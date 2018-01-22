@@ -1,0 +1,14 @@
+<div class="layout-wrapper" (click)="onWrapperClick()" [ngClass]="{'layout-wrapper-static': layoutStatic,
+    'layout-wrapper-active': mobileMenuActive}">
+    <etraining-menu></etraining-menu>
+    <div class="layout-main">
+        <etraining-navbar></etraining-navbar>
+        <etraining-breadcrumb></etraining-breadcrumb>
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+            <etraining-footer></etraining-footer>
+        </div>
+        <div class="layout-main-mask" *ngIf="mobileMenuActive"></div>
+    </div>
+</div>
+<change-password-dialog></change-password-dialog>

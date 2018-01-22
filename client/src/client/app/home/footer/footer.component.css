@@ -1,0 +1,7 @@
+.layout-wrapper .layout-main .layout-footer .footer-text-left span{
+    vertical-align: middle;
+}
+.layout-wrapper .layout-main .layout-footer .footer-text-left {
+    margin-top: 10px;
+    float:left;
+}
