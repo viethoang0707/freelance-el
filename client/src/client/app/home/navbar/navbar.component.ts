@@ -6,7 +6,7 @@ import { User } from '../../shared/models/user.model';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
 import { LangService } from '../../shared/services/lang.service';
-import {SelectItem} from 'primeng/api';
+import {SelectItem} from 'primeng/primeng';
 
 @Component({
 	moduleId: module.id,
@@ -16,16 +16,19 @@ import {SelectItem} from 'primeng/api';
 export class NavbarComponent implements OnInit {
 
 	user: User;
-	@Input() lang;
 	langs: SelectItem[];
-	selectedLang: SelectItem;
+	@Input() selectedLang: SelectItem;
 
-	constructor(public eventManager: HomeEventManager,
+	constructor(public eventManager: HomeEventManager, private langService: LangService,
 		private auth: AuthService, private parent: HomeComponent) {
 		this.langs = [
             {label: 'English', value: 'gb'},
             {label: 'Vietnamese', value: 'vn'}
         ];
+        if (this.langService.Lang == 'vn')
+        	this.selectedLang = this.langs[1];
+        else
+        	this.selectedLang = this.langs[0];
 	}
 
 	ngOnInit() {
@@ -33,7 +36,7 @@ export class NavbarComponent implements OnInit {
 	}
 
 	selectLang($event:any) {
-		console.log($event);
+		this.langService.Lang = $event.value;
 	}
 }
 

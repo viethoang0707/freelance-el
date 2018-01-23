@@ -7,7 +7,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 @Injectable()
 export class HomeEventManager {
     private showProfileEventReceiver: Subject<any> = new Subject();
-    private showCompanyProfileEventReceiver: Subject<any> = new Subject();
     private changePasswordEventReceiver: Subject<any> = new Subject();
     private logoutEventReceiver: Subject<any> = new Subject();
     private menuEventReceiver: Subject<any> = new Subject();
@@ -18,7 +17,6 @@ export class HomeEventManager {
     private toggleMenuEventReceiver: Subject<any> = new Subject();
 
     showProfileEvents:Observable<any> =  this.showProfileEventReceiver.asObservable();
-    showCompanyProfileEvents:Observable<any> =  this.showCompanyProfileEventReceiver.asObservable();
     changePasswordEvents:Observable<any> =  this.changePasswordEventReceiver.asObservable();
     logoutEvents:Observable<any> =  this.logoutEventReceiver.asObservable();
     topbarMenuEvents:Observable<any> =  this.topbarMenuEventReceiver.asObservable();
@@ -31,10 +29,6 @@ export class HomeEventManager {
 
     showProfile() {
         this.showProfileEventReceiver.next();
-    }
-
-    showCompanyProfile() {
-        this.showCompanyProfileEventReceiver.next();
     }
 
     changePassword() {

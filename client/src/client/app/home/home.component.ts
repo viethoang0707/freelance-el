@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChangePasswordDialog } from './modals//change-password-dialog/change-password-dialog.component';
 import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
-import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
+import { BreadcrumbService } from './breadcumb/breadcrumb.service';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -20,9 +20,16 @@ export class HomeComponent extends BaseComponent implements AfterViewInit {
 
     @ViewChild(ChangePasswordDialog) passwordDialog: ChangePasswordDialog;
 
-    constructor( private router: Router,
-     private eventManager :HomeEventManager, authService: AuthService) {
+    constructor( 
+        private router: Router, 
+        private eventManager :HomeEventManager, 
+        private breadcumbService: BreadcrumbService,
+        authService: AuthService) {
         super();
+        this.breadcumbService.setItems([
+            {label: 'Admin'},
+            {label: 'Control Panel', routerLink: ['/controlpanel']}
+        ]);
     }
 
     menuClick: boolean;

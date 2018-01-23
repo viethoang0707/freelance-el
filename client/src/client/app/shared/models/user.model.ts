@@ -21,7 +21,7 @@ export class User extends BaseModel{
 		this.login = undefined;
         this.mobile = undefined;
         this.group_ids = undefined;
-        this.ui_access_group = undefined;
+        this.is_admin = undefined;
 		this.company_id = undefined;
 	}
 
@@ -31,7 +31,7 @@ export class User extends BaseModel{
     gender: string;
     login: string;
     mobile: string;
-    ui_access_group: number;
+    is_admin: boolean;
     display_name: string;
     company_id: number;
     group_ids: number[];
