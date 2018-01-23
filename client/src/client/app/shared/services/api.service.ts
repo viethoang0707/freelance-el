@@ -9,8 +9,6 @@ import { Config } from '../../env.config';
 import 'rxjs/add/operator/map';
 import { Observable, Subject } from 'rxjs/Rx';
 
-
-
 @Injectable()
 export class APIService {
     constructor(private http: Http) { }
@@ -18,7 +16,7 @@ export class APIService {
     cloudInfo(code:string):Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post(Config.CLOUD_ENDPOINT + '/api/cloud', JSON.stringify({code: code }), options)
+        return this.http.post(Config.CLOUD_ENDPOINT + '/cloud/account', JSON.stringify({code: code }), options)
             .map((response: Response) => response.json());
     }
 

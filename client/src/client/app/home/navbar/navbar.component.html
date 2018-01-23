@@ -1,96 +1,57 @@
 <div class="layout-topbar">
-    <img alt="logo" src="assets/layout/images/logo-slim.png" class="mobile-logo" />
-    <a href="#" class="menu-btn" (click)="eventManager.menuClick()">
+  <img alt="logo" src="assets/layout/images/logo-slim.png" class="mobile-logo" />
+  <a href="#" class="menu-btn" (click)="eventManager.menuClick()">
         <i class="material-icons">&#xE5D2;</i>
     </a>
-    <a href="#" class="topbar-menu-btn" (click)="eventManager.topbarMobileMenuClick()">
+  <a href="#" class="topbar-menu-btn" (click)="eventManager.topbarMobileMenuClick()">
         <i class="material-icons">&#xE853;</i>
     </a>
-    <div class="layout-topbar-menu-wrapper">
-        <ul class="topbar-menu fadeInDown" [ngClass]="{'topbar-menu-active': parent.topbarMenuActive}" (click)="eventManager.topbarMenuClick()">
-            <li #profile class="profile-item" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
-                <a href="#">
+  <div class="layout-topbar-menu-wrapper">
+    <ul class="topbar-menu fadeInDown" [ngClass]="{'topbar-menu-active': parent.topbarMenuActive}" (click)="eventManager.topbarMenuClick()">
+      <li #profile class="profile-item" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
+        <a href="#">
                     <span class="profile-image-wrapper">
                         <img [src]='user.image | imageBase64'/>
                     </span>
                     <span class="topbar-item-name profile-name">{{user.display_name}}</span>
                 </a>
-                <ul class="fadeInDown">
-                    <li role="menuitem">
-                        <a href="#" (click)="eventManager.showProfile()">
+        <ul class="fadeInDown">
+          <li role="menuitem">
+            <a href="#" (click)="eventManager.showProfile()">
                             <i class="material-icons">account_circle</i>
                             <span>Thông tin cá nhân</span>
                         </a>
-                    </li>
-                    <li role="menuitem">
-                        <a href="#" (click)="eventManager.changePassword()">
+          </li>
+          <li role="menuitem">
+            <a href="#" (click)="eventManager.changePassword()">
                             <i class="material-icons">verified_user</i>
                             <span>Đổi mật khẩu</span>
                         </a>
-                    </li>
-                    <li role="menuitem">
-                        <a href="#" (click)="eventManager.logout()">
+          </li>
+          <li role="menuitem">
+            <a href="#" (click)="eventManager.logout()">
                             <i class="material-icons" >exit_to_app</i>
                             <span>Đăng xuất</span>
                         </a>
-                    </li>
-                </ul>
-            </li>
-            <li #notifications [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === notifications}" (click)="eventManager.topbarRootItemClick( notifications)">
-                <a href="#">
-                    <i class="topbar-icon material-icons">notifications</i>
-                    <span class="topbar-badge animated rubberBand">4</span>
-                    <span class="topbar-item-name">Notifications</span>
-                </a>
-                <ul class="fadeInDown">
-                    <li role="menuitem">
-                        <a href="#">
-                            <i class="material-icons">bug_report</i>
-                            <span>Pending tasks</span>
-                        </a>
-                    </li>
-                    <li role="menuitem">
-                        <a href="#">
-                            <i class="material-icons">event</i>
-                            <span>Meeting today at 3pm</span>
-                        </a>
-                    </li>
-                    <li role="menuitem">
-                        <a href="#">
-                            <i class="material-icons">cloud_download</i>
-                            <span>Download documents</span>
-                        </a>
-                    </li>
-                    <li role="menuitem">
-                        <a href="#">
-                            <i class="material-icons">flight</i>
-                            <span>Book flight</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li #langs [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === langs}" (click)="eventManager.topbarRootItemClick( langs)">
-
-                
-                <a href="#">
-                    <span class="flag-icon flag-icon-gb"></span>
-                    <span class="topbar-item-name">Languages</span>
-                </a>
-                <ul class="fadeInDown">
-                    <li role="menuitem">
-                        <a href="#">
-                            <span class="flag-icon flag-icon-gb"></span>
-                <span style="font-size:14px;margin-top:4px">English</span>
-                        </a>
-                    </li>
-                    <li role="menuitem">
-                        <a href="#">
-                            <span class="flag-icon flag-icon-vn"></span>
-                <span style="font-size:14px;margin-top:4px">Vietnamese</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+          </li>
         </ul>
-    </div>
+      </li>
+      <li #language [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === langs}" (click)="eventManager.topbarRootItemClick( language)" >
+        <p-dropdown [options]="langs" [style]="{'width':'150px'}" (onChange)="selectLang($event)" [(ngModel)]="selectedLang">
+          <ng-template let-item pTemplate="selectedItem">
+            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                <span class="flag-icon" [ngClass]="'flag-icon-'+selectedLang.value"></span>
+                <div style="font-size:14px;float:right;margin-top:4px">{{item.label}}</div>
+            </div>
+          </ng-template>
+          <ng-template let-car pTemplate="item">
+            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
+                <span class="flag-icon" [ngClass]="'flag-icon-'+item.value"></span>
+                <div style="font-size:14px;float:right;margin-top:4px">{{item.label}}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </li>
+    </ul>
+  </div>
 </div>

@@ -1,0 +1,55 @@
+<div class="modal animated zoomIn text-xs-left" id="groupItemDialog" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel34"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2"><i class="icon-edit2"></i> Nhóm phân quyền</h4>
+            </div>
+            <form novalidate (ngSubmit)="f.form.valid && save()"
+                                      #f="ngForm">
+                <div class="modal-body ">
+
+                    <div class="form-group">
+                        <label>Tên <span>*</span></label>
+                        <div class="form-group position-relative ">
+                            <input type="text" name="name" class="form-control" required [(ngModel)]="object.name"
+                                   #name="ngModel">
+
+                        </div>
+                        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                             class="alert alert-danger ">
+
+                            <div *ngIf="name.errors.required">
+                                Trường Tên là bắt buộc.
+                            </div>
+
+                        </div>
+
+                        <label>Ghi chú</label>
+                        <div class="form-group position-relative ">
+                            <input type="text" name="note" class="form-control" [(ngModel)]="object.note">
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary " data-dismiss="modal"
+                            data-backdrop="false">
+                        Đóng
+                    </button>
+                    <button type="submit" class="btn btn-outline-primary">
+                        {{object && object.id ?  'Cập nhật': 'Tạo mới'}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

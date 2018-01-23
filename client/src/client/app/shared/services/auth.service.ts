@@ -10,6 +10,9 @@ import { APIService } from './api.service'
 @Injectable()
 export class AuthService {
 
+    constructor(private apiService: APIService) {
+    }
+
     get StoredCredential(): Credential {
         if (localStorage.getItem('credential'))
             return MapUtils.deserialize(Credential, JSON.parse(atob(localStorage.getItem('credential'))));
@@ -30,10 +33,6 @@ export class AuthService {
 
     set CurrentUser(user: User) {
         localStorage.setItem('currentUser', btoa(JSON.stringify(user)));
-    }
-
-
-    constructor(private apiService: APIService) {
     }
 
     saveCredential(info: Credential, remember: boolean) {

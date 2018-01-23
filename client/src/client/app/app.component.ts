@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { Config } from './env.config';
-import { TranslateService } from '@ngx-translate/core';
 import './operators';
+import { LangService } from './shared/services/lang.service';
 
-/**
- * This class represents the main application component.
- */
 @Component({
 	moduleId: module.id,
 	selector: 'etraining-app',
@@ -13,9 +10,8 @@ import './operators';
 })
 export class AppComponent {
 
-	constructor(translate: TranslateService) {
-		translate.setDefaultLang('vi');
-		translate.use('en');
+	constructor(private langService: LangService) {
+		langService.initSetting();
 		console.log('Environment config', Config);
 	}
 

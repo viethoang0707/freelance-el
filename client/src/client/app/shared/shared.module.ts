@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
+import { LangService } from './services/lang.service';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
@@ -231,7 +232,7 @@ export class ErpSharedModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: SharedModule,
-            providers: [AuthGuard, APIService, AuthService, MessageService]
+            providers: [AuthGuard, APIService, AuthService, MessageService, LangService]
         };
     }
 }
