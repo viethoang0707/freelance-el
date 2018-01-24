@@ -18,10 +18,11 @@ import { HomeEventManager } from './home-manager.service';
   imports: [ HomeRoutingModule, ErpSharedModule ],
   declarations: [ HomeComponent, NavbarComponent, SideMenuComponent, 
   FooterComponent,SubMenuComponent,BreadcrumbComponent,ChangePasswordDialog ],
-  exports: [ HomeComponent],
-  providers: [ AuthGuard, BreadcrumbService, HomeEventManager ]
+  exports: [],
+  providers: [ BreadcrumbService, HomeEventManager ]
 })
-export class HomeModule { }
+export class HomeModule { 
+}
 
 
 

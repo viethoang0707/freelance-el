@@ -81,11 +81,6 @@ import { TreeModule } from 'primeng/primeng';
 import { TreeTableModule } from 'primeng/primeng';
 import { MessageService } from 'primeng/components/common/messageservice';
 
-
-/**
- * Do not specify providers for modules that might be imported by a lazy loaded module.
- */
-
 @NgModule({
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, HttpModule,
         AccordionModule,

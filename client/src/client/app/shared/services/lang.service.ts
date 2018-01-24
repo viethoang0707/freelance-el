@@ -16,8 +16,8 @@ export class LangService {
     }
 
     initSetting() {
-        this.translationService.setDefaultLang('vi');
-        var defaultLang = localStorage.getItem('language')? localStorage.getItem('language'):'vi';
+        this.translationService.setDefaultLang('vn');
+        var defaultLang = localStorage.getItem('language')? localStorage.getItem('language'):'vn';
         this.translationService.use(defaultLang);
     }
 

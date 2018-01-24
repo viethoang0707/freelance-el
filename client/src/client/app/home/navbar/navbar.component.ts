@@ -7,6 +7,7 @@ import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
 import { LangService } from '../../shared/services/lang.service';
 import {SelectItem} from 'primeng/primeng';
+import { BreadcrumbService } from '../breadcumb/breadcrumb.service';
 
 @Component({
 	moduleId: module.id,
@@ -17,18 +18,16 @@ export class NavbarComponent implements OnInit {
 
 	user: User;
 	langs: SelectItem[];
-	@Input() selectedLang: SelectItem;
+	@Input() selectedLang: string;
 
 	constructor(public eventManager: HomeEventManager, private langService: LangService,
-		private auth: AuthService, private parent: HomeComponent) {
+		private auth: AuthService, private parent: HomeComponent, private breadcrumbService: BreadcrumbService) {
 		this.langs = [
             {label: 'English', value: 'gb'},
             {label: 'Vietnamese', value: 'vn'}
         ];
-        if (this.langService.Lang == 'vn')
-        	this.selectedLang = this.langs[1];
-        else
-        	this.selectedLang = this.langs[0];
+        this.selectedLang = this.langService.Lang 
+
 	}
 
 	ngOnInit() {

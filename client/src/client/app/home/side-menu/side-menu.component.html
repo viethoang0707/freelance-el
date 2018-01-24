@@ -2,7 +2,7 @@
     (click)="eventManager.sidebarClick()" (mouseover)="app.sidebarActive=true" (mouseleave)="app.sidebarActive=false">
     <div class="sidebar-logo">
         <a routerLink="/dashboard">
-            <img alt="logo" src="assets/layout/images/logo-slim.png" />
+            <img [src]="credential.cloud_account.logoUrl">
             <span class="app-name">e-Training</span>
         </a>
         <a href="#" class="sidebar-anchor" title="Toggle Menu" (click)="eventManager.toggleMenuClick()"></a>

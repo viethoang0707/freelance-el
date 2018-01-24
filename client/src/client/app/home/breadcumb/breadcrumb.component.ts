@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-import { HomeComponent } from '../home.component';
 import { BreadcrumbService } from './breadcrumb.service';
 import { Subscription } from 'rxjs/Subscription';
 import { MenuItem } from 'primeng/primeng';
@@ -15,11 +14,12 @@ export class BreadcrumbComponent implements OnDestroy {
 
     items: MenuItem[];
 
-    constructor(public breadcrumbService: BreadcrumbService) {
+    constructor(private breadcrumbService: BreadcrumbService) {
         this.subscription = breadcrumbService.itemsHandler.subscribe(response => {
-            console.log('Sub',response);
             this.items = response;
         });
+
+        
     }
 
     ngOnDestroy() {

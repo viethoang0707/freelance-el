@@ -20,38 +20,24 @@ export class HomeComponent extends BaseComponent implements AfterViewInit {
 
     @ViewChild(ChangePasswordDialog) passwordDialog: ChangePasswordDialog;
 
+    menuClick: boolean;
+    menuButtonClick: boolean;
+    topbarMenuButtonClick: boolean;
+    topbarMenuClick: boolean;
+    topbarMenuActive: boolean;
+    activeTopbarItem: Element;
+    layoutStatic: boolean;
+    sidebarActive: boolean;
+    mobileMenuActive: boolean;
+    darkMenu: boolean;
+
     constructor( 
         private router: Router, 
         private eventManager :HomeEventManager, 
-        private breadcumbService: BreadcrumbService,
+        private breadcrumbService: BreadcrumbService,
         authService: AuthService) {
         super();
-        this.breadcumbService.setItems([
-            {label: 'Admin'},
-            {label: 'Control Panel', routerLink: ['/controlpanel']}
-        ]);
     }
-
-    menuClick: boolean;
-
-    menuButtonClick: boolean;
-
-    topbarMenuButtonClick: boolean;
-
-    topbarMenuClick: boolean;
-
-    topbarMenuActive: boolean;
-
-    activeTopbarItem: Element;
-
-    layoutStatic: boolean;
-
-    sidebarActive: boolean;
-
-    mobileMenuActive: boolean;
-
-    darkMenu: boolean;
-
 
     onWrapperClick() {
         if (!this.menuClick && !this.menuButtonClick) {
@@ -62,7 +48,6 @@ export class HomeComponent extends BaseComponent implements AfterViewInit {
             this.topbarMenuActive = false;
             this.activeTopbarItem = null;
         }
-
         this.menuClick = false;
         this.menuButtonClick = false;
         this.topbarMenuClick = false;
