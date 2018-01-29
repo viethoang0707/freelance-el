@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { Credential } from '../../shared/models/credential.model';
 import { TranslateService } from '@ngx-translate/core';
+import { Company } from '../../shared/models/company.model';
+import { CacheService } from '../../shared/services/cache.service';
 
 @Component({
   moduleId: module.id,
@@ -14,16 +15,15 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
     @Input() recover_email: string;
     @Input() recover_cloud: string;
+    company: Company;
     mode: string = '<%= BUILD_TYPE %>';
-    credential: Credential;
 
-    constructor(private translateService: TranslateService) { 
+    constructor(private translateService: TranslateService, private cacheService: CacheService) { 
       super(); 
-      this.credential = this.authService.StoredCredential;
     }
 
     ngOnInit() {
-
+      this.company =  this.cacheService.UserCompany;
     }
 
     recoverPassword() {

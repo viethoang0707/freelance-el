@@ -37,8 +37,6 @@ export class AuthService {
 
     saveCredential(info: Credential, remember: boolean) {
         if (remember) {
-            info.username = '';
-            info.password = '';
             this.StoredCredential =  info;
         } else {
             this.StoredCredential =  new Credential();

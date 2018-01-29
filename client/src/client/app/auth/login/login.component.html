@@ -1,13 +1,13 @@
 <div class="login-body">
     <div class="login-panel ui-fluid">
         <div class="login-panel-header">
-            <img [src]="credential.cloud_account.logoUrl">
+            <img [src]='company.logo | imageBase64'>
         </div>
         <div class="login-panel-content">
             <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
                 <div class="ui-g">
                     <div class=" ui-g-12 ">
-                        <h1>{{credential.cloud_account.name?credential.cloud_account.name:'E-learning' | translate }}</h1>
+                        <h1>{{company.name}}</h1>
                     </div>
                     <div class=" ui-g-12 ">
                         <span class="md-inputfield">

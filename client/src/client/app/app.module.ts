@@ -8,6 +8,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { ErpSharedModule } from './shared/shared.module';
+import { SettingModule } from './setting/setting.module';
+import { AccountModule } from './account/account.module';
 import { InterceptHttp } from './shared/helpers/intercept.http';
 import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
@@ -21,6 +23,8 @@ import { CustomTranslationLoader } from './shared/helpers/translation.loader';
         AppRoutingModule,
         AuthModule,
         HomeModule,
+        SettingModule,
+        AccountModule,
         ErpSharedModule.forRoot(),
         TranslateModule.forRoot({
             loader: {provide: TranslateLoader, useClass: CustomTranslationLoader}

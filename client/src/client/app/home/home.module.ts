@@ -10,7 +10,6 @@ import { SubMenuComponent } from './side-menu/sub-menu.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BreadcrumbComponent } from './breadcumb/breadcrumb.component';
-import { BreadcrumbService } from './breadcumb/breadcrumb.service';
 import { HomeEventManager } from './home-manager.service';
 
 
@@ -19,7 +18,7 @@ import { HomeEventManager } from './home-manager.service';
   declarations: [ HomeComponent, NavbarComponent, SideMenuComponent, 
   FooterComponent,SubMenuComponent,BreadcrumbComponent,ChangePasswordDialog ],
   exports: [],
-  providers: [ BreadcrumbService, HomeEventManager ]
+  providers: [HomeEventManager ]
 })
 export class HomeModule { 
 }

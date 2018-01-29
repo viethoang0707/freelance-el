@@ -1,0 +1,26 @@
+<div class="card card-w-title">
+       <h1> {{'Application setting'|translate}}</h1>
+<form novalidate (ngSubmit)="save()" #f="ngForm">          
+                <div class="ui-g form-group ui-fluid">
+                    <div class="ui-g-12 ">
+                        <span class="md-inputfield">
+                            <input type="text" pInputText [(ngModel)]="company.name" name="companyName">
+                            <label>{{'Name'|translate}}</label>
+                        </span>
+                    </div>
+                    <div class="ui-g-12 ">
+                        <div class="ui-g-3">
+                            <label>{{'Logo'|translate}}</label>
+                            <image-base64 [(src64)]="company.logo"></image-base64>
+                        </div>
+                    </div>
+                </div>
+                    <div class="ui-g">
+          <div class="ui-g-12" style="text-align:right">
+              <button pButton type="submit" label="{{'Save'|translate}}" icon="fa ui-icon-save" class="purple-btn"></button>
+          
+              <button pButton type="button" label="{{'Undo'|translate}}" icon="fa ui-icon-restore" class="blue-grey-btn" (click)="restore()"></button>
+      </div>
+    </div>
+</form>
+</div>

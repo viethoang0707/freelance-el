@@ -6,25 +6,31 @@ import { RouterModule } from '@angular/router';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend } from '@angular/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
+import { CacheService } from './services/cache.service';
+import { ExcelService } from './services/excel.service';
+import { TreeUtils } from './helpers/tree.utils';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
-
+import { ImageBase64Component } from './components/image-base64/image-base64.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';
 import { CalendarModule } from 'primeng/primeng';
 import { CarouselModule } from 'primeng/primeng';
+import { KeyFilterModule } from 'primeng/primeng';
 import { ChartModule } from 'primeng/primeng';
 import { CheckboxModule } from 'primeng/primeng';
 import { ChipsModule } from 'primeng/primeng';
 import { CodeHighlighterModule } from 'primeng/primeng';
 import { ConfirmDialogModule } from 'primeng/primeng';
+import { ConfirmationService } from 'primeng/api';
 import { ColorPickerModule } from 'primeng/primeng';
 import { SharedModule } from 'primeng/primeng';
 import { ContextMenuModule } from 'primeng/primeng';
@@ -71,6 +77,7 @@ import { SpinnerModule } from 'primeng/primeng';
 import { SplitButtonModule } from 'primeng/primeng';
 import { StepsModule } from 'primeng/primeng';
 import { TabMenuModule } from 'primeng/primeng';
+import {TableModule} from 'primeng/table';
 import { TabViewModule } from 'primeng/primeng';
 import { TerminalModule } from 'primeng/primeng';
 import { TieredMenuModule } from 'primeng/primeng';
@@ -114,6 +121,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
+        KeyFilterModule,
         LightboxModule,
         ListboxModule,
         MegaMenuModule,
@@ -141,6 +149,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         StepsModule,
         TabMenuModule,
         TabViewModule,
+        TableModule,
         TerminalModule,
         TieredMenuModule,
         ToggleButtonModule,
@@ -149,12 +158,18 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TreeModule,
         TreeTableModule,
         TranslateModule],
-    declarations: [MatchInputValidatorDirective, ValuesPipe, KeysPipe, ImageBase64Pipe],
-    exports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, 
-        ValuesPipe, 
-        KeysPipe, 
+    declarations: [
+        MatchInputValidatorDirective,
+        ValuesPipe,
+        KeysPipe,
+        ImageBase64Pipe,
+        ImageBase64Component],
+    exports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule,
+        ValuesPipe,
+        KeysPipe,
         ImageBase64Pipe,
         MatchInputValidatorDirective,
+        ImageBase64Component,
         HttpModule,
         AccordionModule,
         AutoCompleteModule,
@@ -187,6 +202,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
+        KeyFilterModule,
         LightboxModule,
         ListboxModule,
         MegaMenuModule,
@@ -213,6 +229,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         SplitButtonModule,
         StepsModule,
         TabMenuModule,
+        TableModule,
         TabViewModule,
         TerminalModule,
         TieredMenuModule,
@@ -227,7 +244,9 @@ export class ErpSharedModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: SharedModule,
-            providers: [AuthGuard, APIService, AuthService, MessageService, LangService]
+            providers: [AuthGuard, AdminGuard, APIService, AuthService, 
+            MessageService, LangService, CacheService, TreeUtils, ExcelService,
+            ConfirmationService]
         };
     }
 }

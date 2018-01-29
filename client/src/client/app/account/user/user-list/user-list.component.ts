@@ -1,81 +1,85 @@
-import { Component, Input, OnInit, AfterViewInit} from '@angular/core';
-import { Observable}     from 'rxjs/Observable';
-import { ToolbarManager} from '../../../shared/components/base/toolbar.manager';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS } from '../../../shared/models/constants'
 import { User } from '../../../shared/models/user.model';
 import { Group } from '../../../shared/models/group.model';
-import { Employee } from '../../../shared/models/employee.model';
-import { ListingViewComponent, } from '../../../shared/components/listing-view/listing-view.component';
+import { UserDialog } from '../user-dialog/user-dialog.component';
+import { UserExportDialog } from '../export-dialog/export-dialog.component';
+import { UserImportDialog } from '../import-dialog/import-dialog.component';
+import { UserProfileDialog } from '../profile-dialog/profile-dialog.component';
+import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { TreeNode } from 'primeng/api';
+import { GROUP_CATEGORY } from '../../../shared/models/constants';
+import { ConfirmationService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     moduleId: module.id,
-    selector: 'hrm-user-list',
+    selector: 'etraining-user-list',
     templateUrl: 'user-list.component.html',
     styleUrls: ['user-list.component.css'],
-    providers: [ ToolbarManager ]
 })
-export class UserListComponent extends ListingViewComponent<User> {
+export class UserListComponent extends BaseComponent {
 
-    groups: Group[];
-    filteredGroup: Group;
-    employee: Employee;
-    employeeId: number;
+    @ViewChild(UserDialog) userDialog: UserDialog;
+    @ViewChild(UserExportDialog) userExportDialog: UserExportDialog;
+    @ViewChild(UserImportDialog) userImportDialog: UserImportDialog;
+    @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
 
-    constructor(
-                toolbarService: ToolbarManager) {
-        super( toolbarService);
-        this.filteredGroup = new Group();
-        Group.listUIAccessGroup(this).subscribe( data => this.groups = data);
+    constructor(private treeUtils: TreeUtils, private confirmationService: ConfirmationService, 
+        private translateService: TranslateService) {
+        super();
     }
 
-    tableOptios() {
-       return {
-                dom: 't<"col-md-7"il><"col-md-5"p>',
-                language: {
-                    url: "./assets/locale/datatable.vn.json"
-                },
-                scrollX: true
-            };
+    tree: TreeNode[];
+    selectedUser: User;
+    users: User[];
+
+    ngOnInit() {
+        this.loadTableData();
     }
 
-    selectGroupFilter(group:Group) {
-        if (this.filteredGroup.id) {
-            if (this.filteredGroup.id == group.id) 
-                this.filteredGroup =  new Group();
-            else
-                this.filteredGroup =  group;
-        } else {
-            this.filteredGroup = group;
-        }
-        this.applyFilterGroup( this.filteredGroup);
+    add() {
+        var user = new User();
+        this.userDialog.show(user);
+        this.userDialog.onCreateComplete.subscribe(() => {
+            this.loadTableData();
+        })
     }
 
-    onSelectRow(index:number) {
-        super.onSelectRow(index);
-        this.employeeId =  this.selectedRecord.employee_ids[0];
+    edit() {
+        if (this.selectedUser)
+            this.userDialog.show(this.selectedUser);
     }
 
-    applyFilterGroup( group:Group) {
-        var filterUsers = _.filter(this.records, function(item) {
-            return (!group.id || item.ui_access_group == group.id) 
+    delete() {
+        if (this.selectedUser)
+            this.confirmationService.confirm({
+                message: this.translateService.instant('Are you sure to delete ?'),
+                accept: () => {
+                    this.selectedUser.delete(this).subscribe(() => {
+                        this.loadTableData();
+                    })
+                }
+            });
+    }
+
+    export() {
+        this.userExportDialog.show(this.users);
+    }
+
+    import() {
+
+    }
+
+    loadTableData() {
+        User.all(this).subscribe(users => {
+            this.users = users;
         });
-        this.populateTable(filterUsers);
-    }
-
-    getTableDatal():Observable<User[]> {
-        var users =  User.allUserWithEmployee(this);
-        return users;
-    }
-    
-    createEmptyModel():User {
-        return new User();
-    }
-    
-    populateRow(obj:User):any[] {
-        return [obj.login, obj.name, obj.mobile, obj.email, '',obj.create_date, obj.active? USER_STATUS[obj.active.toString()]:''];
     }
 
 }

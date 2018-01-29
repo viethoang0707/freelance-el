@@ -12,10 +12,10 @@ import { TreeNode } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-user-dialog',
-    templateUrl: 'user-dialog.component.html',
+    selector: 'etraining-user-profile-dialog',
+    templateUrl: 'profile-dialog.component.html',
 })
-export class UserDialog extends BaseDialog<User> {
+export class UserProfileDialog extends BaseDialog<User> {
 
     tree: TreeNode[];
     selectedNode: TreeNode;

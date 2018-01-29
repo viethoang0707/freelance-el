@@ -1,9 +1,8 @@
-
+import { GROUP_CATEGORY} from './constants';
 import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from './decorator';
 import { APIContext } from './context';
-import { GroupCategory } from './group-category.model';
 
 @Model('res.groups')
 export class Group extends BaseModel{
@@ -13,14 +12,22 @@ export class Group extends BaseModel{
         super();
 		
 		this.name = undefined;
-		this.category_id = undefined;
-		this.users = undefined;
-		this.comment = undefined;
+		this.category = undefined;
+		this.order = undefined;
+		this.code = undefined;
+        this.parent_id = undefined;
+        this.child_ids = undefined;
 	}
 
     name:string;
-    category_id: number;
-    users: number[];
-    comment: string;
+    category: string;
+    code: string;
+    order: string;
+    parent_id: number;
+    child_ids: number[];
+
+    static listUserGroup(context:APIContext):Observable<any> {
+        return Group.search([], "[('category','=','"+GROUP_CATEGORY.USER+"')]",context);
+    }
 
 }

@@ -1,0 +1,13 @@
+<p-dialog header="{{'Export to Excel'|translate}}" [(visible)]="display" modal="modal" width="300" [responsive]="true">
+  <div class="ui-g form-group">
+    <div class="ui-g-12">
+      <label> {{'Exported fields' | translate}}</label>
+      <p-listbox [options]="fields" [(ngModel)]="selectedFields"  multiple="multiple" checkbox="checkbox">
+      </p-listbox>
+    </div>
+  </div>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" label="{{'Export'|translate}}" (click)="export()"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog>

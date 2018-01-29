@@ -17,25 +17,35 @@ export class User extends BaseModel{
 		this.display_name = undefined;
         this.name = undefined;
 		this.email = undefined;
-        this.gender = undefined;
+        this.etraining_group_id = undefined;
+        this.etraining_group_id__DESC__ = undefined;
 		this.login = undefined;
-        this.mobile = undefined;
+        this.phone = undefined;
         this.group_ids = undefined;
         this.is_admin = undefined;
+        this.banned = undefined;
 		this.company_id = undefined;
 	}
 
     image:string;
     name:string;
     email: string;
-    gender: string;
+    etraining_group_id: number;
+    etraining_group_id__DESC__: string;
     login: string;
-    mobile: string;
+    phone: string;
     is_admin: boolean;
+    banned: boolean;
     display_name: string;
     company_id: number;
     group_ids: number[];
 
+    getCompany(context:APIContext):Observable<any> {
+        return Company.get(this.company_id, context);
+    }
 
+    static all( context:APIContext): Observable<any[]> {
+        return this.search([],"[('login','!=','admin')]",context);
+    }
 
 }

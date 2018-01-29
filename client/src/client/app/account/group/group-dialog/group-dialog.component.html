@@ -1,55 +1,29 @@
-<div class="modal animated zoomIn text-xs-left" id="groupItemDialog" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel34"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel2"><i class="icon-edit2"></i> Nhóm phân quyền</h4>
-            </div>
-            <form novalidate (ngSubmit)="f.form.valid && save()"
-                                      #f="ngForm">
-                <div class="modal-body ">
-
-                    <div class="form-group">
-                        <label>Tên <span>*</span></label>
-                        <div class="form-group position-relative ">
-                            <input type="text" name="name" class="form-control" required [(ngModel)]="object.name"
-                                   #name="ngModel">
-
-                        </div>
-                        <div *ngIf="name.invalid && (name.dirty || name.touched)"
-                             class="alert alert-danger ">
-
-                            <div *ngIf="name.errors.required">
-                                Trường Tên là bắt buộc.
-                            </div>
-
-                        </div>
-
-                        <label>Ghi chú</label>
-                        <div class="form-group position-relative ">
-                            <input type="text" name="note" class="form-control" [(ngModel)]="object.note">
-
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary " data-dismiss="modal"
-                            data-backdrop="false">
-                        Đóng
-                    </button>
-                    <button type="submit" class="btn btn-outline-primary">
-                        {{object && object.id ?  'Cập nhật': 'Tạo mới'}}
-                    </button>
-                </div>
-            </form>
-        </div>
+<form novalidate (ngSubmit)="save()" #f="ngForm">
+<p-dialog header="{{'User group'|translate}}" [(visible)]="display" modal="modal" width="300" [responsive]="true">
+  
+    <div class="ui-g ui-fluid form-group">
+       <div class="ui-g-12">
+        <label>{{'Parent group'|translate}}</label>
+        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)">></p-tree>
+      </div>
+      <div class="ui-g-12 ">
+        <span class="md-inputfield">
+                            <input type="text" pInputText [(ngModel)]="object.name" name="name">
+                            <label>{{'Name'|translate}}</label>
+                        </span>
+      </div>
+      <div class="ui-g-12">
+        <span class="md-inputfield">
+                            <input type="text" pInputText [(ngModel)]="object.code" name="code">
+                            <label>{{'Code'|translate}}</label>
+                        </span>
+      </div>
+     
     </div>
-</div>
-
-
+    <p-footer>
+      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+  
+</p-dialog>
+</form>

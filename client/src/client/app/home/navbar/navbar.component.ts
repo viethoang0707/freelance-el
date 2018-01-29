@@ -7,7 +7,6 @@ import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
 import { LangService } from '../../shared/services/lang.service';
 import {SelectItem} from 'primeng/primeng';
-import { BreadcrumbService } from '../breadcumb/breadcrumb.service';
 
 @Component({
 	moduleId: module.id,
@@ -21,7 +20,7 @@ export class NavbarComponent implements OnInit {
 	@Input() selectedLang: string;
 
 	constructor(public eventManager: HomeEventManager, private langService: LangService,
-		private auth: AuthService, private parent: HomeComponent, private breadcrumbService: BreadcrumbService) {
+		private auth: AuthService, private parent: HomeComponent) {
 		this.langs = [
             {label: 'English', value: 'gb'},
             {label: 'Vietnamese', value: 'vn'}

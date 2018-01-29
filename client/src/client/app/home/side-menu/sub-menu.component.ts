@@ -8,7 +8,7 @@ declare var jQuery: any;
 
 @Component({
     moduleId: module.id,
-    selector: '[hrm-submenu]',
+    selector: '[etraining-submenu]',
     templateUrl: 'sub-menu.component.html',
     animations: [
         trigger('children', [
@@ -26,15 +26,10 @@ declare var jQuery: any;
 export class SubMenuComponent {
 
     @Input() item: MenuItem;
-
     @Input() root: boolean;
-
     @Input() visible: boolean;
-
     _reset: boolean;
-
     activeIndex: number;
-
     hover: boolean;
 
     constructor(public app: HomeComponent, public router: Router, public location: Location) { }

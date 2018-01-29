@@ -1,17 +1,13 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
-import { HrmSharedModule } from '../shared/shared.module';
-import  { SettingComponent } from './setting.component'
-import { GroupListComponent } from './group/group-list/group-list.component';
-import { GroupDialog } from './group/group-dialog/group-dialog.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserDialog } from './user/user-dialog/user-dialog.component';
-import { CountUserByGroupPipe } from './user/user-list/user-by-group.pipe';
+import { ErpSharedModule } from '../shared/shared.module';
+import { SettingAppComponent } from './application/setting-app.component';
+import { SettingMailComponent } from './mail/setting-mail.component';
+import { SettingComponent } from './setting.component';
 
 @NgModule({
-    imports: [HrmSharedModule, AuthModule],
-    declarations: [SettingComponent, GroupDialog, GroupListComponent,
-    				UserListComponent, UserDialog, CountUserByGroupPipe],
+    imports: [ErpSharedModule, AuthModule],
+    declarations: [SettingAppComponent, SettingMailComponent, SettingComponent],
     exports: [],
     providers: []
 })

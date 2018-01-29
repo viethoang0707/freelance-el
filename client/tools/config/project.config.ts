@@ -27,7 +27,7 @@ export class ProjectConfig extends SeedConfig {
 
     constructor() {
         super();
-        this.APP_TITLE = 'Viet ERP';
+        this.APP_TITLE = 'e-Learning';
         // this.GOOGLE_ANALYTICS_ID = 'Your site's ID';
 
         /* Enable typeless compiler runs (faster) between typed compiler runs. */
@@ -95,7 +95,15 @@ export class ProjectConfig extends SeedConfig {
                     main: 'bundles/core.umd.js',
                     defaultExtension: 'js'
                 }
-            }
+            },
+            {
+                name: 'file-saver',
+                path: 'node_modules/file-saver/FileSaver.js'
+            },
+            {
+                name: 'xlsx',
+                path: 'node_modules/xlsx/xlsx.js'
+            },
         ];
 
         this.addPackagesBundles(additionalPackages);

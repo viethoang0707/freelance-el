@@ -5,7 +5,6 @@ import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
-import { BreadcrumbService } from './breadcumb/breadcrumb.service';
 
 /**
  * This class represents the lazy loaded HomeComponent.
@@ -34,7 +33,6 @@ export class HomeComponent extends BaseComponent implements AfterViewInit {
     constructor( 
         private router: Router, 
         private eventManager :HomeEventManager, 
-        private breadcrumbService: BreadcrumbService,
         authService: AuthService) {
         super();
     }

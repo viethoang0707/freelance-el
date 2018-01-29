@@ -2,10 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { Credential } from '../../shared/models/credential.model';
+import { CacheService } from '../../shared/services/cache.service';
+import { Company } from '../../shared/models/company.model';
 
-/**
- * This class represents the lazy loaded AboutComponent.
- */
 @Component({
     moduleId: module.id,
     selector: 'etraining-login',
@@ -14,6 +13,7 @@ import { Credential } from '../../shared/models/credential.model';
 
 export class LoginComponent extends BaseComponent implements OnInit {
     credential: Credential;
+    company: Company;
     returnUrl: string;
     mode: string = '<%= BUILD_TYPE %>';
 
@@ -22,14 +22,17 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private router: Router) {
+        private router: Router,
+        private cacheService: CacheService) {
         super();
     }
 
     ngOnInit() {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.credential = this.authService.StoredCredential;
+        console.log(this.credential);
         this.remember = (this.credential.username != "" && this.credential.password != "");
+        this.company =  this.cacheService.UserCompany;
     }
 
     login() {
@@ -37,6 +40,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
             .subscribe(
             user => {
                 this.authService.saveCredential(this.credential, this.remember);
+                this.authService.CurrentUser.getCompany(this).subscribe(company => {
+                    this.cacheService.UserCompany =  company;
+                });
                 this.router.navigate([this.returnUrl]);
             },
             error => {

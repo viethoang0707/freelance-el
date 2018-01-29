@@ -77,7 +77,7 @@ export abstract class BaseModel {
     static array(ids: number[], context:APIContext): Observable<any[]> {
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
-        return context.apiService.getArray(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint);
+        return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint);
     }
 
     static allWithInactive(context:APIContext):Observable<any[]> {
