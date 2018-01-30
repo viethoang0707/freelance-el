@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/group.model';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/user.model';
 import * as _ from 'underscore';
 import { ExcelService } from '../../../shared/services/excel.service';
@@ -15,11 +15,12 @@ import { TranslateService } from '@ngx-translate/core';
 	selector: 'etraining-user-export-dialog',
 	templateUrl: 'export-dialog.component.html',
 })
-export class UserExportDialog extends BaseDialog<User> implements OnInit {
+export class UserExportDialog extends BaseComponent implements OnInit {
 
 	users: User[];
 	fields: SelectItem[];
 	selectedFields: string[];
+	display:boolean;
 
 	constructor(private excelService: ExcelService, private translateService: TranslateService) {
 		super();
@@ -31,26 +32,28 @@ export class UserExportDialog extends BaseDialog<User> implements OnInit {
 			{ value: 'group_code', label: this.translateService.instant('Group') }
 		];
 		this.selectedFields = [];
+		this.display = false;
 	}
 
-
-	ngOnInit() {
-		this.onShow.subscribe(object => {
-			this.users = object;
-			Group.listUserGroup(this).subscribe(groups => {
-				_.each(this.users, function(user) {
-					if (user.etraining_group_id) {
-						var group = _.find(groups, function(obj:Group) {
-						return obj.id == user.etraining_group_id;
-						});
-						if (group)
-							user['group_code'] = group.code;
-					}
-				});
-			})
+	show(users:any) {
+        this.users = users;
+        this.display = true;
+        Group.listUserGroup(this).subscribe(groups => {
+			_.each(this.users, function(user) {
+				if (user.etraining_group_id) {
+					var group = _.find(groups, function(obj:Group) {
+					return obj.id == user.etraining_group_id;
+					});
+					if (group)
+						user['group_code'] = group.code;
+				}
+			});
 		});
+    }
 
-	}
+    hide() {
+        this.display = false;
+    }
 
 	export() {
 		var self = this;
@@ -61,7 +64,6 @@ export class UserExportDialog extends BaseDialog<User> implements OnInit {
 			});
 			return userData;
 		});
-		console.log(data);
 		this.excelService.exportAsExcelFile(data, 'users');
 		this.hide();
 	}

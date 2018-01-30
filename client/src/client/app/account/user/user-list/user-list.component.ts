@@ -73,7 +73,7 @@ export class UserListComponent extends BaseComponent {
     }
 
     import() {
-
+        this.userImportDialog.show();
     }
 
     loadTableData() {
