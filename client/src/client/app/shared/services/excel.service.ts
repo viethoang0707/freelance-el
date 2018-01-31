@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs/Rx';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-
 export const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -31,8 +31,10 @@ export class ExcelService {
         var data = new Uint8Array(e.target.result);
         data = new Uint8Array(data);
         var workbook = XLSX.read(data, { type: 'array' });
-        observer.onNext(workbook);
-        observer.onCompleted();
+        var sheetName = workbook.SheetNames[0];
+        var sheet = workbook.Sheets[sheetName];
+        observer.next(XLSX.utils.sheet_to_json(sheet));
+        observer.complete();
       };
       reader.readAsArrayBuffer(file);
     });

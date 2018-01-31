@@ -46,9 +46,10 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                 {
                     label: 'Enrollment', icon: 'school',
                     items: [
-                        { label: 'Course', routerLink: ['/enrollment/course/list'] },
-                        { label: 'Class', routerLink: ['/enrollment/class/list'] },
-                        { label: 'Member', routerLink: ['/enrollment/member/list'] }
+                        { label: 'Course', routerLink: ['/enrollment/courses'] },
+                        { label: 'Course group', routerLink: ['/enrollment/course-groups'] },
+                        { label: 'Class', routerLink: ['/enrollment/classes'] },
+                        { label: 'Member', routerLink: ['/enrollment/members'] }
                     ]
                 },
                 {
@@ -60,7 +61,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     ]
                 },
                 {
-                    label: 'Library', icon: 'local_library',
+                    label: 'Report', icon: 'pie_chart',
                     items: [
                         { label: 'Category', routerLink: ['/library/category/list'] },
                         { label: 'Item', routerLink: ['/library/item/list'] }

@@ -8,7 +8,6 @@ import { User } from '../../../shared/models/user.model';
 import * as _ from 'underscore';
 import { ExcelService } from '../../../shared/services/excel.service';
 import { SelectItem } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	moduleId: module.id,
@@ -22,7 +21,7 @@ export class UserExportDialog extends BaseComponent implements OnInit {
 	selectedFields: string[];
 	display:boolean;
 
-	constructor(private excelService: ExcelService, private translateService: TranslateService) {
+	constructor(private excelService: ExcelService) {
 		super();
 		this.users = [];
 		this.fields = [

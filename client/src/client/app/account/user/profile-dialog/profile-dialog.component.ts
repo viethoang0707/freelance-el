@@ -30,6 +30,12 @@ export class UserProfileDialog extends BaseDialog<User> {
 		}
 	}
 
+	nodeSelect(event:any) {
+		if (this.selectedNode) {
+			this.object.etraining_group_id = this.selectedNode.data.id;
+		}
+	}
+
 	ngOnInit() {
 		this.onShow.subscribe(object => {
 			Group.listUserGroup(this).subscribe(groups => {

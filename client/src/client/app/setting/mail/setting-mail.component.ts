@@ -4,8 +4,6 @@ import { APIService } from '../../shared/services/api.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { SMTP } from '../../shared/models/smtp.model';
-import { CacheService } from '../../shared/services/cache.service';
-import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -18,7 +16,7 @@ export class SettingMailComponent extends BaseComponent {
     smtp: SMTP;
     originSmtp: SMTP;
 
-    constructor(private cacheService: CacheService, private translateService: TranslateService) {
+    constructor() {
         super();
         this.smtp =  new SMTP();
     }

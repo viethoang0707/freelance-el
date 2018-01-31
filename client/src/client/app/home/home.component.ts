@@ -5,7 +5,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
-
+import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog.component';
 /**
  * This class represents the lazy loaded HomeComponent.
  */
@@ -18,6 +18,7 @@ import { HomeEventManager } from './home-manager.service';
 export class HomeComponent extends BaseComponent implements AfterViewInit {
 
     @ViewChild(ChangePasswordDialog) passwordDialog: ChangePasswordDialog;
+    @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
 
     menuClick: boolean;
     menuButtonClick: boolean;
@@ -55,6 +56,10 @@ export class HomeComponent extends BaseComponent implements AfterViewInit {
     ngAfterViewInit() {
         this.eventManager.changePasswordEvents.subscribe(() => {
             this.passwordDialog.show();
+        });
+        this.eventManager.showProfileEvents.subscribe(() => {
+            var user = this.authService.CurrentUser;
+            this.userProfileDialog.show(user);
         });
         this.eventManager.logoutEvents.subscribe(() => {
             this.authService.logout();

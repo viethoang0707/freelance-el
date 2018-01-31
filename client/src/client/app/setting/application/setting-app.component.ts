@@ -4,8 +4,6 @@ import { APIService } from '../../shared/services/api.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { Company } from '../../shared/models/company.model';
-import { CacheService } from '../../shared/services/cache.service';
-import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -18,7 +16,7 @@ export class SettingAppComponent extends BaseComponent {
     company: Company;
     originCompany: Company;
 
-    constructor(private cacheService: CacheService, private translateService: TranslateService) {
+    constructor() {
         super();
     }
 

@@ -1,38 +1,55 @@
- <form novalidate (ngSubmit)="save()" #f="ngForm">
-<p-dialog header="{{'User account'|translate}}" [(visible)]="display" modal="modal" width="600" [responsive]="true">
-    <div class="ui-g ui-fluid form-group">
-      <div class="ui-g-12">
-        <label>{{'Parent group'|translate}}</label>
-        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
-      </div>
-      <div class="ui-g-12 ">
-        <span class="md-inputfield">
+<form novalidate (ngSubmit)="save()" #f="ngForm">
+  <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="modal" width="600" height="100%" [responsive]="true">
+    <p-tabView>
+      <p-tabPanel header="{{'Account info'|translate}}" leftIcon="ui-icon-people">
+        <div class="ui-g ui-fluid form-group">
+          <div class="ui-g-12">
+            <label>{{'Parent group'|translate}}</label>
+            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+          </div>
+          <div class="ui-g-12 ">
+            <span class="md-inputfield">
                             <input type="text" pInputText [(ngModel)]="object.name" name="name">
                             <label>{{'Name'|translate}}</label>
                         </span>
-      </div>
-      <div class="ui-g-6">
-        <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.login" name="login">
+          </div>
+          <div class="ui-g-6">
+            <span class="md-inputfield">
+                            <input type="text" pInputText [(ngModel)]="object.login" name="login" [disabled]="true">
                             <label>{{'Login'|translate}}</label>
                         </span>
-      </div>
-      <div class="ui-g-6">
-        <span class="md-inputfield">
-                            <input type="password" pPassword [(ngModel)]="object.password" name="password">
-                            <label>{{'Password'|translate}}</label>
+          </div>
+          <div class="ui-g-12">
+            <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
+          </div>
+          <div class="ui-g-12">
+            <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="object.banned"></p-checkbox>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
+        <div class="ui-g ui-fluid form-group">
+          <div class="ui-g-6">
+            <span class="md-inputfield">
+                            <input type="text" pInputText [(ngModel)]="object.email" name="email" pKeyFilter="email">
+                            <label>{{'Email'|translate}}</label>
                         </span>
-      </div>
-      <div class="ui-g-12">
-        <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
-      </div>
-      <div class="ui-g-12">
-        <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="object.banned"></p-checkbox>
-      </div>
-    </div>
+          </div>
+          <div class="ui-g-6">
+            <span class="md-inputfield">
+                            <input type="password" pPassword [(ngModel)]="object.mobile" name="mobile">
+                            <label>{{'Mobile'|translate}}</label>
+                        </span>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school">
+        After a break of more than 15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.
+      </p-tabPanel>
+    </p-tabView>
     <p-footer>
       <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
-</p-dialog>
- </form>
+  </p-dialog>
+</form>

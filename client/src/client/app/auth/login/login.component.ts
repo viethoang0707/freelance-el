@@ -22,8 +22,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private router: Router,
-        private cacheService: CacheService) {
+        private router: Router) {
         super();
     }
 

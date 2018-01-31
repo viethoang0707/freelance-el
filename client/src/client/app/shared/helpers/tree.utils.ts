@@ -31,6 +31,7 @@ export class TreeUtils {
         {
           data: group,
           label: group.name,
+          expanded: true,
           expandedIcon: "ui-icon-folder-open",
           collapsedIcon: "ui-icon-folder",
           children: self.buildSubTree(group, groups)

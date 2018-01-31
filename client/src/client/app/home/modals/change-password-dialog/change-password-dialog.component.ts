@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     moduleId: module.id,
@@ -15,7 +14,7 @@ export class ChangePasswordDialog extends BaseComponent implements OnInit {
     @Input() new_pass: string;
     display: boolean;
 
-    constructor(private translateService: TranslateService) {
+    constructor() {
         super();
         this.new_pass = '';
         this.old_pass = '';

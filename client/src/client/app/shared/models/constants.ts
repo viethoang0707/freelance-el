@@ -1,6 +1,11 @@
-
+export const DEFAULT_PASSWORD = '123456';
 export const USER_STATUS = {'true':'Active', 'false': 'Suspended'};
 export const GENDER = {'male':'Male', 'female': 'Female', 'other':'Other'};
 export const GROUP_CATEGORY = {USER:'organization', QUESTION: 'Question', COURSE :'Course'};
 export const SERVER_DATETIME_FORMAT = 'YYYY-MM-DD hh:mm:ss';
-
+export const COURSE_STATUS = {'draft':'Draft', 'published': 'Published', 'unpublished': 'Unpublished'};
+export const COURSE_MODE = {'self-study':'Self-study', 'group': 'Group-study'};
+export const UNIT_TYPE = {'quiz':'Quiz', 'lecture': 'Lecture', 'practice': 'Practice', 'video': 'Video'};
+export const COURSE_MEMBER_ROLE = {'student':'Student', 'teacher': 'Teacher'};
+export const COURSE_MEMBER_STATUS = {'active':'Active', 'withdraw': 'Withdraw', 'suspend':'Suspended'};
+export const COURSE_MEMBER_ENROLL_STATUS = {'in-study':'In-study', 'complete': 'Complete', 'registered':'Registered'};

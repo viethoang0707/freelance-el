@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { TranslateService } from '@ngx-translate/core';
 import { Company } from '../../shared/models/company.model';
-import { CacheService } from '../../shared/services/cache.service';
 
 @Component({
   moduleId: module.id,
@@ -18,7 +16,7 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
     company: Company;
     mode: string = '<%= BUILD_TYPE %>';
 
-    constructor(private translateService: TranslateService, private cacheService: CacheService) { 
+    constructor() { 
       super(); 
     }
 

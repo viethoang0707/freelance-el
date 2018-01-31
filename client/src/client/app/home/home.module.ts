@@ -11,10 +11,10 @@ import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BreadcrumbComponent } from './breadcumb/breadcrumb.component';
 import { HomeEventManager } from './home-manager.service';
-
+import { AccountModule } from '../account/account.module';
 
 @NgModule({
-  imports: [ HomeRoutingModule, ErpSharedModule ],
+  imports: [ HomeRoutingModule, ErpSharedModule, AccountModule ],
   declarations: [ HomeComponent, NavbarComponent, SideMenuComponent, 
   FooterComponent,SubMenuComponent,BreadcrumbComponent,ChangePasswordDialog ],
   exports: [],

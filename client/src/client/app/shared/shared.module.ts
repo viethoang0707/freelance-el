@@ -16,11 +16,13 @@ import { TreeUtils } from './helpers/tree.utils';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
+import { GroupsPipe } from './pipes/group.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
 import { ImageBase64Component } from './components/image-base64/image-base64.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
+import {BlockUIModule} from 'primeng/blockui';
 import { ButtonModule } from 'primeng/primeng';
 import { CalendarModule } from 'primeng/primeng';
 import { CarouselModule } from 'primeng/primeng';
@@ -92,6 +94,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
     imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, HttpModule,
         AccordionModule,
         AutoCompleteModule,
+        BlockUIModule,
         BreadcrumbModule,
         ButtonModule,
         CalendarModule,
@@ -162,17 +165,20 @@ import { MessageService } from 'primeng/components/common/messageservice';
         MatchInputValidatorDirective,
         ValuesPipe,
         KeysPipe,
+        GroupsPipe,
         ImageBase64Pipe,
         ImageBase64Component],
     exports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule,
         ValuesPipe,
         KeysPipe,
+        GroupsPipe,
         ImageBase64Pipe,
         MatchInputValidatorDirective,
         ImageBase64Component,
         HttpModule,
         AccordionModule,
         AutoCompleteModule,
+        BlockUIModule,
         BreadcrumbModule,
         ButtonModule,
         CalendarModule,

@@ -8,14 +8,13 @@ import { UserDialog } from './user/user-dialog/user-dialog.component';
 import { UserExportDialog } from './user/export-dialog/export-dialog.component';
 import { UserImportDialog } from './user/import-dialog/import-dialog.component';
 import { UserProfileDialog } from './user/profile-dialog/profile-dialog.component';
-import { CountUserByGroupPipe } from './user/user-list/user-by-group.pipe';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule],
     declarations: [GroupDialog, GroupListComponent,
-    				UserListComponent, UserDialog, CountUserByGroupPipe,
+    				UserListComponent, UserDialog,
     				UserExportDialog,UserImportDialog,UserProfileDialog],
-    exports: [],
+    exports: [UserProfileDialog],
     providers: []
 })
 export class AccountModule {
