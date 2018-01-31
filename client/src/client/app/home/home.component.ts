@@ -13,7 +13,6 @@ import { HomeEventManager } from './home-manager.service';
     moduleId: module.id,
     selector: 'etraining-home',
     templateUrl: 'home.component.html'
-
 })
 export class HomeComponent extends BaseComponent implements AfterViewInit {
 

@@ -1,0 +1,24 @@
+html {
+    height: 100%;
+    box-sizing: border-box;
+    }
+  
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+  
+body 
+  {
+    position: relative;
+    min-height: 100%;
+  }
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 100px);
+  }
+.layout-content{
+    padding-bottom: 65px !important;
+}

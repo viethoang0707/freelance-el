@@ -1,0 +1,14 @@
+node_modules/
+.idea/
+nbproject/
+npm-debug.log
+public/files/
+public/media/
+/.DS_Store
+public/lib/
+public/upload/
+app.log
+app1.log
+yarn.lock
+npm-debug.log
+/client/dist/
