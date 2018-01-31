@@ -1,0 +1,7 @@
+npm-debug.log
+client/node_modules/
+client/dist/
+src/client/yarn.lock
+.*
+!/.gitignore
+*.pyc
