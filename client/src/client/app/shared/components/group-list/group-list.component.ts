@@ -1,14 +1,15 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { APIService } from '../../../shared/services/api.service';
-import { AuthService } from '../../../shared/services/auth.service';
+import { APIService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 import * as _ from 'underscore';
-import { Group } from '../../../shared/models/group.model';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { Group } from '../../models/group.model';
+import { BaseComponent } from '../base/base.component';
+import { TreeUtils } from '../../helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GroupDialog } from '../group-dialog/group-dialog.component';
-import { GROUP_CATEGORY} from '../../../shared/models/constants';
+import { GROUP_CATEGORY} from '../../models/constants';
 
 @Component({
     moduleId: module.id,
@@ -20,21 +21,23 @@ export class GroupListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(GroupDialog) groupDialog: GroupDialog;
 
-    constructor(private treeUtils: TreeUtils) {
+    constructor(private treeUtils: TreeUtils, private route: ActivatedRoute) {
         super();
     }
 
     tree: TreeNode[];
     selectedNode: TreeNode;
     groups: Group[];
+    category: string;
 
     ngOnInit() {
+        this.category = this.route.snapshot.data['category']
         this.loadTableData();
     }
 
     add() {
         var group =  new Group();
-        group.category = GROUP_CATEGORY.USER;
+        group.category = this.category;
         this.groupDialog.show(group);
         this.groupDialog.onCreateComplete.subscribe(()=> {
             this.loadTableData();
@@ -59,7 +62,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     }
 
     loadTableData() {
-        Group.listUserGroup(this).subscribe(groups => {
+        Group.listByCategory(this, this.category).subscribe(groups => {
             this.groups = groups;
             this.tree = this.treeUtils.buildTree(groups);
         });

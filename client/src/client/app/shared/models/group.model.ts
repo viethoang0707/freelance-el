@@ -26,8 +26,8 @@ export class Group extends BaseModel{
     parent_id: number;
     child_ids: number[];
 
-    static listUserGroup(context:APIContext):Observable<any> {
-        return Group.search([], "[('category','=','"+GROUP_CATEGORY.USER+"')]",context);
+    static listByCategory(context:APIContext, category):Observable<any> {
+        return Group.search([], "[('category','=','"+category+"')]",context);
     }
 
 }

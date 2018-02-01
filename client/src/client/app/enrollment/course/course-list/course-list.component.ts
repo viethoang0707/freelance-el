@@ -4,35 +4,30 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { USER_STATUS } from '../../../shared/models/constants'
-import { User } from '../../../shared/models/user.model';
+import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, COURSE_STATUS } from '../../../shared/models/constants'
+import { Course } from '../../../shared/models/course.model';
 import { Group } from '../../../shared/models/group.model';
-import { UserDialog } from '../user-dialog/user-dialog.component';
-import { UserExportDialog } from '../export-dialog/export-dialog.component';
-import { UserImportDialog } from '../import-dialog/import-dialog.component';
-import { UserProfileDialog } from '../profile-dialog/profile-dialog.component';
+import { CourseDialog } from '../course-dialog/course-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { GROUP_CATEGORY } from '../../../shared/models/constants';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-user-list',
-    templateUrl: 'user-list.component.html',
-    styleUrls: ['user-list.component.css'],
+    selector: 'etraining-course-list',
+    templateUrl: 'course-list.component.html',
+    styleUrls: ['course-list.component.css'],
 })
-export class UserListComponent extends BaseComponent {
+export class CourseListComponent extends BaseComponent {
 
-    @ViewChild(UserDialog) userDialog: UserDialog;
-    @ViewChild(UserExportDialog) userExportDialog: UserExportDialog;
-    @ViewChild(UserImportDialog) userImportDialog: UserImportDialog;
-    @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
+    @ViewChild(CourseDialog) courseDialog: CourseDialog;
 
     tree: TreeNode[];
-    selectedUser: User;
-    users: User[];
+    selectedCourse: Course;
+    courses: Course[];
     filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
+    COURSE_MODE = COURSE_MODE;
+    COURSE_STATUS = COURSE_STATUS;
 
     constructor(private treeUtils: TreeUtils) {
         super();
@@ -40,59 +35,48 @@ export class UserListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listUserGroup(this).subscribe(groups => {
+        Group.listByCategory(this,GROUP_CATEGORY.COURSE).subscribe(groups => {
             this.tree = this.treeUtils.buildTree(groups);
         });
         this.loadTableData();
     }
 
     add() {
-        var user = new User();
-        this.userDialog.show(user);
-        this.userDialog.onCreateComplete.subscribe(() => {
+        var course = new Course();
+        this.courseDialog.show(course);
+        this.courseDialog.onCreateComplete.subscribe(() => {
             this.loadTableData();
         });
     }
 
-    showProfile() {
-        if (this.selectedUser)
-            this.userProfileDialog.show(this.selectedUser);
-        this.userProfileDialog.onUpdateComplete.subscribe(() => {
+    edit() {
+        if (this.selectedCourse)
+            this.courseDialog.show(this.selectedCourse);
+        this.courseDialog.onUpdateComplete.subscribe(() => {
             this.loadTableData();
         });
     }
 
     delete() {
-        if (this.selectedUser)
+        if (this.selectedCourse)
             this.confirmationService.confirm({
                 message: this.translateService.instant('Are you sure to delete ?'),
                 accept: () => {
-                    this.selectedUser.delete(this).subscribe(() => {
+                    this.selectedCourse.delete(this).subscribe(() => {
                         this.loadTableData();
                     })
                 }
             });
     }
 
-    export() {
-        this.userExportDialog.show(this.users);
-    }
-
-    import() {
-        this.userImportDialog.show();
-        this.userImportDialog.onImportComplete.subscribe(()=> {
-            this.loadTableData();
-        });
-    }
-
     loadTableData() {
-        User.all(this).subscribe(users => {
-            this.users = users;
+        Course.all(this).subscribe(courses => {
+            this.courses = courses;
         });
     }
 
     nodeSelect(event:any) {
-        this.groups = _.map(this.selectedGroupNodes, function(node) {
+        this.filterGroups = _.map(this.selectedGroupNodes, function(node) {
             return node.data;
         });
     }

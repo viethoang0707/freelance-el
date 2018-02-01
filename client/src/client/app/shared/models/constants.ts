@@ -1,7 +1,7 @@
 export const DEFAULT_PASSWORD = '123456';
 export const USER_STATUS = {'true':'Active', 'false': 'Suspended'};
 export const GENDER = {'male':'Male', 'female': 'Female', 'other':'Other'};
-export const GROUP_CATEGORY = {USER:'organization', QUESTION: 'Question', COURSE :'Course'};
+export const GROUP_CATEGORY = {USER:'organization', QUESTION: 'question', COURSE :'course'};
 export const SERVER_DATETIME_FORMAT = 'YYYY-MM-DD hh:mm:ss';
 export const COURSE_STATUS = {'draft':'Draft', 'published': 'Published', 'unpublished': 'Unpublished'};
 export const COURSE_MODE = {'self-study':'Self-study', 'group': 'Group-study'};

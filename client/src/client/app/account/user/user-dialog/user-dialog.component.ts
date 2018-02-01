@@ -8,6 +8,7 @@ import { User } from '../../../shared/models/user.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
+import { GROUP_CATEGORY } from '../../../shared/models/constants';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class UserDialog extends BaseDialog<User> {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			Group.listUserGroup(this).subscribe(groups => {
+			Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 				this.tree = this.treeUtils.buildTree(groups);
 				if (object.etraining_group_id) {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.etraining_group_id);

@@ -47,7 +47,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     label: 'Enrollment', icon: 'school',
                     items: [
                         { label: 'Course', routerLink: ['/enrollment/courses'] },
-                        { label: 'Course group', routerLink: ['/enrollment/course-groups'] },
+                        { label: 'Course group', routerLink: ['/enrollment/groups'] },
                         { label: 'Class', routerLink: ['/enrollment/classes'] },
                         { label: 'Member', routerLink: ['/enrollment/members'] }
                     ]

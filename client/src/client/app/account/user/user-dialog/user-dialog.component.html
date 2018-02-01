@@ -18,11 +18,26 @@
                         </span>
       </div>
       <div class="ui-g-6">
-        <span class="md-inputfield">
-                            <input type="password" pPassword [(ngModel)]="object.password" name="password">
-                            <label>{{'Password'|translate}}</label>
-                        </span>
+          <span class="md-inputfield">
+              <input type="password" pPassword [(ngModel)]="object.password" name="password">
+              <label>{{'Password'|translate}}</label>
+          </span>
       </div>
+
+      <div class="ui-g-6">
+        <span class="md-inputfield">
+            <input type="text" pInputText [(ngModel)]="object.email" name="email">
+            <label>{{'Email'|translate}}</label>
+        </span>
+      </div>
+
+      <div class="ui-g-6">
+        <span class="md-inputfield">
+            <input type="text" pInputText [(ngModel)]="object.phone" name="phone">
+            <label>{{'Phone'|translate}}</label>
+        </span>
+      </div>
+
       <div class="ui-g-12">
         <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
       </div>

@@ -19,6 +19,8 @@ import { KeysPipe } from './pipes/map.pipe';
 import { GroupsPipe } from './pipes/group.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
 import { ImageBase64Component } from './components/image-base64/image-base64.component';
+import { GroupDialog } from './components/group-dialog/group-dialog.component';
+import { GroupListComponent } from './components/group-list/group-list.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
@@ -167,7 +169,9 @@ import { MessageService } from 'primeng/components/common/messageservice';
         KeysPipe,
         GroupsPipe,
         ImageBase64Pipe,
-        ImageBase64Component],
+        ImageBase64Component,
+        GroupDialog,
+        GroupListComponent],
     exports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule,
         ValuesPipe,
         KeysPipe,
@@ -175,6 +179,8 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ImageBase64Pipe,
         MatchInputValidatorDirective,
         ImageBase64Component,
+        GroupDialog,
+        GroupListComponent,
         HttpModule,
         AccordionModule,
         AutoCompleteModule,

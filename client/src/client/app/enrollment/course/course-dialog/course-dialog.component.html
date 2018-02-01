@@ -1,38 +1,52 @@
- <form novalidate (ngSubmit)="save()" #f="ngForm">
-<p-dialog header="{{'User account'|translate}}" [(visible)]="display" modal="modal" width="600" [responsive]="true">
+<form novalidate (ngSubmit)="save()" #f="ngForm">
+  <p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="modal" width="600" height="100%" [responsive]="true">
     <div class="ui-g ui-fluid form-group">
+      <div class="ui-g-12">
+      <p-selectButton [options]="courseStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
+      </div>
       <div class="ui-g-12">
         <label>{{'Parent group'|translate}}</label>
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
       </div>
-      <div class="ui-g-12 ">
+      <div class="ui-g-6">
         <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.name" name="name">
+                            <input type="text" pInputText [(ngModel)]="object.name" name="name" required>
                             <label>{{'Name'|translate}}</label>
                         </span>
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.login" name="login">
-                            <label>{{'Login'|translate}}</label>
+                            <input type="text" pInputText [(ngModel)]="object.code" name="code">
+                            <label>{{'Code'|translate}}</label>
                         </span>
       </div>
-      <div class="ui-g-6">
-        <span class="md-inputfield">
-                            <input type="password" pPassword [(ngModel)]="object.password" name="password">
-                            <label>{{'Password'|translate}}</label>
-                        </span>
+      <div class="ui-g-12 ">
+        <label>{{'Summary'|translate}}</label>
+        <textarea pInputTextarea [(ngModel)]="object.summary" name="summary"></textarea>
       </div>
-      <div class="ui-g-12">
-        <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
+      <div class="ui-g-12 ">
+        <label>{{'Description'|translate}}</label>
+        <textarea pInputTextarea [(ngModel)]="object.description" name="description"></textarea>
       </div>
-      <div class="ui-g-12">
-        <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="object.banned"></p-checkbox>
+      <div class="ui-g-12 ">
+        <div class="ui-g-6">
+          <label>{{'Logo'|translate}}</label>
+          <image-base64 [(src64)]="object.logo"></image-base64>
+        </div>
+        <div class="ui-g-6" style="margin-bottom:10px">
+          <label>{{'Mode'|translate}}</label>
+          <div style="margin-bottom:10px">
+          <p-radioButton name="mode" value="self-study" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1"></p-radioButton>
+        </div>
+        <div style="margin-bottom:10px">
+          <p-radioButton name="mode" value="group" label="{{'Group study'|translate}}" [(ngModel)]="object.mode" inputId="opt2"></p-radioButton>
+        </div>
+        </div>
       </div>
     </div>
     <p-footer>
       <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
-</p-dialog>
- </form>
+  </p-dialog>
+</form>

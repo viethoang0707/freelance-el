@@ -4,7 +4,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { USER_STATUS } from '../../../shared/models/constants'
+import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
 import { User } from '../../../shared/models/user.model';
 import { Group } from '../../../shared/models/group.model';
 import { UserDialog } from '../user-dialog/user-dialog.component';
@@ -13,7 +13,6 @@ import { UserImportDialog } from '../import-dialog/import-dialog.component';
 import { UserProfileDialog } from '../profile-dialog/profile-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { GROUP_CATEGORY } from '../../../shared/models/constants';
 
 @Component({
     moduleId: module.id,
@@ -40,7 +39,7 @@ export class UserListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listUserGroup(this).subscribe(groups => {
+        Group.listByCategory(this,GROUP_CATEGORY.USER).subscribe(groups => {
             this.tree = this.treeUtils.buildTree(groups);
         });
         this.loadTableData();
@@ -92,7 +91,7 @@ export class UserListComponent extends BaseComponent {
     }
 
     nodeSelect(event:any) {
-        this.groups = _.map(this.selectedGroupNodes, function(node) {
+        this.filterGroups = _.map(this.selectedGroupNodes, function(node) {
             return node.data;
         });
     }

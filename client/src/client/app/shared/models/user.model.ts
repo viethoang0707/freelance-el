@@ -24,12 +24,14 @@ export class User extends BaseModel{
         this.group_ids = undefined;
         this.is_admin = undefined;
         this.banned = undefined;
+        this.password = undefined;
 		this.company_id = undefined;
 	}
 
     image:string;
     name:string;
     email: string;
+    password: string;
     etraining_group_id: number;
     etraining_group_id__DESC__: string;
     login: string;

@@ -6,7 +6,7 @@ import { Group } from '../../../shared/models/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/user.model';
 import * as _ from 'underscore';
-import { DEFAULT_PASSWORD } from '../../../shared/models/constants';
+import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { ExcelService, EXCEL_TYPE } from '../../../shared/services/excel.service';
 
@@ -21,7 +21,7 @@ export class UserImportDialog extends BaseComponent {
 	display: boolean;
 	fileType: string;
 	fileName: string;
-	users: User[];
+	records: any[];
 	importing: boolean;
 
 	private onImportCompleteReceiver: Subject<any> = new Subject();
@@ -35,7 +35,7 @@ export class UserImportDialog extends BaseComponent {
 		this.fileType = EXCEL_TYPE;
 	}
 
-	show(users: any) {
+	show() {
 		this.display = true;
 	}
 
@@ -46,7 +46,7 @@ export class UserImportDialog extends BaseComponent {
 	import() {
 		var subscriptions = [];
 		var self = this;
-		Group.listUserGroup(this).subscribe(groups => {
+		Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 			this.importing = true;
 			_.each(this.records, function(record) {
 				var user = new User();
@@ -56,7 +56,7 @@ export class UserImportDialog extends BaseComponent {
 					return obj.code == record["group_code"];
 				});
 				if (group) {
-					user.group_id = group.id;
+					user.etraining_group_id = group.id;
 					subscriptions.push(user.save(self));
 				}
 			});

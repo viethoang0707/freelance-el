@@ -17,17 +17,19 @@ export class Course extends BaseModel{
 		this.code = undefined;
         this.status = undefined;
         this.mode = undefined;
-        this.image_url = undefined;
+        this.logo = undefined;
+        this.group_id = undefined;
         this.syllabus_ids = undefined;
 	}
 
     name:string;
+    group_id:number;
     summary: string;
     code: string;
     description: string;
     status: string;
     mode: string;
-    image_url: string;
+    logo: string;
     syllabus_ids: number[];
 
 }

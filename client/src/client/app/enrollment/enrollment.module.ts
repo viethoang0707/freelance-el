@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
-import { HrmSharedModule } from '../shared/shared.module';
-import  { SettingComponent } from './setting.component'
-import { GroupListComponent } from './group/group-list/group-list.component';
-import { GroupDialog } from './group/group-dialog/group-dialog.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserDialog } from './user/user-dialog/user-dialog.component';
-import { CountUserByGroupPipe } from './user/user-list/user-by-group.pipe';
+import { ErpSharedModule } from '../shared/shared.module';
+import  { EnrollmentComponent } from './enrollment.component'
+import { CourseClassListComponent } from './class/class-list/class-list.component';
+import { CourseClassDialog } from './class/class-dialog/class-dialog.component';
+import { CourseListComponent } from './course/course-list/course-list.component';
+import { CourseDialog } from './course/course-dialog/course-dialog.component';
+import { CourseMemberListComponent } from './member/member-list/member-list.component';
+import { CourseMemberDialog } from './member/member-dialog/member-dialog.component';
 
 @NgModule({
-    imports: [HrmSharedModule, AuthModule],
-    declarations: [SettingComponent, GroupDialog, GroupListComponent,
-    				UserListComponent, UserDialog, CountUserByGroupPipe],
+    imports: [ErpSharedModule, AuthModule],
+    declarations: [EnrollmentComponent, CourseClassDialog, CourseClassListComponent,
+    				CourseListComponent, CourseDialog, CourseMemberListComponent, CourseMemberDialog],
     exports: [],
     providers: []
 })
-export class SettingModule {
+export class EnrollmentModule {
 }

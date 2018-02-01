@@ -17,6 +17,8 @@ export class CourseMember extends BaseModel{
         this.date_register = undefined;
         this.status = undefined;
         this.role = undefined;
+        this.name = undefined;
+        this.course_name = undefined;
         this.enroll_status = undefined;
 	}
 
@@ -25,6 +27,12 @@ export class CourseMember extends BaseModel{
     class_id: number;
     status: string;
     role: string;
+    name: string;
+    course_name: string;
     enroll_status: string;
-    date_register: Date
+    date_register: Date;
+
+    static listByUser( context:APIContext, userId: number): Observable<any[]> {
+        return this.search([],"[('user_id','!=',"+userId+")]",context);
+    }
 }

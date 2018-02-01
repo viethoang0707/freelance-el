@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { APIService } from '../../../shared/services/api.service';
-import { AuthService } from '../../../shared/services/auth.service';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
-import { Group } from '../../../shared/models/group.model';
+import { APIService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
+import { BaseDialog } from '../../components/base/base.dialog';
+import { Group } from '../../models/group.model';
 import * as _ from 'underscore';
-import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { TreeUtils } from '../../helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -29,7 +29,7 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			Group.listUserGroup(this).subscribe(groups => {
+			Group.listByCategory(this, object.category).subscribe(groups => {
 				this.tree = this.treeUtils.buildTree(groups);
 				if (object.id) {
 					var node = this.treeUtils.findTreeNode(this.tree, object.id);

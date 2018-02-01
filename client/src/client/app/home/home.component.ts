@@ -13,7 +13,6 @@ import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog
     moduleId: module.id,
     selector: 'etraining-home',
     templateUrl: 'home.component.html'
-
 })
 export class HomeComponent extends BaseComponent implements AfterViewInit {
 

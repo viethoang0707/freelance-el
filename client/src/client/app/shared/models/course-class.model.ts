@@ -12,17 +12,19 @@ export class CourseClass extends BaseModel{
         super();
 		
 		this.name = undefined;
+        this.course_name = undefined;
 		this.course_id = undefined;
         this.supervisor_id = undefined;
 		this.member_ids = undefined;
-        this.enroll_start = undefined;
-        this.enroll_end = undefined;
+        this.start = undefined;
+        this.end = undefined;
 	}
 
     name:string;
+    course_name:string;
     course_id: number;
     supervisor_id: number;
     member_ids: number[];
-    enroll_start: Date;
-    enroll_end: Date
+    start: Date;
+    end: Date
 }

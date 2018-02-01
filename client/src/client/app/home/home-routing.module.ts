@@ -4,6 +4,7 @@ import { HomeComponent } from './home.component';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { SettingRoutes } from '../setting/setting-routing';
 import { AccountRoutes } from '../account/account-routing';
+import { EnrollmentRoutes } from '../enrollment/enrollment-routing';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { AccountRoutes } from '../account/account-routing';
         children: [
           ...SettingRoutes,
           ...AccountRoutes
+          ...EnrollmentRoutes
         ]
       },
       {path: '**', redirectTo: ''}
