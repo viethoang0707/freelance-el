@@ -18,6 +18,8 @@ export class CourseMemberDialog extends BaseDialog<CourseMember>  {
 		super();
 	}
 
+	
+
 }
 
 

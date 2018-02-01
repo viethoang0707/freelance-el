@@ -21,10 +21,12 @@ import { ImageBase64Pipe } from './pipes/image-base64.pipe';
 import { ImageBase64Component } from './components/image-base64/image-base64.component';
 import { GroupDialog } from './components/group-dialog/group-dialog.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
+import { SelectCourseDialog } from './components/select-course-dialog/select-course-dialog.component';
+import { SelectUsersDialog } from './components/select-user-dialog/select-user-dialog.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
-import {BlockUIModule} from 'primeng/blockui';
+import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/primeng';
 import { CalendarModule } from 'primeng/primeng';
 import { CarouselModule } from 'primeng/primeng';
@@ -70,6 +72,7 @@ import { PanelModule } from 'primeng/primeng';
 import { PanelMenuModule } from 'primeng/primeng';
 import { PasswordModule } from 'primeng/primeng';
 import { PickListModule } from 'primeng/primeng';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { ProgressBarModule } from 'primeng/primeng';
 import { RadioButtonModule } from 'primeng/primeng';
 import { RatingModule } from 'primeng/primeng';
@@ -81,7 +84,7 @@ import { SpinnerModule } from 'primeng/primeng';
 import { SplitButtonModule } from 'primeng/primeng';
 import { StepsModule } from 'primeng/primeng';
 import { TabMenuModule } from 'primeng/primeng';
-import {TableModule} from 'primeng/table';
+import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/primeng';
 import { TerminalModule } from 'primeng/primeng';
 import { TieredMenuModule } from 'primeng/primeng';
@@ -143,6 +146,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         PasswordModule,
         PickListModule,
         ProgressBarModule,
+        ProgressSpinnerModule,
         RadioButtonModule,
         RatingModule,
         ScheduleModule,
@@ -171,7 +175,9 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ImageBase64Pipe,
         ImageBase64Component,
         GroupDialog,
-        GroupListComponent],
+        GroupListComponent,
+        SelectUsersDialog,
+        SelectCourseDialog],
     exports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule,
         ValuesPipe,
         KeysPipe,
@@ -181,6 +187,8 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ImageBase64Component,
         GroupDialog,
         GroupListComponent,
+        SelectCourseDialog,
+        SelectUsersDialog,
         HttpModule,
         AccordionModule,
         AutoCompleteModule,
@@ -231,6 +239,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         PasswordModule,
         PickListModule,
         ProgressBarModule,
+        ProgressSpinnerModule,
         RadioButtonModule,
         RatingModule,
         ScheduleModule,
@@ -256,9 +265,9 @@ export class ErpSharedModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: SharedModule,
-            providers: [AuthGuard, AdminGuard, APIService, AuthService, 
-            MessageService, LangService, CacheService, TreeUtils, ExcelService,
-            ConfirmationService]
+            providers: [AuthGuard, AdminGuard, APIService, AuthService,
+                MessageService, LangService, CacheService, TreeUtils, ExcelService,
+                ConfirmationService]
         };
     }
 }

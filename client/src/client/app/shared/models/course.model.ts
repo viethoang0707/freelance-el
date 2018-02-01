@@ -32,4 +32,12 @@ export class Course extends BaseModel{
     logo: string;
     syllabus_ids: number[];
 
+    static listByGroup(context:APIContext, groupId):Observable<any> {
+        return Course.search([], "[('group_id','=',"+groupId+")]",context);
+    }
+
+    static listByGroupAndMode(context:APIContext, groupId, mode):Observable<any> {
+        return Course.search([], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]",context);
+    }
+
 }

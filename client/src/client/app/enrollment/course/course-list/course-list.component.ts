@@ -38,14 +38,14 @@ export class CourseListComponent extends BaseComponent {
         Group.listByCategory(this,GROUP_CATEGORY.COURSE).subscribe(groups => {
             this.tree = this.treeUtils.buildTree(groups);
         });
-        this.loadTableData();
+        this.loadCourses();
     }
 
     add() {
         var course = new Course();
         this.courseDialog.show(course);
         this.courseDialog.onCreateComplete.subscribe(() => {
-            this.loadTableData();
+            this.loadCourses();
         });
     }
 
@@ -53,7 +53,7 @@ export class CourseListComponent extends BaseComponent {
         if (this.selectedCourse)
             this.courseDialog.show(this.selectedCourse);
         this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.loadTableData();
+            this.loadCourses();
         });
     }
 
@@ -63,13 +63,13 @@ export class CourseListComponent extends BaseComponent {
                 message: this.translateService.instant('Are you sure to delete ?'),
                 accept: () => {
                     this.selectedCourse.delete(this).subscribe(() => {
-                        this.loadTableData();
+                        this.loadCourses();
                     })
                 }
             });
     }
 
-    loadTableData() {
+    loadCourses() {
         Course.all(this).subscribe(courses => {
             this.courses = courses;
         });

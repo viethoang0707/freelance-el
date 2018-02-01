@@ -32,7 +32,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.category = this.route.snapshot.data['category']
-        this.loadTableData();
+        this.loadGroups();
     }
 
     add() {
@@ -40,7 +40,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         group.category = this.category;
         this.groupDialog.show(group);
         this.groupDialog.onCreateComplete.subscribe(()=> {
-            this.loadTableData();
+            this.loadGroups();
         })
     }
 
@@ -55,13 +55,13 @@ export class GroupListComponent extends BaseComponent implements OnInit {
             message: this.translateService.instant('Are you sure to delete ?'),
             accept: () => {
                 this.selectedNode.data.delete(this).subscribe(()=> {
-                    this.loadTableData();
+                    this.loadGroups();
                 })
             }
         });
     }
 
-    loadTableData() {
+    loadGroups() {
         Group.listByCategory(this, this.category).subscribe(groups => {
             this.groups = groups;
             this.tree = this.treeUtils.buildTree(groups);

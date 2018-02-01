@@ -24,14 +24,12 @@ export class User extends BaseModel{
         this.group_ids = undefined;
         this.is_admin = undefined;
         this.banned = undefined;
-        this.password = undefined;
 		this.company_id = undefined;
 	}
 
     image:string;
     name:string;
     email: string;
-    password: string;
     etraining_group_id: number;
     etraining_group_id__DESC__: string;
     login: string;
@@ -43,11 +41,15 @@ export class User extends BaseModel{
     group_ids: number[];
 
     getCompany(context:APIContext):Observable<any> {
-        return Company.get(this.company_id, context);
+        return Company.get(context, this.company_id);
     }
 
     static all( context:APIContext): Observable<any[]> {
-        return this.search([],"[('login','!=','admin')]",context);
+        return User.search([],"[('login','!=','admin')]",context);
+    }
+
+    static listByGroup(context:APIContext, groupId):Observable<any> {
+        return User.search([], "[('etraining_group_id','=',"+groupId+")]",context);
     }
 
 }
