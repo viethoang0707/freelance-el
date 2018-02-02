@@ -12,6 +12,7 @@ import { SettingModule } from './setting/setting.module';
 import { AccountModule } from './account/account.module';
 import { EnrollmentModule } from './enrollment/enrollment.module';
 import { AssessmentModule } from './assessment/assessment.module';
+import { ReportModule } from './report/report.module';
 import { InterceptHttp } from './shared/helpers/intercept.http';
 import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
@@ -29,6 +30,7 @@ import { CustomTranslationLoader } from './shared/helpers/translation.loader';
         AccountModule,
         EnrollmentModule,
         AssessmentModule,
+        ReportModule,
         ErpSharedModule.forRoot(),
         TranslateModule.forRoot({
             loader: {provide: TranslateLoader, useClass: CustomTranslationLoader}

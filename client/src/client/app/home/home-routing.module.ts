@@ -6,6 +6,7 @@ import { SettingRoutes } from '../setting/setting-routing';
 import { AccountRoutes } from '../account/account-routing';
 import { EnrollmentRoutes } from '../enrollment/enrollment-routing';
 import { AssessmentRoutes } from '../assessment/assessment-routing';
+import { ReportRoutes } from '../report/report-routing';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { AssessmentRoutes } from '../assessment/assessment-routing';
           ...SettingRoutes,
           ...AccountRoutes,
           ...EnrollmentRoutes,
-          ...AssessmentRoutes
+          ...AssessmentRoutes,
+          ...ReportRoutes
         ]
       },
       {path: '**', redirectTo: ''}

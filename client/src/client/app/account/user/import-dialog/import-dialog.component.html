@@ -11,7 +11,7 @@
     <label [hidden]="!fileName">{{fileName}}</label>
     </div>
   </div>
-  <p-blockUI [blocked]="importing" [target]="importDialog"></p-blockUI>
+  <p-progressSpinner [hidden]="!importing"></p-progressSpinner>
   <p-footer>
     <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="!records.length"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>

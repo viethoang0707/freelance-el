@@ -61,11 +61,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     ]
                 },
                 {
-                    label: 'Report', icon: 'pie_chart',
-                    items: [
-                        { label: 'Category', routerLink: ['/library/category/list'] },
-                        { label: 'Item', routerLink: ['/library/item/list'] }
-                    ]
+                    label: 'Report', icon: 'pie_chart',routerLink: ['/reports']
                 },
                 {
                     label: 'Accounts', icon: 'people',

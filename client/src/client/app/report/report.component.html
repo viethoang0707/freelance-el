@@ -1,0 +1,12 @@
+<div class="card card-w-title">
+  <h1>{{'Reports'|translate}}</h1>
+  <div class="ui-g">
+   
+    <div class="ui-g-4">
+        <p-panelMenu [model]="items" [style]="{'width':'300px'}"></p-panelMenu>
+    </div>
+    <div class="ui-g-12">
+      <ng-template report-container></ng-template>
+    </div>
+  </div>
+</div>

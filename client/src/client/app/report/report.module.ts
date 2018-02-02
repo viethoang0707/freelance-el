@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
-import { HrmSharedModule } from '../shared/shared.module';
-import  { SettingComponent } from './setting.component'
-import { GroupListComponent } from './group/group-list/group-list.component';
-import { GroupDialog } from './group/group-dialog/group-dialog.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserDialog } from './user/user-dialog/user-dialog.component';
-import { CountUserByGroupPipe } from './user/user-list/user-by-group.pipe';
+import { ErpSharedModule } from '../shared/shared.module';
+import { ReportComponent } from './report.component'
+import { UserByGroupReportComponent } from './user/user-by-group-report/user-by-group-report.component';
+import { ReportContainerDirective } from './report-container.directive';
 
 @NgModule({
-    imports: [HrmSharedModule, AuthModule],
-    declarations: [SettingComponent, GroupDialog, GroupListComponent,
-    				UserListComponent, UserDialog, CountUserByGroupPipe],
-    exports: [],
-    providers: []
+	imports: [ErpSharedModule, AuthModule],
+	declarations: [ReportComponent, UserByGroupReportComponent, ReportContainerDirective],
+	entryComponents: [
+        UserByGroupReportComponent
+    ],
+	exports: [],
+	providers: []
 })
-export class SettingModule {
+export class ReportModule {
 }
