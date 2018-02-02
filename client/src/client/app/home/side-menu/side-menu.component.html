@@ -2,10 +2,10 @@
     (click)="eventManager.sidebarClick()" (mouseover)="app.sidebarActive=true" (mouseleave)="app.sidebarActive=false">
     <div class="sidebar-logo">
         <a routerLink="/dashboard">
-            <img [src]='company.logo | imageBase64'>
+            <img [src]='company.logo | imageBase64' width="64">
             <span class="app-name">e-Learning</span>
         </a>
-        <a href="#" class="sidebar-anchor" title="Toggle Menu" (click)="eventManager.toggleMenuClick()"></a>
+        <a class="sidebar-anchor" title="Toggle Menu" (click)="eventManager.toggleMenuClick()"></a>
     </div>
             
     <div #layoutMenuScroller class="nano">

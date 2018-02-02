@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
-import { SettingComponent } from './setting.component';
-import { GroupListComponent} from './group/group-list/group-list.component';
-import { UserListComponent } from './user/user-list/user-list.component';
+import { SettingComponent } from './report.component';
 
 export const SettingRoutes: Routes = [
     {

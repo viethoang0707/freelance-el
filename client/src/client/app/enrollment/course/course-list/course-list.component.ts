@@ -24,8 +24,7 @@ export class CourseListComponent extends BaseComponent {
     tree: TreeNode[];
     selectedCourse: Course;
     courses: Course[];
-    filterGroups: Group[];
-    selectedGroupNodes: TreeNode[];
+    selectedNode: TreeNode;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 
@@ -70,15 +69,18 @@ export class CourseListComponent extends BaseComponent {
     }
 
     loadCourses() {
-        Course.all(this).subscribe(courses => {
-            this.courses = courses;
-        });
+        if (this.selectedNode)
+            Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
+                this.courses = courses;
+            });
+        else
+            Course.all(this).subscribe(courses => {
+                this.courses = courses;
+            });
     }
 
     nodeSelect(event:any) {
-        this.filterGroups = _.map(this.selectedGroupNodes, function(node) {
-            return node.data;
-        });
+        this.loadCourses();
     }
 
 }

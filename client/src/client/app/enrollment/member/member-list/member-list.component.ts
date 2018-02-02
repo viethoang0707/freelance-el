@@ -9,7 +9,7 @@ import { CourseClass } from '../../../shared/models/course-class.model';
 import { CourseMember } from '../../../shared/models/course-member.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
-import { TreeNode } from 'primeng/api';
+import { TreeNode, MenuItem } from 'primeng/api';
 import { CourseMemberDialog } from '../member-dialog/member-dialog.component';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -26,6 +26,7 @@ export class CourseMemberListComponent extends BaseComponent implements OnInit {
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
     tree: TreeNode[];
+    items: MenuItem[];
     selectedNode: TreeNode;
     selectedCourse: Course;
     courses:Course[];
@@ -68,6 +69,10 @@ export class CourseMemberListComponent extends BaseComponent implements OnInit {
             this.classes = classes;
         });
         this.loadMembers();
+        this.items = [
+            {label: this.translateService.instant('Student'), command: ()=> { this.add('student')}},
+            {label: this.translateService.instant('Student'), command: ()=> { this.add('student')}}
+        ];
     }
 
     add(role:string) {

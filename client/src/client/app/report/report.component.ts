@@ -2,11 +2,11 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'hrm-setting',
+  selector: 'etraining-report',
   template: '<router-outlet></router-outlet>'
 
 })
-export class SettingComponent  {
+export class ReportComponent  {
 
 
 

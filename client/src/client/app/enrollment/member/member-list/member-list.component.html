@@ -62,8 +62,7 @@
     <div class="ui-g-12 ">
       <p-toolbar>
         <div class="ui-toolbar-group-left ">
-           <button pButton type="button " label="{{ 'Add teacher'|translate}} " class="green-btn " icon="ui-icon-add " (click)="add('teacher') " [disabled]="!selectedCourse  || (selectedCourse && !selectedClass && selectedCourse.mode=='group')"></button>
-          <button pButton type="button " label="{{ 'Add student'|translate}} " class="green-btn " icon="ui-icon-add " (click)="add('student') " [disabled]="!selectedCourse  || (selectedCourse && !selectedClass && selectedCourse.mode=='group')"></button>
+          <p-splitButton label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add" [model]="items" [disabled]="!selectedCourse  || !selectedClass"></p-splitButton>
           <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="edit() " [disabled]="!selectedMember "></button>
           <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete() " [disabled]="!selectedMember "></button>
         </div>

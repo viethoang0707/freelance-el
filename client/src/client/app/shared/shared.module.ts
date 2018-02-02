@@ -76,6 +76,7 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { ProgressBarModule } from 'primeng/primeng';
 import { RadioButtonModule } from 'primeng/primeng';
 import { RatingModule } from 'primeng/primeng';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
 import { ScheduleModule } from 'primeng/primeng';
 import { SelectButtonModule } from 'primeng/primeng';
 import { SlideMenuModule } from 'primeng/primeng';
@@ -149,6 +150,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ProgressSpinnerModule,
         RadioButtonModule,
         RatingModule,
+        ScrollPanelModule,
         ScheduleModule,
         SelectButtonModule,
         SlideMenuModule,
@@ -243,6 +245,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         RadioButtonModule,
         RatingModule,
         ScheduleModule,
+        ScrollPanelModule,
         SelectButtonModule,
         SlideMenuModule,
         SliderModule,

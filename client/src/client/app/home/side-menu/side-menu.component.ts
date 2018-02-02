@@ -55,9 +55,9 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                 {
                     label: 'Assessment', icon: 'grade',
                     items: [
-                        { label: 'Question banks', routerLink: ['/assessment/question/list'] },
-                        { label: 'Question category', routerLink: ['/assessment/question-category/list'] },
-                        { label: 'Exam', routerLink: ['/assessment/exam/list'] }
+                        { label: 'Question banks', routerLink: ['/assessment/questions'] },
+                        { label: 'Question category', routerLink: ['/assessment/groups'] },
+                        { label: 'Exam', routerLink: ['/assessment/exams'] }
                     ]
                 },
                 {

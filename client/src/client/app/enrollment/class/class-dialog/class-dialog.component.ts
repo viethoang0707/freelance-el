@@ -8,6 +8,8 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectCourseDialog } from '../../../shared/components/select-course-dialog/select-course-dialog.component';
+import { DEFAULT_DATE_LOCALE } from '../../../shared/models/constants'
+
 
 @Component({
 	moduleId: module.id,
@@ -22,16 +24,7 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 
 	constructor(private treeUtils: TreeUtils, private http: Http) {
 		super();
-		this.locale = {
-            firstDayOfWeek: 0,
-            dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-            dayNamesMin: ["Su","Mo","Tu","We","Th","Fr","Sa"],
-            monthNames: [ "January","February","March","April","May","June","July","August","September","October","November","December" ],
-            monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-            today: 'Today',
-            clear: 'Clear'
-        };
+		this.locale = DEFAULT_DATE_LOCALE;
 	}
 
 	ngOnInit() {
