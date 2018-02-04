@@ -3,42 +3,39 @@ import { PipeTransform, Pipe } from '@angular/core';
 @Pipe({ name: 'groups',  pure: false })
 
 export class GroupsPipe implements PipeTransform {
-  transform(value: any[], filterGroups: any[]): any {
-    if(!value) 
+  transform(items: any[], filterGroups: any[]): any {
+    if(!items) 
     { 
       return [];
     }
     else if(!filterGroups) 
     {
-      return value;
+      return items;
     }
     else
     {
-      var keys=[];
-      value.filter(function (el) {
-        filterGroups.filter(function(group){
-          if(group.id == el.etraining_group_id)
-            {
-              keys.push(el);
-            }
-          }).length == 0  
+      var result= items.filter( item =>
+      {      
+        // for(var i=0; i < filterGroups.length; i++)
+        // {
+        //   if(filterGroups[i].data.id == item.etraining_group_id)
+        //   {
+        //     return true;
+        //   }
+        // } 
+        // return false;
+
+        var found = filterGroups.find(function(element){
+          return element.data.id == item.etraining_group_id;
+        });
+        return found;
+
       });
-      return keys;
+      return result;
     } 
   }
 }
 
-// export class GroupsPipe implements PipeTransform {
-//   transform(value: any[], filterGroups: any[]): any[] {
-//     if(!value) return [];
-//     if(!filterGroups) return value;
-//     return value.filter(function(hero){
-//       return filterGroups.filter(function(group){
-//         return group.id == hero.etraining_group_id;
-//       }).length == 0
-//     });
-//    }
-// }
 
 // export class GroupsPipe implements PipeTransform {
 //   transform(items: any[], id: number): any[] {
