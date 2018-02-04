@@ -45,18 +45,21 @@ export class ProjectConfig extends SeedConfig {
             { src: 'chart.js/dist/Chart.bundle.min.js', inject: true },
             { src: 'moment/min/moment.min.js', inject: true },
             { src: 'fullcalendar/dist/fullcalendar.js', inject: true },
-            { src: 'fullcalendar/dist/fullcalendar.min.css', inject: true },
+            { src: 'fullcalendar/dist/fullcalendar.css', inject: true },
             { src: 'fullcalendar/dist/fullcalendar.print.css', inject: true },
             { src: 'fullcalendar/dist/gcal.min.js', inject: true },
             { src: 'fullcalendar/dist/locale-all.js', inject: true },
+            { src: 'quill/dist/quill.core.css', inject: true },
+            { src: 'quill/dist/quill.snow.css', inject: true },
+            { src: 'quill/dist/quill.js', inject: true },
         ];
 
         // Add `local` third-party libraries to be injected/bundled.
         this.APP_ASSETS = [
             { src: `${this.APP_SRC}/assets/layout/script/ripple.js`, inject: true, vendor: true },
             { src: `${this.ASSETS_SRC}/fonts/flag-icon-css/css/flag-icon.min.css`, inject: true, vendor: true },
-            { src: `${this.ASSETS_SRC}/layout/css/layout-deeppurple.css`, inject: true, vendor: false },
-            { src: `${this.ASSETS_SRC}/theme/theme-blue.css`, inject: true, vendor: false },
+            { src: `${this.ASSETS_SRC}/layout/css/layout-reflection.css`, inject: true, vendor: false },
+            { src: `${this.ASSETS_SRC}/theme/theme-indigo.css`, inject: true, vendor: false },
         ];
 
         this.APP_LOCALE = 'vn';

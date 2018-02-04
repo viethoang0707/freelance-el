@@ -55,17 +55,13 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                 {
                     label: 'Assessment', icon: 'grade',
                     items: [
-                        { label: 'Question banks', routerLink: ['/assessment/question/list'] },
-                        { label: 'Question category', routerLink: ['/assessment/question-category/list'] },
-                        { label: 'Exam', routerLink: ['/assessment/exam/list'] }
+                        { label: 'Question banks', routerLink: ['/assessment/questions'] },
+                        { label: 'Question category', routerLink: ['/assessment/groups'] },
+                        { label: 'Exam', routerLink: ['/assessment/exams'] }
                     ]
                 },
                 {
-                    label: 'Report', icon: 'pie_chart',
-                    items: [
-                        { label: 'Category', routerLink: ['/library/category/list'] },
-                        { label: 'Item', routerLink: ['/library/item/list'] }
-                    ]
+                    label: 'Report', icon: 'pie_chart',routerLink: ['/reports']
                 },
                 {
                     label: 'Accounts', icon: 'people',
@@ -87,7 +83,6 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                 { label: 'My course', icon: 'school', routerLink: ['/lms/course'] },
                 { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/conference'] },
                 { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exam'] },
-                { label: 'Library', icon: 'local_library', routerLink: ['/library'] },
             ];
         }
     }

@@ -69,6 +69,13 @@ export class APIService {
             .map((response: Response) => response.json());
     }
 
+    count(model:string, domain:string,cloudid:number, api_endpoint:string): Observable<any[]> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(api_endpoint + '/api/search_count', JSON.stringify({ model: model, domain: domain, cloudid: cloudid  }), options)
+            .map((response: Response) => response.json());
+    }
+
     get(model:string, id:number, fields:string[], cloudid:number, api_endpoint:string): Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });

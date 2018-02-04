@@ -5,6 +5,9 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { SettingRoutes } from '../setting/setting-routing';
 import { AccountRoutes } from '../account/account-routing';
 import { EnrollmentRoutes } from '../enrollment/enrollment-routing';
+import { AssessmentRoutes } from '../assessment/assessment-routing';
+import { ReportRoutes } from '../report/report-routing';
+import { DashboardRoutes } from '../dashboard/dashboard-routing';
 
 @NgModule({
   imports: [
@@ -14,9 +17,12 @@ import { EnrollmentRoutes } from '../enrollment/enrollment-routing';
         component: HomeComponent,
         canActivate: [AuthGuard],
         children: [
+          ...DashboardRoutes
           ...SettingRoutes,
-          ...AccountRoutes
-          ...EnrollmentRoutes
+          ...AccountRoutes,
+          ...EnrollmentRoutes,
+          ...AssessmentRoutes,
+          ...ReportRoutes
         ]
       },
       {path: '**', redirectTo: ''}

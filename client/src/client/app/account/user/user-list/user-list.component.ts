@@ -42,14 +42,14 @@ export class UserListComponent extends BaseComponent {
         Group.listByCategory(this,GROUP_CATEGORY.USER).subscribe(groups => {
             this.tree = this.treeUtils.buildTree(groups);
         });
-        this.loadTableData();
+        this.loadUsers();
     }
 
     add() {
         var user = new User();
         this.userDialog.show(user);
         this.userDialog.onCreateComplete.subscribe(() => {
-            this.loadTableData();
+            this.loadUsers();
         });
     }
 
@@ -57,7 +57,7 @@ export class UserListComponent extends BaseComponent {
         if (this.selectedUser)
             this.userProfileDialog.show(this.selectedUser);
         this.userProfileDialog.onUpdateComplete.subscribe(() => {
-            this.loadTableData();
+            this.loadUsers();
         });
     }
 
@@ -67,7 +67,7 @@ export class UserListComponent extends BaseComponent {
                 message: this.translateService.instant('Are you sure to delete ?'),
                 accept: () => {
                     this.selectedUser.delete(this).subscribe(() => {
-                        this.loadTableData();
+                        this.loadUsers();
                     })
                 }
             });
@@ -80,11 +80,11 @@ export class UserListComponent extends BaseComponent {
     import() {
         this.userImportDialog.show();
         this.userImportDialog.onImportComplete.subscribe(()=> {
-            this.loadTableData();
+            this.loadUsers();
         });
     }
 
-    loadTableData() {
+    loadUsers() {
         User.all(this).subscribe(users => {
             this.users = users;
         });

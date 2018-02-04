@@ -24,8 +24,7 @@ export class CourseListComponent extends BaseComponent {
     tree: TreeNode[];
     selectedCourse: Course;
     courses: Course[];
-    filterGroups: Group[];
-    selectedGroupNodes: TreeNode[];
+    selectedNode: TreeNode;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 
@@ -38,14 +37,14 @@ export class CourseListComponent extends BaseComponent {
         Group.listByCategory(this,GROUP_CATEGORY.COURSE).subscribe(groups => {
             this.tree = this.treeUtils.buildTree(groups);
         });
-        this.loadTableData();
+        this.loadCourses();
     }
 
     add() {
         var course = new Course();
         this.courseDialog.show(course);
         this.courseDialog.onCreateComplete.subscribe(() => {
-            this.loadTableData();
+            this.loadCourses();
         });
     }
 
@@ -53,7 +52,7 @@ export class CourseListComponent extends BaseComponent {
         if (this.selectedCourse)
             this.courseDialog.show(this.selectedCourse);
         this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.loadTableData();
+            this.loadCourses();
         });
     }
 
@@ -63,22 +62,25 @@ export class CourseListComponent extends BaseComponent {
                 message: this.translateService.instant('Are you sure to delete ?'),
                 accept: () => {
                     this.selectedCourse.delete(this).subscribe(() => {
-                        this.loadTableData();
+                        this.loadCourses();
                     })
                 }
             });
     }
 
-    loadTableData() {
-        Course.all(this).subscribe(courses => {
-            this.courses = courses;
-        });
+    loadCourses() {
+        if (this.selectedNode)
+            Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
+                this.courses = courses;
+            });
+        else
+            Course.all(this).subscribe(courses => {
+                this.courses = courses;
+            });
     }
 
     nodeSelect(event:any) {
-        this.filterGroups = _.map(this.selectedGroupNodes, function(node) {
-            return node.data;
-        });
+        this.loadCourses();
     }
 
 }

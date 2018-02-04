@@ -15,6 +15,7 @@ export class CourseClass extends BaseModel{
         this.course_name = undefined;
 		this.course_id = undefined;
         this.supervisor_id = undefined;
+        this.supervisor_name = undefined;
 		this.member_ids = undefined;
         this.start = undefined;
         this.end = undefined;
@@ -22,9 +23,14 @@ export class CourseClass extends BaseModel{
 
     name:string;
     course_name:string;
+    supervisor_name:string;
     course_id: number;
     supervisor_id: number;
     member_ids: number[];
     start: Date;
-    end: Date
+    end: Date;
+
+    static listByCourse(context:APIContext, courseId):Observable<any> {
+        return CourseClass.search([], "[('course_id','=',"+courseId+")]",context);
+    }
 }
