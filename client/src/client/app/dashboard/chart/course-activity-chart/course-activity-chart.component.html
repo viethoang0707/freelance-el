@@ -1,0 +1,15 @@
+ <div class="card">
+<div style="overflow:auto">
+  <h3>{{'Course activity'|translate}}</h3>
+  <div class="ui-g-2">
+    <p-radioButton name="duration" label="{{'Last 7 days'|translate}}" value="7" [(ngModel)]="duration" inputId="opt1"></p-radioButton>
+  </div>
+  <div class="ui-g-2">
+    <p-radioButton name="duration" label="{{'Last 14 days'|translate}}" value="14" [(ngModel)]="duration" inputId="opt2"></p-radioButton>
+  </div>
+  <div class="ui-g-2">
+    <p-radioButton name="duration" label="{{'Last 30 days'|translate}}" value="30" [(ngModel)]="duration" inputId="opt3"></p-radioButton>
+  </div>
+  <p-chart type="line" [data]="chartData" responsive="true"></p-chart>
+</div>
+</div>

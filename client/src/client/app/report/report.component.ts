@@ -2,59 +2,54 @@ import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
-import { MenuItem } from 'primeng/api';
-import { UserByGroupReportComponent } from './user/user-by-group-report/user-by-group-report.component';
+import { SelectItem } from 'primeng/api';
+import { ReportRegister } from './report.decorator';
 import { ReportContainerDirective } from './report-container.directive';
+import { REPORT_CATEGORY } from '../shared/models/constants'
+
 
 @Component({
 	moduleId: module.id,
 	selector: 'etraining-report',
 	templateUrl: 'report.component.html'
-
 })
 export class ReportComponent extends BaseComponent implements OnInit {
 
-	items: MenuItem[];
+	items: SelectItem[];
+	selectedItem: any;
 	@ViewChild(ReportContainerDirective) container: ReportContainerDirective;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
-		this.items = [
-            {
-                label: this.translateService.instant('User report'),
-                icon: 'ui-icon-people',
-                items: [
-                    {label: 'User by group', command:()=> {
-                    	this.renderReportComponent(UserByGroupReportComponent);
-                    } },
-                ]
-            },
-            {
-                label: this.translateService.instant('Course report'),
-                icon: 'ui-icon-school',
-                items: [
-
-                ]
-            },
-            {
-                label: this.translateService.instant('Exam report'),
-                icon: 'ui-icon-grade',
-                items: [
-                ]
-            },
-
-        ];
 	}
 
 	ngOnInit() {
-		
+		var self = this;
+		this.items = [];
+		_.each(REPORT_CATEGORY, function(val, key) {
+			self.items.push({
+                label: '-- '+ self.translateService.instant(val) +' --',
+                value:null
+            });
+            self.items = self.items.concat(_.map(ReportRegister.Instance.lookup(key), function(report) {
+				return {
+					label: self.translateService.instant(report["title"]),
+					value: report["component"]
+					}
+				}));
+		});
 	}
 
 	renderReportComponent(component) {
 		let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
 		let viewContainerRef = this.container.viewContainerRef;
 		viewContainerRef.clear();
-		let componentRef = viewContainerRef.createComponent(component);
+		let componentRef = viewContainerRef.createComponent(componentFactory);
+	}
+
+	selectReport() {
+		if (this.selectedItem)
+			this.renderReportComponent(this.selectedItem);
 	}
 
 

@@ -6,8 +6,8 @@ import { Group } from '../../../shared/models/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { Exam } from '../../../shared/models/exam.model';
 import { Http, Response } from '@angular/http';
-import { DEFAULT_DATE_LOCALE } from '../../../shared/models/constants'
-
+import { DEFAULT_DATE_LOCALE, EXAM_STATUS } from '../../../shared/models/constants'
+import {SelectItem} from 'primeng/api';
 import * as _ from 'underscore';
 
 
@@ -20,10 +20,17 @@ export class ExamDialog extends BaseDialog<Exam> {
 
     rangeDates: Date[];
     locale:any;
+    examStatus: SelectItem[];
 
     constructor(private http: Http) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
+        this.examStatus = _.map(EXAM_STATUS, function(val, key) {
+            return {
+                label: val,
+                value: key
+            }
+        });
     }
 
     ngOnInit() {

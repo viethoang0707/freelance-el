@@ -4,7 +4,7 @@ import { APIService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { Group } from '../../models/group.model';
 import { BaseComponent } from '../base/base.component';
-import { Course } from '../../../shared/models/course.model';
+import { User } from '../../../shared/models/user.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
@@ -13,19 +13,18 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-select-course-dialog',
-	templateUrl: 'select-course-dialog.component.html',
+	selector: 'etraining-select-group-dialog',
+	templateUrl: 'select-group-dialog.component.html',
 })
-export class SelectCourseDialog extends BaseComponent {
+export class SelectGroupDialog extends BaseComponent {
 
+	@Input() category: string;
 	tree: TreeNode[];
 	selectedNode: TreeNode;
-	selectedCourse: Course;
-	courses:Course[];
 	display: boolean;
 
-	private onSelectCourseReceiver: Subject<any> = new Subject();
-    onSelectCourse:Observable<any> =  this.onSelectCourseReceiver.asObservable();
+	private onSelectGroupReceiver: Subject<any> = new Subject();
+    onSelectGroup:Observable<any> =  this.onSelectGroupReceiver.asObservable();
 
 	constructor(private treeUtils: TreeUtils) {
 		super();
@@ -36,23 +35,15 @@ export class SelectCourseDialog extends BaseComponent {
 		this.display = false;
 	}
 
-	nodeSelect(event: any) {
-		if (this.selectedNode) {
-			Course.listByGroup(this,this.selectedNode.data.id).subscribe(courses => {
-				this.courses = courses;
-			});
-		}
-	}
-
 	show() {
 		this.display = true;
-		Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
+		Group.listByCategory(this, this.category).subscribe(groups => {
 			this.tree = this.treeUtils.buildTree(groups);
 		});
 	}
 
-	selectCourse() {
-		this.onSelectCourseReceiver.next(this.selectedCourse);
+	select() {
+		this.onSelectGroupReceiver.next(this.selectedNode.data);
 		this.hide();
 	}
 

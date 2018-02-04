@@ -1,0 +1,50 @@
+<div class="ui-g dashboard">
+  <div class="ui-g-12 ui-md-3">
+    <div class="overview-box overview-box-1">
+      <div class="overview-box-header"></div>
+      <div class="overview-box-content">
+        <div class="overview-box-icon"><i class="material-icons">person_pin_circle</i></div>
+        <div class="overview-box-title">{{'User accounts'}}</div>
+        <div class="overview-box-count">{{userCount}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="ui-g-12 ui-md-3">
+    <div class="overview-box overview-box-2">
+      <div class="overview-box-header"></div>
+      <div class="overview-box-content">
+        <div class="overview-box-icon"><i class="material-icons">school</i></div>
+        <div class="overview-box-title">{{'Course'}}</div>
+        <div class="overview-box-count">{{courseCount}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="ui-g-12 ui-md-3">
+    <div class="overview-box overview-box-3">
+      <div class="overview-box-header"></div>
+      <div class="overview-box-content">
+        <div class="overview-box-icon"><i class="material-icons">person_pin_circle</i></div>
+        <div class="overview-box-title">{{'Student member'}}</div>
+        <div class="overview-box-count">{{studentCount}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="ui-g-12 ui-md-3">
+    <div class="overview-box overview-box-4">
+      <div class="overview-box-header"></div>
+      <div class="overview-box-content">
+        <div class="overview-box-icon"><i class="material-icons">supervisor_account</i></div>
+        <div class="overview-box-title">{{'Teacher member'}}</div>
+        <div class="overview-box-count">{{teacherCount}}</div>
+      </div>
+    </div>
+  </div>
+    <div class="ui-g-9">
+      <ng-template chart-container></ng-template>
+    </div>
+    <div class="ui-g-3" style="text-align:center">
+      <p-panel header="{{'Monitoring'|translate}}">
+        <p-listbox [options]="charts" (onChange)="selectChart()" [(ngModel)]="selectedChart" [style]="{'width':'200px'}"></p-listbox>
+      </p-panel>
+    </div>
+</div>

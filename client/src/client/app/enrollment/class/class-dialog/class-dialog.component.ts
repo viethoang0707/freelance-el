@@ -7,7 +7,6 @@ import { CourseClass } from '../../../shared/models/course-class.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { SelectCourseDialog } from '../../../shared/components/select-course-dialog/select-course-dialog.component';
 import { DEFAULT_DATE_LOCALE } from '../../../shared/models/constants'
 
 
@@ -20,7 +19,6 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 
 	rangeDates: Date[];
 	locale:any;
-	@ViewChild(SelectCourseDialog) selectCourseDialog: SelectCourseDialog;
 
 	constructor(private treeUtils: TreeUtils, private http: Http) {
 		super();

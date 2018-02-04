@@ -21,3 +21,6 @@ export const DEFAULT_DATE_LOCALE = {
 	clear: 'Clear'
 };
 export const EXAM_STATUS = { 'draft': 'Draft', 'published': 'Published', 'unpublished': 'Unpublished' };
+export const REPORT_CATEGORY = {COURSE: 'COURSE',EXAM: 'EXAM' };
+export const EXPORT_DATETIME_FORMAT = "'dd-MM-yyyy'HH:mm:ss";
+export const EXPORT_DATE_FORMAT = "'dd-MM-yyyy"

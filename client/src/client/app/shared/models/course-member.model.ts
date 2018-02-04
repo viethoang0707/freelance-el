@@ -19,10 +19,13 @@ export class CourseMember extends BaseModel{
         this.role = undefined;
         this.name = undefined;
         this.course_name = undefined;
+        this.course_code = undefined;
+        this.course_mode = undefined;
         this.enroll_status = undefined;
         this.email = undefined;
         this.phone = undefined;
         this.user_id = undefined;
+        this.login = undefined;
         this.etraining_group_id = undefined;
         this.etraining_group_id__DESC__ = undefined;
 	}
@@ -34,7 +37,10 @@ export class CourseMember extends BaseModel{
     status: string;
     role: string;
     name: string;
+    login: string;
     course_name: string;
+    course_mode: string;
+    course_code: string;
     enroll_status: string;
     date_register: Date;
     email: string;
@@ -43,10 +49,22 @@ export class CourseMember extends BaseModel{
     etraining_group_id__DESC__: string;
 
     static listByUser( context:APIContext, userId: number): Observable<any[]> {
-        return this.search([],"[('user_id','=',"+userId+")]",context);
+        return CourseMember.search([],"[('user_id','=',"+userId+")]",context);
     }
 
     static listByClass( context:APIContext, classId: number): Observable<any[]> {
-        return this.search([],"[('class_id','=',"+classId+")]",context);
+        return CourseMember.search([],"[('class_id','=',"+classId+")]",context);
+    }
+
+    static listByCourse( context:APIContext, courseId: number): Observable<any[]> {
+        return CourseMember.search([],"[('course_id','=',"+courseId+")]",context);
+    }
+
+    static countTeacher(context: APIContext) {
+        return CourseMember.count(context, "[('role','=','teacher')]")
+    }
+
+    static countStudent(context: APIContext) {
+        return CourseMember.count(context, "[('role','=','student')]")
     }
 }

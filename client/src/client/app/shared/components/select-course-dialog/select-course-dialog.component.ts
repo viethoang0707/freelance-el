@@ -16,16 +16,16 @@ import { SelectItem } from 'primeng/api';
 	selector: 'etraining-select-course-dialog',
 	templateUrl: 'select-course-dialog.component.html',
 })
-export class SelectCourseDialog extends BaseComponent {
+export class SelectCoursesDialog extends BaseComponent {
 
 	tree: TreeNode[];
 	selectedNode: TreeNode;
-	selectedCourse: Course;
+	selectedCourses: Course[];
 	courses:Course[];
 	display: boolean;
 
-	private onSelectCourseReceiver: Subject<any> = new Subject();
-    onSelectCourse:Observable<any> =  this.onSelectCourseReceiver.asObservable();
+	private onSelectCoursesReceiver: Subject<any> = new Subject();
+    onSelectCourses:Observable<any> =  this.onSelectCoursesReceiver.asObservable();
 
 	constructor(private treeUtils: TreeUtils) {
 		super();
@@ -52,7 +52,7 @@ export class SelectCourseDialog extends BaseComponent {
 	}
 
 	selectCourse() {
-		this.onSelectCourseReceiver.next(this.selectedCourse);
+		this.onSelectCoursesReceiver.next(this.selectedCourses);
 		this.hide();
 	}
 

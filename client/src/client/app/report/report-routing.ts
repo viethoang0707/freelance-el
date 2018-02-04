@@ -6,6 +6,9 @@ export const ReportRoutes: Routes = [
     {
        path: "reports",
        component: ReportComponent,
+       data: {
+         breadcrumb:'Reports'
+       }
     }
 
 ]

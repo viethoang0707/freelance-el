@@ -18,6 +18,7 @@ export class Exam extends BaseModel{
         this.end = undefined;
         this.content_id = undefined;
         this.status = undefined;
+        this.scale = undefined;
 	}
 
     name:string;
@@ -26,6 +27,7 @@ export class Exam extends BaseModel{
     start: Date;
     end: Date;
     content_id: number;
+    scale: number;
     status: string;
 
 }

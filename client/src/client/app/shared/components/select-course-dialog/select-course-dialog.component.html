@@ -4,10 +4,12 @@
       <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode" ></p-tree>
     </div>
     <div class="ui-g-8">
-      <p-table  [value]="courses" [(selection)]="selectedCourse" >
+      <p-table  [value]="courses" [(selection)]="selectedCourses" >
         <ng-template pTemplate="header" >
           <tr>
-            <th style="width: 2.25em"></th>
+            <th style="width: 2.25em">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
             <th>
               {{'Code'|translate}}
             </th>
@@ -19,7 +21,7 @@
         <ng-template pTemplate="body" let-rowData>
           <tr [pSelectableRow]="rowData">
             <td>
-              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
             </td>
             <td >
               {{rowData.code}}

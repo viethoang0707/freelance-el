@@ -83,7 +83,6 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                 { label: 'My course', icon: 'school', routerLink: ['/lms/course'] },
                 { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/conference'] },
                 { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exam'] },
-                { label: 'Library', icon: 'local_library', routerLink: ['/library'] },
             ];
         }
     }

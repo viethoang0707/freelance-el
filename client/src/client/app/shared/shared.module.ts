@@ -13,15 +13,18 @@ import { LangService } from './services/lang.service';
 import { CacheService } from './services/cache.service';
 import { ExcelService } from './services/excel.service';
 import { TreeUtils } from './helpers/tree.utils';
+import { ReportUtils } from './helpers/report.utils';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
 import { GroupsPipe } from './pipes/group.pipe';
+import { TimeConvertPipe } from './pipes/time.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
 import { ImageBase64Component } from './components/image-base64/image-base64.component';
 import { GroupDialog } from './components/group-dialog/group-dialog.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
-import { SelectCourseDialog } from './components/select-course-dialog/select-course-dialog.component';
+import { SelectCoursesDialog } from './components/select-course-dialog/select-course-dialog.component';
+import { SelectGroupDialog } from './components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from './components/select-user-dialog/select-user-dialog.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
@@ -72,11 +75,11 @@ import { PanelModule } from 'primeng/primeng';
 import { PanelMenuModule } from 'primeng/primeng';
 import { PasswordModule } from 'primeng/primeng';
 import { PickListModule } from 'primeng/primeng';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ProgressBarModule } from 'primeng/primeng';
 import { RadioButtonModule } from 'primeng/primeng';
 import { RatingModule } from 'primeng/primeng';
-import {ScrollPanelModule} from 'primeng/scrollpanel';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ScheduleModule } from 'primeng/primeng';
 import { SelectButtonModule } from 'primeng/primeng';
 import { SlideMenuModule } from 'primeng/primeng';
@@ -97,7 +100,14 @@ import { TreeTableModule } from 'primeng/primeng';
 import { MessageService } from 'primeng/components/common/messageservice';
 
 @NgModule({
-    imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, HttpModule,
+    imports: [
+    // Angular modules
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpModule,
+    // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,
         BlockUIModule,
@@ -170,28 +180,41 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TreeTableModule,
         TranslateModule],
     declarations: [
+    // App components
         MatchInputValidatorDirective,
         ValuesPipe,
         KeysPipe,
         GroupsPipe,
+        TimeConvertPipe,
         ImageBase64Pipe,
         ImageBase64Component,
         GroupDialog,
         GroupListComponent,
         SelectUsersDialog,
-        SelectCourseDialog],
-    exports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule,
-        ValuesPipe,
-        KeysPipe,
-        GroupsPipe,
-        ImageBase64Pipe,
-        MatchInputValidatorDirective,
-        ImageBase64Component,
-        GroupDialog,
-        GroupListComponent,
-        SelectCourseDialog,
-        SelectUsersDialog,
+        SelectCoursesDialog,
+        SelectGroupDialog
+        ],
+    exports: [
+    // Angular modules
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
         HttpModule,
+    // App components
+        ValuesPipe,
+        KeysPipe,
+        GroupsPipe,
+        ImageBase64Pipe,
+        TimeConvertPipe,
+        MatchInputValidatorDirective,
+        ImageBase64Component,
+        GroupDialog,
+        GroupListComponent,
+        SelectCoursesDialog,
+        SelectUsersDialog,
+        SelectGroupDialog,
+     // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,
         BlockUIModule,
@@ -268,9 +291,18 @@ export class ErpSharedModule {
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: SharedModule,
-            providers: [AuthGuard, AdminGuard, APIService, AuthService,
-                MessageService, LangService, CacheService, TreeUtils, ExcelService,
-                ConfirmationService]
+            providers: [
+                AuthGuard,
+                AdminGuard,
+                APIService,
+                AuthService,
+                MessageService,
+                LangService,
+                CacheService,
+                TreeUtils,
+                ExcelService,
+                ConfirmationService,
+                ReportUtils]
         };
     }
 }
