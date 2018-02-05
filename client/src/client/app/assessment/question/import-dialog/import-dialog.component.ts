@@ -4,7 +4,8 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { User } from '../../../shared/models/user.model';
+import { Question } from '../../../shared/models/question.model';
+import { QuestionOption } from '../../../shared/models/option.model';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
@@ -13,10 +14,10 @@ import { ExcelService, EXCEL_TYPE } from '../../../shared/services/excel.service
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-user-import-dialog',
+	selector: 'etraining-question-import-dialog',
 	templateUrl: 'import-dialog.component.html',
 })
-export class UserImportDialog extends BaseComponent {
+export class QuestionImportDialog extends BaseComponent {
 
 	display: boolean;
 	fileType: string;
@@ -45,25 +46,46 @@ export class UserImportDialog extends BaseComponent {
 
 	import() {
 		var subscriptions = [];
-		var self = this;
-		Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
+		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
 			this.importing = true;
-			_.each(this.records, function(record) {
-				var user = new User();
-				Object.assign(user, record);
-				user["password"] = DEFAULT_PASSWORD;
+			for (var i=0; i < this.records.length; i++) {
+				var record = this.records[i];
+				var question = new Question();
+				Object.assign(question, record);
 				var group = _.find(groups, function(obj:Group) {
 					return obj.code == record["group_code"];
 				});
-				if (group) {
-					user.etraining_group_id = group.id;
-					subscriptions.push(user.save(self));
+				var type = record["type"];
+				if (group && type) {
+					question.group_id = group.id;
+					var options = [];
+					var optionLength = record["option"];
+					if (type =="sc" && optionLength) {
+						for (var j=1;j<= optionLength && i < this.records.length;j++,i++) {
+							var optionRecord = this.records[j+i];
+							var option = new QuestionOption();
+							option.is_correct = j==0;
+							option.content = optionRecord["option"];
+							options.push(option);
+						}
+						var subscription =  question.save(this).flatMap(() => {
+							var optionSubscription = [];
+							_.each(options, function(obj:QuestionOption) {
+								obj.question_id =  question.id;
+								optionSubscription.push(option.save(this));
+							});
+							return Observable.forkJoin(...optionSubscription);
+						});
+						subscriptions.push(subscription);
+					} 
+					else
+						subscriptions.push(question.save(this));
 				}
-			});
+			}
 			Observable.forkJoin(...subscriptions).subscribe(()=> {
 				this.importing = false;
-				this.onImportCompleteReceiver.next();
 				this.hide();
+				this.onImportCompleteReceiver.next();
 			});
 		});
 	}

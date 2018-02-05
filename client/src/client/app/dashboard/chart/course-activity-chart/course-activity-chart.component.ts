@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
 import { APIService } from '../../../shared/services/api.service';
@@ -14,7 +14,7 @@ import { ExamMember } from '../../../shared/models/exam-member.model';
 import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../shared/models/constants'
 import { Chart } from '../../chart.decorator';
-
+import { StatsUtils } from '../../../shared/helpers/statistics.utils';
 
 @Component({
     moduleId: module.id,
@@ -22,31 +22,45 @@ import { Chart } from '../../chart.decorator';
     templateUrl: 'course-activity-chart.component.html',
 })
 @Chart({
-    title:'Course activity chart',
+    title: 'Course activity chart',
 })
-export class CourseActivityChartComponent extends BaseComponent implements OnInit{
+export class CourseActivityChartComponent extends BaseComponent implements OnInit {
 
-    chartData:any;
-    duration: number = 7;
+    chartData: any;
 
-    constructor() {
+    constructor(private statsUtils: StatsUtils) {
         super();
     }
 
     ngOnInit() {
-           this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: this.translateService.instant('Course unit attempt'),
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    borderColor: '#FFC107'
-                }
-            ]
-        };
+        this.drawChart(7);
     }
 
-   
+    drawChart(duration:number) {
+        console.log(event)
+        var end = new Date();
+        var start = new Date(end.getTime() - duration * 24 * 60 * 60 * 1000);
+        start.setHours(0, 0, 0, 0);
+        this.statsUtils.courseStatisticByDate(this, start, end).subscribe(slots => {
+            var labels = [this.translateService.instant('Today')];
+            var data = [slots[0]];
+            for (var i =1; i< slots.length;i++) {
+                labels.push(this.translateService.instant("Day-"+i));
+                data.push(slots[i]);
+            }
+            this.chartData = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: this.translateService.instant('Course unit attempt'),
+                        data: data,
+                        fill: false,
+                        borderColor: '#FFC107'
+                    }
+                ]
+            };
+        });
+
+    }
 
 }

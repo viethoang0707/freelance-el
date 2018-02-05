@@ -5,6 +5,8 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { DashboardComponent } from './dashboard.component'
 import { ChartContainerDirective } from './chart-container.directive'
 import { CourseActivityChartComponent } from './chart/course-activity-chart/course-activity-chart.component';
+import { StatsUtils } from '../shared/helpers/statistics.utils';
+
 @NgModule({
 	imports: [ErpSharedModule],
 	declarations: [
@@ -15,7 +17,7 @@ import { CourseActivityChartComponent } from './chart/course-activity-chart/cour
 		CourseActivityChartComponent],
 	exports: [DashboardComponent],
 	entryComponents: [CourseActivityChartComponent],
-	providers: []
+	providers: [StatsUtils]
 })
 export class DashboardModule {
 }

@@ -301,8 +301,7 @@ export class ErpSharedModule {
                 CacheService,
                 TreeUtils,
                 ExcelService,
-                ConfirmationService,
-                ReportUtils]
+                ConfirmationService]
         };
     }
 }

@@ -39,12 +39,11 @@
       </div>
     </div>
   </div>
-    <div class="ui-g-9">
-      <ng-template chart-container></ng-template>
-    </div>
-    <div class="ui-g-3" style="text-align:center">
+    
+    <div class="ui-g-12" style="text-align:center">
       <p-panel header="{{'Monitoring'|translate}}">
         <p-listbox [options]="charts" (onChange)="selectChart()" [(ngModel)]="selectedChart" [style]="{'width':'200px'}"></p-listbox>
+         <ng-template chart-container></ng-template>
       </p-panel>
     </div>
 </div>
