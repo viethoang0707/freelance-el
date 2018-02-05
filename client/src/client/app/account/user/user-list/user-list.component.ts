@@ -90,10 +90,5 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    nodeSelect(event:any) {
-        this.filterGroups = _.map(this.selectedGroupNodes, function(node) {
-            return node.data;
-        });
-    }
 
 }
