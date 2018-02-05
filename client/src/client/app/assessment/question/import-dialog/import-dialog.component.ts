@@ -41,14 +41,16 @@ export class QuestionImportDialog extends BaseComponent {
 	}
 
 	hide() {
+		this.importing = false;
 		this.display = false;
 	}
 
 	import() {
 		var subscriptions = [];
+		var self = this;
 		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
 			this.importing = true;
-			for (var i=0; i < this.records.length; i++) {
+			for (var i=0; i < this.records.length;) {
 				var record = this.records[i];
 				var question = new Question();
 				Object.assign(question, record);
@@ -59,9 +61,9 @@ export class QuestionImportDialog extends BaseComponent {
 				if (group && type) {
 					question.group_id = group.id;
 					var options = [];
-					var optionLength = record["option"];
+					var optionLength =record["option"]? +record["option"]:0;
 					if (type =="sc" && optionLength) {
-						for (var j=1;j<= optionLength && i < this.records.length;j++,i++) {
+						for (var j=1;j<= optionLength && i < this.records.length;j++) {
 							var optionRecord = this.records[j+i];
 							var option = new QuestionOption();
 							option.is_correct = j==0;
@@ -72,7 +74,7 @@ export class QuestionImportDialog extends BaseComponent {
 							var optionSubscription = [];
 							_.each(options, function(obj:QuestionOption) {
 								obj.question_id =  question.id;
-								optionSubscription.push(option.save(this));
+								optionSubscription.push(option.save(self));
 							});
 							return Observable.forkJoin(...optionSubscription);
 						});
@@ -80,7 +82,9 @@ export class QuestionImportDialog extends BaseComponent {
 					} 
 					else
 						subscriptions.push(question.save(this));
-				}
+					i += optionLength + 1;
+				} else
+					i++;
 			}
 			Observable.forkJoin(...subscriptions).subscribe(()=> {
 				this.importing = false;

@@ -1,4 +1,4 @@
-<p-dialog header="{{'Select course'|translate}}" [(visible)]="display" modal="true" width="600" height="100%" [responsive]="true">
+<p-dialog header="{{'Select course'|translate}}" [(visible)]="display" modal="true" width="600" height="100%" [responsive]="true" appendTo="body">
   <div class="ui-g ui-fluid form-group">
     <div class="ui-g-4">
       <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode" ></p-tree>

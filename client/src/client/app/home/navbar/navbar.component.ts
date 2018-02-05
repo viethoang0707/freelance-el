@@ -6,34 +6,38 @@ import { User } from '../../shared/models/user.model';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
 import { LangService } from '../../shared/services/lang.service';
-import {SelectItem} from 'primeng/primeng';
+import { SelectItem } from 'primeng/primeng';
+import { BaseComponent } from '../../shared/components/base/base.component';
+
 
 @Component({
 	moduleId: module.id,
 	selector: 'etraining-navbar',
 	templateUrl: 'navbar.component.html',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent extends BaseComponent implements OnInit {
 
 	user: User;
 	langs: SelectItem[];
 	@Input() selectedLang: string;
+	adminMode: boolean;
 
 	constructor(public eventManager: HomeEventManager, private langService: LangService,
 		private auth: AuthService, private parent: HomeComponent) {
+		super();
 		this.langs = [
-            {label: 'English', value: 'gb'},
-            {label: 'Vietnamese', value: 'vn'}
-        ];
-        this.selectedLang = this.langService.Lang 
-
+			{ label: 'English', value: 'gb' },
+			{ label: 'Vietnamese', value: 'vn' }
+		];
+		this.selectedLang = this.langService.Lang
+		this.adminMode = this.authService.CurrentUser.is_admin || this.authService.CurrentUser.login == 'admin';
 	}
 
 	ngOnInit() {
 		this.user = this.auth.CurrentUser;
 	}
 
-	selectLang($event:any) {
+	selectLang($event: any) {
 		this.langService.Lang = $event.value;
 	}
 }

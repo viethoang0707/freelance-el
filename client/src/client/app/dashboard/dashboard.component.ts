@@ -1,5 +1,6 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import { BaseComponent } from '../shared/components/base/base.component';
+import { HomeEventManager } from '../home/home-manager.service';
 
 @Component({
     moduleId: module.id,
@@ -7,13 +8,19 @@ import { BaseComponent } from '../shared/components/base/base.component';
     templateUrl: 'dashboard.component.html'
 
 })
-export class DashboardComponent extends BaseComponent{
+export class DashboardComponent extends BaseComponent implements OnInit{
 
     isAdmin:boolean;
 
-    constructor() {
+    constructor(private eventManager: HomeEventManager) {
         super();
         this.isAdmin =  this.authService.CurrentUser.is_admin || this.authService.CurrentUser.login=='admin'
+    }
+
+    ngOnInit() {
+    	this.eventManager.switchViewModeEvents.subscribe((adminMode:boolean) => {
+            this.isAdmin = adminMode;
+        });
     }
 
 }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { ErpSharedModule } from '../shared/shared.module';
@@ -18,10 +18,16 @@ import { AccountModule } from '../account/account.module';
   declarations: [ HomeComponent, NavbarComponent, SideMenuComponent, 
   FooterComponent,SubMenuComponent,BreadcrumbComponent,ChangePasswordDialog ],
   exports: [],
-  providers: [HomeEventManager ]
+  providers: [ ]
 })
-export class HomeModule { 
-}
 
+export class HomeModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+        	ngModule: HomeModule,
+            providers: [HomeEventManager]
+        }
+    }
+}
 
 

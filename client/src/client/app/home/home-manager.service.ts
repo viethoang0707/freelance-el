@@ -15,6 +15,7 @@ export class HomeEventManager {
     private topbarRootItemEventReceiver: Subject<any> = new Subject();
     private sidebarEventReceiver: Subject<any> = new Subject();
     private toggleMenuEventReceiver: Subject<any> = new Subject();
+    private switchViewModeEventReceiver: Subject<any> = new Subject();
 
     showProfileEvents:Observable<any> =  this.showProfileEventReceiver.asObservable();
     changePasswordEvents:Observable<any> =  this.changePasswordEventReceiver.asObservable();
@@ -25,6 +26,7 @@ export class HomeEventManager {
     topbarRootItemEvents:Observable<any> =  this.topbarRootItemEventReceiver.asObservable();
     sidebarEvents:Observable<any> =  this.sidebarEventReceiver.asObservable();
     toggleMenuEvents:Observable<any> =  this.toggleMenuEventReceiver.asObservable();
+    switchViewModeEvents:Observable<any> =  this.switchViewModeEventReceiver.asObservable();
 
 
     showProfile() {
@@ -63,7 +65,9 @@ export class HomeEventManager {
         this.toggleMenuEventReceiver.next();
     }
 
-
+    swithViewMode(isAdmin:boolean) {
+        this.switchViewModeEventReceiver.next(isAdmin);
+    }
 
 
 }

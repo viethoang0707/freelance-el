@@ -27,7 +27,7 @@ import { CustomTranslationLoader } from './shared/helpers/translation.loader';
         HttpModule,
         AppRoutingModule,
         AuthModule,
-        HomeModule,
+        HomeModule.forRoot(),
         DashboardModule,
         SettingModule,
         AccountModule,

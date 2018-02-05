@@ -1,5 +1,5 @@
 <form novalidate (ngSubmit)="save()" #f="ngForm">
-<p-dialog header="{{'Course member'|translate}}" [(visible)]="display" modal="true" width="300" [responsive]="true">
+<p-dialog header="{{'Exam member'|translate}}" [(visible)]="display" modal="true" width="300" [responsive]="true" appendTo="body">
     <div class="ui-g ui-fluid form-group">
        <div class="ui-g-12">
         <label>{{'Name'|translate}} : {{object.name}}</label>
@@ -9,8 +9,8 @@
       </div>
       <div class="ui-g-12 ">
         <label>{{'Role'|translate}}</label>
-          <p-radioButton name="role" value="student"  label="{{'Student'|translate}}" [(ngModel)]="object.role" inputId="opt1"></p-radioButton>
-          <p-radioButton name="role" value="teacher"  label="{{'Teacher'|translate}}" [(ngModel)]="object.role" inputId="opt1"></p-radioButton>
+          <p-radioButton name="role" value="candidate"  label="{{'Candidate'|translate}}" [(ngModel)]="object.role" inputId="opt1"></p-radioButton>
+          <p-radioButton name="role" value="supervisor"  label="{{'Supervisor'|translate}}" [(ngModel)]="object.role" inputId="opt2"></p-radioButton>
       </div>
     </div>
     <p-footer>
