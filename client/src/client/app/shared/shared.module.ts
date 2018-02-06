@@ -7,6 +7,8 @@ import { HttpModule, Http, BaseRequestOptions, XHRBackend } from '@angular/http'
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { TeacherGuard } from './guards/teacher.guard';
+import { SupervisorGuard } from './guards/supervisor.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
@@ -294,6 +296,8 @@ export class ErpSharedModule {
             providers: [
                 AuthGuard,
                 AdminGuard,
+                TeacherGuard,
+                SupervisorGuard,
                 APIService,
                 AuthService,
                 MessageService,

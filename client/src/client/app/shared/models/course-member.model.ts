@@ -67,4 +67,14 @@ export class CourseMember extends BaseModel{
     static countStudent(context: APIContext) {
         return CourseMember.count(context, "[('role','=','student')]")
     }
+
+    static byCourseAndUser( context:APIContext, userId: number, courseId: number): Observable<any> {
+        return CourseMember.search([],"[('user_id','=',"+userId+"),('course_id','=',"+courseId+")]",context)
+        .map(members => {
+            if (members.length)
+                return members[0];
+            else
+                return null;
+        });
+    }
 }

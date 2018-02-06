@@ -54,7 +54,7 @@
         </p-dropdown>
       </li>
        <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)">
-        <p-toggleButton [(ngModel)]="adminMode" onLabel="{{'Administration mode'|translate}}" offLabel="{{'Learning mode'|translate}}" (onChange)="eventManager.swithViewMode($event.checked)"  [style]="{'width':'150px'}"></p-toggleButton>
+        <p-toggleButton [(ngModel)]="viewMode" onLabel="{{'Administration mode'|translate}}" offLabel="{{'Learning mode'|translate}}" *ngIf="isAdmin" (onChange)="eventManager.swithViewMode($event.checked)"  [style]="{'width':'150px'}"></p-toggleButton>
       </li>
     </ul>
   </div>

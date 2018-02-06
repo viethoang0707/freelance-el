@@ -20,7 +20,8 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	user: User;
 	langs: SelectItem[];
 	@Input() selectedLang: string;
-	adminMode: boolean;
+	isAdmin: boolean;
+	viewMode: boolean;
 
 	constructor(public eventManager: HomeEventManager, private langService: LangService,
 		private auth: AuthService, private parent: HomeComponent) {
@@ -30,7 +31,8 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 			{ label: 'Vietnamese', value: 'vn' }
 		];
 		this.selectedLang = this.langService.Lang
-		this.adminMode = this.authService.CurrentUser.is_admin || this.authService.CurrentUser.login == 'admin';
+		this.isAdmin = this.authService.CurrentUser.is_admin || this.authService.CurrentUser.login == 'admin';
+		this.viewMode = this.isAdmin;
 	}
 
 	ngOnInit() {
