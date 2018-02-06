@@ -3295,7 +3295,7 @@ body {
       box-shadow: none;
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
-      vertical-align: top; }
+      vertical-align: baseline; }
       body .ui-splitbutton > .ui-button:active {
         background-color: #4ca0ea; }
     body .ui-splitbutton .ui-splitbutton-menubutton {
