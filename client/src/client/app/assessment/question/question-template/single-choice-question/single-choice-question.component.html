@@ -7,7 +7,7 @@
   <div class="ui-g-12">
         <p-panel header="{{'Options'|translate}}">
             <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addOption()"></button>
-            <ul>
+            <ul class="options-question">
                 <li *ngFor="let option of options">
                     <p-checkbox (click)="setOptionCorrect(option)" binary="true" name="option.is_correct"></p-checkbox>
                     <span class="md-inputfield">

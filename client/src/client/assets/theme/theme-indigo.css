@@ -5824,3 +5824,23 @@ body .ui-inplace .ui-inplace-display {
     background-color: #e8e8e8; }
 body .ui-terminal .ui-terminal-input {
   font-size: 14px; }
+
+body .options-question li{
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+body .options-question .ui-chkbox{
+  float: left;
+}
+
+body .options-question .md-inputfield{
+  float: left;
+  margin-left: 5px;
+}
+
+body .options-question .ui-button.ui-button-icon-only{
+  margin-left: 10px;
+  width: 2em;
+  height: 2em;
+}
