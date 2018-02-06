@@ -45,7 +45,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
                 this.router.navigate([this.returnUrl]);
             },
             error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Thông tin đăng nhập không đúng.' });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translateService.instant('Login failed.') });
             });
     }
 }

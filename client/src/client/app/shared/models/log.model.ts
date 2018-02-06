@@ -4,8 +4,8 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from './decorator';
 import { APIContext } from './context';
 
-@Model('etraining.log')
-export class Log extends BaseModel{
+@Model('etraining.user_log')
+export class UserLog extends BaseModel{
 
     constructor(){
         super();
@@ -28,4 +28,28 @@ export class Log extends BaseModel{
     start: Date;
     attachment_url: string;
     attachment_id: number;
+
+    static userStudyActivity(context:APIContext, userId, courseId):Observable<any> {
+        var domain = "";
+        if (courseId)
+            domain = "[('user_id','=',"+userId+"),('res_id','=',"+courseId+"),('res_model','=','etraining.course')]";
+        else
+            domain = "[('user_id','=',"+userId+"),('res_model','=','etraining.course')]"
+        return UserLog.search([], domain ,context);
+    }
+
+    static userExamActivity(context:APIContext, userId, examId):Observable<any> {
+        var domain = "";
+        if (examId)
+            domain = "[('user_id','=',"+userId+"),('res_id','=',"+examId+"),('res_model','=','etraining.exam')]";
+        else
+            domain = "[('user_id','=',"+userId+"),('res_model','=','etraining.exam')]"
+        return UserLog.search([], domain ,context);
+    }
+
+    static courseActivity(context:APIContext, courseId):Observable<any> {
+        return UserLog.search([], "[('res_id','=',"+courseId+"),('res_model','=','etraining.course')]" ,context);
+    }
+
+
 }

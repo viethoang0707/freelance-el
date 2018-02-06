@@ -1,23 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
-import { SettingComponent } from './report.component';
+import { ReportComponent } from './report.component';
 
-export const SettingRoutes: Routes = [
+export const ReportRoutes: Routes = [
     {
-       path: "setting",
-       component: SettingComponent,
-       children:
-       [
-           {
-               path: "group",
-               component: GroupListComponent
-            },
-            {
-               path: "user",
-               component: UserListComponent
-            }
-
-       ]
+       path: "reports",
+       component: ReportComponent,
+       data: {
+         breadcrumb:'Reports'
+       }
     }
 
 ]

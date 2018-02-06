@@ -20,4 +20,8 @@ export class QuestionOption extends BaseModel{
     content: string;
     question_id: number;
 
+    static listByQuestion(context:APIContext, questionId):Observable<any> {
+        return QuestionOption.search([], "[('question_id','=',"+questionId+")]",context);
+    }
+
 }

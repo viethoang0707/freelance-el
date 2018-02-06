@@ -10,6 +10,7 @@ import { Group } from '../../../shared/models/group.model';
 import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
+import { QuestionImportDialog } from '../import-dialog/import-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -20,6 +21,7 @@ import { TreeNode, MenuItem } from 'primeng/api';
 export class QuestionListComponent extends BaseComponent {
 
     @ViewChild(QuestionDialog) questionDialog: QuestionDialog;
+    @ViewChild(QuestionImportDialog) questionImportDialog: QuestionImportDialog;
 
     tree: TreeNode[];
     items: MenuItem[];
@@ -39,7 +41,6 @@ export class QuestionListComponent extends BaseComponent {
         this.loadQuestions();
         this.items = [
             {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.add('sc')}},
-            {label: this.translateService.instant(QUESTION_TYPE['fb']), command: ()=> { this.add('fb')}},
             {label: this.translateService.instant(QUESTION_TYPE['ext']), command: ()=> { this.add('ext')}},
         ];
     }
@@ -86,6 +87,13 @@ export class QuestionListComponent extends BaseComponent {
 
     nodeSelect(event:any) {
         this.loadQuestions();
+    }
+
+    import() {
+        this.questionImportDialog.show();
+        this.questionImportDialog.onImportComplete.subscribe(()=> {
+            this.loadQuestions();
+        });
     }
 
 }

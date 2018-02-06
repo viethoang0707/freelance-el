@@ -30,8 +30,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     @ViewChild('layoutMenuScroller') layoutMenuScrollerViewChild: ElementRef;
 
     constructor(public app: HomeComponent, 
-        private eventManager: HomeEventManager,
-        private cacheService: CacheService) {
+        private eventManager: HomeEventManager) {
         super();
     }
 
@@ -40,7 +39,21 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
         this.credential = this.authService.StoredCredential;
         var user = this.authService.CurrentUser;
         if (user.login == 'admin' || user.is_admin) {
-            this.model = [
+            this.setAdminMenu();
+        } else {
+            this.setUserMenu();
+        }
+
+        this.eventManager.switchViewModeEvents.subscribe((adminMode:boolean) => {
+            if (adminMode)
+                this.setAdminMenu();
+            else
+                this.setUserMenu();
+        });
+    }
+
+    setAdminMenu() {
+        this.model = [
                 { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
                 { label: '', separator: true, styleClass: 'menu-separator' },
                 {
@@ -49,7 +62,6 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                         { label: 'Course', routerLink: ['/enrollment/courses'] },
                         { label: 'Course group', routerLink: ['/enrollment/groups'] },
                         { label: 'Class', routerLink: ['/enrollment/classes'] },
-                        { label: 'Member', routerLink: ['/enrollment/members'] }
                     ]
                 },
                 {
@@ -61,11 +73,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     ]
                 },
                 {
-                    label: 'Report', icon: 'pie_chart',
-                    items: [
-                        { label: 'Category', routerLink: ['/library/category/list'] },
-                        { label: 'Item', routerLink: ['/library/item/list'] }
-                    ]
+                    label: 'Report', icon: 'pie_chart',routerLink: ['/reports']
                 },
                 {
                     label: 'Accounts', icon: 'people',
@@ -82,14 +90,14 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     ]
                 }
             ];
-        } else {
-            this.model = [
+    }
+
+    setUserMenu() {
+        this.model = [
                 { label: 'My course', icon: 'school', routerLink: ['/lms/course'] },
-                { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/conference'] },
                 { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exam'] },
-                { label: 'Library', icon: 'local_library', routerLink: ['/library'] },
+                { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/conference'] },
             ];
-        }
     }
 
 

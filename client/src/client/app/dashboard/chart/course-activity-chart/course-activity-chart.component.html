@@ -1,0 +1,9 @@
+ <div class="card">
+<div style="overflow:auto">
+  <h3>{{'Course activity'|translate}}</h3>
+  <p-radioButton name="monitor_window" label="{{'Last 7 days'|translate}}" value="7" inputId="opt1" (onClick)="drawChart(7)"></p-radioButton>
+    <p-radioButton name="monitor_window" label="{{'Last 14 days'|translate}}" value="14"  inputId="opt2" (onClick)="drawChart(14)"></p-radioButton>
+    <p-radioButton name="monitor_window" label="{{'Last 30 days'|translate}}" value="30" inputId="opt3" (onClick)="drawChart(30)"></p-radioButton>
+  <p-chart type="line" [data]="chartData" responsive="true"></p-chart>
+</div>
+</div>

@@ -17,7 +17,7 @@ export class ExamContent extends BaseModel{
         this.question_number = undefined;
         this.question_level = undefined;
         this.question_group_id = undefined;
-        this.score = undefined;
+        this.scale = undefined;
         this.question_ids = undefined;
     }
 
@@ -28,6 +28,6 @@ export class ExamContent extends BaseModel{
     question_number: number;
     question_level: number;
     question_group_id: number;
-    score: number;
+    scale: number;
     question_ids: number[];
 }

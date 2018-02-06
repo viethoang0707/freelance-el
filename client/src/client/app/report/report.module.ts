@@ -1,19 +1,30 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
-import { HrmSharedModule } from '../shared/shared.module';
-import  { SettingComponent } from './setting.component'
-import { GroupListComponent } from './group/group-list/group-list.component';
-import { GroupDialog } from './group/group-dialog/group-dialog.component';
-import { UserListComponent } from './user/user-list/user-list.component';
-import { UserDialog } from './user/user-dialog/user-dialog.component';
-import { CountUserByGroupPipe } from './user/user-list/user-by-group.pipe';
+import { ErpSharedModule } from '../shared/shared.module';
+import { ReportComponent } from './report.component'
+import { ExamResultReportComponent } from './exam/exam-result-report/exam-result-report.component';
+import { CourseByMemberReportComponent } from './course/course-by-member-report/course-by-member-report.component';
+import { MemberByCourseReportComponent } from './course/member-by-course-report/member-by-course-report.component';
+import { ReportContainerDirective } from './report-container.directive';
+import { DatePipe } from '@angular/common';
+import { ReportUtils } from '../shared/helpers/report.utils';
+import { TimeConvertPipe} from '../shared/pipes/time.pipe';
 
 @NgModule({
-    imports: [HrmSharedModule, AuthModule],
-    declarations: [SettingComponent, GroupDialog, GroupListComponent,
-    				UserListComponent, UserDialog, CountUserByGroupPipe],
-    exports: [],
-    providers: []
+	imports: [ErpSharedModule, AuthModule],
+	declarations: [
+	ReportComponent, 
+	ExamResultReportComponent,
+	CourseByMemberReportComponent,
+	MemberByCourseReportComponent,
+	ReportContainerDirective],
+	entryComponents: [
+        ExamResultReportComponent,
+        CourseByMemberReportComponent,
+        MemberByCourseReportComponent
+    ],
+	exports: [],
+	providers: [DatePipe, ReportUtils, TimeConvertPipe]
 })
-export class SettingModule {
+export class ReportModule {
 }

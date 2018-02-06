@@ -1,8 +1,13 @@
+<style>
+    .app-name{
+        font-size: 20px !important;
+    }
+</style>
 <div class="layout-sidebar" [ngClass]="{'layout-sidebar-active': app.sidebarActive, 'layout-sidebar-dark': app.darkMenu}" 
     (click)="eventManager.sidebarClick()" (mouseover)="app.sidebarActive=true" (mouseleave)="app.sidebarActive=false">
     <div class="sidebar-logo">
         <a routerLink="/dashboard">
-            <img [src]='company.logo | imageBase64' width="64">
+            <img [src]='company.logo | imageBase64' width="64" height="32">
             <span class="app-name">e-Learning</span>
         </a>
         <a class="sidebar-anchor" title="Toggle Menu" (click)="eventManager.toggleMenuClick()"></a>

@@ -1,0 +1,11 @@
+<p-dialog header="{{'Select group'|translate}}" [(visible)]="display" modal="true" width="300" height="100%" [responsive]="true" appendTo="body">
+  <div class="ui-g ui-fluid form-group">
+    <div class="ui-g-12">
+      <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" ></p-tree>
+    </div>
+  </div>
+  <p-footer>
+    <button type="button" [disabled]="!selectedNode || !selectedNode.data" pButton icon="fa-check" label="{{'OK'|translate}}" (click)="select()"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog>

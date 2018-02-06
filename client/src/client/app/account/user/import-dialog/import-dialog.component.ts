@@ -62,6 +62,7 @@ export class UserImportDialog extends BaseComponent {
 			});
 			Observable.forkJoin(...subscriptions).subscribe(()=> {
 				this.importing = false;
+				this.onImportCompleteReceiver.next();
 				this.hide();
 			});
 		});

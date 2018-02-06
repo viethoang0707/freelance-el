@@ -6,11 +6,17 @@ export const DashboardRoutes: Routes = [
     {
        path: '',
        component: DashboardComponent,
+       data: {
+       	breadcrumb:'Dashboard'
+       }
     },
 
     {
        path: "dashboard",
        component: DashboardComponent,
+       data: {
+       	breadcrumb:'Dashboard'
+       }
     }
 
 ]

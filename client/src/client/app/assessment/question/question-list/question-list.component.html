@@ -14,7 +14,6 @@
                      
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="{{'Export'|translate}}"  class="purple-btn" icon="ui-icon-file-download" (click)="export()"></button>
                     <button pButton type="button" label="{{'Import'|translate}}"  class="purple-btn" icon="ui-icon-file-upload" (click)="import()"></button>
                 </div>
             </p-toolbar>
@@ -55,6 +54,7 @@
                 </ng-template>
             </p-table>
             <etraining-question-dialog></etraining-question-dialog>
+            <etraining-question-import-dialog></etraining-question-import-dialog>
             <p-confirmDialog header="{{'Confirmation'|translate}}" width="300"></p-confirmDialog>
         </div>
     </div>

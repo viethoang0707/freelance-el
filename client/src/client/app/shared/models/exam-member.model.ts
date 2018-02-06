@@ -15,6 +15,7 @@ export class ExamMember extends BaseModel{
         this.status = undefined;
         this.role = undefined;
         this.name = undefined;
+        this.login = undefined;
         this.email = undefined;
         this.phone = undefined;
         this.user_id = undefined;
@@ -26,11 +27,26 @@ export class ExamMember extends BaseModel{
     user_id: number;
     status: string;
     role: string;
+    login: string;
     name: string;
     date_register: Date;
     email: string;
     phone: string;
     etraining_group_id: number;
     etraining_group_id__DESC__: string;
+
+    static listByExam( context:APIContext, examId: number): Observable<any[]> {
+        return ExamMember.search([],"[('exam_id','=',"+examId+")]",context);
+    }
+
+    static byExamAndUser( context:APIContext, userId: number, examId: number): Observable<any> {
+        return ExamMember.search([],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]",context)
+        .map(members => {
+            if (members.length)
+                return members[0];
+            else
+                return null;
+        });
+    }
 
 }

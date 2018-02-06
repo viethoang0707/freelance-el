@@ -12,6 +12,10 @@ import { SettingModule } from './setting/setting.module';
 import { AccountModule } from './account/account.module';
 import { EnrollmentModule } from './enrollment/enrollment.module';
 import { AssessmentModule } from './assessment/assessment.module';
+import { ReportModule } from './report/report.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { CMSModule } from './cms/cms.module';
+import { LMSModule } from './lms/lms.module';
 import { InterceptHttp } from './shared/helpers/intercept.http';
 import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
@@ -19,16 +23,21 @@ import { CustomTranslationLoader } from './shared/helpers/translation.loader';
 
 
 @NgModule({
-    imports: [BrowserModule,
+    imports: [
+        BrowserModule,
         BrowserAnimationsModule,
         HttpModule,
         AppRoutingModule,
         AuthModule,
-        HomeModule,
+        HomeModule.forRoot(),
+        DashboardModule,
         SettingModule,
         AccountModule,
         EnrollmentModule,
         AssessmentModule,
+        ReportModule,
+        CMSModule,
+        LMSModule,
         ErpSharedModule.forRoot(),
         TranslateModule.forRoot({
             loader: {provide: TranslateLoader, useClass: CustomTranslationLoader}

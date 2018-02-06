@@ -78,8 +78,8 @@ export class ExamListComponent extends BaseComponent {
             });
     }
 
-    onDayClick(event) {
-        console.log(event);
+    onDayClick() {
+        this.add();
     }
 
     onEventClick(event) {

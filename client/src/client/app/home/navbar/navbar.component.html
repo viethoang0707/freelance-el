@@ -1,15 +1,15 @@
 <div class="layout-topbar">
   <img alt="logo" src="assets/layout/images/logo-slim.png" class="mobile-logo" />
-  <a href="#" class="menu-btn" (click)="eventManager.menuClick()">
+  <a class="menu-btn" (click)="eventManager.menuClick()">
         <i class="material-icons">&#xE5D2;</i>
     </a>
-  <a href="#" class="topbar-menu-btn" (click)="eventManager.topbarMobileMenuClick()">
+  <a class="topbar-menu-btn" (click)="eventManager.topbarMobileMenuClick()">
         <i class="material-icons">&#xE853;</i>
     </a>
   <div class="layout-topbar-menu-wrapper">
     <ul class="topbar-menu fadeInDown" [ngClass]="{'topbar-menu-active': parent.topbarMenuActive}" (click)="eventManager.topbarMenuClick()">
       <li #profile class="profile-item" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
-        <a href="#">
+        <a>
             <span class="profile-image-wrapper">
                 <img [src]='user.image | imageBase64'/>
             </span>
@@ -17,26 +17,27 @@
         </a>
         <ul class="fadeInDown">
           <li role="menuitem">
-            <a href="#" (click)="eventManager.showProfile()">
+            <a  (click)="eventManager.showProfile()">
                 <i class="material-icons">account_circle</i>
                 <span>{{'User Profile'|translate}}</span>
             </a>
           </li>
           <li role="menuitem">
-            <a href="#" (click)="eventManager.changePassword()">
+            <a  (click)="eventManager.changePassword()">
                 <i class="material-icons">verified_user</i>
                 <span>{{'Change Password'|translate}}</span>
             </a>
           </li>
           <li role="menuitem">
-            <a href="#" (click)="eventManager.logout()">
+            <a  (click)="eventManager.logout()">
                 <i class="material-icons" >exit_to_app</i>
                 <span>{{'Log out'|translate}}</span>
             </a>
           </li>
         </ul>
       </li>
-      <li #language [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === langs}" (click)="eventManager.topbarRootItemClick( language)">
+
+      <li #language [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === language}" (click)="eventManager.topbarRootItemClick( language)">
         <p-dropdown [options]="langs" (onChange)="selectLang($event)" [(ngModel)]="selectedLang">
           <ng-template let-item pTemplate="selectedItem">
             <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
@@ -51,6 +52,9 @@
             </div>
           </ng-template>
         </p-dropdown>
+      </li>
+       <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)">
+        <p-toggleButton [(ngModel)]="viewMode" onLabel="{{'Administration mode'|translate}}" offLabel="{{'Learning mode'|translate}}" *ngIf="isAdmin" (onChange)="eventManager.swithViewMode($event.checked)"  [style]="{'width':'150px'}"></p-toggleButton>
       </li>
     </ul>
   </div>

@@ -3,7 +3,7 @@
     <div class="ui-g">
       <div class="ui-g-12">
         <label>{{'Organization'|translate}}</label>
-        <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="nodeSelect($event)"></p-tree>
+        <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" ></p-tree>
       </div>
         <div class="ui-g-12">
             <p-toolbar>
@@ -18,7 +18,7 @@
                     <button pButton type="button" label="{{'Import'|translate}}"  class="purple-btn" icon="ui-icon-file-upload" (click)="import()"></button>
                 </div>
             </p-toolbar>
-            <p-table #userTable [value]="users | groups:filterGroups" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedUser" [responsive]="true">
+            <p-table #userTable [value]="users | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedUser" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">
@@ -52,7 +52,7 @@
                 <ng-template pTemplate="summary">
                     {{'Total records'|translate}} : {{users?.length}}
                 </ng-template>
-                <ng-template pTemplate="emptymessage" let-columns>
+                <ng-template pTemplate="emptymessage">
                     <tr>
                         <td [attr.colspan]="5">
                             {{'No records found'|translate}}

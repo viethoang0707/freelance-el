@@ -3,7 +3,6 @@ import { Routes } from '@angular/router';
 import  { EnrollmentComponent } from './enrollment.component'
 import { CourseClassListComponent } from './class/class-list/class-list.component';
 import { CourseListComponent } from './course/course-list/course-list.component';
-import { CourseMemberListComponent } from './member/member-list/member-list.component';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 
@@ -30,13 +29,6 @@ export const EnrollmentRoutes: Routes = [
                data: {
                   breadcrumb: 'Courses'
                 }
-            },
-            {
-               path: "members",
-               component: CourseMemberListComponent,
-               data: {
-                  breadcrumb: 'Members'
-                },
             },
             {
                path: "groups",
