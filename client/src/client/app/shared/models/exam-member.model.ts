@@ -39,6 +39,10 @@ export class ExamMember extends BaseModel{
         return ExamMember.search([],"[('exam_id','=',"+examId+")]",context);
     }
 
+    static listByUser( context:APIContext, userId: number): Observable<any[]> {
+        return ExamMember.search([],"[('user_id','=',"+userId+")]",context);
+    }
+
     static byExamAndUser( context:APIContext, userId: number, examId: number): Observable<any> {
         return ExamMember.search([],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]",context)
         .map(members => {

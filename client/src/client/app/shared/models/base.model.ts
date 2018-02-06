@@ -67,7 +67,7 @@ export abstract class BaseModel {
     }
 
 
-    static search(fields:string[], domain:string, context:APIContext):Observable<any[]> {
+    static search(context:APIContext, fields:string[], domain:string):Observable<any[]> {
         var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
@@ -82,7 +82,7 @@ export abstract class BaseModel {
         return this.search([],'[]',context);
     }
 
-    static array(ids: number[], context:APIContext): Observable<any[]> {
+    static array(context:APIContext,ids: number[]): Observable<any[]> {
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint);

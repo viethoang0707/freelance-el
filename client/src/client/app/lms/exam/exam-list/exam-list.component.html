@@ -1,0 +1,42 @@
+<div class="card card-w-title">
+    <h1>{{'My exams'|translate}}</h1>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-dataList [value]="exams" [paginator]="true" [rows]="5">
+    <p-header>
+        List of Exams
+    </p-header>
+    <ng-template let-exam pTemplate="item">
+       <div class="ui-g-12 image-box">
+            <div class="card">
+                <img src="assets/layout/images/dashboard/gradient-waters.png" library="serenity-layout" />
+
+                <div class="image-box-content">
+                    <h3>Gradient Waters</h3>
+                    <span class="image-box-tag">article</span>
+                    <p>
+                        Derive inexpedient reason law virtues superiority victorious. Overcome pious horror suicide revaluation. Holiest ocean society disgust passion value love.
+                        Faithful mountains morality hope disgust merciful moral will revaluation society fearful love.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, 
+                        culpa ratione quam perferendis esse, cupiditate neque quas!
+                    </p>
+                    <p>
+                        In et blandit turpis, ut congue nibh. Nam vitae tincidunt nunc, sed accumsan lacus. Sed efficitur malesuada augue ut varius. Pellentesque ultricies leo massa, eu posuere diam sodales quis.
+                    </p>
+                    <div class="image-box-footer">
+                        <button pButton type="button" icon="ui-icon-close" title="Close" label="Close" class="remove-btn orange-btn" style="margin-right:4px;"></button>
+                        <button pButton type="button" icon="ui-icon-add" title="New" label="New" class="message-btn secondary-btn"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-template>
+</p-dataList>
+          
+            <p-confirmDialog header="{{'Confirmation'|translate}}" width="300"></p-confirmDialog>
+        </div>
+    </div>
+</div>
