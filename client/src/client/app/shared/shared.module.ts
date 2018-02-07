@@ -14,6 +14,7 @@ import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
 import { CacheService } from './services/cache.service';
 import { ExcelService } from './services/excel.service';
+import { SettingService } from './services/setting.service';
 import { TreeUtils } from './helpers/tree.utils';
 import { ReportUtils } from './helpers/report.utils';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
@@ -305,6 +306,7 @@ export class ErpSharedModule {
                 CacheService,
                 TreeUtils,
                 ExcelService,
+                SettingService,
                 ConfirmationService]
         };
     }

@@ -35,7 +35,9 @@ export class HomeComponent extends BaseComponent implements AfterViewInit {
         private eventManager :HomeEventManager, 
         authService: AuthService) {
         super();
-        router.navigate(['/dashboard']);
+        this.settingService.adminModeEvents.subscribe(()=> {
+            router.navigate(['/dashboard']);
+        });
     }
 
     onWrapperClick() {

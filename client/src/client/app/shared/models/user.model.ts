@@ -45,11 +45,11 @@ export class User extends BaseModel{
     }
 
     static all( context:APIContext): Observable<any[]> {
-        return User.search([],"[('login','!=','admin')]",context);
+        return User.search(context,[],"[('login','!=','admin')]");
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return User.search([], "[('etraining_group_id','=',"+groupId+")]",context);
+        return User.search(context,[], "[('etraining_group_id','=',"+groupId+")]");
     }
 
 }

@@ -6,11 +6,12 @@ import { User } from '../models/user.model';
 import { CloudAccount } from '../models/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service'
+import {SettingService} from './setting.service';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private apiService: APIService) {
+    constructor(private apiService: APIService, private settingService: SettingService) {
     }
 
     get StoredCredential(): Credential {
@@ -33,6 +34,8 @@ export class AuthService {
 
     set CurrentUser(user: User) {
         localStorage.setItem('currentUser', btoa(JSON.stringify(user)));
+        if (user.is_admin || user.login =='admin')
+            this.settingService.setAdminMode(true);
     }
 
     saveCredential(info: Credential, remember: boolean) {

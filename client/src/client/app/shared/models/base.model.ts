@@ -79,7 +79,7 @@ export abstract class BaseModel {
     }
 
     static all( context:APIContext): Observable<any[]> {
-        return this.search([],'[]',context);
+        return this.search(context,[],'[]');
     }
 
     static array(context:APIContext,ids: number[]): Observable<any[]> {
@@ -90,11 +90,11 @@ export abstract class BaseModel {
 
     static allWithInactive(context:APIContext):Observable<any[]> {
         var domain = "['|',('active','=',True),('active','=',False)]";
-        return this.search([], domain, context);
+        return this.search(context,[], domain);
     }
 
 
-    static executeRemote(method:string, paramsList: string[], paramsDict: any, context:APIContext):Observable<any> {
+    static executeRemote(context:APIContext, method:string, paramsList: string[], paramsDict: any):Observable<any> {
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.execute(model, method, paramsList, paramsDict, cloud_acc.id, cloud_acc.api_endpoint);

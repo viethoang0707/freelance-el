@@ -36,15 +36,13 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.company =  this.cacheService.UserCompany;
-        this.credential = this.authService.StoredCredential;
-        var user = this.authService.CurrentUser;
-        if (user.login == 'admin' || user.is_admin) {
+        if (this.settingService.adminMode) {
             this.setAdminMenu();
         } else {
             this.setUserMenu();
         }
 
-        this.eventManager.switchViewModeEvents.subscribe((adminMode:boolean) => {
+        this.settingService.adminModeEvents.subscribe((adminMode:boolean) => {
             if (adminMode)
                 this.setAdminMenu();
             else
@@ -94,9 +92,11 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
 
     setUserMenu() {
         this.model = [
-                { label: 'My course', icon: 'school', routerLink: ['/lms/course'] },
-                { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exam'] },
-                { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/conference'] },
+                { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
+                { label: '', separator: true, styleClass: 'menu-separator' },
+                { label: 'My course', icon: 'school', routerLink: ['/lms/courses'] },
+                { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exams'] },
+                { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/lms/meetings'] },
             ];
     }
 

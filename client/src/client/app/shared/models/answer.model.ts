@@ -28,7 +28,7 @@ export class Answer extends BaseModel{
     text:string;
 
     static listBySubmit( context:APIContext, submitId: number): Observable<any[]> {
-        return Answer.search([],"[('submission_id','=',"+submitId+")]",context);
+        return Answer.search(context,[],"[('submission_id','=',"+submitId+")]");
     }
 
 }

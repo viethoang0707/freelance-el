@@ -27,7 +27,7 @@ export class Group extends BaseModel{
     child_ids: number[];
 
     static listByCategory(context:APIContext, category):Observable<any> {
-        return Group.search([], "[('category','=','"+category+"')]",context);
+        return Group.search(context,[], "[('category','=','"+category+"')]");
     }
 
 }

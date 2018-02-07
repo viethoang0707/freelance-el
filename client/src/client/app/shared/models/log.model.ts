@@ -35,7 +35,7 @@ export class UserLog extends BaseModel{
             domain = "[('user_id','=',"+userId+"),('res_id','=',"+courseId+"),('res_model','=','etraining.course')]";
         else
             domain = "[('user_id','=',"+userId+"),('res_model','=','etraining.course')]"
-        return UserLog.search([], domain ,context);
+        return UserLog.search(context,[], domain );
     }
 
     static userExamActivity(context:APIContext, userId, examId):Observable<any> {
@@ -44,11 +44,11 @@ export class UserLog extends BaseModel{
             domain = "[('user_id','=',"+userId+"),('res_id','=',"+examId+"),('res_model','=','etraining.exam')]";
         else
             domain = "[('user_id','=',"+userId+"),('res_model','=','etraining.exam')]"
-        return UserLog.search([], domain ,context);
+        return UserLog.search(context,[], domain );
     }
 
     static courseActivity(context:APIContext, courseId):Observable<any> {
-        return UserLog.search([], "[('res_id','=',"+courseId+"),('res_model','=','etraining.course')]" ,context);
+        return UserLog.search(context,[], "[('res_id','=',"+courseId+"),('res_model','=','etraining.course')]" );
     }
 
 

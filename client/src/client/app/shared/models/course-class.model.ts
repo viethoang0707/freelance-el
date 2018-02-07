@@ -31,6 +31,6 @@ export class CourseClass extends BaseModel{
     end: Date;
 
     static listByCourse(context:APIContext, courseId):Observable<any> {
-        return CourseClass.search([], "[('course_id','=',"+courseId+")]",context);
+        return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
     }
 }

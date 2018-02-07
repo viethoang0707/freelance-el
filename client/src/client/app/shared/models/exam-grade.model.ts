@@ -23,6 +23,6 @@ export class ExamGrade extends BaseModel{
     max: number;
 
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
-        return ExamGrade.search([],"[('exam_id','=',"+examId+")]",context);
+        return ExamGrade.search(context,[],"[('exam_id','=',"+examId+")]");
     }
 }

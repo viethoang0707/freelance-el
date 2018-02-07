@@ -18,9 +18,8 @@ import { SelectItem } from 'primeng/api';
 })
 export class ExamListComponent extends BaseComponent implements OnInit {
 
-
-    selectedExam: Exam;
     exams: Exam[];
+    EXAM_STATUS = EXAM_STATUS;
 
 
     constructor() {
@@ -28,35 +27,19 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     }
 
-    ngOninit() {
+    ngOnInit() {
         ExamMember.listByUser(this, this.authService.CurrentUser.id).subscribe(members => {
-            var examIds = _.pluck(members,'id');
+            var examIds = _.pluck(members,'exam_id');
             Exam.array(this, examIds).subscribe(exams => {
                 this.exams =  exams;
+                _.each(exams, function(exam) {
+                    exam.member = _.find(members, function(member) {
+                        return member.exam_id == exam.id;
+                    });
+                });
             })
         });
     }
 
-
-
-    ngOnInit() {
-        this.loadExams();
-    }
-
-
-    loadExams() {
-        Exam.all(this).subscribe(exams => {
-            this.exams = exams;
-            this.events = _.map(exams, function(exam) {
-                return {
-                    title: exam.name,
-                    start: exam.start,
-                    send: exam.end,
-                    id: exam.id,
-                    allDay: true
-                }
-            });
-        });
-    }
 
 }

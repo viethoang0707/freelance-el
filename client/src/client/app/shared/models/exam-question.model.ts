@@ -19,12 +19,12 @@ export class ExamQuestion extends BaseModel{
         this.group_id = undefined;
         this.option_ids = undefined;
         this.question_id = undefined;
-        this.content_id = undefined;
+        this.exam_id = undefined;
         this.score = undefined;
         this.order = undefined;
 	}
     question_id: number;
-    content_id: number;
+    exam_id: number;
     score: number;
     order: number;
     level: number;
