@@ -47,9 +47,10 @@
     <div class="ui-g-12">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
-          <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add" [disabled]="!selectedCourse"></button>
+          <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add" [disabled]="!selectedCourse || !courses.length"></button>
           <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedClass"></button>
           <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedClass"></button>
+          <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" [disabled]="!selectedClass"></button>
         </div>
       </p-toolbar>
       <p-table #classTable [value]="classes | byCourse: selectedCourse" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedClass" [responsive]="true">
@@ -96,6 +97,8 @@
         </ng-template>
       </p-table>
       <etraining-class-dialog></etraining-class-dialog>
+       <etraining-course-dialog></etraining-course-dialog>
+       <etraining-course-enrollment-dialog></etraining-course-enrollment-dialog>
       <p-confirmDialog header="{{'Confirmation'|translate}}" width="300"></p-confirmDialog>
     </div>
   </div>

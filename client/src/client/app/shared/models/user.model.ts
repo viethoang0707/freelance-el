@@ -21,7 +21,6 @@ export class User extends BaseModel{
         this.etraining_group_id__DESC__ = undefined;
 		this.login = undefined;
         this.phone = undefined;
-        this.group_ids = undefined;
         this.is_admin = undefined;
         this.banned = undefined;
 		this.company_id = undefined;
@@ -38,7 +37,6 @@ export class User extends BaseModel{
     banned: boolean;
     display_name: string;
     company_id: number;
-    group_ids: number[];
 
     getCompany(context:APIContext):Observable<any> {
         return Company.get(context, this.company_id);

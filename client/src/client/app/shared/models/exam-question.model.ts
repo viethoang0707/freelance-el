@@ -17,7 +17,6 @@ export class ExamQuestion extends BaseModel{
 		this.type = undefined;
         this.level = undefined;
         this.group_id = undefined;
-        this.option_ids = undefined;
         this.question_id = undefined;
         this.exam_id = undefined;
         this.score = undefined;
@@ -34,6 +33,5 @@ export class ExamQuestion extends BaseModel{
     type: string;
     level: number;
     group_id: number;
-    option_ids: number[];
 
 }

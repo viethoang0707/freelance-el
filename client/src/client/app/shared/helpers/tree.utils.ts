@@ -23,7 +23,7 @@ export class TreeUtils {
       });
     else {
       directChilds = _.filter(groups, function(group) {
-        return parentGroup.child_ids.includes(group.id);
+        return parentGroup.id == group.parent_id;
       });
     }
     _.each(directChilds, function(group) {

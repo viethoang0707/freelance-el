@@ -13,6 +13,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
+import { CourseEnrollDialog } from '../../enrollment-dialog/enrollment-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -23,6 +24,7 @@ import { SelectItem } from 'primeng/api';
 export class CourseClassListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
+    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
     selectedClass: CourseClass;
     classes: CourseClass[];
 
@@ -36,6 +38,7 @@ export class CourseClassListComponent extends BaseComponent implements OnInit {
 
     constructor(private treeUtils:TreeUtils) {
         super();
+        this.courses = [];
     }
 
     nodeSelect(event: any) {
@@ -53,31 +56,9 @@ export class CourseClassListComponent extends BaseComponent implements OnInit {
         });
     }
 
-    add() {
-        var courseClass =  new CourseClass();
-        courseClass.course_id = this.selectedCourse.id;
-        courseClass.course_name = this.selectedCourse.name;
-        this.classDialog.show(courseClass);
-        this.classDialog.onCreateComplete.subscribe(()=> {
-            this.loadClasses();
-        })
-    }
-
-    edit() {
+    enroll() {
         if (this.selectedClass)
-            this.classDialog.show(this.selectedClass);
-    }
-
-    delete() {
-        if (this.selectedClass)
-        this.confirmationService.confirm({
-            message: this.translateService.instant('Are you sure to delete ?'),
-            accept: () => {
-                this.selectedClass.data.delete(this).subscribe(()=> {
-                    this.loadClasses();
-                })
-            }
-        });
+            this.courseEnrollDialog.enrollClass(this.selectedClass);
     }
 
     loadClasses() {

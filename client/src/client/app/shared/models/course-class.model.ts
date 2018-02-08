@@ -16,7 +16,6 @@ export class CourseClass extends BaseModel{
 		this.course_id = undefined;
         this.supervisor_id = undefined;
         this.supervisor_name = undefined;
-		this.member_ids = undefined;
         this.start = undefined;
         this.end = undefined;
 	}
@@ -26,7 +25,6 @@ export class CourseClass extends BaseModel{
     supervisor_name:string;
     course_id: number;
     supervisor_id: number;
-    member_ids: number[];
     start: Date;
     end: Date;
 

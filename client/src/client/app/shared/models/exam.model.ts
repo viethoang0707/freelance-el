@@ -19,7 +19,6 @@ export class Exam extends BaseModel{
         this.selector_id = undefined;
         this.status = undefined;
         this.scale = undefined;
-        this.question_ids = undefined;
         this.duration = undefined;
         this.max_attempt = undefined;
         this.allow_navigation = undefined;
@@ -33,7 +32,6 @@ export class Exam extends BaseModel{
     end: Date;
     selector_id: number;
     scale: number;
-    question_ids: number[];
     status: string;
     duration: number;
     max_attempt: number;

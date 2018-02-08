@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Renderer, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangePasswordDialog } from './modals//change-password-dialog/change-password-dialog.component';
 import { AuthService } from '../shared/services/auth.service';
@@ -14,7 +14,7 @@ import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog
     selector: 'etraining-home',
     templateUrl: 'home.component.html'
 })
-export class HomeComponent extends BaseComponent implements AfterViewInit {
+export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
     @ViewChild(ChangePasswordDialog) passwordDialog: ChangePasswordDialog;
     @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
@@ -38,6 +38,10 @@ export class HomeComponent extends BaseComponent implements AfterViewInit {
         this.settingService.adminModeEvents.subscribe(()=> {
             router.navigate(['/dashboard']);
         });
+    }
+
+    ngOnInit() {
+         this.settingService.setAdminMode(this.authService.CurrentUser.is_admin || this.authService.CurrentUser.login=='admin');
     }
 
     onWrapperClick() {

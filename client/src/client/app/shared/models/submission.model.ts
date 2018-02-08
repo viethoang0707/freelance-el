@@ -15,13 +15,11 @@ export class Submission extends BaseModel{
         this.member_id = undefined;
         this.log_id = undefined;
         this.exam_id = undefined;
-        this.answer_ids = undefined;
 	}
     log_id: number;
     exam_id: number;
     user_id: number;
     member_id: number;
-    answer_ids: number[];
 
     static byUser( context:APIContext, userId: number): Observable<any[]> {
         return Submission.search(context,[],"[('user_id','=',"+userId+")]").map(submits =>{

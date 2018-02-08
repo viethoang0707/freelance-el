@@ -16,7 +16,6 @@ export class Group extends BaseModel{
 		this.order = undefined;
 		this.code = undefined;
         this.parent_id = undefined;
-        this.child_ids = undefined;
 	}
 
     name:string;
@@ -24,7 +23,6 @@ export class Group extends BaseModel{
     code: string;
     order: string;
     parent_id: number;
-    child_ids: number[];
 
     static listByCategory(context:APIContext, category):Observable<any> {
         return Group.search(context,[], "[('category','=','"+category+"')]");
