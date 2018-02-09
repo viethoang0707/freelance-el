@@ -14,6 +14,7 @@ import { IQuestion } from '../question.interface';
 	moduleId: module.id,
 	selector: 'etraining-single-choice-question',
 	templateUrl: 'single-choice-question.component.html',
+	styleUrls: ['single-choice-question.component.css'],
 })
 @QuestionTemplate({
 	type:'sc'
