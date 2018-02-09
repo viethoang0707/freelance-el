@@ -72,10 +72,9 @@ export class ExamContentDialog extends BaseComponent {
 			else
 				selectedGroups = [this.selector.group_id];
 			var groupIds = _.pluck(selectedGroups, 'id');
-
 			Question.listByGroups(this, groupIds).subscribe(questions => {
-				questions = _.shuffle(questions);
 				if (this.selector.mode =='random' && this.selector.number) {
+					questions = _.shuffle(questions);
 					if (this.selector.level)
 						questions = _.filter(questions, function(obj:Question) {
 							return obj.level == self.selector.level;
