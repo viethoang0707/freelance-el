@@ -22,7 +22,6 @@ export class Exam extends BaseModel{
         this.duration = undefined;
         this.max_attempt = undefined;
         this.allow_navigation = undefined;
-        this.question_selection = undefined;
 	}
 
     name:string;
@@ -36,6 +35,5 @@ export class Exam extends BaseModel{
     duration: number;
     max_attempt: number;
     allow_navigation: boolean;
-    question_selection: string;
 
 }

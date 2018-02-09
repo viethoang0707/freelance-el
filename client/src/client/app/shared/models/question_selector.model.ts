@@ -9,17 +9,16 @@ export class QuestionSelector extends BaseModel{
 
     constructor(){
         super();
-        
-        
-        this.question_number = undefined;
-        this.question_level = undefined;
-        this.question_group_id = undefined;
-
+        this.number = undefined;
+        this.level = undefined;
+        this.group_id = undefined;
+        this.mode = undefined;
+        this.include_sub_group = undefined;
     }
 
-    
-    question_number: number;
-    question_level: number;
-    question_group_id: number;
-    
+    mode: string;
+    number: number;
+    level: number;
+    group_id: number;
+    include_sub_group: boolean;
 }

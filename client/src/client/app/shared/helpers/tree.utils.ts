@@ -13,6 +13,25 @@ export class TreeUtils {
     return this.buildSubTree(null, groups);
   }
 
+  getSubGroup(groups:Group[], parentId:number) {
+    var self = this;
+    var subGroups = _.filter(groups, function(group) {
+        return self.isSubGroup(groups, group, parentId);
+      });
+  }
+
+  private isSubGroup(groups:Group, target: Group, parentId:number) {
+    while (target) {
+      if (target.id == parentId)
+        return true;
+      if (target.parent_id)
+        target = _.find(groups, function(group) {
+        return group.id == target.parent_id;
+      });
+    }
+    return false;
+  }
+
   private buildSubTree(parentGroup: Group, groups: Group[]) {
     var subTrees = [];
     var self = this;

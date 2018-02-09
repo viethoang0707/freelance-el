@@ -34,4 +34,8 @@ export class ExamQuestion extends BaseModel{
     level: number;
     group_id: number;
 
+    static listByExam( context:APIContext, examId: number): Observable<any[]> {
+        return ExamQuestion.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
+
 }

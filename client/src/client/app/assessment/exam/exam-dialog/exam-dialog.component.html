@@ -6,12 +6,16 @@
       <p-selectButton [options]="examStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
       </div>
       <div class="ui-g-6">
-         <label>{{'Name'|translate}}</label>
+        <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.name" name="name">
+            <label>{{'Name'|translate}}</label>
+        </span>
       </div>
       <div class="ui-g-6">
-        <label>{{'Summary'|translate}}</label>
-        <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
+        <span class="md-inputfield">
+            <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
+            <label>{{'Summary'|translate}}</label>
+        </span>
       </div>
       <div class="ui-g-7">
         <label>{{'Instruction'|translate}}</label>
@@ -23,6 +27,12 @@
         <label>{{'Datetime'|translate}}</label>
          <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date"  [inline]="true" required [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
       </div>
+      <div class="ui-g-6">
+        <span class="md-inputfield">
+            <input type="text" pInputText [(ngModel)]="object.duration" name="duration" pKeyFilter="pint">
+            <label>{{'Duration (in minutes)'|translate}}</label>
+        </span>
+      </div>
     </div>
 </p-scrollPanel>
     <p-footer>
@@ -31,6 +41,5 @@
     </p-footer>
     <etraining-exam-member-dialog></etraining-exam-member-dialog>
       <etraining-select-user-dialog></etraining-select-user-dialog>
-      <p-confirmDialog header="{{ 'Confirmation'|translate}} " width="300 "></p-confirmDialog>
   </p-dialog>
 </form>

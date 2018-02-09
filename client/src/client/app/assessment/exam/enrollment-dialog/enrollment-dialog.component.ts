@@ -85,7 +85,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
         this.confirmationService.confirm({
             message: this.translateService.instant('Are you sure to delete ?'),
             accept: () => {
-                this.selectedMember.data.delete(this).subscribe(()=> {
+                this.selectedMember.delete(this).subscribe(()=> {
                     this.loadMembers();
                 })
             }

@@ -13,14 +13,14 @@ export class ExamGrade extends BaseModel{
 		
 		this.name = undefined;
 		this.exam_id = undefined;
-		this.min = undefined;
-		this.max = undefined;
+		this.min_score = undefined;
+		this.max_score = undefined;
 	}
 
     name:string;
     exam_id: number;
-    min: number;
-    max: number;
+    min_score: number;
+    max_score: number;
 
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
         return ExamGrade.search(context,[],"[('exam_id','=',"+examId+")]");

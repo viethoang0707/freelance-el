@@ -83,9 +83,14 @@ export abstract class BaseModel {
     }
 
     static array(context:APIContext,ids: number[]): Observable<any[]> {
+        var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
-        return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint);
+        return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint).map(items => {
+            return _.map(items, function(item) {
+               return  MapUtils.deserialize(self, item);
+            });
+        });;
     }
 
     static allWithInactive(context:APIContext):Observable<any[]> {

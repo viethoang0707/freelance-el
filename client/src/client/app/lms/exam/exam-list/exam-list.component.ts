@@ -9,6 +9,7 @@ import { Exam } from '../../../shared/models/exam.model';
 import { ExamMember } from '../../../shared/models/exam-member.model';
 import { Group } from '../../../shared/models/group.model';
 import { SelectItem } from 'primeng/api';
+import { ExamContentDialog } from '../../../cms/exam/content/exam-content.dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -20,7 +21,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     exams: Exam[];
     EXAM_STATUS = EXAM_STATUS;
-
+    @ViewChild(ExamContentDialog) examContentDialog ExamContentDialog;
 
     constructor() {
         super();
@@ -39,6 +40,10 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 });
             })
         });
+    }
+
+    editContent(exam:Exam) {
+        this.examContentDialog.show(exam);
     }
 
 

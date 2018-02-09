@@ -34,6 +34,7 @@ import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/primeng';
+import {CardModule} from 'primeng/card';
 import { CalendarModule } from 'primeng/primeng';
 import { CarouselModule } from 'primeng/primeng';
 import { KeyFilterModule } from 'primeng/primeng';
@@ -118,6 +119,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ButtonModule,
         CalendarModule,
         CarouselModule,
+        CardModule,
         ChartModule,
         CheckboxModule,
         ChipsModule,
@@ -225,6 +227,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ButtonModule,
         CalendarModule,
         CarouselModule,
+        CardModule,
         ChartModule,
         CheckboxModule,
         ChipsModule,
