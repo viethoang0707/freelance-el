@@ -14,6 +14,7 @@ import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
 import { CacheService } from './services/cache.service';
 import { ExcelService } from './services/excel.service';
+import { SettingService } from './services/setting.service';
 import { TreeUtils } from './helpers/tree.utils';
 import { ReportUtils } from './helpers/report.utils';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
@@ -33,6 +34,7 @@ import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/primeng';
+import {CardModule} from 'primeng/card';
 import { CalendarModule } from 'primeng/primeng';
 import { CarouselModule } from 'primeng/primeng';
 import { KeyFilterModule } from 'primeng/primeng';
@@ -117,6 +119,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ButtonModule,
         CalendarModule,
         CarouselModule,
+        CardModule,
         ChartModule,
         CheckboxModule,
         ChipsModule,
@@ -224,6 +227,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         ButtonModule,
         CalendarModule,
         CarouselModule,
+        CardModule,
         ChartModule,
         CheckboxModule,
         ChipsModule,
@@ -305,6 +309,7 @@ export class ErpSharedModule {
                 CacheService,
                 TreeUtils,
                 ExcelService,
+                SettingService,
                 ConfirmationService]
         };
     }

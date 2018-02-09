@@ -6,8 +6,10 @@ import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/exam.model';
+import { ExamMember } from '../../../shared/models/exam-member.model';
 import { Group } from '../../../shared/models/group.model';
 import { SelectItem } from 'primeng/api';
+import { ExamContentDialog } from '../../../cms/exam/content/exam-content.dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -15,7 +17,34 @@ import { SelectItem } from 'primeng/api';
     templateUrl: 'exam-list.component.html',
     styleUrls: ['exam-list.component.css'],
 })
-export class ExamListComponent extends BaseComponent {
+export class ExamListComponent extends BaseComponent implements OnInit {
+
+    exams: Exam[];
+    EXAM_STATUS = EXAM_STATUS;
+    @ViewChild(ExamContentDialog) examContentDialog ExamContentDialog;
+
+    constructor() {
+        super();
+
+    }
+
+    ngOnInit() {
+        ExamMember.listByUser(this, this.authService.CurrentUser.id).subscribe(members => {
+            var examIds = _.pluck(members,'exam_id');
+            Exam.array(this, examIds).subscribe(exams => {
+                this.exams =  exams;
+                _.each(exams, function(exam) {
+                    exam.member = _.find(members, function(member) {
+                        return member.exam_id == exam.id;
+                    });
+                });
+            })
+        });
+    }
+
+    editContent(exam:Exam) {
+        this.examContentDialog.show(exam);
+    }
 
 
 }

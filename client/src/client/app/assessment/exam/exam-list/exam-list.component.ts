@@ -8,6 +8,7 @@ import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/exam.model';
 import { Group } from '../../../shared/models/group.model';
 import { ExamDialog } from '../exam-dialog/exam-dialog.component';
+import { ExamEnrollDialog } from '../enrollment-dialog/enrollment-dialog.component';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -19,6 +20,7 @@ import { SelectItem } from 'primeng/api';
 export class ExamListComponent extends BaseComponent {
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
+    @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
 
     selectedExam: Exam;
     exams: Exam[];
@@ -43,7 +45,10 @@ export class ExamListComponent extends BaseComponent {
         };
     }
 
-
+    enroll() {
+        if (this.selectedExam)
+            this.examEnrollDialog.enroll(this.selectedExam);
+    }
 
     ngOnInit() {
         this.loadExams();

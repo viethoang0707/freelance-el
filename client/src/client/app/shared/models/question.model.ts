@@ -3,6 +3,7 @@ import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from './decorator';
 import { APIContext } from './context';
+import * as _ from 'underscore';
 
 @Model('etraining.question')
 export class Question extends BaseModel{
@@ -17,7 +18,6 @@ export class Question extends BaseModel{
 		this.type = undefined;
         this.level = undefined;
         this.group_id = undefined;
-        this.option_ids = undefined;
 	}
 
     title:string;
@@ -26,10 +26,17 @@ export class Question extends BaseModel{
     type: string;
     level: number;
     group_id: number;
-    option_ids: number[];
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
         return Question.search([], "[('group_id','=',"+groupId+")]",context);
+    }
+
+    static listByGroups(context:APIContext, groupIds):Observable<any> {
+        var subscriptions = [];
+        _.each(groupIds, function(groupId) {
+            subscriptions.push(Question.listByGroup(context,groupId));
+        });
+        return Observable.forkJoin(...subscriptions);
     }
 
 }

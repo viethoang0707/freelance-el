@@ -16,9 +16,12 @@ export class Exam extends BaseModel{
 		this.instruction = undefined;
         this.start = undefined;
         this.end = undefined;
-        this.content_id = undefined;
+        this.selector_id = undefined;
         this.status = undefined;
         this.scale = undefined;
+        this.duration = undefined;
+        this.max_attempt = undefined;
+        this.allow_navigation = undefined;
 	}
 
     name:string;
@@ -26,8 +29,11 @@ export class Exam extends BaseModel{
     instruction: string;
     start: Date;
     end: Date;
-    content_id: number;
+    selector_id: number;
     scale: number;
     status: string;
+    duration: number;
+    max_attempt: number;
+    allow_navigation: boolean;
 
 }

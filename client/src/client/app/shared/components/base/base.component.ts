@@ -7,6 +7,7 @@ import { ServiceLocator } from "../../../service.locator";
 import { ConfirmationService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from '../../services/cache.service';
+import { SettingService } from '../../services/setting.service';
 
 export abstract class BaseComponent implements APIContext {
 	apiService: APIService;
@@ -15,6 +16,7 @@ export abstract class BaseComponent implements APIContext {
 	confirmationService: ConfirmationService;
 	translateService: TranslateService;
 	cacheService: CacheService;
+	settingService: SettingService;
 
 	constructor() {
 		this.apiService = ServiceLocator.injector.get(APIService);
@@ -23,6 +25,7 @@ export abstract class BaseComponent implements APIContext {
 		this.confirmationService = ServiceLocator.injector.get(ConfirmationService);
 		this.translateService = ServiceLocator.injector.get(TranslateService);
 		this.cacheService = ServiceLocator.injector.get(CacheService);
+		this.settingService = ServiceLocator.injector.get(SettingService);
 	}
 
 }

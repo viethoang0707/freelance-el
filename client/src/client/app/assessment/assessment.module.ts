@@ -10,12 +10,13 @@ import { QuestionContainerDirective } from './question/question-template/questio
 import { SingleChoiceQuestionComponent } from './question/question-template/single-choice-question/single-choice-question.component';
 import { QuestionImportDialog } from './question/import-dialog/import-dialog.component';
 import { ExamMemberDialog } from './exam/member-dialog/member-dialog.component';
+import { ExamEnrollDialog } from './exam/enrollment-dialog/enrollment-dialog.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule],
     declarations: [AssessmentComponent, ExamListComponent, ExamDialog,ExamMemberDialog,
     				QuestionListComponent, QuestionDialog, QuestionContainerDirective,
-    				SingleChoiceQuestionComponent, QuestionImportDialog],
+    				SingleChoiceQuestionComponent, QuestionImportDialog, ExamEnrollDialog],
     exports: [],
     providers: [],
     entryComponents: [SingleChoiceQuestionComponent]

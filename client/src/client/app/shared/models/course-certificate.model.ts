@@ -27,7 +27,7 @@ export class Certificate extends BaseModel{
     url:string;
 
     static byMember( context:APIContext, memberId: number): Observable<any[]> {
-        return this.search([],"[('member_id','!=',"+memberId+")]",context)
+        return this.search(context,[],"[('member_id','!=',"+memberId+")]")
         .map(certificates => {
             return certificates[0]}
          );

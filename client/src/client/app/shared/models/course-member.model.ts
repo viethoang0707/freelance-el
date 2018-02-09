@@ -49,15 +49,15 @@ export class CourseMember extends BaseModel{
     etraining_group_id__DESC__: string;
 
     static listByUser( context:APIContext, userId: number): Observable<any[]> {
-        return CourseMember.search([],"[('user_id','=',"+userId+")]",context);
+        return CourseMember.search(context,[],"[('user_id','=',"+userId+")]");
     }
 
     static listByClass( context:APIContext, classId: number): Observable<any[]> {
-        return CourseMember.search([],"[('class_id','=',"+classId+")]",context);
+        return CourseMember.search(context,[],"[('class_id','=',"+classId+")]");
     }
 
     static listByCourse( context:APIContext, courseId: number): Observable<any[]> {
-        return CourseMember.search([],"[('course_id','=',"+courseId+")]",context);
+        return CourseMember.search(context,[],"[('course_id','=',"+courseId+")]");
     }
 
     static countTeacher(context: APIContext) {
@@ -69,7 +69,7 @@ export class CourseMember extends BaseModel{
     }
 
     static byCourseAndUser( context:APIContext, userId: number, courseId: number): Observable<any> {
-        return CourseMember.search([],"[('user_id','=',"+userId+"),('course_id','=',"+courseId+")]",context)
+        return CourseMember.search(context,[],"[('user_id','=',"+userId+"),('course_id','=',"+courseId+")]")
         .map(members => {
             if (members.length)
                 return members[0];

@@ -1,35 +1,31 @@
 <div *ngIf="mode=='edit'">
   <div class="ui-g-12 ">
-        <label>{{'Content'|translate}}</label>
-        <p-editor [(ngModel)]="question.content" [style]="{'height':'120px'}" name="content">
-        </p-editor>
-      </div>
+    <label>{{'Content'|translate}}</label>
+    <p-editor [(ngModel)]="question.content" [style]="{'height':'120px'}" name="content">
+    </p-editor>
+  </div>
   <div class="ui-g-12">
-        <p-panel header="{{'Options'|translate}}">
-            <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addOption()"></button>
-            <ul class="options-question">
-                <li *ngFor="let option of options">
-                    <p-checkbox (click)="setOptionCorrect(option)" binary="true" name="option.is_correct"></p-checkbox>
-                    <span class="md-inputfield">
+    <p-panel header="{{'Options'|translate}}">
+      <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addOption()" pTooltip="{{'Add option'|translate}}"></button>
+      <ul class="options-question">
+        <li *ngFor="let option of options">
+          <p-checkbox (click)="setOptionCorrect(option)" binary="true" name="option.is_correct"></p-checkbox>
+          <span class="md-inputfield">
                             <input type="text" pInputText [(ngModel)]="option.content" name="option_content">
                             <label>{{'Option'|translate}}</label>
                         </span>
-                    <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)" class="remove-btn"></button>
-                </li>
-            </ul>
-        </p-panel>
-    </div>
-    <div class="ui-g-12 ">
-        <label>{{'Explanation'|translate}}</label>
-        <p-editor [(ngModel)]="question.explanation" [style]="{'height':'120px'}" name="explanation">
-        </p-editor>
-      </div>
+          <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)" class="remove-btn"></button>
+        </li>
+      </ul>
+    </p-panel>
+  </div>
+  <div class="ui-g-12 ">
+    <label>{{'Explanation'|translate}}</label>
+    <p-editor [(ngModel)]="question.explanation" [style]="{'height':'120px'}" name="explanation">
+    </p-editor>
+  </div>
 </div>
-
 <div *ngIf="mode=='study'">
-  
 </div>
-
 <div *ngIf="mode=='result'">
-  
 </div>

@@ -21,7 +21,7 @@ export class QuestionOption extends BaseModel{
     question_id: number;
 
     static listByQuestion(context:APIContext, questionId):Observable<any> {
-        return QuestionOption.search([], "[('question_id','=',"+questionId+")]",context);
+        return QuestionOption.search(context,[], "[('question_id','=',"+questionId+")]");
     }
 
 }

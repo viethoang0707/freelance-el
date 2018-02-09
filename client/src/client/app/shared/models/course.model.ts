@@ -19,7 +19,6 @@ export class Course extends BaseModel{
         this.mode = undefined;
         this.logo = undefined;
         this.group_id = undefined;
-        this.syllabus_ids = undefined;
 	}
 
     name:string;
@@ -30,14 +29,13 @@ export class Course extends BaseModel{
     status: string;
     mode: string;
     logo: string;
-    syllabus_ids: number[];
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return Course.search([], "[('group_id','=',"+groupId+")]",context);
+        return Course.search(context,[], "[('group_id','=',"+groupId+")]");
     }
 
     static listByGroupAndMode(context:APIContext, groupId, mode):Observable<any> {
-        return Course.search([], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]",context);
+        return Course.search(context,[], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
 
 }

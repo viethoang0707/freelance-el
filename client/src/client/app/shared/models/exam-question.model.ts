@@ -17,14 +17,13 @@ export class ExamQuestion extends BaseModel{
 		this.type = undefined;
         this.level = undefined;
         this.group_id = undefined;
-        this.option_ids = undefined;
         this.question_id = undefined;
-        this.content_id = undefined;
+        this.exam_id = undefined;
         this.score = undefined;
         this.order = undefined;
 	}
     question_id: number;
-    content_id: number;
+    exam_id: number;
     score: number;
     order: number;
     level: number;
@@ -34,6 +33,9 @@ export class ExamQuestion extends BaseModel{
     type: string;
     level: number;
     group_id: number;
-    option_ids: number[];
+
+    static listByExam( context:APIContext, examId: number): Observable<any[]> {
+        return ExamQuestion.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
 
 }

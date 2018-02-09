@@ -14,23 +14,21 @@ export class Submission extends BaseModel{
         this.user_id = undefined;
         this.member_id = undefined;
         this.log_id = undefined;
-        this.content_id = undefined;
-        this.answer_ids = undefined;
+        this.exam_id = undefined;
 	}
     log_id: number;
-    content_id: number;
+    exam_id: number;
     user_id: number;
     member_id: number;
-    answer_ids: number[];
 
     static byUser( context:APIContext, userId: number): Observable<any[]> {
-        return Submission.search([],"[('user_id','=',"+userId+")]",context).map(submits =>{
+        return Submission.search(context,[],"[('user_id','=',"+userId+")]").map(submits =>{
             return submits.length ? submits[0]: null;
         });
     }
 
     static byMember( context:APIContext, member_id: number): Observable<any[]> {
-        return Submission.search([],"[('member_id','=',"+member_id+")]",context).map(submits =>{
+        return Submission.search(context,[],"[('member_id','=',"+member_id+")]").map(submits =>{
             return submits.length ? submits[0]: null;
         });
     }

@@ -21,7 +21,6 @@ import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
 import { CustomTranslationLoader } from './shared/helpers/translation.loader';
 
-
 @NgModule({
     imports: [
         BrowserModule,

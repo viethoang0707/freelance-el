@@ -36,11 +36,15 @@ export class ExamMember extends BaseModel{
     etraining_group_id__DESC__: string;
 
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
-        return ExamMember.search([],"[('exam_id','=',"+examId+")]",context);
+        return ExamMember.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
+
+    static listByUser( context:APIContext, userId: number): Observable<any[]> {
+        return ExamMember.search(context,[],"[('user_id','=',"+userId+")]");
     }
 
     static byExamAndUser( context:APIContext, userId: number, examId: number): Observable<any> {
-        return ExamMember.search([],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]",context)
+        return ExamMember.search(context,[],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]")
         .map(members => {
             if (members.length)
                 return members[0];

@@ -14,11 +14,11 @@ export class DashboardComponent extends BaseComponent implements OnInit{
 
     constructor(private eventManager: HomeEventManager) {
         super();
-        this.isAdmin =  this.authService.CurrentUser.is_admin || this.authService.CurrentUser.login=='admin'
+        this.isAdmin = this.settingService.adminMode;
     }
 
     ngOnInit() {
-    	this.eventManager.switchViewModeEvents.subscribe((adminMode:boolean) => {
+    	this.settingService.adminModeEvents.subscribe((adminMode:boolean) => {
             this.isAdmin = adminMode;
         });
     }
