@@ -68,6 +68,7 @@ export class UserListComponent extends BaseComponent {
                 accept: () => {
                     this.selectedUser.delete(this).subscribe(() => {
                         this.loadUsers();
+                        this.selectedUser = null;
                     })
                 }
             });

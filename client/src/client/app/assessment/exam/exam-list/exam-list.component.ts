@@ -78,6 +78,7 @@ export class ExamListComponent extends BaseComponent {
                 accept: () => {
                     this.selectedExam.delete(this).subscribe(() => {
                         this.loadExams();
+                        this.selectedExam = null;
                     })
                 }
             });

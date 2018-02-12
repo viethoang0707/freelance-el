@@ -1,0 +1,28 @@
+<div *ngIf="mode=='edit'">
+  <div class="ui-g-12 ">
+    <label>{{'Content'|translate}}</label>
+    <p-editor [(ngModel)]="question.content" [style]="{'height':'120px'}" name="content">
+    </p-editor>
+  </div>
+</div>
+<div *ngIf="mode=='study'">
+  <div class="ui-g-12 ">
+    <label>{{'Content'|translate}}</label>
+    <p [innerHTML]="question.content"></p>
+  </div>
+  <div class="ui-g-12 ">
+    <label>{{'Answer'|translate}}</label>
+    <p-editor [(ngModel)]="answer.text" [style]="{'height':'120px'}" name="content">
+    </p-editor>
+  </div>
+</div>
+<div *ngIf="mode=='review'">
+  <div class="ui-g-12 ">
+    <label>{{'Content'|translate}}</label>
+    <p [innerHTML]="question.content"></p>
+  </div>
+  <div class="ui-g-12 ">
+    <label>{{'Answer'|translate}}</label>
+    <p [innerHTML]="answer.text"></p>
+  </div>
+</div>

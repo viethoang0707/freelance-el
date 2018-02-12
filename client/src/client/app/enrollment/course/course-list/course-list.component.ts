@@ -70,6 +70,7 @@ export class CourseListComponent extends BaseComponent {
                 accept: () => {
                     this.selectedCourse.delete(this).subscribe(() => {
                         this.loadCourses();
+                        this.selectedCourse = null;
                     })
                 }
             });

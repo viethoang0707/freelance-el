@@ -1,7 +1,7 @@
 import { GROUP_CATEGORY} from './constants';
 import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from './decorator';
+import { Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
 
 @Model('etraining.course_class')
@@ -25,7 +25,10 @@ export class CourseClass extends BaseModel{
     supervisor_name:string;
     course_id: number;
     supervisor_id: number;
+
+    @FieldProperty<Date>()
     start: Date;
+    @FieldProperty<Date>()
     end: Date;
 
     static listByCourse(context:APIContext, courseId):Observable<any> {

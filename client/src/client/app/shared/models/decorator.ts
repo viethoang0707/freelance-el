@@ -43,22 +43,22 @@ export function Model( model: string) {
 
 
 /* Field decorator */
-export interface IJsonMetaData<T> {
+export interface IFieldMetaData<T> {
     name?: string,
     clazz?: {new(): T}
 }
 
-export const JSON_METADATA_KEY = "jsonProperty";
+export const FIELD_METADATA_KEY = "fieldProperty";
 
-export function JsonProperty<T>(metadata?:IJsonMetaData<T>|string): any {
+export function FieldProperty<T>(metadata?:IFieldMetaData<T>|string): any {
     if (metadata instanceof String || typeof metadata === "string"){
-        return Reflect.metadata(JSON_METADATA_KEY, {
+        return Reflect.metadata(FIELD_METADATA_KEY, {
             name: metadata,
             clazz: undefined
         });
     } else {
-        let metadataObj = <IJsonMetaData<T>>metadata;
-        return Reflect.metadata(JSON_METADATA_KEY, {
+        let metadataObj = <IFieldMetaData<T>>metadata;
+        return Reflect.metadata(FIELD_METADATA_KEY, {
             name: metadataObj ? metadataObj.name : undefined,
             clazz: metadataObj ? metadataObj.clazz : undefined
         });

@@ -1,7 +1,7 @@
 import { GROUP_CATEGORY} from './constants';
 import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from './decorator';
+import { Model, FieldProperty } from './decorator';
 import { APIContext } from './context';
 
 @Model('etraining.course_member')
@@ -42,6 +42,7 @@ export class CourseMember extends BaseModel{
     course_mode: string;
     course_code: string;
     enroll_status: string;
+    @FieldProperty<Date>()
     date_register: Date;
     email: string;
     phone: string;

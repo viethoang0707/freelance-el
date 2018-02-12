@@ -21,7 +21,7 @@ import { MatchInputValidatorDirective } from './validators/match-input.directive
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
 import { GroupsPipe } from './pipes/group.pipe';
-import { TimeConvertPipe } from './pipes/time.pipe';
+import { TimeConvertPipe,ClockPipe } from './pipes/time.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
 import { ImageBase64Component } from './components/image-base64/image-base64.component';
 import { GroupDialog } from './components/group-dialog/group-dialog.component';
@@ -64,6 +64,7 @@ import { InputMaskModule } from 'primeng/primeng';
 import { InputSwitchModule } from 'primeng/primeng';
 import { InputTextModule } from 'primeng/primeng';
 import { InputTextareaModule } from 'primeng/primeng';
+import {InplaceModule} from 'primeng/inplace';
 import { LightboxModule } from 'primeng/primeng';
 import { ListboxModule } from 'primeng/primeng';
 import { MegaMenuModule } from 'primeng/primeng';
@@ -145,6 +146,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
+        InplaceModule,
         KeyFilterModule,
         LightboxModule,
         ListboxModule,
@@ -191,6 +193,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         KeysPipe,
         GroupsPipe,
         TimeConvertPipe,
+        ClockPipe,
         ImageBase64Pipe,
         ImageBase64Component,
         GroupDialog,
@@ -212,6 +215,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         GroupsPipe,
         ImageBase64Pipe,
         TimeConvertPipe,
+        ClockPipe,
         MatchInputValidatorDirective,
         ImageBase64Component,
         GroupDialog,
@@ -253,6 +257,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         InputSwitchModule,
         InputTextModule,
         InputTextareaModule,
+        InplaceModule,
         KeyFilterModule,
         LightboxModule,
         ListboxModule,

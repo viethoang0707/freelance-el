@@ -31,6 +31,7 @@ export class ExamContentDialog extends BaseComponent {
 	grades: ExamGrade[];
 	questions: ExamQuestion[];
 	groups: Group[];
+	examStatus: SelectItem[];
 
 	constructor(private treeUtils: TreeUtils) {
 		super();
@@ -38,6 +39,12 @@ export class ExamContentDialog extends BaseComponent {
 		this.grades = [];
 		this.exam = new Exam();
 		this.questions = [];
+		this.examStatus = _.map(EXAM_STATUS, function(val, key) {
+            return {
+                label: val,
+                value: key
+            }
+        });
 	}
 
 	nodeSelect(event: any) {
@@ -59,19 +66,28 @@ export class ExamContentDialog extends BaseComponent {
 		});
 	}
 
-	generateQuestion() {
+	removeOldQuestions():Observable<any> {
 		var self = this;
 		var delSubscriptions = [];
 		_.each(this.questions, function(question) {
 			delSubscriptions.push(question.delete(self));
 		});
-		Observable.forkJoin(...delSubscriptions).subscribe(() => {
-			var selectedGroups = [];
-			if (this.selector.include_sub_group)
-				selectedGroups = this.treeUtils.getSubGroup(this.groups, this.selector.group_id);
+		if (delSubscriptions.length)
+			return Observable.forkJoin(...delSubscriptions);
+		else
+			return Observable.of(null);
+	}
+
+	generateQuestion() {
+		var self = this;
+		this.removeOldQuestions().subscribe(() => {
+			var groupIds = [];
+			if (this.selector.include_sub_group) {
+				var selectedGroups = this.treeUtils.getSubGroup(this.groups, this.selector.group_id);
+				groupIds = _.pluck(selectedGroups, 'id');
+			}
 			else
-				selectedGroups = [this.selector.group_id];
-			var groupIds = _.pluck(selectedGroups, 'id');
+				groupIds = [this.selector.group_id];
 			Question.listByGroups(this, groupIds).subscribe(questions => {
 				if (this.selector.mode =='random' && this.selector.number) {
 					questions = _.shuffle(questions);

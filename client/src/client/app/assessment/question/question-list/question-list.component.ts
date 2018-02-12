@@ -69,6 +69,7 @@ export class QuestionListComponent extends BaseComponent {
                 accept: () => {
                     this.selectedQuestion.delete(this).subscribe(() => {
                         this.loadQuestions();
+                        this.selectedQuestion = null;
                     })
                 }
             });

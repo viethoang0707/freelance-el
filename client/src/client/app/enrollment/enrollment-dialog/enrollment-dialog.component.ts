@@ -106,6 +106,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				accept: () => {
 					this.selectedMember.data.delete(this).subscribe(() => {
 						this.loadMembers();
+						this.selectedMember = null;
 					})
 				}
 			});

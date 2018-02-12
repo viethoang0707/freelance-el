@@ -18,7 +18,7 @@ export class StatsUtils {
 		var cloud_acc = context.authService.StoredCredential.cloud_account;
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return context.apiService.search(UserLog.Model,[],"[('start','>=','"+startDateStr+"'),('end','>=','"+endDateStr+"'),('res_model','=','etraining.course')]",
+		return context.apiService.search(UserLog.Model,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','etraining.course')]",
 		 cloud_acc.id, cloud_acc.api_endpoint).map(logs => {
 		 	var dayLengthMills = 1000 * 60 * 60 * 24;
 		 	var slots = [];

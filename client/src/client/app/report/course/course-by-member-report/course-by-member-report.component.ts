@@ -59,7 +59,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
     		User.listByGroup(this, group.id).subscribe(users => {
     			this.generateReport(users).subscribe(records => {
 					this.records = records;
-					this.rowGroupMetadata = this.reportUtils.createowGroupMetaData(this.records,"user_login");
+					this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
 				});
     		});
     	});
@@ -70,18 +70,18 @@ export class CourseByMemberReportComponent extends BaseComponent{
     	this.userDialog.onSelectUsers.subscribe((users:User[]) => {
 			this.generateReport(users).subscribe(records => {
 				this.records = records;
-				this.rowGroupMetadata = this.reportUtils.createowGroupMetaData(this.records,"user_login");
+				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
 			});
 		});
     }
 
     generateReport(users:User[]):Observable<any> {
     	var records = [];
-    	var self = this;
+        var self = this;
     	var subscriptions =[];
     	_.each(users, function(user:User) {
-    		var subscription = CourseMember.listByUser(self, user.id).merge(members => {
-    			return UserLog.userStudyActivity(self, user.id,null).subscribe(logs => {
+    		var subscription = CourseMember.listByUser(self, user.id).flatMap(members => {
+    			return UserLog.userStudyActivity(self, user.id,null).do(logs => {
     				var memberRecords = _.map(members, function(member:CourseMember) {
     					return self.generateReportRow(member, logs);
     				})
@@ -91,8 +91,8 @@ export class CourseByMemberReportComponent extends BaseComponent{
     		subscriptions.push(subscription);	
     	});		
     	return Observable.forkJoin(...subscriptions).map(()=> {
-    		return records;
-    	});
+            return records;
+        });
     }
 
     generateReportRow(member: CourseMember, logs: UserLog[]):any {
@@ -104,10 +104,10 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	    record["course_code"] = this.translateService.instant(COURSE_MODE[member.course_code]);
 	    record["enroll_status"] = this.translateService.instant(COURSE_MEMBER_ENROLL_STATUS[member.enroll_status]);
 	    record["first_attempt"] =  this.datePipe.transform(member.date_register,EXPORT_DATETIME_FORMAT);
-	    var result = this.reportUtils.analyzeActivity(logs);
-	    if (result[0])
+	    var result = this.reportUtils.analyzeCourseActivity(logs);
+	    if (result[0] != Infinity)
 	    	record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
-    	if (result[1])
+    	if (result[1] != Infinity)
 	    	record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATETIME_FORMAT);
 	    record["time_spent"] =  this.timePipe.transform(result[2],'min');
 	    return record;

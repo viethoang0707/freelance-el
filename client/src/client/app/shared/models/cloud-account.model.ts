@@ -1,5 +1,5 @@
 import { BaseModel } from './base.model';
-import { MODEL_METADATA_KEY, Model } from './decorator';
+import { MODEL_METADATA_KEY, Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
 import { MapUtils }  from '../helpers/map.utils';
 import { Observable, Subject } from 'rxjs/Rx';
@@ -22,6 +22,7 @@ export class CloudAccount extends BaseModel{
     db:string;
     domain:string;
     api_endpoint: string;
+    @FieldProperty<Data>()
     date_expire: Date;
     name: number;
 

@@ -47,7 +47,7 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	ngOnInit() {
 		this.onShow.subscribe(object => {
 			if (object.start && object.end) {
-				this.rangeDates = [new Date(object.start), new Date(object.end)];
+				this.rangeDates = [object.start,object.end];
 			}
 			var lang = this.translateService.currentLang;
 			this.http.get(`/assets/i18n/calendar.${lang}.json`)

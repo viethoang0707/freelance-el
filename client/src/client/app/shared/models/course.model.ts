@@ -19,10 +19,14 @@ export class Course extends BaseModel{
         this.mode = undefined;
         this.logo = undefined;
         this.group_id = undefined;
+        this.author_id = undefined;
+        this.author_name = undefined;
 	}
 
     name:string;
     group_id:number;
+    author_name:string;
+    author_id:number;
     summary: string;
     code: string;
     description: string;

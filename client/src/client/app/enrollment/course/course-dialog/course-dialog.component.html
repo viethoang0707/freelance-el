@@ -45,7 +45,11 @@
               </div>
             </div>
           </div>
+          <div class="ui-g-6">
+              <button type="buton" pButton icon="ui-icon-change-history" label="{{object.author_id?object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
+          </div>
     </p-scrollPanel>
+    <etraining-select-user-dialog></etraining-select-user-dialog>
     <p-footer>
       <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>

@@ -17,39 +17,48 @@ import { IQuestion } from '../question.interface';
 	styleUrls: ['single-choice-question.component.css'],
 })
 @QuestionTemplate({
-	type:'sc'
+	type: 'sc'
 })
-export class SingleChoiceQuestionComponent extends BaseComponent implements IQuestion{
+export class SingleChoiceQuestionComponent extends BaseComponent implements IQuestion {
 
-	mode:any;
-	question:Question;
+	mode: any;
+	question: Question;
+	answer: Answer;
 	options: QuestionOption[];
 
 	constructor() {
 		super();
+		this.options = [];
 	}
 
 	render(question, answer?) {
 		this.question = question;
-		QuestionOption.listByQuestion(this,question.id).subscribe((options:QuestionOption[]) => {
-			this.options =  options;
-		})
-
-	}
-	
-	save():Observable<any> {
-		var self = this;
-		if (this.mode =='edit') {
-			return this.question.save(this).flatMap(() => {
-				var subscriptions = [];
-				_.each(this.options, function(option:QuestionOption) {
-					option.question_id =  self.question.id;
-					subscriptions.push(option.save(self));
-				});
-				return Observable.forkJoin(...subscriptions);
+		this.answer =  answer;
+		if (this.question.id)
+			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
+				this.options = options;
 			});
-		}
-		return Observable.of(null);
+	}
+
+	saveEditor(): Observable<any> {
+		var self = this;
+		return this.question.save(this).flatMap(() => {
+			var subscriptions = [];
+			_.each(this.options, function(option: QuestionOption) {
+				option.question_id = self.question.id;
+				subscriptions.push(option.save(self));
+			});
+			return Observable.forkJoin(...subscriptions);
+		});
+	}
+
+	concludeAnswer() {
+		var self = this;
+		var option = _.find(this.options, function(obj) {
+			return obj.id == self.answer.option_id;
+		});
+		if (option)
+			this.answer.is_correct =  option.is_correct;
 	}
 
 	addOption() {
@@ -65,19 +74,17 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 		}
 	}
 
-	removeOption(option:QuestionOption) {
+	removeOption(option: QuestionOption) {
 		if (option.id) {
-			option.delete(this).subscribe(()=> {
+			option.delete(this).subscribe(() => {
 				this.options = _.reject(this.options, function(obj) {
 					return obj == option;
 				});
 			})
 		} else
 			this.options = _.reject(this.options, function(obj) {
-					return obj == option;
-				});
+				return obj == option;
+			});
 	}
-
-
 }
 

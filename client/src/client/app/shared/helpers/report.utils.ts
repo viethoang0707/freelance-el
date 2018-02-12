@@ -10,7 +10,7 @@ export class ReportUtils {
 	constructor() {
 	}
 
-	createowGroupMetaData(records: any, key: string) {
+	createRowGroupMetaData(records: any, key: string) {
 		var rowGroupMetadata = {};
 		if (records) {
 			for (let i = 0; i < records.length; i++) {
@@ -32,21 +32,50 @@ export class ReportUtils {
 		return rowGroupMetadata;
 	}
 
-	analyzeActivity(logs: UserLog[]) {
-		var first = null;
-		var last = null;
+	analyzeCourseActivity(logs: UserLog[]) {
 		var onTime = 0;
-		_.each(logs, function(log) {
-			var start = log.start ? new Date(log.start) : null;
-			var end = log.end ? new Date(log.end) : null;
-			if (start && (!first || first.getTime() > start.getTime()))
-				first = start;
-			if (end && (!last || last.getTime() < end.getTime()))
-				last = end;
-			if (start && end) 
-				onTime = end.getTime() - start.getTime();
+		var startCourseUnitLogs = _.filter(logs, function(log) {
+			return log.start && log.code =='START_COURSE_UNIT';
 		});
-		return [first, last, onTime];
+		var endCourseUnitLogs = _.filter(logs, function(log) {
+			return log.start && log.code =='FINISH_COURSE_UNIT';
+		});
+		var first_attempt = _.min(startCourseUnitLogs, function(log) {
+			return log.start.getTime();
+		});
+		var last_attempt = _.max(startCourseUnitLogs, function(log) {
+			return log.start.getTime();
+		});
+		_.each(logs, function(log) {
+			if (log.code == 'FINISH_COURSE_UNIT')
+				onTime += log.start.getTime();
+			if (log.code == 'START_COURSE_UNIT')
+				onTime -= log.start.getTime();
+		});
+		return [first_attempt, last_attempt, onTime];
+	}
+
+	analyzeExamActivity(logs: UserLog[]) {
+		var onTime = 0;
+		var startCourseUnitLogs = _.filter(logs, function(log) {
+			return log.start && log.code =='START_EXAM';
+		});
+		var endCourseUnitLogs = _.filter(logs, function(log) {
+			return log.start && log.code =='FINISH_EXAM';
+		});
+		var first_attempt = _.min(startCourseUnitLogs, function(log) {
+			return log.start.getTime();
+		});
+		var last_attempt = _.max(startCourseUnitLogs, function(log) {
+			return log.start.getTime();
+		});
+		_.each(logs, function(log) {
+			if (log.code == 'FINISH_EXAM')
+				onTime += log.start.getTime();
+			if (log.code == 'START_EXAM')
+				onTime -= log.start.getTime();
+		});
+		return [first_attempt, last_attempt, onTime];
 	}
 
 }
