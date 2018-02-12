@@ -3295,7 +3295,7 @@ body {
       box-shadow: none;
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
-      vertical-align: baseline; }
+      vertical-align: top; }
       body .ui-splitbutton > .ui-button:active {
         background-color: #4ca0ea; }
     body .ui-splitbutton .ui-splitbutton-menubutton {
@@ -5824,3 +5824,4 @@ body .ui-inplace .ui-inplace-display {
     background-color: #e8e8e8; }
 body .ui-terminal .ui-terminal-input {
   font-size: 14px; }
+
