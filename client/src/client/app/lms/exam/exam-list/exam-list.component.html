@@ -6,46 +6,48 @@
         <ng-template let-exam pTemplate="item">
           <p-card>
             <p-header>
-                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'|translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(exam)" *ngIf="exam.member.role=='supervisor'"></button>
-              <button pButton type="button" icon="ui-icon-star" title="{{'Mark'|translate}}" label="{{'Mark '|translate}}" class="orange-btn" style="margin-right:4px;"  *ngIf="exam.member.role=='supervisor'"></button>
-              <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'|translate}}" label="{{'Result '|translate}}" class="orange-btn" style="margin-right:4px;"></button>
-              <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'|translate}}" label="{{'Join '|translate}}" class=" green-btn" style="margin-right:4px;"  *ngIf="exam.member.role=='candidate'"></button>
+              <div class="head-exam">
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'|translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" (click)="editContent(exam)" *ngIf="exam.member.role=='supervisor'"></button>
+                <button pButton type="button" icon="ui-icon-star" title="{{'Mark'|translate}}" label="{{'Mark '|translate}}" class="orange-btn" *ngIf="exam.member.role=='supervisor'"></button>
+                <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'|translate}}" label="{{'Result '|translate}}" class="orange-btn"></button>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'|translate}}" label="{{'Join '|translate}}" class=" green-btn" *ngIf="exam.member.role=='candidate'"></button>
+            </div>
             </p-header>
-            <div class="ui-g">
+            <div class="ui-g body-exam">
               <div class="ui-g-8">
                 <h4>{{exam.name}}</h4>
                 <p>
                 {{EXAM_STATUS[exam.status]}}
               </p>
-                <h5>{{'Summary'|translate}}</h5>
+                <h5 class="e-title">{{'Summary'|translate}}</h5>
                 <p>
                   {{exam.summary}}
                 </p>
-                <h5>{{'Instruction'|translate}}</h5>
+                <h5 class="e-title">{{'Instruction'|translate}}</h5>
                 <p [innerHTML]="exam.instruction"></p>
               </div>
               <div class="ui-g-4">
                  <p-card>
-                    <ul>
-                      <li class="clearfix">
+                    <ul class="list-cmt">
+                      <li class="clearfix" style="border-top: none">
                         <i class="material-icons">date_range</i>
-                        <span >{{'Start date'|translate}}</span>
-                        <span >{{exam.start}}</span>
+                        <span class="cmt-title">{{'Start date'|translate}}</span>
+                        <span class="cmt-detail">{{exam.start}}</span>
                       </li>
                       <li class="clearfix">
                         <i class="material-icons">date_range</i>
-                        <span >{{'End date'|translate}}</span>
-                        <span >{{exam.end}}</span>
+                        <span class="cmt-title">{{'End date'|translate}}</span>
+                        <span class="cmt-detail">{{exam.end}}</span>
                       </li>
                       <li class="clearfix">
                         <i class="material-icons">alarm</i>
-                        <span >{{'Duration (mintes)'|translate}}</span>
-                        <span >{{exam.duration}}</span>
+                        <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
+                        <span class="cmt-detail">{{exam.duration}}</span>
                       </li>
                       <li class="clearfix">
                         <i class="material-icons">done</i>
-                        <span >{{'Number of question'|translate}}</span>
-                        <span ></span>
+                        <span class="cmt-title">{{'Number of question'|translate}}</span>
+                        <span class="cmt-detail"></span>
                       </li>
                     </ul>
                   </p-card>
