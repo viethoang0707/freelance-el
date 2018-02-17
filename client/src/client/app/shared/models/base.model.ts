@@ -83,6 +83,8 @@ export abstract class BaseModel {
     }
 
     static array(context:APIContext,ids: number[]): Observable<any[]> {
+        if (ids.length == 0)
+            return Observable.of([]);
         var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;

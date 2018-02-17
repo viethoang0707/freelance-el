@@ -1,0 +1,19 @@
+<div class="ui-g">
+  <div class="ui-g-3" align='center'>
+    <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
+    </p-fileUpload>
+  </div>
+  <div class="ui-g-3">
+    <button pButton type="button" label="{{'Record from camera'|translate}}" class="green-btn" icon="ui-icon-videocam" (click)="recordFromCamera()"></button>
+  </div>
+  <div class="ui-g-3">
+    <button pButton type="button" label="{{'Capture screen'|translate}}" class="green-btn" icon="ui-icon-screen-share" (click)="shareScreen()"></button>
+  </div>
+  <video>
+  </video>
+  <div class="ui-g-12 ">
+    <label>{{'Lecture'|translate}}</label>
+    <p-editor [(ngModel)]="lecture.transcript" [style]="{'height':'120px'}" name="content">
+    </p-editor>
+  </div>
+</div>

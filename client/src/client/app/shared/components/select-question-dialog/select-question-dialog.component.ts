@@ -4,34 +4,35 @@ import { APIService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { Group } from '../../models/group.model';
 import { BaseComponent } from '../base/base.component';
-import { Course } from '../../../shared/models/course.model';
+import { Question } from '../../../shared/models/question.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, QUESTION_TYPE } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-select-course-dialog',
-	templateUrl: 'select-course-dialog.component.html',
+	selector: 'etraining-select-question-dialog',
+	templateUrl: 'select-question-dialog.component.html',
 })
-export class SelectCoursesDialog extends BaseComponent {
+export class SelectQuestionsDialog extends BaseComponent {
 
 	tree: TreeNode[];
 	selectedNode: TreeNode;
-	selectedCourses: Course[];
-	courses:Course[];
+	selectedQuestions: Question[];
+	questions:Question[];
 	display: boolean;
+	QUESTION_TYPE =  QUESTION_TYPE;
 
-	private onSelectCoursesReceiver: Subject<any> = new Subject();
-    onSelectCourses:Observable<any> =  this.onSelectCoursesReceiver.asObservable();
+	private onSelectQuestionsReceiver: Subject<any> = new Subject();
+    onSelectQuestions:Observable<any> =  this.onSelectQuestionsReceiver.asObservable();
 
 	constructor(private treeUtils: TreeUtils) {
 		super();
 		this.display = false;
-		this.selectedCourses = [];
-		this.courses = [];
+		this.selectedQuestions = [];
+		this.questions = [];
 	}
 
 	hide() {
@@ -40,21 +41,21 @@ export class SelectCoursesDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			Course.listByGroup(this,this.selectedNode.data.id).subscribe(courses => {
-				this.courses = courses;
+			Question.listByGroup(this,this.selectedNode.data.id).subscribe(questions => {
+				this.questions = questions;
 			});
 		}
 	}
 
 	show() {
 		this.display = true;
-		Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
+		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
 			this.tree = this.treeUtils.buildTree(groups);
 		});
 	}
 
 	selectCourse() {
-		this.onSelectCoursesReceiver.next(this.selectedCourses);
+		this.onSelectQuestionsReceiver.next(this.selectedQuestions);
 		this.hide();
 	}
 

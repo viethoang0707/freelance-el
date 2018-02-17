@@ -12,7 +12,6 @@ export class CourseMember extends BaseModel{
         super();
 		
 		this.course_id = undefined;
-        this.syllabus_id = undefined;
 		this.class_id = undefined;
         this.date_register = undefined;
         this.status = undefined;
@@ -32,7 +31,6 @@ export class CourseMember extends BaseModel{
 
     course_id: number;
     user_id: number;
-    syllabus_id: number;
     class_id: number;
     status: string;
     role: string;

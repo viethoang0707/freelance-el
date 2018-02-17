@@ -23,8 +23,10 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	display: boolean;
 	processing: boolean;
-	selectedMember: CourseMember;
-	members: CourseMember[];
+	selectedStudent: CourseMember;
+	students: CourseMember[];
+	selectedTeacher: CourseMember;
+	teachers: CourseMember[];
 	course: Course;
 	courseClass: CourseClass;
 	items: SelectItem[];
@@ -94,20 +96,21 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-	edit() {
-		if (this.selectedMember)
-			this.memberDialog.show(this.selectedMember);
+	edit(member:CourseMember) {
+		if (member)
+			this.memberDialog.show(member);
 	}
 
-	delete() {
-		if (this.selectedMember)
+	delete(member:CourseMember) {
+		if (member)
 			this.confirmationService.confirm({
 				message: this.translateService.instant('Are you sure to delete ?'),
 				accept: () => {
-					this.selectedMember.data.delete(this).subscribe(() => {
+					member.delete(this).subscribe(() => {
+						this.selectedStudent = null;
+						this.selectedTeacher = null;
 						this.loadMembers();
-						this.selectedMember = null;
-					})
+					});
 				}
 			});
 	}
@@ -115,11 +118,25 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	loadMembers() {
 		if (this.course)
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
-				this.members = members;
+				this.students = _.filter(members, function(member) {
+					return member.role =='student';
+				});
+				this.selectedStudent = null;
+				this.teachers = _.filter(members, function(member) {
+					return member.role =='teacher';
+				});
+				this.selectedTeacher = null;
 			});
 		if (this.courseClass)
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
-				this.members = members;
+				this.students = _.filter(members, function(member) {
+					return member.role =='student';
+				});
+				this.selectedStudent = null;
+				this.teachers = _.filter(members, function(member) {
+					return member.role =='teacher';
+				});
+				this.selectedTeacher = null;
 			});
 	}
 }

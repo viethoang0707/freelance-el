@@ -16,17 +16,19 @@ import { CacheService } from './services/cache.service';
 import { ExcelService } from './services/excel.service';
 import { SettingService } from './services/setting.service';
 import { TreeUtils } from './helpers/tree.utils';
+import { SyllabusUtils } from './helpers/syllabus.utils';
 import { ReportUtils } from './helpers/report.utils';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
 import { GroupsPipe } from './pipes/group.pipe';
-import { TimeConvertPipe,ClockPipe } from './pipes/time.pipe';
+import { TimeConvertPipe, ClockPipe } from './pipes/time.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
 import { ImageBase64Component } from './components/image-base64/image-base64.component';
 import { GroupDialog } from './components/group-dialog/group-dialog.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
 import { SelectCoursesDialog } from './components/select-course-dialog/select-course-dialog.component';
+import { SelectQuestionsDialog } from './components/select-question-dialog/select-question-dialog.component';
 import { SelectGroupDialog } from './components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from './components/select-user-dialog/select-user-dialog.component';
 import { AccordionModule } from 'primeng/primeng';
@@ -34,7 +36,7 @@ import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/primeng';
-import {CardModule} from 'primeng/card';
+import { CardModule } from 'primeng/card';
 import { CalendarModule } from 'primeng/primeng';
 import { CarouselModule } from 'primeng/primeng';
 import { KeyFilterModule } from 'primeng/primeng';
@@ -64,7 +66,7 @@ import { InputMaskModule } from 'primeng/primeng';
 import { InputSwitchModule } from 'primeng/primeng';
 import { InputTextModule } from 'primeng/primeng';
 import { InputTextareaModule } from 'primeng/primeng';
-import {InplaceModule} from 'primeng/inplace';
+import { InplaceModule } from 'primeng/inplace';
 import { LightboxModule } from 'primeng/primeng';
 import { ListboxModule } from 'primeng/primeng';
 import { MegaMenuModule } from 'primeng/primeng';
@@ -106,13 +108,13 @@ import { MessageService } from 'primeng/components/common/messageservice';
 
 @NgModule({
     imports: [
-    // Angular modules
+        // Angular modules
         CommonModule,
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
-    // PrimeNG modules
+        // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,
         BlockUIModule,
@@ -187,7 +189,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TreeTableModule,
         TranslateModule],
     declarations: [
-    // App components
+        // App components
         MatchInputValidatorDirective,
         ValuesPipe,
         KeysPipe,
@@ -200,16 +202,17 @@ import { MessageService } from 'primeng/components/common/messageservice';
         GroupListComponent,
         SelectUsersDialog,
         SelectCoursesDialog,
+        SelectQuestionsDialog,
         SelectGroupDialog
-        ],
+    ],
     exports: [
-    // Angular modules
+        // Angular modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
         HttpModule,
-    // App components
+        // App components
         ValuesPipe,
         KeysPipe,
         GroupsPipe,
@@ -223,7 +226,8 @@ import { MessageService } from 'primeng/components/common/messageservice';
         SelectCoursesDialog,
         SelectUsersDialog,
         SelectGroupDialog,
-     // PrimeNG modules
+        SelectQuestionsDialog,
+        // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,
         BlockUIModule,
@@ -313,6 +317,7 @@ export class ErpSharedModule {
                 LangService,
                 CacheService,
                 TreeUtils,
+                SyllabusUtils,
                 ExcelService,
                 SettingService,
                 ConfirmationService]

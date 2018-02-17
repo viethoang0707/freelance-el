@@ -11,7 +11,7 @@ import { ExamQuestion } from '../../../shared/models/exam-question.model';
 import { Group } from '../../../shared/models/group.model';
 import { Submission } from '../../../shared/models/submission.model';
 import { SelectItem } from 'primeng/api';
-import { ExamContentDialog } from '../../../cms/exam/content/exam-content.dialog.component';
+import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog} from '../exam-study/exam-study.dialog.component';
 import { ExamMarkingDialog} from '../exam-marking/exam-marking.dialog.component';
 import { ExamScoreDialog } from '../exam-score/exam-score.dialog.component';
@@ -41,25 +41,23 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         var self = this;
         ExamMember.listByUser(this, this.authService.CurrentUser.id).subscribe(members => {
             var examIds = _.pluck(members,'exam_id');
-            if (examIds.length)
-                Exam.array(this, examIds)
-                .subscribe(exams => {
-                    _.each(exams, function(exam) {
-                        exam.msgs = [];
-                        exam.member = _.find(members, function(member:ExamMember) {
-                            return member.exam_id == exam.id;
-                        });
-                        exam.member.examScore(self, exam.id).subscribe(score=> {
-                            exam.member.score = score;
-                        });
-                        ExamQuestion.countByExam(self, exam.id).subscribe(count => {
-                            exam.question_count = count;
-                        });
+            Exam.array(this, examIds)
+            .subscribe(exams => {
+                _.each(exams, function(exam) {
+                    exam.member = _.find(members, function(member:ExamMember) {
+                        return member.exam_id == exam.id;
                     });
-                    this.exams = _.filter(exams, function(exam) {
-                         return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
+                    exam.member.examScore(self, exam.id).subscribe(score=> {
+                        exam.member.score = score;
+                    });
+                    ExamQuestion.countByExam(self, exam.id).subscribe(count => {
+                        exam.question_count = count;
                     });
                 });
+                this.exams = _.filter(exams, function(exam) {
+                     return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
+                });
+            });
         });
     }
 

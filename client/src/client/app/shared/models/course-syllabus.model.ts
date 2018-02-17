@@ -5,7 +5,7 @@ import { Model } from './decorator';
 import { APIContext } from './context';
 
 @Model('etraining.syllabus')
-export class Syllabus extends BaseModel{
+export class CourseSyllabus extends BaseModel{
 
     // Default constructor will be called by mapper
     constructor(){
@@ -17,4 +17,14 @@ export class Syllabus extends BaseModel{
 
     name:string;
     course_id: number;
+
+    static byCourse(context:APIContext, courseId: number):Observable<any> {
+        return CourseSyllabus.search(context,[],"[('course_id','=',"+courseId+")]")
+        .map(syllabi => {
+            if (syllabi.length)
+                return syllabi[0];
+            else
+                return null;
+        });
+    }
 }

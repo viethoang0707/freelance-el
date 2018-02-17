@@ -30,7 +30,6 @@ export class Exam extends BaseModel{
     name:string;
     summary: string;
     instruction: string;
-
     @FieldProperty<Date>()
     start: Date;
     @FieldProperty<Date>()
