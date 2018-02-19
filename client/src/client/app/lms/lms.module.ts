@@ -9,19 +9,20 @@ import { ExamStudyDialog} from './exam/exam-study/exam-study.dialog.component';
 import { ExamMarkingDialog} from './exam/exam-marking/exam-marking.dialog.component';
 import { CourseListComponent} from './course/course-list/course-list.component';
 import { CourseStudyComponent } from './course/course-study/course-study.component';
-import { ClassManageDialog} from './course/class-manage/class-manage.dialog.component';
-import { StudentManageDialog} from './course/student-manage/student-manage.dialog.component';
+import { ClassConferenceDialog} from './course/class-conference/class-conference.dialog.component';
+import { StudentPrfileListDialog} from './course/student-profile-list/student-profile-list.dialog.component';
 import { ClassListDialog } from './course/class-list/class-list.dialog.component';
 import { QuestionMarkingDialog} from './exam/question-marking/question-marking.dialog.component';
 import { ExamScoreDialog } from './exam/exam-score/exam-score.dialog.component';
 import { AnswerSheetDialog } from './exam/answer-sheet/answer-sheet.dialog.component';
+import { ConferenceListComponent } from './conference/conference-list/conference-list.component';
 
 @NgModule({
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,ExamMarkingDialog,
     				CourseListComponent, CourseStudyComponent, QuestionMarkingDialog,
-    				ExamScoreDialog, AnswerSheetDialog, StudentManageDialog, ClassListDialog,
-    				ClassManageDialog],
+    				ExamScoreDialog, AnswerSheetDialog, StudentPrfileListDialog, ClassListDialog,
+    				ClassConferenceDialog, ConferenceListComponent],
     exports: [],
     providers: []
 })

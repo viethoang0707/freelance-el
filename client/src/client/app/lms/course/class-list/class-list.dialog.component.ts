@@ -8,11 +8,12 @@ import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
 import { CourseMember } from '../../../shared/models/course-member.model';
 import { Course } from '../../../shared/models/course.model';
 import { CourseClass } from '../../../shared/models/course-class.model';
-import { SelectItem } from 'primeng/api';
+import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
+
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-lms-class-list-dialog',
+    selector: 'etraining-class-list-dialog',
     templateUrl: 'class-list.dialog.component.html',
 })
 export class ClassListDialog extends BaseDialog {
@@ -22,6 +23,7 @@ export class ClassListDialog extends BaseDialog {
 	member: CourseMember;
 	selectedClass: CourseClass;
 	classes: CourseClass[];
+	@ViewChild(ClassConferenceDialog) conferenceDialog : ClassConferenceDialog;
 
 	constructor() {
 		super();
@@ -46,5 +48,23 @@ export class ClassListDialog extends BaseDialog {
 
 	hide() {
 		this.display = false;
+	}
+
+	manageConference() {
+		if (this.selectedClass) {
+			this.conferenceDialog.show(this.selectedClass);
+		}
+	}
+
+	manageStudent() {
+		if (this.selectedClass) {
+			
+		}
+	}
+
+	manageExam() {
+		if (this.selectedClass) {
+			
+		}
 	}
 }

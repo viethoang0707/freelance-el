@@ -1,12 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../services/api.service';
-import { AuthService } from '../../services/auth.service';
 import { Group } from '../../models/group.model';
 import { BaseComponent } from '../base/base.component';
-import { Question } from '../../../shared/models/question.model';
+import { Question } from '../../models/question.model';
 import * as _ from 'underscore';
-import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { TreeUtils } from '../../helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, QUESTION_TYPE } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';

@@ -16,7 +16,7 @@ import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog
 @NgModule({
 	imports: [ErpSharedModule, AuthModule],
 	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, 
-	CourseSyllabusDialogComponent,CourseUnitContainerDirective, FolderCourseUnitComponent,
+	CourseSyllabusDialog,CourseUnitContainerDirective, FolderCourseUnitComponent,
 	ExerciseCourseUnitComponent, VideoLectureCourseUnitComponent,HtmlLectureCourseUnitComponent, CourseUnitDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog],
 	providers: [],

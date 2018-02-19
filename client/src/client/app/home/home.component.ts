@@ -1,6 +1,6 @@
 import { Component, ElementRef, Renderer, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChangePasswordDialog } from './modals//change-password-dialog/change-password-dialog.component';
+import { ChangePasswordDialog } from './change-password-dialog/change-password-dialog.component';
 import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';

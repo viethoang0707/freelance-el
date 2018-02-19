@@ -15,6 +15,8 @@ import { LangService } from './services/lang.service';
 import { CacheService } from './services/cache.service';
 import { ExcelService } from './services/excel.service';
 import { SettingService } from './services/setting.service';
+import { MeetingService } from './services/meeting.service';
+import { WindowRef } from './helpers/windonw.ref';
 import { TreeUtils } from './helpers/tree.utils';
 import { SyllabusUtils } from './helpers/syllabus.utils';
 import { ReportUtils } from './helpers/report.utils';
@@ -316,7 +318,9 @@ export class ErpSharedModule {
                 MessageService,
                 LangService,
                 CacheService,
+                MeetingService,
                 TreeUtils,
+                WindowRef,
                 SyllabusUtils,
                 ExcelService,
                 SettingService,

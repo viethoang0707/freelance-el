@@ -11,10 +11,10 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-lms-class-manage-dialog',
-    templateUrl: 'class-manage.dialog.component.html',
+    selector: 'etraining-student-profile-list-dialog',
+    templateUrl: 'student-profile-list.dialog.component.html',
 })
-export class ClassManageDialog extends BaseDialog {
+export class StudentPrfileListDialog extends BaseDialog {
 
 
 }

@@ -25,6 +25,7 @@ export class CourseMember extends BaseModel{
         this.phone = undefined;
         this.user_id = undefined;
         this.login = undefined;
+        this.image = undefined;
         this.etraining_group_id = undefined;
         this.etraining_group_id__DESC__ = undefined;
 	}
@@ -36,6 +37,7 @@ export class CourseMember extends BaseModel{
     role: string;
     name: string;
     login: string;
+    image: string;
     course_name: string;
     course_mode: string;
     course_code: string;

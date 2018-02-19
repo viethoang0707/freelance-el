@@ -29,3 +29,4 @@ export const QUESTION_SELECTION = { 'manual': 'Manual', 'random': 'Random' };
 export const EXAM_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };
 export const COURSE_UNIT_TYPE = { 'folder': 'Folder', 'exercise': 'Exercise', 'html': 'HTML Lecture','video':'Video lecture' };
 export const COURSE_UNIT_ICON = { 'folder': 'ui-icon-folder', 'exercise': 'ui-icon-play-for-work', 'html': 'ui-icon-text-fields','video':'ui-icon-videocam' };
+export const CONFERENCE_STATUS = { 'open': 'Open', 'closed': 'Closed'};
