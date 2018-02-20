@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Group } from '../../shared/models/group.model';
 import { BaseDialog } from '../../shared/components/base/base.dialog';
 import { Course } from '../../shared/models/course.model';
+import { User } from '../../shared/models/user.model';
 import { CourseClass } from '../../shared/models/course-class.model';
 import { CourseMember } from '../../shared/models/course-member.model';
 import * as _ from 'underscore';
@@ -29,7 +30,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	teachers: CourseMember[];
 	course: Course;
 	courseClass: CourseClass;
-	items: SelectItem[];
+	items: any[];
 	@ViewChild(CourseMemberDialog) memberDialog: CourseMemberDialog;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -74,7 +75,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.usersDialog.onSelectUsers.subscribe(users => {
 			this.processing = true;
 			var subscriptions = [];
-			_.each(users, function(user) {
+			_.each(users, function(user:User) {
 				var member = new CourseMember();
 				if (self.courseClass) {
 					member.course_id = self.courseClass.course_id;

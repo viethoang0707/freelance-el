@@ -27,10 +27,10 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     exams: Exam[];
     EXAM_STATUS = EXAM_STATUS;
-    @ViewChild(ExamContentDialog) examContentDialog ExamContentDialog;
-    @ViewChild(ExamStudyDialog) examStudyDialog ExamStudyDialog;
-    @ViewChild(ExamMarkingDialog) markingDialog ExamMarkingDialog;
-    @ViewChild(ExamScoreDialog) scoreDialog ExamScoreDialog;
+    @ViewChild(ExamContentDialog) examContentDialog:ExamContentDialog;
+    @ViewChild(ExamStudyDialog) examStudyDialog:ExamStudyDialog;
+    @ViewChild(ExamMarkingDialog) markingDialog:ExamMarkingDialog;
+    @ViewChild(ExamScoreDialog) scoreDialog:ExamScoreDialog;
 
     constructor() {
         super();

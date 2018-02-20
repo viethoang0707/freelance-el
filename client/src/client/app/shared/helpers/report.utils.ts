@@ -35,10 +35,10 @@ export class ReportUtils {
 	analyzeCourseActivity(logs: UserLog[]) {
 		var onTime = 0;
 		var startCourseUnitLogs = _.filter(logs, function(log) {
-			return log.start && log.code =='START_COURSE_UNIT';
+			return log.start!=null && log.code =='START_COURSE_UNIT';
 		});
 		var endCourseUnitLogs = _.filter(logs, function(log) {
-			return log.start && log.code =='FINISH_COURSE_UNIT';
+			return log.start!=null && log.code =='FINISH_COURSE_UNIT';
 		});
 		var first_attempt = _.min(startCourseUnitLogs, function(log) {
 			return log.start.getTime();

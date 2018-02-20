@@ -109,7 +109,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	    	record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
     	if (result[1] != Infinity)
 	    	record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATETIME_FORMAT);
-	    record["time_spent"] =  this.timePipe.transform(result[2],'min');
+	    record["time_spent"] =  this.timePipe.transform(+result[2],'min');
 	    return record;
     }
 

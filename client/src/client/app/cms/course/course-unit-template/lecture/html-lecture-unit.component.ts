@@ -31,7 +31,7 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		HtmlLecture.byCourseUnit(this, unit.id).subscribe(lecture => {
+		HtmlLecture.byCourseUnit(this, unit.id).subscribe((lecture:HtmlLecture) => {
 			if (lecture)
 				this.lecture = lecture;
 			else {

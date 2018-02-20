@@ -453,6 +453,9 @@ export class SeedConfig {
       'app/': `${this.APP_BASE}app/`,
       '@angular/common/http': 'node_modules/@angular/common/bundles/common-http.umd.js',
       'tslib': 'node_modules/tslib/tslib.js',
+      'fs': '@node/fs' ,
+      'crypto': '@node/crypto',
+      'stream':  '@node/stream',
       // For test config
       'dist/dev/': '/base/dist/dev/',
       '': 'node_modules/',
@@ -480,10 +483,12 @@ export class SeedConfig {
     base: this.PROJECT_ROOT,
     packageConfigPaths: [
       join('node_modules', '*', 'package.json'),
-      join('node_modules', '@angular', '*', 'package.json')
+      join('node_modules', '@angular', '*', 'package.json'),
       // for other modules like @ngx-translate the package.json path needs to updated here
       // otherwise npm run build.prod would fail
-      // join('node_modules', '@ngx-translate', '*', 'package.json')
+      join('node_modules', '@ngx-translate', '*', 'package.json'),
+      join('node_modules', 'file-saver', '*', 'package.json'),
+      join('node_modules', 'xlsx', '*', 'package.json')
     ],
     paths: {
       // Note that for multiple apps this configuration need to be updated
@@ -495,6 +500,11 @@ export class SeedConfig {
       'dist/tmp/node_modules/*': 'dist/tmp/node_modules/*',
       'node_modules/*': 'node_modules/*',
       '*': 'node_modules/*'
+    },
+    map: {
+      'fs': '@node/fs',
+      'crypto': '@node/crypto',
+      'stream': '@node/stream'
     },
     packages: {
       '@angular/animations': {

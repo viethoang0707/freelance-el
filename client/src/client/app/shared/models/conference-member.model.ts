@@ -16,7 +16,6 @@ export class ConferenceMember extends BaseModel{
         this.email = undefined;
         this.phone = undefined;
         this.name = undefined;
-        this.login = undefined;
         this.user_id = undefined;
         this.conference_id = undefined;
         this.room_member_ref = undefined;

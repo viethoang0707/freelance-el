@@ -28,11 +28,15 @@ export abstract class BaseModel {
     }
 
     static get Model():string {
-    	return Reflect.getMetadata(MODEL_METADATA_KEY, this);
+        return Reflect.getMetadata(MODEL_METADATA_KEY, this);
+    }
+
+     get Model():string {
+        return Reflect.getMetadata(MODEL_METADATA_KEY, this.constructor);
     }
 
     save(context:APIContext):Observable<any> {
-    	var model = this.constructor.Model;
+    	var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
     	if (!this.id)
     		return context.apiService.create(model, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint).map(data=> {
@@ -44,17 +48,16 @@ export abstract class BaseModel {
     }
 
     delete(context:APIContext):Observable<any> {
-    	var model = this.constructor.Model;
+    	var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
     	return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
     }
 
     static get(context:APIContext,id:number):Observable<any> {
-    	var self = this;
     	var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
     	return context.apiService.get(model, id, [],cloud_acc.id, cloud_acc.api_endpoint).map(item => {
-             return   MapUtils.deserialize(self, item);
+             return   MapUtils.deserializeModel(model, item);
         });
     }
 
@@ -68,12 +71,11 @@ export abstract class BaseModel {
 
 
     static search(context:APIContext, fields:string[], domain:string):Observable<any[]> {
-        var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.search(model, fields, domain, cloud_acc.id, cloud_acc.api_endpoint).map(items => {
             return _.map(items, function(item) {
-               return  MapUtils.deserialize(self, item);
+               return  MapUtils.deserializeModel(model, item);
             });
         });
     }
@@ -85,12 +87,11 @@ export abstract class BaseModel {
     static array(context:APIContext,ids: number[]): Observable<any[]> {
         if (ids.length == 0)
             return Observable.of([]);
-        var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint).map(items => {
             return _.map(items, function(item) {
-               return  MapUtils.deserialize(self, item);
+               return  MapUtils.deserializeModel(model, item);
             });
         });;
     }

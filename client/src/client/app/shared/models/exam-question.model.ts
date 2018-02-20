@@ -33,7 +33,6 @@ export class ExamQuestion extends BaseModel{
     content: string;
     explanation: string;
     type: string;
-    level: number;
     group_id: number;
     group_id__DESC__: string;
 

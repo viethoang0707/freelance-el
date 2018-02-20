@@ -23,7 +23,6 @@ export class UserLog extends BaseModel{
         this.attachment_id = undefined;
     }
 
-    res_id: string;
     res_id: number;
     user_id: number;
     res_model: string;
@@ -60,44 +59,44 @@ export class UserLog extends BaseModel{
         var log = new UserLog();
         log.user_id = userId;
         log.res_id = submit.id;
-        log.res_model = submit.Model;
+        log.res_model = Submission.Model;
         log.note = 'Start exam';
         log.code = 'START_EXAM';
         log.start = new Date();
-        log.save(context);
+        return log.save(context);
     }
 
     static finishExam(context:APIContext, userId:number, submit:Submission):Observable<any> {
         var log = new UserLog();
         log.user_id = userId;
         log.res_id = submit.id;
-        log.res_model = submit.Model;
+        log.res_model = Submission.Model;
         log.note = 'Finish exam';
         log.code = 'FINISH_EXAM';
         log.start = new Date();
-        log.save(context);
+        return log.save(context);
     }
 
     static startAnswer(context:APIContext, userId:number, answer:Answer):Observable<any> {
         var log = new UserLog();
         log.user_id = userId;
         log.res_id = answer.id;
-        log.res_model = answer.Model;
+        log.res_model = Answer.Model;
         log.note = 'Start answer';
         log.code = "START_ANSWER";
         log.start = new Date();
-        log.save(context);
+        return log.save(context);
     }
 
     static finishAnswer(context:APIContext, userId:number, answer:Answer):Observable<any> {
         var log = new UserLog();
         log.user_id = userId;
         log.res_id = answer.id;
-        log.res_model = answer.Model;
+        log.res_model = Answer.Model;
         log.note = 'Close answer';
         log.code = "CLOSE_ANSWER";
         log.start = new Date();
-        log.save(context);
+        return log.save(context);
     }
 
 }

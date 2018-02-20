@@ -9,18 +9,18 @@ export class TreeUtils {
   constructor() {
   }
 
-  buildTree(groups: Group[]) {
+  buildTree(groups: Group[]):any[] {
     return this.buildSubTree(null, groups);
   }
 
-  getSubGroup(groups:Group[], parentId:number) {
+  getSubGroup(groups:Group[], parentId:number):any[] {
     var self = this;
-    var subGroups = _.filter(groups, function(group) {
+    return _.filter(groups, function(group:Group) {
         return self.isSubGroup(groups, group, parentId);
       });
   }
 
-  private isSubGroup(groups:Group, target: Group, parentId:number) {
+  private isSubGroup(groups:Group[], target: Group, parentId:number):boolean {
     while (target) {
       if (target.id == parentId)
         return true;
@@ -32,7 +32,7 @@ export class TreeUtils {
     return false;
   }
 
-  private buildSubTree(parentGroup: Group, groups: Group[]) {
+  private buildSubTree(parentGroup: Group, groups: Group[]):any[] {
     var subTrees = [];
     var self = this;
     var directChilds = [];
@@ -59,7 +59,7 @@ export class TreeUtils {
     return subTrees;
   }
 
-  findTreeNode(tree, groupId) {
+  findTreeNode(tree, groupId):any {
     var self = this;
     for (var i = 0; i < tree.length; i++) {
       var node = tree[i];
@@ -70,7 +70,7 @@ export class TreeUtils {
     return null;
   }
 
-  private findTreeSubNode(node, groupId) {
+  private findTreeSubNode(node, groupId):any {
     var self = this;
     if (node.data.id == groupId)
       return node;

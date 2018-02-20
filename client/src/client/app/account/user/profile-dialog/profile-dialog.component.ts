@@ -47,9 +47,9 @@ export class UserProfileDialog extends BaseDialog<User> {
 				}
 			});
 			CourseMember.listByUser(this, object.id)
-				.map((members:CourseMember[]) => {
+				.map(members => {
 					return _.filter(members, function(member:CourseMember) {
-						member.role == 'student';
+						return member.role == 'student';
 					});
 				})
 				.subscribe(members => {

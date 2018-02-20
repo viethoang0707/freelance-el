@@ -114,7 +114,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
 	    record["total_member_completed"] = completededMembers.length;
 	    record["percentage_member_completed"] = members.length ? Math.floor(completededMembers.length/members.length*100):0;
 	    var result = this.reportUtils.analyzeCourseActivity(logs);
-	    record["time_spent"] =  this.timePipe.transform(result[2],'min');
+	    record["time_spent"] =  this.timePipe.transform(+result[2],'min');
 	    return record;
     }
 

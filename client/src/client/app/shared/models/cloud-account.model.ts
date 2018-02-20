@@ -22,7 +22,7 @@ export class CloudAccount extends BaseModel{
     db:string;
     domain:string;
     api_endpoint: string;
-    @FieldProperty<Data>()
+    @FieldProperty<Date>()
     date_expire: Date;
     name: number;
 

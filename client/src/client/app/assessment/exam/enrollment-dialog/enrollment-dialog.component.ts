@@ -3,8 +3,10 @@ import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/group.model';
+import { User } from '../../../shared/models/user.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { Exam } from '../../../shared/models/exam.model';
+import { Course } from '../../../shared/models/course.model';
 import { ExamMember } from '../../../shared/models/exam-member.model';
 import { Http, Response } from '@angular/http';
 import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
@@ -24,7 +26,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 	processing: boolean;
 	exam: Exam;
     candidates: ExamMember[];
-    selectedCandidated: ExamMember;
+    selectedCandidate: ExamMember;
     supervisors: ExamMember[];
     selectedSupervisor: ExamMember;
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
@@ -56,7 +58,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
         this.usersDialog.onSelectUsers.subscribe(users => {
             this.processing = true;
             var subscriptions = [];
-            _.each(users, function(user) {
+            _.each(users, function(user:User) {
                 var member = new ExamMember();
                 member.role = role;
                 member.exam_id = self.exam.id;
@@ -86,7 +88,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
                         this.selectedCandidate = null;
                         this.selectedSupervisor = null;
                         this.loadMembers();
-\                    })
+                    })
                 }
             });
     }

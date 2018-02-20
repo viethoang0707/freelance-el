@@ -1,7 +1,9 @@
-
+import './reflect';
 import { FIELD_METADATA_KEY, FieldProperty, IFieldMetaData } from '../models/decorator'
 import * as moment from 'moment';
-import {SERVER_DATETIME_FORMAT} from '../models/constants'
+import {SERVER_DATETIME_FORMAT} from '../models/constants';
+import { ModelRegister } from '../models/decorator';
+
 export class MapUtils {
     static isPrimitive(obj:any) {
         switch (typeof obj) {
@@ -53,7 +55,7 @@ export class MapUtils {
                 if (!jsonObject[propertyName])
                     return null;
                 if (MapUtils.isArray(clazz)) {
-                    let metadata = MapUtils.getJsonProperty(obj, key);
+                    let metadata = MapUtils.getLocalProperty(obj, key);
                     if (metadata.clazz || MapUtils.isPrimitive(clazz)) {
                         if (innerJson && MapUtils.isArray(innerJson)) {
                             return innerJson.map(
@@ -88,7 +90,36 @@ export class MapUtils {
         return obj;
     }
 
-    static serialize<T>(object:any):any {
+    static deserializeModel(model:string, jsonObject:any) {
+        if (jsonObject === undefined) return undefined;
+        let obj:any = ModelRegister.Instance.instantiateObject(model);
+        Object.keys(obj).forEach((key) => {
+            let propertyMetadataFn:(IFieldMetaData) => any = (propertyMetadata)=> {
+                let propertyName = propertyMetadata.name || key;
+                let innerJson = jsonObject ? jsonObject[propertyName] : undefined;
+                let clazz = MapUtils.getClazz(obj, key);
+                if (!jsonObject[propertyName])
+                    return null;
+                if (MapUtils.isPrimitive(clazz)) {
+                    return jsonObject ? jsonObject[propertyName] : undefined;
+                } else if (MapUtils.isDate(new clazz())) {
+                    return jsonObject ? moment(jsonObject[propertyName],SERVER_DATETIME_FORMAT).toDate(): undefined;
+                }
+            };
+
+            let propertyMetadata = MapUtils.getFieldProperty(obj, key);
+            if (propertyMetadata) {
+                obj[key] = propertyMetadataFn(propertyMetadata);
+            } else {
+                if (jsonObject && jsonObject[key] !== undefined) {
+                    obj[key] = jsonObject[key];
+                }
+            }
+        });
+        return obj;
+    }
+
+    static serialize(object:any):any {
         if (object === undefined) return {};
         let jsonObject:any = {};
         Object.keys(object).forEach((key) => {

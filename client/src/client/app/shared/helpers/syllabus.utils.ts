@@ -63,7 +63,7 @@ export class SyllabusUtils {
           data: unit,
           label: unit.name,
           icon: unit.icon,
-          children: [];
+          children: []
         });
   }
 
@@ -74,7 +74,7 @@ export class SyllabusUtils {
           data: unit,
           label: unit.name,
           icon: unit.icon,
-          children: [];
+          children: []
         });
   }
 

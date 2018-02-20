@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 export interface IQuestion {
 	mode: any;
-	render(question:Question, answer?:Answer[]);
+	render(question:Question, answer?:Answer);
 	saveEditor():Observable<any>;
 	concludeAnswer();
 }

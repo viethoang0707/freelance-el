@@ -20,7 +20,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	display: boolean;
 	tree: TreeNode[];
-	syl: Syllabus;
+	syl: CourseSyllabus;
 	selectedNode: TreeNode;
 	items: MenuItem[];
 

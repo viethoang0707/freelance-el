@@ -27,7 +27,6 @@ export class OpenEndQuestionComponent extends BaseComponent implements IQuestion
 
 	constructor() {
 		super();
-		this.options = [];
 	}
 
 	render(question, answer?) {

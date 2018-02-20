@@ -14,7 +14,7 @@ export class MeetingService {
          this.nativeWindow = winRef.getNativeWindow();
     }
 
-    join(room_ref:string, member_ref: string):Observable<any> {
+    join(room_ref:string, member_ref: string) {
         this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}`);
     }
 

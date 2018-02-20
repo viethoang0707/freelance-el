@@ -3,7 +3,7 @@ import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/group.model';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/exam.model';
 import { Answer } from '../../../shared/models/answer.model';
 import { Submission } from '../../../shared/models/submission.model';
@@ -17,14 +17,14 @@ import { QuestionMarkingDialog } from '../question-marking/question-marking.dial
     selector: 'etraining-exam-marking-dialog',
     templateUrl: 'exam-marking.dialog.component.html',
 })
-export class ExamMarkingDialog extends BaseDialog<Course> {
+export class ExamMarkingDialog extends BaseComponent {
 
     display: boolean;
     exam: Exam;
     records: any;
     selectedRecord: any;
     questions: ExamQuestion[];
-    @ViewChild(QuestionMarkingDialog) questionMarkDialog QuestionMarkingDialog;
+    @ViewChild(QuestionMarkingDialog) questionMarkDialog:QuestionMarkingDialog;
     
     constructor() {
         super();
@@ -54,7 +54,7 @@ export class ExamMarkingDialog extends BaseDialog<Course> {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
                 self.records = [];
                 _.each(members, function(member:ExamMember) {
-                    Submission.byMember(self,member.id).subscribe(submit => {
+                    Submission.byMember(self,member.id).subscribe((submit:Submission) => {
                         Answer.listBySubmit(self, submit.id).subscribe(answers => {
                             answers = _.filter(answers, function(obj:Answer) {
                                 return _.contains(questionIds,obj.question_id);

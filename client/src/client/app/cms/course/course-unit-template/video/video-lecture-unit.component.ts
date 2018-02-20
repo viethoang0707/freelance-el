@@ -31,11 +31,11 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		VideoLecture.byCourseUnit(this, unit.id).subscribe(lecture => {
+		VideoLecture.byCourseUnit(this, unit.id).subscribe((lecture:VideoLecture) => {
 			if (lecture)
 				this.lecture = lecture;
 			else {
-				var lecture = new HtmlLecture();
+				var lecture = new VideoLecture();
 				lecture.unit_id = this.unit.id;
 				this.lecture =  lecture;
 			}

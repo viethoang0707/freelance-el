@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
@@ -16,7 +16,7 @@ import { ClassConferenceDialog } from '../class-conference/class-conference.dial
     selector: 'etraining-class-list-dialog',
     templateUrl: 'class-list.dialog.component.html',
 })
-export class ClassListDialog extends BaseDialog {
+export class ClassListDialog extends BaseComponent {
 
 	display: boolean;
 	course:Course;
@@ -37,7 +37,7 @@ export class ClassListDialog extends BaseDialog {
 		this.course =  course;
 		CourseClass.listByCourse(this, course.id)
 		.map(classList => {
-			return _.filter(classList, function(obj) {
+			return _.filter(classList, function(obj:CourseClass) {
 				return member.class_id == obj.id;
 			});
 		})

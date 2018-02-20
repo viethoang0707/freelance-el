@@ -15,6 +15,7 @@ import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
+import { TreeNode } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
@@ -91,7 +92,7 @@ export class ExamContentDialog extends BaseComponent {
 	generateQuestion() {
 		var self = this;
 		this.removeOldQuestions().subscribe(() => {
-			var groupIds = [];
+			var groupIds=[];
 			if (this.selector.include_sub_group) {
 				var selectedGroups = this.treeUtils.getSubGroup(this.groups, this.selector.group_id);
 				groupIds = _.pluck(selectedGroups, 'id');
@@ -137,7 +138,7 @@ export class ExamContentDialog extends BaseComponent {
 		if (this.exam.selector_id) {
 			return QuestionSelector.get(this, this.exam.selector_id);
 		} else {
-			return Observable.of(new QuestionSelector();)
+			return Observable.of(new QuestionSelector());
 		}
 	}
 

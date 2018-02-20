@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
@@ -14,7 +14,7 @@ import { SelectItem } from 'primeng/api';
     selector: 'etraining-student-profile-list-dialog',
     templateUrl: 'student-profile-list.dialog.component.html',
 })
-export class StudentPrfileListDialog extends BaseDialog {
+export class StudentPrfileListDialog extends BaseComponent {
 
 
 }

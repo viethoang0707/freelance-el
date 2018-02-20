@@ -75,7 +75,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
         var subscriptions =[];
     	_.each(members, function(member:ExamMember) {
     		var subscription = UserLog.userExamActivity(self, member.user_id, exam.id).flatMap(logs => {
-    			return Submission.byMember(self, member.id).flatMap(submit => {
+    			return Submission.byMember(self, member.id).flatMap((submit:Submission) => {
                     if (!submit)
                         return Observable.of([]);
     				return Answer.listBySubmit(self, submit.id).map(answers => {

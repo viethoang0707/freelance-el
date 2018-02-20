@@ -15,7 +15,7 @@ export class CourseUnitRegister
     }
 
     public register(type, ctor) {
-        this.registry[type]=ctor: ;
+        this.registry[type]=ctor;
       }
 
     public lookup(type) {
@@ -27,6 +27,6 @@ export class CourseUnitRegister
 export function CourseUnitTemplate( args: any) {
     return (ctor: Function) => {
         CourseUnitRegister.Instance.register( args.type,ctor);
-    }
+    };
 }
 

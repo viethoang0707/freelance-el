@@ -30,7 +30,7 @@ export class ExamStudyDialog extends BaseComponent {
 	display: boolean;
 	exam: Exam;
 	member: ExamMember;
-	qIndex: 0;
+	qIndex: number;
 	examQuestions: ExamQuestion[];
 	answers: Answer[];
 	submission: Submission;
@@ -60,7 +60,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		Submission.byMember(this, this.member.id).subscribe(submit => {
+		Submission.byMember(this, this.member.id).subscribe((submit:Submission) => {
 			if (!submit) {
 				submit = new Submission();
 				submit.member_id = member.id;
@@ -135,11 +135,11 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	updateProgress() {
-		var validAnswers = _.filter(this.answers, function(ans: Answer) {
-			return ans.option_id || ans.text;
+		var validAnswers = _.filter(this.answers, function(ans:Answer) {
+			return ans.option_id!=null || ans.text!=null;
 		});
-		if (this.questions.length)
-			this.progress = Math.floor(validAnswers.length / this.questions.length * 100)
+		if (this.examQuestions.length)
+			this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
 	}
 
 	displayQuestion(index: number) {
@@ -207,7 +207,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	startTimer() {
 		this.timerSubject = new Subject();
-		var now = n ew Date();
+		var now = new Date();
 		var elapse = Math.floor((now.getTime() - this.submission.start.getTime()));
 		this.timeLeft = this.exam.duration * 60 * 1000 - elapse;
 		if (this.timeLeft <= 0)

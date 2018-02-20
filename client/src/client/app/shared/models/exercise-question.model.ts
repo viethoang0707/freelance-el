@@ -28,7 +28,6 @@ export class ExerciseQuestion extends BaseModel{
     unit_id: number;
     score: number;
     order: number;
-    level: number;
     title:string;
     content: string;
     explanation: string;

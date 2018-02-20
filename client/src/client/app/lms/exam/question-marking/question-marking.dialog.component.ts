@@ -23,7 +23,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 
 	display: boolean;
 	answers: Answer[];
-	questions: ExamQuestion[];
+	questions: any;
 	member: ExamMember;
 	private onMarkCompleteReceiver: Subject<any> = new Subject();
     onMarkComplete:Observable<any> =  this.onMarkCompleteReceiver.asObservable();

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/group.model';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/exam.model';
 import { Answer } from '../../../shared/models/answer.model';
 import { ExamGrade } from '../../../shared/models/exam-grade.model';
@@ -18,14 +18,14 @@ import * as _ from 'underscore';
     selector: 'etraining-exam-score-dialog',
     templateUrl: 'exam-score.dialog.component.html',
 })
-export class ExamScoreDialog extends BaseDialog<Course> {
+export class ExamScoreDialog extends BaseComponent {
 
     display: boolean;
     exam: Exam;
     records: any;
     selectedRecord: any;
 
-    @ViewChild(AnswerSheetDialog) answerSheetDialog AnswerSheetDialog;
+    @ViewChild(AnswerSheetDialog) answerSheetDialog:AnswerSheetDialog;
 
     constructor() {
         super();
@@ -43,7 +43,7 @@ export class ExamScoreDialog extends BaseDialog<Course> {
 
     viewAnswerSheet() {
         if (this.selectedRecord)
-            this.answerSheetDialog.show(this.exam, this.selectedRecord.member, this.selectedRecord.answers);
+            this.answerSheetDialog.show(this.exam, this.selectedRecord.member);
     }
 
     loadAnswers() {
@@ -52,7 +52,7 @@ export class ExamScoreDialog extends BaseDialog<Course> {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
                 self.records = [];
                 _.each(members, function(member: ExamMember) {
-                    Submission.byMember(self, member.id).subscribe(submit => {
+                    Submission.byMember(self, member.id).subscribe((submit:Submission) => {
                         Answer.listBySubmit(self, submit.id).subscribe(answers => {
                             var record = {
                                 name: member.name,

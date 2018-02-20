@@ -33,7 +33,6 @@ export = () => {
       console.log('Building JS Prod eror: ', e);
       this.once('finish', () => process.exit(1));
     });
-
   return result.js
     .pipe(plugins.template(new TemplateLocalsBuilder().build()))
     .pipe(gulp.dest(Config.TMP_DIR))

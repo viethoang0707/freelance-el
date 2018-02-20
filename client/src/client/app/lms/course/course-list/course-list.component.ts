@@ -30,7 +30,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     currentUser: User;
     COURSE_STATUS = COURSE_STATUS;
     COURSE_MODE = COURSE_MODE;
-    @ViewChild(CourseSyllabusDialog) syllabusDialog CourseSyllabusDialog;
+    @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;
     @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
     @ViewChild(StudentPrfileListDialog) studentProfileListDialog: StudentPrfileListDialog;
 
@@ -48,11 +48,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                 return _.flatten(courses);
             })
             .subscribe(courses => {
-                this.courses = _.uniq(courses, function(course) {
+                courses = _.uniq(courses, function(course) {
                     return course.id;
                 });
-                _.each(this.courses, function(course) {
-    
+                _.each(courses, function(course) {
                     if (course.syllabus_id)
                         CourseUnit.countBySyllabus(self, course.syllabus_id).subscribe(count => {
                             course.unit_count = count;
@@ -64,12 +63,13 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                     });
 
                 });
+                this.courses = courses;
             });
         });
     }
 
     getCourseSyllabus(course:Course):Observable<any> {
-        return CourseSyllabus.byCourse(this, course.id).flatMap(syllabus => {
+        return CourseSyllabus.byCourse(this, course.id).flatMap((syllabus:CourseSyllabus) => {
             if (syllabus)
                 return Observable.of(syllabus);
             else {
@@ -88,13 +88,13 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     studyCourse(course:Course) {
-        if (course.syllabus_id && course.status =='published')
-            this.router.navigate('/lms/course/study',{syllabusId:course.syllabus_id})
+       // if (course.syllabus_id && course.status =='published')
+       //     this.router.navigate('/lms/course/study',{syllabusId:course.syllabus_id})
     }
 
 
     manageStudent(member:CourseMember, course:Course) {
-       this.studentProfileListDialog.show(member, course);
+       //this.studentProfileListDialog.show(member, course);
     }
 
     manageClass(member: CourseMember, course: Course) {

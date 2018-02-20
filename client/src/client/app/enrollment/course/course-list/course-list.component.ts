@@ -32,7 +32,6 @@ export class CourseListComponent extends BaseComponent {
 
     constructor(private treeUtils: TreeUtils) {
         super();
-        this.filterGroups = [];
     }
 
     ngOnInit() {

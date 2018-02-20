@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
@@ -18,7 +18,7 @@ import { SelectItem } from 'primeng/api';
     selector: 'etraining-class-conference-dialog',
     templateUrl: 'class-conference.dialog.component.html',
 })
-export class ClassConferenceDialog extends BaseDialog {
+export class ClassConferenceDialog extends BaseComponent {
 
 	display: boolean;
 	courseClass: CourseClass;
@@ -46,12 +46,12 @@ export class ClassConferenceDialog extends BaseDialog {
 			CourseMember.listByClass(this, courseClass.id).subscribe(members => {
 				this.members =  members;
 				_.each(members, function(member) {
-					ConferenceMember.byCourseMember(self, member.id).subscribe(conferenceMember => {
+					ConferenceMember.byCourseMember(self, member["id"]).subscribe(conferenceMember => {
 						if (conferenceMember) {
-							member.conferenceMember = conferenceMember;
-							member.is_active = conferenceMember.is_active;
+							member["conferenceMember"] = conferenceMember;
+							member["is_active"] = conferenceMember.is_active;
 						} else
-							member.is_active = false;
+							member["is_active"] = false;
 					});
 				});
 			});
@@ -86,8 +86,8 @@ export class ClassConferenceDialog extends BaseDialog {
 							conferenceMember.room_member_ref =  roomMember.ref;
 							conferenceMember.course_member_id =  member.id;
 							conferenceMember.save(self).subscribe(()=> {
-								member.conferenceMember = conferenceMember;
-								member.is_active = true;
+								member["conferenceMember"] = conferenceMember;
+								member["is_active"] = true;
 							});
 						});
 					});
@@ -114,7 +114,7 @@ export class ClassConferenceDialog extends BaseDialog {
 				conferenceMember.is_active = true;
 				conferenceMember.save(this);
 			} else {
-				RoomMember.createRoomMember(this, member.name, member.image, this.room.id).subscribe(conferenceMember => {
+				RoomMember.createRoomMember(this, member.name, member.image, this.room.id).subscribe(roomMember => {
 					var conferenceMember = new ConferenceMember();
 					conferenceMember.conference_id =  this.conference.id;
 					conferenceMember.room_member_ref =  roomMember.ref;

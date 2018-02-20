@@ -33,7 +33,7 @@ export class RoomMember extends BaseModel{
         });
     }
 
-    static createRoomMember(context:APIContext, name: string, avatar: string, roomId: mumber):Observable<any> {
+    static createRoomMember(context:APIContext, name: string, avatar: string, roomId: number):Observable<any> {
         var roomMember = new RoomMember();
         roomMember.room_id =  roomId;
         roomMember.name =  name;

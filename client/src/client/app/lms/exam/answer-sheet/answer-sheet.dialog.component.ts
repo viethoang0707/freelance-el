@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/group.model';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/exam.model';
 import { ExamQuestion } from '../../../shared/models/exam-question.model';
 import { Answer } from '../../../shared/models/answer.model';
@@ -21,16 +21,17 @@ import 'rxjs/add/observable/timer'; import * as _ from 'underscore';
     selector: 'etraining-answer-sheet-dialog',
     templateUrl: 'answer-sheet.dialog.component.html',
 })
-export class AnswerSheetDialog extends BaseDialog<Course> {
+export class AnswerSheetDialog extends BaseComponent {
 
     display: boolean;
-    qIndex: 0;
+    qIndex: number;
     examQuestions: ExamQuestion[];
     answers: Answer[];
     member: ExamMember;
     exam: Exam;
     currentAnswer: Answer;
     currentQuestion: ExamQuestion;
+    submission: Submission;
 
     @ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
     componentRef: any;
@@ -50,7 +51,7 @@ export class AnswerSheetDialog extends BaseDialog<Course> {
         this.exam = exam;
         this.member = member;
         this.qIndex = 0;
-        Submission.byMember(this, this.member.id).subscribe(submit => {
+        Submission.byMember(this, this.member.id).subscribe((submit:Submission) => {
             if (submit) {
                 this.submission = submit;
                 this.startReview();

@@ -31,9 +31,9 @@ export class Group extends BaseModel{
     }
 
     static listBySyllabus(context:APIContext, sylId:number):Observable<any> {
-        return CourseUnit.listBySyllabus(this, sylId).flatMap(units => {
+        return CourseUnit.listBySyllabus(context, sylId).flatMap(units => {
             var groupIds = _.pluck(units, 'group_id');
-            return Group.array(this, groupIds);
+            return Group.array(context, groupIds);
         });
     }
 

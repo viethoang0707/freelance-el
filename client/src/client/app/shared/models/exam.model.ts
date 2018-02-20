@@ -43,7 +43,7 @@ export class Exam extends BaseModel{
     allow_navigation: boolean;
     publish_score: boolean;
 
-    get IsAvailable():string {
+    get IsAvailable():boolean {
         if (this.status !='published')
             return false;
         var now = new Date();

@@ -1,3 +1,4 @@
+import '../helpers/reflect';
 import { BaseModel } from './base.model';
 
 export class ModelRegister

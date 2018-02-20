@@ -25,15 +25,21 @@ export class Submission extends BaseModel{
     @FieldProperty<Date>()
     start: Date;
 
-    static byUser( context:APIContext, userId: number): Observable<any[]> {
+    static byUser( context:APIContext, userId: number): Observable<any> {
         return Submission.search(context,[],"[('user_id','=',"+userId+")]").map(submits =>{
-            return submits.length ? submits[0]: null;
+            if (submits.length)
+                return submits[0];
+            else
+                return null;
         });
     }
 
-    static byMember( context:APIContext, member_id: number): Observable<any[]> {
+    static byMember( context:APIContext, member_id: number): Observable<any> {
         return Submission.search(context,[],"[('member_id','=',"+member_id+")]").map(submits =>{
-            return submits.length ? submits[0]: null;
+            if (submits.length)
+                return submits[0];
+            else
+                return null;
         });
     }
 }
