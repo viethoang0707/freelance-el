@@ -1,7 +1,7 @@
 import { GROUP_CATEGORY} from './constants';
 import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from './decorator';
+import { Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
 
 @Model('etraining.certificate')
@@ -22,12 +22,13 @@ export class Certificate extends BaseModel{
     name:string;
     course_id: number;
     member_id: number;
+    @FieldProperty<Date>()
     date_issue:Date;
     attachment_id: number;
     url:string;
 
     static byMember( context:APIContext, memberId: number): Observable<any[]> {
-        return this.search([],"[('member_id','!=',"+memberId+")]",context)
+        return this.search(context,[],"[('member_id','!=',"+memberId+")]")
         .map(certificates => {
             return certificates[0]}
          );

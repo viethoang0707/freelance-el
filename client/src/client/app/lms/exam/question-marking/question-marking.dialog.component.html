@@ -1,0 +1,28 @@
+<p-dialog header="{{'Marking candidate'}}" [(visible)]="display" modal="true" width="960" [responsive]="true" appendTo="body">
+  <p-card>
+    <p-header>
+      <span>
+          {{'Candidate'|translate}} {{member.name}}
+        </span>
+    </p-header>
+    <div *ngFor="let answer of answers" class="ui-g">
+      <div class="ui-g-12 ">
+        <label>{{'Question: '|translate}} {{questions[answer.question_id].title}} </label>
+        <p [innerHTML]="questions[answer.question_id].content"></p>
+      </div>
+      <div class="ui-g-12 ">
+        <label>{{'Answer'|translate}}</label>
+        <p [innerHTML]="answer.text"></p>
+      </div> 
+      <div class="ui-g-12 ">
+        <label>{{'Score'|translate}}</label>
+        <p-spinner size="30" [(ngModel)]="answer.score" [min]="0" [max]="questions[answer.question_id].score"></p-spinner>
+      </div>             
+    </div>
+    </p-card>
+    <p-footer>
+      <button type="submit" pButton icon="fa-check" (click)="save()" label="{{'Save'|translate}}"></button>
+      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+  
+</p-dialog>

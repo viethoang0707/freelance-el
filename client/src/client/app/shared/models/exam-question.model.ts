@@ -17,14 +17,15 @@ export class ExamQuestion extends BaseModel{
 		this.type = undefined;
         this.level = undefined;
         this.group_id = undefined;
-        this.option_ids = undefined;
         this.question_id = undefined;
-        this.content_id = undefined;
+        this.exam_id = undefined;
         this.score = undefined;
         this.order = undefined;
+        this.group_id__DESC__ = undefined;
 	}
+
     question_id: number;
-    content_id: number;
+    exam_id: number;
     score: number;
     order: number;
     level: number;
@@ -34,6 +35,24 @@ export class ExamQuestion extends BaseModel{
     type: string;
     level: number;
     group_id: number;
-    option_ids: number[];
+    group_id__DESC__: string;
+
+    static listByExam( context:APIContext, examId: number): Observable<any[]> {
+        return ExamQuestion.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
+
+    static countByExam( context:APIContext, examId: number): Observable<any[]> {
+        return ExamQuestion.count(context,"[('exam_id','=',"+examId+")]");
+    }
+
+    static listOpenQuestionByExam( context:APIContext, examId: number): Observable<any[]> {
+        return ExamQuestion.search(context,[],"[('exam_id','=',"+examId+"),('type','=','ext')]");
+    }
+
+    static byQuestion( context:APIContext, questionId: number): Observable<any[]> {
+        return ExamQuestion.search(context,[],"[('question_id','=',"+questionId+")]").map(questions =>{
+            return questions.length ? questions[0]: null;
+        });
+    }
 
 }

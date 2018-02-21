@@ -11,7 +11,7 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-lms-course-study',
+    selector: 'etraining-course-study',
     templateUrl: 'course-study.component.html',
 })
 export class CourseStudyComponent extends BaseComponent {

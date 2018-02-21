@@ -5,7 +5,7 @@ import { Model } from './decorator';
 import { APIContext } from './context';
 
 @Model('etraining.syllabus')
-export class Syllabus extends BaseModel{
+export class CourseSyllabus extends BaseModel{
 
     // Default constructor will be called by mapper
     constructor(){
@@ -13,16 +13,18 @@ export class Syllabus extends BaseModel{
 		
 		this.name = undefined;
 		this.course_id = undefined;
-		this.unit_ids = undefined;
-		this.member_ids = undefined;
-        this.material_ids = undefined;
-        this.faq_ids = undefined;
 	}
 
     name:string;
     course_id: number;
-    unit_ids: number[];
-    member_ids: number[];
-    faq_ids: number[];
-    material_ids: number[];
+
+    static byCourse(context:APIContext, courseId: number):Observable<any> {
+        return CourseSyllabus.search(context,[],"[('course_id','=',"+courseId+")]")
+        .map(syllabi => {
+            if (syllabi.length)
+                return syllabi[0];
+            else
+                return null;
+        });
+    }
 }

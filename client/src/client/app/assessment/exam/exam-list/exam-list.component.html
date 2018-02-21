@@ -7,6 +7,7 @@
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedExam"></button>
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedExam"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" [disabled]="!selectedExam"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <p-selectButton [options]="viewModes" [(ngModel)]="viewMode" name="view" ></p-selectButton>
@@ -56,8 +57,8 @@
                     </tr>
                 </ng-template>
             </p-table>
+            <etraining-exam-enrollment-dialog></etraining-exam-enrollment-dialog>
             <etraining-exam-dialog></etraining-exam-dialog>
-            <p-confirmDialog header="{{'Confirmation'|translate}}" width="300"></p-confirmDialog>
         </div>
     </div>
 </div>

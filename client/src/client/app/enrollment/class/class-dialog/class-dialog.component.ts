@@ -47,18 +47,13 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	ngOnInit() {
 		this.onShow.subscribe(object => {
 			if (object.start && object.end) {
-				this.rangeDates = [new Date(object.start), new Date(object.end)];
+				this.rangeDates = [object.start,object.end];
 			}
 			var lang = this.translateService.currentLang;
 			this.http.get(`/assets/i18n/calendar.${lang}.json`)
             .subscribe((res: Response) => {
             	this.locale = res.json();
             });
-            this.loadMembers();
-			this.items = [
-				{ label: this.translateService.instant('Student'), command: () => { this.add('student') } },
-				{ label: this.translateService.instant('Student'), command: () => { this.add('student') } }
-			];
 		});
 	}
 
@@ -67,56 +62,6 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 			this.object.start = this.rangeDates[0];
 			this.object.end = this.rangeDates[1];
 		}
-	}
-
-	add(role: string) {
-		var self = this;
-		this.usersDialog.show();
-		this.usersDialog.onSelectUsers.subscribe(users => {
-			this.processing = true;
-			var subscriptions = [];
-			_.each(users, function(user) {
-				var member = new CourseMember();
-				member.class_id = self.object.id;
-				member.role = role;
-				member.course_id = self.object.id;
-				member.user_id = user.id;
-				member.status = 'active';
-				member.enroll_status = 'registered';
-				member.date_register = new Date();
-				subscriptions.push(member.save(self));
-			});
-			Observable.forkJoin(...subscriptions).subscribe(() => {
-				this.processing = false;
-				this.loadMembers();
-			});
-		});
-	}
-
-	edit() {
-		if (this.selectedMember)
-			this.memberDialog.show(this.selectedMember);
-	}
-
-	delete() {
-		if (this.selectedMember)
-			this.confirmationService.confirm({
-				message: this.translateService.instant('Are you sure to delete ?'),
-				accept: () => {
-					this.selectedMember.data.delete(this).subscribe(() => {
-						this.loadMembers();
-					})
-				}
-			});
-	}
-
-	loadMembers() {
-		if (this.object.id)
-			CourseMember.listByClass(this, this.object.id).subscribe(members => {
-				this.members = members;
-			});
-		else
-			this.members = [];
 	}
 }
 

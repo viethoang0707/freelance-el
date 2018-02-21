@@ -7,7 +7,6 @@ import { AccountRoutes } from '../account/account-routing';
 import { EnrollmentRoutes } from '../enrollment/enrollment-routing';
 import { AssessmentRoutes } from '../assessment/assessment-routing';
 import { ReportRoutes } from '../report/report-routing';
-import { CMSRoutes } from '../cms/cms-routing';
 import { LMSRoutes } from '../lms/lms-routing';
 import { DashboardRoutes } from '../dashboard/dashboard-routing';
 
@@ -25,7 +24,6 @@ import { DashboardRoutes } from '../dashboard/dashboard-routing';
           ...EnrollmentRoutes,
           ...AssessmentRoutes,
           ...ReportRoutes,
-          ...CMSRoutes,
           ...LMSRoutes
         ]
       },

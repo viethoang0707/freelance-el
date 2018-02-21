@@ -3,6 +3,8 @@ import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from './decorator';
 import { APIContext } from './context';
+import { CourseUnit } from './course-unit.model';
+import * as _ from 'underscore';
 
 @Model('res.groups')
 export class Group extends BaseModel{
@@ -16,7 +18,6 @@ export class Group extends BaseModel{
 		this.order = undefined;
 		this.code = undefined;
         this.parent_id = undefined;
-        this.child_ids = undefined;
 	}
 
     name:string;
@@ -24,10 +25,16 @@ export class Group extends BaseModel{
     code: string;
     order: string;
     parent_id: number;
-    child_ids: number[];
 
     static listByCategory(context:APIContext, category):Observable<any> {
-        return Group.search([], "[('category','=','"+category+"')]",context);
+        return Group.search(context,[], "[('category','=','"+category+"')]");
+    }
+
+    static listBySyllabus(context:APIContext, sylId:number):Observable<any> {
+        return CourseUnit.listBySyllabus(this, sylId).flatMap(units => {
+            var groupIds = _.pluck(units, 'group_id');
+            return Group.array(this, groupIds);
+        });
     }
 
 }

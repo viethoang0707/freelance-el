@@ -19,25 +19,35 @@ export class Course extends BaseModel{
         this.mode = undefined;
         this.logo = undefined;
         this.group_id = undefined;
-        this.syllabus_ids = undefined;
+        this.author_id = undefined;
+        this.author_name = undefined;
+        this.syllabus_id = undefined;
+        this.group_id__DESC__ = undefined;
 	}
 
     name:string;
+    syllabus_id:number;
     group_id:number;
+    group_id__DESC__: string;
+    author_name:string;
+    author_id:number;
     summary: string;
     code: string;
     description: string;
     status: string;
     mode: string;
     logo: string;
-    syllabus_ids: number[];
+
+    static listByAuthor(context:APIContext, authorId):Observable<any> {
+        return Course.search(context,[], "[('author_id','=',"+authorId+")]");
+    }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return Course.search([], "[('group_id','=',"+groupId+")]",context);
+        return Course.search(context,[], "[('group_id','=',"+groupId+")]");
     }
 
     static listByGroupAndMode(context:APIContext, groupId, mode):Observable<any> {
-        return Course.search([], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]",context);
+        return Course.search(context,[], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
 
 }

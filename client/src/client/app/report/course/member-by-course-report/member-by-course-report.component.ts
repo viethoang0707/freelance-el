@@ -80,21 +80,17 @@ export class MemberByCourseReportComponent extends BaseComponent{
     }
 
     generateReport(courses:Course[]):Observable<any> {
-    	var records = [];
     	var self = this;
     	var subscriptions =[];
     	_.each(courses, function(course:Course) {
-    		var subscription = CourseMember.listByCourse(self, course.id).merge(members => {
-    			return UserLog.courseActivity(self, course.id).subscribe(logs => {
-    				var record = self.generateReportRow(course, members, logs);
-    				records.push(record);
+    		var subscription = CourseMember.listByCourse(self, course.id).flatMap(members => {
+    			return UserLog.courseActivity(self, course.id).map(logs => {
+    				return self.generateReportRow(course, members, logs);
 	    		});
     		});	
     		subscriptions.push(subscription);	
     	});		
-    	return Observable.forkJoin(...subscriptions).map(()=> {
-    		return records;
-    	});
+    	return Observable.zip(...subscriptions);
     }
 
     generateReportRow(course: Course, members: CourseMember[], logs: UserLog[]):any {
@@ -117,7 +113,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
 	    record["percentage_member_inprogress"] = members.length ? Math.floor(inprogressMembers.length/members.length*100):0;
 	    record["total_member_completed"] = completededMembers.length;
 	    record["percentage_member_completed"] = members.length ? Math.floor(completededMembers.length/members.length*100):0;
-	    var result = this.reportUtils.analyzeActivity(logs);
+	    var result = this.reportUtils.analyzeCourseActivity(logs);
 	    record["time_spent"] =  this.timePipe.transform(result[2],'min');
 	    return record;
     }

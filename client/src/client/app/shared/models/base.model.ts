@@ -67,7 +67,7 @@ export abstract class BaseModel {
     }
 
 
-    static search(fields:string[], domain:string, context:APIContext):Observable<any[]> {
+    static search(context:APIContext, fields:string[], domain:string):Observable<any[]> {
         var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
@@ -79,22 +79,29 @@ export abstract class BaseModel {
     }
 
     static all( context:APIContext): Observable<any[]> {
-        return this.search([],'[]',context);
+        return this.search(context,[],'[]');
     }
 
-    static array(ids: number[], context:APIContext): Observable<any[]> {
+    static array(context:APIContext,ids: number[]): Observable<any[]> {
+        if (ids.length == 0)
+            return Observable.of([]);
+        var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
-        return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint);
+        return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint).map(items => {
+            return _.map(items, function(item) {
+               return  MapUtils.deserialize(self, item);
+            });
+        });;
     }
 
     static allWithInactive(context:APIContext):Observable<any[]> {
         var domain = "['|',('active','=',True),('active','=',False)]";
-        return this.search([], domain, context);
+        return this.search(context,[], domain);
     }
 
 
-    static executeRemote(method:string, paramsList: string[], paramsDict: any, context:APIContext):Observable<any> {
+    static executeRemote(context:APIContext, method:string, paramsList: string[], paramsDict: any):Observable<any> {
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.execute(model, method, paramsList, paramsDict, cloud_acc.id, cloud_acc.api_endpoint);

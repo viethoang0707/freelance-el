@@ -1,7 +1,7 @@
 import { GROUP_CATEGORY} from './constants';
 import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from './decorator';
+import { Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
 
 @Model('etraining.course_class')
@@ -16,7 +16,6 @@ export class CourseClass extends BaseModel{
 		this.course_id = undefined;
         this.supervisor_id = undefined;
         this.supervisor_name = undefined;
-		this.member_ids = undefined;
         this.start = undefined;
         this.end = undefined;
 	}
@@ -26,11 +25,13 @@ export class CourseClass extends BaseModel{
     supervisor_name:string;
     course_id: number;
     supervisor_id: number;
-    member_ids: number[];
+
+    @FieldProperty<Date>()
     start: Date;
+    @FieldProperty<Date>()
     end: Date;
 
     static listByCourse(context:APIContext, courseId):Observable<any> {
-        return CourseClass.search([], "[('course_id','=',"+courseId+")]",context);
+        return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
     }
 }

@@ -60,7 +60,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
     selectExam() {
     	if (this.selectedExam) {
     		ExamMember.listByExam(this, this.selectedExam.id).subscribe(members => {
-				ExamGrade.listByExam(this,this.selectedExam.id).merge(grades => {
+				ExamGrade.listByExam(this,this.selectedExam.id).subscribe(grades => {
 					this.generateReport(this.selectedExam, grades, members).subscribe(records => {
 		    			this.records = records;
 		    		});
@@ -71,23 +71,21 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
 
 
     generateReport(exam: Exam, grades: ExamGrade[], members: ExamMember[]):Observable<any> {
-    	var records = [];
     	var self = this;
-    	var subscriptions =[];
+        var subscriptions =[];
     	_.each(members, function(member:ExamMember) {
-    		var subscription = UserLog.userExamActivity(self, member.user_id, exam.id).merge(logs => {
-    			return Submission.byMember(self, member.id).merge(submit => {
-    				return Answer.listBySubmit(self, submit.id).subscribe(answers => {
-    					var record = self.generateReportRow(exam, grades, member, answers, logs);
-    					records.push(record);
+    		var subscription = UserLog.userExamActivity(self, member.user_id, exam.id).flatMap(logs => {
+    			return Submission.byMember(self, member.id).flatMap(submit => {
+                    if (!submit)
+                        return Observable.of([]);
+    				return Answer.listBySubmit(self, submit.id).map(answers => {
+    					return self.generateReportRow(exam, grades, member, answers, logs);
     				});
     			});
     		});	
     		subscriptions.push(subscription);	
     	});		
-    	return Observable.forkJoin(...subscriptions).map(()=> {
-    		return records;
-    	});
+    	return Observable.zip(...subscriptions);
     }
 
     generateReportRow(exam:Exam, grades: ExamGrade[], member: ExamMember, answers: Answer[], logs: UserLog[]):any {
@@ -98,11 +96,11 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
 	    record["score"] = _.reduce(answers, function (sum, ans) {
     		return sum + ans.score;
 		},0);
-	    var result = this.reportUtils.analyzeActivity(logs);
-	    if (result[0])
+	    var result = this.reportUtils.analyzeExamActivity(logs);
+	    if (result[0] != Infinity)
 	    	record["date_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
     	var grade = _.find(grades, function(obj) {
-    		return obj.min <= record["score"] && obj.max >= record["score"]
+    		return obj.min_score <= record["score"] && obj.max_score >= record["score"]
     	});
     	if (grade)
     		record["grade"] = grade.name;

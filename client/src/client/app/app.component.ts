@@ -10,10 +10,9 @@ import { BaseComponent } from './shared/components/base/base.component';
 	selector: 'etraining-app',
 	template: `<router-outlet></router-outlet>`
 })
-export class AppComponent extends BaseComponent {
+export class AppComponent {
 
 	constructor(private langService: LangService) {
-		super();
 		langService.initSetting();
 		console.log('Environment config', Config);
 	}

@@ -1,0 +1,17 @@
+<p-dialog header="{{exam.name}}" [(visible)]="display" modal="true" width="960" [responsive]="true" [closeOnEscape]="false" [closable]="false">
+    <p-card>
+      <p-header>
+        <span class="exam-question-title">
+          {{'Question'|translate}} {{(qIndex+1) +'/' + examQuestions.length}} {{'-' + currentQuestion.title}}
+        </span>
+        <span class="exam-timer"><i class="material-icons">access_time</i> {{ timeLeft | clock  }}</span>
+        <p-progressBar [value]="progress"></p-progressBar>
+      </p-header>
+        <ng-template question-container></ng-template>
+      <p-footer>
+          <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
+          <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="next()" *ngIf="qIndex < examQuestions.length-1"></button>
+          <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="submitExam()" *ngIf="qIndex==examQuestions.length-1"></button>
+      </p-footer>
+    </p-card>
+</p-dialog>

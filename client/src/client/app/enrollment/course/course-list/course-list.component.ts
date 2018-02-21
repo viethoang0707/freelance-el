@@ -8,6 +8,7 @@ import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, COURSE_STATUS } from '../../.
 import { Course } from '../../../shared/models/course.model';
 import { Group } from '../../../shared/models/group.model';
 import { CourseDialog } from '../course-dialog/course-dialog.component';
+import { CourseEnrollDialog } from '../../enrollment-dialog/enrollment-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 
@@ -20,6 +21,7 @@ import { TreeNode } from 'primeng/api';
 export class CourseListComponent extends BaseComponent {
 
     @ViewChild(CourseDialog) courseDialog: CourseDialog;
+    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
 
     tree: TreeNode[];
     selectedCourse: Course;
@@ -56,6 +58,11 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
+    enroll() {
+        if (this.selectedCourse)
+            this.courseEnrollDialog.enrollCourse(this.selectedCourse);
+    }
+
     delete() {
         if (this.selectedCourse)
             this.confirmationService.confirm({
@@ -63,6 +70,7 @@ export class CourseListComponent extends BaseComponent {
                 accept: () => {
                     this.selectedCourse.delete(this).subscribe(() => {
                         this.loadCourses();
+                        this.selectedCourse = null;
                     })
                 }
             });

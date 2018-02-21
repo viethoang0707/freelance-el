@@ -1,0 +1,41 @@
+<p-dialog header="{{'Select questio'|translate}}" [(visible)]="display" modal="true" width="600" height="100%" [responsive]="true" appendTo="body">
+  <div class="ui-g ui-fluid form-group">
+    <div class="ui-g-4">
+      <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode" ></p-tree>
+    </div>
+    <div class="ui-g-8">
+      <p-table  [value]="questions" [(selection)]="selectedQuestions" >
+        <ng-template pTemplate="header" >
+          <tr>
+            <th style="width: 2.25em">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>
+              {{'Title'|translate}}
+            </th>
+            <th>
+              {{'Type'|translate}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </td>
+            <td >
+              {{rowData.title}}
+            </td>
+            <td >
+              {{QUESTION_TYPE[rowData.type]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <p-footer>
+    <button type="button" [disabled]="!selectedQuestions.length" pButton icon="fa-check" label="{{'OK'|translate}}" (click)="selectCourse()"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog>
