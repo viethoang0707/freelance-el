@@ -50,6 +50,7 @@ export class ProjectConfig extends SeedConfig {
             { src: 'quill/dist/quill.core.css', inject: true },
             { src: 'quill/dist/quill.snow.css', inject: true },
             { src: 'quill/dist/quill.js', inject: true },
+            { src: 'file-saver/FileSaver.js', inject: true }
         ];
 
         // Add `local` third-party libraries to be injected/bundled.
@@ -99,18 +100,10 @@ export class ProjectConfig extends SeedConfig {
                 }
             },
             {
-                name: 'file-saver',
-                path: 'node_modules/file-saver',
-                packageMeta: {
-                    main: 'FileSaver.js',
-                    defaultExtension: 'js'
-                }
-            },
-            {
                 name: 'xlsx',
                 path: 'node_modules/xlsx',
                 packageMeta: {
-                    main: 'dist/xlsx.full.min.js',
+                    main: 'xlsx.js',
                     defaultExtension: 'js'
                 }
             },
