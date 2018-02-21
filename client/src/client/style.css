@@ -22,3 +22,7 @@ body
 .layout-content{
     padding-bottom: 65px !important;
 }
+
+.ui-table-tbody td{
+  text-align: center;
+}
