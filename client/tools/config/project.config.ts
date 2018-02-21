@@ -58,6 +58,7 @@ export class ProjectConfig extends SeedConfig {
             { src: `${this.ASSETS_SRC}/fonts/flag-icon-css/css/flag-icon.min.css`, inject: true, vendor: true },
             { src: `${this.ASSETS_SRC}/layout/css/layout-reflection.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/theme-indigo.css`, inject: true, vendor: false },
+            { src: `${this.ASSETS_SRC}/theme/style.css`, inject: true, vendor: false },
         ];
 
         this.APP_LOCALE = 'vn';
@@ -107,9 +108,9 @@ export class ProjectConfig extends SeedConfig {
             },
             {
                 name: 'xlsx',
-                path: 'node_modules/xlsx/',
+                path: 'node_modules/xlsx',
                 packageMeta: {
-                    main: 'xlsx.js',
+                    main: 'dist/xlsx.full.min.js',
                     defaultExtension: 'js'
                 }
             },
