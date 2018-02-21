@@ -103,7 +103,7 @@ export class ProjectConfig extends SeedConfig {
                 name: 'xlsx',
                 path: 'node_modules/xlsx',
                 packageMeta: {
-                    main: 'xlsx.js',
+                    main: 'dist/xlsx.js',
                     defaultExtension: 'js'
                 }
             },
