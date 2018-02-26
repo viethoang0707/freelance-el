@@ -1,7 +1,7 @@
 import { GROUP_CATEGORY} from './constants';
 import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from './decorator';
+import { Model, FieldProperty } from './decorator';
 import { APIContext } from './context';
 
 @Model('etraining.course_member')
@@ -12,7 +12,6 @@ export class CourseMember extends BaseModel{
         super();
 		
 		this.course_id = undefined;
-        this.syllabus_id = undefined;
 		this.class_id = undefined;
         this.date_register = undefined;
         this.status = undefined;
@@ -26,22 +25,24 @@ export class CourseMember extends BaseModel{
         this.phone = undefined;
         this.user_id = undefined;
         this.login = undefined;
+        this.image = undefined;
         this.etraining_group_id = undefined;
         this.etraining_group_id__DESC__ = undefined;
 	}
 
     course_id: number;
     user_id: number;
-    syllabus_id: number;
     class_id: number;
     status: string;
     role: string;
     name: string;
     login: string;
+    image: string;
     course_name: string;
     course_mode: string;
     course_code: string;
     enroll_status: string;
+    @FieldProperty<Date>()
     date_register: Date;
     email: string;
     phone: string;

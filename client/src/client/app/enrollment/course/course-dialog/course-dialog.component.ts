@@ -25,7 +25,7 @@ export class CourseDialog extends BaseDialog<Course> {
 	items: MenuItem[];
 	selectedNode: TreeNode;
 	courseStatus: SelectItem[];
-	
+	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	constructor(private treeUtils: TreeUtils) {
 		super();
@@ -41,6 +41,20 @@ export class CourseDialog extends BaseDialog<Course> {
 		if (this.selectedNode) {
 			this.object.group_id = this.selectedNode.data.id;
 		}
+	}
+
+	selectAuthor() {
+		this.usersDialog.show();
+		this.usersDialog.onSelectUsers.subscribe(users => {
+			if (users.length > 1) {
+				this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translateService.instant('You can select only one author.') });
+				return;
+			} else if (users.length == 1) {
+				var author = users[0];
+				this.object.author_id = author.id;
+				this.object.author_name = author.name;
+			}
+		});
 	}
 
 	ngOnInit() {

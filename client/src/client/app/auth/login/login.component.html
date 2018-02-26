@@ -9,9 +9,9 @@
                     <div class=" ui-g-12 ">
                         <h1>{{company.name}}</h1>
                     </div>
-                    <div class=" ui-g-12 ">
+                    <div class=" ui-g-12 "[hidden]="mode=='prod'" >
                         <span class="md-inputfield">
-                            <input type="text"  pInputText name="cloudid" [hidden]="mode=='prod'" [(ngModel)]="cloudid">
+                            <input type="text"  pInputText name="cloudid" [(ngModel)]="cloudid">
                             <label for="cloudid">{{'Cloud ID' | translate}}</label>
                         </span>
                     </div>

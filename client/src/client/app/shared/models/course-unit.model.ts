@@ -12,21 +12,31 @@ export class CourseUnit extends BaseModel{
         super();
 		
 		this.name = undefined;
-		this.group_id = undefined;
-		this.syllabus_id = undefined;
-		this.test_id = undefined;
         this.video_id = undefined;
         this.lecture = undefined;
         this.video_url = undefined;
         this.type = undefined;
+        this.order = undefined;
+        this.parent_id = undefined;
+        this.syllabus_id = undefined;
+        this.icon = undefined;
 	}
 
     name:string;
-    group_id: number;
+    parent_id: number;
+    order: number;
+    icon: string;
     syllabus_id: number;
-    test_id: number;
     video_id: number;
     lecture: string;
     video_url: string;
     type: string;
+
+    static listBySyllabus(context:APIContext, sylId:number):Observable<any> {
+        return CourseUnit.search(context,[], "[('syllabus_id','=',"+sylId+")]");
+    }
+
+    static countBySyllabus(context:APIContext, sylId:number):Observable<any> {
+        return CourseUnit.count(context, "[('syllabus_id','=',"+sylId+")]");
+    }
 }

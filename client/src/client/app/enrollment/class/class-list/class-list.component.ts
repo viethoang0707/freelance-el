@@ -67,6 +67,39 @@ export class CourseClassListComponent extends BaseComponent implements OnInit {
             this.classes = classes;
         });
     }
+
+    add() {
+        if (this.selectedCourse) {
+            var clazz = new CourseClass();
+            clazz.course_id =  this.selectedCourse.id;
+            this.classDialog.show(clazz);
+            this.classDialog.onCreateComplete.subscribe(() => {
+                this.loadClasses();
+            });
+        }
+        
+    }
+
+    edit() {
+        if (this.selectedClass)
+            this.classDialog.show(this.selectedClass);
+        this.classDialog.onUpdateComplete.subscribe(() => {
+            this.loadClasses();
+        });
+    }
+
+    delete() {
+        if (this.selectedClass)
+            this.confirmationService.confirm({
+                message: this.translateService.instant('Are you sure to delete ?'),
+                accept: () => {
+                    this.selectedClass.delete(this).subscribe(() => {
+                        this.loadClasses();
+                        this.selectedClass = null;
+                    })
+                }
+            });
+    }
    
 
 }

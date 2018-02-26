@@ -36,6 +36,7 @@ export class ProjectConfig extends SeedConfig {
         // Add `NPM` third-party libraries to be injected/bundled.
         this.NPM_DEPENDENCIES = [
             ...this.NPM_DEPENDENCIES,
+            { src: 'reflect-metadata/Reflect.js', inject: true },
             { src: 'jquery/dist/jquery.min.js', inject: true },
             { src: 'primeng/resources/primeng.css', inject: true },
             { src: `primeng/resources/themes/${this.PRIME_NG_THEME}/theme.css`, inject: true },
@@ -46,9 +47,6 @@ export class ProjectConfig extends SeedConfig {
             { src: 'moment/min/moment.min.js', inject: true },
             { src: 'fullcalendar/dist/fullcalendar.js', inject: true },
             { src: 'fullcalendar/dist/fullcalendar.css', inject: true },
-            // { src: 'fullcalendar/dist/fullcalendar.print.css', inject: true },
-            // { src: 'fullcalendar/dist/gcal.min.js', inject: true },
-            // { src: 'fullcalendar/dist/locale-all.js', inject: true },
             { src: 'quill/dist/quill.core.css', inject: true },
             { src: 'quill/dist/quill.snow.css', inject: true },
             { src: 'quill/dist/quill.js', inject: true },
@@ -60,6 +58,7 @@ export class ProjectConfig extends SeedConfig {
             { src: `${this.ASSETS_SRC}/fonts/flag-icon-css/css/flag-icon.min.css`, inject: true, vendor: true },
             { src: `${this.ASSETS_SRC}/layout/css/layout-reflection.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/theme-indigo.css`, inject: true, vendor: false },
+            { src: `${this.ASSETS_SRC}/theme/style.css`, inject: true, vendor: false },
         ];
 
         this.APP_LOCALE = 'vn';
@@ -101,11 +100,19 @@ export class ProjectConfig extends SeedConfig {
             },
             {
                 name: 'file-saver',
-                path: 'node_modules/file-saver/FileSaver.js'
+                path: 'node_modules/file-saver',
+                packageMeta: {
+                    main: 'FileSaver.js',
+                    defaultExtension: 'js'
+                }
             },
             {
                 name: 'xlsx',
-                path: 'node_modules/xlsx/xlsx.js'
+                path: 'node_modules/xlsx',
+                packageMeta: {
+                    main: 'dist/xlsx.full.min.js',
+                    defaultExtension: 'js'
+                }
             },
         ];
 

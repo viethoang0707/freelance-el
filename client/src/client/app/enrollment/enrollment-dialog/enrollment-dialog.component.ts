@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Group } from '../../shared/models/group.model';
 import { BaseDialog } from '../../shared/components/base/base.dialog';
 import { Course } from '../../shared/models/course.model';
+import { User } from '../../shared/models/user.model';
 import { CourseClass } from '../../shared/models/course-class.model';
 import { CourseMember } from '../../shared/models/course-member.model';
 import * as _ from 'underscore';
@@ -23,11 +24,13 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	display: boolean;
 	processing: boolean;
-	selectedMember: CourseMember;
-	members: CourseMember[];
+	selectedStudent: CourseMember;
+	students: CourseMember[];
+	selectedTeacher: CourseMember;
+	teachers: CourseMember[];
 	course: Course;
 	courseClass: CourseClass;
-	items: SelectItem[];
+	items: any[];
 	@ViewChild(CourseMemberDialog) memberDialog: CourseMemberDialog;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -72,7 +75,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.usersDialog.onSelectUsers.subscribe(users => {
 			this.processing = true;
 			var subscriptions = [];
-			_.each(users, function(user) {
+			_.each(users, function(user:User) {
 				var member = new CourseMember();
 				if (self.courseClass) {
 					member.course_id = self.courseClass.course_id;
@@ -94,19 +97,21 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-	edit() {
-		if (this.selectedMember)
-			this.memberDialog.show(this.selectedMember);
+	edit(member:CourseMember) {
+		if (member)
+			this.memberDialog.show(member);
 	}
 
-	delete() {
-		if (this.selectedMember)
+	delete(member:CourseMember) {
+		if (member)
 			this.confirmationService.confirm({
 				message: this.translateService.instant('Are you sure to delete ?'),
 				accept: () => {
-					this.selectedMember.data.delete(this).subscribe(() => {
+					member.delete(this).subscribe(() => {
+						this.selectedStudent = null;
+						this.selectedTeacher = null;
 						this.loadMembers();
-					})
+					});
 				}
 			});
 	}
@@ -114,11 +119,25 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	loadMembers() {
 		if (this.course)
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
-				this.members = members;
+				this.students = _.filter(members, function(member) {
+					return member.role =='student';
+				});
+				this.selectedStudent = null;
+				this.teachers = _.filter(members, function(member) {
+					return member.role =='teacher';
+				});
+				this.selectedTeacher = null;
 			});
 		if (this.courseClass)
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
-				this.members = members;
+				this.students = _.filter(members, function(member) {
+					return member.role =='student';
+				});
+				this.selectedStudent = null;
+				this.teachers = _.filter(members, function(member) {
+					return member.role =='teacher';
+				});
+				this.selectedTeacher = null;
 			});
 	}
 }

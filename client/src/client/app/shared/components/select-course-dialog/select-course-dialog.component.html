@@ -35,7 +35,7 @@
     </div>
   </div>
   <p-footer>
-    <button type="button" [disabled]="!selectedCourse" pButton icon="fa-check" label="{{'OK'|translate}}" (click)="selectCourse()"></button>
+    <button type="button" [disabled]="!selectedCourses.length" pButton icon="fa-check" label="{{'OK'|translate}}" (click)="selectCourse()"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>

@@ -15,7 +15,7 @@ export class QuestionRegister
     }
 
     public register(type, ctor) {
-        this.registry[type]=ctor: ;
+        this.registry[type]=ctor ;
       }
 
     public lookup(type) {
@@ -27,6 +27,6 @@ export class QuestionRegister
 export function QuestionTemplate( args: any) {
     return (ctor: Function) => {
         QuestionRegister.Instance.register( args.type,ctor);
-    }
+    };
 }
 

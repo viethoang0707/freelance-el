@@ -3,8 +3,10 @@ import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/group.model';
+import { User } from '../../../shared/models/user.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { Exam } from '../../../shared/models/exam.model';
+import { Course } from '../../../shared/models/course.model';
 import { ExamMember } from '../../../shared/models/exam-member.model';
 import { Http, Response } from '@angular/http';
 import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
@@ -23,9 +25,10 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 	display: boolean;
 	processing: boolean;
 	exam: Exam;
-    items: MenuItem[];
-    members: ExamMember[];
-    selectedMember: ExamMember;
+    candidates: ExamMember[];
+    selectedCandidate: ExamMember;
+    supervisors: ExamMember[];
+    selectedSupervisor: ExamMember;
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
     EXAM_STATUS =  EXAM_STATUS;
     EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
@@ -35,10 +38,6 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 	
 	constructor() {
 		super();
-		this.items = [
-            {label: this.translateService.instant('Candidate'), command: ()=> { this.add('candidate')}},
-            {label: this.translateService.instant('Supervisor'), command: ()=> { this.add('supervisor')}}
-        ];
 	}
 
 	enroll(exam:Exam) {
@@ -59,7 +58,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
         this.usersDialog.onSelectUsers.subscribe(users => {
             this.processing = true;
             var subscriptions = [];
-            _.each(users, function(user) {
+            _.each(users, function(user:User) {
                 var member = new ExamMember();
                 member.role = role;
                 member.exam_id = self.exam.id;
@@ -75,26 +74,33 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
         });
     }
 
-    edit() {
-        if (this.selectedMember)
-            this.memberDialog.show(this.selectedMember);
+    edit(member:ExamMember) {
+        if (member)
+            this.memberDialog.show(member);
     }
 
-    delete() {
-        if (this.selectedMember)
-        this.confirmationService.confirm({
-            message: this.translateService.instant('Are you sure to delete ?'),
-            accept: () => {
-                this.selectedMember.delete(this).subscribe(()=> {
-                    this.loadMembers();
-                })
-            }
-        });
+    delete(member:ExamMember) {
+        if (member)
+            this.confirmationService.confirm({
+                message: this.translateService.instant('Are you sure to delete ?'),
+                accept: () => {
+                    member.delete(this).subscribe(()=> {
+                        this.selectedCandidate = null;
+                        this.selectedSupervisor = null;
+                        this.loadMembers();
+                    })
+                }
+            });
     }
 
     loadMembers() {
         ExamMember.listByExam(this, this.exam.id).subscribe(members => {
-                this.members = members;
+             this.candidates = _.filter(members, function(member) {
+                 return member.role =='candidate';
+             });
+             this.supervisors = _.filter(members, function(member) {
+                 return member.role =='supervisor';
+             });
         });
     }
 }

@@ -30,6 +30,8 @@ export class SelectCoursesDialog extends BaseComponent {
 	constructor(private treeUtils: TreeUtils) {
 		super();
 		this.display = false;
+		this.selectedCourses = [];
+		this.courses = [];
 	}
 
 	hide() {

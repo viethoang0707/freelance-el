@@ -21,7 +21,7 @@ export class ExcelService {
     const data: Blob = new Blob([buffer], {
       type: EXCEL_TYPE
     });
-    FileSaver(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+    FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
 
   public importFromExcelFile(file: any): Observable<any> {
@@ -39,4 +39,6 @@ export class ExcelService {
       reader.readAsArrayBuffer(file);
     });
   }
+
+
 }

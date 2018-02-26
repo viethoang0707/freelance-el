@@ -39,7 +39,7 @@ export class ExamListComponent extends BaseComponent {
         }];
         this.viewMode = 'list';
         this.header = {
-            left: 'prev,next today',
+            left: 'prev, next today',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         };
@@ -78,6 +78,7 @@ export class ExamListComponent extends BaseComponent {
                 accept: () => {
                     this.selectedExam.delete(this).subscribe(() => {
                         this.loadExams();
+                        this.selectedExam = null;
                     })
                 }
             });

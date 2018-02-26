@@ -32,7 +32,6 @@ export class CourseListComponent extends BaseComponent {
 
     constructor(private treeUtils: TreeUtils) {
         super();
-        this.filterGroups = [];
     }
 
     ngOnInit() {
@@ -70,6 +69,7 @@ export class CourseListComponent extends BaseComponent {
                 accept: () => {
                     this.selectedCourse.delete(this).subscribe(() => {
                         this.loadCourses();
+                        this.selectedCourse = null;
                     })
                 }
             });

@@ -3,6 +3,12 @@ import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET } from '@
 import { Subscription } from 'rxjs/Subscription';
 import { MenuItem } from 'primeng/primeng';
 
+export interface IBreadcrumb {
+    label: string,
+    queryParams: any,
+    routerLink: string
+}
+
 @Component({
     moduleId: module.id,
     selector: 'etraining-breadcrumb',
@@ -65,5 +71,6 @@ export class BreadcrumbComponent implements OnInit {
             //recursive
             return this.getBreadcrumbs(child, url, breadcrumbs);
         }
+        return breadcrumbs;
     }
 }

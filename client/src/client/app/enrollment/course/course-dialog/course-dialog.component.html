@@ -1,54 +1,60 @@
-<form novalidate (ngSubmit)="save()" #f="ngForm">
-  <p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true">
-    <p-scrollPanel [style]="{width: '100%', height: '520px'}">
-          <div class="ui-g ui-fluid form-group">
-            <div class="ui-g-12">
-              <p-selectButton [options]="courseStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
-            </div>
-            <div class="ui-g-12">
-              <label>{{'Parent group'|translate}}</label>
-              <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
-            </div>
-            <div class="ui-g-6">
-              <span class="md-inputfield">
+<p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false" width="960" height="100%" [responsive]="true">
+  <p-scrollPanel [style]="{width: '100%', height: '520px'}">
+    <form novalidate (ngSubmit)="save()" #f="ngForm" >
+      <div class="ui-g ui-fluid form-group">
+        <div class="ui-g-12">
+          <p-selectButton [options]="courseStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
+        </div>
+        <div class="ui-g-12">
+          <label>{{'Parent group'|translate}}</label>
+          <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+        </div>
+        <div class="ui-g-6">
+          <span class="md-inputfield">
                             <input type="text" pInputText [(ngModel)]="object.name" name="name" required>
                             <label>{{'Name'|translate}}</label>
                         </span>
-            </div>
-            <div class="ui-g-6">
-              <span class="md-inputfield">
+        </div>
+        <div class="ui-g-6">
+          <span class="md-inputfield">
                             <input type="text" pInputText [(ngModel)]="object.code" name="code">
                             <label>{{'Code'|translate}}</label>
                         </span>
+        </div>
+        <div class="ui-g-12 ">
+          <label>{{'Summary'|translate}}</label>
+          <textarea pInputTextarea [(ngModel)]="object.summary" name="summary"></textarea>
+        </div>
+        <div class="ui-g-12 ">
+          <label>{{'Description'|translate}}</label>
+          <textarea pInputTextarea [(ngModel)]="object.description" name="description"></textarea>
+        </div>
+        <div class="ui-g-12 ">
+          <div class="ui-g-6">
+            <label>{{'Logo'|translate}}</label>
+            <image-base64 [(src64)]="object.logo"></image-base64>
+          </div>
+          <div class="ui-g-6" style="margin-bottom:10px">
+            <label>{{'Mode'|translate}}</label>
+            <div style="margin-bottom:10px">
+              <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1"></p-radioButton>
             </div>
-            <div class="ui-g-12 ">
-              <label>{{'Summary'|translate}}</label>
-              <textarea pInputTextarea [(ngModel)]="object.summary" name="summary"></textarea>
-            </div>
-            <div class="ui-g-12 ">
-              <label>{{'Description'|translate}}</label>
-              <textarea pInputTextarea [(ngModel)]="object.description" name="description"></textarea>
-            </div>
-            <div class="ui-g-12 ">
-              <div class="ui-g-6">
-                <label>{{'Logo'|translate}}</label>
-                <image-base64 [(src64)]="object.logo"></image-base64>
-              </div>
-              <div class="ui-g-6" style="margin-bottom:10px">
-                <label>{{'Mode'|translate}}</label>
-                <div style="margin-bottom:10px">
-                  <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1"></p-radioButton>
-                </div>
-                <div style="margin-bottom:10px">
-                  <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode" inputId="opt2"></p-radioButton>
-                </div>
-              </div>
+            <div style="margin-bottom:10px">
+              <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode" inputId="opt2"></p-radioButton>
             </div>
           </div>
-    </p-scrollPanel>
-    <p-footer>
-      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
-      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-  </p-dialog>
-</form>
+        </div>
+      </div>
+    </form>
+    <div class="ui-g ui-fluid form-group">
+      <div class="ui-g-6">
+        <button type="buton" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
+      </div>
+    </div>
+    <etraining-select-user-dialog></etraining-select-user-dialog>
+  </p-scrollPanel>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog>

@@ -1,87 +1,71 @@
 <div class="card card-w-title">
-  <h1>{{'My exams'|translate}}</h1>
-  <div class="ui-g dashboard">
-    <div class="ui-g-12">
-      <p-dataList [value]="exams" [paginator]="true" [rows]="5">
-        <ng-template let-exam pTemplate="item">
-          <div class="task-box task-box-2">
-            <div class="task-box-header">
-              <button pButton type="button" icon="ui-icon-pencil" title="{{'Edit content'|translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;"></button>
-               <button pButton type="button" icon="ui-icon-pencil" title="{{'Mark'|translate}}" label="{{'Mark '|translate}}" class="purple-btn" style="margin-right:4px;"></button>
-               <button pButton type="button" icon="ui-icon-pencil" title="{{'Result'|translate}}" label="{{'Result '|translate}}" class="purple-btn" style="margin-right:4px;"></button>
-              <button pButton type="button" icon="ui-icon-pencil" title="{{'Join'|translate}}" label="{{'Join '|translate}}" class=" green-btn" style="margin-right:4px;"></button>
-            </div>
-            <div class="task-box-content">
-              <div class="ui-g">
-                <div class="ui-g-8">
-                  <h2>{{exam.name}}</h2>
-                  <span class="image-box-tag">{{exam.status}}</span>
-                  <h3>{{'Status'|translate}}</h3>
-                  <p>
-                    {{EXAM_STATUS[exam.status]}}
-                  </p>
-                  <h3>{{'Summary'|translate}}</h3>
-                  <p>
-                    {{exam.summary}}
-                  </p>
-                  <h3>{{'Instruction'|translate}}</h3>
-                  <p [innerHTML]="exam.instruction"></p>
-                </div>
-                <div class="ui-g-4">
-                  <div class="user-card card">
-                    <div class="user-card-content">
-                      <div class="user-detail">
-                        <ul>
-                          <li class="clearfix">
-                            <i class="material-icons">assignment</i>
-                            <span class="project-title">Tasks</span>
-                            <span class="project-detail">3 open</span>
-                            <div class="project-progressbar">
-                              <div class="project-progressbar-value" style="width: 50%"></div>
-                            </div>
-                          </li>
-                          <li class="clearfix">
-                            <i class="material-icons">attach_money</i>
-                            <span class="project-title">Revenue</span>
-                            <span class="project-detail">+20%</span>
-                            <div class="project-progressbar">
-                              <div class="project-progressbar-value" style="width: 20%"></div>
-                            </div>
-                          </li>
-                          <li class="clearfix">
-                            <i class="material-icons">payment</i>
-                            <span class="project-title">Payments</span>
-                            <span class="project-detail">24 new</span>
-                            <div class="project-progressbar">
-                              <div class="project-progressbar-value" style="width: 65%"></div>
-                            </div>
-                          </li>
-                          <li class="clearfix">
-                            <i class="material-icons">business_center</i>
-                            <span class="project-title">Clients</span>
-                            <span class="project-detail">+80%</span>
-                            <div class="project-progressbar">
-                              <div class="project-progressbar-value" style="width: 80%"></div>
-                            </div>
-                          </li>
-                          <li class="clearfix">
-                            <i class="material-icons">pie_chart</i>
-                            <span class="project-title">Turnover</span>
-                            <span class="project-detail">+40%</span>
-                            <div class="project-progressbar">
-                              <div class="project-progressbar-value" style="width: 40%"></div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+  <h1>{{'My courses'|translate}}</h1>
+  <p-dataList [value]="courses" [paginator]="true" [rows]="5">
+    <ng-template let-course pTemplate="item">
+      <p-card>
+        <p-header>
+        </p-header>
+        <div class="ui-g">
+          <div class="ui-g-8">
+            <h4>
+                <span class="profile-image-wrapper">
+                  <img [src]='course.logo | imageBase64'/>
+              </span>
+              <span>{{course.name}}</span>
+            </h4>
+            <p>
+              {{COURSE_STATUS[course.status]|translate}}
+            </p>
+            <h5>{{'Summary'|translate}}</h5>
+            <p>
+              {{course.summary}}
+            </p>
+            <h5>{{'Description'|translate}}</h5>
+            <p [innerHTML]="course.description"></p>
           </div>
-        </ng-template>
-      </p-dataList>
-    </div>
-  </div>
+          <div class="ui-g-4">
+            <p-card>
+              <ul>
+                <li class="clearfix">
+                  <i class="material-icons">toys</i>
+                  <span>{{'Code'|translate}}</span>
+                  <span>{{course.code}}</span>
+                </li>
+                <li class="clearfix">
+                  <i class="material-icons">copyright</i>
+                  <span>{{'Author'|translate}}</span>
+                  <span>{{course.author_name}}</span>
+                </li>
+                <li class="clearfix">
+                <i class="material-icons">invert_colors</i>
+                <span>{{'Mode'|translate}}</span>
+                <span>{{COURSE_MODE[course.mode]|translate}}</span>
+                </li>
+                <li class="clearfix">
+                <i class="material-icons">layers</i>
+                <span>{{'Number of unit'|translate}}</span>
+                <span>{{course.unit_count}}</span>
+                </li>
+                <li class="clearfix">
+                  <i class="material-icons">toc</i>
+                  <span>{{'Group'|translate}}</span>
+                  <span>{{course.group_id__DESC__}}</span>
+                </li>
+              </ul>
+              <p-footer>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'|translate}}" label="{{'Join '|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student'" [disabled]="!course.status !='published'"></button>
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'|translate}}" label="{{'Edit course'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
+                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage student'|translate}}" label="{{'Manage student '|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageStudent(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='self-study' && course.status =='published'"></button>
+                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage class'|translate}}" label="{{'Manage class '|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageClass(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
+              </p-footer>
+            </p-card>
+          </div>
+        </div>
+      </p-card>
+    </ng-template>
+  </p-dataList>
+  <etraining-course-syllabus-dialog></etraining-course-syllabus-dialog>
+  <etraining-student-profile-list-dialog></etraining-student-profile-list-dialog>
+  <etraining-class-list-dialog></etraining-class-list-dialog>
+  
 </div>

@@ -28,7 +28,7 @@ export class Question extends BaseModel{
     group_id: number;
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return Question.search([], "[('group_id','=',"+groupId+")]",context);
+        return Question.search(context,[], "[('group_id','=',"+groupId+")]");
     }
 
     static listByGroups(context:APIContext, groupIds):Observable<any> {
@@ -36,7 +36,9 @@ export class Question extends BaseModel{
         _.each(groupIds, function(groupId) {
             subscriptions.push(Question.listByGroup(context,groupId));
         });
-        return Observable.forkJoin(...subscriptions);
+        return Observable.zip(...subscriptions).map(questionArrs => {
+            return _.flatten(questionArrs);
+        });
     }
 
 }

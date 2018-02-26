@@ -1,0 +1,54 @@
+<p-dialog header="{{'Class conference'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true" appendTo="body">
+  <p-scrollPanel [style]="{width: '100%', height: '480px'}">
+    <div class="ui-g-12 ">
+      <p-toolbar>
+        <div class="ui-toolbar-group-left ">
+          <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="openConference() " [disabled]="conference.status=='open'"></button>
+          <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeConference() " [disabled]="!conference.id || conference.status=='closed'"></button>
+        </div>
+      </p-toolbar>
+      <div class=" ui-g-12 ">
+          <label for="password">{{'Room password' | translate}}</label>
+          <input type="text"  pInputText name="password"[(ngModel)]="conference.room_pass" [disabled]="true">
+              
+        </div>
+      <p-table #memberTable [value]="members" [paginator]="true" [rows]="10" selectionMode="single"  [(selection)]="selectedMember"  [responsive]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="'name'">
+              {{'Name'|translate}}
+              <p-sortIcon [field]="'name'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'etraining_group_id__DESC__'">
+              {{'Group'|translate}}
+              <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+            </th>
+            <th>{{'Allow/banned'|translate}}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-member>
+          <tr [pSelectableRow]="member">
+            <td>{{member.name}}</td>
+            <td>{{member.etraining_group_id__DESC__}}</td>
+            <td>
+              <p-inputSwitch [(ngModel)]="member.is_active"  (onChange)="accessControl($event,member)" [disabled]="!conference.id" onLabel="'Allow'|translate" offLabel="'Banned'|translate"></p-inputSwitch>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          {{'Total records'|translate}} : {{members?.length}}
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="3">
+              {{'No records found'|translate}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-scrollPanel>
+  <p-footer>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog>
