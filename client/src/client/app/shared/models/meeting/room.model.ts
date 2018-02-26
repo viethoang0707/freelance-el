@@ -32,7 +32,7 @@ export class Room extends BaseModel{
         });
     }
 
-    static createOne2ManyRoom(context:APIContext, name: string):Observable<any> {
+    static createWebminarRoom(context:APIContext, name: string):Observable<any> {
         var room = new Room();
         room.category = 'one-to-many';
         room.name =  name;

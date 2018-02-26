@@ -42,6 +42,9 @@ export class ClassConferenceDialog extends BaseComponent {
 		Conference.byClass(this, courseClass.id).subscribe(conference => {
 			if (conference) {
 				this.conference = conference;
+				Room.byRef(this, conference.room_ref).subscribe(room => {
+					this.room = room;
+				});
 			}
 			CourseMember.listByClass(this, courseClass.id).subscribe(members => {
 				this.members =  members;
@@ -71,7 +74,7 @@ export class ClassConferenceDialog extends BaseComponent {
 			});
 		}
 		if (!this.conference.id ) {
-			Room.createOne2ManyRoom(this, this.courseClass.name).subscribe(room => {
+			Room.createWebminarRoom(this, this.courseClass.name).subscribe(room => {
 				this.room = room;
 				this.conference.room_ref =  room.ref;
 				this.conference.room_pass =  room.password;
@@ -80,7 +83,7 @@ export class ClassConferenceDialog extends BaseComponent {
 				this.conference.save(this).subscribe(()=> {
 					this.messageService.add({severity:'info', summary:'Exam Info', detail: 'Conference open'});
 					_.each(this.members, function(member) {
-						RoomMember.createRoomMember(self, member.name, member.image, room.id).subscribe(roomMember => {
+						RoomMember.createRoomMember(self, member.name, member.image, room.id, member.role).subscribe(roomMember => {
 							var conferenceMember = new ConferenceMember();
 							conferenceMember.conference_id =  this.conference.id;
 							conferenceMember.room_member_ref =  roomMember.ref;
@@ -114,7 +117,7 @@ export class ClassConferenceDialog extends BaseComponent {
 				conferenceMember.is_active = true;
 				conferenceMember.save(this);
 			} else {
-				RoomMember.createRoomMember(this, member.name, member.image, this.room.id).subscribe(roomMember => {
+				RoomMember.createRoomMember(this, member.name, member.image, this.room.id, member.role).subscribe(roomMember => {
 					var conferenceMember = new ConferenceMember();
 					conferenceMember.conference_id =  this.conference.id;
 					conferenceMember.room_member_ref =  roomMember.ref;
