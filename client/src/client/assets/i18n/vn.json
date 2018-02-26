@@ -25,7 +25,6 @@
 	"Close": "Thoát",
 	"Yes": "Có",
 	"No": "Không",
-//auth
 	"Username": "Tên truy cập",
 	"Username is required": "Tên người dùng bắt buộc nhập",
 	"Password": "Mật khẩu",
@@ -35,11 +34,9 @@
 	"Password Recovery Form": "Khôi phục mật khẩu",
 	"Email is required": "Email là bắt buộc",
 	"Return to login": "Trở về trang đăng nhập",
-//lms-dashboard
 	"Dashboard": "Trang chủ",
 	"My exams": "Kỳ thi của tôi",
 	"Conference": "Hội thảo",
-//lms-my exams
 	"Result": "Kết quả khảo sát",
 	"Join": "Tham gia",
 	"Number of question": "Số câu hỏi",
@@ -48,7 +45,6 @@
 	"End date": "Ngày kết thúc",
 	"Edit content": "Sửa nội dung",
 	"Mark": "Đánh dấu",
-//cms-dashboard
 	"Enrollment": "Đào tạo",
 	"Course": "Khóa học",
 	"Course Group": "Chương trình",
@@ -72,7 +68,6 @@
 	"Last 7 days": "7 ngày trước",
 	"Last 14 days": "14 ngày trước",
 	"Last 30 days": "30 ngày trước",
-//cms-enrollment
 	"Course tree": "Danh mục khóa học",
 	"Supervisor": "Giám sát viên",
 	"Draft": "Nháp",
@@ -96,8 +91,6 @@
 	"Are you sure to delete ?": "Bạn có chắc chắn xóa không?",
 	"Exam enrollment": "Kỳ thi tuyển sinh",
 	"Course enrollment": "Tuyển sinh khóa học",
-
-//cms-assassment
 	"Title": "Tiêu đề",
 	"Level": "Cấp độ",
 	"Type": "Kiểu câu hỏi",
@@ -133,7 +126,6 @@
 	"Scale": "Tỉ lệ",
 	"Add grade": "Thêm thang điểm",
 	"Invalid grade options": "Tùy chọn thang điểm không hợp lệ",
-//Reports
 	"Course by member report": "Báo cáo khóa học theo học viên",
 	"Member by course report": "Báo cáo học viên theo khóa học",
 	"Exam result report": "Báo cáo kết quả thi sát hạch",
@@ -157,14 +149,12 @@
 	"Select course group": "Chọn nhóm khóa học",
 	"Select individual courses": "Chọn khóa học riêng lẻ",
 	"Reports": "Báo cáo",
-//setting
 	"Application setting": "Cài đặt ứng dụng",
 	"Undo": "Hủy bỏ",
 	"SMTP Host": "Máy chủ SMTP",
 	"SMTP Port": "Cổng SMTP",
 	"SMTP User": "Tên người dùng SMTP",
 	"SMTP Password": "Mật khẩu SMTP",
-//account
 	"Organization": "Sơ đồ tổ chức",
 	"Login": "Đăng nhập",
 	"Admin user": "Quản trị viên",
@@ -184,6 +174,5 @@
 	"Export to Excel": "Xuất ra file excel",
 	"Exported fields": "Xuất ra file",
 	"Import from Excel": "Nhập dữ liệu từ file excel",
-	"Sample template": "Mẫu file nhập vào",
-	
+	"Sample template": "Mẫu file nhập vào"
 }

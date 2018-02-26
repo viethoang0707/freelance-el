@@ -43,6 +43,6 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     }
 
     joinConference(member) {
-    	this.meetingSerivce.join(member.room_member_ref, member.conference.room_ref)
+    	this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref)
     }
 }
