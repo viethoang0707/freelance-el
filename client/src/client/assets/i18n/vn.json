@@ -174,5 +174,7 @@
 	"Export to Excel": "Xuất ra file excel",
 	"Exported fields": "Xuất ra file",
 	"Import from Excel": "Nhập dữ liệu từ file excel",
-	"Sample template": "Mẫu file nhập vào"
+	"Sample template": "Mẫu file nhập vào",
+	"Total user accounts" : "Tổng số người dùng",
+	"Total course" : "Tổng số khóa học"
 }
