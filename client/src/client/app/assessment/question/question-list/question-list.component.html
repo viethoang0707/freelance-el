@@ -39,7 +39,7 @@
                     <tr [pSelectableRow]="question">
                         <td>{{question.title}}</td>
                         <td>{{question.level}}</td>
-                        <td>{{QUESTION_TYPE[question.type]}}</td>
+                        <td>{{QUESTION_TYPE[question.type] | translate}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

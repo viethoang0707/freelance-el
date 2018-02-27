@@ -44,8 +44,8 @@
                         <td>{{course.name}}</td>
                         <td>{{course.code}}</td>
                         <td>{{course.summary}}</td>
-                        <td>{{COURSE_MODE[course.mode]}}</td>
-                        <td>{{COURSE_STATUS[course.status]}}</td>
+                        <td>{{COURSE_MODE[course.mode] | translate}}</td>
+                        <td>{{COURSE_STATUS[course.status] | translate}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

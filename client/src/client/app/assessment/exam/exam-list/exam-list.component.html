@@ -43,7 +43,7 @@
                         <td>{{exam.summary}}</td>
                         <td>{{exam.start | date : "dd/MM/yyyy"}}</td>
                         <td>{{exam.end | date : "dd/MM/yyyy"}}</td>
-                        <td>{{EXAM_STATUS[exam.status]}}</td>
+                        <td>{{EXAM_STATUS[exam.status] | translate}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

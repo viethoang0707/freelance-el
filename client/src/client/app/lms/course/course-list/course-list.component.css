@@ -3,3 +3,42 @@
 .mrg-bt{
     margin-bottom: 15px;
 }
+
+.list-cmt{
+	padding-left: 0;
+}
+
+.list-cmt li{
+	list-style: none;
+	padding: 16px 24px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.list-cmt li i{
+	font-size: 24px;
+    margin-right: 8px;
+    width: 32px;
+    vertical-align: middle;
+    color: #757575;
+}
+
+.list-cmt li .cmt-title{
+	font-weight: 700;
+    margin-right: 8px;
+}
+
+.list-cmt li .cmt-detail{
+	color: #757575;
+	float: right;
+}
+
+.c-title{
+	font-size: 15px;
+}
+
+.c-status{
+	background-color: #e91e63;
+	border-radius: 9px;
+    padding: 2px 8px;
+    color: #fff;
+}
