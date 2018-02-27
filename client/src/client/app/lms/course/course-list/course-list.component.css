@@ -42,3 +42,8 @@
     padding: 2px 8px;
     color: #fff;
 }
+
+.profile-image-wrapper img{
+	width: 400px;
+	height: 250px;
+}
