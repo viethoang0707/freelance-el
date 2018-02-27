@@ -23,7 +23,7 @@
 .list-cmt li{
 	list-style: none;
 	padding: 16px 24px;
-    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
 }
 
 .list-cmt li i{
@@ -46,4 +46,11 @@
 
 .e-title{
 	font-size: 15px;
+}
+
+.e-status{
+	background-color: #e91e63;
+	border-radius: 9px;
+    padding: 2px 8px;
+    color: #fff;
 }

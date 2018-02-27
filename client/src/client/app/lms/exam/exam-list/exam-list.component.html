@@ -10,9 +10,9 @@
         <div class="ui-g body-exam">
           <div class="ui-g-8">
             <h4>{{exam.name}}</h4>
-            <p>
-              {{EXAM_STATUS[exam.status]}}
-            </p>
+            <span class="e-status">
+              {{EXAM_STATUS[exam.status] | translate}}
+            </span>
             <h5 class="e-title">{{'Summary'|translate}}</h5>
             <p>
               {{exam.summary}}
@@ -26,12 +26,12 @@
                 <li class="clearfix">
                   <i class="material-icons">date_range</i>
                   <span class="cmt-title">{{'Start date'|translate}}</span>
-                  <span class="cmt-detail">{{exam.start}}</span>
+                  <span class="cmt-detail">{{exam.start | date : "dd/MM/yyyy"}}</span>
                 </li>
                 <li class="clearfix">
                   <i class="material-icons">date_range</i>
                   <span class="cmt-title">{{'End date'|translate}}</span>
-                  <span class="cmt-detail">{{exam.end}}</span>
+                  <span class="cmt-detail">{{exam.end | date : "dd/MM/yyyy"}}</span>
                 </li>
                 <li class="clearfix">
                   <i class="material-icons">alarm</i>
@@ -50,10 +50,10 @@
                 </li>
               </ul>
               <p-footer>
-                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'|translate}}" label="{{'Join '|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(exam, exam.member)" *ngIf="exam.member.role=='candidate'" [disabled]="!exam.IsAvailable || exam.member.enroll_status=='completed'"></button>
-                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'|translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(exam)" *ngIf="exam.member.role=='supervisor'"></button>
-                <button pButton type="button" icon="ui-icon-star" title="{{'Mark'|translate}}" label="{{'Mark '|translate}}" class="orange-btn" style="margin-right:4px;" (click)="markExam(exam)" *ngIf="exam.member.role=='supervisor'"></button>
-                <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'|translate}}" label="{{'Result '|translate}}" class="orange-btn" style="margin-right:4px;" *ngIf="exam.member.role=='supervisor'" (click)="viewScore(exam)"></button>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(exam, exam.member)" *ngIf="exam.member.role=='candidate'" [disabled]="!exam.IsAvailable || exam.member.enroll_status=='completed'"></button>
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(exam)" *ngIf="exam.member.role=='supervisor'"></button>
+                <button pButton type="button" icon="ui-icon-star" title="{{'Mark'| translate}}" label="{{'Mark'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="markExam(exam)" *ngIf="exam.member.role=='supervisor'"></button>
+                <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'| translate}}" label="{{'Result'|translate}}" class="orange-btn" style="margin-right:4px;" *ngIf="exam.member.role=='supervisor'" (click)="viewScore(exam)"></button>
               </p-footer>
             </p-card>
           </div>

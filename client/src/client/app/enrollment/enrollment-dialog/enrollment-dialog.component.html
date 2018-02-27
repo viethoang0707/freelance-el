@@ -42,8 +42,8 @@
                 <td>{{member.email}}</td>
                 <td>{{member.phone}}</td>
                 <td>{{member.etraining_group_id__DESC__}}</td>
-                <td>{{COURSE_MEMBER_STATUS[member.status]}}</td>
-                <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status]}}</td>
+                <td>{{COURSE_MEMBER_STATUS[member.status] | translate}}</td>
+                <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
               </tr>
             </ng-template>
             <ng-template pTemplate="summary">

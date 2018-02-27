@@ -36,8 +36,8 @@
                 <td>
                   {{rowData.name}}
                 </td>
-                <td>{{COURSE_MODE[rowData.mode]}}</td>
-                <td>{{COURSE_STATUS[rowData.status]}}</td>
+                <td>{{COURSE_MODE[rowData.mode] | translate}}</td>
+                <td>{{COURSE_STATUS[rowData.status] | translate}}</td>
               </tr>
             </ng-template>
           </p-table>
@@ -80,8 +80,8 @@
           <tr [pSelectableRow]="class">
             <td>{{class.name}}</td>
             <td>{{class.course_name}}</td>
-            <td>{{class.start}}</td>
-            <td>{{class.end}}</td>
+            <td>{{class.start | date : "dd/MM/yyyy"}}</td>
+            <td>{{class.end | date : "dd/MM/yyyy"}}</td>
             <td>{{class.supervisor_name}}</td>
           </tr>
         </ng-template>
