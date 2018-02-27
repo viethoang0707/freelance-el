@@ -95,7 +95,6 @@ export class AnswerSheetDialog extends BaseComponent {
 
     displayQuestion(index: number) {
         this.qIndex = index;
-        var self = this;
         this.currentQuestion = this.examQuestions[index];
         this.prepareQuestion(this.currentQuestion).subscribe(question => {
             this.prepareAnswer(this.currentQuestion).subscribe(answer => {

@@ -47,16 +47,15 @@ export class ExamMarkingDialog extends BaseComponent {
     }
 
     loadScores() {
-        var self = this;
         ExamQuestion.listOpenQuestionByExam(this, this.exam.id).subscribe(questions => {
-            self.questions = questions;
+            this.questions = questions;
             var questionIds = _.pluck(questions,'question_id');
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
-                self.records = [];
-                _.each(members, function(member:ExamMember) {
-                    Submission.byMember(self,member.id).subscribe((submit:Submission) => {
-                        Answer.listBySubmit(self, submit.id).subscribe(answers => {
-                            answers = _.filter(answers, function(obj:Answer) {
+                this.records = [];
+                _.each(members, (member:ExamMember)=> {
+                    Submission.byMember(this,member.id).subscribe((submit:Submission) => {
+                        Answer.listBySubmit(this, submit.id).subscribe(answers => {
+                            answers = _.filter(answers, (obj:Answer)=> {
                                 return _.contains(questionIds,obj.question_id);
                             });
                             var record = {
@@ -65,10 +64,10 @@ export class ExamMarkingDialog extends BaseComponent {
                                 member: member,
                                 answers: answers
                             }
-                            _.each(answers, function(obj) {
+                            _.each(answers, (obj)=> {
                                 record[obj.question_id] = obj.score;
                             });
-                            self.records.push(record);
+                            this.records.push(record);
                         });
                     })
                 });

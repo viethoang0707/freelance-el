@@ -3,6 +3,7 @@ import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
+import { Conference } from './conference.model';
 
 @Model('etraining.course_class')
 export class CourseClass extends BaseModel{
@@ -33,5 +34,15 @@ export class CourseClass extends BaseModel{
 
     static listByCourse(context:APIContext, courseId):Observable<any> {
         return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
+    }
+
+    delete(context:APIContext):Observable<any> {
+        return Conference.byClass(context,this.id).flatMap(conference => {
+            if (!conference)
+                return this.delete(context);
+            else {
+                return Observable.zip(this.delete(context), conference.delete(context))
+            }
+        });
     }
 }

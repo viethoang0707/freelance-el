@@ -38,19 +38,18 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        var self = this;
         ExamMember.listByUser(this, this.authService.CurrentUser.id).subscribe(members => {
             var examIds = _.pluck(members,'exam_id');
             Exam.array(this, examIds)
             .subscribe(exams => {
-                _.each(exams, function(exam) {
+                _.each(exams, (exam)=> {
                     exam.member = _.find(members, function(member:ExamMember) {
                         return member.exam_id == exam.id;
                     });
-                    exam.member.examScore(self, exam.id).subscribe(score=> {
+                    exam.member.examScore(this, exam.id).subscribe(score=> {
                         exam.member.score = score;
                     });
-                    ExamQuestion.countByExam(self, exam.id).subscribe(count => {
+                    ExamQuestion.countByExam(this, exam.id).subscribe(count => {
                         exam.question_count = count;
                     });
                 });

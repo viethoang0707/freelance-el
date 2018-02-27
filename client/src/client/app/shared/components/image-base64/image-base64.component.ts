@@ -19,12 +19,11 @@ export class ImageBase64Component  {
     showControl: boolean;
 
     changeListner(event: any) {
-        var self = this;
         var reader = new FileReader();
 
-        reader.onload = function(e: any) {
+        reader.onload = (e: any)=> {
             var srcEncode = btoa(e.target.result);
-            self.src64Change.emit(srcEncode);
+            this.src64Change.emit(srcEncode);
         };
 
         reader.readAsBinaryString(event.files[0]);

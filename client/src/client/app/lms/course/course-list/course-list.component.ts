@@ -39,7 +39,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        var self = this;
         this.currentUser = this.authService.CurrentUser;
         CourseMember.listByUser(this, this.authService.CurrentUser.id).subscribe(members => {
             var courseIds = _.pluck(members,'course_id');
@@ -48,12 +47,12 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                 return _.flatten(courses);
             })
             .subscribe(courses => {
-                courses = _.uniq(courses, function(course) {
+                courses = _.uniq(courses, (course)=> {
                     return course.id;
                 });
-                _.each(courses, function(course) {
+                _.each(courses, (course)=> {
                     if (course.syllabus_id)
-                        CourseUnit.countBySyllabus(self, course.syllabus_id).subscribe(count => {
+                        CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
                             course.unit_count = count;
                         });
                     else

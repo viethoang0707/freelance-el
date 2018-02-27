@@ -3,6 +3,7 @@ import { BaseModel } from './base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from './decorator';
 import { APIContext } from './context';
+import { ConferenceMember } from './conference-member.model';
 
 @Model('etraining.course_member')
 export class CourseMember extends BaseModel{
@@ -76,6 +77,16 @@ export class CourseMember extends BaseModel{
                 return members[0];
             else
                 return null;
+        });
+    }
+
+    delete(context:APIContext):Observable<any> {
+        return ConferenceMember.byCourseMember(context,this.id).flatMap(conferenceMember => {
+            if (!conferenceMember)
+                return this.delete(context);
+            else {
+                return Observable.zip(this.delete(context), conferenceMember.delete(context))
+            }
         });
     }
 }

@@ -38,15 +38,14 @@ export class QuestionMarkingDialog extends BaseComponent {
 	}
 
 	show(member: ExamMember, answers: Answer[]) {
-		var self = this;
 		this.display = true;
 		ExamQuestion.listByExam(this, member.exam_id).subscribe(questions => {
-			self.questions = {};
-			_.each(questions, function(question) {
-				self.questions[question.question_id] =  question;
+			this.questions = {};
+			_.each(questions, (question)=> {
+				this.questions[question.question_id] =  question;
 			});
-			self.member = member;
-			self.answers = answers;
+			this.member = member;
+			this.answers = answers;
 		});
 	}
 
@@ -55,9 +54,8 @@ export class QuestionMarkingDialog extends BaseComponent {
 	}
 
 	save() {
-		var self = this;
-		var subscrptions = _.map(this.answers, function(answer) {
-			return answer.save(self);
+		var subscrptions = _.map(this.answers, (answer)=> {
+			return answer.save(this);
 		});
 		Observable.forkJoin(...subscrptions).subscribe(()=> {
 			this.messageService.add({severity:'success', summary:'Marking', detail: 'Marking saved sucessfully'});

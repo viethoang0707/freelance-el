@@ -5,6 +5,7 @@ import { Answer } from './answer.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
+import { Room } from './meeting/room.model';
 import * as _ from 'underscore';
 
 @Model('etraining.conference')
@@ -24,6 +25,16 @@ export class Conference extends BaseModel{
     room_pass: string;
     status: string;
     name: string;
+
+    delete(context:APIContext):Observable<any> {
+        return Room.byRef(context,this.room_ref).flatMap(room => {
+            if (!room)
+                return this.delete(context);
+            else {
+                return Observable.zip(this.delete(context), room.delete(context))
+            }
+        });
+    }
 
     static byClass(context:APIContext, classId: number):Observable<any> {
         return Conference.search(context,[],"[('class_id','=',"+classId+")]")

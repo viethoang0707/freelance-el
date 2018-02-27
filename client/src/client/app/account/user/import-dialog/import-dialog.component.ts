@@ -45,10 +45,9 @@ export class UserImportDialog extends BaseComponent {
 
 	import() {
 		var subscriptions = [];
-		var self = this;
 		Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 			this.importing = true;
-			_.each(this.records, function(record) {
+			_.each(this.records, (record)=> {
 				var user = new User();
 				Object.assign(user, record);
 				user["password"] = DEFAULT_PASSWORD;
@@ -57,7 +56,7 @@ export class UserImportDialog extends BaseComponent {
 				});
 				if (group) {
 					user.etraining_group_id = group.id;
-					subscriptions.push(user.save(self));
+					subscriptions.push(user.save(this));
 				}
 			});
 			Observable.forkJoin(...subscriptions).subscribe(()=> {

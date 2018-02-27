@@ -77,13 +77,12 @@ export class CourseByMemberReportComponent extends BaseComponent{
 
     generateReport(users:User[]):Observable<any> {
     	var records = [];
-        var self = this;
     	var subscriptions =[];
-    	_.each(users, function(user:User) {
-    		var subscription = CourseMember.listByUser(self, user.id).flatMap(members => {
-    			return UserLog.userStudyActivity(self, user.id,null).do(logs => {
+    	_.each(users, (user:User)=> {
+    		var subscription = CourseMember.listByUser(this, user.id).flatMap(members => {
+    			return UserLog.userStudyActivity(this, user.id,null).do(logs => {
     				var memberRecords = _.map(members, function(member:CourseMember) {
-    					return self.generateReportRow(member, logs);
+    					return this.generateReportRow(member, logs);
     				})
     				records = records.concat(memberRecords);
 	    		});

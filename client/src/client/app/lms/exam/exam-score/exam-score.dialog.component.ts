@@ -47,13 +47,12 @@ export class ExamScoreDialog extends BaseComponent {
     }
 
     loadAnswers() {
-        var self = this;
         ExamGrade.listByExam(this, this.exam.id).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
-                self.records = [];
-                _.each(members, function(member: ExamMember) {
-                    Submission.byMember(self, member.id).subscribe((submit:Submission) => {
-                        Answer.listBySubmit(self, submit.id).subscribe(answers => {
+                this.records = [];
+                _.each(members, (member: ExamMember)=> {
+                    Submission.byMember(this, member.id).subscribe((submit:Submission) => {
+                        Answer.listBySubmit(this, submit.id).subscribe(answers => {
                             var record = {
                                 name: member.name,
                                 etraining_group_id__DESC__: member.etraining_group_id__DESC__,
@@ -63,12 +62,12 @@ export class ExamScoreDialog extends BaseComponent {
                             record["score"] = _.reduce(answers, function(sum, ans) {
                                 return sum + ans.score;
                             }, 0);
-                            var grade = _.find(grades, function(obj) {
+                            var grade = _.find(grades, (obj)=> {
                                 return obj.min_score <= record["score"] && obj.max_score >= record["score"]
                             });
                             if (grade)
                                 record["grade"] = grade.name;
-                            self.records.push(record);
+                            this.records.push(record);
                         });
                     })
                 });

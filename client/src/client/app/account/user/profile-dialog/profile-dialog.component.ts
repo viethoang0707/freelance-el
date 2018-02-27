@@ -38,7 +38,6 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	ngOnInit() {
-		var self = this;
 		this.onShow.subscribe(object => {
 			Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 				this.tree = this.treeUtils.buildTree(groups);
@@ -53,9 +52,9 @@ export class UserProfileDialog extends BaseDialog<User> {
 					});
 				})
 				.subscribe(members => {
-					self.members = members;
-					_.each(members, function(member:CourseMember) {
-						Certificate.byMember(self,member.id).subscribe(cert => {
+					this.members = members;
+					_.each(members, (member:CourseMember)=> {
+						Certificate.byMember(this,member.id).subscribe(cert => {
 							member["certificate"] = cert;
 						});
 					});

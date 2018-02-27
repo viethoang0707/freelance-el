@@ -71,15 +71,14 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
 
 
     generateReport(exam: Exam, grades: ExamGrade[], members: ExamMember[]):Observable<any> {
-    	var self = this;
         var subscriptions =[];
-    	_.each(members, function(member:ExamMember) {
-    		var subscription = UserLog.userExamActivity(self, member.user_id, exam.id).flatMap(logs => {
-    			return Submission.byMember(self, member.id).flatMap((submit:Submission) => {
+    	_.each(members, (member:ExamMember)=> {
+    		var subscription = UserLog.userExamActivity(this, member.user_id, exam.id).flatMap(logs => {
+    			return Submission.byMember(this, member.id).flatMap((submit:Submission) => {
                     if (!submit)
                         return Observable.of([]);
-    				return Answer.listBySubmit(self, submit.id).map(answers => {
-    					return self.generateReportRow(exam, grades, member, answers, logs);
+    				return Answer.listBySubmit(this, submit.id).map(answers => {
+    					return this.generateReportRow(exam, grades, member, answers, logs);
     				});
     			});
     		});	

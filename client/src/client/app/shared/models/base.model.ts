@@ -63,7 +63,6 @@ export abstract class BaseModel {
 
     static count(context:APIContext, domain?:string):Observable<any[]> {
         var domain = domain?domain:"[]";
-        var self = this;
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.count(model, domain, cloud_acc.id, cloud_acc.api_endpoint);

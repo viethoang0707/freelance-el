@@ -70,25 +70,24 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 
 	add(role: string) {
-		var self = this;
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.subscribe(users => {
 			this.processing = true;
 			var subscriptions = [];
-			_.each(users, function(user:User) {
+			_.each(users, (user:User)=> {
 				var member = new CourseMember();
-				if (self.courseClass) {
-					member.course_id = self.courseClass.course_id;
-					member.class_id =  self.courseClass.id;
+				if (this.courseClass) {
+					member.course_id = this.courseClass.course_id;
+					member.class_id =  this.courseClass.id;
 				}
 				member.role = role;
-				if (self.course)
-					member.course_id = self.course.id;
+				if (this.course)
+					member.course_id = this.course.id;
 				member.user_id = user.id;
 				member.status = 'active';
 				member.enroll_status = 'registered';
 				member.date_register = new Date();
-				subscriptions.push(member.save(self));
+				subscriptions.push(member.save(this));
 			});
 			Observable.forkJoin(...subscriptions).subscribe(() => {
 				this.processing = false;

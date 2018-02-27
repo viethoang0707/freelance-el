@@ -36,7 +36,6 @@ export class ClassConferenceDialog extends BaseComponent {
 	}
 
 	show(courseClass: CourseClass) {
-		var self = this;
 		this.display = true;
 		this.courseClass =  courseClass;
 		Conference.byClass(this, courseClass.id).subscribe(conference => {
@@ -48,8 +47,8 @@ export class ClassConferenceDialog extends BaseComponent {
 			}
 			CourseMember.listByClass(this, courseClass.id).subscribe(members => {
 				this.members =  members;
-				_.each(members, function(member) {
-					ConferenceMember.byCourseMember(self, member["id"]).subscribe(conferenceMember => {
+				_.each(members, (member)=> {
+					ConferenceMember.byCourseMember(this, member["id"]).subscribe(conferenceMember => {
 						if (conferenceMember) {
 							member["conferenceMember"] = conferenceMember;
 							member["is_active"] = conferenceMember.is_active;
@@ -66,7 +65,6 @@ export class ClassConferenceDialog extends BaseComponent {
 	}
 
 	openConference() {
-		var self = this;
 		if (this.conference.id && this.conference.status !='open' ) {
 			this.conference.status = 'open';
 			this.conference.save(this).subscribe(()=> {
@@ -82,13 +80,13 @@ export class ClassConferenceDialog extends BaseComponent {
 				this.conference.status = 'open';
 				this.conference.save(this).subscribe(()=> {
 					this.messageService.add({severity:'info', summary:'Exam Info', detail: 'Conference open'});
-					_.each(this.members, function(member) {
-						RoomMember.createRoomMember(self, member.name, member.image, room.id, member.role).subscribe(roomMember => {
+					_.each(this.members, (member)=> {
+						RoomMember.createRoomMember(this, member.name, member.image, room.id, member.role).subscribe(roomMember => {
 							var conferenceMember = new ConferenceMember();
 							conferenceMember.conference_id =  this.conference.id;
 							conferenceMember.room_member_ref =  roomMember.ref;
 							conferenceMember.course_member_id =  member.id;
-							conferenceMember.save(self).subscribe(()=> {
+							conferenceMember.save(this).subscribe(()=> {
 								member["conferenceMember"] = conferenceMember;
 								member["is_active"] = true;
 							});

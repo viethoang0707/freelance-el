@@ -41,8 +41,8 @@ export class UserExportDialog extends BaseComponent {
         Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 			_.each(this.users, function(user) {
 				if (user.etraining_group_id) {
-					var group = _.find(groups, function(obj:Group) {
-					return obj.id == user.etraining_group_id;
+					var group = _.find(groups, (obj:Group) => {
+						return obj.id == user.etraining_group_id;
 					});
 					if (group)
 						user['group_code'] = group.code;
@@ -56,10 +56,9 @@ export class UserExportDialog extends BaseComponent {
     }
 
 	export() {
-		var self = this;
-		var data = _.map(this.users, function(user) {
+		var data = _.map(this.users, (user)=> {
 			var userData = {};
-			_.each(self.selectedFields, function(field) {
+			_.each(this.selectedFields, (field) => {
 				userData[field] = user[field];
 			});
 			return userData;

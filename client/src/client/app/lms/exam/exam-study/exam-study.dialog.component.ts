@@ -103,7 +103,6 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	finishExam() {
-		var self = this;
 		var subscriptions = [];
 		this.member.enroll_status = 'completed';
 		this.submission.end = new Date();
@@ -144,7 +143,6 @@ export class ExamStudyDialog extends BaseComponent {
 
 	displayQuestion(index: number) {
 		this.qIndex = index;
-		var self = this;
 		this.currentQuestion = this.examQuestions[index];
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
@@ -166,7 +164,6 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	submitAnswer(): Observable<any> {
-		var self = this;
 		(<IQuestion>this.componentRef.instance).concludeAnswer();
 		if (this.currentAnswer.is_correct) {
 			this.currentAnswer.score = this.currentQuestion.score;

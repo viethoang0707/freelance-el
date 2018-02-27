@@ -24,16 +24,15 @@ export class ReportComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		var self = this;
 		this.items = [];
-		_.each(REPORT_CATEGORY, function(val, key) {
-			self.items.push({
-                label: '-- '+ self.translateService.instant(val) +' --',
+		_.each(REPORT_CATEGORY, (val, key)=> {
+			this.items.push({
+                label: '-- '+ this.translateService.instant(val) +' --',
                 value:null
             });
-            self.items = self.items.concat(_.map(ReportRegister.Instance.lookup(key), function(report) {
+            this.items = this.items.concat(_.map(ReportRegister.Instance.lookup(key), function(report) {
 				return {
-					label: self.translateService.instant(report["title"]),
+					label: this.translateService.instant(report["title"]),
 					value: report["component"]
 					}
 				}));

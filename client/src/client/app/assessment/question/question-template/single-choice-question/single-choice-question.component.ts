@@ -41,21 +41,19 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 	}
 
 	saveEditor(): Observable<any> {
-		var self = this;
 		return this.question.save(this).flatMap(() => {
 			var subscriptions = [];
-			_.each(this.options, function(option: QuestionOption) {
-				option.question_id = self.question.id;
-				subscriptions.push(option.save(self));
+			_.each(this.options, (option: QuestionOption)=> {
+				option.question_id = this.question.id;
+				subscriptions.push(option.save(this));
 			});
 			return Observable.forkJoin(...subscriptions);
 		});
 	}
 
 	concludeAnswer() {
-		var self = this;
-		var option = _.find(this.options, function(obj) {
-			return obj.id == self.answer.option_id;
+		var option = _.find(this.options, (obj)=> {
+			return obj.id == this.answer.option_id;
 		});
 		if (option)
 			this.answer.is_correct =  option.is_correct;

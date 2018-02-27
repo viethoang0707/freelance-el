@@ -44,10 +44,9 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         CourseMember.countStudent(this).subscribe(count => {
             this.studentCount = count;
         });
-        var self = this;
-        this.charts = _.map(ChartRegister.Instance.entries(), function(chart) {
+        this.charts = _.map(ChartRegister.Instance.entries(), (chart)=> {
             return {
-                label: self.translateService.instant(chart["title"]),
+                label: this.translateService.instant(chart["title"]),
                 value: chart["component"]
             }
         });

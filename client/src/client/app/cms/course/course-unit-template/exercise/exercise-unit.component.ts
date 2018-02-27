@@ -44,10 +44,9 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	removeOldQuestions():Observable<any> {
 		if (this.unit.id) {
-			var self = this;
 			var delSubscriptions = [];
-			_.each(this.exerciseQuestions, function(question) {
-				delSubscriptions.push(question.delete(self));
+			_.each(this.exerciseQuestions, (question)=> {
+				delSubscriptions.push(question.delete(this));
 			});
 			if (delSubscriptions.length)
 				return Observable.forkJoin(...delSubscriptions);
@@ -60,11 +59,10 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	}
 
 	saveEditor():Observable<any> {
-		var self = this;
 		return this.unit.save(this).flatMap(()=> {
-			var updateSubscriptions = _.map(this.exerciseQuestions, function(exerciseQuestion) {
-				exerciseQuestion.unit_id = self.unit.id;
-				return exerciseQuestion.save(self);
+			var updateSubscriptions = _.map(this.exerciseQuestions, (exerciseQuestion)=> {
+				exerciseQuestion.unit_id = this.unit.id;
+				return exerciseQuestion.save(this);
 			});
 			return Observable.forkJoin(...updateSubscriptions);
 		});
@@ -83,14 +81,13 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	createExerciseQuestionFromQuestionBank(questions: Question[]):Observable<any> {
 		if (this.unit.id) {
-			var self = this;
-			var createSubscriptions = _.map(questions, function(question) {
+			var createSubscriptions = _.map(questions, (question)=> {
 				var exerciseQuestion = new ExerciseQuestion();
-				exerciseQuestion.unit_id = self.unit.id;
+				exerciseQuestion.unit_id = this.unit.id;
 				exerciseQuestion.question_id = question.id;
 				exerciseQuestion.type =  question.type;
 				exerciseQuestion.title =  question.title;
-				return exerciseQuestion.save(self);
+				return exerciseQuestion.save(this);
 			});
 			return Observable.forkJoin(...createSubscriptions);
 		} else {

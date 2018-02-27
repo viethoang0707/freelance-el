@@ -56,21 +56,19 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	createExamQuestionFromQuestionBank(questions: Question[]):Observable<any> {
-		var self = this;
-		var createSubscriptions = _.map(questions, function(question) {
+		var createSubscriptions = _.map(questions, (question)=> {
 			var examQuestion = new ExamQuestion();
-			examQuestion.exam_id = self.exam.id;
+			examQuestion.exam_id = this.exam.id;
 			examQuestion.question_id = question.id;
-			return examQuestion.save(self);
+			return examQuestion.save(this);
 		});
 		return Observable.forkJoin(...createSubscriptions);
 	}
 
 	removeOldQuestions():Observable<any> {
-		var self = this;
 		var delSubscriptions = [];
-		_.each(this.questions, function(question) {
-			delSubscriptions.push(question.delete(self));
+		_.each(this.questions, (question)=> {
+			delSubscriptions.push(question.delete(this));
 		});
 		if (delSubscriptions.length)
 			return Observable.forkJoin(...delSubscriptions);
@@ -90,7 +88,6 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	generateQuestion() {
-		var self = this;
 		this.removeOldQuestions().subscribe(() => {
 			var groupIds=[];
 			if (this.selector.include_sub_group) {
@@ -103,12 +100,12 @@ export class ExamContentDialog extends BaseComponent {
 				if (this.selector.mode =='random' && this.selector.number) {
 					questions = _.shuffle(questions);
 					if (this.selector.level)
-						questions = _.filter(questions, function(obj:Question) {
-							return obj.level == self.selector.level;
+						questions = _.filter(questions, (obj:Question)=> {
+							return obj.level == this.selector.level;
 						});
 					questions = questions.slice(0, this.selector.number);
 				}
-				self.createExamQuestionFromQuestionBank(questions);
+				this.createExamQuestionFromQuestionBank(questions);
 			});
 		});
 	}
@@ -147,13 +144,12 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	save() {
-		var self = this;
 		var subscriptions = [];
-		_.each(this.grades, function(grade) {
-			subscriptions.push(grade.save(self));
+		_.each(this.grades, (grade)=> {
+			subscriptions.push(grade.save(this));
 		});
-		_.each(this.questions, function(question) {
-			subscriptions.push(question.save(self));
+		_.each(this.questions, (question)=> {
+			subscriptions.push(question.save(this));
 		});
 		subscriptions.push(this.selector.save(this).flatMap(() => {
 			this.exam.selector_id = this.selector.id;

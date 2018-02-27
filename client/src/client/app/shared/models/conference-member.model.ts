@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
 import * as _ from 'underscore';
+import { RoomMember } from './meeting/room-member.model';
 
 @Model('etraining.conference_member')
 export class ConferenceMember extends BaseModel{
@@ -36,6 +37,16 @@ export class ConferenceMember extends BaseModel{
     user_id: number;
     conference_id: number;
     etraining_group_id__DESC__: string;
+
+    delete(context:APIContext):Observable<any> {
+        return RoomMember.byRef(context,this.room_member_ref).flatMap(roomMember => {
+            if (!roomMember)
+                return this.delete(context);
+            else {
+                return Observable.zip(this.delete(context), roomMember.delete(context))
+            }
+        });
+    }
 
     static byCourseMember(context:APIContext, memberId: number):Observable<any> {
         return ConferenceMember.search(context,[],"[('course_member_id','=',"+memberId+")]")

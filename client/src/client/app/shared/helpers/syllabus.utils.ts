@@ -14,9 +14,8 @@ export class SyllabusUtils {
   }
 
   getSubGroup(units:CourseUnit[], parentId:number) {
-    var self = this;
-    var subUnits = _.filter(units, function(unit) {
-        return self.isSubUnit(units, unit, parentId);
+    var subUnits = _.filter(units, (unit)=> {
+        return this.isSubUnit(units, unit, parentId);
       });
   }
 
@@ -34,7 +33,6 @@ export class SyllabusUtils {
 
   private buildSubTree(parentUnit: CourseUnit, units: CourseUnit[]) {
     var subTrees = [];
-    var self = this;
     var directChilds = [];
     if (!parentUnit)
       directChilds = _.filter(units, function(unit) {
@@ -45,13 +43,13 @@ export class SyllabusUtils {
         return parentUnit.id == unit.parent_id;
       });
     }
-    _.each(directChilds, function(unit) {
+    _.each(directChilds, (unit)=> {
       subTrees.push(
         {
           data: unit,
           label: unit.name,
           icon: unit.icon,
-          children: self.buildSubTree(unit, units)
+          children: this.buildSubTree(unit, units)
         });
     });
     return subTrees;
@@ -79,10 +77,9 @@ export class SyllabusUtils {
   }
 
   findTreeNode(tree, unitId) {
-    var self = this;
     for (var i = 0; i < tree.length; i++) {
       var node = tree[i];
-      var found = self.findTreeSubNode(node, unitId);
+      var found = this.findTreeSubNode(node, unitId);
       if (found)
         return found;
     }
@@ -90,12 +87,11 @@ export class SyllabusUtils {
   }
 
   private findTreeSubNode(node, unitId) {
-    var self = this;
     if (node.data.id == unitId)
       return node;
     for (var i = 0; i < node.children.length; i++) {
       var childNode = node.children[i];
-      var found = self.findTreeSubNode(childNode, unitId);
+      var found = this.findTreeSubNode(childNode, unitId);
       if (found)
         return found;
     }

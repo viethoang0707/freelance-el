@@ -53,19 +53,18 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 
 
 	 add(role:string) {
-        var self = this;
         this.usersDialog.show();
         this.usersDialog.onSelectUsers.subscribe(users => {
             this.processing = true;
             var subscriptions = [];
-            _.each(users, function(user:User) {
+            _.each(users, (user:User)=> {
                 var member = new ExamMember();
                 member.role = role;
-                member.exam_id = self.exam.id;
+                member.exam_id = this.exam.id;
                 member.user_id = user.id;
                 member.date_register =  new Date();
                 member.status = 'active';
-                subscriptions.push(member.save(self));
+                subscriptions.push(member.save(this));
             });
             Observable.forkJoin(...subscriptions).subscribe(()=> {
                 this.processing = false;

@@ -47,14 +47,13 @@ export class QuestionImportDialog extends BaseComponent {
 
 	import() {
 		var subscriptions = [];
-		var self = this;
 		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
 			this.importing = true;
 			for (var i=0; i < this.records.length;) {
 				var record = this.records[i];
 				var question = new Question();
 				Object.assign(question, record);
-				var group = _.find(groups, function(obj:Group) {
+				var group = _.find(groups, (obj:Group)=> {
 					return obj.code == record["group_code"];
 				});
 				var type = record["type"];
@@ -72,9 +71,9 @@ export class QuestionImportDialog extends BaseComponent {
 						}
 						var subscription =  question.save(this).flatMap(() => {
 							var optionSubscription = [];
-							_.each(options, function(obj:QuestionOption) {
+							_.each(options, (obj:QuestionOption)=> {
 								obj.question_id =  question.id;
-								optionSubscription.push(option.save(self));
+								optionSubscription.push(option.save(this));
 							});
 							return Observable.forkJoin(...optionSubscription);
 						});
