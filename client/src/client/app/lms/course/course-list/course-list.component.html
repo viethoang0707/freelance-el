@@ -1,3 +1,12 @@
+<style>
+  ul{
+    list-style-type: none;
+    padding-left: 0px;
+  }
+  .vertical{
+    vertical-align: middle;
+  }
+</style>
 <div class="card card-w-title">
   <h1>{{'My courses'|translate}}</h1>
   <p-dataList [value]="courses" [paginator]="true" [rows]="5">
@@ -27,27 +36,27 @@
             <p-card>
               <ul>
                 <li class="clearfix">
-                  <i class="material-icons">toys</i>
+                  <i class="material-icons vertical">toys</i>
                   <span>{{'Code'|translate}}</span>
                   <span>{{course.code}}</span>
                 </li>
                 <li class="clearfix">
-                  <i class="material-icons">copyright</i>
+                  <i class="material-icons vertical">copyright</i>
                   <span>{{'Author'|translate}}</span>
                   <span>{{course.author_name}}</span>
                 </li>
                 <li class="clearfix">
-                <i class="material-icons">invert_colors</i>
+                <i class="material-icons vertical">invert_colors</i>
                 <span>{{'Mode'|translate}}</span>
                 <span>{{COURSE_MODE[course.mode]|translate}}</span>
                 </li>
                 <li class="clearfix">
-                <i class="material-icons">layers</i>
+                <i class="material-icons vertical">layers</i>
                 <span>{{'Number of unit'|translate}}</span>
                 <span>{{course.unit_count}}</span>
                 </li>
                 <li class="clearfix">
-                  <i class="material-icons">toc</i>
+                  <i class="material-icons vertical">toc</i>
                   <span>{{'Group'|translate}}</span>
                   <span>{{course.group_id__DESC__}}</span>
                 </li>
