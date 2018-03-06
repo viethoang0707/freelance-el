@@ -67,8 +67,8 @@
 	"Accounts": "Tài khoản",
 	"User": "Người dùng",
 	"Users": "Người dùng",
-	"Group": "Phòng ban",
-	"Groups": "Phòng ban",
+	"Group": "Danh mục",
+	"Groups": "Danh mục",
 	"Setting": "Cài đặt",
 	"Application": "Hệ thống",
 	"User accounts": "Tài khoản người dùng",
@@ -234,5 +234,7 @@
 	"Folder": "Thư mục",
 	"HTML Lecture": "Bài học HTML",
 	"Video lecture": "Bài học Video",
-	"Exercise": "Bài tập"
+	"Exercise": "Bài tập",
+	"Generate questions": "Tạo câu hỏi",
+	"Total score": "Tổng điểm" 
 }
