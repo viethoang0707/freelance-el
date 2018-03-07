@@ -38,12 +38,20 @@ export class AuthService {
             this.settingService.setAdminMode(true);
     }
 
+    get Remember(): boolean {
+        if (localStorage.getItem('remember'))
+            return localStorage.getItem('remember')=='true';
+        else
+            return false;
+    }
+
+    set Remember(val: boolean) {
+        localStorage.setItem('remember', val.toString());
+    }
+
     saveCredential(info: Credential, remember: boolean) {
-        if (remember) {
-            this.StoredCredential =  info;
-        } else {
-            this.StoredCredential =  new Credential();
-        }
+        this.StoredCredential =  info;
+        this.Remember = remember;
     }
 
     login(info: Credential, code: string): Observable<User> {
@@ -69,6 +77,8 @@ export class AuthService {
 
     logout() {
         localStorage.removeItem('currentUser');
+        if (!this.Remember)
+            this.StoredCredential = new Credential();
     }
 
 

@@ -1,8 +1,3 @@
-/**
- * Created by quang.nguyen on 26/8/17.
- * Context-free API service
- */
-
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Config } from '../../env.config';

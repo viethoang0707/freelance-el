@@ -15,9 +15,13 @@
           </div>
           <div class="ui-g-6">
             <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.login" name="login" [disabled]="true">
-                            <label>{{'Login'|translate}}</label>
-                        </span>
+                <input type="text" pInputText [(ngModel)]="object.login" name="login" [disabled]="true">
+                <label>{{'Login'|translate}}</label>
+            </span>
+          </div>
+          <div class="ui-g-6">
+            <label>{{'Avatar'|translate}}</label>
+            <image-base64 [(src64)]="object.image"></image-base64>
           </div>
           <div class="ui-g-12">
             <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
@@ -37,7 +41,7 @@
           </div>
           <div class="ui-g-6">
             <span class="md-inputfield">
-                            <input type="password" pPassword [(ngModel)]="object.mobile" name="mobile">
+                            <input type="text" pInputText [(ngModel)]="object.mobile" name="mobile">
                             <label>{{'Mobile'|translate}}</label>
                         </span>
           </div>
