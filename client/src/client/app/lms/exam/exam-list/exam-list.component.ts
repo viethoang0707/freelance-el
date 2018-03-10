@@ -43,7 +43,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             Exam.array(this, examIds)
             .subscribe(exams => {
                 _.each(exams, (exam)=> {
-                    exam.member = _.find(members, function(member:ExamMember) {
+                    exam.member = _.find(members, (member:ExamMember)=> {
                         return member.exam_id == exam.id;
                     });
                     exam.member.examScore(this, exam.id).subscribe(score=> {
@@ -53,7 +53,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                         exam.question_count = count;
                     });
                 });
-                this.exams = _.filter(exams, function(exam) {
+                this.exams = _.filter(exams, (exam)=> {
                      return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
                 });
             });

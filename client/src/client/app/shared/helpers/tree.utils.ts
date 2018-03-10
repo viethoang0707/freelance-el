@@ -24,7 +24,7 @@ export class TreeUtils {
       if (target.id == parentId)
         return true;
       if (target.parent_id)
-        target = _.find(groups, function(group) {
+        target = _.find(groups, (group)=> {
         return group.id == target.parent_id;
       });
     }
@@ -35,11 +35,11 @@ export class TreeUtils {
     var subTrees = [];
     var directChilds = [];
     if (!parentGroup)
-      directChilds = _.filter(groups, function(group) {
+      directChilds = _.filter(groups, (group)=> {
         return !group.parent_id;
       });
     else {
-      directChilds = _.filter(groups, function(group) {
+      directChilds = _.filter(groups, (group)=> {
         return parentGroup.id == group.parent_id;
       });
     }

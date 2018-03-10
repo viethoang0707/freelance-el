@@ -81,6 +81,10 @@ export class ProjectConfig extends SeedConfig {
                 path: 'node_modules/underscore/underscore-min.js'
             },
             {
+                name: 'recordrtc',
+                path: 'node_modules/recordrtc/RecordRTC.min.js'
+            },
+            {
                 name: 'moment',
                 path: 'node_modules/moment/min/moment.min.js'
             },

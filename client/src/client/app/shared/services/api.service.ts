@@ -93,4 +93,18 @@ export class APIService {
                 return response.json();
             });
     }
+
+    upload(file: any, cloudid: number):Observable<any>{
+        let formData:FormData = new FormData();
+        formData.append('file', file, file.name);
+        formData.append('cloudid', cloudid.toString());
+        let headers = new Headers();
+        /** No need to include Content-Type in Angular 4 */
+       // headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(`${Config.CLOUD_ENDPOINT}/cloud/file`, formData, options)
+            .map(res => res.json())
+            .catch(error => Observable.throw(error));
+    }
 }

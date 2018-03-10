@@ -29,7 +29,7 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	constructor(private treeUtils: TreeUtils) {
 		super();
-		this.courseStatus = _.map(COURSE_STATUS, function(val, key) {
+		this.courseStatus = _.map(COURSE_STATUS, (val, key)=> {
 			return {
 				label: val,
 				value: key

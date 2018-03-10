@@ -118,22 +118,22 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	loadMembers() {
 		if (this.course)
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
-				this.students = _.filter(members, function(member) {
+				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
 				});
 				this.selectedStudent = null;
-				this.teachers = _.filter(members, function(member) {
+				this.teachers = _.filter(members, (member)=> {
 					return member.role =='teacher';
 				});
 				this.selectedTeacher = null;
 			});
 		if (this.courseClass)
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
-				this.students = _.filter(members, function(member) {
+				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
 				});
 				this.selectedStudent = null;
-				this.teachers = _.filter(members, function(member) {
+				this.teachers = _.filter(members, (member)=> {
 					return member.role =='teacher';
 				});
 				this.selectedTeacher = null;

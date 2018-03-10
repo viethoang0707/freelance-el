@@ -37,7 +37,7 @@ export class ClassListDialog extends BaseComponent {
 		this.course =  course;
 		CourseClass.listByCourse(this, course.id)
 		.map(classList => {
-			return _.filter(classList, function(obj:CourseClass) {
+			return _.filter(classList, (obj:CourseClass)=> {
 				return member.class_id == obj.id;
 			});
 		})

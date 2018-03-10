@@ -85,7 +85,7 @@ export class AnswerSheetDialog extends BaseComponent {
     }
 
     prepareAnswer(question: ExamQuestion): Observable<any> {
-        var answer = _.find(this.answers, function(ans: Answer) {
+        var answer = _.find(this.answers, (ans: Answer)=> {
             return ans.question_id == question.question_id;
         });
         if (!answer)

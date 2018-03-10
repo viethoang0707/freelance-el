@@ -90,7 +90,7 @@ export class ExamListComponent extends BaseComponent {
 
     onEventClick(event) {
         var examId = event.calEvent.id;
-        this.selectedExam = _.find(this.exams, function(exam) {
+        this.selectedExam = _.find(this.exams, (exam)=> {
             return exam.id == examId;
         });
         this.edit();
@@ -99,7 +99,7 @@ export class ExamListComponent extends BaseComponent {
     loadExams() {
         Exam.all(this).subscribe(exams => {
             this.exams = exams;
-            this.events = _.map(exams, function(exam) {
+            this.events = _.map(exams, (exam)=> {
                 return {
                     title: exam.name,
                     start: exam.start,

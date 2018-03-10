@@ -91,7 +91,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			});
 			return Observable.forkJoin(...createSubscriptions);
 		} else {
-			return Observable.of(_.map(questions, function(question) {
+			return Observable.of(_.map(questions, (question)=> {
 				var exerciseQuestion = new ExerciseQuestion();
 				exerciseQuestion.question_id = question.id;
 				return exerciseQuestion;

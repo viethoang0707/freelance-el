@@ -53,7 +53,7 @@ import {ScheduleModule} from 'primeng/schedule';
         BaseRequestOptions,
         {
             provide: Http,
-            useFactory: function(options: BaseRequestOptions, realBackend: XHRBackend) {
+            useFactory: (options: BaseRequestOptions, realBackend: XHRBackend)=> {
                 return new InterceptHttp(realBackend, options);
             },
             deps: [BaseRequestOptions, XHRBackend]

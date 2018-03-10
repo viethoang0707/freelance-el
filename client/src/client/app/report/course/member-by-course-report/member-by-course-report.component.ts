@@ -82,7 +82,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
     generateReport(courses:Course[]):Observable<any> {
     	var self = this;
     	var subscriptions =[];
-    	_.each(courses, function(course:Course) {
+    	_.each(courses, (course:Course)=> {
     		var subscription = CourseMember.listByCourse(self, course.id).flatMap(members => {
     			return UserLog.courseActivity(self, course.id).map(logs => {
     				return self.generateReportRow(course, members, logs);
@@ -98,13 +98,13 @@ export class MemberByCourseReportComponent extends BaseComponent{
 	    record["course_name"] = course.name;
 	    record["course_code"] = course.code;
 	    record["total_member"] = members.length;
-	    var registeredMembers = _.filter(members, function(member:CourseMember) {
+	    var registeredMembers = _.filter(members, (member:CourseMember)=> {
 	    	return member.enroll_status == 'registered';
 	    });
-	    var inprogressMembers = _.filter(members, function(member:CourseMember) {
+	    var inprogressMembers = _.filter(members, (member:CourseMember)=> {
 	    	return member.enroll_status == 'in-study';
 	    });
-	    var completededMembers = _.filter(members, function(member:CourseMember) {
+	    var completededMembers = _.filter(members, (member:CourseMember)=> {
 	    	return member.enroll_status == 'completed';
 	    });
 	    record["total_member_registered"] = registeredMembers.length;
@@ -129,8 +129,8 @@ export class MemberByCourseReportComponent extends BaseComponent{
     		percentage_member_completed:0,
     		time_spent:0
     	};
-    	_.each(records, function(record) {
-    		_.each(summary, function(key) {
+    	_.each(records, (record)=> {
+    		_.each(summary, (key)=> {
     			summary[key] += record[key]
     		});
     	});

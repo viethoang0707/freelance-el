@@ -26,7 +26,7 @@ export class StatsUtils {
 		 	var endTimeMills = endDate.getTime();
 		 	for (var i = 0; starTimeMillis + i * dayLengthMills < endTimeMills;i++)
 		 		slots.push(0);
-		 	_.each(logs, function(log:UserLog) {
+		 	_.each(logs, (log:UserLog)=> {
 		 		var start = new Date(log.start);
 		 		var index = Math.floor((start.getTime() -  starTimeMillis)/ dayLengthMills);
 		 		slots[index]++;

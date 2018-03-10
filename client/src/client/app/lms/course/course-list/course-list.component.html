@@ -1,11 +1,12 @@
 <style>
-  ul{
-    list-style-type: none;
-    padding-left: 0px;
-  }
-  .vertical{
-    vertical-align: middle;
-  }
+ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+.vertical {
+  vertical-align: middle;
+}
 </style>
 <div class="card card-w-title">
   <h1>{{'My courses'|translate}}</h1>
@@ -46,14 +47,14 @@
                   <span class="cmt-detail">{{course.author_name}}</span>
                 </li>
                 <li class="clearfix">
-                <i class="material-icons">invert_colors</i>
-                <span class="cmt-title">{{'Mode'|translate}}</span>
-                <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
+                  <i class="material-icons">invert_colors</i>
+                  <span class="cmt-title">{{'Mode'|translate}}</span>
+                  <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
                 </li>
                 <li class="clearfix">
-                <i class="material-icons">layers</i>
-                <span class="cmt-title">{{'Number of unit'|translate}}</span>
-                <span class="cmt-detail">{{course.unit_count}}</span>
+                  <i class="material-icons">layers</i>
+                  <span class="cmt-title">{{'Number of unit'|translate}}</span>
+                  <span class="cmt-detail">{{course.unit_count}}</span>
                 </li>
                 <li class="clearfix">
                   <i class="material-icons">toc</i>
@@ -62,7 +63,7 @@
                 </li>
               </ul>
               <p-footer>
-                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student'" [disabled]="!course.status !='published'"></button>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student'" [disabled]="course.status !='published'"></button>
                 <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit course'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
                 <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage student'|translate}}" label="{{'Manage student'| translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageStudent(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='self-study' && course.status =='published'"></button>
                 <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage class'| translate}}" label="{{'Manage class'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageClass(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
@@ -76,5 +77,4 @@
   <etraining-course-syllabus-dialog></etraining-course-syllabus-dialog>
   <etraining-student-profile-list-dialog></etraining-student-profile-list-dialog>
   <etraining-class-list-dialog></etraining-class-list-dialog>
-  
 </div>

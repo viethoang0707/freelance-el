@@ -73,7 +73,7 @@ export abstract class BaseModel {
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.search(model, fields, domain, cloud_acc.id, cloud_acc.api_endpoint).map(items => {
-            return _.map(items, function(item) {
+            return _.map(items, (item)=> {
                return  MapUtils.deserializeModel(model, item);
             });
         });
@@ -89,7 +89,7 @@ export abstract class BaseModel {
         var model = this.Model;
         var cloud_acc = context.authService.StoredCredential.cloud_account;
         return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint).map(items => {
-            return _.map(items, function(item) {
+            return _.map(items, (item)=> {
                return  MapUtils.deserializeModel(model, item);
             });
         });;

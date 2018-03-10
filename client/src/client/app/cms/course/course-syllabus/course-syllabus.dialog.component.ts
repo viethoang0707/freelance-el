@@ -23,6 +23,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	syl: CourseSyllabus;
 	selectedNode: TreeNode;
 	items: MenuItem[];
+	units: CourseUnit[];
 
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 
@@ -44,8 +45,9 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	buildCourseTree() {
 		if (this.syl)
-			CourseUnit.listBySyllabus(this,this.syl.id).subscribe(groups => {
-				this.tree = this.sylUtils.buildTree(groups);
+			CourseUnit.listBySyllabus(this,this.syl.id).subscribe(units => {
+				this.units = units;
+				this.tree = this.sylUtils.buildTree(units);
 	        });
 	}
 
@@ -60,6 +62,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		unit.type =  type;
 		unit.name = 'New unit';
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
+		unit.order = this.selectedNode ? _.max(this.selectedNode.children, (obj)=> obj.data.order) : 0;
 		unit.save(this).subscribe(()=> {
 			if (this.selectedNode)
 				this.sylUtils.addChildNode(this.selectedNode, unit)
@@ -86,7 +89,25 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	moveUp() {
+		if (this.selectedNode) {
+			var unit =  this.selectedNode.data;
+			this.sylUtils.moveUp(this.tree,this.selectedNode);
+			var subscriptions = _.map(this.units, (unit) => {
+				return unit.save(this);
+			});
+			Observable.forkJoin(subscriptions).subscribe();
+		}
+	}
 
+	moveDown() {
+		if (this.selectedNode) {
+			var unit =  this.selectedNode.data;
+			this.sylUtils.moveDown(this.tree,this.selectedNode);
+			var subscriptions = _.map(this.units, (unit) => {
+				return unit.save(this);
+			});
+			Observable.forkJoin(subscriptions).subscribe();
+		}
 	}
 
 }
