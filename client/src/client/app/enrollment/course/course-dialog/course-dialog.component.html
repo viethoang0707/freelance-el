@@ -1,6 +1,6 @@
 <p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false" width="960" height="100%" [responsive]="true">
   <p-scrollPanel [style]="{width: '100%', height: '520px'}">
-    <form novalidate (ngSubmit)="save()" #f="ngForm" >
+    <form novalidate (ngSubmit)="save()" #f="ngForm"  autocomplete="off">
       <div class="ui-g ui-fluid form-group">
         <div class="ui-g-12">
           <p-selectButton [options]="courseStatus" [(ngModel)]="object.status" name="status"></p-selectButton>

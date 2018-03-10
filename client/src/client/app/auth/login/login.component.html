@@ -4,7 +4,7 @@
             <img [src]='company.logo | imageBase64'>
         </div>
         <div class="login-panel-content">
-            <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+            <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate  autocomplete="off">
                 <div class="ui-g">
                     <div class=" ui-g-12 ">
                         <h1>{{company.name}}</h1>

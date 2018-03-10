@@ -1,4 +1,4 @@
-<form novalidate (ngSubmit)="save()" #f="ngForm">
+<form novalidate (ngSubmit)="save()" #f="ngForm"  autocomplete="off">
   <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="600" height="100%" [responsive]="true">
     <p-tabView>
       <p-tabPanel header="{{'Account info'|translate}}" leftIcon="ui-icon-people">
@@ -9,9 +9,9 @@
           </div>
           <div class="ui-g-12 ">
             <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.name" name="name">
-                            <label>{{'Name'|translate}}</label>
-                        </span>
+                <input type="text" pInputText [(ngModel)]="object.name" name="name">
+                <label>{{'Name'|translate}}</label>
+            </span>
           </div>
           <div class="ui-g-6">
             <span class="md-inputfield">
