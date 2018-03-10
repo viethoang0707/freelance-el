@@ -28,7 +28,7 @@ export class ExamDialog extends BaseDialog<Exam> {
     constructor(private http: Http) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
-        this.examStatus = _.map(EXAM_STATUS, function(val, key) {
+        this.examStatus = _.map(EXAM_STATUS, (val, key)=> {
             return {
                 label: val,
                 value: key

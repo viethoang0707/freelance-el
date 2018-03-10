@@ -33,7 +33,7 @@ export class Question extends BaseModel{
 
     static listByGroups(context:APIContext, groupIds):Observable<any> {
         var subscriptions = [];
-        _.each(groupIds, function(groupId) {
+        _.each(groupIds, (groupId)=> {
             subscriptions.push(Question.listByGroup(context,groupId));
         });
         return Observable.zip(...subscriptions).map(questionArrs => {

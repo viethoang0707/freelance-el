@@ -47,7 +47,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 			});
 			CourseMember.listByUser(this, object.id)
 				.map(members => {
-					return _.filter(members, function(member:CourseMember) {
+					return _.filter(members, (member:CourseMember)=> {
 						return member.role == 'student';
 					});
 				})

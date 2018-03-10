@@ -39,7 +39,7 @@ export class UserExportDialog extends BaseComponent {
         this.users = users;
         this.display = true;
         Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
-			_.each(this.users, function(user) {
+			_.each(this.users, (user)=> {
 				if (user.etraining_group_id) {
 					var group = _.find(groups, (obj:Group) => {
 						return obj.id == user.etraining_group_id;

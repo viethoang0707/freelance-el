@@ -34,19 +34,19 @@ export class ReportUtils {
 
 	analyzeCourseActivity(logs: UserLog[]) {
 		var onTime = 0;
-		var startCourseUnitLogs = _.filter(logs, function(log) {
+		var startCourseUnitLogs = _.filter(logs, (log)=> {
 			return log.start!=null && log.code =='START_COURSE_UNIT';
 		});
-		var endCourseUnitLogs = _.filter(logs, function(log) {
+		var endCourseUnitLogs = _.filter(logs, (log)=> {
 			return log.start!=null && log.code =='FINISH_COURSE_UNIT';
 		});
-		var first_attempt = _.min(startCourseUnitLogs, function(log) {
+		var first_attempt = _.min(startCourseUnitLogs, (log)=> {
 			return log.start.getTime();
 		});
-		var last_attempt = _.max(startCourseUnitLogs, function(log) {
+		var last_attempt = _.max(startCourseUnitLogs, (log)=> {
 			return log.start.getTime();
 		});
-		_.each(logs, function(log) {
+		_.each(logs, (log)=> {
 			if (log.code == 'FINISH_COURSE_UNIT')
 				onTime += log.start.getTime();
 			if (log.code == 'START_COURSE_UNIT')
@@ -57,19 +57,19 @@ export class ReportUtils {
 
 	analyzeExamActivity(logs: UserLog[]) {
 		var onTime = 0;
-		var startCourseUnitLogs = _.filter(logs, function(log) {
+		var startCourseUnitLogs = _.filter(logs, (log)=> {
 			return log.start && log.code =='START_EXAM';
 		});
-		var endCourseUnitLogs = _.filter(logs, function(log) {
+		var endCourseUnitLogs = _.filter(logs, (log)=> {
 			return log.start && log.code =='FINISH_EXAM';
 		});
-		var first_attempt = _.min(startCourseUnitLogs, function(log) {
+		var first_attempt = _.min(startCourseUnitLogs, (log)=> {
 			return log.start.getTime();
 		});
-		var last_attempt = _.max(startCourseUnitLogs, function(log) {
+		var last_attempt = _.max(startCourseUnitLogs, (log)=> {
 			return log.start.getTime();
 		});
-		_.each(logs, function(log) {
+		_.each(logs, (log)=> {
 			if (log.code == 'FINISH_EXAM')
 				onTime += log.start.getTime();
 			if (log.code == 'START_EXAM')

@@ -57,7 +57,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                         });
                     else
                         course.unit_count  = 0;
-                    course.member = _.find(members, function(member:CourseMember) {
+                    course.member = _.find(members, (member:CourseMember)=> {
                         return member.course_id == course.id;
                     });
 

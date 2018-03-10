@@ -41,7 +41,7 @@ export class ExamContentDialog extends BaseComponent {
 		this.grades = [];
 		this.exam = new Exam();
 		this.questions = [];
-		this.examStatus = _.map(EXAM_STATUS, function(val, key) {
+		this.examStatus = _.map(EXAM_STATUS, (val, key)=> {
             return {
                 label: val,
                 value: key
@@ -170,12 +170,12 @@ export class ExamContentDialog extends BaseComponent {
 	removeGrade(grade: ExamGrade) {
 		if (grade.id) {
 			grade.delete(this).subscribe(() => {
-				this.grades = _.reject(this.grades, function(obj) {
+				this.grades = _.reject(this.grades, (obj)=> {
 					return obj == grade;
 				});
 			})
 		} else
-			this.grades = _.reject(this.grades, function(obj) {
+			this.grades = _.reject(this.grades, (obj)=> {
 				return obj == grade;
 			});
 	}

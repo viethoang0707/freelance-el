@@ -30,7 +30,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.credential = this.authService.StoredCredential;
         console.log(this.credential);
-        this.remember = (this.credential.username != "" && this.credential.password != "");
+        this.remember = this.authService.Remember;
         this.company =  this.cacheService.UserCompany;
     }
 

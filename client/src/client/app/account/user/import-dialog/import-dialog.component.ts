@@ -51,7 +51,7 @@ export class UserImportDialog extends BaseComponent {
 				var user = new User();
 				Object.assign(user, record);
 				user["password"] = DEFAULT_PASSWORD;
-				var group = _.find(groups, function(obj:Group) {
+				var group = _.find(groups, (obj:Group)=> {
 					return obj.code == record["group_code"];
 				});
 				if (group) {

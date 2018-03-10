@@ -59,7 +59,7 @@ export class ExamScoreDialog extends BaseComponent {
                                 member: member,
                                 answers: answers
                             }
-                            record["score"] = _.reduce(answers, function(sum, ans) {
+                            record["score"] = _.reduce(answers, (sum, ans)=> {
                                 return sum + ans.score;
                             }, 0);
                             var grade = _.find(grades, (obj)=> {

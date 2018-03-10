@@ -94,10 +94,10 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 
     loadMembers() {
         ExamMember.listByExam(this, this.exam.id).subscribe(members => {
-             this.candidates = _.filter(members, function(member) {
+             this.candidates = _.filter(members, (member)=> {
                  return member.role =='candidate';
              });
-             this.supervisors = _.filter(members, function(member) {
+             this.supervisors = _.filter(members, (member)=> {
                  return member.role =='supervisor';
              });
         });

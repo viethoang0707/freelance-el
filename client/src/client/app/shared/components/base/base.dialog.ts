@@ -42,12 +42,14 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
             this.object.save(this).subscribe(() => {
                 this.hide();
                 this.onCreateCompleteReceiver.next(this.object);
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: this.translateService.instant('Object created successfully.') });
             })
         }
         else {
             this.object.save(this).subscribe(() => {
                 this.hide();
                 this.onUpdateCompleteReceiver.next(this.object);
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: this.translateService.instant('Object saved successfully.') });
             })
         }
     }

@@ -92,13 +92,13 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
 	    record["user_login"] =  member.login;
 	    record["user_name"] = member.name;
 	    record["user_group"] = member.etraining_group_id__DESC__;
-	    record["score"] = _.reduce(answers, function (sum, ans) {
+	    record["score"] = _.reduce(answers,  (sum, ans)=> {
     		return sum + ans.score;
 		},0);
 	    var result = this.reportUtils.analyzeExamActivity(logs);
 	    if (result[0] != Infinity)
 	    	record["date_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
-    	var grade = _.find(grades, function(obj) {
+    	var grade = _.find(grades, (obj)=> {
     		return obj.min_score <= record["score"] && obj.max_score >= record["score"]
     	});
     	if (grade)

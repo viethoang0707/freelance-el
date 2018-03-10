@@ -65,7 +65,7 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 
 	setOptionCorrect(option) {
 		if (option.is_correct) {
-			_.each(this.options, function(option) {
+			_.each(this.options, (option)=> {
 				option.is_correct = false;
 			});
 			option.is_correct = true;
@@ -75,12 +75,12 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 	removeOption(option: QuestionOption) {
 		if (option.id) {
 			option.delete(this).subscribe(() => {
-				this.options = _.reject(this.options, function(obj) {
+				this.options = _.reject(this.options, (obj)=> {
 					return obj == option;
 				});
 			})
 		} else
-			this.options = _.reject(this.options, function(obj) {
+			this.options = _.reject(this.options, (obj)=> {
 				return obj == option;
 			});
 	}

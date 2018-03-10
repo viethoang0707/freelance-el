@@ -30,7 +30,7 @@ export class ReportComponent extends BaseComponent implements OnInit {
                 label: '-- '+ this.translateService.instant(val) +' --',
                 value:null
             });
-            this.items = this.items.concat(_.map(ReportRegister.Instance.lookup(key), function(report) {
+            this.items = this.items.concat(_.map(ReportRegister.Instance.lookup(key), (report)=> {
 				return {
 					label: this.translateService.instant(report["title"]),
 					value: report["component"]
