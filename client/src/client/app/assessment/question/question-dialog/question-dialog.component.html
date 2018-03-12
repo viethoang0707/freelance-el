@@ -1,4 +1,4 @@
-<form novalidate (ngSubmit)="save()" #f="ngForm"  autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm"  autocomplete="off">
   <p-dialog header="{{'Question'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true">
     <p-scrollPanel [style]="{width: '100%', height: '480px'}">
       <p-tabView>
@@ -6,15 +6,31 @@
     <div class="ui-g ui-fluid form-group">
       <div class="ui-g-12">
         <label>{{'Group'|translate}}</label>
-        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+        <p-tree [value]="tree" selectionMode="single" required [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
       </div>
       <div class="ui-g-6">
         <label>{{'Title'|translate}}</label>
-        <textarea pInputTextarea [(ngModel)]="object.title" name="title"></textarea>
+        <textarea pInputTextarea [(ngModel)]="object.title" #title="ngModel" required name="title"></textarea>
+        <div *ngIf="title.invalid && (title.dirty || title.touched)"
+          class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="title.errors.required">
+                {{'Title is required' | translate}}
+            </div>
+        </div>
       </div>
       <div class="ui-g-6">
         <label>{{'Level'|translate}}</label>
-        <p-rating [(ngModel)]="object.level" [stars]="5" name="level"></p-rating>
+        <div style="margin-top: 20px;">
+          <div style="float: left;">
+            <p-radioButton name="mode" value="easy" [disabled]="object.id" label="{{'Easy'|translate}}" [(ngModel)]="object.mode" inputId="opt1"></p-radioButton>
+          </div>
+          <div style="float: left; margin-left:30px">
+            <p-radioButton name="mode" value="medium" [disabled]="object.id" label="{{'Medium'|translate}}" [(ngModel)]="object.mode" inputId="opt2"></p-radioButton>
+          </div>
+          <div style="float: left; margin-left:30px">
+            <p-radioButton name="mode" value="difficult" [disabled]="object.id" label="{{'Difficult'|translate}}" [(ngModel)]="object.mode" inputId="opt3"></p-radioButton>
+          </div>
+        </div>
       </div>
     </div>
   </p-tabPanel>

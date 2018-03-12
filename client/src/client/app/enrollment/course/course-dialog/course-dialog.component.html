@@ -1,6 +1,6 @@
 <p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false" width="960" height="100%" [responsive]="true">
   <p-scrollPanel [style]="{width: '100%', height: '520px'}">
-    <form novalidate (ngSubmit)="save()" #f="ngForm"  autocomplete="off">
+    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm"  autocomplete="off">
       <div class="ui-g ui-fluid form-group">
         <div class="ui-g-12">
           <p-selectButton [options]="courseStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
@@ -11,15 +11,27 @@
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.name" name="name" required>
-                            <label>{{'Name'|translate}}</label>
-                        </span>
+            <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
+            <label>{{'Name'|translate}}</label>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)"
+              class="ui-message ui-messages-error ui-corner-all">
+                <div *ngIf="name.errors.required">
+                    {{'Name is required' | translate}}
+                </div>
+            </div>
+          </span>
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.code" name="code">
-                            <label>{{'Code'|translate}}</label>
-                        </span>
+            <input type="text" pInputText [(ngModel)]="object.code" #code="ngModel" name="code" required>
+            <label>{{'Code'|translate}}</label>
+            <div *ngIf="code.invalid && (code.dirty || code.touched)" 
+              class="ui-message ui-messages-error ui-corner-all">
+              <div *ngIf="code.errors.required">
+                  {{'Code is required' | translate}}
+              </div>
+            </div>
+          </span>
         </div>
         <div class="ui-g-12 ">
           <label>{{'Summary'|translate}}</label>

@@ -41,8 +41,8 @@
         <p-dropdown [options]="langs" (onChange)="selectLang($event)" [(ngModel)]="selectedLang">
           <ng-template let-item pTemplate="selectedItem">
             <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-              <span class="flag-icon" style="vertical-align:middle"[ngClass]="'flag-icon-'+item.value"></span>
-              <div style="font-size:14px;float:right;margin-top:4px;vertical-align:middle">{{item.label}}</div>
+              <span class="flag-icon" style="margin-top:4px;vertical-align:middle;float: left" [ngClass]="'flag-icon-'+item.value"></span>
+              <div style="font-size:14px;float:left; margin-left: 5px; margin-top:4px;vertical-align:middle">{{item.label}}</div>
             </div>
           </ng-template>
           <ng-template let-item pTemplate="item">

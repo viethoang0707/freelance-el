@@ -236,5 +236,10 @@
 	"Video lecture": "Bài học Video",
 	"Exercise": "Bài tập",
 	"Generate questions": "Tạo câu hỏi",
-	"Total score": "Tổng điểm" 
+	"Total score": "Tổng điểm",
+	"Name is required": "Nhập tên là bắt buộc",
+	"Code is required": "Nhập mã là bắt buộc",
+	"Duration is required": "Thời gian là bắt buộc",
+	"Login is required": "Tên đăng nhập là bắt buộc",
+	"Title is required": "Tiêu đề là bắt buộc"
 }

@@ -1,4 +1,4 @@
-<form novalidate (ngSubmit)="save()" #f="ngForm"  autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm"  autocomplete="off">
   <p-dialog header="{{'Exam'|translate}}" [(visible)]="display" modal="false" width="960"  [responsive]="true">
      <p-scrollPanel [style]="{width: '100%', height: '520px'}">
     <div class="ui-g ui-fluid form-group">
@@ -7,8 +7,14 @@
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.name" name="name">
+            <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
             <label>{{'Name'|translate}}</label>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" 
+              class="ui-message ui-messages-error ui-corner-all">
+              <div *ngIf="name.errors.required">
+                  {{'Name is required' | translate}}
+              </div>
+            </div>
         </span>
       </div>
       <div class="ui-g-6">
@@ -25,12 +31,18 @@
 
       <div class="ui-g-5">
         <label>{{'Datetime'|translate}}</label>
-         <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date"  [inline]="true" required [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
+         <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" required [inline]="true" [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.duration" name="duration" pKeyFilter="pint">
+            <input type="text" pInputText [(ngModel)]="object.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
             <label>{{'Duration (in minutes)'|translate}}</label>
+            <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" 
+              class="ui-message ui-messages-error ui-corner-all">
+              <div *ngIf="duration.errors.required">
+                  {{'Duration is required' | translate}}
+              </div>
+            </div>
         </span>
       </div>
     </div>

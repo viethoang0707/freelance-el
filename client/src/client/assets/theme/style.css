@@ -26,3 +26,7 @@ body
 .ui-table-tbody td{
   text-align: center;
 }
+
+body .ui-state-highlight{
+  background-color: #161e840d;
+}
