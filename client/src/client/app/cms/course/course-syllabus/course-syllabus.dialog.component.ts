@@ -10,6 +10,7 @@ import { CourseSyllabus }  from '../../../shared/models/course-syllabus.model';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
+import * as _ from 'underscore';
 
 @Component({
     moduleId: module.id,
@@ -56,13 +57,14 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translateService.instant('You can only add course unit to a folder.') });
 			return;
 		}
+		var maxOrderNode = _.max(this.selectedNode.children, (obj)=> obj.data.order); 
 		var unit = new CourseUnit();
 		unit.syllabus_id =  this.syl.id;
 		unit.icon = COURSE_UNIT_ICON[type];
 		unit.type =  type;
 		unit.name = 'New unit';
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
-		unit.order = this.selectedNode ? _.max(this.selectedNode.children, (obj)=> obj.data.order) : 0;
+		unit.order = this.selectedNode ? maxOrderNode.data.order : 0;
 		unit.save(this).subscribe(()=> {
 			if (this.selectedNode)
 				this.sylUtils.addChildNode(this.selectedNode, unit)

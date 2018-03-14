@@ -32,7 +32,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	@ViewChild('camera') video: any
 
-	constructor(private ngZone:NgZone) {
+	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new VideoLecture();
 	}
@@ -67,9 +67,9 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 			data => {
 				this.uploadInprogress = false;
 				if (data["result"]) {
-					ngZone.run(()=> {
+					// this.ngZone.run(() => {
 						this.lecture.video_url = data["url"];
-					}
+					// });
 				}
 			},
 			() => {
@@ -87,12 +87,8 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	startRecording() {
 		var self = this;
 		let mediaConstraints = {
-			video: {
-				mandatory: {
-					minWidth: 1280,
-					minHeight: 720
-				}
-			}, audio: true
+			video:true , 
+			audio: true
 		};
 		navigator.mediaDevices
 			.getUserMedia(mediaConstraints)

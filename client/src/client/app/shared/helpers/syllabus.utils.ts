@@ -60,13 +60,13 @@ export class SyllabusUtils {
 
   public moveUp(tree, node) {
     var siblings = [];
-    if (!node.parent_id)
+    if (!node.parent_id) {
       siblings = tree;
-    else {
+    } else {
       var parentNode = this.findTreeNode(tree, node.parent_id);
       siblings = parentNode.children;
     }
-    var curIndex = _.findIndex(siblings, (obj) => return obj.data.id == node.data.id);
+    var curIndex = _.findIndex(siblings, (obj) => { return obj.data.id == node.data.id; });
     if (curIndex > 0) {
       var prevNode = siblings[curIndex - 1];
       var prevData = prevNode.data;
@@ -75,20 +75,20 @@ export class SyllabusUtils {
       prevData.order = currentData.order;
       currentData.order = tmp;
       siblings[curIndex] = prevNode;
-      siblings[curIndex-1] = node;
+      siblings[curIndex - 1] = node;
     }
   }
 
-  public moveDown(tree, node): boolean {
+  public moveDown(tree, node) {
     var siblings = [];
-    if (!node.parent_id)
+    if (!node.parent_id) {
       siblings = tree;
-    else {
+    } else {
       var parentNode = this.findTreeNode(tree, node.parent_id);
       siblings = parentNode.children;
     }
-    var curIndex = _.findIndex(siblings, (obj) => return obj.data.id == node.data.id);
-    if (curIndex < siblings.length-1) {
+    var curIndex = _.findIndex(siblings, (obj) => { return obj.data.id == node.data.id; });
+    if (curIndex < siblings.length - 1) {
       var nextNode = siblings[curIndex + 1];
       var nextData = nextNode.data;
       var currentData = node.data;
@@ -96,7 +96,7 @@ export class SyllabusUtils {
       nextData.order = currentData.order;
       currentData.order = tmp;
       siblings[curIndex] = nextNode;
-      siblings[curIndex+1] = node;
+      siblings[curIndex + 1] = node;
     }
   }
 
