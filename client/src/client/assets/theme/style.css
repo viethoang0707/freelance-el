@@ -27,6 +27,6 @@ body
   text-align: center;
 }
 
-body .ui-state-highlight{
+body p-schedule .ui-state-highlight{
   background-color: #161e840d;
 }
