@@ -57,6 +57,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translateService.instant('You can only add course unit to a folder.') });
 			return;
 		}
+		var maxOrderNode = _.max(this.selectedNode.children, (obj)=> obj.data.order); 
 		var unit = new CourseUnit();
 		var maxOrderNode =  _.max(this.selectedNode.children, (obj)=> obj.data.order);
 		unit.syllabus_id =  this.syl.id;

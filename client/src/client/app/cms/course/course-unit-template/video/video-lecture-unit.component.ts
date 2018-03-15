@@ -32,7 +32,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	@ViewChild('camera') video: any
 
-	constructor(private ngZone:NgZone) {
+	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new VideoLecture();
 	}

@@ -60,9 +60,9 @@ export class SyllabusUtils {
 
   public moveUp(tree, node) {
     var siblings = [];
-    if (!node.parent_id)
+    if (!node.parent_id) {
       siblings = tree;
-    else {
+    } else {
       var parentNode = this.findTreeNode(tree, node.parent_id);
       siblings = parentNode.children;
     }
@@ -81,9 +81,9 @@ export class SyllabusUtils {
 
   public moveDown(tree, node) {
     var siblings = [];
-    if (!node.parent_id)
+    if (!node.parent_id) {
       siblings = tree;
-    else {
+    } else {
       var parentNode = this.findTreeNode(tree, node.parent_id);
       siblings = parentNode.children;
     }
