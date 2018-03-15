@@ -1,0 +1,19 @@
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+<p-dialog header="{{'Course FAQ'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
+    <div class="ui-g ui-fluid form-group">
+      <div class="ui-g-12 ">
+          <label>{{'Question'|translate}}</label>
+          <textarea pInputTextarea [(ngModel)]="object.question" name="question"></textarea>
+        </div>
+        <div class="ui-g-12 ">
+          <label>{{'Answer'|translate}}</label>
+          <textarea pInputTextarea [(ngModel)]="object.answer" name="description"></textarea>
+        </div>
+    </div>
+    
+    <p-footer>
+      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+</p-dialog>
+ </form>

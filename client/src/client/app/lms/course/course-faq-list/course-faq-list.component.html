@@ -1,0 +1,44 @@
+<div class="card card-w-title">
+    <h1>{{'Course materials'|translate}}</h1>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                    <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedFaq"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedFaq"></button>
+                </div>
+            </p-toolbar>
+            <p-table #faqTable [value]="faqs" [paginator]="true" [rows]="10" selectionMode="single" 
+            [(selection)]="selectedFaq" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            {{'Question'|translate}}
+                        </th>
+                        <th>
+                            {{'Answer'|translate}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-faq>
+                    <tr [pSelectableRow]="faq">
+                        <td>{{faq.question}}</td>
+                        <td>{{faq.answer}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    {{'Total records'|translate}} : {{faqs?.length}}
+                </ng-template>
+                <ng-template pTemplate="emptymessage" >
+                    <tr>
+                        <td [attr.colspan]="3">
+                            {{'No records found'|translate}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <etraining-course-faq-dialog></etraining-course-faq-dialog>
+        </div>
+    </div>
+</div>

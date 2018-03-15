@@ -11,10 +11,15 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-student-profile-list-dialog',
-    templateUrl: 'student-profile-list.dialog.component.html',
+    selector: 'etraining-gradebook-list-dialog',
+    templateUrl: 'gradebook-list.component.html',
 })
-export class StudentPrfileListDialog extends BaseComponent {
+export class GradebookListDialog extends BaseComponent {
 
+	constructor() {
+		super();
+	}
 
+	ngOnInit() {
+	}
 }

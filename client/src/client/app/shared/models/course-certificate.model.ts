@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from './decorator';
 import { APIContext } from './context';
 
-@Model('etraining.certificate')
+@Model('etraining.course_certificate')
 export class Certificate extends BaseModel{
 
     // Default constructor will be called by mapper

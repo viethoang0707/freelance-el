@@ -14,7 +14,7 @@ import { Group } from '../../../shared/models/group.model';
 import { User } from '../../../shared/models/user.model';
 import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
-import { StudentPrfileListDialog} from '../student-profile-list/student-profile-list.dialog.component';
+import { GradebookListDialog } from '../gradebook-list/gradebook-list.component';
 import { ClassListDialog } from '../class-list/class-list.dialog.component';
 
 @Component({
@@ -32,7 +32,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     COURSE_MODE = COURSE_MODE;
     @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;
     @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
-    @ViewChild(StudentPrfileListDialog) studentProfileListDialog: StudentPrfileListDialog;
+    @ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
 
     constructor(private router: Router) {
         super();
@@ -93,7 +93,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
 
     manageStudent(member:CourseMember, course:Course) {
-       //this.studentProfileListDialog.show(member, course);
+       //this.gradebookListDialog.show(member, course);
     }
 
     manageClass(member: CourseMember, course: Course) {

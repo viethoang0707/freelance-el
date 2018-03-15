@@ -12,17 +12,19 @@ export class CourseMaterial extends BaseModel{
         super();
 		
 		this.name = undefined;
-		this.syllabus_id = undefined;
-        this.attachment_id = undefined;
+		this.course_id = undefined;
 		this.filename = undefined;
         this.type = undefined;
         this.url = undefined;
     }
     
     name:string;
-    syllabus_id: number;
-    attachment_id: number;
+    course_id: number;
     filename:string;
     type:string;
     url:string;
+
+    static listByCourse(context:APIContext, courseId):Observable<any> {
+        return CourseMaterial.search(context,[], "[('course_id','=',"+courseId+")]");
+    }
 }
