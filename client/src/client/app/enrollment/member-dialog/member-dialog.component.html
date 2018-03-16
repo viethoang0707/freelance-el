@@ -14,7 +14,8 @@
       </div>
     </div>
     <p-footer>
-      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+      <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
+      <!-- <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button> -->
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
   
