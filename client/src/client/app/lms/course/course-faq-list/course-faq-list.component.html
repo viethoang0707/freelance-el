@@ -1,5 +1,4 @@
-<div class="card card-w-title">
-    <h1>{{'Course materials'|translate}}</h1>
+<p-dialog header="{{'Course FAQ list'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
     <div class="ui-g">
         <div class="ui-g-12">
             <p-toolbar>
@@ -41,4 +40,7 @@
             <etraining-course-faq-dialog></etraining-course-faq-dialog>
         </div>
     </div>
-</div>
+    <p-footer>
+      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+</p-dialog>

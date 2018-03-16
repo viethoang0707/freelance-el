@@ -6,7 +6,7 @@ import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Group } from '../../../shared/models/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/user.model';
-import { UserLog } from '../../../shared/models/log.model';
+import { CourseLog } from '../../../shared/models/log.model';
 import { CourseMember } from '../../../shared/models/course-member.model';
 import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../shared/models/constants'
@@ -80,7 +80,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
     	var subscriptions =[];
     	_.each(users, (user:User)=> {
     		var subscription = CourseMember.listByUser(this, user.id).flatMap(members => {
-    			return UserLog.userStudyActivity(this, user.id,null).do(logs => {
+    			return CourseLog.userStudyActivity(this, user.id,null).do(logs => {
     				var memberRecords = _.map(members, (member:CourseMember)=> {
     					return this.generateReportRow(member, logs);
     				})
@@ -94,7 +94,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
         });
     }
 
-    generateReportRow(member: CourseMember, logs: UserLog[]):any {
+    generateReportRow(member: CourseMember, logs: CourseLog[]):any {
     	var record = {};
 	    record["user_login"] =  member.login;
 	    record["user_name"] = member.name;

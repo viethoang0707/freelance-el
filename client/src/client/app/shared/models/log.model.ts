@@ -6,14 +6,16 @@ import { APIContext } from './context';
 import { ExamMember } from './exam-member.model';
 import { Answer } from './answer.model';
 import { Submission } from './submission.model';
+import { CourseUnit } from './course-unit.model';
 
-@Model('etraining.user_log')
-export class UserLog extends BaseModel{
+@Model('etraining.course_log')
+export class CourseLog extends BaseModel{
 
     constructor(){
         super();
         
         this.user_id = undefined;
+        this.course_id = undefined;
         this.res_id = undefined;
         this.res_model = undefined;
         this.note = undefined;
@@ -25,6 +27,7 @@ export class UserLog extends BaseModel{
 
     res_id: number;
     user_id: number;
+    course_id: number;
     res_model: string;
     note: string;
     code: string;
@@ -36,28 +39,85 @@ export class UserLog extends BaseModel{
     static userStudyActivity(context:APIContext, userId, courseId):Observable<any> {
         var domain = "";
         if (courseId)
-            domain = "[('user_id','=',"+userId+"),('res_id','=',"+courseId+"),('res_model','=','etraining.course')]";
+            domain = "[('user_id','=',"+userId+"),('course_id','=',"+courseId+")]";
         else
-            domain = "[('user_id','=',"+userId+"),('res_model','=','etraining.course')]"
-        return UserLog.search(context,[], domain );
+            domain = "[('user_id','=',"+userId+")]"
+        return CourseLog.search(context,[], domain );
     }
+
+    static courseActivity(context:APIContext, courseId):Observable<any> {
+        return CourseLog.search(context,[], "[('course_id','=',"+courseId+")]" );
+    }
+
+    static startCourseUnit(context:APIContext, userId:number, courseId: number,  unit:CourseUnit):Observable<any> {
+        var log = new CourseLog();
+        log.user_id = userId;
+        log.res_id = unit.id;
+        log.course_id = courseId;
+        log.res_model = CourseUnit.Model;
+        log.note = 'Start course unit';
+        log.code = "START_UNIT";
+        log.start = new Date();
+        return log.save(context);
+    }
+
+    static finishCourseUnit(context:APIContext, userId:number, courseId: number,  unit:CourseUnit):Observable<any> {
+        var log = new CourseLog();
+        log.user_id = userId;
+        log.res_id = unit.id;
+        log.course_id = courseId;
+        log.res_model = CourseUnit.Model;
+        log.note = 'finish course unit';
+        log.code = "FINISH_UNIT";
+        log.start = new Date();
+        return log.save(context);
+    }
+
+}
+
+
+@Model('etraining.exam_log')
+export class ExamLog extends BaseModel{
+
+    constructor(){
+        super();
+        
+        this.user_id = undefined;
+        this.exam_id = undefined;
+        this.res_id = undefined;
+        this.res_model = undefined;
+        this.note = undefined;
+        this.code = undefined;
+        this.start = undefined;
+        this.attachment_url = undefined;
+        this.attachment_id = undefined;
+    }
+
+    res_id: number;
+    user_id: number;
+    exam_id: number;
+    res_model: string;
+    note: string;
+    code: string;
+    @FieldProperty<Date>()
+    start: Date;
+    attachment_url: string;
+    attachment_id: number;
+
 
     static userExamActivity(context:APIContext, userId, examId):Observable<any> {
         var domain = "";
         if (examId)
-            domain = "[('user_id','=',"+userId+"),('res_id','=',"+examId+"),('res_model','=','etraining.exam')]";
+            domain = "[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]";
         else
-            domain = "[('user_id','=',"+userId+"),('res_model','=','etraining.exam')]"
-        return UserLog.search(context,[], domain );
+            domain = "[('user_id','=',"+userId+")]"
+        return ExamLog.search(context,[], domain );
     }
 
-    static courseActivity(context:APIContext, courseId):Observable<any> {
-        return UserLog.search(context,[], "[('res_id','=',"+courseId+"),('res_model','=','etraining.course')]" );
-    }
-
-    static startExam(context:APIContext, userId:number, submit:Submission):Observable<any> {
-        var log = new UserLog();
+    static startExam(context:APIContext, userId:number, examId: number, submit:Submission):Observable<any> {
+        var log = new ExamLog();
         log.user_id = userId;
+        log.exam_id =  examId;
         log.res_id = submit.id;
         log.res_model = Submission.Model;
         log.note = 'Start exam';
@@ -66,9 +126,10 @@ export class UserLog extends BaseModel{
         return log.save(context);
     }
 
-    static finishExam(context:APIContext, userId:number, submit:Submission):Observable<any> {
-        var log = new UserLog();
+    static finishExam(context:APIContext, userId:number, examId: number, submit:Submission):Observable<any> {
+        var log = new ExamLog();
         log.user_id = userId;
+        log.exam_id =  examId;
         log.res_id = submit.id;
         log.res_model = Submission.Model;
         log.note = 'Finish exam';
@@ -77,9 +138,10 @@ export class UserLog extends BaseModel{
         return log.save(context);
     }
 
-    static startAnswer(context:APIContext, userId:number, answer:Answer):Observable<any> {
-        var log = new UserLog();
+    static startAnswer(context:APIContext, userId:number,examId: number,  answer:Answer):Observable<any> {
+        var log = new ExamLog();
         log.user_id = userId;
+        log.exam_id =  examId;
         log.res_id = answer.id;
         log.res_model = Answer.Model;
         log.note = 'Start answer';
@@ -88,9 +150,10 @@ export class UserLog extends BaseModel{
         return log.save(context);
     }
 
-    static finishAnswer(context:APIContext, userId:number, answer:Answer):Observable<any> {
-        var log = new UserLog();
+    static finishAnswer(context:APIContext, userId:number, examId: number, answer:Answer):Observable<any> {
+        var log = new ExamLog();
         log.user_id = userId;
+        log.exam_id =  examId;
         log.res_id = answer.id;
         log.res_model = Answer.Model;
         log.note = 'Close answer';

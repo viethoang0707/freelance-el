@@ -9,6 +9,7 @@ import { CourseMember } from '../../../shared/models/course-member.model';
 import { Course } from '../../../shared/models/course.model';
 import { CourseClass } from '../../../shared/models/course-class.model';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
+import { ClassExamListDialog } from '../class-exam-list/class-exam-list.dialog.component';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ClassListDialog extends BaseComponent {
 	selectedClass: CourseClass;
 	classes: CourseClass[];
 	@ViewChild(ClassConferenceDialog) conferenceDialog : ClassConferenceDialog;
+	@ViewChild(ClassExamListDialog) examListDialog : ClassExamListDialog;
 
 	constructor() {
 		super();
@@ -64,7 +66,7 @@ export class ClassListDialog extends BaseComponent {
 
 	manageExam() {
 		if (this.selectedClass) {
-			
+			this.examListDialog.show(this.selectedClass);
 		}
 	}
 }

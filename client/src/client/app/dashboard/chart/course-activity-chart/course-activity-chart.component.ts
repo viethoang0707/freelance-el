@@ -6,7 +6,6 @@ import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Exam } from '../../../shared/models/exam.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/user.model';
-import { UserLog } from '../../../shared/models/log.model';
 import { ExamGrade } from '../../../shared/models/exam-grade.model';
 import { Submission } from '../../../shared/models/submission.model';
 import { Answer } from '../../../shared/models/answer.model';

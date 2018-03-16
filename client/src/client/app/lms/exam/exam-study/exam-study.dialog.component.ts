@@ -12,7 +12,7 @@ import { Answer } from '../../../shared/models/answer.model';
 import { ExamQuestion } from '../../../shared/models/exam-question.model';
 import { ExamMember } from '../../../shared/models/exam-member.model';
 import { Group } from '../../../shared/models/group.model';
-import { UserLog } from '../../../shared/models/log.model';
+import { ExamLog } from '../../../shared/models/log.model';
 import { ClockPipe } from '../../../shared/pipes/time.pipe';
 import { SelectItem } from 'primeng/api';
 import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
@@ -67,7 +67,7 @@ export class ExamStudyDialog extends BaseComponent {
 				submit.start = new Date();
 				submit.save(this).subscribe(() => {
 					this.submission = submit;
-					UserLog.startExam(this, this.member.user_id, submit);
+					ExamLog.startExam(this, this.member.user_id, exam.id, submit);
 					this.member.enroll_status = 'in-progress';
 					this.member.save(this).subscribe(() => {
 						this.startExam();
@@ -109,7 +109,7 @@ export class ExamStudyDialog extends BaseComponent {
 		subscriptions.push(this.member.save(this));
 		subscriptions.push(this.submission.save(this));
 		Observable.forkJoin(...subscriptions).subscribe(() => {
-			UserLog.finishExam(this, this.member.user_id, this.submission);
+			ExamLog.finishExam(this, this.member.user_id, this.exam.id, this.submission);
 			this.hide();
 		});
 	}
@@ -146,7 +146,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.currentQuestion = this.examQuestions[index];
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
-				UserLog.startAnswer(this, this.member.user_id, answer);
+				ExamLog.startAnswer(this, this.member.user_id,this.exam.id, answer);
 				this.currentAnswer = answer;
 				var detailComponent = QuestionRegister.Instance.lookup(question.type);
 				let viewContainerRef = this.questionHost.viewContainerRef;
@@ -170,7 +170,7 @@ export class ExamStudyDialog extends BaseComponent {
 		} else
 			this.currentAnswer.score = 0;
 		return this.currentAnswer.save(this).do(() => {
-			UserLog.finishAnswer(this, this.member.user_id, this.currentAnswer);
+			ExamLog.finishAnswer(this, this.member.user_id, this.exam.id, this.currentAnswer);
 		});
 	}
 

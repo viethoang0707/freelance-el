@@ -113,7 +113,7 @@ export class ClassConferenceDialog extends BaseComponent {
 		if (event.checked) {
 			if (conferenceMember) {
 				conferenceMember.is_active = true;
-				conferenceMember.save(this);
+				conferenceMember.save(this).subscribe();
 			} else {
 				RoomMember.createRoomMember(this, member.name, member.image, this.room.id, member.role).subscribe(roomMember => {
 					var conferenceMember = new ConferenceMember();
@@ -127,7 +127,7 @@ export class ClassConferenceDialog extends BaseComponent {
 			}
 		} else {
 			conferenceMember.is_active = false;
-			conferenceMember.save(this);
+			conferenceMember.save(this).subscribe();
 		}
 	}
 }
