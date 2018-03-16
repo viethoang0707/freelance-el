@@ -10,6 +10,7 @@ import { TreeUtils } from '../../helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GroupDialog } from '../group-dialog/group-dialog.component';
 import { GROUP_CATEGORY} from '../../models/constants';
+import { Course } from '../../../shared/models/course.model';
 
 @Component({
     moduleId: module.id,
@@ -29,6 +30,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     selectedNode: TreeNode;
     groups: Group[];
     category: string;
+    courses: Course[];
 
     ngOnInit() {
         this.category = this.route.snapshot.data['category']
@@ -50,13 +52,20 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     }
 
     delete() {
-        if (this.selectedNode)
-        this.confirmationService.confirm({
-            message: this.translateService.instant('Are you sure to delete ?'),
-            accept: () => {
-                this.selectedNode.data.delete(this).subscribe(()=> {
-                    this.loadGroups();
-                })
+        Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
+            this.courses = courses;
+            if(this.courses.length > 0){
+                alert('Có khóa học đang thuộc danh mục này.');
+            }
+            else{
+                this.confirmationService.confirm({
+                    message: this.translateService.instant('Are you sure to delete ?'),
+                    accept: () => {
+                        this.selectedNode.data.delete(this).subscribe(()=> {
+                            this.loadGroups();
+                        })
+                    }
+                });
             }
         });
     }
