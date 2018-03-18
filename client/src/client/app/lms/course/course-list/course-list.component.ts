@@ -18,6 +18,7 @@ import { GradebookListDialog } from '../gradebook-list/gradebook-list.component'
 import { ClassListDialog } from '../class-list/class-list.dialog.component';
 import { CourseMaterialListDialog } from '../course-material-list/course-material-list.component'
 import { CourseFaqListDialog } from '../course-faq-list/course-faq-list.component';
+import { CourseStudyDialog } from '../course-study/course-study.dialog.component';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     @ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
     @ViewChild(CourseMaterialListDialog) materialListDialog: CourseMaterialListDialog;
     @ViewChild(CourseFaqListDialog) faqListDialog: CourseFaqListDialog;
+    @ViewChild(CourseStudyDialog) studyDialog:CourseStudyDialog;
 
     constructor(private router: Router) {
         super();
@@ -93,8 +95,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     studyCourse(course:Course) {
         if (course.syllabus_id && course.status =='published')
-            this.router.navigate('/lms/course/study',{syllabusId:course.syllabus_id})
-    }
+            this.studyDialog.show(course);
 
     manageMaterial(course:Course) {
        this.materialListDialog.show(course);

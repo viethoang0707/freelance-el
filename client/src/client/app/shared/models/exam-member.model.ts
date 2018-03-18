@@ -1,6 +1,7 @@
 import { GROUP_CATEGORY} from './constants';
 import { BaseModel } from './base.model';
 import { Submission } from './submission.model';
+import { ExamGrade } from './exam-grade.model';
 import { Answer } from './answer.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from './decorator';
@@ -63,7 +64,7 @@ export class ExamMember extends BaseModel{
         });
     }
 
-    examScore(context:APIContext, examId):Observable<any> {
+    examScore(context:APIContext, examId:number):Observable<any> {
         return Submission.byMember(context, this.id).flatMap(submit => {
             if (!submit)
                 return Observable.of(0);
@@ -73,6 +74,12 @@ export class ExamMember extends BaseModel{
                         return sum + ans.score;
                     },0); 
                 });
+        });
+    }
+
+    examGrade(grades:ExamGrade[], score:number) {
+        return _.find(grades, (obj)=> {
+            return obj.min_score <= record["score"] && obj.max_score >= record["score"]
         });
     }
 

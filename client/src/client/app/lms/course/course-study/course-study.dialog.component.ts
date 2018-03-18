@@ -11,10 +11,30 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-course-study',
+    selector: 'etraining-course-study-dialog',
     templateUrl: 'course-study.component.html',
 })
-export class CourseStudyComponent extends BaseComponent {
+export class CourseStudyDialog extends BaseComponent {
+
+	display: boolean;
+	course: Course;
+
+	@ViewChild(AnswerSheetDialog) answerSheetDialog:AnswerSheetDialog;
+
+	constructor(private reportUtils: ReportUtils,private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+		super();
+	}
+
+	ngOnInit() {
+	}
+
+	hide() {
+		this.display = false;
+	}
 
 
+	show(course: Course) {
+		this.display = true;
+		this.course = course;
+	}
 }

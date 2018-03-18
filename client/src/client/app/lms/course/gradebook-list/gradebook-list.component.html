@@ -3,7 +3,7 @@
     <div class="ui-g-12 ">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
-          <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-eye " (click)="viewGradebook(selectedClass) " [disabled]="!selectedRecord"></button>
+          <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook(selectedClass) " [disabled]="!selectedRecord"></button>
         </div>
       </p-toolbar>
       <p-table #classTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
@@ -26,6 +26,12 @@
               <p-sortIcon [field]="'enroll_status'"></p-sortIcon>
             </th>
             <th>
+              {{'First attempt'|translate}}
+            </th>
+            <th>
+              {{'Last attempt'|translate}}
+            </th>
+            <th>
               {{'Time spend'|translate}}
             </th>
             <th>
@@ -38,6 +44,8 @@
             <td>{{record.name}}</td>
             <td>{{record.email}}</td>
             <td>{{record.etraining_group_id__DESC__}}</td>
+            <td>{{record.first_attempt}} %</td>
+            <td>{{record.last_attempt}} %</td>
             <td>{{record.time_spent}} {{'minute'|translate}}</td>
             <td>{{record.completion}} %</td>
             <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status]}}</td>
@@ -48,7 +56,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td [attr.colspan]="6">
+            <td [attr.colspan]="8">
               {{'No records found'|translate}}
             </td>
           </tr>

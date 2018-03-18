@@ -23,6 +23,7 @@ import { GradebookListDialog } from './course/gradebook-list/gradebook-list.comp
 import { GradebookDialog } from './course/gradebook/gradebook.dialog.component';
 import { ClassExamEnrollDialog } from './course/class-exam-enroll/class-exam-enroll.dialog.component';
 import { ClassExamListDialog } from './course/class-exam-list/class-exam-list.dialog.component';
+import { CourseStudyDialog } from './course/course-study/course-study.dialog.component';
 
 @NgModule({
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule],
@@ -30,7 +31,7 @@ import { ClassExamListDialog } from './course/class-exam-list/class-exam-list.di
     				CourseListComponent, CourseStudyComponent, QuestionMarkingDialog,
     				ExamScoreDialog, AnswerSheetDialog, ClassListDialog,ClassExamListDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseMaterialListDialog,
-    				CourseMaterialDialog, CourseFaqListDialog, CourseFaqDialog, 
+    				CourseMaterialDialog, CourseFaqListDialog, CourseFaqDialog, CourseStudyDialog,
     				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog],
     exports: [],
     providers: []

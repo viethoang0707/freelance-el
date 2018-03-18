@@ -51,25 +51,13 @@ export class ExamScoreDialog extends BaseComponent {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
                 this.records = [];
                 _.each(members, (member: ExamMember)=> {
-                    Submission.byMember(this, member.id).subscribe((submit:Submission) => {
-                        Answer.listBySubmit(this, submit.id).subscribe(answers => {
-                            var record = {
-                                name: member.name,
-                                etraining_group_id__DESC__: member.etraining_group_id__DESC__,
-                                member: member,
-                                answers: answers
-                            }
-                            record["score"] = _.reduce(answers, (sum, ans)=> {
-                                return sum + ans.score;
-                            }, 0);
-                            var grade = _.find(grades, (obj)=> {
-                                return obj.min_score <= record["score"] && obj.max_score >= record["score"]
-                            });
-                            if (grade)
+                    member.examScore(this, this.exam.id).subscribe(score=> {
+                        record["score"] = score;
+                        var grade = member.examGrade(grades, score);
+                        if (grade)
                                 record["grade"] = grade.name;
                             this.records.push(record);
-                        });
-                    })
+                    });
                 });
             });
         });
