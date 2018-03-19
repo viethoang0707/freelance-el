@@ -16,6 +16,9 @@ import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { GradebookListDialog } from '../gradebook-list/gradebook-list.component';
 import { ClassListDialog } from '../class-list/class-list.dialog.component';
+import { CourseMaterialListDialog } from '../course-material-list/course-material-list.component'
+import { CourseFaqListDialog } from '../course-faq-list/course-faq-list.component';
+
 
 @Component({
     moduleId: module.id,
@@ -33,6 +36,8 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;
     @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
     @ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
+    @ViewChild(CourseMaterialListDialog) materialListDialog: CourseMaterialListDialog;
+    @ViewChild(CourseFaqListDialog) faqListDialog: CourseFaqListDialog;
 
     constructor(private router: Router) {
         super();
@@ -87,13 +92,16 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     studyCourse(course:Course) {
-       // if (course.syllabus_id && course.status =='published')
-       //     this.router.navigate('/lms/course/study',{syllabusId:course.syllabus_id})
+        if (course.syllabus_id && course.status =='published')
+            this.router.navigate('/lms/course/study',{syllabusId:course.syllabus_id})
     }
 
+    manageMaterial(course:Course) {
+       this.materialListDialog.show(course);
+    }
 
-    manageStudent(member:CourseMember, course:Course) {
-       //this.gradebookListDialog.show(member, course);
+    manageFaq(course:Course) {
+       this.faqListDialog.show(course);
     }
 
     manageClass(member: CourseMember, course: Course) {

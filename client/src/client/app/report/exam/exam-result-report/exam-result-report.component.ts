@@ -6,7 +6,7 @@ import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Exam } from '../../../shared/models/exam.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/user.model';
-import { UserLog } from '../../../shared/models/log.model';
+import { ExamLog } from '../../../shared/models/log.model';
 import { ExamGrade } from '../../../shared/models/exam-grade.model';
 import { Submission } from '../../../shared/models/submission.model';
 import { Answer } from '../../../shared/models/answer.model';
@@ -73,7 +73,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
     generateReport(exam: Exam, grades: ExamGrade[], members: ExamMember[]):Observable<any> {
         var subscriptions =[];
     	_.each(members, (member:ExamMember)=> {
-    		var subscription = UserLog.userExamActivity(this, member.user_id, exam.id).flatMap(logs => {
+    		var subscription = ExamLog.userExamActivity(this, member.user_id, exam.id).flatMap(logs => {
     			return Submission.byMember(this, member.id).flatMap((submit:Submission) => {
                     if (!submit)
                         return Observable.of([]);
@@ -87,7 +87,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
     	return Observable.zip(...subscriptions);
     }
 
-    generateReportRow(exam:Exam, grades: ExamGrade[], member: ExamMember, answers: Answer[], logs: UserLog[]):any {
+    generateReportRow(exam:Exam, grades: ExamGrade[], member: ExamMember, answers: Answer[], logs: ExamLog[]):any {
     	var record = {};
 	    record["user_login"] =  member.login;
 	    record["user_name"] = member.name;

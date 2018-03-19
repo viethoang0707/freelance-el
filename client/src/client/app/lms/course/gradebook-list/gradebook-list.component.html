@@ -1,0 +1,63 @@
+<p-dialog header="{{'Gradebook list'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true" appendTo="body">
+  <p-scrollPanel [style]="{width: '100%', height: '480px'}">
+    <div class="ui-g-12 ">
+      <p-toolbar>
+        <div class="ui-toolbar-group-left">
+          <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-eye " (click)="viewGradebook(selectedClass) " [disabled]="!selectedRecord"></button>
+        </div>
+      </p-toolbar>
+      <p-table #classTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="'name'">
+              {{'Name'|translate}}
+              <p-sortIcon [field]="'name'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'email'">
+              {{'Email'|translate}}
+              <p-sortIcon [field]="'email'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'etraining_group_id__DESC__'">
+              {{'Group'|translate}}
+              <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'enroll_status'">
+              {{'Enroll status'|translate}}
+              <p-sortIcon [field]="'enroll_status'"></p-sortIcon>
+            </th>
+            <th>
+              {{'Time spend'|translate}}
+            </th>
+            <th>
+              {{'% completion'|translate}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-record>
+          <tr [pSelectableRow]="record">
+            <td>{{record.name}}</td>
+            <td>{{record.email}}</td>
+            <td>{{record.etraining_group_id__DESC__}}</td>
+            <td>{{record.time_spent}} {{'minute'|translate}}</td>
+            <td>{{record.completion}} %</td>
+            <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status]}}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          {{'Total records'|translate}} : {{records?.length}}
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="6">
+              {{'No records found'|translate}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-scrollPanel>
+  <etraining-gradebook-dialog></etraining-gradebook-dialog>
+  <p-footer>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog>

@@ -1,12 +1,12 @@
-<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm"  autocomplete="off">
-  <p-dialog header="{{'Exam'|translate}}" [(visible)]="display" modal="false" width="960"  [responsive]="true">
-     <p-scrollPanel [style]="{width: '100%', height: '520px'}">
-    <div class="ui-g ui-fluid form-group">
-      <div class="ui-g-12">
-      <p-selectButton [options]="examStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
-      </div>
-      <div class="ui-g-6">
-        <span class="md-inputfield">
+<p-dialog header="{{'Exam'|translate}}" [(visible)]="display" modal="false" width="960" [responsive]="true" appendTo="body">
+  <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-scrollPanel [style]="{width: '100%', height: '520px'}">
+      <div class="ui-g ui-fluid form-group">
+        <div class="ui-g-12">
+          <p-selectButton [options]="examStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
+        </div>
+        <div class="ui-g-6">
+          <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
             <label>{{'Name'|translate}}</label>
             <div *ngIf="name.invalid && (name.dirty || name.touched)" 
@@ -16,25 +16,24 @@
               </div>
             </div>
         </span>
-      </div>
-      <div class="ui-g-6">
-        <span class="md-inputfield">
+        </div>
+        <div class="ui-g-6">
+          <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
             <label>{{'Summary'|translate}}</label>
         </span>
-      </div>
-      <div class="ui-g-7">
-        <label>{{'Instruction'|translate}}</label>
-        <p-editor [(ngModel)]="object.instruction" [style]="{'height':'120px'}" name="instruction">
-        </p-editor>
-      </div>
-
-      <div class="ui-g-5">
-        <label>{{'Datetime'|translate}}</label>
-         <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" required [inline]="true" [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
-      </div>
-      <div class="ui-g-6">
-        <span class="md-inputfield">
+        </div>
+        <div class="ui-g-7">
+          <label>{{'Instruction'|translate}}</label>
+          <p-editor [(ngModel)]="object.instruction" [style]="{'height':'120px'}" name="instruction">
+          </p-editor>
+        </div>
+        <div class="ui-g-5">
+          <label>{{'Datetime'|translate}}</label>
+          <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" required [inline]="true" [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
+        </div>
+        <div class="ui-g-6">
+          <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
             <label>{{'Duration (in minutes)'|translate}}</label>
             <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" 
@@ -44,14 +43,14 @@
               </div>
             </div>
         </span>
+        </div>
       </div>
-    </div>
-</p-scrollPanel>
-    <p-footer>
-      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
-      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-    <etraining-exam-member-dialog></etraining-exam-member-dialog>
-      <etraining-select-user-dialog></etraining-select-user-dialog>
-  </p-dialog>
-</form>
+    </p-scrollPanel>
+  </form>
+  <p-footer>
+    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+  <etraining-exam-member-dialog></etraining-exam-member-dialog>
+  <etraining-select-user-dialog></etraining-select-user-dialog>
+</p-dialog>

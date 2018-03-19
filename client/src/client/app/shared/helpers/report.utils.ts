@@ -1,6 +1,6 @@
 import { Observable, Subject } from 'rxjs/Rx'
 import { Group } from '../models/group.model';
-import { UserLog } from '../models/log.model';
+import { ExamLog, CourseLog } from '../models/log.model';
 import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
 
@@ -32,7 +32,7 @@ export class ReportUtils {
 		return rowGroupMetadata;
 	}
 
-	analyzeCourseActivity(logs: UserLog[]) {
+	analyzeCourseActivity(logs: CourseLog[]) {
 		var onTime = 0;
 		var startCourseUnitLogs = _.filter(logs, (log)=> {
 			return log.start!=null && log.code =='START_COURSE_UNIT';
@@ -55,7 +55,7 @@ export class ReportUtils {
 		return [first_attempt, last_attempt, onTime];
 	}
 
-	analyzeExamActivity(logs: UserLog[]) {
+	analyzeExamActivity(logs: ExamLog[]) {
 		var onTime = 0;
 		var startCourseUnitLogs = _.filter(logs, (log)=> {
 			return log.start && log.code =='START_EXAM';

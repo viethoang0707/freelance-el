@@ -4,9 +4,11 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { Exam } from '../../../shared/models/exam.model';
-import { Group } from '../../../shared/models/group.model';
+import { GROUP_CATEGORY, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+import { CourseMember } from '../../../shared/models/course-member.model';
+import { CourseClass } from '../../../shared/models/course-class.model';
+import { UserLog } from '../../../shared/models/log.model';
+import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -16,10 +18,35 @@ import { SelectItem } from 'primeng/api';
 })
 export class GradebookListDialog extends BaseComponent {
 
-	constructor() {
+	COURSE_MEMBER_ENROLL_STATUS =  COURSE_MEMBER_ENROLL_STATUS;
+	records: any;
+	selectedRecord: any;
+	display: boolean;
+	courseClass: CourseClass;
+
+	constructor(private reportUtils: ReportUtils) {
 		super();
 	}
 
 	ngOnInit() {
+	}
+
+	hide() {
+		this.display = false;
+	}
+
+	show(courseClass: CourseClass) {
+		this.display = true;
+		this.courseClass = courseClass;
+		CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
+			this.records = _.filter(members, (member)=> {
+				return member.role =='student';
+			});
+			_.each(this.records,(record)=> {
+				UserLog.userStudyActivity(this,record.user_id, this.courseClass.id).subscribe(logs => {
+					this.reportUtils.analyzeCourseActivity(logs)
+				});
+			});
+		});
 	}
 }

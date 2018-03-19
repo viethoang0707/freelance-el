@@ -21,15 +21,17 @@ import { CourseFaqListDialog } from './course/course-faq-list/course-faq-list.co
 import { CourseFaqDialog } from './course/course-faq/course-faq.dialog.component';
 import { GradebookListDialog } from './course/gradebook-list/gradebook-list.component';
 import { GradebookDialog } from './course/gradebook/gradebook.dialog.component';
+import { ClassExamEnrollDialog } from './course/class-exam-enroll/class-exam-enroll.dialog.component';
+import { ClassExamListDialog } from './course/class-exam-list/class-exam-list.dialog.component';
 
 @NgModule({
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,ExamMarkingDialog,
     				CourseListComponent, CourseStudyComponent, QuestionMarkingDialog,
-    				ExamScoreDialog, AnswerSheetDialog, ClassListDialog,
+    				ExamScoreDialog, AnswerSheetDialog, ClassListDialog,ClassExamListDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseMaterialListDialog,
     				CourseMaterialDialog, CourseFaqListDialog, CourseFaqDialog, 
-    				GradebookDialog, GradebookListDialog],
+    				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog],
     exports: [],
     providers: []
 })
