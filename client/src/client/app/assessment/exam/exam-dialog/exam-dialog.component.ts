@@ -20,8 +20,6 @@ import { TabPanel } from 'primeng/tabview';
     templateUrl: 'exam-dialog.component.html',
 })
 export class ExamDialog extends BaseDialog<Exam> {
-
-    rangeDates: Date[];
     locale:any;
     examStatus: SelectItem[];
 
@@ -39,7 +37,7 @@ export class ExamDialog extends BaseDialog<Exam> {
     ngOnInit() {
         this.onShow.subscribe(object => {
             if (object.start && object.end) {
-                this.rangeDates = [object.start,object.end];
+                object.rangeDates = [object.start,object.end];
             }
             var lang = this.translateService.currentLang;
             this.http.get(`/assets/i18n/calendar.${lang}.json`)
@@ -50,10 +48,11 @@ export class ExamDialog extends BaseDialog<Exam> {
     }
 
     onDateSelect($event) {
-        if (this.rangeDates[0] && this.rangeDates[1]) {
-            this.object.start = this.rangeDates[0];
-            this.object.end = this.rangeDates[1];
+        if (this.object.rangeDates[0] && this.object.rangeDates[1]) {
+            this.object.start = this.object.rangeDates[0];
+            this.object.end = this.object.rangeDates[1];
         }
+        console.log($event);
     }
 
 }
