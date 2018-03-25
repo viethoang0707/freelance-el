@@ -25,7 +25,6 @@ export class Exam extends BaseModel{
         this.max_attempt = undefined;
         this.allow_navigation = undefined;
         this.publish_score = undefined;
-        this.rangeDates = [];
 	}
 
     name:string;
@@ -43,7 +42,6 @@ export class Exam extends BaseModel{
     max_attempt: number;
     allow_navigation: boolean;
     publish_score: boolean;
-    rangeDates : any;
 
     get IsAvailable():boolean {
         if (this.status !='published')
