@@ -54,6 +54,7 @@ export class SelectUsersDialog extends BaseComponent {
 
 	select() {
 		this.onSelectUsersReceiver.next(this.selectedUsers);
+		this.selectedUsers=[];
 		this.hide();
 	}
 
