@@ -30,3 +30,11 @@ body
 body p-schedule .ui-state-highlight{
   background-color: #161e840d;
 }
+
+.ui-scrollpanel-bar-x{
+  display: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar{
+  padding-bottom: 0;
+}
