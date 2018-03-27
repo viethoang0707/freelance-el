@@ -31,7 +31,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	course: Course;
 	courseClass: CourseClass;
 	items: any[];
-	public subscription : Subscription
+	public subscription : Subscription;
 	@ViewChild(CourseMemberDialog) memberDialog: CourseMemberDialog;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -89,14 +89,15 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				member.enroll_status = 'registered';
 				member.date_register = new Date();
 				subscriptions.push(member.save(this));
+				this.subscription.unsubscribe();
 			});
 			Observable.forkJoin(...subscriptions).subscribe(() => {
 				this.processing = false;
 				this.loadMembers();
-				this.subscription.unsubscribe();
 			});
 		});
 	}
+
 
 	edit(member:CourseMember) {
 		if (member)
@@ -111,9 +112,10 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			this.confirmationService.confirm({
 				message: this.translateService.instant('Are you sure to delete ?'),
 				accept: () => {
-					member.delete(this).subscribe(() => {
+					this.subscription = member.delete(this).subscribe(() => {
 						this.selectedStudent = null;
 						this.selectedTeacher = null;
+						this.subscription.unsubscribe();
 						this.loadMembers();
 					});
 				}
