@@ -24,7 +24,7 @@ export class Question extends BaseModel{
     content: string;
     explanation: string;
     type: string;
-    level: number;
+    level: string;
     group_id: number;
 
     static listByGroup(context:APIContext, groupId):Observable<any> {

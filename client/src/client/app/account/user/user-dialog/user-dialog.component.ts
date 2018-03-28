@@ -38,7 +38,7 @@ export class UserDialog extends BaseDialog<User> {
 				if (object.etraining_group_id) {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.etraining_group_id);
 				}
-			});		
+			});
 		});
 	}
 

@@ -18,7 +18,7 @@ export class QuestionSelector extends BaseModel{
 
     mode: string;
     number: number;
-    level: number;
+    level: string;
     group_id: number;
     include_sub_group: boolean;
 }

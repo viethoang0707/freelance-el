@@ -8,7 +8,7 @@ import { Question } from '../../../shared/models/question.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { GROUP_CATEGORY } from '../../../shared/models/constants';
+import { GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants';
 import { QuestionContainerDirective } from '../question-template/question-container.directive';
 import { IQuestion } from '../question-template/question.interface';
 import { QuestionRegister } from '../question-template/question.decorator';
@@ -24,9 +24,11 @@ export class QuestionDialog extends BaseDialog<Question> {
 	selectedNode: TreeNode;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	componentRef: any;
+	treeUtils: TreeUtils;
 
-	constructor(private treeUtils: TreeUtils, private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
+		this.treeUtils = new TreeUtils();
 	}
 
 	nodeSelect(event: any) {

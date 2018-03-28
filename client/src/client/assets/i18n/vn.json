@@ -243,5 +243,6 @@
 	"Login is required": "Tên đăng nhập là bắt buộc",
 	"Title is required": "Tiêu đề là bắt buộc",
 	"Select range dates is required": "Chọn thời hạn kì thi là bắt buộc",
-	"Level is required": "Cấp độ là bắt buộc nhập"
+	"Level is required": "Cấp độ là bắt buộc nhập",
+	"Selected group is required": "Chọn danh mục là bắt buộc"
 }

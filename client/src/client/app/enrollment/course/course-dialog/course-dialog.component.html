@@ -8,6 +8,8 @@
         <div class="ui-g-12">
           <label>{{'Parent group'|translate}}</label>
           <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+          <div *ngIf="selectedNode==null" class="ui-message ui-messages-error ui-corner-all">
+            {{'Selected group is required' | translate}}</div>
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
@@ -71,7 +73,7 @@
     <etraining-select-user-dialog></etraining-select-user-dialog>
   </p-scrollPanel>
   <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
+    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="selectedNode==null"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>
