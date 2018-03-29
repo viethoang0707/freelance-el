@@ -23,8 +23,7 @@ export class ExamDialog extends BaseDialog<Exam> {
     locale:any;
     examStatus: SelectItem[];
     rangeDates: Date[];
-    // date =  new Date(); 
-
+    
     constructor(private http: Http) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
@@ -40,6 +39,9 @@ export class ExamDialog extends BaseDialog<Exam> {
         this.onShow.subscribe(object => {
             if (object.start && object.end) {
                 this.rangeDates = [object.start,object.end];
+            }
+            else{
+                this.rangeDates=[];
             }
             var lang = this.translateService.currentLang;
             this.http.get(`/assets/i18n/calendar.${lang}.json`)
