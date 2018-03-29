@@ -41,9 +41,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-course>
                     <tr [pSelectableRow]="course">
-                        <td>{{course.name}}</td>
+                        <td style="text-align: left;">{{course.name}}</td>
                         <td>{{course.code}}</td>
-                        <td>{{course.summary}}</td>
+                        <td style="text-align: left;">{{course.summary}}</td>
                         <td>{{COURSE_MODE[course.mode] | translate}}</td>
                         <td>{{COURSE_STATUS[course.status] | translate}}</td>
                     </tr>

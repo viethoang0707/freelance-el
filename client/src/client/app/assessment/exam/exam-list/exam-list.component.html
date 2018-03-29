@@ -39,8 +39,8 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-exam>
                     <tr [pSelectableRow]="exam">
-                        <td>{{exam.name}}</td>
-                        <td>{{exam.summary}}</td>
+                        <td style="text-align: left;">{{exam.name}}</td>
+                        <td style="text-align: left;">{{exam.summary}}</td>
                         <td>{{exam.start | date : "dd/MM/yyyy"}}</td>
                         <td>{{exam.end | date : "dd/MM/yyyy"}}</td>
                         <td>{{EXAM_STATUS[exam.status] | translate}}</td>
