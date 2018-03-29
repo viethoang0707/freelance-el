@@ -41,8 +41,8 @@
                     <tr [pSelectableRow]="exam">
                         <td>{{exam.name}}</td>
                         <td>{{exam.summary}}</td>
-                        <td>{{exam.start | date : "dd/MM/yyyy"}}</td>
-                        <td>{{exam.end | date : "dd/MM/yyyy"}}</td>
+                        <td>{{exam.start | date : "dd/MM/yyyy, h:mm a"}}</td>
+                        <td>{{exam.end | date : "dd/MM/yyyy, h:mm a"}}</td>
                         <td>{{EXAM_STATUS[exam.status] | translate}}</td>
                     </tr>
                 </ng-template>

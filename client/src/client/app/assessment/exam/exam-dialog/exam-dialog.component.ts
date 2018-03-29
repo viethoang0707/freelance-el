@@ -22,8 +22,8 @@ import { TabPanel } from 'primeng/tabview';
 export class ExamDialog extends BaseDialog<Exam> {
     locale:any;
     examStatus: SelectItem[];
-    rangeDates: Date[];
-    
+    rangeDates: Date[]; 
+
     constructor(private http: Http) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
@@ -40,9 +40,7 @@ export class ExamDialog extends BaseDialog<Exam> {
             if (object.start && object.end) {
                 this.rangeDates = [object.start,object.end];
             }
-            else{
-                this.rangeDates=[];
-            }
+            
             var lang = this.translateService.currentLang;
             this.http.get(`/assets/i18n/calendar.${lang}.json`)
             .subscribe((res: Response) => {
