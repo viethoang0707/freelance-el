@@ -38,3 +38,20 @@ body p-schedule .ui-state-highlight{
 body .ui-dialog .ui-dialog-titlebar{
   padding-bottom: 0;
 }
+
+body .language .ui-dropdown .ui-dropdown-trigger{
+  height: 28px;
+  margin-top: 0;
+}
+
+.language .fa{
+  line-height: 30px;
+}
+
+.ui-treetable td.group-code{
+  text-align: center;
+}
+
+.ui-table .ui-table-tbody > tr:nth-child(even){
+  background-color: #fff;
+}
