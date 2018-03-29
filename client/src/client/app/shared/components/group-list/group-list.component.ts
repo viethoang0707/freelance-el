@@ -11,6 +11,7 @@ import { TreeNode } from 'primeng/api';
 import { GroupDialog } from '../group-dialog/group-dialog.component';
 import { GROUP_CATEGORY} from '../../models/constants';
 import { Course } from '../../../shared/models/course.model';
+import { User } from '../../../shared/models/user.model';
 
 @Component({
     moduleId: module.id,
@@ -31,6 +32,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     groups: Group[];
     category: string;
     courses: Course[];
+    users: User[];
 
     ngOnInit() {
         this.category = this.route.snapshot.data['category']
@@ -52,22 +54,44 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     }
 
     delete() {
-        Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
-            this.courses = courses;
-            if(this.courses.length > 0){
-                alert('Có khóa học đang thuộc danh mục này.');
-            }
-            else{
-                this.confirmationService.confirm({
-                    message: this.translateService.instant('Are you sure to delete ?'),
-                    accept: () => {
-                        this.selectedNode.data.delete(this).subscribe(()=> {
-                            this.loadGroups();
-                        })
-                    }
-                });
-            }
-        });
+        if(this.selectedNode.data.category == "course")
+        {
+            Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
+                this.courses = courses;
+                if(this.courses.length > 0){
+                    alert('Có khóa học đang thuộc danh mục này.');
+                }
+                else{
+                    this.confirmationService.confirm({
+                        message: this.translateService.instant('Are you sure to delete ?'),
+                        accept: () => {
+                            this.selectedNode.data.delete(this).subscribe(()=> {
+                                this.loadGroups();
+                            })
+                        }
+                    });
+                }
+            });
+        }
+        if(this.selectedNode.data.category == "organization")
+        {
+            User.listByGroup(this, this.selectedNode.data.id).subscribe(users => {
+                this.users = users;
+                if(this.users.length > 0){
+                    alert('Có người dùng đang thuộc danh mục này.');
+                }
+                else{
+                    this.confirmationService.confirm({
+                        message: this.translateService.instant('Are you sure to delete ?'),
+                        accept: () => {
+                            this.selectedNode.data.delete(this).subscribe(()=> {
+                                this.loadGroups();
+                            })
+                        }
+                    });
+                }
+            });
+        }
     }
 
     loadGroups() {
