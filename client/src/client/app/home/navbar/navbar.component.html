@@ -37,7 +37,7 @@
         </ul>
       </li>
 
-      <li #language [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === language}" (click)="eventManager.topbarRootItemClick( language)">
+      <li #language [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === language}" (click)="eventManager.topbarRootItemClick( language)" class="language">
         <p-dropdown [options]="langs" (onChange)="selectLang($event)" [(ngModel)]="selectedLang">
           <ng-template let-item pTemplate="selectedItem">
             <div class="ui-helper-clearfix" style="position: relative;height: 25px;">

@@ -78,8 +78,8 @@
         </ng-template>
         <ng-template pTemplate="body" let-class>
           <tr [pSelectableRow]="class">
-            <td>{{class.name}}</td>
-            <td>{{class.course_name}}</td>
+            <td style="text-align: left;">{{class.name}}</td>
+            <td style="text-align: left;">{{class.course_name}}</td>
             <td>{{class.start | date : "dd/MM/yyyy"}}</td>
             <td>{{class.end | date : "dd/MM/yyyy"}}</td>
             <td>{{class.supervisor_name}}</td>

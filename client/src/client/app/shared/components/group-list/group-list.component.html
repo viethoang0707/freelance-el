@@ -11,7 +11,7 @@
       </p-toolbar>
       <p-treeTable [value]="tree" selectionMode="single" [(selection)]="selectedNode">
         <p-column field="name" header="{{'Name'|translate}}"></p-column>
-        <p-column field="code" header="{{'Code'|translate}}"></p-column>
+        <p-column styleClass="group-code" field="code" header="{{'Code'|translate}}"></p-column>
       </p-treeTable>
       <etraining-group-dialog></etraining-group-dialog>
       <!-- <p-confirmDialog header="{{'Confirmation'|translate}}"  width="300"></p-confirmDialog> -->
