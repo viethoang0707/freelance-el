@@ -7,47 +7,63 @@
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
-            <label>{{'Name'|translate}}</label>
-            <div *ngIf="name.invalid && (name.dirty || name.touched)" 
-              class="ui-message ui-messages-error ui-corner-all">
-              <div *ngIf="name.errors.required">
-                  {{'Name is required' | translate}}
+              <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
+              <label>{{'Name'|translate}}</label>
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" 
+                class="ui-message ui-messages-error ui-corner-all">
+                <div *ngIf="name.errors.required">
+                    {{'Name is required' | translate}}
+                </div>
               </div>
-            </div>
-        </span>
+          </span>
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
-            <label>{{'Summary'|translate}}</label>
-        </span>
+              <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
+              <label>{{'Summary'|translate}}</label>
+          </span>
         </div>
-        <div class="ui-g-7">
+        <div class="ui-g-6">
           <div>
             <label>{{'Instruction'|translate}}</label>
             <p-editor [(ngModel)]="object.instruction" [style]="{'height':'120px'}" name="instruction">
             </p-editor>
           </div>
+        </div>
+        <div class="ui-g-6">
           <div style="margin-top: 50px">
-            <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
-              <label>{{'Duration (in minutes)'|translate}}</label>
-              <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" 
-                class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="duration.errors.required">
-                    {{'Duration is required' | translate}}
+              <span class="md-inputfield">
+                <input type="text" pInputText [(ngModel)]="object.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
+                <label>{{'Duration (in minutes)'|translate}}</label>
+                <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" 
+                  class="ui-message ui-messages-error ui-corner-all">
+                  <div *ngIf="duration.errors.required">
+                      {{'Duration is required' | translate}}
+                  </div>
                 </div>
-              </div>
-            </span>
+              </span>
+          </div>
         </div>
-        </div>
-        <div class="ui-g-5">
-          <label>{{'Datetime'|translate}}</label>
-          <p-calendar [(ngModel)]="rangeDates" #date="ngModel" selectionMode="range" readonlyInput="true" name="date" required="true" [inline]="true" [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
-          <div *ngIf="date.invalid" 
+        <div class="ui-g-6">
+          <!-- <label>{{'Datetime'|translate}}</label> -->
+          <!-- <p-calendar [(ngModel)]="rangeDates" #date="ngModel" selectionMode="range" readonlyInput="true" name="date" required="true" [inline]="true" [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar> -->
+          <label for="">Bat dau</label>
+          <p-calendar [(ngModel)]="object.start" showTime="true" hourFormat="24" #start="ngModel"  name="start" required="true"></p-calendar>
+          
+          <div *ngIf="start.invalid" 
           class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
-            <div *ngIf="date.errors.required">
+            <div *ngIf="start.errors.required">
+                {{'Select date dates is required' | translate}}
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-g-6">
+          <label for="">Ket thuc</label>
+          <p-calendar [(ngModel)]="object.end" showTime="true" hourFormat="24" #end="ngModel"  name="end" required="true"></p-calendar>
+          <div *ngIf="end.invalid" 
+          class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+            <div *ngIf="end.errors.required">
                 {{'Select range dates is required' | translate}}
             </div>
           </div>
