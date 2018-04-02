@@ -1,50 +1,51 @@
-<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm"  autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && saveQuestion()" #f="ngForm" autocomplete="off">
   <p-dialog header="{{'Question'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true" positionTop="58">
     <p-scrollPanel [style]="{width: '100%', height: '460px'}">
-      <p-tabView>
-        <p-tabPanel header="{{'General'|translate}}" leftIcon="ui-icon-info">
+      <p-tabView (onChange)="onTabChange($event)">
+        <p-tabPanel header="{{'General'|translate}}" leftIcon="ui-icon-info" [selected]="selectedTab==0">
           <div class="ui-g ui-fluid form-group">
             <div class="ui-g-12">
               <label>{{'Group'|translate}}</label>
               <p-tree [value]="tree" selectionMode="single" required [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
               <div *ngIf="selectedNode==null" class="ui-message ui-messages-error ui-corner-all">
                 {{'Selected group is required' | translate}}</div>
-              </div>
+            </div>
             <div class="ui-g-6">
               <label>{{'Title'|translate}}</label>
               <textarea pInputTextarea [(ngModel)]="object.title" #title="ngModel" required name="title"></textarea>
-              <div *ngIf="title.invalid && (title.dirty || title.touched)"
-                class="ui-message ui-messages-error ui-corner-all">
-                  <div *ngIf="title.errors.required">
-                      {{'Title is required' | translate}}
-                  </div>
+              <div *ngIf="title.invalid && (title.dirty || title.touched)" class="ui-message ui-messages-error ui-corner-all">
+                <div *ngIf="title.errors.required">
+                  {{'Title is required' | translate}}
+                </div>
               </div>
             </div>
             <div class="ui-g-6">
               <label>{{'Level'|translate}}</label>
               <div style="margin-top: 10px;">
                 <div style="float: left;">
-                  <p-radioButton name="level" value="easy" [disabled]="object.id" label="{{'Easy'|translate}}" [(ngModel)]="object.level" inputId="opt1" #level="ngModel" required></p-radioButton>
+                  <p-radioButton name="level" value="easy" [disabled]="object.id" label="{{'Easy'|translate}}" [(ngModel)]="object.level" inputId="opt1"
+                    #level="ngModel" required></p-radioButton>
                 </div>
                 <div style="float: left; margin-left:30px">
-                  <p-radioButton name="level" value="medium" [disabled]="object.id" label="{{'Medium'|translate}}" [(ngModel)]="object.level" inputId="opt2" required></p-radioButton>
+                  <p-radioButton name="level" value="medium" [disabled]="object.id" label="{{'Medium'|translate}}" [(ngModel)]="object.level"
+                    inputId="opt2" required></p-radioButton>
                 </div>
                 <div style="float: left; margin-left:30px">
-                  <p-radioButton name="level" value="difficult" [disabled]="object.id" label="{{'Difficult'|translate}}" [(ngModel)]="object.level" inputId="opt3" required></p-radioButton>
+                  <p-radioButton name="level" value="difficult" [disabled]="object.id" label="{{'Difficult'|translate}}" [(ngModel)]="object.level"
+                    inputId="opt3" required></p-radioButton>
                 </div>
                 <div class="clearfix"></div>
-                <div *ngIf="level.invalid" class="ui-message ui-messages-error ui-corner-all" 
-                style="margin-top: 10px;">
+                <div *ngIf="level.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin-top: 10px;">
                   <div *ngIf="level.errors.required">
-                      {{'Level is required' | translate}}
+                    {{'Level is required' | translate}}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </p-tabPanel>
-        <p-tabPanel header="{{'Details'|translate}}" leftIcon="ui-icon-details" [hidden]="!componentRef">
-            <ng-template question-container></ng-template>
+        <p-tabPanel header="{{'Details'|translate}}" leftIcon="ui-icon-details" [hidden]="!componentRef" [selected]="selectedTab==1">
+          <ng-template question-container></ng-template>
         </p-tabPanel>
       </p-tabView>
     </p-scrollPanel>

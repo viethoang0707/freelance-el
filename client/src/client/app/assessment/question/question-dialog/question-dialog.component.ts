@@ -19,7 +19,8 @@ import { QuestionRegister } from '../question-template/question.decorator';
 	templateUrl: 'question-dialog.component.html',
 })
 export class QuestionDialog extends BaseDialog<Question> {
-
+	msgs : any;
+	selectedTab: number;
 	tree: TreeNode[];
 	selectedNode: TreeNode;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -67,7 +68,23 @@ export class QuestionDialog extends BaseDialog<Question> {
 		})
 	}
 
-
+	onTabChange(event) {
+		this.msgs = [];
+		this.msgs.push({severity:'info', summary:'Tab Expanded', detail: 'Index: ' + event.index});
+		this.activateTab(event.index);
+	}
+	
+	activateTab(tabNumber) {
+		this.selectedTab = tabNumber;
+	}
+	hide(){
+		this.activateTab(0);
+		this.display= false;
+	}
+	saveQuestion(){
+		this.save();
+		this.activateTab(0);
+	}
 }
 
 
