@@ -55,3 +55,37 @@ body .language .ui-dropdown .ui-dropdown-trigger{
 .ui-table .ui-table-tbody > tr:nth-child(even){
   background-color: #fff;
 }
+
+.layout-wrapper .layout-sidebar .sidebar-logo img{
+  margin-right: 12px;
+}
+
+.fc-toolbar.fc-header-toolbar{
+  margin-top: 14px;
+}
+
+body .ui-dropdown.report-items {
+  height: 29px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #337ab7;
+  margin-top: 0;
+  /*border-color: #2e6da4;*/
+}
+
+.ui-dropdown.report-items:not(.ui-state-disabled):hover{
+  background-color: #337ab7;
+}
+
+.report-items .ui-inputtext{
+  color: #fff;
+}
+
+body .ui-dropdown.report-items .ui-dropdown-trigger{
+  background-color: #337ab7;
+  height: 31px;
+}
+
+body .ui-dropdown.report-items .ui-dropdown-trigger .fa{
+  color: #fff;
+}
