@@ -42,9 +42,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
                     <tr [pSelectableRow]="user">
-                        <td>{{user.name}}</td>
+                        <td style="text-align: left;">{{user.name}}</td>
                         <td>{{user.login}}</td>
-                        <td>{{user.email}}</td>
+                        <td style="text-align: left;">{{user.email}}</td>
                         <td>{{user.phone}}</td>
                         <td>{{user.etraining_group_id__DESC__}}</td>
                     </tr>

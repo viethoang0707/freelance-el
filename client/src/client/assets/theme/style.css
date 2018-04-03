@@ -91,3 +91,27 @@ body .ui-dropdown.report-items .ui-dropdown-trigger .fa{
   color: #fff;
   line-height: 30px;
 }
+
+.layout-wrapper .layout-main .layout-topbar{
+  z-index: 999;
+}
+
+.layout-wrapper .layout-sidebar{
+  z-index: 1000;
+}
+
+.ui-state-default{
+  background-color: #fff;
+}
+
+body .ui-fieldset .ui-fieldset-legend{
+  padding: 9px 14px;
+}
+
+.card h1{
+  margin: 16px 0;
+}
+
+.options-question .md-inputfield .ui-inputtext{
+  width: 550px;
+}
