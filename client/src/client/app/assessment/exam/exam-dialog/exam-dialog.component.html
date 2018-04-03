@@ -47,7 +47,7 @@
         <div class="ui-g-6">
           <!-- <label>{{'Datetime'|translate}}</label> -->
           <!-- <p-calendar [(ngModel)]="rangeDates" #date="ngModel" selectionMode="range" readonlyInput="true" name="date" required="true" [inline]="true" [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar> -->
-          <label for="">Bat dau</label>
+          <label>{{'Start'|translate}}</label>
           <p-calendar [(ngModel)]="object.start" showTime="true" hourFormat="24" #start="ngModel"  name="start" required="true"></p-calendar>
           
           <div *ngIf="start.invalid" 
@@ -57,9 +57,8 @@
             </div>
           </div>
         </div>
-
         <div class="ui-g-6">
-          <label for="">Ket thuc</label>
+          <label>{{'End'|translate}}</label>
           <p-calendar [(ngModel)]="object.end" showTime="true" hourFormat="24" #end="ngModel"  name="end" required="true"></p-calendar>
           <div *ngIf="end.invalid" 
           class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">

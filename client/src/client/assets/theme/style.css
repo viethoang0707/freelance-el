@@ -56,6 +56,9 @@ body .language .ui-dropdown .ui-dropdown-trigger{
   background-color: #fff;
 }
 
+.ui-table .ui-table-tbody > tr:nth-child(even).ui-state-highlight{
+  background-color: #ffef8f;
+}
 .layout-wrapper .layout-sidebar .sidebar-logo img{
   margin-right: 12px;
 }
