@@ -12,6 +12,7 @@ import { GroupDialog } from '../group-dialog/group-dialog.component';
 import { GROUP_CATEGORY} from '../../models/constants';
 import { Course } from '../../../shared/models/course.model';
 import { User } from '../../../shared/models/user.model';
+import { Question } from '../../../shared/models/question.model';
 
 @Component({
     moduleId: module.id,
@@ -33,6 +34,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     category: string;
     courses: Course[];
     users: User[];
+    questions: Question[];
 
     ngOnInit() {
         this.category = this.route.snapshot.data['category']
@@ -79,6 +81,27 @@ export class GroupListComponent extends BaseComponent implements OnInit {
                 this.users = users;
                 if(this.users.length > 0){
                     alert('Có người dùng đang thuộc danh mục này.');
+                }
+                else{
+                    this.confirmationService.confirm({
+                        message: this.translateService.instant('Are you sure to delete ?'),
+                        accept: () => {
+                            this.selectedNode.data.delete(this).subscribe(()=> {
+                                this.loadGroups();
+                            })
+                        }
+                    });
+                }
+            });
+        }
+
+        if(this.selectedNode.data.category == "question")
+        {
+            Question.listByGroup(this, this.selectedNode.data.id).subscribe(questions => {
+                this.questions = questions;
+                console.log(this.questions);
+                if(this.questions.length > 0){
+                    alert('Có câu hỏi đang thuộc danh mục này.');
                 }
                 else{
                     this.confirmationService.confirm({
