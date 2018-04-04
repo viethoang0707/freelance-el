@@ -14,6 +14,7 @@ import {SelectItem, MenuItem} from 'primeng/api';
 import * as _ from 'underscore';
 import { ExamMemberDialog } from '../member-dialog/member-dialog.component';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	moduleId: module.id,
@@ -32,6 +33,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
     EXAM_STATUS =  EXAM_STATUS;
     EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
+    public subscription : Subscription;
 
     @ViewChild(ExamMemberDialog) memberDialog: ExamMemberDialog;
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
@@ -54,7 +56,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 
 	 add(role:string) {
         this.usersDialog.show();
-        this.usersDialog.onSelectUsers.subscribe(users => {
+        this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
             this.processing = true;
             var subscriptions = [];
             _.each(users, (user:User)=> {
@@ -65,6 +67,7 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
                 member.date_register =  new Date();
                 member.status = 'active';
                 subscriptions.push(member.save(this));
+                this.subscription.unsubscribe();
             });
             Observable.forkJoin(...subscriptions).subscribe(()=> {
                 this.processing = false;
@@ -83,9 +86,10 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
             this.confirmationService.confirm({
                 message: this.translateService.instant('Are you sure to delete ?'),
                 accept: () => {
-                    member.delete(this).subscribe(()=> {
+                    this.subscription = member.delete(this).subscribe(()=> {
                         this.selectedCandidate = null;
                         this.selectedSupervisor = null;
+                        this.subscription.unsubscribe();
                         this.loadMembers();
                     })
                 }
