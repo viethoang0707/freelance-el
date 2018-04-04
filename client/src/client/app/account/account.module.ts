@@ -6,11 +6,15 @@ import { UserDialog } from './user/user-dialog/user-dialog.component';
 import { UserExportDialog } from './user/export-dialog/export-dialog.component';
 import { UserImportDialog } from './user/import-dialog/import-dialog.component';
 import { UserProfileDialog } from './user/profile-dialog/profile-dialog.component';
+//permission
+import {PermissionListComponent} from './permission/permission-list/permission-list.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule],
     declarations: [ UserListComponent, UserDialog,
-    				UserExportDialog,UserImportDialog,UserProfileDialog],
+                    UserExportDialog,UserImportDialog,UserProfileDialog,
+                    PermissionListComponent
+                ],
     exports: [UserProfileDialog],
     providers: []
 })

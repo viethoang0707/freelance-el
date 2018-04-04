@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
 import { UserListComponent } from './user/user-list/user-list.component';
+import { PermissionListComponent } from './permission/permission-list/permission-list.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 
 export const AccountRoutes: Routes = [
@@ -26,6 +27,13 @@ export const AccountRoutes: Routes = [
         component: UserListComponent,
         data: {
           breadcrumb: 'Users'
+        },
+      },
+      {
+        path: "permissions",
+        component: PermissionListComponent,
+        data: {
+          breadcrumb: 'Permission'
         },
       }
 

@@ -77,7 +77,8 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     label: 'Accounts', icon: 'people',
                     items: [
                         { label: 'User', routerLink: ['/account/users'] },
-                        { label: 'Group', routerLink: ['/account/groups'] }
+                        { label: 'Group', routerLink: ['/account/groups'] },
+                        { label: 'Permission', routerLink: ['/account/permissions'] }
                     ]
                 },
                 {
