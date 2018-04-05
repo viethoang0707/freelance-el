@@ -9,6 +9,7 @@ export const COURSE_MEMBER_ROLE = { 'student': 'Student', 'teacher': 'Teacher' }
 export const COURSE_MEMBER_STATUS = { 'active': 'Active', 'withdraw': 'Withdraw', 'suspend': 'Suspended' };
 export const COURSE_MEMBER_ENROLL_STATUS = { 'in-study': 'In-study', 'complete': 'Complete', 'registered': 'Registered' };
 export const QUESTION_TYPE = { 'sc': 'Single-choice', 'fb': 'Fill-the-blank', 'ext': 'Open-ended' };
+export const QUESTION_LEVEL = { 'easy': 'Easy', 'medium': 'Medium', 'difficult': 'Difficult' };
 export const DEFAULT_DATE_LOCALE = {
 	firstDayOfWeek: 0,
 	dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],

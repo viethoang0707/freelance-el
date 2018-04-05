@@ -4,6 +4,10 @@
       <div class="ui-g-12">
         <label>{{'Parent group'|translate}}</label>
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+          <div *ngIf="selectedNode==null"
+              class="ui-message ui-messages-error ui-corner-all">
+            {{'Selected group is required' | translate}}
+          </div>
       </div>
       <div class="ui-g-12 ">
         <span class="md-inputfield">
@@ -64,7 +68,7 @@
       </div>
     </div>
     <p-footer>
-      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="selectedNode==null"></button>
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
 </p-dialog>

@@ -14,7 +14,7 @@ import { CourseMemberDialog } from '../member-dialog/member-dialog.component';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../shared/models/constants'
 import { SelectUsersDialog } from '../../shared/components/select-user-dialog/select-user-dialog.component';
-
+import { Subscription } from 'rxjs/Subscription';
 @Component({
 	moduleId: module.id,
 	selector: 'etraining-course-enrollment-dialog',
@@ -31,6 +31,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	course: Course;
 	courseClass: CourseClass;
 	items: any[];
+	public subscription : Subscription;
 	@ViewChild(CourseMemberDialog) memberDialog: CourseMemberDialog;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -71,7 +72,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	add(role: string) {
 		this.usersDialog.show();
-		this.usersDialog.onSelectUsers.subscribe(users => {
+		this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
 			this.processing = true;
 			var subscriptions = [];
 			_.each(users, (user:User)=> {
@@ -88,6 +89,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				member.enroll_status = 'registered';
 				member.date_register = new Date();
 				subscriptions.push(member.save(this));
+				this.subscription.unsubscribe();
 			});
 			Observable.forkJoin(...subscriptions).subscribe(() => {
 				this.processing = false;
@@ -96,9 +98,13 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
+
 	edit(member:CourseMember) {
 		if (member)
 			this.memberDialog.show(member);
+		this.memberDialog.onUpdateComplete.subscribe(() =>{
+			this.loadMembers();
+		});
 	}
 
 	delete(member:CourseMember) {
@@ -106,9 +112,10 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			this.confirmationService.confirm({
 				message: this.translateService.instant('Are you sure to delete ?'),
 				accept: () => {
-					member.delete(this).subscribe(() => {
+					this.subscription = member.delete(this).subscribe(() => {
 						this.selectedStudent = null;
 						this.selectedTeacher = null;
+						this.subscription.unsubscribe();
 						this.loadMembers();
 					});
 				}

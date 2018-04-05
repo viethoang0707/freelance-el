@@ -11,7 +11,8 @@ import { REPORT_CATEGORY } from '../shared/models/constants'
 @Component({
 	moduleId: module.id,
 	selector: 'etraining-report',
-	templateUrl: 'report.component.html'
+	templateUrl: 'report.component.html',
+	styleUrls: ['report.component.css'],
 })
 export class ReportComponent extends BaseComponent implements OnInit {
 

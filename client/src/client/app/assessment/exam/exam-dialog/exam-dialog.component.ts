@@ -20,10 +20,9 @@ import { TabPanel } from 'primeng/tabview';
     templateUrl: 'exam-dialog.component.html',
 })
 export class ExamDialog extends BaseDialog<Exam> {
-
-    rangeDates: Date[];
     locale:any;
     examStatus: SelectItem[];
+    rangeDates: Date[]; 
 
     constructor(private http: Http) {
         super();
@@ -41,12 +40,13 @@ export class ExamDialog extends BaseDialog<Exam> {
             if (object.start && object.end) {
                 this.rangeDates = [object.start,object.end];
             }
+            
             var lang = this.translateService.currentLang;
             this.http.get(`/assets/i18n/calendar.${lang}.json`)
             .subscribe((res: Response) => {
                 this.locale = res.json();
             });
-        });
+        });  
     }
 
     onDateSelect($event) {

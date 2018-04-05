@@ -5,7 +5,7 @@ import { QuestionOption } from '../../../../shared/models/option.model';
 import { Answer } from '../../../../shared/models/answer.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import * as _ from 'underscore';
-import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
+import { DEFAULT_PASSWORD, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { QuestionTemplate } from '../question.decorator';
 import { IQuestion } from '../question.interface';

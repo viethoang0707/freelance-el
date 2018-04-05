@@ -28,5 +28,93 @@ body
 }
 
 body p-schedule .ui-state-highlight{
-  background-color: #161e840d;
+  /* background-color: #161e840d; */
+}
+
+.ui-scrollpanel-bar-x{
+  display: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar{
+  padding-bottom: 0;
+}
+
+body .language .ui-dropdown .ui-dropdown-trigger{
+  height: 28px;
+  margin-top: 0;
+}
+
+.language .fa{
+  line-height: 30px;
+}
+
+.ui-treetable td.group-code{
+  text-align: center;
+}
+
+.ui-table .ui-table-tbody > tr:nth-child(even){
+  background-color: #fff;
+}
+
+.ui-table .ui-table-tbody > tr:nth-child(even).ui-state-highlight{
+  background-color: #ffef8f;
+}
+.layout-wrapper .layout-sidebar .sidebar-logo img{
+  margin-right: 12px;
+}
+
+.fc-toolbar.fc-header-toolbar{
+  margin-top: 14px;
+}
+
+body .ui-dropdown.report-items {
+  height: 29px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  background-color: #337ab7;
+  margin-top: 0;
+  /*border-color: #2e6da4;*/
+}
+
+.ui-dropdown.report-items:not(.ui-state-disabled):hover{
+  background-color: #337ab7;
+}
+
+.report-items .ui-inputtext{
+  color: #fff;
+}
+
+body .ui-dropdown.report-items .ui-dropdown-trigger{
+  background-color: #337ab7;
+  height: 27px;
+  margin-top: 0;
+}
+
+body .ui-dropdown.report-items .ui-dropdown-trigger .fa{
+  color: #fff;
+  line-height: 30px;
+}
+
+.layout-wrapper .layout-main .layout-topbar{
+  z-index: 999;
+}
+
+.layout-wrapper .layout-sidebar{
+  z-index: 1000;
+}
+
+.ui-state-default{
+  background-color: #fff;
+}
+
+body .ui-fieldset .ui-fieldset-legend{
+  padding: 9px 14px;
+}
+
+.card h1{
+  margin: 16px 0;
+}
+
+.options-question .md-inputfield .ui-inputtext{
+  width: 550px;
 }

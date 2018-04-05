@@ -103,7 +103,7 @@ export class ExamListComponent extends BaseComponent {
                 return {
                     title: exam.name,
                     start: exam.start,
-                    send: exam.end,
+                    end: exam.end,
                     id: exam.id,
                     allDay: true
                 }

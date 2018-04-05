@@ -84,8 +84,8 @@
 	"Course tree": "Danh mục khóa học",
 	"Supervisor": "Giám sát viên",
 	"Draft": "Nháp",
-	"Published": "Đang hoạt động",
-	"Unpublished": "Đã kết thúc",
+	"Published": "Mở",
+	"Unpublished": "Đóng",
 	"Parent group": "Danh mục",
 	"Description": "Mô tả",
 	"Logo": "Ảnh dại diện",
@@ -241,5 +241,8 @@
 	"Code is required": "Nhập mã là bắt buộc",
 	"Duration is required": "Thời gian là bắt buộc",
 	"Login is required": "Tên đăng nhập là bắt buộc",
-	"Title is required": "Tiêu đề là bắt buộc"
+	"Title is required": "Tiêu đề là bắt buộc",
+	"Select range dates is required": "Chọn thời hạn kì thi là bắt buộc",
+	"Level is required": "Cấp độ là bắt buộc nhập",
+	"Selected group is required": "Chọn danh mục là bắt buộc"
 }
