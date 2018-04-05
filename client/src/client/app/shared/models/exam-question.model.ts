@@ -28,7 +28,7 @@ export class ExamQuestion extends BaseModel{
     exam_id: number;
     score: number;
     order: number;
-    level: number;
+    level: string;
     title:string;
     content: string;
     explanation: string;
