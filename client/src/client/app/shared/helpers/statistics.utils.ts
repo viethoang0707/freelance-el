@@ -1,12 +1,12 @@
 import { Observable, Subject } from 'rxjs/Rx'
 import { DatePipe } from "@angular/common";
-import { Group } from '../models/group.model';
-import { UserLog } from '../models/log.model';
+import { Group } from '../models/elearning/group.model';
+import { CourseLog, ExamLog } from '../models/elearning/log.model';
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { SERVER_DATETIME_FORMAT} from '../models/constants';
 import { Injectable } from '@angular/core';
-import { APIContext } from '../models/context';
+import { APIContext } from '../models/elearning/context';
 
 @Injectable()
 export class StatsUtils {
@@ -15,10 +15,10 @@ export class StatsUtils {
 	}
 
 	courseStatisticByDate(context: APIContext, startDate: Date, endDate: Date):Observable<any> {
-		var cloud_acc = context.authService.StoredCredential.cloud_account;
+		var cloud_acc = context.cacheService.CloudAcc;
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return context.apiService.search(UserLog.Model,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','etraining.course')]",
+		return context.apiService.search(CourseLog.Model,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','etraining.course')]",
 		 cloud_acc.id, cloud_acc.api_endpoint).map(logs => {
 		 	var dayLengthMills = 1000 * 60 * 60 * 24;
 		 	var slots = [];

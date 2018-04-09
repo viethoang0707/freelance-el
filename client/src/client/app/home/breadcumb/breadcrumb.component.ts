@@ -11,13 +11,12 @@ export interface IBreadcrumb {
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-breadcrumb',
+    selector: 'app-breadcrumb',
     templateUrl: 'breadcrumb.component.html'
 })
 export class BreadcrumbComponent implements OnInit {
 
     subscription: Subscription;
-
     items: MenuItem[];
 
     constructor(private activatedRoute: ActivatedRoute, private router: Router) {
@@ -48,12 +47,10 @@ export class BreadcrumbComponent implements OnInit {
             if (child.outlet !== PRIMARY_OUTLET) {
                 continue;
             }
-
             //verify the custom data property "breadcrumb" is specified on the route
             if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
                 return this.getBreadcrumbs(child, url, breadcrumbs);
             }
-
             //get the route's URL segment
             let routeURL: string = child.snapshot.url.map(segment => segment.path).join("/");
 

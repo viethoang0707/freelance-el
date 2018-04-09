@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnInit, Input, ComponentFactoryResolver, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
-import { Question } from '../../../shared/models/question.model';
+import { Question } from '../../../shared/models/elearning/question.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
@@ -15,19 +15,17 @@ import { QuestionRegister } from '../question-template/question.decorator';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-question-dialog',
+	selector: 'question-dialog',
 	templateUrl: 'question-dialog.component.html',
 })
-export class QuestionDialog extends BaseDialog<Question> {
-	msgs : any;
-	selectedTab: number;
+export class QuestionDialog extends BaseDialog<Question>  {
 	tree: TreeNode[];
 	selectedNode: TreeNode;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	componentRef: any;
 	treeUtils: TreeUtils;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver,private changeDetectionRef: ChangeDetectorRef) {
 		super();
 		this.treeUtils = new TreeUtils();
 	}
@@ -63,27 +61,23 @@ export class QuestionDialog extends BaseDialog<Question> {
 		this.onUpdateComplete.subscribe(object => {
 			if (this.componentRef)
 				(<IQuestion>this.componentRef.instance).saveEditor().subscribe(() => {
-					this.messageService.add({ severity: 'success', summary: 'Success', detail: this.translateService.instant('Question saved.') });
+					this.success('Question saved.');
+				});
+		});
+		this.onCreateComplete.subscribe(object => {
+			if (this.componentRef)
+				(<IQuestion>this.componentRef.instance).saveEditor().subscribe(() => {
+					this.success('Question saved.');
 				});
 		})
 	}
 
-	onTabChange(event) {
-		this.msgs = [];
-		this.msgs.push({severity:'info', summary:'Tab Expanded', detail: 'Index: ' + event.index});
-		this.activateTab(event.index);
-	}
-	
-	activateTab(tabNumber) {
-		this.selectedTab = tabNumber;
-	}
 	hide(){
-		this.activateTab(0);
 		this.display= false;
 	}
+
 	saveQuestion(){
 		this.save();
-		this.activateTab(0);
 	}
 }
 

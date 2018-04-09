@@ -6,23 +6,24 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
-import { Course } from '../../../shared/models/course.model';
-import { CourseUnit } from '../../../shared/models/course-unit.model';
-import { CourseSyllabus } from '../../../shared/models/course-syllabus.model';
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Group } from '../../../shared/models/group.model';
-import { User } from '../../../shared/models/user.model';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
+import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Group } from '../../../shared/models/elearning/group.model';
+import { User } from '../../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { GradebookListDialog } from '../gradebook-list/gradebook-list.component';
 import { ClassListDialog } from '../class-list/class-list.dialog.component';
 import { CourseMaterialListDialog } from '../course-material-list/course-material-list.component'
 import { CourseFaqListDialog } from '../course-faq-list/course-faq-list.component';
+import { CourseStudyDialog } from '../course-study/course-study.dialog.component';
 
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-lms-course-list',
+    selector: 'lms-course-list',
     templateUrl: 'course-list.component.html',
     styleUrls: ['course-list.component.css'],
 })
@@ -38,14 +39,15 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     @ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
     @ViewChild(CourseMaterialListDialog) materialListDialog: CourseMaterialListDialog;
     @ViewChild(CourseFaqListDialog) faqListDialog: CourseFaqListDialog;
+    @ViewChild(CourseStudyDialog) studyDialog:CourseStudyDialog;
 
     constructor(private router: Router) {
         super();
     }
 
     ngOnInit() {
-        this.currentUser = this.authService.CurrentUser;
-        CourseMember.listByUser(this, this.authService.CurrentUser.id).subscribe(members => {
+        this.currentUser = this.cacheService.UserProfile;
+        CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             var courseIds = _.pluck(members,'course_id');
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
             .map(courses => {
@@ -93,8 +95,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     studyCourse(course:Course) {
         if (course.syllabus_id && course.status =='published')
-            this.router.navigate('/lms/course/study',{syllabusId:course.syllabus_id})
-    }
+            this.studyDialog.show(course);
 
     manageMaterial(course:Course) {
        this.materialListDialog.show(course);

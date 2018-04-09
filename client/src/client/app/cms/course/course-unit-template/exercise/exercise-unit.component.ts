@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Question } from '../../../../shared/models/question.model';
-import { QuestionOption } from '../../../../shared/models/option.model';
-import { ExerciseQuestion } from '../../../../shared/models/exercise-question.model';
-import { CourseUnit } from '../../../../shared/models/course-unit.model';
+import { Question } from '../../../../shared/models/elearning/question.model';
+import { QuestionOption } from '../../../../shared/models/elearning/option.model';
+import { ExerciseQuestion } from '../../../../shared/models/elearning/exercise-question.model';
+import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
@@ -16,7 +16,7 @@ import { SelectQuestionsDialog } from '../../../../shared/components/select-ques
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-exercise-course-unit',
+	selector: 'exercise-course-unit',
 	templateUrl: 'exercise-unit.component.html',
 })
 @CourseUnitTemplate({

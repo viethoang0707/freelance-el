@@ -2,19 +2,19 @@ import { Component, OnInit, Input,ViewChild} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { Exam } from '../../../shared/models/exam.model';
-import { Answer } from '../../../shared/models/answer.model';
-import { Submission } from '../../../shared/models/submission.model';
-import { ExamQuestion } from '../../../shared/models/exam-question.model';
-import { ExamMember } from '../../../shared/models/exam-member.model';
+import { Exam } from '../../../shared/models/elearning/exam.model';
+import { Answer } from '../../../shared/models/elearning/answer.model';
+import { Submission } from '../../../shared/models/elearning/submission.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import * as _ from 'underscore';
 import { QuestionMarkingDialog } from '../question-marking/question-marking.dialog.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-exam-marking-dialog',
+    selector: 'exam-marking-dialog',
     templateUrl: 'exam-marking.dialog.component.html',
 })
 export class ExamMarkingDialog extends BaseComponent {
@@ -60,7 +60,7 @@ export class ExamMarkingDialog extends BaseComponent {
                             });
                             var record = {
                                 name: member.name,
-                                etraining_group_id__DESC__: member.etraining_group_id__DESC__,
+                                group_id__DESC__: member.group_id__DESC__,
                                 member: member,
                                 answers: answers
                             }

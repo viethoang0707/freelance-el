@@ -9,7 +9,7 @@ declare var $: any;
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-user-dashboard',
+    selector: 'user-dashboard',
     templateUrl: 'user-dashboard.component.html'
 
 })

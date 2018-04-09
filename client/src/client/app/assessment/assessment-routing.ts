@@ -36,12 +36,10 @@ export const AssessmentRoutes: Routes = [
         path: "groups",
         component: GroupListComponent,
         data: {
-          breadcrumb: 'Groups',
+          breadcrumb: 'Question groups',
           category: 'question'
         },
       }
-
-
     ]
   }
 

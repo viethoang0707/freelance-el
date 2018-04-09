@@ -5,11 +5,11 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { Exam } from '../../../shared/models/exam.model';
-import { ExamMember } from '../../../shared/models/exam-member.model';
-import { ExamQuestion } from '../../../shared/models/exam-question.model';
-import { Group } from '../../../shared/models/group.model';
-import { Submission } from '../../../shared/models/submission.model';
+import { Exam } from '../../../shared/models/elearning/exam.model';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
+import { Group } from '../../../shared/models/elearning/group.model';
+import { Submission } from '../../../shared/models/elearning/submission.model';
 import { SelectItem } from 'primeng/api';
 import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog} from '../exam-study/exam-study.dialog.component';
@@ -19,7 +19,7 @@ import { ExamScoreDialog } from '../exam-score/exam-score.dialog.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-lms-exam-list',
+    selector: 'lms-exam-list',
     templateUrl: 'exam-list.component.html',
     styleUrls: ['exam-list.component.css'],
 })
@@ -38,7 +38,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        ExamMember.listByUser(this, this.authService.CurrentUser.id).subscribe(members => {
+        ExamMember.listByUser(this, this.cacheService.UserProfile.id).subscribe(members => {
             var examIds = _.pluck(members,'exam_id');
             Exam.array(this, examIds)
             .subscribe(exams => {

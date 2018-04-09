@@ -17,27 +17,27 @@
         </a>
         <ul class="fadeInDown">
           <li role="menuitem">
-            <a  (click)="eventManager.showProfile()">
+            <a (click)="eventManager.showProfile()">
                 <i class="material-icons">account_circle</i>
                 <span>{{'User Profile'|translate}}</span>
             </a>
           </li>
           <li role="menuitem">
-            <a  (click)="eventManager.changePassword()">
+            <a (click)="eventManager.changePassword()">
                 <i class="material-icons">verified_user</i>
                 <span>{{'Change Password'|translate}}</span>
             </a>
           </li>
           <li role="menuitem">
-            <a  (click)="eventManager.logout()">
+            <a (click)="eventManager.logout()">
                 <i class="material-icons" >exit_to_app</i>
                 <span>{{'Log out'|translate}}</span>
             </a>
           </li>
         </ul>
       </li>
-
       <li #language [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === language}" (click)="eventManager.topbarRootItemClick( language)" class="language">
+
         <p-dropdown [options]="langs" (onChange)="selectLang($event)" [(ngModel)]="selectedLang">
           <ng-template let-item pTemplate="selectedItem">
             <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
@@ -53,8 +53,8 @@
           </ng-template>
         </p-dropdown>
       </li>
-       <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)">
-        <p-toggleButton [(ngModel)]="viewMode" onLabel="{{'Admin mode'|translate}}" offLabel="{{'Learning mode'|translate}}" *ngIf="isAdmin" (onChange)="settingService.setAdminMode($event.checked)"  [style]="{'width':'150px'}"></p-toggleButton>
+      <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)">
+        <p-selectButton *ngIf="user.IsAdmin"  [options]="viewModes" [(ngModel)]="viewMode" name="view" (onChange)="setViewMode($event)"></p-selectButton>
       </li>
     </ul>
   </div>

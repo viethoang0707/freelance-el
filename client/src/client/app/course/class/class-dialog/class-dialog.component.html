@@ -1,0 +1,28 @@
+<form novalidate (ngSubmit)="save()" #f="ngForm"  autocomplete="off">
+  <p-dialog header="{{'Class'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true">
+    <!-- <p-scrollPanel [style]="{width: '100%', height: '520px'}"> -->
+      <div class="ui-g ui-fluid form-group">
+        <div class="ui-g-12">
+          <label style="font-weight: 600;">{{'Course'|translate}}:{{object.course_name}}</label>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-4">
+            <label>{{'Enrollment'|translate}}</label>
+            <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" [inline]="true" required [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
+          </div>
+          <div class="ui-g-8 ">
+            <span class="md-inputfield">
+              <input type="text" pInputText [(ngModel)]="object.name" name="name">
+              <label>{{'Name'|translate}}</label>
+            </span>
+          </div>
+        </div>
+      </div>
+    <!-- </p-scrollPanel> -->
+    <p-footer>
+      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+  </p-dialog>
+  <select-course-dialog></select-course-dialog>
+</form>

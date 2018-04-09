@@ -2,14 +2,14 @@ import { Component, OnInit, Input } from '@angular/core';
 import { APIService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { BaseDialog } from '../../components/base/base.dialog';
-import { Group } from '../../models/group.model';
+import { Group } from '../../models/elearning/group.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-group-dialog',
+	selector: 'group-dialog',
 	templateUrl: 'group-dialog.component.html',
 })
 export class GroupDialog extends BaseDialog<Group> implements OnInit {
