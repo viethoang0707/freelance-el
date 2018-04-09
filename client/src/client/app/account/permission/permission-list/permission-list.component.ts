@@ -6,8 +6,9 @@ import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
 import { Permission } from '../../../shared/models/permission.model';
-import { Group } from '../../../shared/models/group.model';
-
+import { PermissionDialog} from '../permission-dialog/permission-dialog.component';
+import { MenuPermissionDialog } from '../menu-permission-dialog/menu-permission-dialog.component';
+import { AccessPermissionDialog } from '../access-permission-dialog/access-permission-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 
@@ -19,29 +20,24 @@ import { TreeNode } from 'primeng/api';
 })
 export class PermissionListComponent extends BaseComponent {
 
+    @ViewChild(PermissionDialog) permissionDialog: PermissionDialog;
+    @ViewChild(MenuPermissionDialog) menuPermissionDialog: MenuPermissionDialog;
+    @ViewChild(AccessPermissionDialog) accessPermissionDialog: AccessPermissionDialog;
 
+    // tree: TreeNode[];
+    // selectedPermission: Permission;
+    // permissions: Permission[];
 
-    tree: TreeNode[];
-    selectedPermission: Permission;
-    permissions: Permission[];
-    filterGroups: Group[];
-    selectedGroupNodes: TreeNode[];
+    // selectedGroupNodes: TreeNode[];
+    // selectedNode: TreeNode;
 
-    constructor(private treeUtils: TreeUtils) {
-        super();
-        this.filterGroups = [];
-    }
+    // constructor() {
+    //     super();
+    // }
 
-    ngOnInit() {
-        Group.listByCategory(this,GROUP_CATEGORY.USER).subscribe(groups => {
-            this.tree = this.treeUtils.buildTree(groups);
-        });
-        // this.loadPermission();
-        this.permissions = 
-        [
-            
-        ];
-    }
+    // ngOnInit() {
+       
+    // }
 
     // loadPermission() {
     //     Permission.all(this).subscribe(permissions => {
@@ -49,7 +45,26 @@ export class PermissionListComponent extends BaseComponent {
     //     });
     // }
 
-    
+    // add(){
+    //     var permission = new Permission();
+    //     this.permissionDialog.show(permission);
+    //     this.permissionDialog.onCreateComplete.subscribe(() => {
+    //         this.loadPermission();
+    //     });
+    // }
 
+    // edit() {
+    //     if (this.selectedNode)
+    //         this.permissionDialog.show(this.selectedNode.data);
+    // }
 
+    // permissionMenu(){
+    //     var permission = new Permission();
+    //     this.menuPermissionDialog.show(permission);
+    // }
+
+    // permissionAccess(){
+    //     var permission = new Permission();
+    //     this.accessPermissionDialog.show(permission);
+    // }
 }
