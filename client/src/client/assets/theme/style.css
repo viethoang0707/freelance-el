@@ -124,3 +124,18 @@ body .ui-fieldset .ui-fieldset-legend{
     width: calc(100% - 32px);
   }
 }
+
+@media screen and (max-width: 500px) {
+  .layout-wrapper .layout-main .layout-footer .footer-text-right {
+      margin-top: 10px;
+      text-align: center;
+      display: block;
+      float:none;
+  }
+  .layout-wrapper .layout-main .layout-footer .footer-text-left {
+    margin-top: 10px;
+    text-align: center;
+    display: block;
+    float:none;
+  }
+}

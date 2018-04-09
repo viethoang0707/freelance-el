@@ -1798,8 +1798,11 @@ a {
     .layout-wrapper .layout-main .layout-footer .footer-text-right {
       float: right;
       margin-top: 10px; }
-      .layout-wrapper .layout-main .layout-footer .footer-text-right span {
-        vertical-align: middle; }
+    .layout-wrapper .layout-main .layout-footer .footer-text-left {
+      float: left;
+      margin-top: 10px; }
+    .layout-wrapper .layout-main .layout-footer .footer-text-right span {
+      vertical-align: middle; }
 
 .layout-wrapper-static .layout-sidebar {
   left: 0; }
