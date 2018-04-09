@@ -5,8 +5,8 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
-import { User } from '../../../shared/models/user.model';
-import { Group } from '../../../shared/models/group.model';
+import { User } from '../../../shared/models/elearning/user.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { UserDialog } from '../user-dialog/user-dialog.component';
 import { UserExportDialog } from '../export-dialog/export-dialog.component';
 import { UserImportDialog } from '../import-dialog/import-dialog.component';
@@ -16,7 +16,7 @@ import { TreeNode } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-user-list',
+    selector: 'user-list',
     templateUrl: 'user-list.component.html',
     styleUrls: ['user-list.component.css'],
 })
@@ -28,7 +28,6 @@ export class UserListComponent extends BaseComponent {
     @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
 
     tree: TreeNode[];
-    selectedUser: User;
     users: User[];
     filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
@@ -53,25 +52,20 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    showProfile() {
-        if (this.selectedUser)
-            this.userProfileDialog.show(this.selectedUser);
+    showProfile(user) {
+        this.userProfileDialog.show(user);
         this.userProfileDialog.onUpdateComplete.subscribe(() => {
             this.loadUsers();
         });
     }
 
-    delete() {
-        if (this.selectedUser)
-            this.confirmationService.confirm({
-                message: this.translateService.instant('Are you sure to delete ?'),
-                accept: () => {
-                    this.selectedUser.delete(this).subscribe(() => {
-                        this.loadUsers();
-                        this.selectedUser = null;
-                    })
-                }
-            });
+    delete(user) {
+        this.confirm('Are you sure to delete ?', () => {
+            this.selectedUser.delete(this).subscribe(() => {
+                this.loadUsers();
+                this.selectedUser = null;
+            })
+         });
     }
 
     export() {
@@ -90,6 +84,5 @@ export class UserListComponent extends BaseComponent {
             this.users = users;
         });
     }
-
 
 }

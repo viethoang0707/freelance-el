@@ -6,7 +6,7 @@ import { Config } from '../../env.config'
  */
 @Component({
   moduleId: module.id,
-  selector: 'etraining-footer',
+  selector: 'app-footer',
   templateUrl: 'footer.component.html',
   styleUrls:['footer.component.css'],
   encapsulation: ViewEncapsulation.None

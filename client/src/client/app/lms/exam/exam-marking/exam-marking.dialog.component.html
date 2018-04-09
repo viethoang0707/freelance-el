@@ -13,9 +13,9 @@
               {{'Name'|translate}}
               <p-sortIcon [field]="'name'"></p-sortIcon>
             </th>
-            <th [pSortableColumn]="'etraining_group_id__DESC__'">
+            <th [pSortableColumn]="'group_id__DESC__'">
               {{'Group'|translate}}
-              <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+              <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
             </th>
             <th *ngFor="let question of questions">
                 {{question.title}}
@@ -25,7 +25,7 @@
         <ng-template pTemplate="body" let-record>
           <tr [pSelectableRow]="record">
             <td>{{record.name}}</td>
-            <td>{{record.etraining_group_id__DESC__}}</td>
+            <td>{{record.group_id__DESC__}}</td>
             <td *ngFor="let question of questions">
                 {{record[question.question_id]}}
             </td>
@@ -37,7 +37,7 @@
       </p-table>
     </div>
   </p-scrollPanel>
-  <etraining-question-marking-dialog></etraining-question-marking-dialog>
+  <question-marking-dialog></question-marking-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>

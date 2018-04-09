@@ -7,7 +7,7 @@ import { BaseComponent } from './shared/components/base/base.component';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-app',
+	selector: 'app',
 	template: `<router-outlet></router-outlet>`
 })
 export class AppComponent {

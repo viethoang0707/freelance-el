@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Group } from '../../models/group.model';
+import { Group } from '../../models/elearning/group.model';
 import { BaseComponent } from '../base/base.component';
-import { Question } from '../../models/question.model';
+import { Question } from '../../models/elearning/question.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
@@ -11,7 +11,7 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-select-question-dialog',
+	selector: 'select-question-dialog',
 	templateUrl: 'select-question-dialog.component.html',
 })
 export class SelectQuestionsDialog extends BaseComponent {

@@ -2,34 +2,27 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/mergeMap';
 import { Credential } from '../models/credential.model';
-import { User } from '../models/user.model';
-import { CloudAccount } from '../models/cloud-account.model';
+import { User } from '../models/elearning/user.model';
+import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
-import { APIService } from './api.service'
+import { CacheService } from './cache.service'
 import { TranslateService } from '@ngx-translate/core';
 
 
 @Injectable()
 export class LangService {
 
-    constructor(private translationService: TranslateService) {
+    constructor(private translationService: TranslateService, private cacheService:CacheService) {
     }
 
     initSetting() {
         this.translationService.setDefaultLang('vn');
-        var defaultLang = localStorage.getItem('language')? localStorage.getItem('language'):'vn';
+        var defaultLang = this.cacheService.Lang?this.cacheService.Lang:'vn';
         this.translationService.use(defaultLang);
     }
 
-    set Lang(lang: string) {
-        localStorage.setItem('language', lang);
+    setLanguage(lang: string) {
+        this.cacheService.Lang =  lang;
         this.translationService.use(lang);
     }
-
-   get Lang():string {
-       return  localStorage.getItem('language')? localStorage.getItem('language'):'vi';
-   }
-
-
-
 }

@@ -6,11 +6,11 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { DatePipe } from '@angular/common';
 import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { CourseClass } from '../../../shared/models/course-class.model';
-import { CourseUnit } from '../../../shared/models/course-unit.model';
-import { CourseSyllabus } from '../../../shared/models/course-syllabus.model';
-import { UserLog } from '../../../shared/models/log.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
+import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
+import { UserLog } from '../../../shared/models/elearning/log.model';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe} from '../../../shared/pipes/time.pipe';
@@ -18,7 +18,7 @@ import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-gradebook-list-dialog',
+    selector: 'gradebook-list-dialog',
     templateUrl: 'gradebook-list.component.html',
 })
 export class GradebookListDialog extends BaseComponent {

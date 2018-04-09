@@ -10,9 +10,9 @@ import { HomeModule } from './home/home.module';
 import { ErpSharedModule } from './shared/shared.module';
 import { SettingModule } from './setting/setting.module';
 import { AccountModule } from './account/account.module';
-import { EnrollmentModule } from './enrollment/enrollment.module';
+import { CourseModule } from './course/course.module';
 import { AssessmentModule } from './assessment/assessment.module';
-import { ReportModule } from './report/report.module';
+import { AnalysisModule } from './analysis/analysis.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CMSModule } from './cms/cms.module';
 import { LMSModule } from './lms/lms.module';
@@ -34,9 +34,9 @@ import {ScheduleModule} from 'primeng/schedule';
         DashboardModule,
         SettingModule,
         AccountModule,
-        EnrollmentModule,
+        CourseModule,
         AssessmentModule,
-        ReportModule,
+        AnalysisModule,
         CMSModule,
         LMSModule,
         ErpSharedModule.forRoot(),

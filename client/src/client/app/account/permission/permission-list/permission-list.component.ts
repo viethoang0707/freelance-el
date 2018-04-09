@@ -5,8 +5,8 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
-import { Permission } from '../../../shared/models/permission.model';
-import { Group } from '../../../shared/models/group.model';
+import { Permission } from '../../../shared/models/elearning/permission.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';

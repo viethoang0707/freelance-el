@@ -8,8 +8,9 @@
                     <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" [disabled]="!selectedClassExam"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" icon="ui-icon-star" title="{{'Mark'| translate}}" label="{{'Mark'|translate}}" class="orange-btn" style="></button>
-                    <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'| translate}}" label="{{'Result'|translate}}" class="oran(click)="viewScore()"></button>
+                    <button pButton type="button" icon="ui-icon-star" title="{{'Mark'| translate}}" label="{{'Mark'|translate}}" class="orange-btn">
+                    </button>
+                    <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'| translate}}" label="{{'Result'|translate}}" class="orannge-btn" (click) ="viewScore()"></button>
                 </div>
             </p-toolbar>
             <p-table #examTable [value]="classExams" [paginator]="true" [rows]="10" selectionMode="single" 
@@ -53,10 +54,10 @@
             </p-table>
         </div>
     </div>
-<etraining-exam-dialog></etraining-exam-dialog>
-<etraining-class-exam-enroll-dialog></etraining-class-exam-enroll-dialog>
-<etraining-exam-marking-dialog></etraining-exam-marking-dialog>
-<etraining-exam-score-dialog></etraining-exam-score-dialog>
+<exam-dialog></exam-dialog>
+<class-exam-enroll-dialog></class-exam-enroll-dialog>
+<exam-marking-dialog></exam-marking-dialog>
+<exam-score-dialog></exam-score-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>

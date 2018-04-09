@@ -6,10 +6,8 @@ export class Credential {
     constructor(){
 		this.username = undefined;
 		this.password = undefined;
-		this.cloud_account = new CloudAccount();
 	}
 
     username: string;
     password: string;
-    cloud_account: CloudAccount;
 }

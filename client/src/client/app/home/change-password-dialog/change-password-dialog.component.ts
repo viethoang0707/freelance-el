@@ -8,7 +8,7 @@ import { BaseComponent } from '../../shared/components/base/base.component';
     templateUrl: 'change-password-dialog.component.html',
 })
 
-export class ChangePasswordDialog extends BaseComponent implements OnInit {
+export class ChangePasswordDialog extends BaseComponent {
 
     @Input() old_pass: string;
     @Input() new_pass: string;
@@ -19,10 +19,6 @@ export class ChangePasswordDialog extends BaseComponent implements OnInit {
         this.new_pass = '';
         this.old_pass = '';
         this.display = false;
-    }
-
-
-    ngOnInit() {
     }
 
     show() {
@@ -36,14 +32,10 @@ export class ChangePasswordDialog extends BaseComponent implements OnInit {
     changePass() {
         this.authService.changePass(this.old_pass, this.new_pass).subscribe((resp) => {
             if (resp.success) {
+                this.success('Action completed');
                 this.hide();
             } else {
-                this.messageService
-                .add(
-                    { 
-                        severity: 'error', 
-                        summary: 'Error', 
-                        detail: this.translateService.instant('Error change password!') });
+                this.success('Action failed');
             }
         });
     }

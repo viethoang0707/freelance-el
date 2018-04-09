@@ -4,23 +4,23 @@ import { HomeEventManager } from '../home/home-manager.service';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-dashboard',
+    selector: 'dashboard',
     templateUrl: 'dashboard.component.html'
 
 })
 export class DashboardComponent extends BaseComponent implements OnInit{
 
-    isAdmin:boolean;
+    viewMode:string;
 
     constructor(private eventManager: HomeEventManager) {
         super();
-        this.isAdmin = this.settingService.adminMode;
+        this.settingService.viewModeEvents.subscribe((mode:string) => {
+            this.viewMode = mode;
+        });
     }
 
     ngOnInit() {
-    	this.settingService.adminModeEvents.subscribe((adminMode:boolean) => {
-            this.isAdmin = adminMode;
-        });
+    	this.viewMode = this.settingService.ViewMode;
     }
 
 }

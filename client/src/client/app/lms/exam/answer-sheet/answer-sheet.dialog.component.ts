@@ -2,14 +2,14 @@ import { Component, OnInit, Input, ViewChild, ComponentFactoryResolver } from '@
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { Exam } from '../../../shared/models/exam.model';
-import { ExamQuestion } from '../../../shared/models/exam-question.model';
-import { Answer } from '../../../shared/models/answer.model';
-import { Submission } from '../../../shared/models/submission.model';
-import { Question } from '../../../shared/models/question.model';
-import { ExamMember } from '../../../shared/models/exam-member.model';
+import { Exam } from '../../../shared/models/elearning/exam.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
+import { Answer } from '../../../shared/models/elearning/answer.model';
+import { Submission } from '../../../shared/models/elearning/submission.model';
+import { Question } from '../../../shared/models/elearning/question.model';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Http, Response } from '@angular/http';
 import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
@@ -18,7 +18,7 @@ import 'rxjs/add/observable/timer'; import * as _ from 'underscore';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-answer-sheet-dialog',
+    selector: 'answer-sheet-dialog',
     templateUrl: 'answer-sheet.dialog.component.html',
 })
 export class AnswerSheetDialog extends BaseComponent {

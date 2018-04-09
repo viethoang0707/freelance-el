@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs/Rx'
-import { Group } from '../models/group.model';
+import { Group } from '../models/elearning/group.model';
 import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
 

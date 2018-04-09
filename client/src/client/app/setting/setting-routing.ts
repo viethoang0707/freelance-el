@@ -22,13 +22,6 @@ export const SettingRoutes: Routes = [
           breadcrumb: 'Application'
         }
       },
-      {
-        path: "mail",
-        component: SettingMailComponent,
-        data: {
-          breadcrumb: 'Mail'
-        }
-      }
 
     ]
   }

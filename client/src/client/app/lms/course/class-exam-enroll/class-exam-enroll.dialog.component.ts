@@ -5,15 +5,15 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { CourseClass } from '../../../shared/models/course-class.model';
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Exam } from '../../../shared/models/exam.model';
-import { ExamMember } from '../../../shared/models/exam-member.model';
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Exam } from '../../../shared/models/elearning/exam.model';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SelectItem } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-class-exam-enroll-dialog',
+    selector: 'class-exam-enroll-dialog',
     templateUrl: 'class-exam-enroll.dialog.component.html',
 })
 export class ClassExamEnrollDialog extends BaseComponent {

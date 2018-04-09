@@ -1,39 +1,32 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { Company } from '../../shared/models/company.model';
+import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
+
 
 @Component({
   moduleId: module.id,
-  selector: 'etraining-recover-password',
+  selector: 'recover-password',
   templateUrl: 'recover-password.component.html'
 })
 
 export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
+    account: CloudAccount;
     @Input() recover_email: string;
-    @Input() recover_cloud: string;
-    company: Company;
-    mode: string = '<%= BUILD_TYPE %>';
 
     constructor() { 
       super(); 
     }
 
     ngOnInit() {
-      this.company =  this.cacheService.UserCompany;
+      this.account =  this.cacheService.CloudAcc;
     }
 
     recoverPassword() {
-        this.authService.resetPass(this.recover_email, this.recover_cloud).subscribe((resp) => {
-              this.messageService
-              .add({
-                severity:'success', 
-                summary:'Success', 
-                detail: this.translateService.instant('Password recovery instruction sent to your email')
-              });
-        })
+        this.authService.resetPass(this.recover_email, this.account.id).subscribe(() => {
+            this.success('Password recovery instruction sent to your email')
+        });
     }
-
 }
 

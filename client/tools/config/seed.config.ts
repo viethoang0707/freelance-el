@@ -426,6 +426,11 @@ export class SeedConfig {
    * @type {any}
    */
   SYSTEM_CONFIG_DEV: any = {
+    meta: {
+            'xlsx': {
+                exports: 'XLSX' // <-- this is needed to tell SystemJS to expose XLSX
+            }
+        },
     paths: {
       [this.BOOTSTRAP_MODULE]: `${this.APP_BASE}${this.BOOTSTRAP_MODULE}`,
       '@angular/animations': 'node_modules/@angular/animations/bundles/animations.umd.js',
@@ -460,6 +465,12 @@ export class SeedConfig {
       'dist/dev/': '/base/dist/dev/',
       '': 'node_modules/',
     },
+     map: {
+          'xlsx': this.BUILD_TYPE === BUILD_TYPES.PRODUCTION ? 'node_modules/xlsx/xlsx.min.js' : 'node_modules/xlsx/dist/xlsx.full.min.js',
+          'fs': this.BUILD_TYPE === BUILD_TYPES.PRODUCTION ? '@node/fs' : '', // <-- systemjs doesn't seem to automatically suppress node core
+          'crypto': this.BUILD_TYPE === BUILD_TYPES.PRODUCTION ? '@node/crypto' : '',
+          'stream': this.BUILD_TYPE === BUILD_TYPES.PRODUCTION ? '@node/stream' : '',
+      },
     packages: {
       [this.BOOTSTRAP_DIR]: {
         defaultExtension: 'js'
@@ -490,6 +501,11 @@ export class SeedConfig {
       join('node_modules', 'file-saver', '*', 'package.json'),
       join('node_modules', 'xlsx', '*', 'package.json')
     ],
+    meta: {
+            'xlsx': {
+                exports: 'XLSX' // <-- this is needed to tell SystemJS to expose XLSX
+            }
+        },
     paths: {
       // Note that for multiple apps this configuration need to be updated
       // You will have to include entries for each individual application in
@@ -502,6 +518,7 @@ export class SeedConfig {
       '*': 'node_modules/*'
     },
     map: {
+       'xlsx': this.BUILD_TYPE === BUILD_TYPES.DEVELOPMENT ? 'node_modules/xlsx/xlsx.min.js' : 'node_modules/xlsx/dist/xlsx.full.min.js',
       'fs': '@node/fs',
       'crypto': '@node/crypto',
       'stream': '@node/stream'

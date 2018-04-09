@@ -2,27 +2,28 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { User } from '../../../shared/models/user.model';
+import { User } from '../../../shared/models/elearning/user.model';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
-import { ExcelService, EXCEL_TYPE } from '../../../shared/services/excel.service';
+import { ExcelService } from '../../../shared/services/excel.service';
 
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-user-import-dialog',
+	selector: 'user-import-dialog',
 	templateUrl: 'import-dialog.component.html',
 })
 export class UserImportDialog extends BaseComponent {
 
 	display: boolean;
-	fileType: string;
 	fileName: string;
 	records: any[];
-	importing: boolean;
+	percentage: number ;
+	completed:number;
+	total: number;
 
 	private onImportCompleteReceiver: Subject<any> = new Subject();
     onImportComplete:Observable<any> =  this.onImportCompleteReceiver.asObservable();
@@ -30,13 +31,14 @@ export class UserImportDialog extends BaseComponent {
 	constructor(private excelService: ExcelService) {
 		super();
 		this.display = false;
-		this.importing = false;
 		this.records = [];
-		this.fileType = EXCEL_TYPE;
 	}
 
 	show() {
 		this.display = true;
+		this.percentage = 0;
+		this.completed = 0;
+		this.total = 0;
 	}
 
 	hide() {
@@ -55,15 +57,22 @@ export class UserImportDialog extends BaseComponent {
 					return obj.code == record["group_code"];
 				});
 				if (group) {
-					user.etraining_group_id = group.id;
+					user.group_id = group.id;
 					subscriptions.push(user.save(this));
 				}
 			});
-			Observable.forkJoin(...subscriptions).subscribe(()=> {
-				this.importing = false;
-				this.onImportCompleteReceiver.next();
-				this.hide();
-			});
+			Observable.merge(...subscriptions).subscribe(
+				()=> {
+					this.completed++;
+					this.percentage = Math.floor(this.completed /  this.total *100);
+				},
+				(error)=> {
+					console.log(error);
+				},
+				()=> {
+					this.onImportCompleteReceiver.next();
+					this.hide();
+				});
 		});
 	}
 
@@ -72,7 +81,8 @@ export class UserImportDialog extends BaseComponent {
 		this.fileName = file.name;
 		this.excelService.importFromExcelFile(file).subscribe(data => {
 			this.records = data;
-		})
+			this.total = this.records.length;
+		});
 	}
 
 

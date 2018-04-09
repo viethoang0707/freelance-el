@@ -5,16 +5,14 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
-import { Credential } from '../../shared/models/credential.model';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { Company } from '../../shared/models/company.model';
+import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { CacheService } from '../../shared/services/cache.service';
 declare var jQuery: any;
 
-
 @Component({
     moduleId: module.id,
-    selector: 'etraining-menu',
+    selector: 'app-menu',
     templateUrl: 'side-menu.component.html',
     styleUrls: ['side-menu.component.css'],
     encapsulation: ViewEncapsulation.None
@@ -23,35 +21,32 @@ declare var jQuery: any;
 export class SideMenuComponent extends BaseComponent implements OnInit {
 
     @Input() reset: boolean;
-    company: Company;
-    model: any[];
-    credential: Credential
+    account: CloudAccount;
+    menu: any[];
     layoutMenuScroller: HTMLDivElement;
     @ViewChild('layoutMenuScroller') layoutMenuScrollerViewChild: ElementRef;
 
     constructor(public app: HomeComponent, 
         private eventManager: HomeEventManager) {
         super();
-    }
-
-    ngOnInit() {
-        this.company =  this.cacheService.UserCompany;
-        if (this.settingService.adminMode) {
-            this.setAdminMenu();
-        } else {
-            this.setUserMenu();
-        }
-
-        this.settingService.adminModeEvents.subscribe((adminMode:boolean) => {
-            if (adminMode)
+        this.settingService.viewModeEvents.subscribe((mode:boolean) => {
+            if (mode=='admin')
                 this.setAdminMenu();
             else
                 this.setUserMenu();
         });
     }
 
+    ngOnInit() {
+        this.account =  this.cacheService.CloudAcc;
+        if (this.settingService.ViewMode =='admin')
+                this.setAdminMenu();
+            else
+                this.setUserMenu();
+    }
+
     setAdminMenu() {
-        this.model = [
+        this.menu = [
                 { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
                 { label: '', separator: true, styleClass: 'menu-separator' },
                 {
@@ -71,7 +66,11 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     ]
                 },
                 {
-                    label: 'Report', icon: 'pie_chart',routerLink: ['/reports']
+                    label: 'Analysis', icon: 'pie_chart',
+                    items: [
+                        { label: 'Report', routerLink: ['/analysis/reports'] },
+                        { label: 'Chart', routerLink: ['/analysis/charts'] },
+                    ]
                 },
                 {
                     label: 'Accounts', icon: 'people',
@@ -80,19 +79,12 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                         { label: 'Group', routerLink: ['/account/groups'] },
                         { label: 'Permission', routerLink: ['/account/permissions'] }
                     ]
-                },
-                {
-                    label: 'Setting', icon: 'settings',
-                    items: [
-                        { label: 'Application', routerLink: ['/setting/app'] },
-                        { label: 'Mail', routerLink: ['/setting/mail'] }
-                    ]
                 }
             ];
     }
 
     setUserMenu() {
-        this.model = [
+        this.menu = [
                 { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
                 { label: '', separator: true, styleClass: 'menu-separator' },
                 { label: 'My course', icon: 'school', routerLink: ['/lms/courses'] },
@@ -104,7 +96,6 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
 
     ngAfterViewInit() {
         this.layoutMenuScroller = <HTMLDivElement>this.layoutMenuScrollerViewChild.nativeElement;
-
         setTimeout(() => {
             jQuery(this.layoutMenuScroller).nanoScroller({ flash: true });
         }, 10);

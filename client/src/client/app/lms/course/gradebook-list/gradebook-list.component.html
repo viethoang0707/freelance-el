@@ -17,9 +17,9 @@
               {{'Email'|translate}}
               <p-sortIcon [field]="'email'"></p-sortIcon>
             </th>
-            <th [pSortableColumn]="'etraining_group_id__DESC__'">
+            <th [pSortableColumn]="'group_id__DESC__'">
               {{'Group'|translate}}
-              <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+              <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
             </th>
             <th [pSortableColumn]="'enroll_status'">
               {{'Enroll status'|translate}}
@@ -43,7 +43,7 @@
           <tr [pSelectableRow]="record">
             <td>{{record.name}}</td>
             <td>{{record.email}}</td>
-            <td>{{record.etraining_group_id__DESC__}}</td>
+            <td>{{record.group_id__DESC__}}</td>
             <td>{{record.first_attempt}} %</td>
             <td>{{record.last_attempt}} %</td>
             <td>{{record.time_spent}} {{'minute'|translate}}</td>
@@ -64,7 +64,7 @@
       </p-table>
     </div>
   </p-scrollPanel>
-  <etraining-gradebook-dialog></etraining-gradebook-dialog>
+  <gradebook-dialog></gradebook-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>

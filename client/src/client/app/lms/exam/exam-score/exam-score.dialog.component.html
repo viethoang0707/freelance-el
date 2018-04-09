@@ -30,7 +30,7 @@
         <ng-template pTemplate="body" let-record>
           <tr [pSelectableRow]="record">
             <td>{{record.name}}</td>
-            <td>{{record.etraining_group_id__DESC__}}</td>
+            <td>{{record.group_id__DESC__}}</td>
             <td>{{record.score}}</td>
             <td>{{record.grade}}</td>
           </tr>
@@ -48,7 +48,7 @@
       </p-table>
     </div>
   </p-scrollPanel>
-  <etraining-answer-sheet-dialog></etraining-answer-sheet-dialog>
+  <answer-sheet-dialog></answer-sheet-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>

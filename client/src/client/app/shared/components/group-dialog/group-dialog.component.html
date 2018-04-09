@@ -1,29 +1,26 @@
-<form novalidate (ngSubmit)="save()" #f="ngForm"  autocomplete="off">
-<p-dialog header="{{'Group'|translate}}" [(visible)]="display" modal="false" width="300" [responsive]="true">
-  
+<form novalidate (ngSubmit)="save()" #f="ngForm" autocomplete="off">
+  <p-dialog header="{{'Group'|translate}}" [(visible)]="display" modal="false" width="300" [responsive]="true">
     <div class="ui-g ui-fluid form-group">
-       <div class="ui-g-12">
+      <div class="ui-g-12">
         <label>{{'Parent group'|translate}}</label>
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)">></p-tree>
       </div>
       <div class="ui-g-12 ">
         <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.name" name="name">
-                            <label>{{'Name'|translate}}</label>
-                        </span>
+            <input type="text" pInputText [(ngModel)]="object.name" name="name">
+            <label>{{'Name'|translate}}</label>
+        </span>
       </div>
       <div class="ui-g-12">
         <span class="md-inputfield">
-                            <input type="text" pInputText [(ngModel)]="object.code" name="code">
-                            <label>{{'Code'|translate}}</label>
-                        </span>
+            <input type="text" pInputText [(ngModel)]="object.code" name="code">
+            <label>{{'Code'|translate}}</label>
+        </span>
       </div>
-     
     </div>
     <p-footer>
       <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
-  
-</p-dialog>
+  </p-dialog>
 </form>

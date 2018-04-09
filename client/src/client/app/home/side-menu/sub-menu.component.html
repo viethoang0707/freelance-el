@@ -19,7 +19,7 @@
             <i class="material-icons layout-submenu-toggler" *ngIf="child.items">>keyboard_arrow_down</i>
             <span class="menuitem-badge" *ngIf="child.badge">{{child.badge}}</span>
         </a>
-        <ul etraining-submenu [item]="child" *ngIf="child.items" [visible]="isActive(i)" [reset]="reset"
+        <ul app-submenu [item]="child" *ngIf="child.items" [visible]="isActive(i)" [reset]="reset"
             [@children]="isActive(i) ? 'visible' : 'hidden'"></ul>
     </li>
 </ng-template>

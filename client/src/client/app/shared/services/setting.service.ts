@@ -1,17 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Config } from '../../env.config';
+import { CacheService } from './cache.service';
 import 'rxjs/add/operator/map';
 import { Observable, Subject, Observer } from 'rxjs/Rx';
 
 @Injectable()
 export class SettingService {
-  adminMode: boolean;
-  private adminModeEventReceiver: Subject<boolean> = new Subject();
-  adminModeEvents:Observable<boolean> =  this.adminModeEventReceiver.asObservable();
+  
+  viewMode: string;
 
-  setAdminMode(data:boolean) {
-    this.adminMode = data;
-    this.adminModeEventReceiver.next(this.adminMode);
+  constructor(private cacheService: CacheService) {
+
   }
+
+  private viewModeEventReceiver: Subject<string> = new Subject();
+  viewModeEvents:Observable<string> =  this.viewModeEventReceiver.asObservable();
+
+
+  get ViewMode() {
+  	if (this.viewMode)
+  		return viewMode;
+  	if (this.cacheService.UserProfile) 
+  		return this.cacheService.UserProfile.IsAdmin ? 'admin' :'lms';
+  	return null;
+  }
+
+  set ViewMode(data:string) {
+  	this.viewMode = data;
+    this.viewModeEventReceiver.next(data);
+  }
+  	
 }

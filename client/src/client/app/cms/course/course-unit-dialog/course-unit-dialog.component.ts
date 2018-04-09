@@ -2,9 +2,9 @@ import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
-import { CourseUnit } from '../../../shared/models/course-unit.model';
+import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
@@ -14,7 +14,7 @@ import { ICourseUnit } from '../course-unit-template/unit.interface';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-course-unit-dialog',
+	selector: 'course-unit-dialog',
 	templateUrl: 'course-unit-dialog.component.html',
 })
 export class CourseUnitDialog extends BaseDialog<CourseUnit> {
