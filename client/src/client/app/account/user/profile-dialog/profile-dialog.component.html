@@ -62,7 +62,7 @@
               <td>{{member.course_name}}</td>
               <td>{{member.date_register}}</td>
               <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
-              <td><a [hidden]="!member.certificate" [href]="member.certificate.url">{{'Download link'|translate}}</a></td>
+              <!-- <td><a [hidden]="!member.certificate" [href]="member.certificate.url">{{'Download link'|translate}}</a></td> -->
             </tr>
           </ng-template>
         </p-table>

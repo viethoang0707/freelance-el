@@ -1,10 +1,6 @@
 <div class="card card-w-title">
     <h1>{{'Permission management'|translate}}</h1>
     <div class="ui-g">
-      <div class="ui-g-12">
-        <label>{{'Organization'|translate}}</label>
-        <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedPermissionNodes" ></p-tree>
-      </div>
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-permission-left">
@@ -20,27 +16,43 @@
                         <th>{{'Menu Permission'|translate}}</th>
                         <th>{{'API Permission'|translate}}</th>
                     </tr>
+                    <tr>
+                        <td>Quản lý</td>
+                        <td><button pButton type="button" icon="ui-icon-apps" class="secondary-btn" (click)="permissionMenu()"></button></td>
+                        <td><button pButton type="button" icon="ui-icon-cloud" class="secondary-btn" (click)="permissionAccess()"></button></td>
+                    </tr>
+                    <tr>
+                        <td>Nhân viên</td>
+                        <td><button pButton type="button" icon="ui-icon-apps" class="secondary-btn" (click)="permissionMenu()"></button></td>
+                        <td><button pButton type="button" icon="ui-icon-cloud" class="secondary-btn" (click)="permissionAccess()"></button></td>
+                    </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-user>
-                    <tr [pSelectableRow]="">
+                <!-- <ng-template pTemplate="body" let-user>
+                    <tr [pSelectableRow]="permission">
                         <td>{{permisson.role}}</td>
                         <td><button pButton type="button" icon="ui-icon-apps" class="secondary-btn"></button></td>
                         <td><button pButton type="button" icon="ui-icon-cloud" class="secondary-btn"></button></td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
-                    <!-- {{'Total records'|translate}} : {{permissions?.length}} -->
+                    {{'Total records'|translate}} : {{permissions?.length}}
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td [attr.colspan]="3">
+                        <td [attr.colspan]="5">
                             {{'No records found'|translate}}
                         </td>
                     </tr>
-                </ng-template>
+                </ng-template> -->
             </p-table>
+<<<<<<< HEAD
             <!-- <api-permission-dialog></api-permission-dialog>
             <menu-permission-dialog></menu-permission-dialog> -->
+=======
+            <permission-dialog></permission-dialog>
+            <menu-permission-dialog></menu-permission-dialog>
+            <access-permission-dialog></access-permission-dialog>
+>>>>>>> 0563acaa68fb0b5a797e7dfcfa4ae846e59126e4
         </div>
     </div>
 </div>
