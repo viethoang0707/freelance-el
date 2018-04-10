@@ -168,4 +168,8 @@ body .ui-button.red-btn, body .ui-datepicker-buttonpane > button.red-btn{
     padding-left: 0px !important;
     padding-right: 0px !important;
   }
+
+  body .ui-buttonset > .ui-button:first-child{
+    float:  left !important;
+  }
 }
