@@ -38,7 +38,7 @@
                 <ng-template pTemplate="body" let-question>
                     <tr [pSelectableRow]="question">
                         <td style="text-align: left;">{{question.title}}</td>
-                        <td>{{question.level}}</td>
+                        <td>{{QUESTION_LEVEL[question.level] | translate}}</td>
                         <td>{{QUESTION_TYPE[question.type] | translate}}</td>
                     </tr>
                 </ng-template>

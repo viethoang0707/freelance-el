@@ -13,9 +13,11 @@
           <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="option.content" name="option_content">
             <label>{{'Content'|translate}}</label>
-        </span>
+          </span>
           <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)" class="remove-btn"></button>
         </li>
+        <div *ngIf="!options.length" class="ui-message ui-messages-error ui-corner-all">
+            {{'Add options is required' | translate}}</div>
       </ul>
     </p-panel>
   </div>
