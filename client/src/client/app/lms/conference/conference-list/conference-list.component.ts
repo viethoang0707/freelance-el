@@ -5,18 +5,18 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, CONFERENCE_STATUS } from '../../../shared/models/constants'
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Course } from '../../../shared/models/course.model';
-import { CourseClass } from '../../../shared/models/course-class.model';
-import { ConferenceMember } from '../../../shared/models/conference-member.model';
-import { Conference } from '../../../shared/models/conference.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
+import { Conference } from '../../../shared/models/elearning/conference.model';
 import { Room } from '../../../shared/models/meeting/room.model';
 import { MeetingService } from '../../../shared/services/meeting.service';
 
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-conference-list',
+    selector: 'conference-list',
     templateUrl: 'conference-list.component.html',
 })
 export class ConferenceListComponent extends BaseComponent implements OnInit {

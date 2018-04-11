@@ -1,32 +1,34 @@
 import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { MenuItem } from 'primeng/primeng';
-import { User } from '../../shared/models/user.model';
-import { Course } from '../../shared/models/course.model';
-import { CourseMember } from '../../shared/models/course-member.model';
+import { User } from '../../shared/models/elearning/user.model';
+import { Course } from '../../shared/models/elearning/course.model';
+import { CourseMember } from '../../shared/models/elearning/course-member.model';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { SelectItem } from 'primeng/api';
-import { ChartRegister } from '../chart.decorator';
-import { ChartContainerDirective } from '../chart-container.directive';
+import { Exam } from '../../shared/models/elearning/exam.model';
+import { Group } from '../../shared/models/elearning/group.model';
+import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
+import { SelectItem } from 'primeng/api';
 import * as _ from 'underscore';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-admin-dashboard',
+    selector: 'admin-dashboard',
     templateUrl: 'admin-dashboard.component.html'
 
 })
 export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
-    chartData: any;
     userCount: any;
     studentCount: any;
     teacherCount: any;
     courseCount: any;
-    charts: SelectItem[];
-    selectedChart: any;
+    events: any;
+    exams: Exam[];
+    selectedExam: any;
 
-    @ViewChild(ChartContainerDirective) container: ChartContainerDirective;
-
+    @ViewChild(ExamDialog) examDialog: ExamDialog;
+    
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
     }
@@ -43,31 +45,51 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         });
         CourseMember.countStudent(this).subscribe(count => {
             this.studentCount = count;
-        });
-        this.charts = _.map(ChartRegister.Instance.entries(), (chart)=> {
-            return {
-                label: this.translateService.instant(chart["title"]),
-                value: chart["component"]
-            }
-        });
-        if (this.charts.length) {
-            this.selectedChart =  this.charts[0].value;
-            this.selectChart();
-        }
-        
+        });    
     }
 
-    renderChartComponent(component) {
-        let componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
-        let viewContainerRef = this.container.viewContainerRef;
-        viewContainerRef.clear();
-        let componentRef = viewContainerRef.createComponent(componentFactory);
+    addExam() {
+        var exam = new Exam();
+        this.examDialog.show(exam);
+        this.examDialog.onCreateComplete.subscribe(() => {
+            this.loadExams();
+        });
     }
 
-    selectChart() {
-        if (this.selectedChart)
-            this.renderChartComponent(this.selectedChart);
+    editExam(exam) {
+        this.examDialog.show(exam);
+        this.examDialog.onUpdateComplete.subscribe(() => {
+            this.loadExams();
+        });
     }
+
+    onDayClick() {
+        this.add();
+    }
+
+    onEventClick(event) {
+        var examId = event.calEvent.id;
+        var exam = _.find(this.exams, (exam)=> {
+            return exam.id == examId;
+        });
+        this.editExam(exam);
+    }
+
+    loadExams() {
+        Exam.all(this).subscribe(exams => {
+            this.exams = exams;
+            this.events = _.map(exams, (exam)=> {
+                return {
+                    title: exam.name,
+                    start: exam.start,
+                    send: exam.end,
+                    id: exam.id,
+                    allDay: true
+                }
+            });
+        });
+    }
+
 
 }
 

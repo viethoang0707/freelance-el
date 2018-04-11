@@ -2,9 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { APIService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
-import { Group } from '../../models/group.model';
+import { Group } from '../../models/elearning/group.model';
 import { BaseComponent } from '../base/base.component';
-import { User } from '../../../shared/models/user.model';
+import { User } from '../../../shared/models/elearning/user.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
@@ -13,7 +13,7 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-select-group-dialog',
+	selector: 'select-group-dialog',
 	templateUrl: 'select-group-dialog.component.html',
 })
 export class SelectGroupDialog extends BaseComponent {

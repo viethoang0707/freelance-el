@@ -2,11 +2,11 @@ import { Component, OnInit, Input, ViewChild} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { User } from '../../../shared/models/user.model';
-import { CourseUnit } from '../../../shared/models/course-unit.model';
-import { CourseSyllabus }  from '../../../shared/models/course-syllabus.model';
+import { User } from '../../../shared/models/elearning/user.model';
+import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
+import { CourseSyllabus }  from '../../../shared/models/elearning/course-syllabus.model';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
@@ -14,7 +14,7 @@ import * as _ from 'underscore';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-course-syllabus-dialog',
+    selector: 'course-syllabus-dialog',
     templateUrl: 'course-syllabus.dialog.component.html',
 })
 export class CourseSyllabusDialog extends BaseComponent {

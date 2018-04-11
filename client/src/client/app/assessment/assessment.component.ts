@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'etraining-assessment',
+  selector: 'assessment',
   template: '<router-outlet></router-outlet>'
 
 })

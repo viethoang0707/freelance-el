@@ -2,12 +2,11 @@ import { Component, OnInit, Input} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Course } from '../../../shared/models/course.model';
-import { Certificate } from '../../../shared/models/course-certificate.model';
+import { Group } from '../../../shared/models/elearning/group.model';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
-import { User } from '../../../shared/models/user.model';
+import { User } from '../../../shared/models/elearning/user.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
@@ -16,7 +15,7 @@ import { GROUP_CATEGORY, COURSE_MEMBER_ROLE, COURSE_MEMBER_ENROLL_STATUS } from 
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-user-profile-dialog',
+    selector: 'user-profile-dialog',
     templateUrl: 'profile-dialog.component.html',
 })
 export class UserProfileDialog extends BaseDialog<User> {
@@ -33,7 +32,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 
 	nodeSelect(event:any) {
 		if (this.selectedNode) {
-			this.object.etraining_group_id = this.selectedNode.data.id;
+			this.object.group_id = this.selectedNode.data.id;
 		}
 	}
 
@@ -41,8 +40,8 @@ export class UserProfileDialog extends BaseDialog<User> {
 		this.onShow.subscribe(object => {
 			Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 				this.tree = this.treeUtils.buildTree(groups);
-				if (object.etraining_group_id) {
-					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.etraining_group_id);
+				if (object.group_id) {
+					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 				}
 			});
 			CourseMember.listByUser(this, object.id)

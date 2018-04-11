@@ -1,0 +1,80 @@
+    <div class="ui-g">
+        <div class="ui-g-12">
+        	<p-toolbar>
+                <div class="ui-toolbar-group-left">
+                	<button pButton type="button" label="{{'Select course group'|translate}}"  icon="ui-icon-open-in-browser" class="green-btn" (click)="selectCourseGroup()" ></button>
+                </div>
+                <button pButton type="button" label="{{'Select individual courses'|translate}}"  icon="ui-icon-open-in-browser" class="green-btn" (click)="selectIndividualCourses()" ></button>
+                <div class="ui-toolbar-group-right">
+                    <button pButton type="button" label="{{'Export'|translate}}"  class="purple-btn" icon="ui-icon-file-download" (click)="export()"></button>
+                </div>
+            </p-toolbar>
+            <p-table #dataTable [value]="records" [responsive]="true">
+                <ng-template pTemplate="caption">
+                	{{'Member by course report'|translate}}
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th colspan="2" rowspan="2">{{'Course'|translate}}</th>
+                        <th colspan="7">{{'Course member'|translate}}</th>
+                        <th rowspan="3">{{'Time'|translate}}</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">{{'Total'|translate}}</th>
+                        <th colspan="2">{{'Registered'|translate}}</th>
+                        <th colspan="2">{{'In-progress'|translate}}</th>
+                        <th colspan="2">{{'Completed'|translate}}</th>
+                    </tr>
+                    <tr>
+                    	<th>{{'Code'|translate}}</th>
+                        <th>{{'Name'|translate}}</th>
+                        <th>{{'Total'|translate}}</th>
+                        <th>{{'Percentage'|translate}}</th>
+                        <th>{{'Total'|translate}}</th>
+                        <th>{{'Percentage'|translate}}</th>
+                        <th>{{'Total'|translate}}</th>
+                        <th>{{'Percentage'|translate}}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-record>
+                    <tr [pSelectableRow]="record">
+                        <td>{{record.course_code}}</td>
+                        <td>{{record.course_name}}</td>
+                        <td>{{record.total_member}}</td>
+                        <td>{{record.total_member_registered}}</td>
+                        <td>{{record.percentage_member_registered}}</td>
+                        <td>{{record.total_member_inprogress}}</td>
+                        <td>{{record.percentage_member_inprogress}}</td>
+                        <td>{{record.total_member_complete}}</td>
+                        <td>{{record.percentage_member_complete}}</td>
+                        <td>{{record.total_time_spent | timeConvert:'min'}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td colspan="2">{{'Total'|translate}}</td>
+                        <td>{{summary.total_member}}</td>
+                        <td>{{summary.total_member_registered}}</td>
+                        <td>{{summary.percentage_member_registered}}</td>
+                        <td>{{summary.total_member_inprogress}}</td>
+                        <td>{{summary.percentage_member_inprogress}}</td>
+                        <td>{{summary.total_member_complete}}</td>
+                        <td>{{summary.percentage_member_complete}}</td>
+                        <td>{{summary.total_time_spent | timeConvert:'min'}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    {{'Total records'|translate}} : {{records?.length}}
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td [attr.colspan]="10">
+                            {{'No records found'|translate}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <select-group-dialog [category]="GROUP_CATEGORY.COURSE"></select-group-dialog>
+            <select-course-dialog></select-course-dialog>
+        </div>
+    </div>

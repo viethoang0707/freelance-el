@@ -8,7 +8,7 @@ export class GroupsPipe implements PipeTransform {
     { 
       return [];
     }
-    else if(!filterGroups) 
+    else if(!filterGroups || filterGroups.length==0) 
     {
       return items;
     }
@@ -18,7 +18,7 @@ export class GroupsPipe implements PipeTransform {
       {      
         // for(var i=0; i < filterGroups.length; i++)
         // {
-        //   if(filterGroups[i].data.id == item.etraining_group_id)
+        //   if(filterGroups[i].data.id == item.group_id)
         //   {
         //     return true;
         //   }
@@ -26,7 +26,7 @@ export class GroupsPipe implements PipeTransform {
         // return false;
 
         var found = filterGroups.find(function(element){
-          return element.data.id == item.etraining_group_id;
+          return element.data.id == item.group_id;
         });
         return found;
 
@@ -42,7 +42,7 @@ export class GroupsPipe implements PipeTransform {
 //     if(!items) return [];
 //     if(!id) return items;
 //     return items.filter(function(hero){
-//       return hero.etraining_group_id == id;
+//       return hero.group_id == id;
 //     });
 //    }
 // }

@@ -5,15 +5,15 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Course } from '../../../shared/models/course.model';
-import { CourseMaterial } from '../../../shared/models/course-material.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
 import { CourseMaterialDialog } from '../course-material/course-material.dialog.component';
 
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-course-material-list-dialog',
+	selector: 'course-material-list-dialog',
 	templateUrl: 'course-material-list.component.html',
 })
 export class CourseMaterialListDialog extends BaseComponent {

@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   moduleId: module.id,
-  selector: 'etraining-lms',
+  selector: 'lms',
   template: '<router-outlet></router-outlet>'
 
 })

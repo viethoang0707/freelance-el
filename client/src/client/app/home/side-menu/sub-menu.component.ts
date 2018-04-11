@@ -4,11 +4,10 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
 import { HomeComponent } from '../home.component';
-declare var jQuery: any;
 
 @Component({
     moduleId: module.id,
-    selector: '[etraining-submenu]',
+    selector: '[app-submenu]',
     templateUrl: 'sub-menu.component.html',
     animations: [
         trigger('children', [

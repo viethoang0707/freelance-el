@@ -7,7 +7,7 @@ declare var $: any;
  */
 @Component({
     moduleId: module.id,
-    selector: 'etraining-auth',
+    selector: 'auth',
     template: '<p-growl ></p-growl><router-outlet></router-outlet>',
 })
 

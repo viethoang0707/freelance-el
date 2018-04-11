@@ -17,7 +17,7 @@ body
 .footer {
     position: absolute;
     bottom: 0;
-    width: calc(100% - 100px);
+    width: calc(100% - 94px);
   }
 .layout-content{
     padding-bottom: 65px !important;
@@ -124,4 +124,55 @@ body .ui-fieldset .ui-fieldset-legend{
 
 .ui-state-default{
   background-color: #fff;
+}
+
+/* responsive */
+
+.ui-toolbar-group-left{
+  float:none !important;
+}
+
+body .ui-button.purple-btn, body .ui-datepicker-buttonpane > button.purple-btn{
+  width:100% !important;
+}
+body .ui-button.green-btn, body .ui-datepicker-buttonpane > button.green-btn{
+  width:100% !important;
+}
+body .ui-button.red-btn, body .ui-datepicker-buttonpane > button.red-btn{
+  width:100% !important;
+}
+
+@media screen and (max-width: 1024px) {
+  .footer {
+    width: calc(100% - 32px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .layout-wrapper .layout-main .layout-footer .footer-text-right {
+      margin-top: 10px;
+      text-align: center;
+      display: block;
+      float:none;
+  }
+  .layout-wrapper .layout-main .layout-footer .footer-text-left {
+    margin-top: 10px;
+    text-align: center;
+    display: block;
+    float:none;
+  }
+
+  .showformb{
+    display: none !important;
+  }
+  .ui-table .ui-table-tbody > tr > td{
+    border: 0px !important;
+  }
+  .card{
+    padding: 0px !important;
+  }
+  .ui-g-12{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
 }
