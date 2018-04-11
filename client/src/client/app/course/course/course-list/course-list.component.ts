@@ -24,7 +24,6 @@ export class CourseListComponent extends BaseComponent {
     @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
 
     tree: TreeNode[];
-    selectedCourse: Course;
     courses: Course[];
     selectedNode: TreeNode;
     COURSE_MODE = COURSE_MODE;
@@ -49,30 +48,15 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
-    edit() {
-        if (this.selectedCourse)
-            this.courseDialog.show(this.selectedCourse);
+    edit(course) {
+        this.courseDialog.show(course);
         this.courseDialog.onUpdateComplete.subscribe(() => {
             this.loadCourses();
         });
     }
 
-    enroll() {
-        if (this.selectedCourse)
-            this.courseEnrollDialog.enrollCourse(this.selectedCourse);
-    }
-
-    delete() {
-        if (this.selectedCourse)
-            this.confirmationService.confirm({
-                message: this.translateService.instant('Are you sure to delete ?'),
-                accept: () => {
-                    this.selectedCourse.delete(this).subscribe(() => {
-                        this.loadCourses();
-                        this.selectedCourse = null;
-                    })
-                }
-            });
+    enroll(course) {
+        this.courseEnrollDialog.enrollCourse(course);
     }
 
     loadCourses() {

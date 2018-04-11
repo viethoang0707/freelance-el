@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
-import  { EnrollmentComponent } from './enrollment.component'
+import  { CourseComponent } from './course.component'
 import { ByCoursePipe } from './course.pipe';
 import { ByClassPipe } from './class.pipe';
 import { CourseClassListComponent } from './class/class-list/class-list.component';
@@ -12,7 +12,7 @@ import { CourseEnrollDialog } from './enrollment-dialog/enrollment-dialog.compon
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule],
-    declarations: [EnrollmentComponent, CourseClassDialog, CourseClassListComponent,ByCoursePipe,ByClassPipe,
+    declarations: [CourseComponent, CourseClassDialog, CourseClassListComponent,ByCoursePipe,ByClassPipe,
     				CourseListComponent, CourseDialog, CourseEnrollDialog],
     exports: [],
     providers: []

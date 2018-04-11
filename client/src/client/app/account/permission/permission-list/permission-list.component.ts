@@ -5,16 +5,10 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
-<<<<<<< HEAD
-import { Permission } from '../../../shared/models/elearning/permission.model';
-import { Group } from '../../../shared/models/elearning/group.model';
-
-=======
 import { Permission } from '../../../shared/models/permission.model';
 import { PermissionDialog} from '../permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog } from '../menu-permission-dialog/menu-permission-dialog.component';
 import { AccessPermissionDialog } from '../access-permission-dialog/access-permission-dialog.component';
->>>>>>> 0563acaa68fb0b5a797e7dfcfa4ae846e59126e4
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 

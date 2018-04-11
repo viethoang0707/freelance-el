@@ -38,7 +38,7 @@
                         <td>{{exam.end | date : "dd/MM/yyyy, h:mm a"}}</td>
                         <td>{{EXAM_STATUS[exam.status] | translate}}</td>
                         <td>
-                          <button pButton type="button" label="{{'Edit'|translate}}" class="green-btn" icon="ui-icon-mode-edit" (click)="edit(exam)"></button>
+                          <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit(exam)"></button>
                            <button pButton type="button" label="{{'Enroll'|translate}}" class="blue-grey-btn" icon="ui-icon-people" (click)="enroll(exam)" ></button>
                         </td>
                     </tr>

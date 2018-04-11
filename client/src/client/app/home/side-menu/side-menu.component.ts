@@ -50,11 +50,11 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                 { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
                 { label: '', separator: true, styleClass: 'menu-separator' },
                 {
-                    label: 'Enrollment', icon: 'school',
+                    label: 'Syllabus', icon: 'school',
                     items: [
-                        { label: 'Course', routerLink: ['/enrollment/courses'] },
-                        { label: 'Course group', routerLink: ['/enrollment/groups'] },
-                        { label: 'Class', routerLink: ['/enrollment/classes'] },
+                        { label: 'Course', routerLink: ['/course/courses'] },
+                        { label: 'Course group', routerLink: ['/course/groups'] },
+                        { label: 'Class', routerLink: ['/course/classes'] },
                     ]
                 },
                 {
