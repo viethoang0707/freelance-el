@@ -119,6 +119,22 @@ body .ui-fieldset .ui-fieldset-legend{
   width: 550px;
 }
 
+/* responsive */
+
+.ui-toolbar-group-left{
+  float:none !important;
+}
+
+body .ui-button.purple-btn, body .ui-datepicker-buttonpane > button.purple-btn{
+  width:100% !important;
+}
+body .ui-button.green-btn, body .ui-datepicker-buttonpane > button.green-btn{
+  width:100% !important;
+}
+body .ui-button.red-btn, body .ui-datepicker-buttonpane > button.red-btn{
+  width:100% !important;
+}
+
 @media screen and (max-width: 1024px) {
   .footer {
     width: calc(100% - 32px);
@@ -137,5 +153,19 @@ body .ui-fieldset .ui-fieldset-legend{
     text-align: center;
     display: block;
     float:none;
+  }
+
+  .showformb{
+    display: none !important;
+  }
+  .ui-table .ui-table-tbody > tr > td{
+    border: 0px !important;
+  }
+  .card{
+    padding: 0px !important;
+  }
+  .ui-g-12{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
   }
 }
