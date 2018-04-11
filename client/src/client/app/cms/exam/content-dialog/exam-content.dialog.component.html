@@ -1,5 +1,5 @@
 <p-dialog header="{{'Exam content'|translate}}" [(visible)]="display" modal="false" width="960" [responsive]="true">
-  <p-scrollPanel [style]="{width: '100%', height: '480px'}">
+  <!-- <p-scrollPanel [style]="{width: '100%', height: '480px'}"> -->
     <p-tabView>
       <p-tabPanel header="{{'Question selection' |translate}}">
         <div class="ui-g ui-fluid form-group">
@@ -108,7 +108,7 @@
         </div>
       </p-tabPanel>
     </p-tabView>
-  </p-scrollPanel>
+  <!-- </p-scrollPanel> -->
   <select-question-dialog></select-question-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="save()"></button>
