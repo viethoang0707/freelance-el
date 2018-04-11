@@ -1,18 +1,18 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Group } from '../../shared/models/elearning/group.model';
-import { BaseDialog } from '../../shared/components/base/base.dialog';
-import { Course } from '../../shared/models/elearning/course.model';
-import { User } from '../../shared/models/elearning/user.model';
-import { CourseClass } from '../../shared/models/elearning/course-class.model';
-import { CourseMember } from '../../shared/models/elearning/course-member.model';
+import { Group } from '../../../shared/models/elearning/group.model';
+import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { User } from '../../../shared/models/elearning/user.model';
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import * as _ from 'underscore';
-import { TreeUtils } from '../../shared/helpers/tree.utils';
+import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
- COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../shared/models/constants'
-import { SelectUsersDialog } from '../../shared/components/select-user-dialog/select-user-dialog.component';
+ COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 @Component({
 	moduleId: module.id,

@@ -1,61 +1,65 @@
 <p-dialog header="{{'Class list'|translate}}" [(visible)]="display" modal="true" width="1200" height="100%" [responsive]="true">
   <p-scrollPanel [style]="{width: '100%', height: '460px'}">
-    <div class="ui-g-12 ">
-      <p-toolbar>
-        <div class="ui-toolbar-group-left ">
-          <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add" ></button>
-        </div>
-      </p-toolbar>
-       <p-table #classTable [value]="classes  [paginator]="true" [rows]="10" selectionMode="single" [responsive]="true">
-        <ng-template pTemplate="header">
-          <tr>
-            <th [pSortableColumn]="'name'">
-              {{'Name'|translate}}
-              <p-sortIcon [field]="'name'"></p-sortIcon>
-            </th>
-            <th>
-              {{'Course'|translate}}
-            </th>
-            <th [pSortableColumn]="'start'">
-              {{'Start'|translate}}
-              <p-sortIcon [field]="'start'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'end'">
-              {{'End'|translate}}
-              <p-sortIcon [field]="'end'"></p-sortIcon>
-            </th>
-            <th>
-              {{'Action'|translate}}
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-class>
-          <tr [pSelectableRow]="class">
-            <td style="text-align: left;">{{class.name}}</td>
-            <td style="text-align: left;">{{class.course_name}}</td>
-            <td>{{class.start | date : "dd/MM/yyyy"}}</td>
-            <td>{{class.end | date : "dd/MM/yyyy"}}</td>
-            <td>
-              <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit(class)"></button>
-          <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete(class)"></button>
-          <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll(class)" ></button>
-            </td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-          {{'Total records'|translate}} : {{classes?.length}}
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td [attr.colspan]="5">
-              {{'No records found'|translate}}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+    <div class="ui-g">
+      <div class="ui-g-12 ">
+        <p-toolbar>
+          <div class="ui-toolbar-group-left ">
+            <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
+          </div>
+        </p-toolbar>
+        <p-table #classTable [value]="classes" [paginator]="true" [rows]="10" selectionMode="single " [responsive]="true">
+          <ng-template pTemplate="header ">
+            <tr>
+              <th [pSortableColumn]=" 'name' ">
+                {{'Name'|translate}}
+                <p-sortIcon [field]=" 'name' "></p-sortIcon>
+              </th>
+              <th>
+                {{'Course'|translate}}
+              </th>
+              <th [pSortableColumn]=" 'start' ">
+                {{'Start'|translate}}
+                <p-sortIcon [field]=" 'start' "></p-sortIcon>
+              </th>
+              <th [pSortableColumn]=" 'end' ">
+                {{'End'|translate}}
+                <p-sortIcon [field]=" 'end' "></p-sortIcon>
+              </th>
+              <th>
+                {{'Action'|translate}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body " let-courseClass>
+            <tr [pSelectableRow]="courseClass ">
+              <td style="text-align: left; ">{{courseClass.name}}</td>
+              <td style="text-align: left; ">{{courseClass.course_name}}</td>
+              <td>{{courseClass.start | date : "dd/MM/yyyy "}}</td>
+              <td>{{courseClass.end | date : "dd/MM/yyyy "}}</td>
+              <td>
+                <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="edit(courseClass) "></button>
+                <button pButton type="button " label="{{ 'Enroll'|translate}} " class="green-btn " icon="ui-icon-people " (click)="enroll(courseClass) "></button>
+                <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete(courseClass) "></button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary ">
+            {{'Total records'|translate}} : {{classes?.length}}
+          </ng-template>
+          <ng-template pTemplate="emptymessage ">
+            <tr>
+              <td [attr.colspan]="5 ">
+                {{'No records found'|translate}}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
+    <course-enrollment-dialog></course-enrollment-dialog>
+    <class-dialog></class-dialog>
   </p-scrollPanel>
   <p-footer>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    <button type="button " pButton icon="fa-close " (click)="hide() " label="{{ 'Close'|translate}} "></button>
   </p-footer>
 </p-dialog>

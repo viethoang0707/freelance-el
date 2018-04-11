@@ -54,7 +54,6 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
                     items: [
                         { label: 'Course', routerLink: ['/course/courses'] },
                         { label: 'Course group', routerLink: ['/course/groups'] },
-                        { label: 'Class', routerLink: ['/course/classes'] },
                     ]
                 },
                 {
