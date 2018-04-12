@@ -13,6 +13,7 @@ import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS 
 import {SelectItem, MenuItem} from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	moduleId: module.id,
@@ -25,10 +26,13 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 	processing: boolean;
 	exam: Exam;
     candidates: ExamMember[];
+    selectedCandidate: ExamMember;
     supervisors: ExamMember[];
+    selectedSupervisor: ExamMember;
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
     EXAM_STATUS =  EXAM_STATUS;
     EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
+    public subscription : Subscription;
 
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	
@@ -70,11 +74,18 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
     }
 
     delete(member:ExamMember) {
-        this.confirm('Are you sure to delete ?'), () => {
-            member.delete(this).subscribe(()=> {
-                this.loadMembers();
-            })
-        });
+        if (member)
+            this.confirmationService.confirm({
+                message: this.translateService.instant('Are you sure to delete ?'),
+                accept: () => {
+                    this.subscription = member.delete(this).subscribe(()=> {
+                        this.selectedCandidate = null;
+                        this.selectedSupervisor = null;
+                        this.subscription.unsubscribe();
+                        this.loadMembers();
+                    })
+                }
+            });
     }
 
     loadMembers() {

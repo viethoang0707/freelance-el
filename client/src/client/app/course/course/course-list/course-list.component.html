@@ -8,20 +8,10 @@
     <div class="ui-g-12">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
-          <div class="ui-g">
-            <div class="ui-g-6 ui-md-2 ui-lg-2">
-              <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
-            </div>
-            <div class="ui-g-6 ui-md-2 ui-lg-2">
-              <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedCourse"></button>
-            </div>
-            <div class="ui-g-6 ui-md-2 ui-lg-2">
-              <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedCourse"></button>
-            </div>
-            <div class="ui-g-6 ui-md-2 ui-lg-2">
-              <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" [disabled]="!selectedCourse || selectedCourse.mode=='group'"></button>
-            </div>
-          </div>
+            <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
+            <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedCourse"></button>
+            <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedCourse"></button>
+            <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" [disabled]="!selectedCourse || selectedCourse.mode=='group'"></button>
         </div>
       </p-toolbar>
       <p-table #courseTable [value]="courses" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse"

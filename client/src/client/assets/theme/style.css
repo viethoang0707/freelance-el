@@ -129,17 +129,17 @@ body .ui-fieldset .ui-fieldset-legend{
 /* responsive */
 
 .ui-toolbar-group-left{
-  float:none !important;
+  /* float:none !important; */
 }
 
 body .ui-button.purple-btn, body .ui-datepicker-buttonpane > button.purple-btn{
-  width:100% !important;
+  /* width:100% !important; */
 }
 body .ui-button.green-btn, body .ui-datepicker-buttonpane > button.green-btn{
-  width:100% !important;
+  /* width:100% !important; */
 }
 body .ui-button.red-btn, body .ui-datepicker-buttonpane > button.red-btn{
-  width:100% !important;
+  /* width:100% !important; */
 }
 
 @media screen and (max-width: 1024px) {
