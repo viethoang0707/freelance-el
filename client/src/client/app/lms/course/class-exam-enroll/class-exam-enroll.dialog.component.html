@@ -19,9 +19,9 @@
                   <p-sortIcon [field]="'email'"></p-sortIcon>
                 </th>
                 <th>{{'Phone'|translate}}</th>
-                <th [pSortableColumn]="'etraining_group_id__DESC__'">
+                <th [pSortableColumn]="'group_id__DESC__'">
                   {{'Group'|translate}}
-                  <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+                  <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
                 </th>
                 <th>{{'Activate/suspend'|translate}}</th>
               </tr>
@@ -31,7 +31,7 @@
                 <td>{{member.name}}</td>
                 <td>{{member.email}}</td>
                 <td>{{member.phone}}</td>
-                <td>{{member.etraining_group_id__DESC__}}</td>
+                <td>{{member.group_id__DESC__}}</td>
                 <td>
                   <p-inputSwitch [(ngModel)]="member.allowed"  (onChange)="registerUnregister($event,member)"  onLabel="'Active'|translate" offLabel="'Suspended'|translate"></p-inputSwitch>
                 </td>

@@ -5,18 +5,18 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { Exam } from '../../../shared/models/exam.model';
-import { Submission } from '../../../shared/models/submission.model';
-import { Question } from '../../../shared/models/question.model';
-import { Answer } from '../../../shared/models/answer.model';
-import { ExamQuestion } from '../../../shared/models/exam-question.model';
-import { ExamMember } from '../../../shared/models/exam-member.model';
-import { Group } from '../../../shared/models/group.model';
+import { Exam } from '../../../shared/models/elearning/exam.model';
+import { Submission } from '../../../shared/models/elearning/submission.model';
+import { Question } from '../../../shared/models/elearning/question.model';
+import { Answer } from '../../../shared/models/elearning/answer.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-question-marking-dialog',
+	selector: 'question-marking-dialog',
 	templateUrl: 'question-marking.dialog.component.html',
 })
 export class QuestionMarkingDialog extends BaseComponent {

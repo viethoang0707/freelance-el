@@ -11,7 +11,7 @@ import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog
  */
 @Component({
     moduleId: module.id,
-    selector: 'etraining-home',
+    selector: 'app-home',
     templateUrl: 'home.component.html'
 })
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
@@ -30,18 +30,12 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     mobileMenuActive: boolean;
     darkMenu: boolean;
 
-    constructor( 
-        private router: Router, 
-        private eventManager :HomeEventManager, 
-        authService: AuthService) {
+    constructor( private router: Router, private eventManager :HomeEventManager) {
         super();
-        this.settingService.adminModeEvents.subscribe(()=> {
-            router.navigate(['/dashboard']);
-        });
+        router.navigate(['/dashboard']);
     }
 
     ngOnInit() {
-         this.settingService.setAdminMode(this.authService.CurrentUser.is_admin || this.authService.CurrentUser.login=='admin');
     }
 
     onWrapperClick() {
@@ -64,7 +58,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.passwordDialog.show();
         });
         this.eventManager.showProfileEvents.subscribe(() => {
-            var user = this.authService.CurrentUser;
+            var user = this.cacheService.UserProfile;
             this.userProfileDialog.show(user);
         });
         this.eventManager.logoutEvents.subscribe(() => {

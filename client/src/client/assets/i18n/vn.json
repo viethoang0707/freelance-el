@@ -244,5 +244,22 @@
 	"Title is required": "Tiêu đề là bắt buộc",
 	"Select range dates is required": "Chọn thời hạn kì thi là bắt buộc",
 	"Level is required": "Cấp độ là bắt buộc nhập",
-	"Selected group is required": "Chọn danh mục là bắt buộc"
+	"Selected group is required": "Chọn danh mục là bắt buộc",
+	"Add options is required": "Thêm câu trả lời là bắt buộc",
+	"Register all": "Đăng ký tất cả",
+	"Unregister all": "Hủy đăng ký tất cả",
+	"Activate/suspend": "Kích hoạt/Tạm ngừng",
+	"Suspended": "Đình chỉ",
+	"Course FAQ": "Câu hỏi thường gặp",
+	"Course FAQ list": "Danh sách câu hỏi thường gặp",
+	"Course material": "Tài liệu khóa học",
+	"Media type": "Loại tài liệu",
+	"Course material list": "Danh mục tài liệu khóa học",
+	"% completion": "% Hoàn thành",
+	"Generate question": "Tạo câu hỏi",
+	"Finalize": "Kích hoạt",
+	"Question score": "Điểm số câu hỏi",
+	"Re-entrance": "Thi lại"
+
+
 }

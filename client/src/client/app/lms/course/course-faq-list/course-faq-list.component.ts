@@ -5,15 +5,15 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Course } from '../../../shared/models/course.model';
-import { CourseFaq } from '../../../shared/models/course-faq.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-course-faq-list-dialog',
+	selector: 'course-faq-list-dialog',
 	templateUrl: 'course-faq-list.component.html',
 })
 export class CourseFaqListDialog extends BaseDialog<CourseFaq> {

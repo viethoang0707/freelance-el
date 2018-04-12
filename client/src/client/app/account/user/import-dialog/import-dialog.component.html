@@ -1,17 +1,17 @@
 <p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display"  #importDialog modal="true" width="300" [responsive]="true">
   <div class="ui-g">
     <div class="ui-g-12">
-    <p-fieldset legend="{{'Sample template'|translate}}">
+    <p-fieldset legend="{{'Download template'|translate}}">
     <a href="/assets/templates/user_import.xlsx" target="_blank">user_import.xlsx</a>
 </p-fieldset>
 </div>
     <div class="ui-g-12">
-      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeListner($event)" accept="{{fileType}}" maxFileSize="1024*16" showUploadButton="false" >  
+      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeListner($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false" >  
     </p-fileUpload>
     <label [hidden]="!fileName">{{fileName}}</label>
     </div>
   </div>
-  <p-progressSpinner [hidden]="!importing"></p-progressSpinner>
+  <p-progressBar [value]="percentage"></p-progressBar>
   <p-footer>
     <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="!records.length"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>

@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs/Rx'
-import { CourseUnit } from '../models/course-unit.model';
+import { CourseUnit } from '../models/elearning/course-unit.model';
 import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
 

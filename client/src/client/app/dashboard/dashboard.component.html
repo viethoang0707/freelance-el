@@ -1,5 +1,5 @@
 <div class="card card-w-title">
   <h1>{{'Dashboard'|translate}}</h1>
-  <etraining-admin-dashboard *ngIf="isAdmin"></etraining-admin-dashboard>
-  <etraining-user-dashboard *ngIf="!isAdmin"></etraining-user-dashboard>
+  <admin-dashboard *ngIf="viewMode=='admin'"></admin-dashboard>
+  <user-dashboard *ngIf="viewMode=='lms'"></user-dashboard>
 </div>

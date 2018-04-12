@@ -40,10 +40,10 @@
     </div>
   </div>
     
-    <div class="ui-g-12" style="text-align:center">
-      <p-panel header="{{'Monitoring'|translate}}">
-        <p-listbox [options]="charts" (onChange)="selectChart()" [(ngModel)]="selectedChart" [style]="{'width':'200px'}"></p-listbox>
-         <ng-template chart-container></ng-template>
-      </p-panel>
-    </div>
+  <div class="ui-g-12" style="text-align:center">
+    <p-panel header="{{'Exam schedule'|translate}}">
+      <p-schedule #examSchedule [events]="events" (onDayClick)="onDayClick($event)" [header]="header" [editable]="true" (onEventClick)="onEventClick($event)"></p-schedule>
+      <exam-dialog></exam-dialog>
+    </p-panel>
+</div>
 </div>

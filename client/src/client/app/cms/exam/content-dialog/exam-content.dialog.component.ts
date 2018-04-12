@@ -2,13 +2,14 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { Exam } from '../../../shared/models/exam.model';
-import { Question } from '../../../shared/models/question.model';
-import { ExamGrade } from '../../../shared/models/exam-grade.model';
-import { ExamQuestion } from '../../../shared/models/exam-question.model';
-import { QuestionSelector } from '../../../shared/models/question_selector.model';
+import { Exam } from '../../../shared/models/elearning/exam.model';
+import { Question } from '../../../shared/models/elearning/question.model';
+import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
+import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
+import { QuestionSelector } from '../../../shared/models/elearning/question_selector.model';
 import { Http, Response } from '@angular/http';
 import { QUESTION_SELECTION, GROUP_CATEGORY, EXAM_STATUS, QUESTION_TYPE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
 import { SelectItem, MenuItem } from 'primeng/api';
@@ -19,124 +20,155 @@ import { TreeNode } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'etraining-exam-content-dialog',
+	selector: 'exam-content-dialog',
 	templateUrl: 'exam-content.dialog.component.html',
 })
 export class ExamContentDialog extends BaseComponent {
 
 	display: boolean;
-	tree: TreeNode[];
+	tree: any;
+	selectors:any;
+	selectorGroups:any;
+	selectedNodes: any;
 	exam: Exam;
-	selectedNode: TreeNode;
-	selector: QuestionSelector;
+	sheet: QuestionSheet;
 	grades: ExamGrade[];
-	questions: ExamQuestion[];
+	examQuestions: ExamQuestion[];
 	groups: Group[];
 	examStatus: SelectItem[];
-	@ViewChild(SelectQuestionsDialog) questionDialog : SelectQuestionsDialog;
+	treeUtils: TreeUtils;
+	QUESTION_LEVEL=QUESTION_LEVEL;
+	totalScore: number;
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
-		this.selector = new QuestionSelector();
+		this.initControl();
+	}
+
+	initControl() {
+		this.treeUtils =  new TreeUtils();
+		this.sheet = new QuestionSheet();
 		this.grades = [];
+		this.examQuestions = [];
 		this.exam = new Exam();
-		this.questions = [];
+		this.tree = {};
+		this.selectors = [];
+		this.selectorGroups = {};
+		this.selectedNodes = {};
 		this.examStatus = _.map(EXAM_STATUS, (val, key)=> {
             return {
-                label: val,
+                label: this.translateService.instant(val),
                 value: key
             }
         });
+        _.each(QUESTION_LEVEL, (val, key)=> {
+        	this.selectorGroups[key] = {};
+        	this.selectorGroups[key]["number"] = 0;
+        	this.selectorGroups[key]["score"] = 0;
+        	this.selectorGroups[key]["include_sub_group"] = true;
+        	this.selectorGroups[key]["group_ids"] = [];
+        	this.selectedNodes[key] =  [];
+        });
 	}
 
-	nodeSelect(event: any) {
-		if (this.selectedNode) {
-			this.selector.group_id = this.selectedNode.data.id;
-		}
+	nodeSelect(event: any, level) {
+		this.selectorGroups[level]["group_ids"] = _.map(this.selectedNodes[level], (node=> {
+			return node["data"].id;
+		}));
 	}
 
-	createExamQuestionFromQuestionBank(questions: Question[]):Observable<any> {
+	createExamQuestionFromQuestionBank(questions: Question[], score):Observable<any> {
 		var createSubscriptions = _.map(questions, (question)=> {
 			var examQuestion = new ExamQuestion();
-			examQuestion.exam_id = this.exam.id;
+			examQuestion.sheet_id = this.sheet.id;
 			examQuestion.question_id = question.id;
+			examQuestion.score = score;
 			return examQuestion.save(this);
 		});
-		return Observable.forkJoin(...createSubscriptions);
-	}
-
-	removeOldQuestions():Observable<any> {
-		var delSubscriptions = [];
-		_.each(this.questions, (question)=> {
-			delSubscriptions.push(question.delete(this));
-		});
-		if (delSubscriptions.length)
-			return Observable.forkJoin(...delSubscriptions);
-		else
-			return Observable.of(null);
-	}
-
-	selectQuestion() {
-		this.removeOldQuestions().subscribe(() => {
-			this.questionDialog.show();
-			this.questionDialog.onSelectQuestions.subscribe(questions => {
-				this.createExamQuestionFromQuestionBank(questions).subscribe((examQuestins) => {
-					this.questions = examQuestins;
-				});
-			});
+		return Observable.zip(...createSubscriptions).flatMap(objArr => {
+			var examQuestionIds = _.pluck(objArr, 'id');
+			return ExamQuestion.array(this, examQuestionIds);
 		});
 	}
 
 	generateQuestion() {
-		this.removeOldQuestions().subscribe(() => {
-			var groupIds=[];
-			if (this.selector.include_sub_group) {
-				var selectedGroups = this.treeUtils.getSubGroup(this.groups, this.selector.group_id);
-				groupIds = _.pluck(selectedGroups, 'id');
-			}
-			else
-				groupIds = [this.selector.group_id];
-			Question.listByGroups(this, groupIds).subscribe(questions => {
-				if (this.selector.mode =='random' && this.selector.number) {
-					questions = _.shuffle(questions);
-					if (this.selector.level)
-						questions = _.filter(questions, (obj:Question)=> {
-							return obj.level == this.selector.level;
+		this.sheet.finalized = true;
+		this.sheet.save(this).subscribe(()=> {
+			this.examQuestions = [];
+			var subscriptions =[];
+			_.each(this.selectors, (sel:QuestionSelector)=> {
+				if (sel.group_id) {
+					var selectedGroups = this.treeUtils.getSubGroup(this.groups, sel.group_id);
+					var groupIds = _.pluck(selectedGroups, 'id');
+					Question.listByGroups(this, groupIds).subscribe(questions => {
+						if (sel.number) {
+							questions = _.shuffle(questions);
+							questions = _.filter(questions, (obj:Question)=> {
+								return obj.level == sel.level;
+							});
+							questions = questions.slice(0, sel.number);
+						}
+						this.createExamQuestionFromQuestionBank(questions, sel.score).subscribe(examQuestions => {
+							this.examQuestions =  this.examQuestions.concat(examQuestions);
+							this.totalScore =  _.reduce(examQuestions, (memo, q:ExamQuestion)=>{ return memo + +q.score; }, 0);
 						});
-					questions = questions.slice(0, this.selector.number);
+					});
 				}
-				this.createExamQuestionFromQuestionBank(questions);
 			});
 		});
 	}
 
 	show(exam: Exam) {
+		this.initControl();
 		this.display = true;
 		this.exam = exam;
 		ExamGrade.listByExam(this, exam.id).subscribe(grades => {
 			this.grades = grades;
 		});
-		ExamQuestion.listByExam(this, exam.id).subscribe(questions => {
-			this.questions = questions;
+		QuestionSheet.byExam(this, exam.id).subscribe(sheet => {
+			if (sheet) {
+				this.sheet = sheet;
+				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions=> {
+					this.examQuestions = examQuestions;
+					this.totalScore =  _.reduce(examQuestions, (memo, q)=>{ return memo + +q.score; }, 0);
+				});
+				Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
+					this.groups = groups;
+					QuestionSelector.listBySheet(this, this.sheet.id).subscribe(selectors=> {
+						this.selectors = selectors;
+						_.each(selectors, (sel)=> {
+							this.selectorGroups[sel.level]["number"] = sel.number;
+        					this.selectorGroups[sel.level]["score"] = sel.score;
+        					this.selectorGroups[sel.level]["include_sub_group"] = sel.include_sub_group;
+        					if (sel.group_id)
+        						this.selectorGroups[sel.level]["group_ids"].push(sel.group_id);
+						});
+						_.each(QUESTION_LEVEL, (val, key)=> {
+							this.tree[key] = this.treeUtils.buildTree(groups);
+							if (sheet.finalized) 
+								this.treeUtils.disableTree(this.tree[key]);
+							this.selectedNodes[key] = _.map(this.selectorGroups[key]["group_ids"], (group_id=> {
+								return this.treeUtils.findTreeNode(this.tree[key], group_id);
+							}));
+						});
+					});
+				});
+				
+			}
+			else {
+				this.sheet = new QuestionSheet();
+				this.sheet.exam_id = exam.id;
+				this.sheet.save(this).subscribe(sheet=> {
+					this.sheet = sheet;
+					Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
+						this.groups = groups;
+						_.each(QUESTION_LEVEL, (val, key)=> {
+							this.tree[key] = this.treeUtils.buildTree(groups);
+						});
+					});
+				});
+			}
 		});
-		this.getQuestionSelector().subscribe(selector => {
-			this.selector = selector;
-			Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
-				this.groups = groups;
-				this.tree = this.treeUtils.buildTree(groups);
-				if (this.selector.group_id) {
-					this.selectedNode = this.treeUtils.findTreeNode(this.tree, this.selector.group_id);
-				}
-			});
-		});
-	}
-
-	getQuestionSelector(): Observable<QuestionSelector> {
-		if (this.exam.selector_id) {
-			return QuestionSelector.get(this, this.exam.selector_id);
-		} else {
-			return Observable.of(new QuestionSelector());
-		}
 	}
 
 	hide() {
@@ -145,16 +177,43 @@ export class ExamContentDialog extends BaseComponent {
 
 	save() {
 		var subscriptions = [];
-		_.each(this.grades, (grade)=> {
+		_.each(this.grades, (grade:ExamGrade)=> {
 			subscriptions.push(grade.save(this));
 		});
-		_.each(this.questions, (question)=> {
-			subscriptions.push(question.save(this));
+		_.each(QUESTION_LEVEL, (val, key)=> {
+			let delSelectors:any = _.filter(this.selectors, ((sel: QuestionSelector) => {
+				return sel.level == key && !_.contains(this.selectorGroups[key]["group_ids"], sel.group_id);
+			}));
+			_.each(delSelectors, ((sel:QuestionSelector)=> {
+				subscriptions.push(sel.delete(this));
+			}));
+			let updateSelectors:any = _.filter(this.selectors, ((sel: QuestionSelector) => {
+				return sel.level == key && _.contains(this.selectorGroups[key]["group_ids"], sel.group_id);
+			}));
+			_.each(updateSelectors, ((sel:QuestionSelector)=> {
+				sel.sheet_id = this.sheet.id;
+				sel.number =  this.selectorGroups[key]["number"];
+				sel.score =  this.selectorGroups[key]["score"];
+				sel.include_sub_group = this.selectorGroups[key]["include_sub_group"];		
+				subscriptions.push(sel.save(this));
+			}));
+			var addSelectors = [];
+			_.each(this.selectorGroups[key]["group_ids"], (group_id=> {
+				var sel = _.find(this.selectors, ((sel:QuestionSelector) => {
+					return sel.level == key && sel.group_id == group_id;
+				}));
+				if (!sel) {
+					var newSel = new QuestionSelector();
+					newSel.level = key;
+					newSel.group_id = +group_id;
+					newSel.sheet_id = this.sheet.id;
+					newSel.number =  this.selectorGroups[key]["number"];
+					newSel.score =  this.selectorGroups[key]["score"];
+					newSel.include_sub_group = this.selectorGroups[key]["include_sub_group"];
+					subscriptions.push(newSel.save(this));
+				}
+			}));
 		});
-		subscriptions.push(this.selector.save(this).flatMap(() => {
-			this.exam.selector_id = this.selector.id;
-			return this.exam.save(this);
-		}));
 		return Observable.forkJoin(...subscriptions).subscribe(() => {
 			this.hide();
 			this.messageService.add({ severity: 'success', summary: 'Success', detail: this.translateService.instant('Content saved successfully.') });
@@ -179,6 +238,4 @@ export class ExamContentDialog extends BaseComponent {
 				return obj == grade;
 			});
 	}
-
-
 }

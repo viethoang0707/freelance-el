@@ -5,16 +5,16 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Course } from '../../../shared/models/course.model';
-import { CourseClass } from '../../../shared/models/course-class.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
 import { ClassExamListDialog } from '../class-exam-list/class-exam-list.dialog.component';
 
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-class-list-dialog',
+    selector: 'class-list-dialog',
     templateUrl: 'class-list.dialog.component.html',
 })
 export class ClassListDialog extends BaseComponent {

@@ -2,16 +2,16 @@ import { Component, OnInit, Input, NgZone} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Group } from '../../../shared/models/group.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
-import { CourseMaterial } from '../../../shared/models/course-material.model';
+import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
 import * as _ from 'underscore';
 
 
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-course-material-dialog',
+    selector: 'course-material-dialog',
     templateUrl: 'course-material.dialog.component.html',
 })
 export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {

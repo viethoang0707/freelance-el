@@ -5,8 +5,8 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
-import { Question } from '../../../shared/models/question.model';
-import { Group } from '../../../shared/models/group.model';
+import { Question } from '../../../shared/models/elearning/question.model';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
@@ -14,7 +14,7 @@ import { QuestionImportDialog } from '../import-dialog/import-dialog.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-question-list',
+    selector: 'question-list',
     templateUrl: 'question-list.component.html',
     styleUrls: ['question-list.component.css'],
 })
@@ -25,8 +25,8 @@ export class QuestionListComponent extends BaseComponent {
 
     tree: TreeNode[];
     items: MenuItem[];
-    selectedQuestion: Question;
     questions: Question[];
+    selectedQuestion: any;
     selectedNode: TreeNode;
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
@@ -65,14 +65,11 @@ export class QuestionListComponent extends BaseComponent {
 
     delete() {
         if (this.selectedQuestion)
-            this.confirmationService.confirm({
-                message: this.translateService.instant('Are you sure to delete ?'),
-                accept: () => {
-                    this.selectedQuestion.delete(this).subscribe(() => {
-                        this.loadQuestions();
-                        this.selectedQuestion = null;
-                    })
-                }
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedQuestion.delete(this).subscribe(() => {
+                    this.loadQuestions();
+                    this.selectedQuestion = null;
+                });
             });
     }
 
@@ -85,10 +82,6 @@ export class QuestionListComponent extends BaseComponent {
             Question.all(this).subscribe(questions => {
                 this.questions = questions;
             });
-    }
-
-    nodeSelect(event:any) {
-        this.loadQuestions();
     }
 
     import() {

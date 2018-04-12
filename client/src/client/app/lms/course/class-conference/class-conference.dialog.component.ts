@@ -5,17 +5,17 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { CourseClass } from '../../../shared/models/course-class.model';
-import { CourseMember } from '../../../shared/models/course-member.model';
-import { Conference } from '../../../shared/models/conference.model';
-import { ConferenceMember } from '../../../shared/models/conference-member.model';
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Conference } from '../../../shared/models/elearning/conference.model';
+import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Room } from '../../../shared/models/meeting/room.model';
 import { RoomMember } from '../../../shared/models/meeting/room-member.model';
 import { SelectItem } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'etraining-class-conference-dialog',
+    selector: 'class-conference-dialog',
     templateUrl: 'class-conference.dialog.component.html',
 })
 export class ClassConferenceDialog extends BaseComponent {

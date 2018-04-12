@@ -22,9 +22,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="ui-toolbar-group-right">
-                    <p-selectButton [options]="viewModes" [(ngModel)]="viewMode" name="view"></p-selectButton>
-                </div> -->
             </p-toolbar>
             <p-schedule #examSchedule [events]="events" [hidden]="viewMode!='cal'" (onDayClick)="onDayClick($event)" [header]="header"
                 [editable]="true" (onEventClick)="onEventClick($event)"></p-schedule>
@@ -71,8 +68,8 @@
                     </tr>
                 </ng-template>
             </p-table>
-            <etraining-exam-enrollment-dialog></etraining-exam-enrollment-dialog>
-            <etraining-exam-dialog></etraining-exam-dialog>
+            <exam-enrollment-dialog></exam-enrollment-dialog>
+            <exam-dialog></exam-dialog>
         </div>
     </div>
 </div>

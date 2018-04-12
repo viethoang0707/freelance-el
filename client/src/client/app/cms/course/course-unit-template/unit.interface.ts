@@ -1,4 +1,4 @@
-import { CourseUnit } from '../../../shared/models/course-unit.model';
+import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { Observable, Subject } from 'rxjs/Rx';
 
 export interface ICourseUnit {
