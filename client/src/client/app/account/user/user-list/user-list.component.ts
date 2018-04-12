@@ -29,6 +29,7 @@ export class UserListComponent extends BaseComponent {
 
     tree: TreeNode[];
     users: User[];
+    selectedUser: any;
     filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
 
@@ -52,20 +53,22 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    showProfile(user) {
-        this.userProfileDialog.show(user);
+    showProfile() {
+        if (this.selectedUser)
+            this.userProfileDialog.show(this.selectedUser);
         this.userProfileDialog.onUpdateComplete.subscribe(() => {
             this.loadUsers();
         });
     }
 
-    delete(user) {
-        this.confirm('Are you sure to delete ?', () => {
-            this.selectedUser.delete(this).subscribe(() => {
-                this.loadUsers();
-                this.selectedUser = null;
-            })
-         });
+    delete() {
+        if (this.selectedUser)
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedUser.delete(this).subscribe(() => {
+                    this.loadUsers();
+                    this.selectedUser = null;
+                })
+             });
     }
 
     export() {

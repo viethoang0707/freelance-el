@@ -26,6 +26,7 @@ export class QuestionListComponent extends BaseComponent {
     tree: TreeNode[];
     items: MenuItem[];
     questions: Question[];
+    selectedQuestion: any;
     selectedNode: TreeNode;
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
@@ -54,19 +55,22 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    edit(question) {
-        this.questionDialog.show(question);
+    edit() {
+        if (this.selectedQuestion)
+            this.questionDialog.show(this.selectedQuestion);
         this.questionDialog.onUpdateComplete.subscribe(() => {
             this.loadQuestions();
         });
     }
 
-    delete(question) {
-        this.confirm('Are you sure to delete ?', () => {
-            question.delete(this).subscribe(() => {
-                this.loadQuestions();
+    delete() {
+        if (this.selectedQuestion)
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedQuestion.delete(this).subscribe(() => {
+                    this.loadQuestions();
+                    this.selectedQuestion = null;
+                });
             });
-        });
     }
 
     loadQuestions() {

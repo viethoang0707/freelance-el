@@ -23,6 +23,7 @@ export class ExamListComponent extends BaseComponent {
     @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
 
     exams: Exam[];
+    selectedExam: any;
     events: any[];
     header: any;
     EXAM_STATUS =  EXAM_STATUS;
@@ -53,19 +54,22 @@ export class ExamListComponent extends BaseComponent {
         });
     }
 
-    edit(exam) {
-        this.examDialog.show(exam);
+    edit() {
+        if (this.selectedExam)
+            this.examDialog.show(this.selectedExam);
         this.examDialog.onUpdateComplete.subscribe(() => {
             this.loadExams();
         });
     }
 
-    delete(exam) {
-        this.confirm('Are you sure to delete ?', () => {
-            exam.delete(this).subscribe(() => {
-                this.loadExams();
+    delete() {
+        if (this.selectedExam)
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedExam.delete(this).subscribe(() => {
+                    this.loadExams();
+                    this.selectedExam = null;
+                });
             });
-        });
     }
 
     loadExams() {

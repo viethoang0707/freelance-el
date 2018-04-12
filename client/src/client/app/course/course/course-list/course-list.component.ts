@@ -26,6 +26,7 @@ export class CourseListComponent extends BaseComponent {
     tree: TreeNode[];
     courses: Course[];
     selectedNode: TreeNode;
+    selectedCourse: any;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 
@@ -48,15 +49,17 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
-    edit(course) {
-        this.courseDialog.show(course);
+    edit() {
+        if (this.selectedCourse)
+            this.courseDialog.show(this.selectedCourse);
         this.courseDialog.onUpdateComplete.subscribe(() => {
             this.loadCourses();
         });
     }
 
-    enroll(course) {
-        this.classListDialog.show(course);
+    enroll() {
+        if (this.selectedCourse)
+            this.classListDialog.show(this.selectedCourse);
     }
 
     loadCourses() {
