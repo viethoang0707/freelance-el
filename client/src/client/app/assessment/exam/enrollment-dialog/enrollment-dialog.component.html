@@ -1,4 +1,4 @@
-<p-dialog header="{{'Exam enrollment'|translate}}" [(visible)]="display" modal="true" width="1200" height="100%" [responsive]="true">
+<!-- <p-dialog header="{{'Exam enrollment'|translate}}" [(visible)]="display" modal="true" width="1200" height="100%" [responsive]="true">
   <p-scrollPanel [style]="{width: '100%', height: '460px'}">
     <p-accordion [multiple]="true">
       <p-accordionTab header="{{'Candidates'|translate}}" [selected]="true">
@@ -112,6 +112,129 @@
         </div>
       </p-accordionTab>
     </p-accordion>
+  </p-scrollPanel>
+  <select-user-dialog></select-user-dialog>
+  <p-footer>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog> -->
+
+<p-dialog header="{{'Exam enrollment'|translate}}" [(visible)]="display" modal="true" width="1200" height="100%" [responsive]="true">
+  <p-scrollPanel [style]="{width: '100%', height: '460px'}">
+    <p-tabView [style]="{width: '100%', height: '460px'}">
+      <p-tabPanel header="{{'Candidates'|translate}}" leftIcon="ui-icon-people">
+        <div class="ui-g-12 ">
+          <p-toolbar>
+            <div class="ui-toolbar-group-left ">
+              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="add('candidate') "></button>
+              <!-- <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="edit(selectedCandidate) "
+                [disabled]="!selectedCandidate "></button> -->
+              <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete(selectedCandidate) "
+                [disabled]="!selectedCandidate "></button>
+            </div>
+          </p-toolbar>
+          <p-table #candidateTable [value]="candidates" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedCandidate "
+            [responsive]="true " sortField="name">
+            <ng-template pTemplate="header">
+              <tr>
+                <th [pSortableColumn]="'name'">
+                  {{'Name'|translate}}
+                  <p-sortIcon [field]="'name'"></p-sortIcon>
+                </th>
+                <th width="250px" [pSortableColumn]="'email'">
+                  {{'Email'|translate}}
+                  <p-sortIcon [field]="'email'"></p-sortIcon>
+                </th>
+                <th>{{'Phone'|translate}}</th>
+                <th [pSortableColumn]="'etraining_group_id__DESC__'">
+                  {{'Group'|translate}}
+                  <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+                </th>
+                <th [pSortableColumn]="'status'">
+                  {{'Status'|translate}}
+                  <p-sortIcon [field]="'status'"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-member>
+              <tr [pSelectableRow]="member ">
+                <td style="text-align: left;">{{member.name}}</td>
+                <td style="text-align: left;" width="250px">{{member.email}}</td>
+                <td>{{member.phone}}</td>
+                <td>{{member.group_id__DESC__}}</td>
+                <td>{{EXAM_MEMBER_STATUS[member.status]}}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+              {{'Total records'|translate}} : {{members?.length}}
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="5 ">
+                  {{'No records found'|translate}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="{{'Supervisors'|translate}}" leftIcon="ui-icon-people">
+        <div class="ui-g-12 ">
+          <p-toolbar>
+            <div class="ui-toolbar-group-left ">
+              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="add('supervisor') "></button>
+              <!-- <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="edit(selectedSupervisor) "
+                [disabled]="!selectedSupervisor "></button> -->
+              <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete(selectedSupervisor) "
+                [disabled]="!selectedSupervisor "></button>
+            </div>
+          </p-toolbar>
+          <p-table #candidateTable [value]="supervisors" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedSupervisor "
+            [responsive]="true " sortField="name">
+            <ng-template pTemplate="header">
+              <tr>
+                <th [pSortableColumn]="'name'">
+                  {{'Name'|translate}}
+                  <p-sortIcon [field]="'name'"></p-sortIcon>
+                </th>
+                <th [pSortableColumn]="'email'">
+                  {{'Email'|translate}}
+                  <p-sortIcon [field]="'email'"></p-sortIcon>
+                </th>
+                <th>{{'Phone'|translate}}</th>
+                <th [pSortableColumn]="'etraining_group_id__DESC__'">
+                  {{'Group'|translate}}
+                  <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+                </th>
+                <th [pSortableColumn]="'status'">
+                  {{'Status'|translate}}
+                  <p-sortIcon [field]="'status'"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-member>
+              <tr [pSelectableRow]="member ">
+                <td>{{member.name}}</td>
+                <td>{{member.email}}</td>
+                <td>{{member.phone}}</td>
+                <td>{{member.group_id__DESC__}}</td>
+                <td>{{EXAM_MEMBER_STATUS[member.status]}}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+              {{'Total records'|translate}} : {{members?.length}}
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td [attr.colspan]="5 ">
+                  {{'No records found'|translate}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
   </p-scrollPanel>
   <select-user-dialog></select-user-dialog>
   <p-footer>
