@@ -22,14 +22,22 @@ export class ExamListComponent extends BaseComponent {
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
 
+    selectedExam: Exam;
     exams: Exam[];
-    selectedExam: any;
     events: any[];
+    viewModes: SelectItem[];
+    viewMode:string;
     header: any;
     EXAM_STATUS =  EXAM_STATUS;
 
     constructor() {
         super();
+        this.viewModes = [{
+            label: this.translateService.instant('Calendar'),value:'cal'
+        },{
+            label: this.translateService.instant('List'),value:'list'
+        }];
+        this.viewMode = 'list';
         this.header = {
             left: 'prev, today, next',
             center: 'title',
@@ -37,8 +45,9 @@ export class ExamListComponent extends BaseComponent {
         };
     }
 
-    enroll(exam) {
-         this.examEnrollDialog.enroll(exam);
+    enroll() {
+        if (this.selectedExam)
+            this.examEnrollDialog.enroll(this.selectedExam);
     }
 
     ngOnInit() {
@@ -64,12 +73,27 @@ export class ExamListComponent extends BaseComponent {
 
     delete() {
         if (this.selectedExam)
-            this.confirm('Are you sure to delete ?', () => {
-                this.selectedExam.delete(this).subscribe(() => {
-                    this.loadExams();
-                    this.selectedExam = null;
-                });
+            this.confirmationService.confirm({
+                message: this.translateService.instant('Are you sure to delete ?'),
+                accept: () => {
+                    this.selectedExam.delete(this).subscribe(() => {
+                        this.loadExams();
+                        this.selectedExam = null;
+                    })
+                }
             });
+    }
+
+    onDayClick() {
+        this.add();
+    }
+
+    onEventClick(event) {
+        var examId = event.calEvent.id;
+        this.selectedExam = _.find(this.exams, (exam)=> {
+            return exam.id == examId;
+        });
+        this.edit();
     }
 
     loadExams() {
@@ -86,5 +110,4 @@ export class ExamListComponent extends BaseComponent {
             });
         });
     }
-
 }
