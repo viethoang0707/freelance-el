@@ -45,9 +45,9 @@
                             <p-sortIcon [field]="'email'"></p-sortIcon>
                         </th>
                         <th>{{'Phone'|translate}}</th>
-                        <th [pSortableColumn]="'etraining_group_id__DESC__'">
+                        <th [pSortableColumn]="'group_id__DESC__'">
                             {{'Group'|translate}}
-                            <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+                            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
                         </th>
                     </tr>
                 </ng-template>
@@ -57,7 +57,7 @@
                         <td>{{user.login}}</td>
                         <td class="showformb" style="text-align: left;">{{user.email}}</td>
                         <td class="showformb">{{user.phone}}</td>
-                        <td class="showformb">{{user.etraining_group_id__DESC__}}</td>
+                        <td class="showformb">{{user.group_id__DESC__}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
