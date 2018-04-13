@@ -20,7 +20,7 @@ export class SettingService {
 
   get ViewMode() {
   	if (this.viewMode)
-  		return viewMode;
+  		return this.viewMode;
   	if (this.cacheService.UserProfile) 
   		return this.cacheService.UserProfile.IsAdmin ? 'admin' :'lms';
   	return null;

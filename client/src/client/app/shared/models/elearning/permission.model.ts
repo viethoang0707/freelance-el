@@ -13,8 +13,14 @@ export class Permission extends BaseModel{
     constructor(){
         super();
 		this.role = undefined;
+		this.user_group_id = undefined;
+		this.user_group_id__DESC__ = undefined;
+		this.menu_access = undefined;
 	}
 
     role: string;
+    user_group_id: number;
+    user_group_id__DESC__: string;
+    menu_access: string;
     
 }

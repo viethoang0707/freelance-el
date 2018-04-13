@@ -1,4 +1,4 @@
-<p-dialog header="{{'Course enrollment'|translate}}" [(visible)]="display" modal="true" width="1200" height="100%" [responsive]="true" >
+<p-dialog header="{{'Course enrollment'|translate}}" [(visible)]="display" modal="true" width="1200" height="100%" [responsive]="true">
   <p-scrollPanel [style]="{width: '100%', height: '460px'}">
     <p-tabView [style]="{width: '100%', height: '460px'}">
       <p-tabPanel header="{{'Students'|translate}}" leftIcon="ui-icon-people">
@@ -6,13 +6,15 @@
           <p-toolbar>
             <div class="ui-toolbar-group-left ">
               <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="add('student') "></button>
-              <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="edit(selectedStudent) " [disabled]="!selectedStudent"></button>
-              <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete(selectedStudent) " [disabled]="!selectedStudent "></button>
+              <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete(selectedStudents) " *ngIf="selectedStudents && selectedStudents.length "></button>
             </div>
           </p-toolbar>
-          <p-table #studentTable [value]="students" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedStudent " [responsive]="true " sortField="role">
+          <p-table #studentTable [value]="students" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedStudents " [responsive]="true " sortField="name">
             <ng-template pTemplate="header">
               <tr>
+                <th style="width: 2.25em">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
                 <th [pSortableColumn]="'name'">
                   {{'Name'|translate}}
                   <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -38,6 +40,9 @@
             </ng-template>
             <ng-template pTemplate="body" let-member>
               <tr [pSelectableRow]="member ">
+                <td>
+                  <p-tableCheckbox [value]="member"></p-tableCheckbox>
+                </td>
                 <td style="text-align: left;">{{member.name}}</td>
                 <td style="text-align: left;" width="250px">{{member.email}}</td>
                 <td>{{member.phone}}</td>
@@ -51,7 +56,7 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
-                <td [attr.colspan]="6">
+                <td [attr.colspan]="7">
                   {{'No records found'|translate}}
                 </td>
               </tr>
@@ -59,18 +64,20 @@
           </p-table>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="{{'Teachers'|translate}}" leftIcon="ui-icon-people">
+      <p-tabPanel *ngIf="course.mode=='group'" header="{{'Teachers'|translate}}" leftIcon="ui-icon-people">
         <div class="ui-g-12 ">
           <p-toolbar>
             <div class="ui-toolbar-group-left ">
               <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="add('teacher') "></button>
-              <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="edit(selectedTeacher) " [disabled]="!selectedTeacher"></button>
-              <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete(selectedTeacher) " [disabled]="!selectedTeacher "></button>
+              <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete(selectedTeachers) " *ngIf="selectedTeachers && selectedTeachers.length "></button>
             </div>
           </p-toolbar>
-          <p-table #teacherTable [value]="teachers" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedTeacher " [responsive]="true " sortField="role">
+          <p-table #candidateTable [value]="teachers" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedTeachers " [responsive]="true " sortField="name">
             <ng-template pTemplate="header">
               <tr>
+                <th style="width: 2.25em">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
                 <th [pSortableColumn]="'name'">
                   {{'Name'|translate}}
                   <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -92,6 +99,9 @@
             </ng-template>
             <ng-template pTemplate="body" let-member>
               <tr [pSelectableRow]="member ">
+                <td>
+                  <p-tableCheckbox [value]="member"></p-tableCheckbox>
+                </td>
                 <td>{{member.name}}</td>
                 <td>{{member.email}}</td>
                 <td>{{member.phone}}</td>
@@ -100,11 +110,11 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="summary">
-              {{'Total records'|translate}} : {{teachers?.length}}
+              {{'Total records'|translate}} : {{members?.length}}
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
-                <td [attr.colspan]="5">
+                <td [attr.colspan]="6 ">
                   {{'No records found'|translate}}
                 </td>
               </tr>
@@ -113,8 +123,8 @@
         </div>
       </p-tabPanel>
     </p-tabView>
-    <select-user-dialog></select-user-dialog>
   </p-scrollPanel>
+  <select-user-dialog></select-user-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>

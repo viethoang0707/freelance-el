@@ -37,6 +37,7 @@ export class SelectGroupDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
+		this.selectedNode = null;
 		Group.listByCategory(this, this.category).subscribe(groups => {
 			this.tree = this.treeUtils.buildTree(groups);
 		});

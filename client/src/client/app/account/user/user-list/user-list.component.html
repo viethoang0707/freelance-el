@@ -10,8 +10,8 @@
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="showProfile()"
-                        [disabled]="!selectedUser"></button>
-                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedUser"></button>
+                        *ngIf="selectedUser"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedUser"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <button pButton type="button" label="{{'Export'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="export()"></button>

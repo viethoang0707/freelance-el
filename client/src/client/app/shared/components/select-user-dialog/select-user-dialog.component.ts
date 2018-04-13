@@ -47,6 +47,7 @@ export class SelectUsersDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
+		this.selectedUsers = [];
 		Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 			this.tree = this.treeUtils.buildTree(groups);
 		});

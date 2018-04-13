@@ -9,6 +9,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { CourseDialog } from '../course-dialog/course-dialog.component';
 import { ClassListDialog } from '../../class/class-list/class-list-dialog.component';
+import { CourseEnrollDialog } from '../../class/enrollment-dialog/enrollment-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 
@@ -21,10 +22,12 @@ import { TreeNode } from 'primeng/api';
 export class CourseListComponent extends BaseComponent {
 
     @ViewChild(CourseDialog) courseDialog: CourseDialog;
+    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
     @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
 
     tree: TreeNode[];
     courses: Course[];
+    displayCourses: Course[];
     selectedNode: TreeNode;
     selectedCourse: any;
     COURSE_MODE = COURSE_MODE;
@@ -58,23 +61,26 @@ export class CourseListComponent extends BaseComponent {
     }
 
     enroll() {
-        if (this.selectedCourse)
-            this.classListDialog.show(this.selectedCourse);
+        if (this.selectedCourse) {
+            if (this.selectedCourse.mode == 'group')
+                this.classListDialog.show(this.selectedCourse);
+            if (this.selectedCourse.mode == 'self-study')
+                this.courseEnrollDialog.show(this.selectedCourse);
+        }
     }
 
     loadCourses() {
-        if (this.selectedNode)
-            Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
-                this.courses = courses;
-            });
-        else
-            Course.all(this).subscribe(courses => {
-                this.courses = courses;
-            });
+        Course.all(this).subscribe(courses => {
+            this.courses = courses;
+            this.displayCourses = courses;
+        });
     }
 
     nodeSelect(event:any) {
-        this.loadCourses();
+        if (this.selectedNode)
+            this.displayCourses = _.filter(this.courses, (course=> {
+                return course.group_id ==  this.selectedNode.data.id;
+            }));
     }
 
 }

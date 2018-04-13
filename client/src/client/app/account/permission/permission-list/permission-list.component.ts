@@ -5,7 +5,7 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
-import { Permission } from '../../../shared/models/permission.model';
+import { Permission } from '../../../shared/models/elearning/permission.model';
 import { PermissionDialog} from '../permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog } from '../menu-permission-dialog/menu-permission-dialog.component';
 import { AccessPermissionDialog } from '../access-permission-dialog/access-permission-dialog.component';
@@ -14,7 +14,7 @@ import { TreeNode } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'permission-user-list',
+    selector: 'permission-list',
     templateUrl: 'permission-list.component.html',
     styleUrls: ['permission-list.component.css'],
 })
@@ -24,47 +24,46 @@ export class PermissionListComponent extends BaseComponent {
     @ViewChild(MenuPermissionDialog) menuPermissionDialog: MenuPermissionDialog;
     @ViewChild(AccessPermissionDialog) accessPermissionDialog: AccessPermissionDialog;
 
-    // tree: TreeNode[];
-    // selectedPermission: Permission;
-    // permissions: Permission[];
+    selectedPermission: Permission;
+    permissions: Permission[];
 
-    // selectedGroupNodes: TreeNode[];
-    // selectedNode: TreeNode;
+    constructor() {
+        super();
+    }
 
-    // constructor() {
-    //     super();
-    // }
+    ngOnInit() {
+       this.loadPermission();
+    }
 
-    // ngOnInit() {
-       
-    // }
+    loadPermission() {
+        Permission.all(this).subscribe(permissions => {
+            this.permissions = permissions;
+        });
+    }
 
-    // loadPermission() {
-    //     Permission.all(this).subscribe(permissions => {
-    //         this.permissions = permissions;
-    //     });
-    // }
+    add(){
+        var permission = new Permission();
+        this.permissionDialog.show(permission);
+        this.permissionDialog.onCreateComplete.subscribe(() => {
+            this.loadPermission();
+        });
+    }
 
-    // add(){
-    //     var permission = new Permission();
-    //     this.permissionDialog.show(permission);
-    //     this.permissionDialog.onCreateComplete.subscribe(() => {
-    //         this.loadPermission();
-    //     });
-    // }
+    edit() {
+        if (this.selectedPermission)
+            this.permissionDialog.show(this.selectedPermission);
+        this.permissionDialog.onUpdateComplete.subscribe(() => {
+            this.loadPermission();
+        });
+    }
 
-    // edit() {
-    //     if (this.selectedNode)
-    //         this.permissionDialog.show(this.selectedNode.data);
-    // }
+    permissionMenu(){
+        if (this.selectedPermission)
+            this.menuPermissionDialog.show(this.selectedPermission);
+    }
 
-    // permissionMenu(){
-    //     var permission = new Permission();
-    //     this.menuPermissionDialog.show(permission);
-    // }
-
-    // permissionAccess(){
-    //     var permission = new Permission();
-    //     this.accessPermissionDialog.show(permission);
-    // }
+    permissionAccess(){
+        if (this.selectedPermission)
+            this.accessPermissionDialog.show(this.selectedPermission);
+    }
 }

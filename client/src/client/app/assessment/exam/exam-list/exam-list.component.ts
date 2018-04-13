@@ -25,19 +25,11 @@ export class ExamListComponent extends BaseComponent {
     selectedExam: Exam;
     exams: Exam[];
     events: any[];
-    viewModes: SelectItem[];
-    viewMode:string;
     header: any;
     EXAM_STATUS =  EXAM_STATUS;
 
     constructor() {
         super();
-        this.viewModes = [{
-            label: this.translateService.instant('Calendar'),value:'cal'
-        },{
-            label: this.translateService.instant('List'),value:'list'
-        }];
-        this.viewMode = 'list';
         this.header = {
             left: 'prev, today, next',
             center: 'title',

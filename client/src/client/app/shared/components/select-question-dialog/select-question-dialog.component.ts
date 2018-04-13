@@ -47,6 +47,7 @@ export class SelectQuestionsDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
+		this.selectedQuestions = [];
 		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
 			this.tree = this.treeUtils.buildTree(groups);
 		});

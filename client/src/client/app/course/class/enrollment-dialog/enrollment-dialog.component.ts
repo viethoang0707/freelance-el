@@ -23,9 +23,9 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	display: boolean;
 	processing: boolean;
-	selectedStudent: CourseMember;
+	selectedStudents: any;
 	students: CourseMember[];
-	selectedTeacher: CourseMember;
+	selectedTeachers: any;
 	teachers: CourseMember[];
 	course: Course;
 	courseClass: CourseClass;
@@ -46,6 +46,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			{ label: this.translateService.instant('Teacher'),value:'teacher',command:()=> {this.add('teacher')}},
 		
 		]
+		this.course = new Course();
 	}
 
 	enrollCourse(course:Course, courseClass?:CourseClass) {
@@ -53,6 +54,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.courseClass = courseClass;
 		this.display = true;
 		this.processing = false;
+		this.selectedStudents = [];
+		this.selectedTeachers = [];
 		this.loadMembers();
 	}
 
@@ -60,6 +63,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.courseClass = courseClass;
 		this.display = true;
 		this.processing = false;
+		this.selectedStudents = [];
+		this.selectedTeachers = [];
 		this.loadMembers();
 	}
 
@@ -105,19 +110,18 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-	delete(member:CourseMember) {
-		if (member)
-			this.confirmationService.confirm({
-				message: this.translateService.instant('Are you sure to delete ?'),
-				accept: () => {
-					this.subscription = member.delete(this).subscribe(() => {
-						this.selectedStudent = null;
-						this.selectedTeacher = null;
-						this.subscription.unsubscribe();
+	delete(members) {
+		if (members && members.length)
+            this.confirm('Are you sure to delete ?', () => {
+                    var subscriptions = _.map(members,(member=> {
+                        return member.delete(this);
+                    }));
+                    Observable.forkJoin(...subscriptions).subscribe(()=> {
+                        this.selectedStudents = [];
+						this.selectedTeachers = [];
 						this.loadMembers();
-					});
-				}
-			});
+                    })
+                });
 	}
 
 	loadMembers() {
@@ -126,22 +130,18 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
 				});
-				this.selectedStudent = null;
-				this.teachers = _.filter(members, (member)=> {
-					return member.role =='teacher';
-				});
-				this.selectedTeacher = null;
+				this.selectedStudents = [];
 			});
 		if (this.courseClass)
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
 				});
-				this.selectedStudent = null;
+				this.selectedStudents = [];
 				this.teachers = _.filter(members, (member)=> {
 					return member.role =='teacher';
 				});
-				this.selectedTeacher = null;
+				this.selectedTeachers = [];
 			});
 	}
 }

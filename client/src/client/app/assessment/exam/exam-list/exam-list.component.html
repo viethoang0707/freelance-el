@@ -1,79 +1,3 @@
-<!-- <div class="card card-w-title">
-    <h1>{{'Exams'|translate}}</h1>
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <p-toolbar>
-                <div class="ui-toolbar-group-left">
-                    <div class="ui-g">
-                        <div class="ui-g-6 ui-md-2 ui-lg-2">
-                            <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
-                        </div>
-                        <div class="ui-g-6 ui-md-2 ui-lg-2">
-                            <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedExam"></button>
-                        </div>
-                        <div class="ui-g-6 ui-md-2 ui-lg-2">
-                            <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedExam"></button>
-                        </div>
-                        <div class="ui-g-6 ui-md-2 ui-lg-2">
-                            <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" [disabled]="!selectedExam"></button>
-                        </div>
-                        <div class="ui-g-12 ui-md-3 ui-lg-3">
-                            <p-selectButton [options]="viewModes" [(ngModel)]="viewMode" name="view"></p-selectButton>
-                        </div>
-                    </div>
-                </div>
-            </p-toolbar>
-            <p-schedule #examSchedule [events]="events" [hidden]="viewMode!='cal'" (onDayClick)="onDayClick($event)" [header]="header"
-                [editable]="true" (onEventClick)="onEventClick($event)"></p-schedule>
-            <p-table #examTable [value]="exams" [paginator]="true" [rows]="10" selectionMode="single" [hidden]="viewMode!='list'" [(selection)]="selectedExam"
-                [responsive]="true">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th [pSortableColumn]="'name'">
-                            {{'Name'|translate}}
-                            <p-sortIcon [field]="'name'"></p-sortIcon>
-                        </th>
-                        <th>
-                            {{'Summary'|translate}}
-                        </th>
-                        <th>
-                            {{'Start'|translate}}
-                        </th>
-                        <th>
-                            {{'End'|translate}}
-                        </th>
-                        <th [pSortableColumn]="'status'">
-                            {{'Status'|translate}}
-                            <p-sortIcon [field]="'status'"></p-sortIcon>
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-exam>
-                    <tr [pSelectableRow]="exam">
-                        <td style="text-align: left;">{{exam.name}}</td>
-                        <td class="showformb" style="text-align: left;">{{exam.summary}}</td>
-                        <td class="showformb">{{exam.start | date : "dd/MM/yyyy, h:mm a"}}</td>
-                        <td class="showformb">{{exam.end | date : "dd/MM/yyyy, h:mm a"}}</td>
-                        <td class="showformb">{{EXAM_STATUS[exam.status] | translate}}</td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="summary">
-                    {{'Total records'|translate}} : {{exams?.length}}
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td [attr.colspan]="5">
-                            {{'No records found'|translate}}
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-            <exam-enrollment-dialog></exam-enrollment-dialog>
-            <exam-dialog></exam-dialog>
-        </div>
-    </div>
-</div> -->
-
 <div class="card card-w-title">
     <h1>{{'Exams'|translate}}</h1>
     <div class="ui-g">
@@ -81,17 +5,14 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedExam"></button>
-                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedExam"></button>
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" [disabled]="!selectedExam"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedExam"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedExam"></button>
                 </div>
-                <div class="ui-toolbar-group-right">
-                    <p-selectButton [options]="viewModes" [(ngModel)]="viewMode" name="view"></p-selectButton>
+                 <div class="ui-toolbar-group-right">
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedExam"></button>
                 </div>
             </p-toolbar>
-            <p-schedule #examSchedule [events]="events" [hidden]="viewMode!='cal'" (onDayClick)="onDayClick($event)" [header]="header"
-                [editable]="true" (onEventClick)="onEventClick($event)"></p-schedule>
-            <p-table #examTable [value]="exams" [paginator]="true" [rows]="10" selectionMode="single" [hidden]="viewMode!='list'" [(selection)]="selectedExam"
+            <p-table #examTable [value]="exams" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedExam"
                 [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>

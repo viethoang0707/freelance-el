@@ -2,22 +2,3 @@
 .mrg-bt{
     margin-bottom: 15px;
 }
-
-.group-course{
-    width:30%;
-    float: left;
-}
-.course{
-    width: 70%;
-    float: left;
-}
-
-@media screen and (max-width: 500px) {
-    .group-course{
-        width:100%;
-    }
-    .course{
-        width: 100%;
-        margin-top: 10px;
-    }
-}

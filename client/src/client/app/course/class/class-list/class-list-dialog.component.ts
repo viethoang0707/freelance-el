@@ -14,7 +14,7 @@ import { CourseClassDialog } from '../class-dialog/class-dialog.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'class-by-course-dialog',
+    selector: 'class-list-dialog',
     templateUrl: 'class-list-dialog.component.html',
     styleUrls: ['class-list-dialog.component.css'],
 })
@@ -24,7 +24,9 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     @ViewChild(CourseClassDialog) classDialog : CourseClassDialog;
 
     classes: CourseClass[];
+    selectedClass: any;
     courses:Course;
+    teachers: any;
 
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
@@ -32,14 +34,16 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     constructor() {
         super();
         this.classes = [];
+        this.teachers = [];
     }
 
     ngOnInit() {
         
     }
 
-    enroll(courseClass) {
-      this.courseEnrollDialog.enrollClass(courseClass);
+    enroll() {
+        if (this.selectedClass)
+          this.courseEnrollDialog.enrollClass(this.selectedClass);
     }
 
     loadClasses() {
@@ -68,16 +72,18 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         });        
     }
 
-    edit(courseClass) {
-        this.classDialog.show(courseClass);
+    edit() {
+        if (this.selectedClass)
+            this.classDialog.show(this.selectedClass);
         this.classDialog.onUpdateComplete.subscribe(() => {
             this.loadClasses();
         });
     }
 
-    delete(courseClass) {
+    delete() {
+        if (this.selectedClass)
         this.confirm('Are you sure to delete ?', () => {
-            courseClass.delete(this).subscribe(() => {
+            this.selectedClass.delete(this).subscribe(() => {
                 this.loadClasses();
             })
         });

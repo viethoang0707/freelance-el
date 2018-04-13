@@ -48,6 +48,7 @@ export class SelectCoursesDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
+		this.selectedCourses = [];
 		Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
 			this.tree = this.treeUtils.buildTree(groups);
 		});
