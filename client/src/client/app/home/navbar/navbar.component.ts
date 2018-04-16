@@ -10,6 +10,7 @@ import { LangService } from '../../shared/services/lang.service';
 import { CacheService } from '../../shared/services/cache.service';
 import { SelectItem } from 'primeng/primeng';
 import { BaseComponent } from '../../shared/components/base/base.component';
+import * as _ from 'underscore'
 
 @Component({
 	moduleId: module.id,
@@ -38,7 +39,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.user = this.cacheService.UserProfile;
+		this.user = this.authService.UserProfile;
 		this.viewMode = this.settingService.ViewMode;
 	}
 

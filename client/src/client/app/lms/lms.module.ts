@@ -13,7 +13,7 @@ import { ClassConferenceDialog} from './course/class-conference/class-conference
 import { ClassListDialog } from './course/class-list/class-list.dialog.component';
 import { QuestionMarkingDialog} from './exam/question-marking/question-marking.dialog.component';
 import { ExamScoreDialog } from './exam/exam-score/exam-score.dialog.component';
-import { AnswerSheetDialog } from './exam/answer-sheet/answer-sheet.dialog.component';
+import { AnswerPrintDialog } from './exam/answer-print/answer-print.dialog.component';
 import { ConferenceListComponent } from './conference/conference-list/conference-list.component';
 import { CourseMaterialListDialog } from './course/course-material-list/course-material-list.component';
 import { CourseMaterialDialog } from './course/course-material/course-material.dialog.component';

@@ -49,7 +49,6 @@ export class QuestionImportDialog extends BaseComponent {
 	import() {
 		var subscriptions = [];
 		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
-			this.importing = true;
 			for (var i=0; i < this.records.length;) {
 				var record = this.records[i];
 				var question = new Question();
@@ -73,6 +72,7 @@ export class QuestionImportDialog extends BaseComponent {
 							option.content = optionRecord["option"];
 							options.push(option);
 						}
+						options = _.shuffle(options);
 						var subscription =  question.createWithOption(this,options);
 						subscriptions.push(subscription);
 					} 

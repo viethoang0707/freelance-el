@@ -79,7 +79,7 @@ export class ExamMember extends BaseModel{
 
     examGrade(grades:ExamGrade[], score:number) {
         return _.find(grades, (obj)=> {
-            return obj.min_score <= record["score"] && obj.max_score >= record["score"]
+            return obj.min_score <= score && obj.max_score >= score;
         });
     }
 

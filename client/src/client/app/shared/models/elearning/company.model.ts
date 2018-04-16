@@ -2,7 +2,7 @@
 import { BaseModel } from '../base.model';
 import { MODEL_METADATA_KEY, Model } from '../decorator';
 import { APIContext } from '../context';
-import { MapUtils }  from '../helpers/map.utils';
+import { MapUtils }  from '../../helpers/map.utils';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Model('res.company')

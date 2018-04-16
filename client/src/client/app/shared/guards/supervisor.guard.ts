@@ -20,7 +20,7 @@ export class SupervisorGuard implements CanActivate, APIContext {
 		var examId = route.params.examId;
 		if (!examId)
 			return Observable.of(false);
-		return ExamMember.byExamAndUser(this, this.authService.CurrentUser.id, examId)
+		return ExamMember.byExamAndUser(this, this.authService.UserProfile.id, examId)
 		.map((member:ExamMember) => {
             if (member && member.role=='supervisor') {
                 return true;

@@ -58,7 +58,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.passwordDialog.show();
         });
         this.eventManager.showProfileEvents.subscribe(() => {
-            var user = this.cacheService.UserProfile;
+            var user = this.authService.UserProfile;
             this.userProfileDialog.show(user);
         });
         this.eventManager.logoutEvents.subscribe(() => {

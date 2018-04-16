@@ -101,15 +101,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-
-	edit(member:CourseMember) {
-		if (member)
-			this.memberDialog.show(member);
-		this.memberDialog.onUpdateComplete.subscribe(() =>{
-			this.loadMembers();
-		});
-	}
-
 	delete(members) {
 		if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {

@@ -16,7 +16,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     credential: Credential;
     account: CloudAccount;
     returnUrl: string;
-    productionMode: boolean = '<%= BUILD_TYPE %>==' =='prod';
+    productionMode: boolean = '<%= BUILD_TYPE %>' == 'prod';
 
     @Input() remember: boolean;
     @Input() cloudid: string;
@@ -29,18 +29,18 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        this.credential = this.cacheService.StoredCredential || new Credential();
-        this.remember = this.cacheService.Remember;
+        this.credential = this.authService.StoredCredential || new Credential();
+        this.remember = this.authService.Remember;
         if (this.productionMode) {
-            this.apiService.cloudInfo().subscribe(acc=> {
-                this.cacheService.CloudAcc = aaccount = cc;
+            this.apiService.cloudInfo().subscribe(account=> {
+                this.authService.CloudAcc = this.account = account;
             });
         }
     }
 
     getCloudInfo():Observable<any> {
-        if (this.cacheService.CloudAcc)
-            return Observable.of(this.cacheService.CloudAcc);
+        if (this.authService.CloudAcc)
+            return Observable.of(this.authService.CloudAcc);
         else {
             if (this.productionMode)
                 return this.apiService.cloudInfo();
@@ -51,13 +51,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     login() {
         this.getCloudInfo().subscribe((acc)=> {
-            this.cacheService.CloudAcc = acc;
+            this.authService.CloudAcc = acc;
             this.authService.login(this.credential).subscribe(
                 user => {
-                    this.cacheService.Remember = this.remember;
-                    this.cacheService.UserProfile = user;
+                    this.authService.Remember = this.remember;
+                    this.authService.UserProfile = user;
                     if (this.remember)
-                        this.cacheService.StoredCredential = this.credential;
+                        this.authService.StoredCredential = this.credential;
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {

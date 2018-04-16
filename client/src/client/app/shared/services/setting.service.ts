@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Config } from '../../env.config';
-import { CacheService } from './cache.service';
+import { AuthService } from './auth.service';
 import 'rxjs/add/operator/map';
 import { Observable, Subject, Observer } from 'rxjs/Rx';
 
@@ -10,7 +10,7 @@ export class SettingService {
   
   viewMode: string;
 
-  constructor(private cacheService: CacheService) {
+  constructor(private authService: AuthService) {
 
   }
 
@@ -21,8 +21,8 @@ export class SettingService {
   get ViewMode() {
   	if (this.viewMode)
   		return this.viewMode;
-  	if (this.cacheService.UserProfile) 
-  		return this.cacheService.UserProfile.IsAdmin ? 'admin' :'lms';
+  	if (this.authService.UserProfile) 
+  		return this.authService.UserProfile.IsAdmin ? 'admin' :'lms';
   	return null;
   }
 

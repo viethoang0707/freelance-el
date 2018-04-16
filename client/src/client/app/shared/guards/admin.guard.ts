@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import {CacheService} from '../services/cache.service';
+import { AuthService} from '../services/auth.service';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
 
-    constructor(private router: Router, private cache: CacheService) { }
+    constructor(private router: Router, private authService: AuthService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this.cache.UserProfile.id && (this.cache.UserProfile.IsAdmin) {
+        if (this.authService.UserProfile.id && (this.authService.UserProfile.IsAdmin) {
             // logged in so return true
             return true;
         }

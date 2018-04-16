@@ -4,6 +4,7 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { Course } from '../../../shared/models/elearning/course.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { User } from '../../../shared/models/elearning/user.model';

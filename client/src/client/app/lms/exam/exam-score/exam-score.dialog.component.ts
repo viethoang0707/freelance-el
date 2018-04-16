@@ -10,7 +10,7 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Http, Response } from '@angular/http';
-import { AnswerSheetDialog } from '../answer-sheet/answer-sheet.dialog.component';
+import { AnswerPrintDialog } from './exam/answer-print/answer-print.dialog.component';
 import * as _ from 'underscore';
 
 @Component({
@@ -25,7 +25,7 @@ export class ExamScoreDialog extends BaseComponent {
     records: any;
     selectedRecord: any;
 
-    @ViewChild(AnswerSheetDialog) answerSheetDialog:AnswerSheetDialog;
+    @ViewChild(AnswerPrintDialog) answerSheetDialog:AnswerPrintDialog;
 
     constructor() {
         super();

@@ -8,7 +8,6 @@ import { SelectItem } from 'primeng/api';
 import { Exam } from '../../shared/models/elearning/exam.model';
 import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
-import { SelectItem } from 'primeng/api';
 import * as _ from 'underscore';
 
 @Component({
@@ -64,7 +63,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     onDayClick() {
-        this.add();
+        this.addExam();
     }
 
     onEventClick(event) {

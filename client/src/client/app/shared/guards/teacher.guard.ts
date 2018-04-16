@@ -20,7 +20,7 @@ export class TeacherGuard implements CanActivate, APIContext {
 		var courseId = route.params.courseId;
 		if (!courseId)
 			return Observable.of(false);
-		return CourseMember.byCourseAndUser(this, this.authService.CurrentUser.id, courseId)
+		return CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId)
 		.map((member:CourseMember) => {
             if (member && member.role=='teacher') {
                 return true;

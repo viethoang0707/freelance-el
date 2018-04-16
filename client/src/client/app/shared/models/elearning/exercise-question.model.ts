@@ -5,7 +5,7 @@ import { Model } from '../decorator';
 import { APIContext } from '../context';
 
 @Model('etraining.exercise_question')
-export class ExamQuestion extends BaseModel{
+export class ExerciseQuestion extends BaseModel{
 
     // Default constructor will be called by mapper
     constructor(){

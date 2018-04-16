@@ -25,7 +25,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
 
     classes: CourseClass[];
     selectedClass: any;
-    courses:Course;
+    course:Course;
     teachers: any;
 
     COURSE_MODE = COURSE_MODE;
