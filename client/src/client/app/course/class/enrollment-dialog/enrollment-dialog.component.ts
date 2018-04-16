@@ -14,6 +14,7 @@ import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
+import { CourseMemberDialog } from '../member-dialog/member-dialog.component';
 @Component({
 	moduleId: module.id,
 	selector: 'course-enrollment-dialog',
@@ -31,6 +32,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	courseClass: CourseClass;
 	items: any[];
 	public subscription : Subscription;
+	@ViewChild(CourseMemberDialog) memberDialog: CourseMemberDialog;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
