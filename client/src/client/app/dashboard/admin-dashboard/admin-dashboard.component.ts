@@ -8,7 +8,6 @@ import { SelectItem } from 'primeng/api';
 import { Exam } from '../../shared/models/elearning/exam.model';
 import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
-import { SelectItem } from 'primeng/api';
 import * as _ from 'underscore';
 
 @Component({
@@ -23,15 +22,23 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     studentCount: any;
     teacherCount: any;
     courseCount: any;
-    events: any;
+    events: any[];
     exams: Exam[];
     selectedExam: any;
-    header:any;
+    header: any;
+    viewModes: SelectItem[];
+    viewMode:string;
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
+        this.viewModes = [{
+            label: this.translateService.instant('Calendar'),value:'cal'
+        },{
+            label: this.translateService.instant('List'),value:'list'
+        }];
+        this.viewMode = 'list';
         this.header = {
             left: 'prev, today, next',
             center: 'title',
@@ -52,7 +59,9 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         CourseMember.countStudent(this).subscribe(count => {
             this.studentCount = count;
         });    
+        this.loadExams();
     }
+
 
     addExam() {
         var exam = new Exam();
@@ -70,7 +79,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     onDayClick() {
-        this.add();
+        this.addExam();
     }
 
     onEventClick(event) {
@@ -88,7 +97,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
                 return {
                     title: exam.name,
                     start: exam.start,
-                    send: exam.end,
+                    end: exam.end,
                     id: exam.id,
                     allDay: true
                 }
