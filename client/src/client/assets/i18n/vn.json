@@ -5,7 +5,7 @@
 	"User profile": "Hồ sơ",
 	"Change Password": "Thay đổi mật khẩu",
 	"Log out": "Đăng xuất",
-	"Admin mode": "Trang quản trị",
+	"Administrator mode": "Trang quản trị",
 	"Learning mode": "Trang học viên",
 	"Add": "Thêm",
 	"New": "Thêm mới",
@@ -237,6 +237,7 @@
 	"Exercise": "Bài tập",
 	"Generate questions": "Tạo câu hỏi",
 	"Total score": "Tổng điểm",
+	"Mode is required": "Chọn hình thức học là bắt buộc",
 	"Name is required": "Nhập tên là bắt buộc",
 	"Code is required": "Nhập mã là bắt buộc",
 	"Duration is required": "Thời gian là bắt buộc",
@@ -259,7 +260,18 @@
 	"Generate question": "Tạo câu hỏi",
 	"Finalize": "Kích hoạt",
 	"Question score": "Điểm số câu hỏi",
-	"Re-entrance": "Thi lại"
+	"Re-entrance": "Thi lại",
+	"Syllabus": "Giáo trình",
+	"Analysis": "Phân tích",
+	"Chart": "Biểu đồ",
+	"Permission": "Phân quyền",
+	"Permission management": "Quản lý phân quyền",
+	"Role is required": "Vai trò là bắt buộc nhập",
+	"Easy": "Dễ",
+	"Medium": "Trung bình",
+	"Hard": "Khó",
+	"Exam start time is required": "Chưa chọn thời gian kì thi bắt đầu",
+	"Exam end time is required": "Chưa chọn thời gian kì thi kết thúc"
 
 
 }

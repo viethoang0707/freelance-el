@@ -26,11 +26,17 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     events: any;
     exams: Exam[];
     selectedExam: any;
+    header:any;
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
+        this.header = {
+            left: 'prev, today, next',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        };
     }
 
     ngOnInit() {

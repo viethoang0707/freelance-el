@@ -10,7 +10,7 @@
         <li>/</li>
         <ng-template ngFor let-item let-last="last" [ngForOf]="items">
             <li>
-                <a >{{item.label}}</a>
+                <a >{{item.label | translate}}</a>
                 <ng-container *ngIf="!item.routerLink">{{item.label}}</ng-container>
             </li>
             <li *ngIf="!last">/</li>

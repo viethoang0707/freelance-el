@@ -180,3 +180,12 @@ body .ui-button.red-btn, body .ui-datepicker-buttonpane > button.red-btn{
     float:  left !important;
   }
 }
+
+.ui-state-default{
+  border: none;
+  background: none;
+}
+
+.language .ui-state-default {
+    background: #d7ebf9;
+}
