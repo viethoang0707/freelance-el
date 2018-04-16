@@ -60,6 +60,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         CourseMember.countStudent(this).subscribe(count => {
             this.studentCount = count;
         });    
+        this.loadExams();
     }
 
 
