@@ -33,6 +33,11 @@
                 </div>
                 <div class="clearfix"></div>
               </div>
+              <div *ngIf="level.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin-top: 10px;">
+                <div *ngIf="level.errors.required">
+                  {{'Level is required' | translate}}
+                </div>
+              </div>
             </div>
           </div>
         </p-tabPanel>

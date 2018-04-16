@@ -83,4 +83,17 @@ export class CourseListComponent extends BaseComponent {
             }));
     }
 
+    delete() {
+        if (this.selectedCourse)
+            this.confirmationService.confirm({
+                message: this.translateService.instant('Are you sure to delete ?'),
+                accept: () => {
+                    this.selectedCourse.delete(this).subscribe(() => {
+                        this.loadCourses();
+                        this.selectedCourse = null;
+                    })
+                }
+            });
+    }
+
 }
