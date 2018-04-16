@@ -48,9 +48,9 @@
             <label>{{'Logo'|translate}}</label>
             <image-base64 [(src64)]="object.logo"></image-base64>
           </div>
-          <div class="ui-g-6" style="margin-bottom:10px">
+          <div class="ui-g-6">
             <label>{{'Mode'|translate}}</label>
-            <div style="margin-bottom:10px">
+            <div style="margin:10px 0">
               <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1" #mode="ngModel" required></p-radioButton>
             </div>
             <div style="margin-bottom:10px">
@@ -65,7 +65,7 @@
         </div>
       </div>
     </form>
-    <div class="ui-g ui-fluid form-group">
+    <div class="ui-g ui-fluid form-group" style="margin-bottom: 20px;">
       <div class="ui-g-6">
         <button type="buton" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
       </div>

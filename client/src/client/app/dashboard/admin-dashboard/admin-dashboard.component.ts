@@ -33,7 +33,6 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
-
         this.viewModes = [{
             label: this.translateService.instant('Calendar'),value:'cal'
         },{
