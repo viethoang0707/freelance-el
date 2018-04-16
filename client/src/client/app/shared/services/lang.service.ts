@@ -21,8 +21,12 @@ export class LangService {
         this.translationService.use(defaultLang);
     }
 
-    setLanguage(lang: string) {
-        this.cacheService.Lang =  lang;
-        this.translationService.use(lang);
+     set Lang(lang: string) {
+        localStorage.setItem('language', lang);
+         this.translationService.use(lang);
     }
+
+   get Lang():string {
+       return  localStorage.getItem('language');
+   }
 }

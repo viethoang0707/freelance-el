@@ -7,6 +7,7 @@ import { Group } from '../../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import { User } from '../../../../shared/models/elearning/user.model';
 import { CourseLog } from '../../../../shared/models/elearning/log.model';
+import { CourseMember } from '../../../../shared/models/elearning/course-member.model';
 import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../../shared/models/constants'
 import { Report } from '../../report.decorator';

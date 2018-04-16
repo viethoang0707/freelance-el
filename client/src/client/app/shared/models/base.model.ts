@@ -37,7 +37,7 @@ export abstract class BaseModel {
 
     save(context:APIContext):Observable<any> {
     	var model = this.Model;
-        var cloud_acc = context.cacheService.CloudAcc;
+        var cloud_acc = context.authService.CloudAcc;
     	if (!this.id)
     		return context.apiService.create(model, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint).map(data=> {
                 this.id = data.id;
@@ -49,13 +49,13 @@ export abstract class BaseModel {
 
     delete(context:APIContext):Observable<any> {
     	var model = this.Model;
-        var cloud_acc = context.cacheService.CloudAcc;
+        var cloud_acc = context.authService.CloudAcc;
     	return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
     }
 
     static get(context:APIContext,id:number):Observable<any> {
     	var model = this.Model;
-        var cloud_acc = context.cacheService.CloudAcc;
+        var cloud_acc = context.authService.CloudAcc;
     	return context.apiService.get(model, id, [],cloud_acc.id, cloud_acc.api_endpoint).map(item => {
              return   MapUtils.deserializeModel(model, item);
         });
@@ -64,14 +64,14 @@ export abstract class BaseModel {
     static count(context:APIContext, domain?:string):Observable<any[]> {
         var domain = domain?domain:"[]";
         var model = this.Model;
-        var cloud_acc = context.cacheService.CloudAcc;
+        var cloud_acc = context.authService.CloudAcc;
         return context.apiService.count(model, domain, cloud_acc.id, cloud_acc.api_endpoint);
     }
 
 
     static search(context:APIContext, fields:string[], domain:string):Observable<any[]> {
         var model = this.Model;
-        var cloud_acc = context.cacheService.CloudAcc;
+        var cloud_acc = context.authService.CloudAcc;
         return context.apiService.search(model, fields, domain, cloud_acc.id, cloud_acc.api_endpoint).map(items => {
             return _.map(items, (item)=> {
                return  MapUtils.deserializeModel(model, item);
@@ -87,7 +87,7 @@ export abstract class BaseModel {
         if (ids.length == 0)
             return Observable.of([]);
         var model = this.Model;
-        var cloud_acc = context.cacheService.CloudAcc;
+        var cloud_acc = context.authService.CloudAcc;
         return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint).map(items => {
             return _.map(items, (item)=> {
                return  MapUtils.deserializeModel(model, item);
@@ -103,7 +103,7 @@ export abstract class BaseModel {
 
     static executeRemote(context:APIContext, method:string, paramsList: string[], paramsDict: any):Observable<any> {
         var model = this.Model;
-        var cloud_acc = context.cacheService.CloudAcc;
+        var cloud_acc = context.authService.CloudAcc;
         return context.apiService.execute(model, method, paramsList, paramsDict, cloud_acc.id, cloud_acc.api_endpoint);
     }
 

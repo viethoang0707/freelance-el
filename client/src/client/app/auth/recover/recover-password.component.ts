@@ -12,7 +12,6 @@ import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 
 export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
-    account: CloudAccount;
     @Input() recover_email: string;
 
     constructor() { 
@@ -20,11 +19,10 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.account =  this.cacheService.CloudAcc;
     }
 
     recoverPassword() {
-        this.authService.resetPass(this.recover_email, this.account.id).subscribe(() => {
+        this.authService.resetPass(this.recover_email).subscribe(() => {
             this.success('Password recovery instruction sent to your email')
         });
     }

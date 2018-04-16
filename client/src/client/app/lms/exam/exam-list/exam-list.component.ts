@@ -38,7 +38,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        ExamMember.listByUser(this, this.cacheService.UserProfile.id).subscribe(members => {
+        ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             var examIds = _.pluck(members,'exam_id');
             Exam.array(this, examIds)
             .subscribe(exams => {

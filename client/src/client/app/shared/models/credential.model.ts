@@ -1,4 +1,4 @@
-import { CloudAccount } from './cloud-account.model';
+import { CloudAccount } from './cloud/cloud-account.model';
 
 export class Credential {
 

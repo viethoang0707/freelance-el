@@ -46,7 +46,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.currentUser = this.cacheService.UserProfile;
+        this.currentUser = this.authService.UserProfile;
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             var courseIds = _.pluck(members,'course_id');
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
@@ -96,6 +96,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     studyCourse(course:Course) {
         if (course.syllabus_id && course.status =='published')
             this.studyDialog.show(course);
+    }
 
     manageMaterial(course:Course) {
        this.materialListDialog.show(course);

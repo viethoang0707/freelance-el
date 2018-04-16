@@ -38,7 +38,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.account =  this.cacheService.CloudAcc;
+        this.account =  this.authService.CloudAcc;
         if (this.settingService.ViewMode =='admin')
                 this.setAdminMenu();
             else
