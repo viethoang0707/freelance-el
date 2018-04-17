@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { APIService } from '../services/api.service';
-import { APIContext } from '../models/elearning/context';
+import { APIContext } from '../models/context';
 import { CourseMember } from '../models/elearning/course-member.model';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class TeacherGuard implements CanActivate, APIContext {
 		var courseId = route.params.courseId;
 		if (!courseId)
 			return Observable.of(false);
-		return CourseMember.byCourseAndUser(this, this.authService.CurrentUser.id, courseId)
+		return CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId)
 		.map((member:CourseMember) => {
             if (member && member.role=='teacher') {
                 return true;

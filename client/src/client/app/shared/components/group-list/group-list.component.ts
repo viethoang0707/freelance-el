@@ -57,7 +57,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     }
 
     confirmDelete() {
-        this.confirm.confirm('Are you sure to delete ?', () => {
+        this.confirm('Are you sure to delete ?', () => {
             this.selectedNode.data.delete(this).subscribe(()=> {
                 this.loadGroups();
             });

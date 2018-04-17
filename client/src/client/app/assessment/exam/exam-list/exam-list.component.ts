@@ -65,15 +65,13 @@ export class ExamListComponent extends BaseComponent {
 
     delete() {
         if (this.selectedExam)
-            this.confirmationService.confirm({
-                message: this.translateService.instant('Are you sure to delete ?'),
-                accept: () => {
+            this.confirm('Are you sure to delete ?', () => {
                     this.selectedExam.delete(this).subscribe(() => {
                         this.loadExams();
                         this.selectedExam = null;
                     })
                 }
-            });
+            );
     }
 
     onDayClick() {

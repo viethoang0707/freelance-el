@@ -29,7 +29,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     constructor(public app: HomeComponent, 
         private eventManager: HomeEventManager) {
         super();
-        this.settingService.viewModeEvents.subscribe((mode:boolean) => {
+        this.settingService.viewModeEvents.subscribe(mode => {
             if (mode=='admin')
                 this.setAdminMenu();
             else
@@ -38,7 +38,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.account =  this.cacheService.CloudAcc;
+        this.account =  this.authService.CloudAcc;
         if (this.settingService.ViewMode =='admin')
                 this.setAdminMenu();
             else

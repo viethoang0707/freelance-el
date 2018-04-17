@@ -16,7 +16,7 @@ export class MeetingService {
     }
 
     join(room_ref:string, member_ref: string) {
-        this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&cloudid=${this.authService.StoredCredential.cloud_account.id}`);
+        this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&cloudid=${this.authService.CloudAcc.id}`);
     }
 
    

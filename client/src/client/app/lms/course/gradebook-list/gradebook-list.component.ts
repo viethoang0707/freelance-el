@@ -10,7 +10,7 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
-import { UserLog } from '../../../shared/models/elearning/log.model';
+import { CourseLog } from '../../../shared/models/elearning/log.model';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe} from '../../../shared/pipes/time.pipe';
@@ -56,17 +56,20 @@ export class GradebookListDialog extends BaseComponent {
 			});
 			CourseSyllabus.byCourse(this, courseClass.course_id).subscribe(syllabus=> {
 				CourseUnit.countBySyllabus(this, syllabus.id).subscribe(totalUnit=> {
-					_.each(this.records,(record)=> {
-						UserLog.userStudyActivity(this,record.user_id, this.courseClass.id).subscribe(logs => {
+					_.each(this.records,(record=> {
+						CourseLog.userStudyActivity(this,record["user_id"], this.courseClass.id).subscribe(logs => {
 							var result = this.reportUtils.analyzeCourseActivity(logs);
 						    if (result[0] != Infinity)
 						    	record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
 					    	if (result[1] != Infinity)
 						    	record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATETIME_FORMAT);
 						    record["time_spent"] =  this.timePipe.transform(+result[2],'min');
-						    record["completion"] = totalUnit == 0 ? 0 : Math.floor(result[3]*100/totalUnit);
+						    if (totalUnit)
+						    	record["completion"] = Math.floor(+result[3]*100/+totalUnit);
+						    else
+						    	record["completion"] = 0;
 						});
-					});
+					}));
 				});
 			});
 		});

@@ -9,7 +9,7 @@
           <div class=" ui-g-12 ">
             <h1>{{account.name}}</h1>
           </div>
-          <div class=" ui-g-12 " [hidden]="productionMode">
+          <div class=" ui-g-12 " [hidden]="buildMode=='prod'">
             <span class="md-inputfield">
                 <input type="text"  pInputText name="cloudid" [(ngModel)]="cloudid">
                 <label for="cloudid">{{'Cloud ID' | translate}}</label>

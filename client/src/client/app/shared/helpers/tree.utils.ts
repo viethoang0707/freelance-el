@@ -57,6 +57,14 @@ export class TreeUtils {
     return subTrees;
   }
 
+    disableTree(tree):any {
+    for (var i = 0; i < tree.length; i++) {
+      var node = tree[i];
+      node.selectable = false;
+      this.disableTree(node);
+    }
+  }
+
   findTreeNode(tree, groupId):any {
     for (var i = 0; i < tree.length; i++) {
       var node = tree[i];

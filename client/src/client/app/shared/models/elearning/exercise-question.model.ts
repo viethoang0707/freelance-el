@@ -5,7 +5,7 @@ import { Model } from '../decorator';
 import { APIContext } from '../context';
 
 @Model('etraining.exercise_question')
-export class ExamQuestion extends BaseModel{
+export class ExerciseQuestion extends BaseModel{
 
     // Default constructor will be called by mapper
     constructor(){
@@ -18,7 +18,7 @@ export class ExamQuestion extends BaseModel{
         this.level = undefined;
         this.group_id = undefined;
         this.question_id = undefined;
-        this.exam_id = undefined;
+        this.exercise_id = undefined;
         this.score = undefined;
         this.order = undefined;
         this.sheet_id = undefined;
@@ -26,7 +26,7 @@ export class ExamQuestion extends BaseModel{
     }
 
     question_id: number;
-    exam_id: number;
+    exercise_id: number;
     sheet_id: number;
     score: number;
     order: number;
@@ -39,19 +39,15 @@ export class ExamQuestion extends BaseModel{
     group_id__DESC__: string;
 
     static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
-        return ExamQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
+        return ExerciseQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
     }
 
-    static countByExam( context:APIContext, examId: number): Observable<any[]> {
-        return ExamQuestion.count(context,"[('exam_id','=',"+examId+")]");
-    }
-
-    static listOpenQuestionByExam( context:APIContext, examId: number): Observable<any[]> {
-        return ExamQuestion.search(context,[],"[('exam_id','=',"+examId+"),('type','=','ext')]");
+    static countByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
+        return ExerciseQuestion.count(context,"[('exercise_id','=',"+exerciseId+")]");
     }
 
     static byQuestion( context:APIContext, questionId: number): Observable<any[]> {
-        return ExamQuestion.search(context,[],"[('question_id','=',"+questionId+")]").map(questions =>{
+        return ExerciseQuestion.search(context,[],"[('question_id','=',"+questionId+")]").map(questions =>{
             return questions.length ? questions[0]: null;
         });
     }

@@ -29,7 +29,7 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-    	ConferenceMember.listByUser(this, this.authService.CurrentUser.id)
+    	ConferenceMember.listByUser(this, this.authService.UserProfile.id)
     	.subscribe(members => {
     		this.members = members;
     		_.each(members, (member)=> {

@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { APIService } from '../services/api.service';
-import { APIContext } from '../models/elearning/context';
+import { APIContext } from '../models/context';
 import { ExamMember } from '../models/elearning/exam-member.model';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class SupervisorGuard implements CanActivate, APIContext {
 		var examId = route.params.examId;
 		if (!examId)
 			return Observable.of(false);
-		return ExamMember.byExamAndUser(this, this.authService.CurrentUser.id, examId)
+		return ExamMember.byExamAndUser(this, this.authService.UserProfile.id, examId)
 		.map((member:ExamMember) => {
             if (member && member.role=='supervisor') {
                 return true;

@@ -8,6 +8,7 @@ import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
+import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
@@ -20,6 +21,8 @@ import { IQuestion } from '../../../assessment/question/question-template/questi
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
 
+declare var $: any;
+
 @Component({
 	moduleId: module.id,
 	selector: 'exam-study-dialog',
@@ -30,6 +33,7 @@ export class ExamStudyDialog extends BaseComponent {
 	display: boolean;
 	exam: Exam;
 	member: ExamMember;
+	sheet: QuestionSheet;
 	qIndex: number;
 	examQuestions: ExamQuestion[];
 	answers: Answer[];
@@ -40,6 +44,9 @@ export class ExamStudyDialog extends BaseComponent {
 	currentQuestion: ExamQuestion;
 	timeLeft: number;
 	progress: number;
+	stats: any;
+	height: number;
+	examCode: any;
 
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	componentRef: any;
@@ -50,33 +57,59 @@ export class ExamStudyDialog extends BaseComponent {
 		this.examQuestions = [];
 		this.answers = [];
 		this.exam = new Exam();
+		this.sheet = new QuestionSheet();
 		this.currentQuestion = new ExamQuestion();
 		this.timeLeft = 0;
 		this.progress = 0;
+		this.member = new ExamMember();
+		this.examCode = '';
+		this.stats = {
+			total: 0,
+			attempt: 0,
+			unattempt: 0
+		}
 	}
 
 	show(exam: Exam, member: ExamMember) {
 		this.display = true;
 		this.exam = exam;
 		this.member = member;
+		this.examCode = this.exam.id + '' + this.member.id;
 		this.qIndex = 0;
-		Submission.byMember(this, this.member.id).subscribe((submit:Submission) => {
+		this.height = $(window).height();
+		this.createSubmission().subscribe((submit: Submission) => {
+			this.submission = submit;
+			QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
+				this.sheet = sheet;
+				this.createExamQuestions().subscribe(examQuestions => {
+					this.examQuestions = examQuestions;
+					this.stats.total = examQuestions.length;
+					this.startExam();
+				});
+			});
+		});
+	}
+
+	createSubmission(): Observable<any> {
+		return Submission.byMember(this, this.member.id).flatMap((submit: Submission) => {
 			if (!submit) {
 				submit = new Submission();
-				submit.member_id = member.id;
+				submit.member_id = this.member.id;
 				submit.start = new Date();
-				submit.save(this).subscribe(() => {
-					this.submission = submit;
-					ExamLog.startExam(this, this.member.user_id, exam.id, submit);
-					this.member.enroll_status = 'in-progress';
-					this.member.save(this).subscribe(() => {
-						this.startExam();
-					});
-				});
+				return submit.save(this);
 			} else {
-				this.submission = submit;
-				this.startExam();
+				return Observable.of(submit);
 			}
+		});
+	}
+
+	createExamQuestions(): Observable<any> {
+		return ExamQuestion.listBySheet(this, this.sheet.id).map(examQuestions => {
+			var offset = this.member.id;
+			return _.map(examQuestions, (obj, order) => {
+				var index = (order + this.sheet.seed + offset) % examQuestions.length;
+				return examQuestions[index];
+			});
 		});
 	}
 
@@ -92,13 +125,15 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	startExam() {
-		ExamQuestion.listByExam(this, this.exam.id).subscribe(examQuestions => {
-			this.examQuestions = _.shuffle(examQuestions);
-			this.fetchAnswers().subscribe(answers => {
-				this.answers = answers;
-				this.startTimer();
-				this.displayQuestion(0);
-			});
+		this.member.enroll_status = 'in-progress';
+		this.member.save(this).subscribe();
+		ExamLog.startExam(this, this.member.user_id, this.exam.id, this.submission);
+		this.fetchAnswers().subscribe(answers => {
+			this.answers = answers;
+			this.stats.attempt = answers.length;
+			this.stats.unattempt = this.stats.total - this.stats.attempt;
+			this.startTimer();
+			this.displayQuestion(0);
 		});
 	}
 
@@ -115,7 +150,7 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	prepareAnswer(question: ExamQuestion): Observable<any> {
-		var answer = _.find(this.answers, (ans: Answer)=> {
+		var answer = _.find(this.answers, (ans: Answer) => {
 			return ans.question_id == question.question_id;
 		});
 		if (!answer) {
@@ -124,6 +159,8 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.question_id = question.question_id;
 			return answer.save(this).do(ans => {
 				this.answers.push(answer);
+				this.stats.attempt = this.answers.length;
+				this.stats.unattempt = this.stats.total - this.stats.attempt;
 			});
 		} else
 			return Observable.of(answer);
@@ -134,8 +171,8 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	updateProgress() {
-		var validAnswers = _.filter(this.answers, (ans:Answer)=> {
-			return ans.option_id!=null || ans.text!=null;
+		var validAnswers = _.filter(this.answers, (ans: Answer) => {
+			return ans.option_id != null || ans.text != null;
 		});
 		if (this.examQuestions.length)
 			this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
@@ -146,7 +183,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.currentQuestion = this.examQuestions[index];
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
-				ExamLog.startAnswer(this, this.member.user_id,this.exam.id, answer);
+				ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer);
 				this.currentAnswer = answer;
 				var detailComponent = QuestionRegister.Instance.lookup(question.type);
 				let viewContainerRef = this.questionHost.viewContainerRef;
@@ -160,7 +197,7 @@ export class ExamStudyDialog extends BaseComponent {
 				}
 			});
 		});
-		
+
 	}
 
 	submitAnswer(): Observable<any> {
@@ -169,6 +206,7 @@ export class ExamStudyDialog extends BaseComponent {
 			this.currentAnswer.score = this.currentQuestion.score;
 		} else
 			this.currentAnswer.score = 0;
+
 		return this.currentAnswer.save(this).do(() => {
 			ExamLog.finishAnswer(this, this.member.user_id, this.exam.id, this.currentAnswer);
 		});

@@ -63,7 +63,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	uploadFile(file) {
 		this.uploadInprogress = true;
-		this.apiService.upload(file, this.authService.StoredCredential.cloud_account.id).subscribe(
+		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.uploadInprogress = false;
 				if (data["result"]) {

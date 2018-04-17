@@ -29,7 +29,6 @@ export const AnalysisRoutes: Routes = [
           breadcrumb: 'Charts'
         }
       },
-      }
     ]
   }
 

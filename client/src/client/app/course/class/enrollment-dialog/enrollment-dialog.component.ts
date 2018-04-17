@@ -14,7 +14,7 @@ import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
-import { CourseMemberDialog } from '../member-dialog/member-dialog.component';
+
 @Component({
 	moduleId: module.id,
 	selector: 'course-enrollment-dialog',
@@ -32,7 +32,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	courseClass: CourseClass;
 	items: any[];
 	public subscription : Subscription;
-	@ViewChild(CourseMemberDialog) memberDialog: CourseMemberDialog;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
@@ -103,27 +102,18 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-
-	edit(member:CourseMember) {
-		if (member)
-			this.memberDialog.show(member);
-		this.memberDialog.onUpdateComplete.subscribe(() =>{
-			this.loadMembers();
-		});
-	}
-
 	delete(members) {
         if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {
-                    var subscriptions = _.map(members,(member=> {
-                        return member.delete(this);
-                    }));
-                    Observable.forkJoin(...subscriptions).subscribe(()=> {
-                        this.selectedStudents = [];
-						this.selectedTeachers = [];
-						this.loadMembers();
-                    })
+                var subscriptions = _.map(members,(member:CourseMember) => {
+                    return member.delete(this);
                 });
+                Observable.forkJoin(...subscriptions).subscribe(()=> {
+                    this.selectedStudents = [];
+					this.selectedTeachers = [];
+					this.loadMembers();
+                });
+            });
 	}
 	
 	loadMembers() {

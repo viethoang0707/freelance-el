@@ -11,13 +11,14 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
-import { UserLog } from '../../../shared/models/elearning/log.model';
+import { CourseLog } from '../../../shared/models/elearning/log.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe} from '../../../shared/pipes/time.pipe';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
-import { AnswerSheetDialog } from '../../exam/answer-sheet/answer-sheet.dialog.component';
+import { AnswerPrintDialog } from '../../exam/answer-print/answer-print.dialog.component';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 
 
@@ -33,7 +34,7 @@ export class GradebookDialog extends BaseComponent {
 	member: CourseMember;
 	exams: Exam[];
 
-	@ViewChild(AnswerSheetDialog) answerSheetDialog:AnswerSheetDialog;
+	@ViewChild(AnswerPrintDialog) answerSheetDialog:AnswerPrintDialog;
 
 	constructor() {
 		super();
@@ -59,29 +60,23 @@ export class GradebookDialog extends BaseComponent {
                      return  exam.status == 'published';
                 }));
                 _.each(this.exams, (exam=> {
-                    exam.member = _.find(members, (member:ExamMember)=> {
-                        return member.exam_id == exam.id;
+                    exam["member"] = _.find(members, (examMember:ExamMember)=> {
+                        return examMember.exam_id == exam.id;
                     });
-                    exam.member.examScore(this, exam.id).subscribe(score=> {
-                        exam.member.score = score;
+                    exam["member"].examScore(this, exam.id).subscribe(score=> {
+                        exam["member"]["score"] = score;
                         ExamGrade.listByExam(this, exam.id).subscribe(grades=> {
-                        	var grade = member.examGrade(grades,score);
+                        	var grade = exam["member"].examGrade(grades,score);
                         	if (grade)
-                        		exam.member.grade = grade.name;
+                        		exam["member"]["grade"] = grade.name;
                     	});
                     });
                     ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                        exam.question_count = count;
+                        exam["question_count"] = count;
                     });
                 }));
             });
         });
 	}
-
-	viewAnswerSheet() {
-        if (this.selectedRecord)
-            this.answerSheetDialog.show(this.exam, this.selectedRecord.member);
-    }
-
 }
 
