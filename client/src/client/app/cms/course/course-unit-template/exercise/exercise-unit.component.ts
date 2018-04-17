@@ -36,10 +36,10 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		if (unit.id)
-			ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
+		//if (this.unit.id)
+			/*ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
 				this.exerciseQuestions =  exerciseQuestions;
-			});
+			});*/
 	}
 
 	removeOldQuestions():Observable<any> {
@@ -61,7 +61,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	saveEditor():Observable<any> {
 		return this.unit.save(this).flatMap(()=> {
 			var updateSubscriptions = _.map(this.exerciseQuestions, (exerciseQuestion)=> {
-				exerciseQuestion.unit_id = this.unit.id;
+				//exerciseQuestion.unit_id = this.unit.id;
 				return exerciseQuestion.save(this);
 			});
 			return Observable.forkJoin(...updateSubscriptions);
@@ -83,7 +83,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		if (this.unit.id) {
 			var createSubscriptions = _.map(questions, (question)=> {
 				var exerciseQuestion = new ExerciseQuestion();
-				exerciseQuestion.unit_id = this.unit.id;
+				//exerciseQuestion.unit_id = this.unit.id;
 				exerciseQuestion.question_id = question.id;
 				exerciseQuestion.type =  question.type;
 				exerciseQuestion.title =  question.title;

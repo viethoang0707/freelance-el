@@ -8,7 +8,7 @@ import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { SelectItem } from 'primeng/api';
-import { AnswerSheetDialog } from '../../exam/answer-sheet/answer-sheet.dialog.component';
+import { Course } from '../../../shared/models/elearning/course.model';
 
 
 @Component({

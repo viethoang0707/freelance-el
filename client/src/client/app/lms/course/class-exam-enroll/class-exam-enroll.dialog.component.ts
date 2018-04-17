@@ -97,7 +97,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 				examMember.save(this).subscribe();
 				member["allowed"] = true;
 			} else {
-				var examMember = this.createExamMember(member);
+				examMember = this.createExamMember(member);
 				examMember.save(this).subscribe(()=> {
 					member["examMember"] = examMember;
 					member["allowed"] = true;

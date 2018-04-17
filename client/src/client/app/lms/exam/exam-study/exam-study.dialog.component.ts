@@ -21,6 +21,8 @@ import { IQuestion } from '../../../assessment/question/question-template/questi
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
 
+declare var $: any;
+
 @Component({
 	moduleId: module.id,
 	selector: 'exam-study-dialog',
@@ -106,7 +108,6 @@ export class ExamStudyDialog extends BaseComponent {
 			var offset = this.member.id;
 			return _.map(examQuestions, (obj, order) => {
 				var index = (order + this.sheet.seed + offset) % examQuestions.length;
-				console.log(index);
 				return examQuestions[index];
 			});
 		});
@@ -191,7 +192,7 @@ export class ExamStudyDialog extends BaseComponent {
 					viewContainerRef.clear();
 					this.componentRef = viewContainerRef.createComponent(componentFactory);
 					(<IQuestion>this.componentRef.instance).mode = 'study';
-					(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer, {seed:this.member.id});
+					(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
 					this.updateProgress();
 				}
 			});

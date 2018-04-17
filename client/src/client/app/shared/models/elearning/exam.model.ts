@@ -53,12 +53,9 @@ export class Exam extends BaseModel{
     }
 
     containsOpenEndQuestion(context:APIContext):Observable<any> {
-            return ExamQuestion.listByExam(context, this.id).flatMap(questions => {
-            var openEndQuestions = _.filter(questions, (obj:ExamQuestion)=> {
-                return obj.type == 'ext';
-            });
-            return Observable.of(openEndQuestions.length > 0);
-        })
+        return ExamQuestion.listOpenQuestionByExam(context, this.id).flatMap(questions => {
+            return Observable.of(questions.length > 0);
+        });
     }
 
 }

@@ -8,7 +8,7 @@ export class AdminGuard implements CanActivate {
     constructor(private router: Router, private authService: AuthService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this.authService.UserProfile.id && (this.authService.UserProfile.IsAdmin) {
+        if (this.authService.UserProfile.id && this.authService.UserProfile.IsAdmin) {
             // logged in so return true
             return true;
         }

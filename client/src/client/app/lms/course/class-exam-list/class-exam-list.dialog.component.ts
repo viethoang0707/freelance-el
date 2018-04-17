@@ -14,6 +14,7 @@ import { ExamDialog } from '../../../assessment/exam/exam-dialog/exam-dialog.com
 import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
 import { ExamMarkingDialog } from '../../exam/exam-marking/exam-marking.dialog.component';
 import { ExamScoreDialog } from '../../exam/exam-score/exam-score.dialog.component';
+import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -32,6 +33,7 @@ export class ClassExamListDialog extends BaseComponent {
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
 	@ViewChild(ExamMarkingDialog) markingDialog: ExamMarkingDialog;
 	@ViewChild(ExamScoreDialog) scoreDialog: ExamScoreDialog;
+	@ViewChild(ExamContentDialog) examContentDialog:ExamContentDialog;
 
 	constructor() {
 		super();
@@ -58,7 +60,9 @@ export class ClassExamListDialog extends BaseComponent {
 
 	enroll() {
 		if (this.selectedClassExam) {
-			this.examEnrollDialog.show(this.selectedClassExam, this.courseClass);
+			Exam.get(this,this.selectedClassExam.exam_id ).subscribe(exam=> {
+				this.examEnrollDialog.show(exam,this.courseClass);
+			});
 		}
 	}
 
@@ -73,8 +77,8 @@ export class ClassExamListDialog extends BaseComponent {
 			classExam.save(this).subscribe(() => {
 				var member = new ExamMember();
 				member.role = "supervisor";
-				member.exam_id = this.exam.id;
-				member.user_id = this.authService.CurrentUser.id;
+				member.exam_id = this.selectedClassExam.id;
+				member.user_id = this.authService.UserProfile.id;
 				member.date_register = new Date();
 				member.status = 'active';
 				member.save(this).subscribe();
@@ -98,7 +102,9 @@ export class ClassExamListDialog extends BaseComponent {
 		if (this.selectedClassExam) {
 			this.selectedClassExam.containsOpenEndQuestion(this).subscribe(result => {
 				if (result) {
-					this.markingDialog.show(this.selectedClassExam);
+					Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
+						this.markingDialog.show(exam);
+					});
 				} else {
 					this.messageService.add({ severity: 'info', summary: 'Exam Info', detail: 'Exam is not available for marking' });
 				}
@@ -109,7 +115,9 @@ export class ClassExamListDialog extends BaseComponent {
 
 	editContent() {
 		if (this.selectedClassExam) {
-			this.examContentDialog.show(this.selectedClassExam);
+			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
+						this.examContentDialog.show(exam);
+			});
 		}
 	}
 

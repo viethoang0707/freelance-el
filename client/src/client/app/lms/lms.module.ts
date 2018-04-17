@@ -8,7 +8,6 @@ import { ExamListComponent} from './exam/exam-list/exam-list.component';
 import { ExamStudyDialog} from './exam/exam-study/exam-study.dialog.component';
 import { ExamMarkingDialog} from './exam/exam-marking/exam-marking.dialog.component';
 import { CourseListComponent} from './course/course-list/course-list.component';
-import { CourseStudyComponent } from './course/course-study/course-study.dialog.component';
 import { ClassConferenceDialog} from './course/class-conference/class-conference.dialog.component';
 import { ClassListDialog } from './course/class-list/class-list.dialog.component';
 import { QuestionMarkingDialog} from './exam/question-marking/question-marking.dialog.component';
@@ -30,7 +29,7 @@ import { CourseStudyDialog } from './course/course-study/course-study.dialog.com
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,ExamMarkingDialog,
     				CourseListComponent, CourseStudyDialog, QuestionMarkingDialog,
-    				ExamScoreDialog, AnswerSheetDialog, ClassListDialog,ClassExamListDialog,
+    				ExamScoreDialog, AnswerPrintDialog, ClassListDialog,ClassExamListDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseMaterialListDialog,
     				CourseMaterialDialog, CourseFaqListDialog, CourseFaqDialog, CourseStudyDialog,
     				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog],

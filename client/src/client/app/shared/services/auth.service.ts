@@ -84,7 +84,7 @@ export class AuthService {
 
     changePass(old_pass: string, new_pass: string): Observable<any> {
         var cloud_acc = this.CloudAcc;
-        return this.apiService.changePass(this.CurrentUser.id, old_pass, new_pass, cloud_acc.id, cloud_acc.api_endpoint);
+        return this.apiService.changePass(this.UserProfile.id, old_pass, new_pass, cloud_acc.id, cloud_acc.api_endpoint);
     }
 
     logout() {

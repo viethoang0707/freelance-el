@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { APIService } from '../services/api.service';
-import { APIContext } from '../models/elearning/context';
+import { APIContext } from '../models/context';
 import { CourseMember } from '../models/elearning/course-member.model';
 
 @Injectable()

@@ -39,14 +39,15 @@ export class QuestionMarkingDialog extends BaseComponent {
 
 	show(member: ExamMember, answers: Answer[]) {
 		this.display = true;
-		ExamQuestion.listByExam(this, member.exam_id).subscribe(questions => {
+
+/*		ExamQuestion.listByExam(this, member.exam_id).subscribe(questions => {
 			this.questions = {};
-			_.each(questions, (question)=> {
+			_.each(questions, (question:ExamQuestion)=> {
 				this.questions[question.question_id] =  question;
 			});
 			this.member = member;
 			this.answers = answers;
-		});
+		});*/
 	}
 
 	hide() {

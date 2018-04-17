@@ -16,7 +16,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     credential: Credential;
     account: CloudAccount;
     returnUrl: string;
-    productionMode: boolean = '<%= BUILD_TYPE %>' == 'prod';
+    buildMode: string = "<%= BUILD_TYPE %>";
 
     @Input() remember: boolean;
     @Input() cloudid: string;
@@ -31,7 +31,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         this.credential = this.authService.StoredCredential || new Credential();
         this.remember = this.authService.Remember;
-        if (this.productionMode) {
+        if (this.buildMode=='prod') {
             this.apiService.cloudInfo().subscribe(account=> {
                 this.authService.CloudAcc = this.account = account;
             });
@@ -42,7 +42,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         if (this.authService.CloudAcc)
             return Observable.of(this.authService.CloudAcc);
         else {
-            if (this.productionMode)
+            if (this.buildMode=='prod')
                 return this.apiService.cloudInfo();
             else
                 return this.apiService.cloudInfo(this.cloudid);

@@ -4,7 +4,6 @@ import { LMSComponent } from './lms.component';
 import { ExamListComponent} from './exam/exam-list/exam-list.component';
 import { CourseListComponent} from './course/course-list/course-list.component';
 import { ConferenceListComponent } from './conference/conference-list/conference-list.component';
-import { CourseStudyComponent} from './course/course-study/course-study.dialog.component';
 
 export const LMSRoutes: Routes = [
     {

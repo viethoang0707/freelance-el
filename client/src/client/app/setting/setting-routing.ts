@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { SettingAppComponent } from './application/setting-app.component';
-import { SettingMailComponent } from './mail/setting-mail.component';
 import { SettingComponent } from './setting.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -29,7 +29,6 @@ export class AnswerPrintDialog extends BaseComponent {
     examQuestions: ExamQuestion[];
     answers: Answer[];
     member: ExamMember;
-    company: Company;
     exam: Exam;
     submission: Submission;
 
@@ -42,12 +41,10 @@ export class AnswerPrintDialog extends BaseComponent {
         this.examQuestions = [];
         this.answers = [];
         this.exam = new Exam();
-        this.company = new Company();
         this.member = new ExamMember();
     }
 
     show(exam: Exam, member: ExamMember) {
-        this.company = this.cacheService.UserCompany;
         this.display = true;
         this.examQuestions = [];
         this.answers = [];
@@ -118,7 +115,7 @@ export class AnswerPrintDialog extends BaseComponent {
                     viewContainerRef.clear();
                     var componentRef = viewContainerRef.createComponent(componentFactory);
                     (<IQuestion>componentRef.instance).mode = 'review';
-                    (<IQuestion>componentRef.instance).render(question,answer, {seed:this.member.id});
+                    (<IQuestion>componentRef.instance).render(question,answer);
                 }
             });
             
