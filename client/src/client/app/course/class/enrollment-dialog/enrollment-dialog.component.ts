@@ -113,7 +113,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	}
 
 	delete(members) {
-		if (members && members.length)
+        if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {
                     var subscriptions = _.map(members,(member=> {
                         return member.delete(this);
@@ -125,7 +125,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
                     })
                 });
 	}
-
+	
 	loadMembers() {
 		if (this.course)
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {

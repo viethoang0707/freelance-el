@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/mergeMap';
 import { Credential } from '../models/credential.model';
 import { User } from '../models/elearning/user.model';
-import { CloudAccount } from '../models/elearning/cloud-account.model';
+import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service';
 import { CacheService } from './cache.service'
@@ -13,7 +13,16 @@ export class AuthService {
 
     constructor(private apiService: APIService, private cacheService: CacheService) {
     }
+    get StoredCredential(): Credential {
+        if (localStorage.getItem('credential'))
+            return MapUtils.deserialize(Credential, JSON.parse(atob(localStorage.getItem('credential'))));
+        else
+            return new Credential();
+    }
 
+    set StoredCredential(credential: Credential) {
+        localStorage.setItem('credential', btoa(JSON.stringify(credential)));
+    }
 
     login(info: Credential): Observable<User> {
         var cloud_acc = this.cacheService.CloudAcc;

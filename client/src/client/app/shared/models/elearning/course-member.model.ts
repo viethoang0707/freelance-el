@@ -90,9 +90,9 @@ export class CourseMember extends BaseModel{
     //     });
     // }
 
-    delete(context:APIContext):Observable<any> {
-    	var model = this.Model;
-        var cloud_acc = context.authService.StoredCredential.cloud_account;
-    	return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
-    }
+    // delete(context:APIContext):Observable<any> {
+    // 	var model = this.Model;
+    //     var cloud_acc = context.authService.StoredCredential.cloud_account;
+    // 	return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
+    // }
 }

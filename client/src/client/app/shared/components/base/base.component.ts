@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, Output, EventEmitter } from '@angular/cor
 import { APIService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { MessageService } from 'primeng/components/common/messageservice';
-import { APIContext } from '../../models/elearning/context';
+import { APIContext } from '../../models/context';
 import { ServiceLocator } from "../../../service.locator";
 import { ConfirmationService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
