@@ -123,6 +123,10 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					return member.role =='student';
 				});
 				this.selectedStudents = [];
+				this.teachers = _.filter(members, (member)=> {
+					return member.role =='teacher';
+				});
+				this.selectedTeachers = [];
 			});
 		if (this.courseClass)
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
