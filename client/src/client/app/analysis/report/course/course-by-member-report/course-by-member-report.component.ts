@@ -100,7 +100,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	    record["user_name"] = member.name;
 	    record["course_name"] = member.course_name;
 	    record["course_mode"] = this.translateService.instant(COURSE_MODE[member.course_mode]);
-	    record["course_code"] = this.translateService.instant(COURSE_MODE[member.course_code]);
+	    record["course_code"] = this.translateService.instant(member.course_code);
 	    record["enroll_status"] = this.translateService.instant(COURSE_MEMBER_ENROLL_STATUS[member.enroll_status]);
 	    record["first_attempt"] =  this.datePipe.transform(member.date_register,EXPORT_DATETIME_FORMAT);
 	    var result = this.reportUtils.analyzeCourseActivity(logs);
