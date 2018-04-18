@@ -80,14 +80,13 @@ export class CourseMember extends BaseModel{
         });
     }
 
-    delete(context:APIContext):Observable<any> {
-        return ConferenceMember.byCourseMember(context,this.id).flatMap(conferenceMember => {
-            if (!conferenceMember)
-                return this.delete(context);
-            else {
-                return Observable.zip(this.delete(context), conferenceMember.delete(context))
-            }
-        });
-    }
-
+    // delete(context:APIContext):Observable<any> {
+    //     return ConferenceMember.byCourseMember(context,this.id).flatMap(conferenceMember => {
+    //         if (!conferenceMember)
+    //             return this.delete(context);
+    //         else {
+    //             return Observable.zip(this.delete(context), conferenceMember.delete(context))
+    //         }
+    //     });
+    // }
 }

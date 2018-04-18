@@ -103,7 +103,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	}
 
 	delete(members) {
-		if (members && members.length)
+        if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {
                 var subscriptions = _.map(members,(member:CourseMember) => {
                     return member.delete(this);
@@ -115,7 +115,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
                 });
             });
 	}
-
+	
 	loadMembers() {
 		if (this.course)
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
@@ -123,6 +123,10 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					return member.role =='student';
 				});
 				this.selectedStudents = [];
+				this.teachers = _.filter(members, (member)=> {
+					return member.role =='teacher';
+				});
+				this.selectedTeachers = [];
 			});
 		if (this.courseClass)
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
