@@ -37,7 +37,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
     constructor(private reportUtils: ReportUtils, private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.records = [];
-        this.summary =  this.generateReportFooter(this.records);
+		this.summary =  this.generateReportFooter(this.records);
     }
 
     export() {
@@ -94,10 +94,15 @@ export class MemberByCourseReportComponent extends BaseComponent{
     }
 
     generateReportRow(course: Course, members: CourseMember[], logs: CourseLog[]):any {
-    	var record = {};
+		var record = {};
 	    record["course_name"] = course.name;
 	    record["course_code"] = course.code;
-	    record["total_member"] = members.length;
+		record["total_member"] = members.length;
+
+		var studentMembers = _.filter(members, (member: CourseMember)=> {
+			return member.role == 'student';
+		});
+
 	    var registeredMembers = _.filter(members, (member:CourseMember)=> {
 	    	return member.enroll_status == 'registered';
 	    });
@@ -106,7 +111,9 @@ export class MemberByCourseReportComponent extends BaseComponent{
 	    });
 	    var completededMembers = _.filter(members, (member:CourseMember)=> {
 	    	return member.enroll_status == 'completed';
-	    });
+		});
+		
+		record["total_member_student"] = studentMembers.length;
 	    record["total_member_registered"] = registeredMembers.length;
 	    record["percentage_member_registered"] = members.length ? Math.floor(registeredMembers.length/members.length*100):0;
 	    record["total_member_inprogress"] = inprogressMembers.length;
@@ -120,6 +127,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
 
     generateReportFooter(records:any) {
     	var summary = {
+			total_member_student:0,
     		total_member:records.length,
     		total_member_registered:0,
     		percentage_member_registered:0,
@@ -133,7 +141,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
     		_.each(summary, (key)=> {
     			summary[key] += record[key]
     		});
-    	});
+		});
     	return summary;
     }
 

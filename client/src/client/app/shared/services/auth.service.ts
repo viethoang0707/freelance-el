@@ -6,7 +6,9 @@ import { User } from '../models/elearning/user.model';
 import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service';
-import { CacheService } from './cache.service'
+import { CacheService } from './cache.service';
+declare function escape(s:string): string;
+declare function unescape(s:string): string;
 
 @Injectable()
 export class AuthService {
