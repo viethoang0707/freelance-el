@@ -25,6 +25,13 @@ import 'rxjs/add/observable/timer'; import * as _ from 'underscore';
     styleUrls: ['certificate-print.dialog.component.css'],
 })
 export class CertificatePrintDialog extends BaseComponent {
+     @ViewChild('printSection') printSection;
+
+    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+        super();
+        this.display = false;
+    }
+
    
 
     print() {
