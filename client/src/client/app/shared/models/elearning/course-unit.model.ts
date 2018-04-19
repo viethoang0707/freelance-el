@@ -12,9 +12,7 @@ export class CourseUnit extends BaseModel{
         super();
 		
 		this.name = undefined;
-        this.video_id = undefined;
         this.lecture = undefined;
-        this.video_url = undefined;
         this.type = undefined;
         this.order = undefined;
         this.parent_id = undefined;
@@ -27,9 +25,7 @@ export class CourseUnit extends BaseModel{
     order: number;
     icon: string;
     syllabus_id: number;
-    video_id: number;
     lecture: string;
-    video_url: string;
     type: string;
 
     static listBySyllabus(context:APIContext, sylId:number):Observable<any> {

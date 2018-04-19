@@ -4,27 +4,25 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
 
-@Model('etraining.video_lecture')
-export class VideoLecture extends BaseModel{
+@Model('etraining.scorm_lecture')
+export class SCORMLecture extends BaseModel{
 
     // Default constructor will be called by mapper
     constructor(){
         super();
         
-        this.transcript = undefined;
+        this.base_url = undefined;
         this.unit_id = undefined;
-        this.video_id = undefined;
-        this.video_url = undefined;
+        this.package_url = undefined;
     }
 
-    video_id: number;
-    transcript: string;
-    video_url: string;
+    base_url: string;
+    package_url: string;
     unit_id: number;
 
 
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
-        return VideoLecture.search(context,[],"[('unit_id','=',"+unitId+")]")
+        return SCORMLecture.search(context,[],"[('unit_id','=',"+unitId+")]")
         .map(lectures => {
             if (lectures.length)
                 return lectures[0];

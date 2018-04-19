@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, ViewChild} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -12,6 +12,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, COURSE_MEMBER_ROLE, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants';
+import { CertificatePrintDialog } from '../../../lms/course/certificate-print/certificate-print.dialog.component';
 
 
 @Component({
@@ -25,6 +26,8 @@ export class UserProfileDialog extends BaseDialog<User> {
     selectedNode: TreeNode;
     members: CourseMember[];
     COURSE_MEMBER_ENROLL_STATUS =  COURSE_MEMBER_ENROLL_STATUS;
+
+    @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
 	constructor(private treeUtils: TreeUtils) {
 		super();
@@ -60,6 +63,10 @@ export class UserProfileDialog extends BaseDialog<User> {
 					});
 				});
 		});
+	}
+
+	printCertificate(certificate) {
+		this.certPrintDialog.show(certificate);
 	}
 
 

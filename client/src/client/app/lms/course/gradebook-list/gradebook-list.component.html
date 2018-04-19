@@ -3,7 +3,10 @@
     <div class="ui-g-12 ">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
-          <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook(selectedClass) " [disabled]="!selectedRecord"></button>
+          <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook() " *ngIf="!selectedRecord"></button>
+        </div>
+        <div class="ui-toolbar-group-right">
+          <button pButton type="button " label="{{ 'Grant certificate'|translate}} " class="orange-btn " icon="ui-icon-luanch " (click)="issueCertificate() " *ngIf="selectedRecord"></button>
         </div>
       </p-toolbar>
       <p-table #classTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
@@ -37,6 +40,9 @@
             <th>
               {{'% completion'|translate}}
             </th>
+            <th>
+              {{'Certificate'|translate}}
+            </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-record>
@@ -49,6 +55,7 @@
             <td>{{record.time_spent}} {{'minute'|translate}}</td>
             <td>{{record.completion}} %</td>
             <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status]}}</td>
+            <td>{{record.certificate !=null}} %</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
@@ -56,7 +63,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td [attr.colspan]="8">
+            <td [attr.colspan]="9">
               {{'No records found'|translate}}
             </td>
           </tr>
@@ -65,6 +72,7 @@
     </div>
   </p-scrollPanel>
   <gradebook-dialog></gradebook-dialog>
+  <course-certificate-dialog></course-certificate-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>

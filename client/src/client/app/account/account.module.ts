@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
+import { LMSModule } from '../lms/lms.module';
 import { UserListComponent } from './user/user-list/user-list.component';
 import { UserDialog } from './user/user-dialog/user-dialog.component';
 import { UserExportDialog } from './user/export-dialog/export-dialog.component';
@@ -12,7 +13,7 @@ import { MenuPermissionDialog} from './permission/menu-permission-dialog/menu-pe
 import { AccessPermissionDialog } from './permission/access-permission-dialog/access-permission-dialog.component';
 
 @NgModule({
-    imports: [ErpSharedModule, AuthModule],
+    imports: [ErpSharedModule, AuthModule, LMSModule],
     declarations: [ UserListComponent,
                     UserDialog,
                     UserExportDialog,

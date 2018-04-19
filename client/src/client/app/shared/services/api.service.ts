@@ -27,6 +27,13 @@ export class APIService {
             .catch(error => Observable.throw(error));
     }
 
+    unzip(filename: any, cloudid: number):Observable<any>{
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(Config.CLOUD_ENDPOINT + '/cloud/unzip', JSON.stringify({cloudid: cloudid, filename:filename }), options)
+            .map((response: Response) => response.json());
+    }
+
     login(username: string, password: string, cloudid:number, api_endpoint:string):Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
