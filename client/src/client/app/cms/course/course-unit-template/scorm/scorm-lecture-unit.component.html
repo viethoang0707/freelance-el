@@ -5,7 +5,7 @@
       </p-fileUpload>
     </div>
     <div>
-      <button pButton type="button" label="{{'Preview'|translate}}" class="green-btn" icon="ui-icon-remove-red-eye" (click)="previewScorm()"></button>
+      <button pButton type="button" label="{{'Preview'|translate}}" class="green-btn" icon="ui-icon-remove-red-eye" *ngIf="lecture.base_url" (click)="previewScorm()"></button>
     </div>
   </div>
   <div class="ui-g-9">

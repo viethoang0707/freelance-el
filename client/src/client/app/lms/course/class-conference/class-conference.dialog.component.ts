@@ -68,7 +68,7 @@ export class ClassConferenceDialog extends BaseComponent {
 		if (this.conference.id && this.conference.status !='open' ) {
 			this.conference.status = 'open';
 			this.conference.save(this).subscribe(()=> {
-				this.messageService.add({severity:'info', summary:'Exam Info', detail: 'Conference open'});
+				this.info('Conference open');
 			});
 		}
 		if (!this.conference.id ) {
@@ -79,7 +79,7 @@ export class ClassConferenceDialog extends BaseComponent {
 				this.conference.class_id =  this.courseClass.id;
 				this.conference.status = 'open';
 				this.conference.save(this).subscribe(()=> {
-					this.messageService.add({severity:'info', summary:'Exam Info', detail: 'Conference open'});
+					this.info('Conference open');
 					_.each(this.members, (member)=> {
 						RoomMember.createRoomMember(this, member.name, member.image, room.id, member.role).subscribe(roomMember => {
 							var conferenceMember = new ConferenceMember();

@@ -1,0 +1,43 @@
+<p-dialog header="{{'Answer sheet'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true" appendTo="body">
+  <p-scrollPanel [style]="{width: '100%', height: '520px'}">
+    <div class="ui-g ans-print" #printSection>
+        <div class="ui-g-6 name-c">
+          <span>{{account.name}}</span>
+        </div>
+        <div class="ui-g-6 name-e">
+          <span>{{exam.name}}</span>
+        </div>
+        <div class="ui-g-4">
+          <span class="label">{{'Subject'|translate}}: </span><span class="title">{{exam.subject}}</span>
+        </div>
+        <div class="ui-g-4">
+          <span class="label">{{'Degree'|translate}}: </span><span class="title">{{exam.degree}}</span>
+        </div>
+        <div class="ui-g-4">
+          <span class="label">{{'Code'|translate}}: </span><span class="title">{{exam.code}}</span>
+        </div>
+        <div class="ui-g-12">
+          <span class="label">{{'Duration'|translate}}: </span><span>{{exam.duration}} {{'minutes'|translate}}</span>
+        </div>
+        <div class="ui-g-12">
+          <span class="ins" [innerHTML]="exam.instruction">{{exam.instruction}}</span>
+        </div>
+        <div class="ui-g-6 student">
+          <span>{{'Student'|translate}}: </span><span class="bold"> {{member.name}}</span>
+        </div>
+        <div class="ui-g-6">
+          <span>{{'Score'|translate}}: </span><span class="bold"> {{member.score}}</span>
+        </div>
+        <p-dataList [value]="examQuestions" [rows]="examQuestions.length" styleClass="l-question">
+          <ng-template let-question pTemplate="item" question-container>
+            <div question-container></div>
+          </ng-template>
+        </p-dataList>
+    </div>
+  </p-scrollPanel>
+  <p-footer>
+    <button type="button" pButton icon="ui-icon-print" (click)="print()" label="{{'Print'|translate}}"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+  
+</p-dialog>

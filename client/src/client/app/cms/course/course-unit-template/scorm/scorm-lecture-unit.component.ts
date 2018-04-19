@@ -59,6 +59,9 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.lecture.package_url = data["url"];
+						this.apiService.upload(this.lecture.package_url, this.authService.CloudAcc.id).subscribe((data)=> {
+							this.lecture.base_url = data["url"];
+						});
 					})
 				}
 			},

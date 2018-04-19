@@ -9,12 +9,14 @@ import { EXPORT_DATETIME_FORMAT, COURSE_MEMBER_ENROLL_STATUS } from '../../../sh
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
+import { CourseCertificate } from '../../../shared/models/elearning/course-certificate.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { CourseLog } from '../../../shared/models/elearning/log.model';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe} from '../../../shared/pipes/time.pipe';
 import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
+import { CourseCertificateDialog } from '../course-certificate/course-certificate.dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -29,7 +31,7 @@ export class GradebookListDialog extends BaseComponent {
 	display: boolean;
 	courseClass: CourseClass;
 	@ViewChild(GradebookDialog) gradebookDialog : GradebookDialog;
-
+	@ViewChild(CourseCertificateDialog) certificateDialog : CourseCertificateDialog;
 
 	constructor(private reportUtils: ReportUtils,private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -47,6 +49,23 @@ export class GradebookListDialog extends BaseComponent {
 			this.gradebookDialog.show(this.selectedRecord);
 	}
 
+	issueCertificate() {
+		if (this.selectedRecord) {
+			if (this.selectedRecord["certificate"]!=null)
+				this.info("Member already granted certificate")
+			else {
+				var certificate = new CourseCertificate();
+				certificate.date_issue = new Date();
+				certificate.course_id = this.courseClass.course_id;
+				certificate.member_id = this.selectedRecord["id"];
+				this.certificateDialog.show(certificate);
+			}
+			this.certificateDialog.onCreateComplete.subscribe(()=> {
+				this.selectedRecord["certificate"] =  true;
+			});
+		}
+	}
+
 	show(courseClass: CourseClass) {
 		this.display = true;
 		this.courseClass = courseClass;
@@ -57,6 +76,9 @@ export class GradebookListDialog extends BaseComponent {
 			CourseSyllabus.byCourse(this, courseClass.course_id).subscribe(syllabus=> {
 				CourseUnit.countBySyllabus(this, syllabus.id).subscribe(totalUnit=> {
 					_.each(this.records,(record=> {
+						CourseCertificate.byMember(this, record["id"]).subscribe(certificate=> {
+							record["certificate"] = certificate;
+						});
 						CourseLog.userStudyActivity(this,record["user_id"], this.courseClass.id).subscribe(logs => {
 							var result = this.reportUtils.analyzeCourseActivity(logs);
 						    if (result[0] != Infinity)

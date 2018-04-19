@@ -23,17 +23,19 @@ import { GradebookDialog } from './course/gradebook/gradebook.dialog.component';
 import { ClassExamEnrollDialog } from './course/class-exam-enroll/class-exam-enroll.dialog.component';
 import { ClassExamListDialog } from './course/class-exam-list/class-exam-list.dialog.component';
 import { CourseStudyDialog } from './course/course-study/course-study.dialog.component';
+import { CourseCertificateDialog } from './course/course-certificate/course-certificate.dialog.component';
+import { CertificatePrintDialog } from './course/certificate-print/certificate-print.dialog.component';
 
 
 @NgModule({
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,ExamMarkingDialog,
-    				CourseListComponent, CourseStudyDialog, QuestionMarkingDialog,
+    				CourseListComponent, CourseStudyDialog, QuestionMarkingDialog,CertificatePrintDialog,
     				ExamScoreDialog, AnswerPrintDialog, ClassListDialog,ClassExamListDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseMaterialListDialog,
     				CourseMaterialDialog, CourseFaqListDialog, CourseFaqDialog, CourseStudyDialog,
-    				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog],
-    exports: [],
+    				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog],
+    exports: [CertificatePrintDialog],
     providers: []
 })
 export class LMSModule {
