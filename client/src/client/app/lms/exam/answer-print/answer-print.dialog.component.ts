@@ -7,6 +7,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
+import { CloudAccount } from '../../../shared/models/cloud/cloud-account.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
@@ -31,6 +32,7 @@ export class AnswerPrintDialog extends BaseComponent {
     member: ExamMember;
     exam: Exam;
     submission: Submission;
+    account: CloudAccount;
 
      @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
      @ViewChild('printSection') printSection;
@@ -42,6 +44,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.answers = [];
         this.exam = new Exam();
         this.member = new ExamMember();
+        this.account = this.authService.CloudAcc;
     }
 
     show(exam: Exam, member: ExamMember) {
@@ -86,7 +89,7 @@ export class AnswerPrintDialog extends BaseComponent {
                     var componentHostArr =  this.questionsComponents.toArray();
                         for (var i =0;i<examQuestions.length;i++) {
                             var examQuestion =  examQuestions[i];
-                            var componentHost = componentHostArr[i];
+                            var componentHost = componentHostArr[i+1];
                             this.displayQuestion(examQuestion,componentHost);
                         }
                     }, 0); 
