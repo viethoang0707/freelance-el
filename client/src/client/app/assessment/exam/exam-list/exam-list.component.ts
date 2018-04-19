@@ -26,7 +26,7 @@ export class ExamListComponent extends BaseComponent {
     exams: Exam[];
     events: any[];
     header: any;
-    EXAM_STATUS =  EXAM_STATUS;
+    EXAM_STATUS = EXAM_STATUS;
 
     constructor() {
         super();
@@ -66,11 +66,11 @@ export class ExamListComponent extends BaseComponent {
     delete() {
         if (this.selectedExam)
             this.confirm('Are you sure to delete ?', () => {
-                    this.selectedExam.delete(this).subscribe(() => {
-                        this.loadExams();
-                        this.selectedExam = null;
-                    })
-                }
+                this.selectedExam.delete(this).subscribe(() => {
+                    this.loadExams();
+                    this.selectedExam = null;
+                })
+            }
             );
     }
 
@@ -80,7 +80,7 @@ export class ExamListComponent extends BaseComponent {
 
     onEventClick(event) {
         var examId = event.calEvent.id;
-        this.selectedExam = _.find(this.exams, (exam)=> {
+        this.selectedExam = _.find(this.exams, (exam) => {
             return exam.id == examId;
         });
         this.edit();
@@ -89,7 +89,7 @@ export class ExamListComponent extends BaseComponent {
     loadExams() {
         Exam.all(this).subscribe(exams => {
             this.exams = exams;
-            this.events = _.map(exams, (exam)=> {
+            this.events = _.map(exams, (exam) => {
                 return {
                     title: exam.name,
                     start: exam.start,
@@ -98,6 +98,15 @@ export class ExamListComponent extends BaseComponent {
                     allDay: true
                 }
             });
+            this.exams.sort((exam1, exam2): any => {
+                if (exam1.id < exam2.id)
+                    return -1;
+                else if (exam1.id > exam2.id)
+                    return 1;
+                else
+                    return 0;
+            });
+            console.log(this.exams);
         });
     }
 }

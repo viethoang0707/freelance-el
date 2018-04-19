@@ -38,7 +38,7 @@ export class CourseListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listByCategory(this,GROUP_CATEGORY.COURSE).subscribe(groups => {
+        Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
             this.tree = this.treeUtils.buildTree(groups);
         });
         this.loadCourses();
@@ -76,12 +76,29 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
-    nodeSelect(event:any) {
-        if (this.selectedNode)
-            this.displayCourses = _.filter(this.courses, (course=> {
-                return course.group_id ==  this.selectedNode.data.id;
-            }));
+    nodeSelect(event: any) {
+        console.log(this.selectedNode);
+        if (this.selectedNode) {
+            if (this.selectedNode.children.length == 0) {
+                this.displayCourses = _.filter(this.courses, (course => {
+                    return course.group_id == this.selectedNode.data.id;
+                }));
+            } else {
+                this.displayCourses = [];
+                this.selectedNode.children.forEach(node => {
+                    var filter = _.filter(this.courses, (course => {
+                        return course.group_id == node.data.id;
+                    }));
+                    filter.forEach(course => {
+                        this.displayCourses.push(course);
+                    });
+                });
+
+            }
+        }
+
     }
+
 
     delete() {
         if (this.selectedCourse)

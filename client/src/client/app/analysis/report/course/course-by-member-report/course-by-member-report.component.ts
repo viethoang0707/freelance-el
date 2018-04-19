@@ -58,6 +58,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
     		User.listByGroup(this, group.id).subscribe(users => {
     			this.generateReport(users).subscribe(records => {
+					records = records.filter( record => record.course_name != false);
 					this.records = records;
 					this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
 				});
@@ -69,6 +70,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
     	this.userDialog.show();
     	this.userDialog.onSelectUsers.subscribe((users:User[]) => {
 			this.generateReport(users).subscribe(records => {
+				records = records.filter( record => record.course_name != false);
 				this.records = records;
 				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
 			});
@@ -96,19 +98,34 @@ export class CourseByMemberReportComponent extends BaseComponent{
 
     generateReportRow(member: CourseMember, logs: CourseLog[]):any {
     	var record = {};
-	    record["user_login"] =  member.login;
+	    // record["user_login"] =  member.login;
+	    // record["user_name"] = member.name;
+	    // record["course_name"] = member.course_name;
+	    // record["course_mode"] = this.translateService.instant(COURSE_MODE[member.course_mode]);
+	    // record["course_code"] = this.translateService.instant(member.course_code);
+	    // record["enroll_status"] = this.translateService.instant(COURSE_MEMBER_ENROLL_STATUS[member.enroll_status]);
+	    // record["first_attempt"] =  this.datePipe.transform(member.date_register,EXPORT_DATETIME_FORMAT);
+	    // var result = this.reportUtils.analyzeCourseActivity(logs);
+	    // if (result[0] != Infinity)
+	    // 	record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
+    	// if (result[1] != Infinity)
+	    // 	record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATETIME_FORMAT);
+		// record["time_spent"] =  this.timePipe.transform(+result[2],'min');
+		
+		record["user_login"] =  member.login;
 	    record["user_name"] = member.name;
 	    record["course_name"] = member.course_name;
-	    record["course_mode"] = this.translateService.instant(COURSE_MODE[member.course_mode]);
-	    record["course_code"] = this.translateService.instant(member.course_code);
+		// record["course_mode"] = this.translateService.instant(COURSE_MODE[member.course_mode]);
+		record["course_mode"] = member.course_mode;
+	    record["course_code"] = member.course_code
 	    record["enroll_status"] = this.translateService.instant(COURSE_MEMBER_ENROLL_STATUS[member.enroll_status]);
-	    record["first_attempt"] =  this.datePipe.transform(member.date_register,EXPORT_DATETIME_FORMAT);
-	    var result = this.reportUtils.analyzeCourseActivity(logs);
-	    if (result[0] != Infinity)
-	    	record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
+	    record["date_register"] =  this.datePipe.transform(member.date_register,EXPORT_DATE_FORMAT);
+		var result = this.reportUtils.analyzeCourseActivity(logs);
+		if (result[0] != Infinity)
+	    	record["first_attempt"] =  result[0];
     	if (result[1] != Infinity)
-	    	record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATETIME_FORMAT);
-	    record["time_spent"] =  this.timePipe.transform(+result[2],'min');
+	    	record["last_attempt"] =  result[1];
+		record["time_spent"] =  this.timePipe.transform(+result[2],'min');
 	    return record;
     }
 
