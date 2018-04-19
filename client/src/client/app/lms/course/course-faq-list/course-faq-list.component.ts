@@ -68,14 +68,11 @@ export class CourseFaqListDialog extends BaseDialog<CourseFaq> {
 
 	delete() {
 		if (this.selectedFaq)
-			this.confirmationService.confirm({
-				message: this.translateService.instant('Are you sure to delete ?'),
-				accept: () => {
+			this.confirm('Are you sure to delete ?', () => {
 					this.selectedFaq.delete(this).subscribe(() => {
 						this.loadFaqs();
 						this.selectedFaq = null;
 					})
-				}
-			});
+				});
 	}
 }

@@ -25,10 +25,4 @@ export class QuestionSheet extends BaseModel{
             return sheets.length ? sheets[0]: null;
         });
     }
-
-    static byExercise( context:APIContext, exerciseId: number): Observable<any> {
-        return QuestionSheet.search(context,[],"[('exercise_id','=',"+exerciseId+")]").map(sheets =>{
-            return sheets.length ? sheets[0]: null;
-        });
-    }
 }

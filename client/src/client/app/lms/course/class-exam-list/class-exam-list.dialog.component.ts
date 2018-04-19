@@ -106,9 +106,9 @@ export class ClassExamListDialog extends BaseComponent {
 						this.markingDialog.show(exam);
 					});
 				} else {
-					this.messageService.add({ severity: 'info', summary: 'Exam Info', detail: 'Exam is not available for marking' });
+					this.info( 'Exam is not available for marking' );
 				}
-			})
+			});
 		}
 
 	}

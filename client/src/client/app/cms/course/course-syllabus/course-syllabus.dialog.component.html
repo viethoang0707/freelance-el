@@ -5,17 +5,16 @@
         <p-toolbar>
           <div class="ui-toolbar-group-left">
             <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
-            <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedNode"></button>
-            <button pButton type="button" pTooltip="{{'Move up'|translate}}" class="purple-btn" icon="ui-icon-arrow-upward" (click)="moveUp()" [disabled]="!selectedNode"></button>
-            <button pButton type="button" pTooltip="{{'Move down'|translate}}" class="purple-btn" icon="ui-icon-arrow-downward" (click)="moveDown()" [disabled]="!selectedNode"></button>
-            <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedNode"></button>
+            <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedNode"></button>
+            <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedNode" label="{{'Delete'|translate}}"></button>
           </div>
           <div class="ui-toolbar-group-right">
-            <button pButton type="button" label="{{'Clear selection'|translate}}" class="orange-btn" icon="ui-icon-clear" (click)="selectedNode=null" [disabled]="!selectedNode"></button>
+            <button pButton type="button" pTooltip="{{'Move up'|translate}}" class="purple-btn" icon="ui-icon-arrow-upward" (click)="moveUp()" *ngIf="selectedNode"></button>
+            <button pButton type="button" pTooltip="{{'Move down'|translate}}" class="purple-btn" icon="ui-icon-arrow-downward" (click)="moveDown()" *ngIf="selectedNode"></button>
           </div>
         </p-toolbar>
         <div class="ui-g-12">
-          <label>{{'Course structure'|translate}}</label>
+          <label>{{'Course syllabus'|translate}}</label>
           <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode"></p-tree>
         </div>
       </div>

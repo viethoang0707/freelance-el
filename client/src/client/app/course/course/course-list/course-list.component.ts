@@ -62,7 +62,10 @@ export class CourseListComponent extends BaseComponent {
 
     enroll() {
         if (this.selectedCourse) {
-            this.courseEnrollDialog.enrollCourse(this.selectedCourse);
+            if (this.selectedCourse.mode=='self-study')
+                this.courseEnrollDialog.enrollCourse(this.selectedCourse);
+            else if (this.selectedCourse.mode=='group')
+                this.classListDialog.show(this.selectedCourse);
         }
     }
 

@@ -9,6 +9,7 @@ import { SumPipe } from './exam/sum.pipe';
 import { CourseUnitContainerDirective } from './course/course-unit-template/unit-container.directive';
 import { FolderCourseUnitComponent } from './course/course-unit-template/folder/folder-unit.component';
 import { ExerciseCourseUnitComponent } from './course/course-unit-template/exercise/exercise-unit.component';
+import { SCORMLectureCourseUnitComponent} from './course/course-unit-template/scorm/scorm-lecture-unit.component';
 import { VideoLectureCourseUnitComponent} from './course/course-unit-template/video/video-lecture-unit.component';
 import { HtmlLectureCourseUnitComponent } from './course/course-unit-template/lecture/html-lecture-unit.component';
 import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog.component';
@@ -17,10 +18,10 @@ import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog
 	imports: [ErpSharedModule, AuthModule],
 	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, 
 	CourseSyllabusDialog,CourseUnitContainerDirective, FolderCourseUnitComponent,
-	ExerciseCourseUnitComponent, VideoLectureCourseUnitComponent,HtmlLectureCourseUnitComponent, CourseUnitDialog],
+	ExerciseCourseUnitComponent,SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,HtmlLectureCourseUnitComponent, CourseUnitDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog],
 	providers: [],
-	entryComponents:[FolderCourseUnitComponent,ExerciseCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
+	entryComponents:[FolderCourseUnitComponent,ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
 })
 export class CMSModule {
 }

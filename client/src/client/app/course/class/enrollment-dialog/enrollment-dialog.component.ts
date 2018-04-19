@@ -50,9 +50,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.course = new Course();
 	}
 
-	enrollCourse(course:Course, courseClass?:CourseClass) {
+	enrollCourse(course:Course) {
 		this.course = course;
-		this.courseClass = courseClass;
 		this.display = true;
 		this.processing = false;
 		this.selectedStudents = [];
@@ -60,7 +59,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.loadMembers();
 	}
 
-	enrollClass(courseClass:CourseClass) {
+	enrollClass(course:Course,courseClass:CourseClass) {
+		this.course = course;
 		this.courseClass = courseClass;
 		this.display = true;
 		this.processing = false;

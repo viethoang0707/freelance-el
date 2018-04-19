@@ -18,7 +18,7 @@ export class ExerciseQuestion extends BaseModel{
         this.level = undefined;
         this.group_id = undefined;
         this.question_id = undefined;
-        this.exercise_id = undefined;
+        this.unit_id = undefined;
         this.score = undefined;
         this.order = undefined;
         this.sheet_id = undefined;
@@ -26,8 +26,7 @@ export class ExerciseQuestion extends BaseModel{
     }
 
     question_id: number;
-    exercise_id: number;
-    sheet_id: number;
+    unit_id: number;
     score: number;
     order: number;
     level: string;
@@ -38,9 +37,6 @@ export class ExerciseQuestion extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
 
-    static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
-        return ExerciseQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
-    }
 
     static countByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
         return ExerciseQuestion.count(context,"[('exercise_id','=',"+exerciseId+")]");

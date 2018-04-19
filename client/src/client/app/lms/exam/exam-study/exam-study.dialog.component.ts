@@ -230,13 +230,11 @@ export class ExamStudyDialog extends BaseComponent {
 
 	submitExam() {
 		this.submitAnswer().subscribe(() => {
-			this.confirmationService.confirm({
-				message: this.translateService.instant('Are you sure to submit ?'),
-				accept: () => {
+			this.confirm('Are you sure to submit ?',() => {
 					this.timerSubject.next();
 					this.finishExam();
 				}
-			});
+			)
 		});
 	}
 

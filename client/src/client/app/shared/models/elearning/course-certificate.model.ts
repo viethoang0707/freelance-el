@@ -14,8 +14,8 @@ export class Certificate extends BaseModel{
 		this.course_id = undefined;
         this.member_id = undefined;
         this.date_issue = undefined;
-        this.attachment_id = undefined;
-        this.url = undefined;
+        this.qualification = undefined;
+        this.summary = undefined;
     }
     
     name:string;
@@ -23,8 +23,8 @@ export class Certificate extends BaseModel{
     member_id: number;
     @FieldProperty<Date>()
     date_issue:Date;
-    attachment_id: number;
-    url:string;
+    qualification: number;
+    summary:string;
 
     static byMember( context:APIContext, memberId: number): Observable<any[]> {
         return this.search(context,[],"[('member_id','!=',"+memberId+")]")

@@ -43,7 +43,7 @@ export class ReportUtils {
 		var first_attempt = _.min(startCourseUnitLogs, (log)=> {
 			return log.start.getTime();
 		});
-		var last_attempt = _.max(startCourseUnitLogs, (log)=> {
+		var last_attempt = _.max(endCourseUnitLogs, (log)=> {
 			return log.start.getTime();
 		});
 		var unitCount  = 0;
