@@ -17,15 +17,15 @@ export class ReportUtils {
 				let rowData = records[i];
 				let value = rowData[key];
 				if (i == 0) {
-					rowGroupMetadata[key] = { index: 0, size: 1 };
+					rowGroupMetadata[value] = { index: 0, size: 1 };
 				}
 				else {
 					let previousRowData = records[i - 1];
 					let previousRowGroup = previousRowData[key];
 					if (value === previousRowGroup)
-						rowGroupMetadata[key].size++;
+						rowGroupMetadata[value].size++;
 					else
-						rowGroupMetadata[key] = { index: i, size: 1 };
+						rowGroupMetadata[value] = { index: i, size: 1 };
 				}
 			}
 		}
