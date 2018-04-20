@@ -24,19 +24,21 @@
                             {{'Title'|translate}}
                             <p-sortIcon [field]="'title'"></p-sortIcon>
                         </th>
-                        <th [pSortableColumn]="'level'">
+                        <th width="40%">{{'Content'|translate}}</th>
+                        <th width="15%" [pSortableColumn]="'level'">
                             {{'Level'|translate}}
                             <p-sortIcon [field]="'level'"></p-sortIcon>
                         </th>
-                        <th [pSortableColumn]="'type'">
+                        <th width="20%" [pSortableColumn]="'type'">
                             {{'Type'|translate}}
                             <p-sortIcon [field]="'type'"></p-sortIcon>
-                        </th>
+                        </th>    
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-question>
                     <tr [pSelectableRow]="question">
                         <td style="text-align: left;">{{question.title}}</td>
+                        <td class="q-content" [innerHTML]="question.content">{{question.content}}</td>
                         <td class="showformb">{{QUESTION_LEVEL[question.level] | translate}}</td>
                         <td class="showformb">{{QUESTION_TYPE[question.type] | translate}}</td>
                     </tr>

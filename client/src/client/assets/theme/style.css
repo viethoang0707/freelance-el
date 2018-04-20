@@ -115,7 +115,11 @@ body .ui-fieldset .ui-fieldset-legend{
 }
 
 .card h1{
-  margin: 16px 0;
+  margin: 0 0 16px;
+}
+
+.card h1:first-child{
+  margin-top: 0;
 }
 
 .options-question .md-inputfield .ui-inputtext{
@@ -208,3 +212,14 @@ body .drop-report .ui-dropdown .ui-dropdown-trigger .fa{
   line-height: 30px;
 }
 /**/
+
+.material-icons, .fa{
+  vertical-align: -5px;
+}
+
+.q-content p{
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap; 
+  text-overflow: ellipsis;
+}
