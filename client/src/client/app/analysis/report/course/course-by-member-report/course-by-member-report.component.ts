@@ -19,7 +19,8 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 @Component({
     moduleId: module.id,
     selector: 'course-by-member-report',
-    templateUrl: 'course-by-member-report.component.html',
+	templateUrl: 'course-by-member-report.component.html',
+	styleUrls: ['course-by-member-report.component.css'],
 })
 @Report({
     title:'Course by member report',
@@ -31,6 +32,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	@ViewChild(SelectUsersDialog) userDialog : SelectUsersDialog;
 	records: any;
 	rowGroupMetadata: any;
+	flag: boolean= false;
 	GROUP_CATEGORY = GROUP_CATEGORY;
 
     constructor(private reportUtils: ReportUtils, private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
@@ -56,23 +58,27 @@ export class CourseByMemberReportComponent extends BaseComponent{
     selectUserGroup() {
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
+			this.flag = true;
     		User.listByGroup(this, group.id).subscribe(users => {
     			this.generateReport(users).subscribe(records => {
 					records = records.filter( record => record.course_name != false);
 					this.records = records;
 					this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
+					this.flag = false;
 				});
-    		});
+			});	
     	});
     }
 
     selectIndividualUsers() {
     	this.userDialog.show();
     	this.userDialog.onSelectUsers.subscribe((users:User[]) => {
+			this.flag = true;
 			this.generateReport(users).subscribe(records => {
 				records = records.filter( record => record.course_name != false);
 				this.records = records;
 				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
+				this.flag = false;
 			});
 		});
     }
