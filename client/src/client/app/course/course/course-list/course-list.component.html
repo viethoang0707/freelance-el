@@ -3,7 +3,8 @@
   <div class="ui-g">
     <div class="ui-g-12">
       <label>{{'Course group'|translate}}</label>
-      <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+      <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes"></p-tree>
+      <!-- <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree> -->
     </div>
     <div class="ui-g-12">
       <p-toolbar>
@@ -16,8 +17,7 @@
             <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedCourse"></button>
         </div>
       </p-toolbar>
-      <p-table #courseTable [value]="displayCourses" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse"
-        [responsive]="true">
+      <p-table #courseTable [value]="displayCourses | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true">
         <ng-template pTemplate="header">
           <tr>
             <th [pSortableColumn]="'name'">
