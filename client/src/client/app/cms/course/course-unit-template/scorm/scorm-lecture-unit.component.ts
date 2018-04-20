@@ -11,6 +11,7 @@ import { CourseUnitTemplate } from '../unit.decorator';
 import { ICourseUnit } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import * as RecordRTC from 'recordrtc';
+import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.model';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 
 	constructor(private ngZone: NgZone) {
 		super();
-		this.lecture = new VideoLecture();
+		this.lecture = new SCORMLecture();
 	}
 
 

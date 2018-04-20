@@ -36,7 +36,7 @@ export class ExerciseQuestion extends BaseModel{
     type: string;
     group_id: number;
     group_id__DESC__: string;
-
+    sheet_id: number;
 
     static countByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
         return ExerciseQuestion.count(context,"[('exercise_id','=',"+exerciseId+")]");
