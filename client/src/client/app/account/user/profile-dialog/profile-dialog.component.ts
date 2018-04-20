@@ -66,7 +66,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	printCertificate(certificate) {
-		this.certPrintDialog.show(certificate);
+		// this.certPrintDialog.show(certificate);
 	}
 
 

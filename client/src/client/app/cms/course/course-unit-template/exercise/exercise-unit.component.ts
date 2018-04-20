@@ -36,10 +36,10 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		if (this.unit.id)
-			ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
-				this.exerciseQuestions =  exerciseQuestions;
-			});
+		// if (this.unit.id)
+			// ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
+			// 	this.exerciseQuestions =  exerciseQuestions;
+			// });
 	}
 
 	removeOldQuestions():Observable<any> {
