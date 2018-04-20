@@ -35,6 +35,7 @@ export class CourseSyllabusDialog extends BaseComponent {
             {label: this.translateService.instant(COURSE_UNIT_TYPE['html']), command: ()=> { this.add('html')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['video']), command: ()=> { this.add('video')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['exercise']), command: ()=> { this.add('exercise')}},
+            {label: this.translateService.instant(COURSE_UNIT_TYPE['scorm']), command: ()=> { this.add('scorm')}},
         ];
     }
 

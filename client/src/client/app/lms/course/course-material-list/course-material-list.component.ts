@@ -68,14 +68,11 @@ export class CourseMaterialListDialog extends BaseComponent {
 
 	delete() {
 		if (this.selectedMaterial)
-			this.confirmationService.confirm({
-				message: this.translateService.instant('Are you sure to delete ?'),
-				accept: () => {
+			this.confirm('Are you sure to delete ?',() => {
 					this.selectedMaterial.delete(this).subscribe(() => {
 						this.loadMaterials();
 						this.selectedMaterial = null;
 					})
-				}
-			});
+				});
 	}
 }
