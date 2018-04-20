@@ -111,7 +111,10 @@ export class MemberByCourseReportComponent extends BaseComponent{
 
 	    var registeredMembers = _.filter(members, (member:CourseMember)=> {
 	    	return member.enroll_status == 'registered';
-	    });
+		});
+		
+		var registeredStudentMembers = registeredMembers.filter(member => member.role == 'student');
+
 	    var inprogressMembers = _.filter(members, (member:CourseMember)=> {
 	    	return member.enroll_status == 'in-study';
 	    });
@@ -120,7 +123,8 @@ export class MemberByCourseReportComponent extends BaseComponent{
 		});
 		
 		record["total_member_student"] = studentMembers.length;
-	    record["total_member_registered"] = registeredMembers.length;
+		// record["total_member_registered"] = registeredMembers.length;
+		record["total_member_student_registered"]=registeredStudentMembers.length;
 	    record["percentage_member_registered"] = members.length ? Math.floor(registeredMembers.length/members.length*100):0;
 	    record["total_member_inprogress"] = inprogressMembers.length;
 	    record["percentage_member_inprogress"] = members.length ? Math.floor(inprogressMembers.length/members.length*100):0;
