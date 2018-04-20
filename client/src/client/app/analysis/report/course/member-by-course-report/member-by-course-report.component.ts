@@ -20,7 +20,8 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 @Component({
     moduleId: module.id,
     selector: 'member-by-course-report',
-    templateUrl: 'member-by-course-report.component.html',
+	templateUrl: 'member-by-course-report.component.html',
+	styleUrls: ['member-by-course-report.component.css'],
 })
 @Report({
     title:'Member by course report',
