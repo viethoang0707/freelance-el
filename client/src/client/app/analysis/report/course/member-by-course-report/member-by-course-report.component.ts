@@ -90,7 +90,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
     	_.each(courses, (course:Course)=> {
     		var subscription = CourseMember.listByCourse(this, course.id).flatMap(members => {
     			return CourseLog.courseActivity(this, course.id).map(logs => {
-    				return self.generateReportRow(course, members, logs);
+    				return this.generateReportRow(course, members, logs);
 	    		});
     		});	
     		subscriptions.push(subscription);	
@@ -102,7 +102,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
 		var record = {};
 	    record["course_name"] = course.name;
 	    record["course_code"] = course.code;
-        var courseMemberData = reportUtls.analyseCourseMember(course, members);
+        var courseMemberData = this.reportUtils.analyseCourseMember(course, members);
         Object.assign(record, courseMemberData);
 	    var result = this.reportUtils.analyzeCourseActivity(logs);
 	    record["time_spent"] =  this.timePipe.transform(+result[2],'min');
