@@ -28,13 +28,16 @@ export class CourseListComponent extends BaseComponent {
     tree: TreeNode[];
     courses: Course[];
     displayCourses: Course[];
-    selectedNode: TreeNode;
+    // selectedNode: TreeNode;
+    filterGroups: Group[];
+    selectedGroupNodes: TreeNode[];
     selectedCourse: any;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 
     constructor(private treeUtils: TreeUtils) {
         super();
+        this.filterGroups = [];
     }
 
     ngOnInit() {
@@ -76,28 +79,28 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
-    nodeSelect(event: any) {
-        console.log(this.selectedNode);
-        if (this.selectedNode) {
-            if (this.selectedNode.children.length == 0) {
-                this.displayCourses = _.filter(this.courses, (course => {
-                    return course.group_id == this.selectedNode.data.id;
-                }));
-            } else {
-                this.displayCourses = [];
-                this.selectedNode.children.forEach(node => {
-                    var filter = _.filter(this.courses, (course => {
-                        return course.group_id == node.data.id;
-                    }));
-                    filter.forEach(course => {
-                        this.displayCourses.push(course);
-                    });
-                });
+    // nodeSelect(event: any) {
+    //     console.log(this.selectedNode);
+    //     if (this.selectedNode) {
+    //         if (this.selectedNode.children.length == 0) {
+    //             this.displayCourses = _.filter(this.courses, (course => {
+    //                 return course.group_id == this.selectedNode.data.id;
+    //             }));
+    //         } else {
+    //             this.displayCourses = [];
+    //             this.selectedNode.children.forEach(node => {
+    //                 var filter = _.filter(this.courses, (course => {
+    //                     return course.group_id == node.data.id;
+    //                 }));
+    //                 filter.forEach(course => {
+    //                     this.displayCourses.push(course);
+    //                 });
+    //             });
 
-            }
-        }
+    //         }
+    //     }
 
-    }
+    // }
 
 
     delete() {

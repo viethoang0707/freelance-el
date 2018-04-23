@@ -20,7 +20,8 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 @Component({
     moduleId: module.id,
     selector: 'member-by-course-report',
-    templateUrl: 'member-by-course-report.component.html',
+	templateUrl: 'member-by-course-report.component.html',
+	styleUrls: ['member-by-course-report.component.css'],
 })
 @Report({
     title:'Member by course report',
@@ -33,6 +34,7 @@ export class MemberByCourseReportComponent extends BaseComponent{
 	records: any;
 	summary: any;
 	GROUP_CATEGORY =  GROUP_CATEGORY;
+	flag: boolean= false;
 
     constructor(private reportUtils: ReportUtils, private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
@@ -59,22 +61,26 @@ export class MemberByCourseReportComponent extends BaseComponent{
     selectCourseGroup() {
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
+			this.flag = true;
     		this.summary = {};
     		Course.listByGroup(this, group.id).subscribe((courses:Course[]) => {
     			this.generateReport(courses).subscribe(records => {
 					this.records = records;
 					this.summary =  this.generateReportFooter(records);
+					this.flag = false;
 				});
     		});
     	});
     }
 
     selectIndividualCourses() {
-    	this.courseDialog.show();
+		this.courseDialog.show();
     	this.courseDialog.onSelectCourses.subscribe((courses:Course[]) => {
+			this.flag = true;
 			this.generateReport(courses).subscribe(records => {
 				this.records = records;
 				this.summary =  this.generateReportFooter(records);
+				this.flag = false;
 			});
 		});
     }

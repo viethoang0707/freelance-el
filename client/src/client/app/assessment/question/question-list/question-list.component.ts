@@ -27,12 +27,14 @@ export class QuestionListComponent extends BaseComponent {
     items: MenuItem[];
     questions: Question[];
     selectedQuestion: any;
-    selectedNode: TreeNode;
+    filterGroups: Group[];
+    selectedGroupNodes: TreeNode[];
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
 
     constructor(private treeUtils: TreeUtils) {
         super();
+        this.filterGroups = [];
     }
 
     ngOnInit() {
@@ -74,11 +76,11 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     loadQuestions() {
-        if (this.selectedNode)
-            Question.listByGroup(this, this.selectedNode.data.id).subscribe(questions => {
-                this.questions = questions;
-            });
-        else
+        // if (this.selectedNode)
+        //     Question.listByGroup(this, this.selectedNode.data.id).subscribe(questions => {
+        //         this.questions = questions;
+        //     });
+        // else
             Question.all(this).subscribe(questions => {
                 this.questions = questions;
             });

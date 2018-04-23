@@ -274,7 +274,8 @@
 	"Medium": "Trung bình",
 	"Hard": "Khó",
 	"Exam start time is required": "Chưa chọn thời gian kì thi bắt đầu",
-	"Exam end time is required": "Chưa chọn thời gian kì thi kết thúc"
-
+	"Exam end time is required": "Chưa chọn thời gian kì thi kết thúc",
+	"Email is required": "Nhập Email là bắt buộc",
+	"Phone is required": "Nhập phone là bắt buộc"
 
 }
