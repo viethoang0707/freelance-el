@@ -6,7 +6,6 @@ import { CourseMember } from '../../shared/models/elearning/course-member.model'
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { SelectItem } from 'primeng/api';
 import { Exam } from '../../shared/models/elearning/exam.model';
-import { Course } from '../../shared/models/elearning/course.model';
 import { DateUtils } from '../../shared/helpers/date.utils';
 import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
@@ -30,6 +29,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     events: any[];
     exams: Exam[];
     courses: Course[];
+    course: Course;
     selectedExam: any;
     header: any;
     now: Date;
@@ -47,6 +47,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
             right: 'month,agendaWeek,agendaDay'
         };
         this.now = new Date();
+        this.course = new Course();
     }
 
     ngOnInit() {

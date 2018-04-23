@@ -3,6 +3,8 @@ import { Group } from '../models/elearning/group.model';
 import { ExamLog, CourseLog } from '../models/elearning/log.model';
 import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
+import { Course } from '../models/elearning/course.model';
+import { CourseMember } from '../models/elearning/course-member.model';
 
 @Injectable()
 export class ReportUtils {
