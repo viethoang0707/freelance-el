@@ -42,21 +42,33 @@
                 <div *ngIf="password.errors.required">
                     {{'Password is required' | translate}}
                 </div>
-            </div>
+              </div>
           </span>
       </div>
 
       <div class="ui-g-6">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.email" name="email">
+            <input type="text" pInputText [(ngModel)]="object.email" #email="ngModel" name="email" required>
             <label>{{'Email'|translate}}</label>
+            <div *ngIf="email.invalid && (email.dirty || email.touched)"
+              class="ui-message ui-messages-error ui-corner-all">
+                <div *ngIf="email.errors.required">
+                    {{'Email is required' | translate}}
+                </div>
+            </div>
         </span>
       </div>
 
       <div class="ui-g-6">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.phone" name="phone">
+            <input type="text" pInputText [(ngModel)]="object.phone" #phone="ngModel" name="phone" required>
             <label>{{'Phone'|translate}}</label>
+             <div *ngIf="phone.invalid && (phone.dirty || phone.touched)"
+              class="ui-message ui-messages-error ui-corner-all">
+                <div *ngIf="phone.errors.required">
+                    {{'Phone is required' | translate}}
+                </div>
+            </div>
         </span>
       </div>
 
