@@ -39,11 +39,50 @@
       </div>
     </div>
   </div>
-    
-  <div class="ui-g-12" style="text-align:center">
+  <div class="ui-g-6" style="text-align:center">
     <p-panel header="{{'Exam schedule'|translate}}">
       <p-schedule #examSchedule [events]="events" (onDayClick)="onDayClick($event)" [header]="header" [editable]="true" (onEventClick)="onEventClick($event)"></p-schedule>
       <exam-dialog></exam-dialog>
     </p-panel>
-</div>
+  </div>
+  <div class="ui-g-6 global-sales">
+    <p-panel>
+      <p-header>
+        {{'Recent course' | translate}}
+        <span class="header-helper">{{now | date : "MM/yyyy"}}<</span>
+      </p-header>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>{{'Name'|translate}}</th>
+            <th>{{'Code'|translate}}</th>
+            <th>{{'Summary'|translate}}</th>
+            <th>{{'Mode'|translate}}</th>
+            <th>{{'Status'|translate}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let course of courses; let i = index">
+            <td>{{i+1}}</td>
+            <td><span class="profile-image-wrapper">
+                              <img [src]='course.logo | imageBase64'/>
+                              </span>
+            </td>
+            <td>{{course.name}}</td>
+            <td>{{course.code}}</td>
+            <td>{{course.summary}}</td>
+            <td>{{COURSE_MODE[course.mode] | translate}}</td>
+            <td>{{COURSE_STATUS[course.status] | translate}}</td>
+            <td>
+              <button pButton type="button" title="{{'Edit'|translate}}" class="message-btn secondary-btn" icon="ui-icon-mode-edit" (click)="edit(course)"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <course-dialog></course-dialog>
+    </p-panel>
+  </div>
 </div>

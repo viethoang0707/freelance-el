@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
+import { ReportUtils } from '../../../shared/helpers/report.utils';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
 import { Course } from '../../../shared/models/elearning/course.model';
@@ -41,7 +42,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     @ViewChild(CourseFaqListDialog) faqListDialog: CourseFaqListDialog;
     @ViewChild(CourseStudyDialog) studyDialog:CourseStudyDialog;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private reportUtils: ReportUtils) {
         super();
     }
 
@@ -58,6 +59,9 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                     return course.id;
                 });
                 _.each(courses, (course)=> {
+                    CourseMember.listByCourse(this, course.id).subscribe(members => {
+                        course.courseMemberData = this.reportUtils.analyseCourseMember(course,members);
+                    });
                     if (course.syllabus_id)
                         CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
                             course.unit_count = count;

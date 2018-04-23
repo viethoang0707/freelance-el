@@ -21,6 +21,7 @@ export class DashboardComponent extends BaseComponent implements OnInit{
 
     ngOnInit() {
     	this.viewMode = this.settingService.ViewMode;
+        console.log(this.viewMode);
     }
 
 }

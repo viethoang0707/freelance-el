@@ -6,9 +6,14 @@ import { CourseMember } from '../../shared/models/elearning/course-member.model'
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { SelectItem } from 'primeng/api';
 import { Exam } from '../../shared/models/elearning/exam.model';
+import { Course } from '../../shared/models/elearning/course.model';
+import { DateUtils } from '../../shared/helpers/date.utils';
 import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
 import * as _ from 'underscore';
+import * as moment from 'moment';
+import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '../../shared/models/constants'
+import { CourseDialog } from '../../course/course/course-dialog/course-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -24,26 +29,24 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     courseCount: any;
     events: any[];
     exams: Exam[];
+    courses: Course[];
     selectedExam: any;
     header: any;
-    viewModes: SelectItem[];
-    viewMode:string;
+    now: Date;
+    COURSE_MODE =  COURSE_MODE;
+    COURSE_STATUS = COURSE_STATUS;
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
+    @ViewChild(CourseDialog) courseDialog: CourseDialog;
     
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+    constructor(private dateUtils: DateUtils) {
         super();
-        this.viewModes = [{
-            label: this.translateService.instant('Calendar'),value:'cal'
-        },{
-            label: this.translateService.instant('List'),value:'list'
-        }];
-        this.viewMode = 'list';
         this.header = {
             left: 'prev, today, next',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         };
+        this.now = new Date();
     }
 
     ngOnInit() {
@@ -60,6 +63,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
             this.studentCount = count;
         });    
         this.loadExams();
+        this.loadRecentCourse();
     }
 
 
@@ -75,6 +79,13 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         this.examDialog.show(exam);
         this.examDialog.onUpdateComplete.subscribe(() => {
             this.loadExams();
+        });
+    }
+
+    editCourse(course) {
+        this.courseDialog.show(this.course);
+        this.courseDialog.onUpdateComplete.subscribe(() => {
+            this.loadRecentCourse();
         });
     }
 
@@ -103,6 +114,16 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
                 }
             });
         });
+    }
+
+    loadRecentCourse() {
+        var cloud_acc = this.authService.CloudAcc;
+        var startDateStr = moment(this.dateUtils.firstDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(this.dateUtils.lastDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
+        this.apiService.search(Course.Model,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]",
+         cloud_acc.id, cloud_acc.api_endpoint).subscribe(courses => {
+             this.courses = courses;
+         });
     }
 
 

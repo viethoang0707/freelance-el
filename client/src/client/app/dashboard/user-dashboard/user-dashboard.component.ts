@@ -1,10 +1,16 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import {MenuItem} from 'primeng/primeng';
 import { BaseComponent } from '../../shared/components/base/base.component';
+import { CourseMember } from '../../shared/models/elearning/course-member.model';
+import { Course } from '../../shared/models/elearning/course.model';
+import { CourseClass } from '..//../shared/models/elearning/course-class.model';
+import { ConferenceMember } from '../../shared/models/elearning/conference-member.model';
+import { Conference } from '../../shared/models/elearning/conference.model';
+import { Room } from '../../shared/models/meeting/room.model';
+import { MeetingService } from '../../shared/services/meeting.service';
+import { GROUP_CATEGORY, CONFERENCE_STATUS } from '../../shared/models/constants'
 
-/**
- * This class represents the lazy loaded HomeComponent.
- */
+
 declare var $: any;
 
 @Component({
@@ -13,7 +19,7 @@ declare var $: any;
     templateUrl: 'user-dashboard.component.html'
 
 })
-export class UserDashboardComponent {
+export class UserDashboardComponent extends BaseComponent implements OnInit {
 	cities: any[];
 
     cars: any[];
@@ -27,6 +33,13 @@ export class UserDashboardComponent {
     items: MenuItem[];
 
     header: any;
+
+    confMembers: ConferenceMember[];
+    CONFERENCE_STATUS =  CONFERENCE_STATUS;
+
+    constructor(private meetingSerivce:MeetingService) {
+        super();
+    }
 
 ngOnInit() {
 
@@ -68,6 +81,21 @@ ngOnInit() {
             center: 'title',
             right: 'month, agendaWeek, agendaDay'
         };
+
+        ConferenceMember.listByUser(this, this.authService.UserProfile.id)
+        .subscribe(members => {
+            this.confMembers = members;
+            _.each(members, (member)=> {
+                member.conference = new Conference();
+                Conference.get(this, member.conference_id).subscribe(conference => {
+                    member.conference = conference;
+                });
+            });
+        });
+    }
+
+    joinConference(member) {
+        this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref)
     }
 
 }

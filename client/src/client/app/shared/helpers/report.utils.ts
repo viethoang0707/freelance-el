@@ -87,4 +87,32 @@ export class ReportUtils {
 		return [first_attempt, last_attempt, onTime];
 	}
 
+	analyseCourseMember(course: Course, members: CourseMember[]):any {
+		var record = {};
+		record["total_member"] = members.length;
+
+		var studentMembers = _.filter(members, (member: CourseMember)=> {
+			return member.role == 'student';
+		});
+
+	    var registeredMembers = _.filter(members, (member:CourseMember)=> {
+	    	return member.enroll_status == 'registered';
+	    });
+	    var inprogressMembers = _.filter(members, (member:CourseMember)=> {
+	    	return member.enroll_status == 'in-study';
+	    });
+	    var completededMembers = _.filter(members, (member:CourseMember)=> {
+	    	return member.enroll_status == 'completed';
+		});
+		
+		record["total_member_student"] = studentMembers.length;
+	    record["total_member_registered"] = registeredMembers.length;
+	    record["percentage_member_registered"] = members.length ? Math.floor(registeredMembers.length/members.length*100):0;
+	    record["total_member_inprogress"] = inprogressMembers.length;
+	    record["percentage_member_inprogress"] = members.length ? Math.floor(inprogressMembers.length/members.length*100):0;
+	    record["total_member_completed"] = completededMembers.length;
+	    record["percentage_member_completed"] = members.length ? Math.floor(completededMembers.length/members.length*100):0;
+	    return record;
+    }
+
 }

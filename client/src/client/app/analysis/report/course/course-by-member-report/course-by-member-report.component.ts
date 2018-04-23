@@ -98,20 +98,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 
     generateReportRow(member: CourseMember, logs: CourseLog[]):any {
     	var record = {};
-	    // record["user_login"] =  member.login;
-	    // record["user_name"] = member.name;
-	    // record["course_name"] = member.course_name;
-	    // record["course_mode"] = this.translateService.instant(COURSE_MODE[member.course_mode]);
-	    // record["course_code"] = this.translateService.instant(member.course_code);
-	    // record["enroll_status"] = this.translateService.instant(COURSE_MEMBER_ENROLL_STATUS[member.enroll_status]);
-	    // record["first_attempt"] =  this.datePipe.transform(member.date_register,EXPORT_DATETIME_FORMAT);
-	    // var result = this.reportUtils.analyzeCourseActivity(logs);
-	    // if (result[0] != Infinity)
-	    // 	record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
-    	// if (result[1] != Infinity)
-	    // 	record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATETIME_FORMAT);
-		// record["time_spent"] =  this.timePipe.transform(+result[2],'min');
-		
+
 		record["user_login"] =  member.login;
 	    record["user_name"] = member.name;
 	    record["course_name"] = member.course_name;

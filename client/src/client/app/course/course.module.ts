@@ -14,7 +14,7 @@ import { CourseEnrollDialog } from './class/enrollment-dialog/enrollment-dialog.
     imports: [ErpSharedModule, AuthModule],
     declarations: [CourseComponent, CourseClassDialog, ClassListDialog,ByCoursePipe,ByClassPipe,
     				CourseListComponent, CourseDialog, CourseEnrollDialog],
-    exports: [],
+    exports: [CourseDialog],
     providers: []
 })
 export class CourseModule {
