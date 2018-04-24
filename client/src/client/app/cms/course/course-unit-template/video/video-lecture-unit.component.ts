@@ -85,14 +85,13 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 
 	startRecording() {
-		var self = this;
 		let mediaConstraints = {
 			video: true,
 			audio: true
 		};
 		navigator.mediaDevices
 			.getUserMedia(mediaConstraints)
-			.then(this.successCallback.bind(this), self.errorCallback.bind(this));
+			.then(this.successCallback.bind(this), this.errorCallback.bind(this));
 	}
 
 	stopRecording() {

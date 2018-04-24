@@ -2,16 +2,18 @@
 import { APIContext } from './context';
 import { MapUtils }  from '../helpers/map.utils';
 import { Observable, Subject } from 'rxjs/Rx';
-import { MODEL_METADATA_KEY, ModelRegister } from './decorator';
+import { MODEL_METADATA_KEY, ModelRegister,FieldProperty } from './decorator';
 import * as _ from 'underscore';
 
 
 export abstract class BaseModel {
     id		:	number;
-    create_date: string;
+    @FieldProperty<Date>()
+    create_date: Date;
+    @FieldProperty<Date>()
+    write_date: Date;
     create_uid: number;
     create_uid__DESC__: string;
-    write_date: string;
     write_uid: number;
     write_uid__DESC__: string;
     active    :    boolean;

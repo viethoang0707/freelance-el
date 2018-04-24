@@ -16,10 +16,12 @@ ul {
         <p-header>
         </p-header>
         <div class="ui-g">
-          <div class="ui-g-8">
+          <div class="ui-g-4">
             <span class="profile-image-wrapper">
                 <img [src]='course.logo | imageBase64'/>
             </span>
+          </div>
+          <div class="ui-g-4">
             <h4>
               <span>{{course.name}}</span>
             </h4>
@@ -70,6 +72,33 @@ ul {
                 <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage class'| translate}}" label="{{'Manage class'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageClass(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
               </p-footer>
             </p-card>
+          </div>
+          <div class="ui-g-12 status-bars" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group'" >
+            <div class="card">
+              <ul>
+                <li>
+                  <div class="status-bar status-bar-2">
+                    <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_registered}}%">{{course.courseMemberData.percentage_member_registered}}%</div>
+                  </div>
+                  <span>{{'Registered'|translate}}</span>
+                  <i class="material-icons">&#xE86C;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-3">
+                    <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_inprogress}}%">{{course.courseMemberData.percentage_member_inprogress}}%</div>
+                  </div>
+                  <span>{{'In-progress'|translate}}</span>
+                  <i class="material-icons">&#xE868;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-4">
+                    <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_completed}}%">{{course.courseMemberData.percentage_member_completed}}</div>
+                  </div>
+                  <span>{{'Completed'|translate}}</span>
+                  <i class="material-icons">&#xE8B2;</i>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </p-card>

@@ -56,19 +56,6 @@
                     <td>{{record.total_time_spent | timeConvert:'min'}}</td>
                 </tr>
             </ng-template>
-            <!-- <ng-template pTemplate="footer">
-                <tr>
-                    <td colspan="2">{{'Total'|translate}}</td>
-                    <td>{{summary.total_member}}</td>
-                    <td>{{summary.total_member_registered}}</td>
-                    <td>{{summary.percentage_member_registered}}</td>
-                    <td>{{summary.total_member_inprogress}}</td>
-                    <td>{{summary.percentage_member_inprogress}}</td>
-                    <td>{{summary.total_member_complete}}</td>
-                    <td>{{summary.percentage_member_complete}}</td>
-                    <td>{{summary.total_time_spent | timeConvert:'min'}}</td>
-                </tr>
-            </ng-template> -->
             <ng-template pTemplate="summary">
                 {{'Total records'|translate}} : {{records?.length}}
             </ng-template>
