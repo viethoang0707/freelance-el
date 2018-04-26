@@ -26,7 +26,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	@Input() selectedLang: string;
 	@Input() adminMode: boolean;
 
-	constructor(private parent:HomeComponent, private eventManager: HomeEventManager) {
+	constructor(private router:Router, private parent:HomeComponent, private eventManager: HomeEventManager) {
 		super();
 		this.langs = _.map(LANGS, (val, key)=> {
 			return { label: val, value: key};
@@ -53,6 +53,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
 	setViewMode($event:any) {
 		this.settingService.ViewMode = $event.value;
+		this.router.navigate(['/dashboard']);
 	}
 }
 

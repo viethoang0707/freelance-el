@@ -7,6 +7,7 @@ import { CourseMember } from '../../shared/models/elearning/course-member.model'
 import { Course } from '../../shared/models/elearning/course.model';
 import { ExamMember } from '../../shared/models/elearning/exam-member.model';
 import { Exam } from '../../shared/models/elearning/exam.model';
+import { ExamQuestion } from '../../shared/models/elearning/exam-question.model';
 import { CourseClass } from '../../shared/models/elearning/course-class.model';
 import { ConferenceMember } from '../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../shared/models/elearning/conference.model';
@@ -65,17 +66,29 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
                 });
             });
-
         this.currentUser = this.authService.UserProfile;
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
-            var courseIds = _.pluck(members, 'course_id');
-            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
-                .map(courses => {
-                    return _.flatten(courses);
-                })
-                .subscribe(courses => {
-                    courses = _.uniq(courses, (course) => {
-                        return course.id;
+            var courseIds = _.pluck(members,'course_id');
+            courseIds = _.filter(courseIds, (id)=> {
+                return id && id!='';
+            });
+            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
+            .map(courses => {
+                return _.flatten(courses);
+            })
+            .subscribe(courses => {
+                courses = _.uniq(courses, (course)=> {
+                    return course.id;
+                });
+                _.each(courses, (course)=> {
+                    if (course.syllabus_id)
+                        CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
+                            course.unit_count = count;
+                        });
+                    else
+                        course.unit_count  = 0;
+                    course.member = _.find(members, (member:CourseMember)=> {
+                        return member.course_id == course.id;
                     });
                     _.each(courses, (course) => {
                         if (course.syllabus_id)
@@ -91,11 +104,11 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
                     this.courses = courses;
                 });
+            });
         });
 
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             var examIds = _.pluck(members, 'exam_id');
-            console.log(examIds);
             Exam.array(this, examIds)
                 .subscribe(exams => {
                     _.each(exams, (exam) => {
@@ -110,10 +123,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         });
                     });
                     this.exams = _.filter(exams, (exam) => {
-                        console.log(exam);
                         return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                     });
                 });
+                 this.exams = _.filter(exams, (exam=> {
+                     return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
+                }));
+            });
         });
     }
 
