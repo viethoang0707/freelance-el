@@ -15,13 +15,11 @@ import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
-import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
-import * as _ from 'underscore';
 import { QuestionMarkingDialog } from '../question-marking/question-marking.dialog.component';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Http, Response } from '@angular/http';
@@ -55,7 +53,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => { 
 	        var memberId = +params['memberId']; 
 	        var examId = +params['examId']; 
-	        Exam.get(this, courseId).subscribe(exam => {
+	        Exam.get(this, examId).subscribe(exam => {
 	        	ExamMember.get(this, memberId).subscribe(member => {
 	        		this.member =  member;
 					this.exam =  exam;
