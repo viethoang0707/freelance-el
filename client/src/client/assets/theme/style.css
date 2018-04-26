@@ -126,10 +126,6 @@ body .ui-fieldset .ui-fieldset-legend{
   width: 550px;
 }
 
-.ui-state-default{
-  background-color: #fff;
-}
-
 /* responsive */
 
 .ui-toolbar-group-left{
@@ -222,4 +218,31 @@ body .drop-report .ui-dropdown .ui-dropdown-trigger .fa{
   overflow: hidden;
   white-space: nowrap; 
   text-overflow: ellipsis;
+}
+
+/* lms-list */
+.cont{
+  margin-top: 10px;
+}
+
+body .cont.ui-accordion .ui-accordion-header > a{
+  padding-left: 14px;
+  color: #2779aa;
+}
+
+body .ui-widget-content .cont .fa{
+  color: #2779aa;
+}
+
+body .cont.ui-accordion .ui-accordion-header{
+  background: none;
+  border: none;
+  color: #2779aa;
+}
+
+body .cont.ui-accordion .ui-accordion-header:not(.ui-state-active):not(.ui-state-disabled):hover {
+  background-color: #dcf0f9; }
+
+body .cont.ui-accordion .ui-accordion-header.ui-state-active{
+  background-color: #dcf0f9;
 }

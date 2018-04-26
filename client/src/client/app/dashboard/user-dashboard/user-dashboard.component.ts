@@ -22,7 +22,6 @@ import { QuestionMarkingDialog } from '../../lms/exam/question-marking/question-
 import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
 import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
-import { ExamQuestion } from '../../shared/models/elearning/exam-question.model';
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
 
 declare var $: any;
@@ -68,27 +67,17 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             });
         this.currentUser = this.authService.UserProfile;
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
-            var courseIds = _.pluck(members,'course_id');
-            courseIds = _.filter(courseIds, (id)=> {
-                return id && id!='';
+            var courseIds = _.pluck(members, 'course_id');
+            courseIds = _.filter(courseIds, (id) => {
+                return id && id != '';
             });
-            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
-            .map(courses => {
-                return _.flatten(courses);
-            })
-            .subscribe(courses => {
-                courses = _.uniq(courses, (course)=> {
-                    return course.id;
-                });
-                _.each(courses, (course)=> {
-                    if (course.syllabus_id)
-                        CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                            course.unit_count = count;
-                        });
-                    else
-                        course.unit_count  = 0;
-                    course.member = _.find(members, (member:CourseMember)=> {
-                        return member.course_id == course.id;
+            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
+                .map(courses => {
+                    return _.flatten(courses);
+                })
+                .subscribe(courses => {
+                    courses = _.uniq(courses, (course) => {
+                        return course.id;
                     });
                     _.each(courses, (course) => {
                         if (course.syllabus_id)
@@ -100,21 +89,27 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         course.member = _.find(members, (member: CourseMember) => {
                             return member.course_id == course.id;
                         });
+                        _.each(courses, (course) => {
+                            if (course.syllabus_id)
+                                CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
+                                    course.unit_count = count;
+                                });
+                            else
+                                course.unit_count = 0;
+                            course.member = _.find(members, (member: CourseMember) => {
+                                return member.course_id == course.id;
+                            });
 
+                        });
+                        this.courses = courses;
                     });
-                    this.courses = courses;
                 });
-            });
         });
 
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             var examIds = _.pluck(members, 'exam_id');
             Exam.array(this, examIds)
-            .subscribe(exams => {
-                _.each(exams, (exam)=> {
-                    exam.member = _.find(members, (member:ExamMember)=> {
-                        return member.exam_id == exam.id;
-                    });
+                .subscribe(exams => {
                     _.each(exams, (exam) => {
                         exam.member = _.find(members, (member: ExamMember) => {
                             return member.exam_id == exam.id;
@@ -126,14 +121,12 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                             exam.question_count = count;
                         });
                     });
-
+                    this.exams = _.filter(exams, (exam) => {
+                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+                    });
                 });
-                 this.exams = _.filter(exams, (exam=> {
-                     return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
-                }));
-            });
         });
-    }
+    });
 
     joinConference(member) {
         this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref)
@@ -181,5 +174,4 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         }
         );
     }
-
 }
