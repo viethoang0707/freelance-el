@@ -125,9 +125,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                     });
                 });
-            this.exams = _.filter(exams, (exam => {
-                return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-            }));
         });
     });
 
