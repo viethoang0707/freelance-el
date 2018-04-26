@@ -7,6 +7,7 @@ import { CourseMember } from '../../shared/models/elearning/course-member.model'
 import { Course } from '../../shared/models/elearning/course.model';
 import { ExamMember } from '../../shared/models/elearning/exam-member.model';
 import { Exam } from '../../shared/models/elearning/exam.model';
+import { ExamQuestion } from '../../shared/models/elearning/exam-question.model';
 import { CourseClass } from '../../shared/models/elearning/course-class.model';
 import { ConferenceMember } from '../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../shared/models/elearning/conference.model';
@@ -63,11 +64,12 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
                 });
             });
-        });
-
         this.currentUser = this.authService.UserProfile;
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             var courseIds = _.pluck(members,'course_id');
+            courseIds = _.filter(courseIds, (id=> {
+                return id;
+            }))
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
             .map(courses => {
                 return _.flatten(courses);
@@ -96,9 +98,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             var examIds = _.pluck(members,'exam_id');
             Exam.array(this, examIds)
             .subscribe(exams => {
-                this.exams = _.filter(exams, (exam)=> {
-                     return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
-                });
+
                 _.each(exams, (exam)=> {
                     exam.member = _.find(members, (member:ExamMember)=> {
                         return member.exam_id == exam.id;
@@ -110,7 +110,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         exam.question_count = count;
                     });
                 });
-                
+                 this.exams = _.filter(exams, (exam)=> {
+                     return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
+                });
             });
         });
     }
