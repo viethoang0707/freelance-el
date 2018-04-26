@@ -15,9 +15,6 @@ import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
-import { CourseMember } from '../../../shared/models/elearning/course-member.model';
-import { Course } from '../../../shared/models/elearning/course.model';
-import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
 import { ClassExamListDialog } from '../class-exam-list/class-exam-list.dialog.component';
 import { GradebookListDialog } from '../gradebook-list/gradebook-list.component';

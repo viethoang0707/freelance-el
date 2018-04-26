@@ -13,6 +13,7 @@ import { SelectItem } from 'primeng/api';
 import { ExamDialog } from '../../../assessment/exam/exam-dialog/exam-dialog.component';
 import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
 import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
@@ -31,7 +32,7 @@ export class ClassExamListDialog extends BaseComponent {
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
 	@ViewChild(ExamContentDialog) examContentDialog:ExamContentDialog;
 
-	constructor() {
+	constructor(private router: Router) {
 		super();
 		this.display = false;
 		this.courseClass = new CourseClass();
