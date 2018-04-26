@@ -12,9 +12,9 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { SelectItem } from 'primeng/api';
 import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
-import { ExamStudyDialog} from '../exam-study/exam-study.dialog.component';
-import { ExamMarkingDialog} from '../exam-marking/exam-marking.dialog.component';
-import { ExamScoreDialog } from '../exam-score/exam-score.dialog.component';
+import { ExamStudyDialog } from '../exam-study/exam-study.dialog.component';
+import { ReportUtils } from '../../../shared/helpers/report.utils';
+import { Route, Router } from '@angular/router';
 
 
 @Component({
@@ -27,64 +27,54 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     exams: Exam[];
     EXAM_STATUS = EXAM_STATUS;
-    @ViewChild(ExamContentDialog) examContentDialog:ExamContentDialog;
-    @ViewChild(ExamStudyDialog) examStudyDialog:ExamStudyDialog;
-    @ViewChild(ExamMarkingDialog) markingDialog:ExamMarkingDialog;
-    @ViewChild(ExamScoreDialog) scoreDialog:ExamScoreDialog;
+    @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
+    @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
 
-    constructor() {
+    constructor(private reportUtils: ReportUtils, private router: Router) {
         super();
         this.exams = [];
     }
 
     ngOnInit() {
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
-            var examIds = _.pluck(members,'exam_id');
+            var examIds = _.pluck(members, 'exam_id');
             Exam.array(this, examIds)
-            .subscribe(exams => {
-                _.each(exams, (exam)=> {
-                    exam.member = _.find(members, (member:ExamMember)=> {
-                        return member.exam_id == exam.id;
+                .subscribe(exams => {
+                    _.each(exams, (exam) => {
+                        exam.member = _.find(members, (member: ExamMember) => {
+                            return member.exam_id == exam.id;
+                        });
+                        exam.member.examScore(this, exam.id).subscribe(score => {
+                            exam.member.score = score;
+                        });
+                        ExamQuestion.countByExam(this, exam.id).subscribe(count => {
+                            exam.question_count = count;
+                        });
+                        exam.examMemberData = {};
+                        ExamMember.listByExam(this, exam.id).subscribe(members => {
+                            exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
+                        });
                     });
-                    exam.member.examScore(this, exam.id).subscribe(score=> {
-                        exam.member.score = score;
-                    });
-                    ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                        exam.question_count = count;
+                    
+                    this.exams = _.filter(exams, (exam) => {
+                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                     });
                 });
-                this.exams = _.filter(exams, (exam)=> {
-                     return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
-                });
-            });
         });
     }
 
-    markExam(exam:Exam) {
-       exam.containsOpenEndQuestion(this).subscribe(result => {
-           if (result) {
-               this.markingDialog.show(exam);
-           } else {
-                this.messageService.add({severity:'info', summary:'Exam Info', detail: 'Exam is not available for marking'});
-           }
-       })
+    manageExam(exam: Exam, member: ExamMember) {
+        this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
     }
 
-    editContent(exam:Exam) {
+    editContent(exam: Exam) {
         this.examContentDialog.show(exam);
     }
 
-    viewScore(exam:Exam) {
-        this.scoreDialog.show(exam);
-    }
-
-    startExam(exam:Exam, member: ExamMember) {
-        this.confirmationService.confirm({
-                message: this.translateService.instant('Are you sure to start ?'),
-                accept: () => {
-                    this.examStudyDialog.show(exam, member);
-                }
-            });
-        
+    startExam(exam: Exam, member: ExamMember) {
+        this.confirm('Are you sure to start ?', () => {
+            this.examStudyDialog.show(exam, member);
+        }
+        );
     }
 }

@@ -65,11 +65,9 @@ ul {
                 </li>
               </ul>
               <p-footer>
-                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student'" [disabled]="course.status !='published'"></button>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
                 <button pButton type="button" icon="ui-icon-edit" title="{{'Edit syllabus'| translate}}" label="{{'Edit course'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
-                <button pButton type="button" icon="ui-icon-cloud-download" title="{{'Course material'|translate}}" label="{{'Course material'| translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageMaterial(  course)" *ngIf="course.member && course.member.role=='teacher'  && course.status =='published'"></button>
-                <button pButton type="button" icon="ui-icon-question-answer" title="{{'FAQ'|translate}}" label="{{'FAQ'| translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageFaq(course)" *ngIf="course.member && course.member.role=='teacher'  && course.status =='published'"></button>
-                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage class'| translate}}" label="{{'Manage class'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageClass(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
+                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage course'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageCourse(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
               </p-footer>
             </p-card>
           </div>
@@ -105,8 +103,4 @@ ul {
     </ng-template>
   </p-dataList>
   <course-syllabus-dialog></course-syllabus-dialog>
-  <class-list-dialog></class-list-dialog>
-  <course-material-list-dialog></course-material-list-dialog>
-  <course-study-dialog></course-study-dialog>
-  <course-faq-list-dialog></course-faq-list-dialog>
 </div>

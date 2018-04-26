@@ -8,9 +8,8 @@
                     <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedClassExam"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" icon="ui-icon-star" title="{{'Mark'| translate}}" *ngIf="selectedClassExam" label="{{'Mark'|translate}}" class="orange-btn">
+                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage'| translate}}" *ngIf="selectedClassExam" label="{{'Manage'|translate}}" (click)="manageExam()" class="orange-btn">
                     </button>
-                    <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'| translate}}" *ngIf="selectedClassExam" label="{{'Result'|translate}}" class="orannge-btn" (click) ="viewScore()"></button>
                 </div>
             </p-toolbar>
             <p-table #examTable [value]="classExams" [paginator]="true" [rows]="10" selectionMode="single" 
@@ -56,8 +55,6 @@
     </div>
 <exam-dialog></exam-dialog>
 <class-exam-enroll-dialog></class-exam-enroll-dialog>
-<exam-marking-dialog></exam-marking-dialog>
-<exam-score-dialog></exam-score-dialog>
 <exam-content-dialog></exam-content-dialog>
   <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>

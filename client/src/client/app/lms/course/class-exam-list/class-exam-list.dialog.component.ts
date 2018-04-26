@@ -12,9 +12,8 @@ import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { SelectItem } from 'primeng/api';
 import { ExamDialog } from '../../../assessment/exam/exam-dialog/exam-dialog.component';
 import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
-import { ExamMarkingDialog } from '../../exam/exam-marking/exam-marking.dialog.component';
-import { ExamScoreDialog } from '../../exam/exam-score/exam-score.dialog.component';
 import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
@@ -31,11 +30,9 @@ export class ClassExamListDialog extends BaseComponent {
 
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
-	@ViewChild(ExamMarkingDialog) markingDialog: ExamMarkingDialog;
-	@ViewChild(ExamScoreDialog) scoreDialog: ExamScoreDialog;
 	@ViewChild(ExamContentDialog) examContentDialog:ExamContentDialog;
 
-	constructor() {
+	constructor(private router: Router) {
 		super();
 		this.display = false;
 		this.courseClass = new CourseClass();
@@ -98,19 +95,11 @@ export class ClassExamListDialog extends BaseComponent {
 		}
 	}
 
-	markExam() {
-		if (this.selectedClassExam) {
-			this.selectedClassExam.containsOpenEndQuestion(this).subscribe(result => {
-				if (result) {
-					Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
-						this.markingDialog.show(exam);
-					});
-				} else {
-					this.info( 'Exam is not available for marking' );
-				}
+	manageExam() {
+		if (this.selectedClassExam) 
+			ExamMember.byExamAndUser(this,this.selectedClassExam.id, this.authService.UserProfile.id ).subscribe(member=> {
+				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.id, member.id]);
 			});
-		}
-
 	}
 
 	editContent() {
@@ -119,10 +108,6 @@ export class ClassExamListDialog extends BaseComponent {
 						this.examContentDialog.show(exam);
 			});
 		}
-	}
-
-	viewScore(exam: Exam) {
-		this.scoreDialog.show(exam);
 	}
 
 }
