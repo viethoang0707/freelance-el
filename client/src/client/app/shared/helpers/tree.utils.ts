@@ -27,6 +27,8 @@ export class TreeUtils {
         target = _.find(groups, (group)=> {
         return group.id == target.parent_id;
       });
+      else
+        target = null;
     }
     return false;
   }
