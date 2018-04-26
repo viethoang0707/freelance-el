@@ -4,21 +4,29 @@
     <ng-template let-exam pTemplate="item">
       <p-card>
         <p-header>
-              <div class="head-exam">
-              </div>
-            </p-header>
+          <div class="head-exam">
+          </div>
+        </p-header>
         <div class="ui-g body-exam">
           <div class="ui-g-8">
             <h4>{{exam.name}}</h4>
             <span class="e-status">
               {{EXAM_STATUS[exam.status] | translate}}
             </span>
-            <h5 class="e-title">{{'Summary'|translate}}</h5>
+            <!-- <h5 class="e-title">{{'Summary'|translate}}</h5>
             <p>
               {{exam.summary}}
             </p>
             <h5 class="e-title">{{'Instruction'|translate}}</h5>
-            <p [innerHTML]="exam.instruction"></p>
+            <p class="ins" [innerHTML]="exam.instruction"></p> -->
+            <p-accordion styleClass="cont">
+              <p-accordionTab header="{{'Summary' | translate}}">
+                {{exam.summary}}
+              </p-accordionTab>
+              <p-accordionTab header="{{'Instruction' | translate}}">
+                <p [innerHTML]="exam.instruction"></p>
+              </p-accordionTab>
+            </p-accordion>
           </div>
           <div class="ui-g-4">
             <p-card>
@@ -87,7 +95,6 @@
 
         </div>
         <p-footer>
-          
         </p-footer>
       </p-card>
     </ng-template>

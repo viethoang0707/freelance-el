@@ -30,7 +30,7 @@ export class CourseDialog extends BaseDialog<Course> {
 		super();
 		this.courseStatus = _.map(COURSE_STATUS, (val, key)=> {
 			return {
-				label: val,
+				label: this.translateService.instant(val),
 				value: key
 			}
 		});
