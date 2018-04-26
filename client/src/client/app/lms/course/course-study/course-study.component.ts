@@ -13,12 +13,11 @@ import { Course } from '../../../shared/models/elearning/course.model';
 
 @Component({
     moduleId: module.id,
-    selector: 'course-study-dialog',
-    templateUrl: 'course-study.dialog.component.html',
+    selector: 'course-study',
+    templateUrl: 'course-study.component.html',
 })
-export class CourseStudyDialog extends BaseComponent {
+export class CourseStudyComponent extends BaseComponent implements OnInit{
 
-	display: boolean;
 	course: Course;
 
 	constructor() {
@@ -26,15 +25,6 @@ export class CourseStudyDialog extends BaseComponent {
 	}
 
 	ngOnInit() {
-	}
-
-	hide() {
-		this.display = false;
-	}
-
-
-	show(course: Course) {
-		this.display = true;
-		this.course = course;
+		
 	}
 }

@@ -15,11 +15,6 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
-import { GradebookListDialog } from '../gradebook-list/gradebook-list.component';
-import { ClassListDialog } from '../class-list/class-list.dialog.component';
-import { CourseMaterialListDialog } from '../course-material-list/course-material-list.component'
-import { CourseFaqListDialog } from '../course-faq-list/course-faq-list.component';
-import { CourseStudyDialog } from '../course-study/course-study.dialog.component';
 
 
 @Component({
@@ -36,11 +31,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     COURSE_STATUS = COURSE_STATUS;
     COURSE_MODE = COURSE_MODE;
     @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;
-    @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
-    @ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
-    @ViewChild(CourseMaterialListDialog) materialListDialog: CourseMaterialListDialog;
-    @ViewChild(CourseFaqListDialog) faqListDialog: CourseFaqListDialog;
-    @ViewChild(CourseStudyDialog) studyDialog:CourseStudyDialog;
 
     constructor(private router: Router, private reportUtils: ReportUtils) {
         super();
@@ -59,6 +49,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                     return course.id;
                 });
                 _.each(courses, (course)=> {
+                    course.courseMemberData = {};
                     CourseMember.listByCourse(this, course.id).subscribe(members => {
                         course.courseMemberData = this.reportUtils.analyseCourseMember(course,members);
                     });
@@ -99,18 +90,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     studyCourse(course:Course) {
         if (course.syllabus_id && course.status =='published')
-            this.studyDialog.show(course);
+            this.router.navigate(['/lms/courses/study',course.id, member.id]);
     }
 
-    manageMaterial(course:Course) {
-       this.materialListDialog.show(course);
-    }
-
-    manageFaq(course:Course) {
-       this.faqListDialog.show(course);
-    }
-
-    manageClass(member: CourseMember, course: Course) {
-        this.classListDialog.show(member, course);
+    manageCourse(member: CourseMember, course: Course) {
+        this.router.navigate(['/lms/courses/manage',course.id, member.id]);
     }
 }

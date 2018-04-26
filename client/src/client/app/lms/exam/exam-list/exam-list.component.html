@@ -52,11 +52,39 @@
               <p-footer>
                 <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(exam, exam.member)" *ngIf="exam.member.role=='candidate'" [disabled]="!exam.IsAvailable || exam.member.enroll_status=='completed'"></button>
                 <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(exam)" *ngIf="exam.member.role=='supervisor'"></button>
-                <button pButton type="button" icon="ui-icon-star" title="{{'Mark'| translate}}" label="{{'Mark'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="markExam(exam)" *ngIf="exam.member.role=='supervisor'"></button>
-                <button pButton type="button" icon="ui-icon-timeline" title="{{'Result'| translate}}" label="{{'Result'|translate}}" class="orange-btn" style="margin-right:4px;" *ngIf="exam.member.role=='supervisor'" (click)="viewScore(exam)"></button>
+                <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage exam'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageExam(exam, exam.member)" *ngIf="exam.member.role=='supervisor'"></button>
               </p-footer>
             </p-card>
           </div>
+
+          <div class="ui-g-12 status-bars" *ngIf="exam.member && exam.member.role=='supervisor'" >
+            <div class="card">
+              <ul>
+                <li>
+                  <div class="status-bar status-bar-2">
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_registered}}%">{{exam.examMemberData.percentage_member_registered}}%</div>
+                  </div>
+                  <span>{{'Registered'|translate}}</span>
+                  <i class="material-icons">&#xE86C;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-3">
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_inprogress}}%">{{exam.examMemberData.percentage_member_inprogress}}%</div>
+                  </div>
+                  <span>{{'In-progress'|translate}}</span>
+                  <i class="material-icons">&#xE868;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-4">
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_completed}}%">{{exam.examMemberData.percentage_member_completed}}</div>
+                  </div>
+                  <span>{{'Completed'|translate}}</span>
+                  <i class="material-icons">&#xE8B2;</i>
+                </li>
+              </ul>
+            </div>
+          </div>
+
         </div>
         <p-footer>
           
@@ -64,8 +92,6 @@
       </p-card>
     </ng-template>
   </p-dataList>
-  <exam-marking-dialog></exam-marking-dialog>
   <exam-content-dialog></exam-content-dialog>
-  <exam-score-dialog></exam-score-dialog>
   <exam-study-dialog></exam-study-dialog>
 </div>
