@@ -55,9 +55,18 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                             exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
                         });
                     });
-                    
+
                     this.exams = _.filter(exams, (exam) => {
                         return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+                    });
+
+                    this.exams.sort((exam1, exam2): any => {
+                        if (exam1.create_date > exam2.create_date)
+                            return -1;
+                        else if (exam1.create_date < exam2.create_date)
+                            return 1;
+                        else
+                            return 0;
                     });
                 });
         });
