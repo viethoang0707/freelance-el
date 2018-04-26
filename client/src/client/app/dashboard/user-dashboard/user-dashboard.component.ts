@@ -23,7 +23,6 @@ import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dial
 import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog} from '../../lms/exam/exam-study/exam-study.dialog.component';
 
-
 declare var $: any;
 
 @Component({
@@ -48,16 +47,20 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     constructor(private meetingSerivce:MeetingService, private router: Router) {
         super();
+        this.courses = [];
+        this.exams = [];
     }
+
 
     ngOnInit() {
         ConferenceMember.listByUser(this, this.authService.UserProfile.id)
-        .subscribe(members => {
-            this.confMembers = members;
-            _.each(members, (member)=> {
-                member.conference = new Conference();
-                Conference.get(this, member.conference_id).subscribe(conference => {
-                    member.conference = conference;
+            .subscribe(members => {
+                this.confMembers = members;
+                _.each(members, (member) => {
+                    member.conference = new Conference();
+                    Conference.get(this, member.conference_id).subscribe(conference => {
+                        member.conference = conference;
+                    });
                 });
             });
         });
@@ -113,7 +116,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     joinConference(member) {
-        this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref)
+        this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref)
     }
 
     getCourseSyllabus(course:Course):Observable<any> {
@@ -157,7 +160,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     this.examStudyDialog.show(exam, member);
                 }
            );
-        
     }
 
 }
