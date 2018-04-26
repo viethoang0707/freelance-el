@@ -69,9 +69,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.currentUser = this.authService.UserProfile;
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             var courseIds = _.pluck(members,'course_id');
-            courseIds = _.filter(courseIds, (id=> {
-                return id;
-            }))
+            courseIds = _.filter(courseIds, (id)=> {
+                return id && id!='';
+            });
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
             .map(courses => {
                 return _.flatten(courses);
@@ -104,6 +104,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
                     this.courses = courses;
                 });
+            });
         });
 
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
@@ -127,9 +128,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
 
                 });
-                 this.exams = _.filter(exams, (exam)=> {
+                 this.exams = _.filter(exams, (exam=> {
                      return exam.member.role=='supervisor' || (exam.member.role=='candidate' && exam.status == 'published');
-                });
+                }));
             });
         });
     }
