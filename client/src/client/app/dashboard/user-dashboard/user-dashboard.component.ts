@@ -95,11 +95,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             var examIds = _.pluck(members, 'exam_id');
+            console.log(examIds);
             Exam.array(this, examIds)
                 .subscribe(exams => {
-                    this.exams = _.filter(exams, (exam) => {
-                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-                    });
                     _.each(exams, (exam) => {
                         exam.member = _.find(members, (member: ExamMember) => {
                             return member.exam_id == exam.id;
@@ -111,7 +109,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                             exam.question_count = count;
                         });
                     });
-
+                    this.exams = _.filter(exams, (exam) => {
+                        console.log(exam);
+                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+                    });
                 });
         });
     }

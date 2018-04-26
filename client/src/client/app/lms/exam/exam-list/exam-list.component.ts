@@ -40,9 +40,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             var examIds = _.pluck(members, 'exam_id');
             Exam.array(this, examIds)
                 .subscribe(exams => {
-                    this.exams = _.filter(exams, (exam) => {
-                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-                    });
                     _.each(exams, (exam) => {
                         exam.member = _.find(members, (member: ExamMember) => {
                             return member.exam_id == exam.id;
@@ -58,7 +55,10 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                             exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
                         });
                     });
-
+                    
+                    this.exams = _.filter(exams, (exam) => {
+                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+                    });
                 });
         });
     }
