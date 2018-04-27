@@ -28,7 +28,7 @@ export class ExamDialog extends BaseDialog<Exam> {
         this.locale = DEFAULT_DATE_LOCALE;
         this.examStatus = _.map(EXAM_STATUS, (val, key)=> {
             return {
-                label: val,
+                label: this.translateService.instant(val),
                 value: key
             }
         });

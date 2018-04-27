@@ -9,7 +9,7 @@
         </p-header>
         <div class="ui-g body-exam">
           <div class="ui-g-8">
-            <h4>{{exam.name}}</h4>
+            <h4 class="title">{{exam.name}}</h4>
             <span class="e-status">
               {{EXAM_STATUS[exam.status] | translate}}
             </span>
@@ -19,6 +19,7 @@
             </p>
             <h5 class="e-title">{{'Instruction'|translate}}</h5>
             <p class="ins" [innerHTML]="exam.instruction"></p> -->
+            <div class="clearfix"></div>
             <p-accordion styleClass="cont">
               <p-accordionTab header="{{'Summary' | translate}}">
                 {{exam.summary}}
@@ -27,6 +28,34 @@
                 <p [innerHTML]="exam.instruction"></p>
               </p-accordionTab>
             </p-accordion>
+            
+            <div class="status-bars" *ngIf="exam.member && exam.member.role=='supervisor'" >
+            <!-- <div class="card"> -->
+              <ul>
+                <li>
+                  <div class="status-bar status-bar-2">
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_registered}}%">{{exam.examMemberData.percentage_member_registered}}%</div>
+                  </div>
+                  <span>{{'Registered'|translate}}</span>
+                  <i class="material-icons">&#xE86C;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-3">
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_inprogress}}%">{{exam.examMemberData.percentage_member_inprogress}}%</div>
+                  </div>
+                  <span>{{'In-progress'|translate}}</span>
+                  <i class="material-icons">&#xE868;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-4">
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_completed}}%">{{exam.examMemberData.percentage_member_completed}}</div>
+                  </div>
+                  <span>{{'Completed'|translate}}</span>
+                  <i class="material-icons">&#xE8B2;</i>
+                </li>
+              </ul>
+            </div>
+          <!-- </div> -->
           </div>
           <div class="ui-g-4">
             <p-card>
@@ -64,35 +93,6 @@
               </p-footer>
             </p-card>
           </div>
-
-          <div class="ui-g-12 status-bars" *ngIf="exam.member && exam.member.role=='supervisor'" >
-            <div class="card">
-              <ul>
-                <li>
-                  <div class="status-bar status-bar-2">
-                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_registered}}%">{{exam.examMemberData.percentage_member_registered}}%</div>
-                  </div>
-                  <span>{{'Registered'|translate}}</span>
-                  <i class="material-icons">&#xE86C;</i>
-                </li>
-                <li>
-                  <div class="status-bar status-bar-3">
-                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_inprogress}}%">{{exam.examMemberData.percentage_member_inprogress}}%</div>
-                  </div>
-                  <span>{{'In-progress'|translate}}</span>
-                  <i class="material-icons">&#xE868;</i>
-                </li>
-                <li>
-                  <div class="status-bar status-bar-4">
-                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_completed}}%">{{exam.examMemberData.percentage_member_completed}}</div>
-                  </div>
-                  <span>{{'Completed'|translate}}</span>
-                  <i class="material-icons">&#xE8B2;</i>
-                </li>
-              </ul>
-            </div>
-          </div>
-
         </div>
         <p-footer>
         </p-footer>

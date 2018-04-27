@@ -277,6 +277,8 @@
 	"Exam end time is required": "Chưa chọn thời gian kì thi kết thúc",
 	"Email is required": "Nhập Email là bắt buộc",
 	"Phone is required": "Nhập phone là bắt buộc",
-	"Select the correct answer is required": "Chọn đáp án đúng là bắt buộc"
+	"Select the correct answer is required": "Chọn đáp án đúng là bắt buộc",
+	"Department": "Phòng ban",
+	"User groups": "Hệ thống người dùng"
 
 }

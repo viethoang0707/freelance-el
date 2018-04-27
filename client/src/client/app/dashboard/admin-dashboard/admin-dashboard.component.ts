@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular
 import { MenuItem } from 'primeng/primeng';
 import { User } from '../../shared/models/elearning/user.model';
 import { Course } from '../../shared/models/elearning/course.model';
+import { CourseDialog } from '../../course/course/course-dialog/course-dialog.component';
 import { CourseMember } from '../../shared/models/elearning/course-member.model';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { SelectItem } from 'primeng/api';
@@ -11,8 +12,7 @@ import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '../../shared/models/constants'
-import { CourseDialog } from '../../course/course/course-dialog/course-dialog.component';
+import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '../../shared/models/constants';
 
 @Component({
     moduleId: module.id,
@@ -84,6 +84,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editCourse(course) {
+        this.course = course;
         this.courseDialog.show(this.course);
         this.courseDialog.onUpdateComplete.subscribe(() => {
             this.loadRecentCourse();
