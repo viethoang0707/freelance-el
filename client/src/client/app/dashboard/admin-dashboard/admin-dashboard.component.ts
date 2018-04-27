@@ -85,10 +85,9 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editCourse(course) {
-        this.course = course;
-        this.courseDialog.show(this.course);
+        this.courseDialog.show(course);
         this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.loadRecentCourse();
+            this.loadCourses();
         });
     }
 
