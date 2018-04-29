@@ -64,7 +64,8 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
             this.studentCount = count;
         });    
         this.loadExams();
-        this.loadRecentCourse();
+        // this.loadRecentCourse();
+        this.loadCourses();
     }
 
 
@@ -84,9 +85,9 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editCourse(course) {
-        this.courseDialog.show(this.course);
+        this.courseDialog.show(course);
         this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.loadRecentCourse();
+            this.loadCourses();
         });
     }
 
@@ -125,6 +126,15 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
          cloud_acc.id, cloud_acc.api_endpoint).subscribe(courses => {
              this.courses = courses;
          });
+    }
+
+    loadCourses() {
+        var cloud_acc = this.authService.CloudAcc;
+        var startDateStr = moment(this.dateUtils.firstDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(this.dateUtils.lastDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
+        Course.search(this,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]", ).subscribe(courses => {
+            this.courses = courses;
+        });
     }
 
 
