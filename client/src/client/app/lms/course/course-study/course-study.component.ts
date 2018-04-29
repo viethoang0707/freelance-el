@@ -10,7 +10,6 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { SelectItem } from 'primeng/api';
 import { Course } from '../../../shared/models/elearning/course.model';
 
-
 @Component({
     moduleId: module.id,
     selector: 'course-study',

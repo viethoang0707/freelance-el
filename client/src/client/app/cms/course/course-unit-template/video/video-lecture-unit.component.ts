@@ -23,6 +23,7 @@ import * as RecordRTC from 'recordrtc';
 })
 export class VideoLectureCourseUnitComponent extends BaseComponent implements AfterViewInit, ICourseUnit {
 
+	@Input() mode;
 	unit: CourseUnit;
 	lecture: VideoLecture;
 	uploadInprogress: boolean;

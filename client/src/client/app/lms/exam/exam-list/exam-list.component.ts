@@ -67,6 +67,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                         else
                             return 0;
                     });
+                });
         });
     }
 
@@ -80,8 +81,8 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     startExam(exam: Exam, member: ExamMember) {
         this.confirm('Are you sure to start ?', () => {
-            this.examStudyDialog.show(exam, member);
-        }
+                this.examStudyDialog.show(exam, member);
+            }
         );
     }
 }
