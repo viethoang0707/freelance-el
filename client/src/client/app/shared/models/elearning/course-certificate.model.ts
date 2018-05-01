@@ -16,6 +16,14 @@ export class Certificate extends BaseModel{
         this.date_issue = undefined;
         this.qualification = undefined;
         this.summary = undefined;
+
+        this.course_name = undefined;
+        this.course_code = undefined;
+        this.course_mode = undefined;
+        this.member_name = undefined;
+        this.member_login = undefined;
+        this.member_image = undefined;
+
     }
     
     name:string;
@@ -25,6 +33,12 @@ export class Certificate extends BaseModel{
     date_issue:Date;
     qualification: number;
     summary:string;
+    member_name: string;
+    member_login: string;
+    member_image: string;
+    course_name: string;
+    course_mode: string;
+    course_code: string;
 
     static byMember( context:APIContext, memberId: number): Observable<any[]> {
         return this.search(context,[],"[('member_id','!=',"+memberId+")]")

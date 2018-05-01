@@ -12,7 +12,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
- COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+ COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
@@ -22,6 +22,9 @@ import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
 import { CourseMaterialDialog } from '../course-material/course-material.dialog.component';
+import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
+import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
+import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 
 
 @Component({
@@ -39,13 +42,19 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	faqs: CourseFaq[];
 	selectedMaterial: CourseMaterial;
 	materials: CourseMaterial[];
+	tree: TreeNode[];
+	syl: CourseSyllabus;
+	selectedNode: TreeNode;
+	units: CourseUnit[];
+	selectedUnit:CourseUnit;
+	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ClassConferenceDialog) conferenceDialog : ClassConferenceDialog;
 	@ViewChild(ClassExamListDialog) examListDialog : ClassExamListDialog;
 	@ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
 
-	constructor(private router: Router, private route: ActivatedRoute) {
+	constructor(private router: Router, private route: ActivatedRoute, private sylUtils:SyllabusUtils) {
 		super();
 		this.classes = [];
 		this.faqs = [];
@@ -74,7 +83,14 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 					this.loadFaqs();
 					this.loadMaterials();
 	        	});
+	        	CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+		        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
+						this.units = units;
+						this.tree = this.sylUtils.buildTree(units);
+			        });
+		        });
 	        });
+	        
 	    }); 
 
 		

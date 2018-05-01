@@ -22,9 +22,10 @@ import { CourseSettingDialog } from './course/course-setting/course-setting.dial
 	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,
 	CourseSyllabusDialog,CourseUnitContainerDirective, FolderCourseUnitComponent,CourseSettingDialog,
 	ExerciseCourseUnitComponent,SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,HtmlLectureCourseUnitComponent, CourseUnitDialog],
-	exports: [ExamContentDialog, CourseSyllabusDialog],
+	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog],
 	providers: [],
-	entryComponents:[FolderCourseUnitComponent,ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
+	entryComponents:[FolderCourseUnitComponent,ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, 
+	VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
 })
 export class CMSModule {
 }

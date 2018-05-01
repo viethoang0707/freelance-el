@@ -86,8 +86,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					member.class_id =  this.courseClass.id;
 				}
 				member.role = role;
-				if (this.course)
-					member.course_id = this.course.id;
+				member.course_id = this.course.id;
 				member.user_id = user.id;
 				member.status = 'active';
 				member.enroll_status = 'registered';
@@ -95,9 +94,20 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				subscriptions.push(member.save(this));
 				this.subscription.unsubscribe();
 			});
-			Observable.forkJoin(...subscriptions).subscribe(() => {
+			Observable.zip(...subscriptions).subscribe((members) => {
 				this.processing = false;
-				this.loadMembers();
+				if (this.course.prequisite_course_id) 
+					_.each(members, (member=> {
+						CourseMember.checkCourseEnrollCondition(this,member.user_id, this.course.prequisite_course_id).subscribe(success=> {
+							if (!success) {
+								member.status = 'suspend';
+								member.save(this).subscribe();
+							}
+						});
+					}));
+				else {
+					this.loadMembers();
+				}
 			});
 		});
 	}
