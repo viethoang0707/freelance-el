@@ -64,11 +64,11 @@ export class QuestionImportDialog extends BaseComponent {
 					var optionLength = 1;
 					while (i + optionLength < this.records.length && !this.records[i + optionLength]["group_code"])
 						optionLength++;
-					if (type =="sc" && optionLength) {
+					if ((type =="sc" || type =="mc") && optionLength) {
 						for (var j=0;j< optionLength && i < this.records.length;j++) {
 							var optionRecord = this.records[j+i];
 							var option = new QuestionOption();
-							option.is_correct = j==0;
+							option.is_correct = optionRecord["correct"] == 'Y';
 							option.content = optionRecord["option"];
 							options.push(option);
 						}

@@ -1,0 +1,19 @@
+.options-question li{
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+.options-question p-checkbox{
+  float: left;
+}
+
+.options-question .md-inputfield{
+  float: left;
+  margin-left: 5px;
+}
+
+.options-question .ui-button.ui-button-icon-only{
+  margin-left: 10px;
+  width: 2em;
+  height: 2em;
+}

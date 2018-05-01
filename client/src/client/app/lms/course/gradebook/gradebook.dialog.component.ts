@@ -21,8 +21,8 @@ import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { AnswerPrintDialog } from '../../exam/answer-print/answer-print.dialog.component';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
-import { CertificateDialog } from '../../exam/course-certificate/course-certificate.dialog.component';
-import { CertificatePrintDialog } from '../../exam/certificate-print/certificate-print.dialog.component';
+import { CourseCertificateDialog } from '../../course/course-certificate/course-certificate.dialog.component';
+import { CertificatePrintDialog } from '../../course/certificate-print/certificate-print.dialog.component';
 
 
 @Component({
@@ -39,7 +39,7 @@ export class GradebookDialog extends BaseComponent {
     certificate: Certificate;
 
 	@ViewChild(AnswerPrintDialog) answerSheetDialog:AnswerPrintDialog;
-    @ViewChild(CertificateDialog) certDialog:CertificateDialog;
+    @ViewChild(CourseCertificateDialog) certDialog:CourseCertificateDialog;
     @ViewChild(CertificatePrintDialog) certPrintDialog:CertificatePrintDialog;
 
 	constructor() {
