@@ -6,14 +6,14 @@ import { APIContext } from '../context';
 import { ConferenceMember } from './conference-member.model';
 
 @Model('etraining.course_member')
-export class CourseMember extends BaseModel{
+export class CourseMember extends BaseModel {
 
     // Default constructor will be called by mapper
-    constructor(){
+    constructor() {
         super();
-		
-		this.course_id = undefined;
-		this.class_id = undefined;
+
+        this.course_id = undefined;
+        this.class_id = undefined;
         this.date_register = undefined;
         this.status = undefined;
         this.role = undefined;
@@ -29,7 +29,7 @@ export class CourseMember extends BaseModel{
         this.image = undefined;
         this.group_id = undefined;
         this.group_id__DESC__ = undefined;
-	}
+    }
 
     course_id: number;
     user_id: number;
@@ -50,16 +50,16 @@ export class CourseMember extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
 
-    static listByUser( context:APIContext, userId: number): Observable<any[]> {
-        return CourseMember.search(context,[],"[('user_id','=',"+userId+")]");
+    static listByUser(context: APIContext, userId: number): Observable<any[]> {
+        return CourseMember.search(context, [], "[('user_id','='," + userId + ")]");
     }
 
-    static listByClass( context:APIContext, classId: number): Observable<any[]> {
-        return CourseMember.search(context,[],"[('class_id','=',"+classId+")]");
+    static listByClass(context: APIContext, classId: number): Observable<any[]> {
+        return CourseMember.search(context, [], "[('class_id','='," + classId + ")]");
     }
 
-    static listByCourse( context:APIContext, courseId: number): Observable<any[]> {
-        return CourseMember.search(context,[],"[('course_id','=',"+courseId+")]");
+    static listByCourse(context: APIContext, courseId: number): Observable<any[]> {
+        return CourseMember.search(context, [], "[('course_id','='," + courseId + ")]");
     }
 
     static countTeacher(context: APIContext) {
@@ -70,18 +70,18 @@ export class CourseMember extends BaseModel{
         return CourseMember.count(context, "[('role','=','student')]")
     }
 
-    static byCourseAndUser( context:APIContext, userId: number, courseId: number): Observable<any> {
-        return CourseMember.search(context,[],"[('user_id','=',"+userId+"),('course_id','=',"+courseId+")]")
-        .map(members => {
-            if (members.length)
-                return members[0];
-            else
-                return null;
-        });
+    static byCourseAndUser(context: APIContext, userId: number, courseId: number): Observable<any> {
+        return CourseMember.search(context, [], "[('user_id','='," + userId + "),('course_id','='," + courseId + ")]")
+            .map(members => {
+                if (members.length)
+                    return members[0];
+                else
+                    return null;
+            });
     }
 
-    delete(context:APIContext):Observable<any> {
-        return ConferenceMember.byCourseMember(context,this.id).flatMap(conferenceMember => {
+    delete(context: APIContext): Observable<any> {
+        return ConferenceMember.byCourseMember(context, this.id).flatMap(conferenceMember => {
             if (!conferenceMember)
                 return this.delete(context);
             else {
@@ -90,11 +90,13 @@ export class CourseMember extends BaseModel{
         });
     }
 
-    static checkCourseEnrollCondition(context:APIContext, userId: number, prequisiteCourseId:number):Observable<any> {
-        CourseMember.byCourseAndUser(context,userId,prequisiteCourseId ).map(member=> {
-            if (!member || member.enroll_status !='completed')
+    static checkCourseEnrollCondition(context: APIContext, userId: number, prequisiteCourseId: number): Observable<any> {
+        return CourseMember.byCourseAndUser(context, userId, prequisiteCourseId).map(member => {
+            if (!member || member.enroll_status != 'completed') {
                 return Observable.of(false);
-            Observable.of(true);
-        })
+            } else {
+                return Observable.of(true);
+            }
+        });
     }
 }

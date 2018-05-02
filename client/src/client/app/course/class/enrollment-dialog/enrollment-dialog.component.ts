@@ -97,7 +97,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			Observable.zip(...subscriptions).subscribe((members) => {
 				this.processing = false;
 				if (this.course.prequisite_course_id) 
-					_.each(members, (member=> {
+					_.each(members, ((member:any)=> {
 						CourseMember.checkCourseEnrollCondition(this,member.user_id, this.course.prequisite_course_id).subscribe(success=> {
 							if (!success) {
 								member.status = 'suspend';
