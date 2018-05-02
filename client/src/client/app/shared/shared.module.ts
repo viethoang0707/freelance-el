@@ -109,6 +109,7 @@ import { TreeModule } from 'primeng/primeng';
 import { TreeTableModule } from 'primeng/primeng';
 import { MessageService } from 'primeng/components/common/messageservice';
 
+
 @NgModule({
     imports: [
         // Angular modules
@@ -190,7 +191,8 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TooltipModule,
         TreeModule,
         TreeTableModule,
-        TranslateModule],
+        TranslateModule,
+        ],
     declarations: [
         // App components
         MatchInputValidatorDirective,
@@ -305,7 +307,8 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TooltipModule,
         TreeModule,
         TreeTableModule,
-        TranslateModule],
+        TranslateModule,
+        ],
 })
 export class ErpSharedModule {
     static forRoot(): ModuleWithProviders {

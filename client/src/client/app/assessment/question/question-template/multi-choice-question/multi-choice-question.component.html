@@ -40,10 +40,10 @@
     <p-fieldset legend="{{'Options'|translate}}">
       <ul class="options-question">
         <li *ngFor="let option of options">
-          <p-radioButton [(ngModel)]="answer.option_id" [disabled]="true" value="{{option.id}}" name="option_answer" label="{{option.content}}"></p-radioButton>
-          <i class="material-icons" *ngIf="answer.is_correct">done</i>
+          <p-checkbox  binary="true" name="option_answer" [(ngModel)]="option.subAns.is_selected"></p-checkbox>
         </li>
       </ul>
+      <i class="material-icons" *ngIf="answer.is_correct">done</i>
     </p-fieldset>
   </div>
 </div>
@@ -55,10 +55,10 @@
     <p-fieldset styleClass="f-print">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-radioButton [(ngModel)]="answer.option_id" [disabled]="true" value="{{option.id}}" name="option_answer" label="{{option.content}}"></p-radioButton>
-          <i class="material-icons" *ngIf="option.is_correct">done</i>
+          <p-checkbox  binary="true" [disabled]="true" name="option_answer" [(ngModel)]="option.subAns.is_selected"></p-checkbox>
         </li>
       </ul>
+      <i class="material-icons" *ngIf="answer.is_correct">done</i>
     </p-fieldset>
   </div>
 </div>
@@ -70,7 +70,7 @@
     <p-fieldset styleClass="f-print">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-radioButton [disabled]="true" value="{{option.id}}" name="option_answer" label="{{option.content}}"></p-radioButton>
+          <p-checkbox  binary="true" [disabled]="true" name="option_answer" [(ngModel)]="option.subAns.is_selected"></p-checkbox>
           <i class="material-icons" *ngIf="option.is_correct">done</i>
         </li>
       </ul>

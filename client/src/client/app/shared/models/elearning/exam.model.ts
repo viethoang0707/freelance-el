@@ -25,6 +25,7 @@ export class Exam extends BaseModel{
         this.max_attempt = undefined;
         this.allow_navigation = undefined;
         this.publish_score = undefined;
+        this.take_picture_on_submit = undefined;
 	}
 
     name:string;
@@ -34,7 +35,7 @@ export class Exam extends BaseModel{
     start: Date;
     @FieldProperty<Date>()
     end: Date;
-
+    take_picture_on_submit: boolean;
     selector_id: number;
     scale: number;
     status: string;
