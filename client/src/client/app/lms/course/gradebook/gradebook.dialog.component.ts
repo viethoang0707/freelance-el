@@ -71,10 +71,6 @@ export class GradebookDialog extends BaseComponent {
         });
     }
 
-    showCertificate() {
-
-    }
-
     show(member: CourseMember) {
         this.display = true;
         this.member = member;
