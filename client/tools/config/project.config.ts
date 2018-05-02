@@ -104,7 +104,15 @@ export class ProjectConfig extends SeedConfig {
                     main: 'bundles/core.umd.js',
                     defaultExtension: 'js'
                 }
-            }
+            },
+            {
+                name: 'ngx-webcam',
+                path: 'node_modules/ngx-webcam',
+                packageMeta: {
+                    main: 'bundles/ngx-webcam.umd.js',
+                    defaultExtension: 'js'
+                }
+            },
         ];
 
         this.addPackagesBundles(additionalPackages);

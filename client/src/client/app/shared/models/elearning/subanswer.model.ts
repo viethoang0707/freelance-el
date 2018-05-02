@@ -13,14 +13,15 @@ export class SubAnswer extends BaseModel{
         this.question_id = undefined;
         this.option_id = undefined;
         this.answer_id = undefined;
+        this.is_selected = undefined;
 	}
     question_id: number;
     option_id: number;
     answer_id: number;
-
+    is_selected: boolean;
 
     static listByAnswer( context:APIContext, answerId: number): Observable<any[]> {
-        return Answer.search(context,[],"[('answer_id','=',"+answerId+")]");
+        return SubAnswer.search(context,[],"[('answer_id','=',"+answerId+")]");
     }
 
 }

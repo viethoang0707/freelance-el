@@ -84,4 +84,18 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	        
 	    }); 
 	}
+
+	loadFaqs() {
+		CourseFaq.listByCourse(this, this.course.id)
+			.subscribe(faqs => {
+				this.faqs = faqs;
+			})
+	}
+
+	loadMaterials() {
+		CourseMaterial.listByCourse(this, this.course.id)
+			.subscribe(materials => {
+				this.materials = materials;
+			});
+	}
 }

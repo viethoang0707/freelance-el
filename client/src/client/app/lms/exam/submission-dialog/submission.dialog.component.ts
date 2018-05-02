@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
-import { Observable,Subject } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs/Rx';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -56,7 +56,7 @@ export class SubmissionDialog extends BaseComponent {
     }
 
     confirm(){
-        if (this.exam.take_picutre_on_submit)
+        if (this.exam.take_picture_on_submit)
             this.trigger.next();
         else {
             this.onConfirmReceiver.next();
@@ -66,7 +66,7 @@ export class SubmissionDialog extends BaseComponent {
 
    handleImage(webcamImage: WebcamImage): void {
     console.info('received webcam image', webcamImage);
-    this.submission.picture = webcamImage.imageAsDataUrl();
+    this.submission.picture = webcamImage.imageAsDataUrl;
     this.onConfirmReceiver.next();
     this.hide();
   }
