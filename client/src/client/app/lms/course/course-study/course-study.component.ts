@@ -52,6 +52,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 
 	constructor(private router: Router, private route: ActivatedRoute, private sylUtils:SyllabusUtils) {
 		super();
+		this.course = new Course();
+		this.member = new CourseMember();
 	}
 
 	ngOnInit() {
