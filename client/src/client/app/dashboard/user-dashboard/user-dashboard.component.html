@@ -16,36 +16,45 @@
       </div>
     </div>
   </div>
-  <div class="ui-g-12">
-    <h3 class="tit"><i class="material-icons icon">local_library</i>{{'My courses'|translate}}</h3>
-    <div class="ui-g-3 image-box" *ngFor="let course of courses">
-      <div class="card">
-        <img [src]='course.logo | imageBase64' height="180" onError="this.src='assets/images/logo/logov.png';" />
-        <div class="image-box-content">
-          <h4 class="title">{{course.name}}</h4>
-          <span class="image-box-tag">{{COURSE_MODE[course.mode]}}</span>
-          <p class="summary">{{course.summary}}</p>
-          <div class="image-box-footer">
-            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
-            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit syllabus'| translate}}" label="{{'Edit course'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
-            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage course'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageCourse(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
-          </div>
+  <div class="ui-g-12 dashboard-courses-list">
+    <p-dataGrid [value]="courses" [paginator]="true" [rows]="8">
+      <p-header>
+        <i class="material-icons icon">local_library</i>{{'My courses'|translate}}
+      </p-header>
+      <ng-template let-course pTemplate="item">
+        <div class="ui-g-3">
+          <p-panel>
+            <p-header>
+               <img [src]='course.logo | imageBase64' height="180" width="250px" onError="this.src='assets/images/logo/logov.png';" /> 
+            </p-header>
+            <div class="image-box-content">
+              <h4 class="title">{{course.name}}</h4>
+              <span class="image-box-tag">{{COURSE_MODE[course.mode]}}</span>
+              <p class="summary">{{course.summary}}</p>
+              <div class="image-box-footer">
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit syllabus'| translate}}" label="{{'Edit course'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
+                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage course'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageCourse(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
+              </div>
+            </div>
+          </p-panel>
         </div>
-      </div>
-    </div>
-    <p-paginator [rows]="8" [totalRecords]="24" styleClass="linkPage"></p-paginator>
+      </ng-template>
+    </p-dataGrid>
+    <course-syllabus-dialog></course-syllabus-dialog>
   </div>
-  <course-syllabus-dialog></course-syllabus-dialog>
-
-  <div class="ui-g-12">
-    <h3><i class="material-icons icon">watch_later</i>{{'My exams'|translate}}</h3>
-    <div class="ui-g-4" *ngFor="let exam of exams">
-      <div class="ui-g-12">
-        <div class="user-card card">
-          <div class="user-card-header">
-            <img src="assets/layout/images/dashboard/usercard.png" library="serenity-layout" width="100" />
-          </div>
-          <div class="user-card-content">
+ 
+  <div class="ui-g-12 dashboard-exam-list">
+    <p-dataGrid [value]="exams" [paginator]="true" [rows]="8">
+      <p-header>
+        <i class="material-icons icon">local_library</i>{{'My exams'|translate}}
+      </p-header>
+      <ng-template let-exam pTemplate="item">
+        <div class="ui-g-4">
+          <p-panel>
+            <p-header>
+               <img src="assets/layout/images/dashboard/usercard.png" library="serenity-layout" width="100" /> 
+            </p-header>
             <div class="user-card-name">
               <span>{{exam.name}}</span>
             </div>
@@ -78,17 +87,32 @@
                 </li>
               </ul>
             </div>
+            <p-footer>
+              <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:5px;" (click)="startExam(exam, exam.member)" *ngIf="exam.member.role=='candidate'" [disabled]="!exam.IsAvailable || exam.member.enroll_status=='completed'"></button>
+              <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:5px;" (click)="editContent(exam)" *ngIf="exam.member.role=='supervisor'"></button>
+              <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage exam'|translate}}" class="orange-btn" style="margin-right:5px;" (click)="manageExam(exam, exam.member)" *ngIf="exam.member.role=='supervisor'"></button>
+            </p-footer>
+          </p-panel>
+        </div>
+      </ng-template>
+    </p-dataGrid>
+    <course-syllabus-dialog></course-syllabus-dialog>
+  </div>
+
+  <!-- <div class="ui-g-12">
+    <h3><i class="material-icons icon">watch_later</i>{{'My exams'|translate}}</h3>
+    <div class="ui-g-4" *ngFor="let exam of exams">
+      <div class="ui-g-12">
+        <div class="user-card card">
+          <div class="user-card-header">
+            <img src="assets/layout/images/dashboard/usercard.png" library="serenity-layout" width="100" />
           </div>
-          <div class="user-card-footer">
-            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:5px;" (click)="startExam(exam, exam.member)" *ngIf="exam.member.role=='candidate'" [disabled]="!exam.IsAvailable || exam.member.enroll_status=='completed'"></button>
-            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:5px;" (click)="editContent(exam)" *ngIf="exam.member.role=='supervisor'"></button>
-            <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage exam'|translate}}" class="orange-btn" style="margin-right:5px;" (click)="manageExam(exam, exam.member)" *ngIf="exam.member.role=='supervisor'"></button>
-          </div>
+          
         </div>
       </div>
     </div>
     <p-paginator [rows]="8" [totalRecords]="24" styleClass="linkPage"></p-paginator>
     <exam-content-dialog></exam-content-dialog>
     <exam-study-dialog></exam-study-dialog>
-  </div>
+  </div> -->
 </div>
