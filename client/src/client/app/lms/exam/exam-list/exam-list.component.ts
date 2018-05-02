@@ -67,6 +67,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                         else
                             return 0;
                     });
+                });
         });
     }
 

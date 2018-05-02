@@ -126,7 +126,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
                 });
         });
-    });
+    }
 
     joinConference(member) {
         this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref)
