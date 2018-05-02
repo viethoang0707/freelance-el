@@ -246,3 +246,30 @@ body .cont.ui-accordion .ui-accordion-header:not(.ui-state-active):not(.ui-state
 body .cont.ui-accordion .ui-accordion-header.ui-state-active{
   background-color: #dcf0f9;
 }
+
+/*dashboard*/
+.dashboard .user-card .user-card-content .user-detail ul{
+  padding: 0;
+}
+
+.dashboard .user-card .user-card-content{
+  min-height: 230px;
+}
+
+body .linkPage.ui-paginator{
+  background-color: #fff;
+  border: none;
+}
+
+body .linkPage.ui-paginator > a{
+  color: #283593;
+}
+
+body .linkPage.ui-paginator .ui-paginator-pages a{
+  color: #283593;
+}
+
+body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active{
+  background-color: #283593;
+  color: #fff;
+}

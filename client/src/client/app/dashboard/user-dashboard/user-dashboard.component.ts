@@ -23,6 +23,7 @@ import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dial
 import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
+import {PaginatorModule} from 'primeng/paginator';
 
 declare var $: any;
 declare var _: any;
@@ -30,7 +31,8 @@ declare var _: any;
 @Component({
     moduleId: module.id,
     selector: 'user-dashboard',
-    templateUrl: 'user-dashboard.component.html'
+    templateUrl: 'user-dashboard.component.html',
+    styleUrls: ['user-dashboard.component.css'],
 
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
@@ -126,7 +128,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
                 });
         });
-    });
+    }
 
     joinConference(member) {
         this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref)

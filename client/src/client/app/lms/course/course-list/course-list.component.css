@@ -44,6 +44,5 @@
 }
 
 .profile-image-wrapper img{
-	width: 400px;
-	height: 250px;
+	width: 100%;
 }

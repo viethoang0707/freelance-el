@@ -57,7 +57,7 @@ export class CourseListComponent extends BaseComponent {
 
     edit() {
         if (this.selectedCourse)
-            this.courseDialog.show(this.selectedCourse);
+        this.courseDialog.show(this.selectedCourse);
         this.courseDialog.onUpdateComplete.subscribe(() => {
             this.loadCourses();
         });

@@ -16,24 +16,30 @@ ul {
         <p-header>
         </p-header>
         <div class="ui-g">
-          <div class="ui-g-4">
+          <div class="ui-g-3">
             <span class="profile-image-wrapper">
-                <img [src]='course.logo | imageBase64'/>
+                <img [src]='course.logo | imageBase64' onError="this.src='assets/images/logo/logov.png';"/>
             </span>
           </div>
-          <div class="ui-g-4">
-            <h4>
+          <div class="ui-g-5">
+            <h4 style="font-weight: 600;">
               <span>{{course.name}}</span>
             </h4>
             <span class="c-status">
               {{COURSE_STATUS[course.status]|translate}}
             </span>
-            <h5 class="c-title">{{'Summary'|translate}}</h5>
-            <p>
-              {{course.summary}}
-            </p>
+            <!-- <h5 class="c-title">{{'Summary'|translate}}</h5>
+            <p>{{course.summary}}</p>
             <h5 class="c-title">{{'Description'|translate}}</h5>
-            <p [innerHTML]="course.description"></p>
+            <p [innerHTML]="course.description"></p> -->
+            <p-accordion styleClass="cont">
+              <p-accordionTab header="{{'Summary' | translate}}">
+                {{course.summary}}
+              </p-accordionTab>
+              <p-accordionTab header="{{'Description' | translate}}">
+                <p [innerHTML]="course.description"></p>
+              </p-accordionTab>
+            </p-accordion>
           </div>
           <div class="ui-g-4">
             <p-card>

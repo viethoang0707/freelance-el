@@ -54,3 +54,15 @@
     padding: 2px 8px;
     color: #fff;
 }
+
+.status-bars{
+	margin-top: 20px;
+	margin-right: 20px;
+}
+
+h4.title{
+	margin-top: 0;
+	float: left;
+	margin-right: 10px;
+	font-weight: 600;
+}

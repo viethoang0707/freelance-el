@@ -1,0 +1,38 @@
+.user-card-footer{
+	padding: 10px;
+	text-align: center;
+}
+
+.list-cmt li .cmt-title{
+	font-weight: 700;
+    margin-right: 8px;
+    color: #484747;
+}
+
+.list-cmt li .cmt-detail{
+	color: #757575;
+	float: right;
+}
+
+h4.title{
+	margin-top: 0;
+	font-weight: 600;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.summary{
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.tit{
+	margin-top: 0;
+}
+
+.icon{
+	font-size: 24px;
+    margin-right: 5px;
+}
