@@ -24,6 +24,7 @@ import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.
 })
 export class SCORMLectureCourseUnitComponent extends BaseComponent implements ICourseUnit {
 
+	@Input() mode;
 	unit: CourseUnit;
 	lecture: SCORMLecture;
 	uploadInprogress: boolean;
@@ -60,10 +61,11 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.lecture.package_url = data["url"];
-						this.apiService.upload(this.lecture.package_url, this.authService.CloudAcc.id).subscribe((data)=> {
+						var serverFile = data["filename"]
+						this.apiService.unzip(serverFile, this.authService.CloudAcc.id).subscribe((data)=> {
 							this.lecture.base_url = data["url"];
 						});
-					})
+					});
 				}
 			},
 			() => {

@@ -1,6 +1,25 @@
 <div class="card card-w-title">
   <h1>{{'Course manage'|translate}}: {{course.name}} </h1>
     <p-tabView [style]="{width: '100%', height: '460px'}">
+      <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
+         <div class="ui-g-3">
+          <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+        </div>
+        <div class="ui-g-9" *ngIf="selectedUnit">
+          <div class="card">
+            <div class="image-box-content">
+              <div>
+                <h3>{{selectedUnit.name}}</h3>
+                <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
+              </div>
+              <div class="image-box-footer">
+                <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit()" *ngIf="selectedUnit.type!='folder'"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </p-tabPanel>
       <p-tabPanel header="{{'Class list'|translate}}" leftIcon="ui-icon-supervisor-account">
         <div class="ui-g-12 ">
           <p-toolbar>

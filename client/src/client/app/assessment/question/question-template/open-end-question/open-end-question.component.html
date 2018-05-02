@@ -26,3 +26,9 @@
     <p [innerHTML]="answer.text"></p>
   </div>
 </div>
+<div *ngIf="mode=='preview'">
+  <div class="ui-g-12 ">
+    <label>{{'Content'|translate}}</label>
+    <p [innerHTML]="question.content"></p>
+  </div>
+</div>

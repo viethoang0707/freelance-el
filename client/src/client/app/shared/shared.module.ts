@@ -23,6 +23,7 @@ import { ReportUtils } from './helpers/report.utils';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
+import { SafePipe } from './pipes/safe.pipe';
 import { GroupsPipe } from './pipes/group.pipe';
 import { TimeConvertPipe, ClockPipe } from './pipes/time.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
@@ -198,6 +199,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         GroupsPipe,
         TimeConvertPipe,
         ClockPipe,
+        SafePipe,
         ImageBase64Pipe,
         ImageBase64Component,
         GroupDialog,
@@ -217,6 +219,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         // App components
         ValuesPipe,
         KeysPipe,
+        SafePipe,
         GroupsPipe,
         ImageBase64Pipe,
         TimeConvertPipe,
