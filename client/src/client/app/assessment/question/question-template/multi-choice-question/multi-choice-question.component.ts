@@ -9,6 +9,7 @@ import { DEFAULT_PASSWORD, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../../sh
 import { TreeNode } from 'primeng/api';
 import { QuestionTemplate } from '../question.decorator';
 import { IQuestion } from '../question.interface';
+import { SubAnswer } from '../../../../shared/models/elearning/subanswer.model';
 
 @Component({
 	moduleId: module.id,
@@ -24,6 +25,7 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 	mode: any;
 	question: Question;
 	answer: Answer;
+	subanswers: SubAnswer[];
 	options: QuestionOption[];
 
 	constructor() {
@@ -37,6 +39,24 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 		if (this.question.id)
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
+				if (this.answer && this.answer.id)
+					SubAnswer.listByAnswer(this, answer.id).subscribe((subans: QuestionOption[]) => {
+						this.subanswers = subans;
+						_.each(options, (option=> {
+							option.subAns = new SubAnswer();
+							var subAns = _.find(subans, obj=> {
+								return obj.option_id == option.id;
+							});
+							if (!subAns) {
+								subAns = new SubAnswer();
+								subAns.option_id = option.id;
+								subAns.answer_id = this.answer.id;
+								this.subanswers.push(subAns);
+								subAns.save(this).subscribe();
+							}
+							option.subAns = subAns;
+						}));
+					});
 			});
 	}
 
@@ -52,11 +72,14 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 	}
 
 	concludeAnswer() {
-		var option = _.find(this.options, (obj)=> {
-			return obj.id == this.answer.option_id;
-		});
-		if (option)
-			this.answer.is_correct =  option.is_correct;
+		this.answer.is_correct  = true;
+		_.each(options, (option=> {
+			var subAns = _.find(subans, obj=> {
+				return obj.option_id == option.id;
+			});
+			if ((option.is_correct && !subAns) || (!option.is_correct && subAns))
+				this.answer.is_correct = false;
+		}));
 	}
 
 	addOption() {

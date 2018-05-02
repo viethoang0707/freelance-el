@@ -16,7 +16,6 @@ import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe } from '../../../shared/pipes/time.pipe';
 import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
-import { CourseCertificateDialog } from '../course-certificate/course-certificate.dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -31,7 +30,6 @@ export class GradebookListDialog extends BaseComponent {
 	display: boolean;
 	courseClass: CourseClass;
 	@ViewChild(GradebookDialog) gradebookDialog : GradebookDialog;
-	@ViewChild(CourseCertificateDialog) certificateDialog : CourseCertificateDialog;
 
 	constructor(private reportUtils: ReportUtils,private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -47,23 +45,6 @@ export class GradebookListDialog extends BaseComponent {
 	viewGradebook() {
 		if (this.selectedRecord)
 			this.gradebookDialog.show(this.selectedRecord);
-	}
-
-	issueCertificate() {
-		if (this.selectedRecord) {
-			if (this.selectedRecord["certificate"]!=null)
-				this.info("Member already granted certificate")
-			else {
-				var certificate = new Certificate();
-				certificate.date_issue = new Date();
-				certificate.course_id = this.courseClass.course_id;
-				certificate.member_id = this.selectedRecord["id"];
-				this.certificateDialog.show(certificate);
-			}
-			this.certificateDialog.onCreateComplete.subscribe(()=> {
-				this.selectedRecord["certificate"] =  true;
-			});
-		}
 	}
 
 	show(courseClass: CourseClass) {

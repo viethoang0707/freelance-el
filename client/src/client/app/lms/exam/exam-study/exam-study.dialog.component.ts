@@ -19,6 +19,7 @@ import { SelectItem } from 'primeng/api';
 import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
+import { SubmissionDialog } from '../submission-dialog/submission.dialog.component';
 import 'rxjs/add/observable/timer';
 
 declare var $: any;
@@ -48,6 +49,7 @@ export class ExamStudyDialog extends BaseComponent {
 	height: number;
 	examCode: any;
 
+	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	componentRef: any;
 
@@ -230,11 +232,10 @@ export class ExamStudyDialog extends BaseComponent {
 
 	submitExam() {
 		this.submitAnswer().subscribe(() => {
-			this.confirm('Are you sure to submit ?',() => {
-					this.timerSubject.next();
-					this.finishExam();
-				}
-			)
+			this.submitDialog.show(this.exam, this.submission);
+			this.submitDialog.onConfirm.subscribe(()=> {
+				this.finishExam();
+			});
 		});
 	}
 
@@ -257,4 +258,5 @@ export class ExamStudyDialog extends BaseComponent {
 		}
 
 	}
+
 }
