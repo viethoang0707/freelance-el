@@ -46,7 +46,7 @@ export class CourseDialog extends BaseDialog<Course> {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.subscribe(users => {
 			if (users.length > 1) {
-				this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translateService.instant('You can select only one author.') });
+				this.error('You can select only one author.');
 				return;
 			} else if (users.length == 1) {
 				var author = users[0];

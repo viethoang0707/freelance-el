@@ -1,21 +1,23 @@
-<div class="ui-g">
-  <div class="ui-g-3" align='center'>
-    <div>
+<div *ngIf="mode=='design'">
+  <div class="ui-g">
+    <div class="ui-g-6">
       <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
       </p-fileUpload>
+      <a href="{{lecture.package_url}}" target="_blank" *ngIf="lecture.package_url">{{'Download SCORM package file'|translate}}</a>
     </div>
-    <div>
-      <button pButton type="button" label="{{'Preview'|translate}}" class="green-btn" icon="ui-icon-remove-red-eye" *ngIf="lecture.base_url" (click)="previewScorm()"></button>
+    <div class="ui-g-6">
+      <span class="md-inputfield">
+            <input type="text" pInputText [(ngModel)]="lecture.entry_file"  name="entry_file" required>
+            <label>{{'Entry file'|translate}}</label>
+          </span>
+    </div>
+    <div class="ui-g-9">
+      <div class="spinner" [hidden]="!uploadInprogress">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
     </div>
   </div>
-  <div class="ui-g-9">
-    <div class="spinner" [hidden]="!uploadInprogress">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
-  </div>
-  <div class="ui-g-12 ">
-    <label>{{'Lecture'|translate}}</label>
-    <p-editor [(ngModel)]="lecture.transcript" [style]="{'height':'120px'}" name="content">
-    </p-editor>
-  </div>
+</div>
+<div *ngIf="mode=='design'">
+  <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
 </div>

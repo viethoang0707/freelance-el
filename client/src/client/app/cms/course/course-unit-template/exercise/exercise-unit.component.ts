@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, QueryList, ViewChildren, ComponentFactoryResolver,ViewContainerRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
@@ -12,7 +12,9 @@ import { CourseUnitTemplate } from '../unit.decorator';
 import { ICourseUnit } from '../unit.interface';
 import { TreeUtils } from '../../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../../shared/components/select-question-dialog/select-question-dialog.component';
-
+import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
+import { IQuestion } from '../../../../assessment/question/question-template/question.interface';
+import { QuestionRegister } from '../../../../assessment/question/question-template/question.decorator';
 
 @Component({
 	moduleId: module.id,
@@ -22,25 +24,52 @@ import { SelectQuestionsDialog } from '../../../../shared/components/select-ques
 @CourseUnitTemplate({
 	type:'exercise'
 })
-export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit{
+export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit,OnInit{
 
+	@Input() mode;
 	unit: CourseUnit;
 	exerciseQuestions: ExerciseQuestion[];
 	@ViewChild(SelectQuestionsDialog) questionDialog : SelectQuestionsDialog;
+	@ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
 
-
-	constructor(private treeUtils: TreeUtils) {
+	constructor(private treeUtils: TreeUtils, private componentFactoryResolver:ComponentFactoryResolver) {
 		super();
 		this.exerciseQuestions = [];
 	}
 
+	ngOnInit() {
+	}
+
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		// if (this.unit.id)
-			// ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
-			// 	this.exerciseQuestions =  exerciseQuestions;
-			// });
+		if (this.unit.id)
+			 ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
+			 	this.exerciseQuestions =  exerciseQuestions;
+			 	if (this.mode=='preview')
+			 	setTimeout(()=>{
+                    var componentHostArr =  this.questionsComponents.toArray();
+                        for (var i =0;i<exerciseQuestions.length;i++) {
+                            var exerciseQuestion =  exerciseQuestions[i];
+                            var componentHost = componentHostArr[i];
+                            this.previewQuestion(exerciseQuestion,componentHost);
+                        }
+                    }, 0); 
+			 });
+
+
 	}
+
+	previewQuestion(exerciseQuestion: ExerciseQuestion, componentHost:any) {
+        Question.get(this, exerciseQuestion.question_id).subscribe((question)=> {
+            var detailComponent = QuestionRegister.Instance.lookup(question.type);
+            if (detailComponent) {
+                let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+                var componentRef = componentHost.viewContainerRef.createComponent(componentFactory);
+                (<IQuestion>componentRef.instance).mode = 'preview' ;
+                (<IQuestion>componentRef.instance).render(question);
+            }            
+        });
+    }
 
 	removeOldQuestions():Observable<any> {
 		if (this.unit.id) {
@@ -97,7 +126,8 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				return exerciseQuestion;
 			}));
 		}
-		
 	}
+
+
 }
 

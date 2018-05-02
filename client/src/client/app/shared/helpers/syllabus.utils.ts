@@ -27,6 +27,8 @@ export class SyllabusUtils {
         target = _.find(units, (unit) => {
           return unit.id == target.parent_id;
         });
+      else
+        target = null;
     }
     return false;
   }

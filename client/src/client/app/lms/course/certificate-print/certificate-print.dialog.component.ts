@@ -6,7 +6,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
-import { Answer } from '../../../shared/models/elearning/answer.model';
+import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { CloudAccount } from '../../../shared/models/cloud/cloud-account.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
@@ -28,13 +28,21 @@ export class CertificatePrintDialog extends BaseComponent {
     @ViewChild('printSection') printSection;
 
     display:boolean;
+    certificate: Certificate;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+    constructor() {
         super();
         this.display = false;
     }
 
+    show(certificate: Certificate) {
+        this.certificate = certificate;
+        this.display = true;
+    }
 
+    hide() {
+        this.display = false;
+    }
 
     print() {
         let printContents, popupWin;

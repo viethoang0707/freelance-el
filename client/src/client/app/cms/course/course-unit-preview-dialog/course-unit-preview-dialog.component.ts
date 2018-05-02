@@ -14,10 +14,10 @@ import { ICourseUnit } from '../course-unit-template/unit.interface';
 
 @Component({
 	moduleId: module.id,
-	selector: 'course-unit-dialog',
-	templateUrl: 'course-unit-dialog.component.html',
+	selector: 'course-unit-preview-dialog',
+	templateUrl: 'course-unit-preview-dialog.component.html',
 })
-export class CourseUnitDialog extends BaseDialog<CourseUnit> {
+export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	componentRef: any;
@@ -34,7 +34,7 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 				viewContainerRef.clear();
 				this.componentRef = viewContainerRef.createComponent(componentFactory);
-				(<ICourseUnit>this.componentRef.instance).mode = 'design';
+				(<ICourseUnit>this.componentRef.instance).mode = 'preview';
 				(<ICourseUnit>this.componentRef.instance).render(object);
 			} else {
 				viewContainerRef.clear();
@@ -42,12 +42,6 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 			}
 
 		});
-		this.onUpdateComplete.subscribe(object => {
-			if (this.componentRef)
-				(<ICourseUnit>this.componentRef.instance).saveEditor().subscribe(() => {
-					this.success('Course unit saved.');
-				});
-		})
 	}
 
 

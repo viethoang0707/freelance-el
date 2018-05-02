@@ -38,6 +38,10 @@ export class ExerciseQuestion extends BaseModel{
     group_id__DESC__: string;
     sheet_id: number;
 
+    static listByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
+        return ExerciseQuestion.search(context,[],"[('unit_id','=',"+exerciseId+")]");
+    }
+
     static countByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
         return ExerciseQuestion.count(context,"[('exercise_id','=',"+exerciseId+")]");
     }

@@ -29,7 +29,7 @@
           <span>{{'Score'|translate}}: </span><span class="bold"> {{member.score}}</span>
         </div>
         <p-dataList [value]="examQuestions" [rows]="examQuestions.length" styleClass="l-question">
-          <ng-template let-question pTemplate="item" question-container>
+          <ng-template let-question pTemplate="item">
             <div question-container></div>
           </ng-template>
         </p-dataList>

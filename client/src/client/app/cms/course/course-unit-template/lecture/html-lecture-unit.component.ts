@@ -21,6 +21,7 @@ import { CourseUnit } from '../../../../shared/models/elearning/course-unit.mode
 })
 export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICourseUnit{
 
+	@Input() mode;
 	unit: CourseUnit;
 	lecture: HtmlLecture;
 

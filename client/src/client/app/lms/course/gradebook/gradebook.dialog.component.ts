@@ -20,6 +20,9 @@ import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { AnswerPrintDialog } from '../../exam/answer-print/answer-print.dialog.component';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
+import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
+import { CourseCertificateDialog } from '../../course/course-certificate/course-certificate.dialog.component';
+import { CertificatePrintDialog } from '../../course/certificate-print/certificate-print.dialog.component';
 
 
 @Component({
@@ -33,8 +36,11 @@ export class GradebookDialog extends BaseComponent {
 	display: boolean;
 	member: CourseMember;
 	exams: Exam[];
+    certificate: Certificate;
 
 	@ViewChild(AnswerPrintDialog) answerSheetDialog:AnswerPrintDialog;
+    @ViewChild(CourseCertificateDialog) certDialog:CourseCertificateDialog;
+    @ViewChild(CertificatePrintDialog) certPrintDialog:CertificatePrintDialog;
 
 	constructor() {
 		super();
@@ -48,10 +54,30 @@ export class GradebookDialog extends BaseComponent {
 		this.display = false;
 	}
 
+    printCertificate() {
+        this.certPrintDialog.show(this.certificate);
+    }
+
+    issueCertificate() {
+        var certificate = new Certificate();
+        certificate.course_id = this.member.course_id;
+        certificate.member_id = this.member.id;
+        this.certDialog.show(certificate);
+        this.certDialog.onCreateComplete.subscribe(obj => {
+            this.certificate = obj;
+        });
+    }
+
+    showCertificate() {
+
+    }
 
 	show(member: CourseMember) {
 		this.display = true;
 		this.member = member;
+        Certificate.byMember(this, member.id).subscribe(certificate=> {
+            this.certificate = certificate;
+        });
 		ExamMember.listByUser(this, this.member.user_id).subscribe(members => {
             var examIds = _.pluck(members,'exam_id');
             Exam.array(this, examIds)

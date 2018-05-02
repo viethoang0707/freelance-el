@@ -5,11 +5,14 @@ import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
+import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus }  from '../../../shared/models/elearning/course-syllabus.model';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
+import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
+import { CourseSettingDialog } from '../course-setting/course-setting.dialog.component';
 import * as _ from 'underscore';
 
 @Component({
@@ -25,8 +28,12 @@ export class CourseSyllabusDialog extends BaseComponent {
 	selectedNode: TreeNode;
 	items: MenuItem[];
 	units: CourseUnit[];
+	selectedUnit:CourseUnit;
+	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
+	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
+	@ViewChild(CourseSettingDialog) settingDialog: CourseSettingDialog;
 
     constructor(private sylUtils : SyllabusUtils ) {
         super();
@@ -37,6 +44,7 @@ export class CourseSyllabusDialog extends BaseComponent {
             {label: this.translateService.instant(COURSE_UNIT_TYPE['exercise']), command: ()=> { this.add('exercise')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['scorm']), command: ()=> { this.add('scorm')}},
         ];
+        this.syl = new CourseSyllabus();
     }
 
     show(syl: CourseSyllabus) {
@@ -53,20 +61,25 @@ export class CourseSyllabusDialog extends BaseComponent {
 	        });
 	}
 
+	showSetting() {
+		Course.get(this, this.syl.course_id).subscribe(course=> {
+			this.settingDialog.show(course);
+		});
+	}
+
 	add(type:string) {
-		if ( this.selectedNode && this.selectedNode.data.type != 'folder') {
-			this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translateService.instant('You can only add course unit to a folder.') });
+		if (type!='folder' && (!this.selectedNode || this.selectedNode.data.type != 'folder')) {
+			this.error('You need to select a folder.') ;
 			return;
 		}
-		var maxOrderNode = _.max(this.selectedNode.children, (obj)=> obj.data.order); 
+		var maxOrder = this.selectedNode ? this.selectedNode.children.length : this.tree.length; 
 		var unit = new CourseUnit();
-		var maxOrderNode =  _.max(this.selectedNode.children, (obj)=> obj.data.order);
 		unit.syllabus_id =  this.syl.id;
 		unit.icon = COURSE_UNIT_ICON[type];
 		unit.type =  type;
 		unit.name = 'New unit';
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
-		unit.order = this.selectedNode ? maxOrderNode.data.order : 0;
+		unit.order = maxOrder;
 		unit.save(this).subscribe(()=> {
 			if (this.selectedNode)
 				this.sylUtils.addChildNode(this.selectedNode, unit)
@@ -85,7 +98,13 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	delete() {
-
+		if (this.selectedNode)
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedNode.data.delete(this).subscribe(() => {
+                    this.buildCourseTree();
+                    this.selectedNode = null;
+                })
+             });
 	}
 
 	hide() {
@@ -111,6 +130,18 @@ export class CourseSyllabusDialog extends BaseComponent {
 				return unit.save(this);
 			});
 			Observable.forkJoin(subscriptions).subscribe();
+		}
+	}
+
+	nodeSelect(event:any) {
+		if (this.selectedNode) {
+			this.selectedUnit =  this.selectedNode.data;
+		}
+	}
+
+	previewUnit() {
+		if (this.selectedNode) {
+			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
 	}
 
