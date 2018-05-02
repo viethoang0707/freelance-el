@@ -22,11 +22,12 @@ import { CourseCertificateDialog } from './course/course-certificate/course-cert
 import { CertificatePrintDialog } from './course/certificate-print/certificate-print.dialog.component';
 import { CourseManageComponent } from './course/course-manage/course-manage.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
-
+import { AnswerPrintDialog } from './exam/submission-dialog/submission.dialog.component';
+import {WebcamModule} from 'ngx-webcam';
 
 @NgModule({
-    imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule],
-    declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,
+    imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule],
+    declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,AnswerPrintDialog,
     				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,
     				 AnswerPrintDialog,ClassExamListDialog,ExamManageComponent,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
