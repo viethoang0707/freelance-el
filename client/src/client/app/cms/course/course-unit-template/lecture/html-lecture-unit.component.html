@@ -5,6 +5,9 @@
 	  </p-editor>
 	</div>
 </div>
-<div *ngIf="mode=='design'">
+<div *ngIf="mode=='preview'">
+  <div [innerHTML]="lecture.content"></div>
+</div>
+<div *ngIf="mode=='study'">
   <div [innerHTML]="lecture.content"></div>
 </div>

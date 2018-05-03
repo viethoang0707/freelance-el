@@ -113,6 +113,22 @@ export class ProjectConfig extends SeedConfig {
                     defaultExtension: 'js'
                 }
             },
+            {
+                name: 'pdfjs-dist',
+                path: 'node_modules/pdfjs-dist',
+                packageMeta: {
+                    defaultExtension: 'js'
+                }
+            },
+            {
+                name: 'ng2-pdf-viewer',
+                path: 'node_modules/ng2-pdf-viewer',
+                packageMeta: {
+                    main:'bundles/ng2-pdf-viewer.umd.js',
+                    defaultExtension: 'js',
+                    format: 'cjs'
+                }
+            }
         ];
 
         this.addPackagesBundles(additionalPackages);
