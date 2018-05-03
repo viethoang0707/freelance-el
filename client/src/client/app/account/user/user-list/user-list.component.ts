@@ -13,6 +13,8 @@ import { UserImportDialog } from '../import-dialog/import-dialog.component';
 import { UserProfileDialog } from '../profile-dialog/profile-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 
 @Component({
     moduleId: module.id,
@@ -29,6 +31,7 @@ export class UserListComponent extends BaseComponent {
 
     tree: TreeNode[];
     users: User[];
+    user: User;
     selectedUser: any;
     filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
@@ -62,15 +65,26 @@ export class UserListComponent extends BaseComponent {
     }
 
     delete() {
-        if (this.selectedUser)
-            this.confirm('Are you sure to delete ?', () => {
-                this.selectedUser.delete(this).subscribe(() => {
-                    this.loadUsers();
-                    this.selectedUser = null;
-                })
-             });
+        if(this.selectedUser)
+        {
+            this.user = this.selectedUser;
+            ExamMember.listByUser(this, this.user.id).subscribe(exams => 
+            {
+                console.log(exams);
+                if(exams.length == 0){
+                    this.confirm('Are you sure to delete ?', () => {
+                        this.selectedUser.delete(this).subscribe(() => {
+                            this.loadUsers();
+                            this.selectedUser = null;
+                        })
+                    });
+                }
+                else{
+                    alert("Có kỳ thi người dùng này đã đăng ký!");
+                }
+            });
+        }
     }
-
     export() {
         this.userExportDialog.show(this.users);
     }
