@@ -35,6 +35,8 @@ export class UserListComponent extends BaseComponent {
     selectedUser: any;
     filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
+    totalExam: any;
+    totalCourse: any;
 
     constructor(private treeUtils: TreeUtils) {
         super();
@@ -68,23 +70,36 @@ export class UserListComponent extends BaseComponent {
         if(this.selectedUser)
         {
             this.user = this.selectedUser;
-            ExamMember.listByUser(this, this.user.id).subscribe(exams => 
-            {
-                console.log(exams);
-                if(exams.length == 0){
-                    this.confirm('Are you sure to delete ?', () => {
-                        this.selectedUser.delete(this).subscribe(() => {
-                            this.loadUsers();
-                            this.selectedUser = null;
-                        })
-                    });
-                }
-                else{
-                    alert("Có kỳ thi người dùng này đã đăng ký!");
-                }
-            });
+            this.checkExamMember(this.user);
+            
+            if(this.totalExam.length == 0){
+                this.confirm('Are you sure to delete ?', () => {
+                    this.selectedUser.delete(this).subscribe(() => {
+                        this.loadUsers();
+                        this.selectedUser = null;
+                    })
+                });
+            }
+            else{
+                alert("Có kỳ thi người dùng này đã đăng ký!");
+            }
         }
     }
+
+    checkExamMember(member)
+    {
+        ExamMember.listByUser(this, member.id).subscribe(exams => {
+            this.totalExam = exams;
+        });
+    }
+    checkCourseMember(member)
+    {
+        CourseMember.listByUser(this, member.id).subscribe(courses => {
+            this.totalCourse = courses;
+        });
+    }
+
+
     export() {
         this.userExportDialog.show(this.users);
     }
