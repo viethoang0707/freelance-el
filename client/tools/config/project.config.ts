@@ -62,6 +62,7 @@ export class ProjectConfig extends SeedConfig {
             // { src: `${this.ASSETS_SRC}/layout/css/layout-cityscape.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/theme-indigo.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/style.css`, inject: true, vendor: false },
+            { src: `${this.ASSETS_SRC}/theme/style-size.css`, inject: true, vendor: false },
         ];
 
         this.APP_LOCALE = 'vn';
@@ -103,6 +104,30 @@ export class ProjectConfig extends SeedConfig {
                 packageMeta: {
                     main: 'bundles/core.umd.js',
                     defaultExtension: 'js'
+                }
+            },
+            {
+                name: 'ngx-webcam',
+                path: 'node_modules/ngx-webcam',
+                packageMeta: {
+                    main: 'bundles/ngx-webcam.umd.js',
+                    defaultExtension: 'js'
+                }
+            },
+            {
+                name: 'pdfjs-dist',
+                path: 'node_modules/pdfjs-dist',
+                packageMeta: {
+                    defaultExtension: 'js'
+                }
+            },
+            {
+                name: 'ng2-pdf-viewer',
+                path: 'node_modules/ng2-pdf-viewer',
+                packageMeta: {
+                    main:'bundles/ng2-pdf-viewer.umd.js',
+                    defaultExtension: 'js',
+                    format: 'cjs'
                 }
             }
         ];

@@ -40,7 +40,7 @@
     <p-fieldset legend="{{'Options'|translate}}">
       <ul class="options-question">
         <li *ngFor="let option of options">
-          <p-checkbox  binary="true" name="option_answer" [(ngModel)]="option.subAns.is_correct"></p-checkbox>
+          <p-checkbox  binary="true" name="option_answer" [(ngModel)]="option.subAns.is_selected"></p-checkbox>
         </li>
       </ul>
       <i class="material-icons" *ngIf="answer.is_correct">done</i>
@@ -55,7 +55,7 @@
     <p-fieldset styleClass="f-print">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-checkbox  binary="true" [disabled]="true" name="option_answer" [(ngModel)]="option.subAns.is_correct"></p-checkbox>
+          <p-checkbox  binary="true" [disabled]="true" name="option_answer" [(ngModel)]="option.subAns.is_selected"></p-checkbox>
         </li>
       </ul>
       <i class="material-icons" *ngIf="answer.is_correct">done</i>
@@ -70,7 +70,7 @@
     <p-fieldset styleClass="f-print">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-checkbox  binary="true" [disabled]="true" name="option_answer" [(ngModel)]="option.subAns.is_correct"></p-checkbox>
+          <p-checkbox  binary="true" [disabled]="true" name="option_answer" [(ngModel)]="option.subAns.is_selected"></p-checkbox>
           <i class="material-icons" *ngIf="option.is_correct">done</i>
         </li>
       </ul>

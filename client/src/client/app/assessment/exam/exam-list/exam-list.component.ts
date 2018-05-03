@@ -99,9 +99,9 @@ export class ExamListComponent extends BaseComponent {
                 }
             });
             this.exams.sort((exam1, exam2): any => {
-                if (exam1.id < exam2.id)
+                if (exam1.id > exam2.id)
                     return -1;
-                else if (exam1.id > exam2.id)
+                else if (exam1.id < exam2.id)
                     return 1;
                 else
                     return 0;

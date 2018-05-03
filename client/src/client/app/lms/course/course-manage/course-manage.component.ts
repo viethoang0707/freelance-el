@@ -25,6 +25,7 @@ import { CourseMaterialDialog } from '../course-material/course-material.dialog.
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
+import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 
 
 @Component({
@@ -53,7 +54,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(ClassConferenceDialog) conferenceDialog : ClassConferenceDialog;
 	@ViewChild(ClassExamListDialog) examListDialog : ClassExamListDialog;
 	@ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
-
+	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
+	
 	constructor(private router: Router, private route: ActivatedRoute, private sylUtils:SyllabusUtils) {
 		super();
 		this.classes = [];
@@ -183,6 +185,18 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 						this.selectedMaterial = null;
 					})
 				});
+	}
+
+	nodeSelect(event:any) {
+		if (this.selectedNode) {
+			this.selectedUnit =  this.selectedNode.data;
+		}
+	}
+
+	previewUnit() {
+		if (this.selectedNode) {
+			this.unitPreviewDialog.show(this.selectedNode.data);
+		}
 	}
 }
 

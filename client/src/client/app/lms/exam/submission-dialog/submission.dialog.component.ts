@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs/Rx';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -17,7 +17,8 @@ import { QuestionContainerDirective } from '../../../assessment/question/questio
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
- import * as _ from 'underscore';
+import * as _ from 'underscore';
+import {WebcamImage} from 'ngx-webcam';
 
 @Component({
     moduleId: module.id,
@@ -27,54 +28,52 @@ import 'rxjs/add/observable/timer';
 })
 export class SubmissionDialog extends BaseComponent {
     display: boolean;
-    qIndex: number;
-    examQuestions: ExamQuestion[];
-    answers: Answer[];
-    member: ExamMember;
     exam: Exam;
     submission: Submission;
-    account: CloudAccount;
+      trigger: Subject<void> = new Subject<void>();
 
-     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
+  
+
+    private onConfirmReceiver: Subject<any> = new Subject();
+    onConfirm: Observable<any> = this.onConfirmReceiver.asObservable();
+
      @ViewChild('printSection') printSection;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
         this.display = false;
-        this.examQuestions = [];
-        this.answers = [];
         this.exam = new Exam();
-        this.member = new ExamMember();
-        this.account = this.authService.CloudAcc;
     }
 
-    show(exam: Exam, member: ExamMember) {
+    show(exam: Exam, submission: Submission) {
         this.display = true;
-        this.examQuestions = [];
-        this.answers = [];
         this.exam = exam;
-        this.member = member;
-        this.qIndex = 0;
-        Submission.byMember(this, this.member.id).subscribe((submit:Submission) => {
-            if (submit) {
-                this.submission = submit;
-                this.startReview();
-            }
-        });
+        this.submission = submission;
     }
 
     hide() {
         this.display = false;
     }
 
-    fetchAnswers(): Observable<any> {
-        if (this.submission.id)
-            return Answer.listBySubmit(this, this.submission.id);
-        else
-            return Observable.of([]);
+    confirm(){
+        if (this.exam.take_picture_on_submit)
+            this.trigger.next();
+        else {
+            this.onConfirmReceiver.next();
+            this.hide();
+        }
     }
 
-   
+   handleImage(webcamImage: WebcamImage): void {
+    console.info('received webcam image', webcamImage);
+    this.submission.picture = webcamImage.imageAsDataUrl;
+    this.onConfirmReceiver.next();
+    this.hide();
+  }
+
+   get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
+  }
 }
 
 

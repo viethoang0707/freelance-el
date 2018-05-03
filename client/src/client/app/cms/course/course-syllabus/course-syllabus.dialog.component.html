@@ -1,37 +1,37 @@
 <p-dialog header="{{'Course syllabus'|translate}}:{{syl.name}}" [(visible)]="display" modal="false" width="960" [responsive]="true">
-    <div class="ui-g">
-      <div class="ui-g-12">
-        <p-toolbar>
-          <div class="ui-toolbar-group-left">
-            <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
-            <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedNode"></button>
-            <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedNode" label="{{'Delete'|translate}}"></button>
-          </div>
-          <div class="ui-toolbar-group-right">
-            <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings" (click)="showSetting()"  label="{{'Setting'|translate}}"></button>
-          </div>
-        </p-toolbar>
-        <div class="ui-g-3">
-          <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-toolbar>
+        <div class="ui-toolbar-group-left">
+          <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
+          <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedNode"></button>
+          <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedNode" label="{{'Delete'|translate}}"></button>
         </div>
-        <div class="ui-g-9" *ngIf="selectedUnit">
-          <div class="card">
-            <div class="image-box-content">
-              <div>
-                <h3>{{selectedUnit.name}}</h3>
-                <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
-              </div>
-              <div class="image-box-footer">
-                <button pButton type="button" label="{{'Move up'|translate}}" class="purple-btn" icon="ui-icon-arrow-upward" (click)="moveUp()"></button>
-                <button pButton type="button" label="{{'Move down'|translate}}" class="purple-btn" icon="ui-icon-arrow-downward" (click)="moveDown()"></button>
-                <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit()" *ngIf="selectedUnit.type!='folder'"></button>
-              </div>
+        <div class="ui-toolbar-group-right">
+          <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings" (click)="showSetting()" label="{{'Setting'|translate}}"></button>
+        </div>
+      </p-toolbar>
+      <div class="ui-g-3">
+        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+      </div>
+      <div class="ui-g-9" *ngIf="selectedUnit">
+        <div class="card">
+          <div class="image-box-content">
+            <div>
+              <h3>{{selectedUnit.name}}</h3>
+              <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
+            </div>
+            <div class="image-box-footer">
+              <button pButton type="button" label="{{'Move up'|translate}}" class="purple-btn" icon="ui-icon-arrow-upward" (click)="moveUp()"></button>
+              <button pButton type="button" label="{{'Move down'|translate}}" class="purple-btn" icon="ui-icon-arrow-downward" (click)="moveDown()"></button>
+              <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit()" *ngIf="selectedUnit.type!='folder'"></button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <course-setting-dialog></course-setting-dialog>
+  </div>
+  <course-setting-dialog></course-setting-dialog>
   <course-unit-dialog></course-unit-dialog>
   <course-unit-preview-dialog></course-unit-preview-dialog>
   <p-footer>

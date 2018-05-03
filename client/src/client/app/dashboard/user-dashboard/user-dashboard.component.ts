@@ -153,8 +153,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    studyCourse(member: CourseMember, course: Course) {
-        if (course.syllabus_id && course.status == 'published')
+    studyCourse(course: Course,member: CourseMember ) {
+        if (course.status == 'published')
             this.router.navigate(['/lms/courses/study', course.id, member.id]);
     }
 

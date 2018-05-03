@@ -35,6 +35,7 @@ export class AnswerPrintDialog extends BaseComponent {
     submission: Submission;
     account: CloudAccount;
 
+
      @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
      @ViewChild('printSection') printSection;
 

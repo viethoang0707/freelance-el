@@ -40,11 +40,11 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
 				if (this.answer && this.answer.id)
-					SubAnswer.listByAnswer(this, answer.id).subscribe((subans: QuestionOption[]) => {
+					SubAnswer.listByAnswer(this, answer.id).subscribe((subans: SubAnswer[]) => {
 						this.subanswers = subans;
 						_.each(options, (option=> {
-							option.subAns = new SubAnswer();
-							var subAns = _.find(subans, obj=> {
+							option["subAns"] = new SubAnswer();
+							var subAns = _.find(subans, (obj)=> {
 								return obj.option_id == option.id;
 							});
 							if (!subAns) {
@@ -54,7 +54,7 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 								this.subanswers.push(subAns);
 								subAns.save(this).subscribe();
 							}
-							option.subAns = subAns;
+							option["subAns"] = subAns;
 						}));
 					});
 			});
@@ -73,11 +73,9 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 
 	concludeAnswer() {
 		this.answer.is_correct  = true;
-		_.each(options, (option=> {
-			var subAns = _.find(subans, obj=> {
-				return obj.option_id == option.id;
-			});
-			if ((option.is_correct && !subAns) || (!option.is_correct && subAns))
+		_.each(this.options, (option=> {
+			var subAns = option["subAns"];
+			if ((option.is_correct && !subAns.is_selected) || (!option.is_correct && subAns.is_selected))
 				this.answer.is_correct = false;
 		}));
 	}
