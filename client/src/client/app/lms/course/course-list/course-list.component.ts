@@ -100,12 +100,12 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         });
     }
 
-    studyCourse(member: CourseMember, course:Course) {
-        if (course.syllabus_id && course.status =='published')
+    studyCourse( course:Course,member: CourseMember) {
+        if ( course.status =='published')
             this.router.navigate(['/lms/courses/study',course.id, member.id]);
     }
 
-    manageCourse(member: CourseMember, course: Course) {
+    manageCourse( course: Course,member: CourseMember) {
         this.router.navigate(['/lms/courses/manage',course.id, member.id]);
     }
 }
