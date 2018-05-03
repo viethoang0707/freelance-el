@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -16,6 +16,12 @@ import { ICourseUnit } from '../course-unit-template/unit.interface';
 	moduleId: module.id,
 	selector: 'course-unit-dialog',
 	templateUrl: 'course-unit-dialog.component.html',
+	styles: [`
+		.custom .ui-scrollpanel-content {
+			width: 100% !important;
+		}
+    `],
+	encapsulation: ViewEncapsulation.None
 })
 export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 

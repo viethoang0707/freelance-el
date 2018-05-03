@@ -1,10 +1,10 @@
 <div *ngIf ="mode=='design'">
-	<div class="ui-g-12 ">
-	  <label>{{'Lecture'|translate}}</label>
-	  <p-editor [(ngModel)]="lecture.content" [style]="{'height':'120px'}" name="content">
+	<div class="ui-g-12 removePdLf removePdRt">
+	  <label for="content">{{'Lecture'|translate}}</label>
+	  <p-editor [(ngModel)]="lecture.content" [style]="{'height':'320px'}" name="content">
 	  </p-editor>
 	</div>
 </div>
-<div *ngIf="mode=='design'">
+<div *ngIf="mode=='review'">
   <div [innerHTML]="lecture.content"></div>
 </div>
