@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
@@ -21,6 +21,7 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
     selector: 'user-list',
     templateUrl: 'user-list.component.html',
     styleUrls: ['user-list.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class UserListComponent extends BaseComponent {
 
