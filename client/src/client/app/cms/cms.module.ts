@@ -10,9 +10,9 @@ import { SumPipe } from './exam/sum.pipe';
 import { CourseUnitContainerDirective } from './course/course-unit-template/unit-container.directive';
 import { FolderCourseUnitComponent } from './course/course-unit-template/folder/folder-unit.component';
 import { ExerciseCourseUnitComponent } from './course/course-unit-template/exercise/exercise-unit.component';
-import { SCORMLectureCourseUnitComponent} from './course/course-unit-template/scorm/scorm-lecture-unit.component';
-import { SlideLectureCourseUnitComponent} from './course/course-unit-template/scorm/slide-lecture-unit.component';
-import { VideoLectureCourseUnitComponent} from './course/course-unit-template/video/video-lecture-unit.component';
+import { SCORMLectureCourseUnitComponent } from './course/course-unit-template/scorm/scorm-lecture-unit.component';
+import { SlideLectureCourseUnitComponent } from './course/course-unit-template/slide/slide-lecture-unit.component';
+import { VideoLectureCourseUnitComponent } from './course/course-unit-template/video/video-lecture-unit.component';
 import { HtmlLectureCourseUnitComponent } from './course/course-unit-template/lecture/html-lecture-unit.component';
 import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from './course/course-unit-preview-dialog/course-unit-preview-dialog.component';
@@ -21,12 +21,12 @@ import { CourseSettingDialog } from './course/course-setting/course-setting.dial
 @NgModule({
 	imports: [ErpSharedModule, AuthModule, AssessmentModule],
 	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,
-	CourseSyllabusDialog,CourseUnitContainerDirective, FolderCourseUnitComponent,CourseSettingDialog,SlideLectureCourseUnitComponent,
-	ExerciseCourseUnitComponent,SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,HtmlLectureCourseUnitComponent, CourseUnitDialog],
+		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSettingDialog, SlideLectureCourseUnitComponent,
+		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent, CourseUnitDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog],
 	providers: [],
-	entryComponents:[FolderCourseUnitComponent,ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
-	VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
+	entryComponents: [FolderCourseUnitComponent, ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
+		VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
 })
 export class CMSModule {
 }

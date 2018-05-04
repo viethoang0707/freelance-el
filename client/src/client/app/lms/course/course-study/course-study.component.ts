@@ -26,17 +26,17 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
-import { SelectItem } from 'primeng/api';
+// import { SelectItem } from 'primeng/api';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
-import { Group } from '../../../shared/models/elearning/group.model';
-import { Submission } from '../../../shared/models/elearning/submission.model';
-import { SelectItem } from 'primeng/api';
+// import { Group } from '../../../shared/models/elearning/group.model';
+// import { Submission } from '../../../shared/models/elearning/submission.model';
+// import { SelectItem } from 'primeng/api';
 import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../exam/exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
-import { Route, Router } from '@angular/router';
+import { Route } from '@angular/router';
 import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { CertificatePrintDialog } from '../certificate-print/certificate-print.dialog.component';
@@ -62,6 +62,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	exams: Exam[];
 	completedExams: Exam[];
 	certificate: Certificate;
+	classes: CourseClass[];
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -74,7 +75,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	EXAM_STATUS = EXAM_STATUS;
 
 
-	constructor(private router: Router, private route: ActivatedRoute, private sylUtils:SyllabusUtils) {
+	constructor(private router: Router, private route: ActivatedRoute, private sylUtils:SyllabusUtils,private reportUtils: ReportUtils) {
 		super();
 		this.course = new Course();
 		this.member = new CourseMember();
@@ -127,7 +128,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	}
 
 	loadCertificate() {
-		Certificate.byMember(this, member.id).subscribe((certificate:any) => {
+		Certificate.byMember(this, this.member.id).subscribe((certificate:any) => {
             this.certificate = certificate;
         });
 	}
