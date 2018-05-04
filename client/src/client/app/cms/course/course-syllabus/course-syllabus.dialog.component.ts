@@ -40,9 +40,11 @@ export class CourseSyllabusDialog extends BaseComponent {
         this.items = [
             {label: this.translateService.instant(COURSE_UNIT_TYPE['folder']), command: ()=> { this.add('folder')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['html']), command: ()=> { this.add('html')}},
+            {label: this.translateService.instant(COURSE_UNIT_TYPE['slide']), command: ()=> { this.add('slide')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['video']), command: ()=> { this.add('video')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['exercise']), command: ()=> { this.add('exercise')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['scorm']), command: ()=> { this.add('scorm')}},
+
         ];
         this.syl = new CourseSyllabus();
     }

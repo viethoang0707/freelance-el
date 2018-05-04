@@ -29,6 +29,11 @@
     </div>
   </div>
 </div>
-<div *ngIf="mode=='design'">
+<div *ngIf="mode=='preview'">
 <video id="camera" width="100%" #camera autoplay poster="assets/images/logo-vietinterview.png" src="{{lecture.video_url}}"></video>
+<div [innerHTML]="lecture.transcript"></div>
+</div>
+<div *ngIf="mode=='study'">
+<video id="camera" width="100%" #camera autoplay poster="assets/images/logo-vietinterview.png" src="{{lecture.video_url}}"></video>
+<div [innerHTML]="lecture.transcript"></div>
 </div>

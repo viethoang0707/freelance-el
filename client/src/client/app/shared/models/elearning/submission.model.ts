@@ -10,7 +10,7 @@ export class Submission extends BaseModel{
     // Default constructor will be called by mapper
     constructor(){
         super();
-		
+		this.picture = undefined;
         this.user_id = undefined;
         this.member_id = undefined;
         this.exam_id = undefined;
@@ -20,6 +20,7 @@ export class Submission extends BaseModel{
     exam_id: number;
     user_id: number;
     member_id: number;
+    picture: string;
     @FieldProperty<Date>()
     end: Date;
     @FieldProperty<Date>()
