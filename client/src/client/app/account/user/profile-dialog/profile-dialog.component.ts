@@ -21,7 +21,7 @@ import { CertificatePrintDialog } from '../../../lms/course/certificate-print/ce
     templateUrl: 'profile-dialog.component.html',
 })
 export class UserProfileDialog extends BaseDialog<User> {
-
+	user: User;
     tree: TreeNode[];
     selectedNode: TreeNode;
     members: CourseMember[];
@@ -41,6 +41,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	ngOnInit() {
+		this.user = this.authService.UserProfile;
 		this.onShow.subscribe(object => {
 			Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 				this.tree = this.treeUtils.buildTree(groups);
