@@ -76,6 +76,14 @@ export class CourseListComponent extends BaseComponent {
         Course.all(this).subscribe(courses => {
             this.courses = courses;
             this.displayCourses = courses;
+            this.displayCourses.sort((course1, course2): any => {
+                if (course1.id > course2.id)
+                    return -1;
+                else if (course1.id < course2.id)
+                    return 1;
+                else
+                    return 0;
+            });
         });
     }
 
