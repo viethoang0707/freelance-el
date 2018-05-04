@@ -3,6 +3,21 @@
 	text-align: center;
 }
 
+ul.list-cmt{
+	margin: 0;
+    padding-left: 0;
+}
+
+.border-end{
+	border-bottom: none;
+}
+
+.list-cmt li{
+	list-style: none;
+	padding: 16px 24px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
 .list-cmt li .cmt-title{
 	font-weight: 700;
     margin-right: 8px;
@@ -36,3 +51,18 @@ h4.title{
 	font-size: 24px;
     margin-right: 5px;
 }
+
+.card-exam{
+	position: relative;
+}
+
+.user-name{
+	font-size: 20px;
+    color: #212121;
+    position: absolute;
+    top: 50px;
+    margin-left: 110px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+

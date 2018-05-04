@@ -205,7 +205,7 @@
 	"Level down": "Xuống cấp",
 	"Clear selection": "Xóa lựa chọn",
 	"Course syllabus": "Giáo trình khóa học", 
-	"Course unit": "Đơn vị học trình",
+	"Course unit": "Giáo trình",
 	"Select questions": "Lựa chọn câu hỏi",
 	"Lecture": "Bài học",
 	"Upload from computer": "Tải lên từ máy tính",
@@ -279,6 +279,11 @@
 	"Phone is required": "Nhập phone là bắt buộc",
 	"Select the correct answer is required": "Chọn đáp án đúng là bắt buộc",
 	"Department": "Phòng ban",
-	"User groups": "Hệ thống người dùng"
+	"User groups": "Hệ thống người dùng",
+	"Manage course": "Quản lý khóa học",
+	"Manage exam": "Quản lý kì thi",
+	"Recent course": "Khóa học gần đây",
+	"Exam schedule": "Lịch thi",
+	"Manage": "Quản lý"
 
 }
