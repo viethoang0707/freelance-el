@@ -21,12 +21,12 @@ import { CourseSettingDialog } from './course/course-setting/course-setting.dial
 @NgModule({
 	imports: [ErpSharedModule, AuthModule, AssessmentModule],
 	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,
-	CourseSyllabusDialog,CourseUnitContainerDirective, FolderCourseUnitComponent,CourseSettingDialog,SlideLectureCourseUnitComponent,
-	ExerciseCourseUnitComponent,SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,HtmlLectureCourseUnitComponent, CourseUnitDialog],
+		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSettingDialog, SlideLectureCourseUnitComponent,
+		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent, CourseUnitDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog],
 	providers: [],
-	entryComponents:[FolderCourseUnitComponent,ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
-	VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
+	entryComponents: [FolderCourseUnitComponent, ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
+		VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
 })
 export class CMSModule {
 }

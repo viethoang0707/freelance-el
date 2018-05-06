@@ -31,6 +31,7 @@ export class QuestionListComponent extends BaseComponent {
     selectedGroupNodes: TreeNode[];
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
+    total: number;
 
     constructor(private treeUtils: TreeUtils) {
         super();
@@ -38,7 +39,7 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listByCategory(this,GROUP_CATEGORY.QUESTION).subscribe(groups => {
+        Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
             this.tree = this.treeUtils.buildTree(groups);
         });
         this.loadQuestions();
@@ -49,7 +50,7 @@ export class QuestionListComponent extends BaseComponent {
         ];
     }
 
-    add(type:string) {
+    add(type: string) {
         var question = new Question();
         question.type = type;
         this.questionDialog.show(question);
@@ -77,21 +78,15 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     loadQuestions() {
-        // if (this.selectedNode)
-        //     Question.listByGroup(this, this.selectedNode.data.id).subscribe(questions => {
-        //         this.questions = questions;
-        //     });
-        // else
-            Question.all(this).subscribe(questions => {
-                this.questions = questions;
-            });
+        Question.all(this).subscribe(questions => {
+            this.questions = questions;
+        });
     }
 
     import() {
         this.questionImportDialog.show();
-        this.questionImportDialog.onImportComplete.subscribe(()=> {
+        this.questionImportDialog.onImportComplete.subscribe(() => {
             this.loadQuestions();
         });
     }
-
 }

@@ -68,6 +68,15 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
                 });
                 this.courses = courses;
+
+                this.courses.sort((exam1, exam2): any => {
+                    if (exam1.create_date > exam2.create_date)
+                        return -1;
+                    else if (exam1.create_date < exam2.create_date)
+                        return 1;
+                    else
+                        return 0;
+                });
             });
         });
     }

@@ -248,14 +248,14 @@ body .cont.ui-accordion .ui-accordion-header.ui-state-active{
 }
 
 /*dashboard*/
-.dashboard .user-card .user-card-content .user-detail ul{
+/*.dashboard .user-card .user-card-content .user-detail ul{
   padding: 0;
 }
 
 .dashboard .user-card .user-card-content{
   min-height: 230px;
 }
-
+*/
 body .linkPage.ui-paginator{
   background-color: #fff;
   border: none;
@@ -272,4 +272,20 @@ body .linkPage.ui-paginator .ui-paginator-pages a{
 body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active{
   background-color: #283593;
   color: #fff;
+}
+
+body .dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
+  height: 100px;
+  overflow: hidden;
+  padding: 0;
+}
+
+body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
+  height: 180px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.dashboard-courses-list .ui-panel-content-wrapper{
+  min-height: 155px;
 }

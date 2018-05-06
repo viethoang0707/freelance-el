@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, AfterViewInit, NgZone } from '@ang
 import { Observable, Subject } from 'rxjs/Rx';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
-import { SlideLecture } from '../../../../shared/models/elearning/lecture-slide.model';
+import { SlideLecture } from '../../../../shared/models/elearning/lecture_slide.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
