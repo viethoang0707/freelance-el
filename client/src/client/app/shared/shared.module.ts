@@ -108,6 +108,7 @@ import { TooltipModule } from 'primeng/primeng';
 import { TreeModule } from 'primeng/primeng';
 import { TreeTableModule } from 'primeng/primeng';
 import { MessageService } from 'primeng/components/common/messageservice';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 @NgModule({
@@ -192,6 +193,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TreeModule,
         TreeTableModule,
         TranslateModule,
+        PdfViewerModule
         ],
     declarations: [
         // App components
@@ -308,6 +310,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TreeModule,
         TreeTableModule,
         TranslateModule,
+        PdfViewerModule
         ],
 })
 export class ErpSharedModule {

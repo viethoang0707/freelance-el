@@ -13,12 +13,19 @@
               <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
             </div>
             <div class="image-box-footer">
-              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder'"></button>
+              <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
+              <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
+              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="cyan-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder'"></button>
+            </div>
+            <div>
+              <ng-template course-unit-container></ng-template>
+              <div>
+                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn" style="margin-right:4px;" (click)="completeUnit()" [disabled]="selectedUnit.completed" *ngIf="selectedUnit.type!='folder'"></button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <course-unit-study-dialog></course-unit-study-dialog>
     </p-tabPanel>
     <p-tabPanel *ngIf="member.class_id" header="{{'Exam'|translate}}" leftIcon="ui-icon-grade">
       <div class="ui-g-12 ">
@@ -207,11 +214,21 @@
     </p-tabPanel>
     <p-tabPanel *ngIf="course.mode=='group'" header="{{'Conference'|translate}}" leftIcon="ui-icon-call">
       <div class="ui-g-12">
-        <p-accordion>
-          <p-accordionTab header="{{faq.question}}" [selected]="true" *ngFor="let faq of faqs">
-            <div [innerHTML]="faq.answer"></div>
-          </p-accordionTab>
-        </p-accordion>
+        <div class="ui-g-4">
+          <div class="task-box task-box-1">
+            <div class="task-box-header">
+              <button pButton type="button " label="{{ 'Join'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
+            </div>
+            <div class="task-box-content">
+              <h3>{{'Live conference'|translate}} : {{conference.name}}</h3>
+              <p>{{'Room password'|translate}} {{':'+conference.room_pass}}
+              </p>
+            </div>
+            <div class="task-box-footer">
+              <span class="task-status">{{CONFERENCE_STATUS[conference.status] | translate}}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </p-tabPanel>
   </p-tabView>

@@ -31,10 +31,15 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	exerciseQuestions: ExerciseQuestion[];
 	@ViewChild(SelectQuestionsDialog) questionDialog : SelectQuestionsDialog;
 	@ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
+	@ViewChild(QuestionContainerDirective) studyQuestionComponent : QuestionContainerDirective;
+	stage:string;
+	qIndex:number;
+	currentQuestion: ExerciseQuestion;
 
 	constructor(private treeUtils: TreeUtils, private componentFactoryResolver:ComponentFactoryResolver) {
 		super();
 		this.exerciseQuestions = [];
+		this.currentQuestion =  new ExerciseQuestion();
 	}
 
 	ngOnInit() {
@@ -46,14 +51,18 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			 ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
 			 	this.exerciseQuestions =  exerciseQuestions;
 			 	if (this.mode=='preview')
-			 	setTimeout(()=>{
-                    var componentHostArr =  this.questionsComponents.toArray();
-                        for (var i =0;i<exerciseQuestions.length;i++) {
-                            var exerciseQuestion =  exerciseQuestions[i];
-                            var componentHost = componentHostArr[i];
-                            this.previewQuestion(exerciseQuestion,componentHost);
-                        }
-                    }, 0); 
+				 	setTimeout(()=>{
+	                    var componentHostArr =  this.questionsComponents.toArray();
+	                        for (var i =0;i<exerciseQuestions.length;i++) {
+	                            var exerciseQuestion =  exerciseQuestions[i];
+	                            var componentHost = componentHostArr[i];
+	                            this.previewQuestion(exerciseQuestion,componentHost);
+	                        }
+	                    }, 0); 
+				 if (this.mode=='study') {
+				 	this.qIndex = 0;
+				 	this.displayQuestion(this.qIndex);
+				 }
 			 });
 
 
@@ -128,6 +137,43 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		}
 	}
 
+	answerQuestion() {
+		this.stage = 'answer';
+	}
+
+	prepareQuestion(question: ExerciseQuestion): Observable<any> {
+		return Question.get(this, question.question_id);
+	}
+
+	displayQuestion(index: number) {
+		this.qIndex = index;
+		this.stage = 'question';
+		this.currentQuestion = this.exerciseQuestions[index];
+		this.prepareQuestion(this.currentQuestion).subscribe(question => {
+			var detailComponent = QuestionRegister.Instance.lookup(question.type);
+			let viewContainerRef = this.studyQuestionComponent.viewContainerRef;
+			if (detailComponent) {
+				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+				viewContainerRef.clear();
+				var componentRef = viewContainerRef.createComponent(componentFactory);
+				(<IQuestion>componentRef.instance).mode = 'study';
+				(<IQuestion>componentRef.instance).render(question, this.currentAnswer);
+			}
+		});
+
+	}
+
+	next() {
+		if (this.qIndex < this.exerciseQuestions.length - 1) {
+			this.displayQuestion(this.qIndex + 1);
+		}
+	}
+
+	prev() {
+		if (this.qIndex > 0) {
+			this.displayQuestion(this.qIndex - 1);
+		}
+	}
 
 }
 

@@ -19,6 +19,20 @@ export class SyllabusUtils {
     });
   }
 
+  flattenTree(tree) {
+    var nodeList = [];
+    for (var i = 0; i< tree.length)
+      nodeList = nodeList.concat(this.flattenNode(tree[i]));
+    return nodeList;
+  }
+
+  private flattenNode(treeNode) {
+    var nodeList = [treeNode];
+    for (var i = 0; i< treeNode.children.length)
+      nodeList = nodeList.concat(this.flattenNode(treeNode.children[i]));
+    return nodeList;
+  }
+
   private isSubUnit(units: CourseUnit[], target: CourseUnit, parentId: number) {
     while (target) {
       if (target.id == parentId)
@@ -62,10 +76,10 @@ export class SyllabusUtils {
 
   public moveUp(tree, node) {
     var siblings = [];
-    if (!node.parent_id) {
+    if (!node.parent) {
       siblings = tree;
     } else {
-      var parentNode = this.findTreeNode(tree, node.parent_id);
+      var parentNode = this.findTreeNode(tree, node.parent.data.id);
       siblings = parentNode.children;
     }
     var curIndex = _.findIndex(siblings, (obj) => {return obj.data.id == node.data.id});
@@ -83,10 +97,10 @@ export class SyllabusUtils {
 
   public moveDown(tree, node) {
     var siblings = [];
-    if (!node.parent_id) {
+    if (!node.parent) {
       siblings = tree;
     } else {
-      var parentNode = this.findTreeNode(tree, node.parent_id);
+      var parentNode = this.findTreeNode(tree, node.parent.data.id);
       siblings = parentNode.children;
     }
     var curIndex = _.findIndex(siblings, (obj) => {return obj.data.id == node.data.id});
