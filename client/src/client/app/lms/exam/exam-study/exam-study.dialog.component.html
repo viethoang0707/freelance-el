@@ -73,6 +73,10 @@
             <button type="button" pButton [ngClass]="{'mt10': true, 'lineHeight2-25': true, 'ui-button-success':question.checkAnswer}"
               (click)="displayQuestion(i)">{{ i + 1 }}</button>
           </div>
+          <div class="clear"></div>
+          <div>
+            <p-messages [(value)]="msgs"></p-messages>
+          </div>
         </div>
       </div>
     </div>
