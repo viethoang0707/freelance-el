@@ -1,4 +1,3 @@
-
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from '../decorator';
@@ -7,6 +6,7 @@ import { ExamMember } from './exam-member.model';
 import { Answer } from './answer.model';
 import { Submission } from './submission.model';
 import { CourseUnit } from './course-unit.model';
+import * as _ from 'underscore';
 
 @Model('etraining.course_log')
 export class CourseLog extends BaseModel{

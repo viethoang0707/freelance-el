@@ -21,14 +21,14 @@ export class SyllabusUtils {
 
   flattenTree(tree) {
     var nodeList = [];
-    for (var i = 0; i< tree.length)
+    for (var i = 0; i< tree.length;i++)
       nodeList = nodeList.concat(this.flattenNode(tree[i]));
     return nodeList;
   }
 
   private flattenNode(treeNode) {
     var nodeList = [treeNode];
-    for (var i = 0; i< treeNode.children.length)
+    for (var i = 0; i< treeNode.children.length;i++)
       nodeList = nodeList.concat(this.flattenNode(treeNode.children[i]));
     return nodeList;
   }

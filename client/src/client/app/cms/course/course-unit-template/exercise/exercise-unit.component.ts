@@ -157,7 +157,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				viewContainerRef.clear();
 				var componentRef = viewContainerRef.createComponent(componentFactory);
 				(<IQuestion>componentRef.instance).mode = 'study';
-				(<IQuestion>componentRef.instance).render(question, this.currentAnswer);
+				(<IQuestion>componentRef.instance).render(question);
 			}
 		});
 
