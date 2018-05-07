@@ -21,6 +21,8 @@ import { IQuestion } from '../../../assessment/question/question-template/questi
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import { SubmissionDialog } from '../submission-dialog/submission.dialog.component';
 import 'rxjs/add/observable/timer';
+import {Message} from 'primeng/components/common/api';
+import {MessageService} from 'primeng/components/common/messageservice';
 
 declare var $: any;
 
@@ -28,6 +30,7 @@ declare var $: any;
 	moduleId: module.id,
 	selector: 'exam-study-dialog',
 	templateUrl: 'exam-study.dialog.component.html',
+	providers: [MessageService]
 })
 export class ExamStudyDialog extends BaseComponent {
 
@@ -48,6 +51,7 @@ export class ExamStudyDialog extends BaseComponent {
 	stats: any;
 	height: number;
 	examCode: any;
+	msgs: Message[] = [];
 
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -252,11 +256,18 @@ export class ExamStudyDialog extends BaseComponent {
 				.takeUntil(this.timerSubject)
 				.subscribe(() => {
 					this.timeLeft -= 1000;
+					if(this.timeLeft <= 300000 && this.timeLeft > 299000)
+					{
+						this.showWarn();
+					}
 					if (this.timeLeft <= 0)
 						this.finishExam();
 				});
 		}
-
 	}
+	showWarn() {
+        this.msgs = [];
+        this.msgs.push({severity:'warn', summary:'Warn Message', detail:'5 minutes remaining!'});
+    }
 
 }
