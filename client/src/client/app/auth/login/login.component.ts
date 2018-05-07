@@ -5,6 +5,7 @@ import { Credential } from '../../shared/models/credential.model';
 import { CacheService } from '../../shared/services/cache.service';
 import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { Observable, Subject } from 'rxjs/Rx';
+import { Permission } from '../../shared/models/elearning/permission.model';
 
 @Component({
     moduleId: module.id,
@@ -58,7 +59,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
                     this.authService.UserProfile = user;
                     if (this.remember)
                         this.authService.StoredCredential = this.credential;
-                    this.router.navigate([this.returnUrl]);
+                    user.getPermission(this).subscribe(permission=> {
+                        this.authService.UserPermission =  permission;
+                        this.router.navigate([this.returnUrl]);
+                    });
                 },
                 error => {
                     this.error('Login failed.');

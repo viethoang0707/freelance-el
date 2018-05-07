@@ -14,6 +14,7 @@ import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
 import { CacheService } from './services/cache.service';
 import { ExcelService } from './services/excel.service';
+import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
 import { MeetingService } from './services/meeting.service';
 import { WindowRef } from './helpers/windonw.ref';
@@ -332,6 +333,7 @@ export class ErpSharedModule {
                 WindowRef,
                 SyllabusUtils,
                 ExcelService,
+                MenuService,
                 SettingService,
                 ConfirmationService]
         };

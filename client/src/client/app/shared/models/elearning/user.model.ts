@@ -1,9 +1,9 @@
-
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
+import { Permission } from './permission.model';
 import * as _ from 'underscore';
 
 @Model('res.users')
@@ -24,6 +24,7 @@ export class User extends BaseModel{
         this.is_admin = undefined;
         this.banned = undefined;
 		this.company_id = undefined;
+        this.permission_id = undefined;
 	}
 
     image:string;
@@ -37,13 +38,25 @@ export class User extends BaseModel{
     banned: boolean;
     display_name: string;
     company_id: number;
+    permission_id: number;
 
     get IsAdmin() {
         return this.is_admin || this.login =='admin';
     }
 
+    get IsSuperAdmin() {
+        return this.login =='admin';
+    }
+
     getCompany(context:APIContext):Observable<any> {
         return Company.get(context, this.company_id);
+    }
+
+    getPermission(context:APIContext):Observable<any> {
+        if (this.permission_id)
+            return Permission.get(context, this.permission_id);
+        else
+            return Observable.of(null);
     }
 
     static all( context:APIContext): Observable<any[]> {
@@ -52,6 +65,10 @@ export class User extends BaseModel{
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
         return User.search(context,[], "[('group_id','=',"+groupId+")]");
+    }
+
+    static listByPermission(context:APIContext, permissionId):Observable<any> {
+        return User.search(context,[], "[('permission_id','=',"+permissionId+")]");
     }
 
 }

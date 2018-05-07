@@ -10,7 +10,7 @@ import { UserProfileDialog } from './user/profile-dialog/profile-dialog.componen
 import {PermissionListComponent} from './permission/permission-list/permission-list.component';
 import { PermissionDialog} from './permission/permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog} from './permission/menu-permission-dialog/menu-permission-dialog.component';
-import { AccessPermissionDialog } from './permission/access-permission-dialog/access-permission-dialog.component';
+import { MemberPermissionDialog} from './permission/member-permission-dialog/member-permission-dialog.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule, LMSModule],
@@ -22,7 +22,7 @@ import { AccessPermissionDialog } from './permission/access-permission-dialog/ac
                     PermissionListComponent,
                     PermissionDialog,
                     MenuPermissionDialog,
-                    AccessPermissionDialog
+                    MemberPermissionDialog
                 ],
     exports: [UserProfileDialog],
     providers: []
