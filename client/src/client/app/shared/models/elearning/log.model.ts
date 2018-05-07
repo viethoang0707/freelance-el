@@ -1,4 +1,3 @@
-
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from '../decorator';
@@ -7,6 +6,7 @@ import { ExamMember } from './exam-member.model';
 import { Answer } from './answer.model';
 import { Submission } from './submission.model';
 import { CourseUnit } from './course-unit.model';
+import * as _ from 'underscore';
 
 @Model('etraining.course_log')
 export class CourseLog extends BaseModel{
@@ -36,6 +36,20 @@ export class CourseLog extends BaseModel{
     attachment_url: string;
     attachment_id: number;
 
+    static lastUserAttempt(context:APIContext, userId: number, courseId: number):Observable<any> {
+        var domain = "[('user_id','=',"+userId+"),('course_id','=',"+courseId+"),('res_model','=',"+CourseUnit.Model+")]";
+        return CourseLog.search(context,[], domain ).flatMap(logs=> {
+            if (logs.length ==0)
+                return Observable.of(null);
+            else {
+                var last_attempt = _.max(logs, (log)=> {
+                    return log.start.getTime();
+                });
+                return Observable.of(last_attempt);
+            }
+        });
+    }
+
     static userStudyActivity(context:APIContext, userId, courseId):Observable<any> {
         var domain = "";
         if (courseId)
@@ -56,7 +70,7 @@ export class CourseLog extends BaseModel{
         log.course_id = courseId;
         log.res_model = CourseUnit.Model;
         log.note = 'Start course unit';
-        log.code = "START_UNIT";
+        log.code = "START_COURSE_UNIT";
         log.start = new Date();
         return log.save(context);
     }
@@ -68,7 +82,19 @@ export class CourseLog extends BaseModel{
         log.course_id = courseId;
         log.res_model = CourseUnit.Model;
         log.note = 'finish course unit';
-        log.code = "FINISH_UNIT";
+        log.code = "FINISH_COURSE_UNIT";
+        log.start = new Date();
+        return log.save(context);
+    }
+
+    static completeCourseUnit(context:APIContext, userId:number, courseId: number,  unit:CourseUnit):Observable<any> {
+        var log = new CourseLog();
+        log.user_id = userId;
+        log.res_id = unit.id;
+        log.course_id = courseId;
+        log.res_model = CourseUnit.Model;
+        log.note = 'finish course unit';
+        log.code = "COMPLETE_COURSE_UNIT";
         log.start = new Date();
         return log.save(context);
     }

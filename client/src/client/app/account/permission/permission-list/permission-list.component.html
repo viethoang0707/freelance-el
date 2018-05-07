@@ -18,12 +18,14 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th>{{'Role'|translate}}</th>
+                        <th>{{'Managed group'|translate}}</th>
                     </tr>
                     
                 </ng-template>
                 <ng-template pTemplate="body" let-permission>
                     <tr [pSelectableRow]="permission">
                         <td>{{permission.role}}</td>
+                        <td>{{permission.user_group_id__DESC__}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
@@ -38,8 +40,9 @@
                 </ng-template> 
             </p-table>
             <permission-dialog></permission-dialog>
+            <member-permission-dialog></member-permission-dialog>
             <menu-permission-dialog></menu-permission-dialog>
-            <access-permission-dialog></access-permission-dialog>
+            <select-group-dialog [category]="'organization'"></select-group-dialog>
         </div>
     </div>
 </div>

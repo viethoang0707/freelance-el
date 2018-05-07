@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/mergeMap';
 import { Credential } from '../models/credential.model';
 import { User } from '../models/elearning/user.model';
+import { Permission } from '../models/elearning/permission.model';
 import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service';
@@ -42,6 +43,20 @@ export class AuthService {
 
     clearUserProfile() {
         localStorage.removeItem('currentUser');
+    }
+
+    get UserPermission(): Permission {
+        if (localStorage.getItem('userPerm'))
+            return MapUtils.deserialize(Permission, JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('userPerm'))))));
+        return null;
+    }
+
+    set UserPermission(perm: Permission) {
+        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(Permission)))));
+    }
+
+    clearUserPermission() {
+        localStorage.removeItem('userPerm');
     }
 
     set CloudAcc(acc: CloudAccount) {
@@ -90,9 +105,11 @@ export class AuthService {
     }
 
     logout() {
-        localStorage.removeItem('currentUser');
+        this.clearUserProfile();
+        this.clearCloudAccount();
+        this.clearUserPermission();
         if (!this.Remember)
-            this.StoredCredential = new Credential();
+            this.clearStoredCredential();
     }
 
 

@@ -23,7 +23,6 @@ import { CertificatePrintDialog } from './course/certificate-print/certificate-p
 import { CourseManageComponent } from './course/course-manage/course-manage.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { SubmissionDialog } from './exam/submission-dialog/submission.dialog.component';
-import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-unit-study.dialog.component';
 import {WebcamModule} from 'ngx-webcam';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
@@ -32,7 +31,7 @@ import {MessageModule} from 'primeng/message';
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,MessagesModule,MessageModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,AnswerPrintDialog,
     				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,
-    				 SubmissionDialog,ClassExamListDialog,ExamManageComponent,CourseUnitStudyDialog,
+    				 SubmissionDialog,ClassExamListDialog,ExamManageComponent,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,
     				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog],

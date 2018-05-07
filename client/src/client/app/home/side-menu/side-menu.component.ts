@@ -8,6 +8,7 @@ import { HomeComponent } from '../home.component';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { CacheService } from '../../shared/services/cache.service';
+import { MenuService } from '../../shared/services/menu.service';
 declare var jQuery: any;
 
 @Component({
@@ -26,7 +27,7 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     layoutMenuScroller: HTMLDivElement;
     @ViewChild('layoutMenuScroller') layoutMenuScrollerViewChild: ElementRef;
 
-    constructor(public app: HomeComponent, 
+    constructor(public app: HomeComponent, private menuService: MenuService,
         private eventManager: HomeEventManager) {
         super();
         this.settingService.viewModeEvents.subscribe(mode => {
@@ -46,50 +47,11 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     }
 
     setAdminMenu() {
-        this.menu = [
-                { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
-                { label: '', separator: true, styleClass: 'menu-separator' },
-                {
-                    label: 'Syllabus', icon: 'school',
-                    items: [
-                        { label: 'Course', routerLink: ['/course/courses'] },
-                        { label: 'Course group', routerLink: ['/course/groups'] },
-                    ]
-                },
-                {
-                    label: 'Assessment', icon: 'grade',
-                    items: [
-                        { label: 'Question banks', routerLink: ['/assessment/questions'] },
-                        { label: 'Question category', routerLink: ['/assessment/groups'] },
-                        { label: 'Exam', routerLink: ['/assessment/exams'] }
-                    ]
-                },
-                {
-                    label: 'Analysis', icon: 'pie_chart',
-                    items: [
-                        { label: 'Report', routerLink: ['/analysis/reports'] },
-                        { label: 'Chart', routerLink: ['/analysis/charts'] },
-                    ]
-                },
-                {
-                    label: 'Accounts', icon: 'people',
-                    items: [
-                        { label: 'User', routerLink: ['/account/users'] },
-                        { label: 'Group', routerLink: ['/account/groups'] },
-                        { label: 'Permission', routerLink: ['/account/permissions'] }
-                    ]
-                }
-            ];
+        this.menu = this.menuService.adminMenu();
     }
 
     setUserMenu() {
-        this.menu = [
-                { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
-                { label: '', separator: true, styleClass: 'menu-separator' },
-                { label: 'My course', icon: 'school', routerLink: ['/lms/courses'] },
-                { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exams'] },
-                { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/lms/meetings'] },
-            ];
+        this.menu = this.menuService.userMenu();
     }
 
 

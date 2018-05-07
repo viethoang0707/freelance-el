@@ -23,10 +23,24 @@
   <select-question-dialog></select-question-dialog>
 </div>
 <div *ngIf="mode=='preview'">
-    <div *ngFor ="let question of exerciseQuestions;let i = index">
-      <span>{{'Question'|translate}} : {{i+1}} </span>
-        <div question-container>
-        </div>
+  <div *ngFor="let question of exerciseQuestions;let i = index">
+    <span>{{'Question'|translate}} : {{i+1}} </span>
+    <div question-container>
     </div>
-    
+  </div>
+</div>
+<div *ngIf="mode=='study'">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <ng-template question-container></ng-template>
+    </div>
+  </div>
+  <div class="ui-g-12" *ngIf="stage=='answer'">
+    <span>{{currentQuestion.explanation}}</span>
+    <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
+    <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="next()" *ngIf="qIndex < exerciseQuestions.length-1"></button>
+  </div>
+  <div class="ui-g-12" *ngIf="stage=='question'">
+    <button pButton type="button" icon="ui-icon-lightbulb-outline" title="{{'Answer'|translate}}" label="{{'Answer'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="answerQuestion()"></button>
+      </div>
 </div>
