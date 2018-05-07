@@ -1,6 +1,6 @@
-<p-dialog header="{{'Course syllabus'|translate}}:{{syl.name}}" [(visible)]="display" modal="false" width="960" [responsive]="true">
+<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" width="960" [responsive]="true" [positionTop]="80">
   <div class="ui-g">
-    <div class="ui-g-12">
+    <div class="ui-g-12 course-syllabus">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
           <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
@@ -11,10 +11,10 @@
           <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings" (click)="showSetting()" label="{{'Setting'|translate}}"></button>
         </div>
       </p-toolbar>
-      <div class="ui-g-3">
-        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+      <div class="ui-g-4">
+        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" [style]="{width: '100%'}"></p-tree>
       </div>
-      <div class="ui-g-9" *ngIf="selectedUnit">
+      <div class="ui-g-8" *ngIf="selectedUnit">
         <div class="card">
           <div class="image-box-content">
             <div>

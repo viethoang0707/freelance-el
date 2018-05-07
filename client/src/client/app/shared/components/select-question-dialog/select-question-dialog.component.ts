@@ -13,6 +13,7 @@ import { SelectItem } from 'primeng/api';
 	moduleId: module.id,
 	selector: 'select-question-dialog',
 	templateUrl: 'select-question-dialog.component.html',
+	styleUrls: ['select-question-dialog.component.css'],
 })
 export class SelectQuestionsDialog extends BaseComponent {
 

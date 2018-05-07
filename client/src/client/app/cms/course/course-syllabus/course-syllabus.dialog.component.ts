@@ -19,6 +19,7 @@ import * as _ from 'underscore';
     moduleId: module.id,
     selector: 'course-syllabus-dialog',
     templateUrl: 'course-syllabus.dialog.component.html',
+    styleUrls: ['course-syllabus.dialog.component.css'],
 })
 export class CourseSyllabusDialog extends BaseComponent {
 

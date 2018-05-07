@@ -284,6 +284,26 @@
 	"Manage exam": "Quản lý kì thi",
 	"Recent course": "Khóa học gần đây",
 	"Exam schedule": "Lịch thi",
-	"Manage": "Quản lý"
+	"Manage": "Quản lý",
+	"Course certificate": "Chứng chỉ khóa học",
+	"Course manage": "Quản lý khóa học",
+	"Preview": "Xem trước",
+	"Unit type": "Loại giáo trình",
+	"Gradebook": "Sổ điểm",
+	"View certificate": "Xem chứng chỉ",
+	"Course material": "Tài liệu khóa học",
+	"Issue certificate": "Cấp chứng chỉ",
+	"Gradebook list": "Danh sách bảng điểm",
+	"Class list": "Danh sách lớp học",
+	"View": "Xem",
+	"Time spend": "Thời gian học",
+	"Class exam enroll": "Đăng ký bài kiểm tra lớp",
+	"Class exams": "Bài kiểm tra lớp học",
+	"Select question": "Lựa chọn câu hỏi",
+	"Select group": "Lựa chọn danh mục",
+	"Select course": "Lựa chọn khóa học",
+	"Course setting": "Cài đặt khóa học",
+	"Select prequisite course": "Chọn khóa học tiên quyết"
+
 
 }
