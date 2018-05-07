@@ -29,7 +29,7 @@ export class DataAccessService {
     	if (this.authService.UserProfile.IsSuperAdmin)
     		return true;
     	if (record.Model == User.Model) {
-    		var userAccess = new UserAccess(this.authService.UserPermission, groups);
+    		var userAccess = new UserAccess(this.authService.UserPermission, this.userGroups);
     		return userAccess.checkPermission(record as User,method);
     	} else
     		return true;
@@ -59,7 +59,7 @@ class UserAccess implements IAccessible<User> {
 	private perm: Permission;
 	private groups: Group[];
 
-	constructor( perm: Permission, groups: Group[];) {
+	constructor( perm: Permission, groups: Group[]) {
 		this.perm =  perm;
 		this.groups = groups;
     }

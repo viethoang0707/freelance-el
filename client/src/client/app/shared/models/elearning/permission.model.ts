@@ -12,7 +12,7 @@ export class Permission extends BaseModel{
     // Default constructor will be called by mapper
     constructor(){
         super();
-		this.role = undefined;
+		this.name = undefined;
 		this.user_group_id = undefined;
 		this.user_group_id__DESC__ = undefined;
 		this.menu_access = undefined;
