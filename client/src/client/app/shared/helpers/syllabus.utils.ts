@@ -9,7 +9,7 @@ export class SyllabusUtils {
   constructor() {
   }
 
-  buildTree(units: CourseUnit[]) {
+  buildGroupTree(units: CourseUnit[]) {
     return this.buildSubTree(null, units);
   }
 

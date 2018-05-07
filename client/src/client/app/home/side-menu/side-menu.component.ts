@@ -7,7 +7,7 @@ import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
-import { CacheService } from '../../shared/services/cache.service';
+import { SettingService } from '../../shared/services/setting.service';
 import { MenuService } from '../../shared/services/menu.service';
 declare var jQuery: any;
 

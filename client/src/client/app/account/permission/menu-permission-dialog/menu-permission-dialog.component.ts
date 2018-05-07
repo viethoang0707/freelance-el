@@ -34,7 +34,7 @@ export class MenuPermissionDialog extends BaseDialog<Permission> implements OnIn
 	}
 
 	ngOnInit() {
-		this.menuTree = this.menuService.adminMenuTree();
+		this.menuTree = this.menuService.menuToTree(this.menuService.adminMenu());
 		this.onShow.subscribe(()=> {
 			this.selectedMenus = [];
 			var menuCodes = this.object.menu_access;

@@ -1,0 +1,28 @@
+<div class="card card-w-title">
+  <h1>{{'Approval tree'|translate}}</h1>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-toolbar>
+        <div class="ui-toolbar-group-left">
+          <button pButton type="button" label="{{'Select supervisor'|translate}}" class="green-btn" icon="ui-icon-transform" (click)="selectSupervisor()"  [disabled]="!selectedUser"></button>
+          <button pButton type="button" label="{{'Clear supervisor'|translate}}" class="red-btn" icon="ui-icon-clear" (click)="clearSupervisor()" [disabled]="!selectedUser"></button>
+        </div>
+      </p-toolbar>
+      <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)">
+        <ng-template let-node pTemplate="person">
+          <div class="node-header ui-corner-top">{{node.data.group_id__DESC__}}</div>
+          <div class="node-content">
+            <span class="profile-image-wrapper">
+                <img [src]='node.data.image | imageBase64'/>
+            </span>
+            <div>{{node.data.name}}</div>
+          </div>
+        </ng-template>
+        <ng-template let-node pTemplate="department">
+            <div>{{node.label}}</div>
+        </ng-template>
+      </p-organizationChart>
+      <select-admin-dialog></select-admin-dialog>
+    </div>
+  </div>
+</div>

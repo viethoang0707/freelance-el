@@ -18,7 +18,7 @@ export class Permission extends BaseModel{
 		this.menu_access = undefined;
 	}
 
-    role: string;
+    name: string;
     user_group_id: number;
     user_group_id__DESC__: string;
     menu_access: string;

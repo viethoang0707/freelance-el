@@ -7,10 +7,11 @@ import { UserDialog } from './user/user-dialog/user-dialog.component';
 import { UserExportDialog } from './user/export-dialog/export-dialog.component';
 import { UserImportDialog } from './user/import-dialog/import-dialog.component';
 import { UserProfileDialog } from './user/profile-dialog/profile-dialog.component';
-import {PermissionListComponent} from './permission/permission-list/permission-list.component';
+import { PermissionListComponent } from './permission/permission-list/permission-list.component';
 import { PermissionDialog} from './permission/permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog} from './permission/menu-permission-dialog/menu-permission-dialog.component';
 import { MemberPermissionDialog} from './permission/member-permission-dialog/member-permission-dialog.component';
+import { ApprovalTreeComponent } from './workflow/approval-tree/approval-tree.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule, LMSModule],
@@ -22,7 +23,8 @@ import { MemberPermissionDialog} from './permission/member-permission-dialog/mem
                     PermissionListComponent,
                     PermissionDialog,
                     MenuPermissionDialog,
-                    MemberPermissionDialog
+                    MemberPermissionDialog,
+                    ApprovalTreeComponent
                 ],
     exports: [UserProfileDialog],
     providers: []

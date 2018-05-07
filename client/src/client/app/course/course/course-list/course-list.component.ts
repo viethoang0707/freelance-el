@@ -42,7 +42,7 @@ export class CourseListComponent extends BaseComponent {
 
     ngOnInit() {
         Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
-            this.tree = this.treeUtils.buildTree(groups);
+            this.tree = this.treeUtils.buildGroupTree(groups);
         });
         this.loadCourses();
     }

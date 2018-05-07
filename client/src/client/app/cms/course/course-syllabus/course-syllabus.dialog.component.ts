@@ -59,7 +59,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		if (this.syl)
 			CourseUnit.listBySyllabus(this,this.syl.id).subscribe(units => {
 				this.units = units;
-				this.tree = this.sylUtils.buildTree(units);
+				this.tree = this.sylUtils.buildGroupTree(units);
 	        });
 	}
 

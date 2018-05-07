@@ -151,7 +151,7 @@ export class ExamContentDialog extends BaseComponent {
 								this.selectorGroups[sel.level]["group_ids"].push(sel.group_id);
 						});
 						_.each(QUESTION_LEVEL, (val, key) => {
-							this.tree[key] = this.treeUtils.buildTree(groups);
+							this.tree[key] = this.treeUtils.buildGroupTree(groups);
 							if (sheet.finalized)
 								this.treeUtils.disableTree(this.tree[key]);
 							this.selectedNodes[key] = _.map(this.selectorGroups[key]["group_ids"], (group_id => {
@@ -170,7 +170,7 @@ export class ExamContentDialog extends BaseComponent {
 					Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
 						this.groups = groups;
 						_.each(QUESTION_LEVEL, (val, key)=> {
-							this.tree[key] = this.treeUtils.buildTree(groups);
+							this.tree[key] = this.treeUtils.buildGroupTree(groups);
 						});
 					});
 				});

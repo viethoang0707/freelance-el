@@ -59,7 +59,7 @@ export class CourseDialog extends BaseDialog<Course> {
 	ngOnInit() {
 		this.onShow.subscribe(object => {
 			Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
-				this.tree = this.treeUtils.buildTree(groups);
+				this.tree = this.treeUtils.buildGroupTree(groups);
 				if (object.group_id) {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 				}

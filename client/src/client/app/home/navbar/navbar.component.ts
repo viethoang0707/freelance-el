@@ -7,7 +7,7 @@ import { LANGS } from '../../shared/models/constants';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
 import { LangService } from '../../shared/services/lang.service';
-import { CacheService } from '../../shared/services/cache.service';
+import { SettingService } from '../../shared/services/setting.service';
 import { SelectItem } from 'primeng/primeng';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import * as _ from 'underscore'

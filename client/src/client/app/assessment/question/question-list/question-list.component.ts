@@ -40,7 +40,7 @@ export class QuestionListComponent extends BaseComponent {
 
     ngOnInit() {
         Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
-            this.tree = this.treeUtils.buildTree(groups);
+            this.tree = this.treeUtils.buildGroupTree(groups);
         });
         this.loadQuestions();
         this.items = [

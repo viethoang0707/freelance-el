@@ -108,7 +108,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	        	CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
 		        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
 						this.units = units;
-						this.tree = this.sylUtils.buildTree(units);
+						this.tree = this.sylUtils.buildGroupTree(units);
 						this.treeList = this.sylUtils.flattenTree(this.tree);
 						CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt:CourseLog)=> {
 							if (attempt) {

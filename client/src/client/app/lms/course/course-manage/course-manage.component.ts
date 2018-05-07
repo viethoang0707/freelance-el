@@ -88,7 +88,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	        	CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
 		        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
 						this.units = units;
-						this.tree = this.sylUtils.buildTree(units);
+						this.tree = this.sylUtils.buildGroupTree(units);
 			        });
 		        });
 	        });
