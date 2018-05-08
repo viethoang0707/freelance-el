@@ -15,6 +15,7 @@ import { SelectItem } from 'primeng/api';
 	moduleId: module.id,
 	selector: 'select-user-dialog',
 	templateUrl: 'select-user-dialog.component.html',
+	styleUrls: ['select-user-dialog.component.css'],
 })
 export class SelectUsersDialog extends BaseComponent {
 

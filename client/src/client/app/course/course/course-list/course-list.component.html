@@ -9,15 +9,20 @@
     <div class="ui-g-12">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
-            <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
-            <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedCourse"></button>
-            <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedCourse"></button>
+          <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
+          <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedCourse"></button>
+          <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedCourse"></button>
+          <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedCourse"></button>
         </div>
         <div class="ui-toolbar-group-right">
-            <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedCourse"></button>
+          <span class="md-inputfield search">
+              <input type="text" pInputText placeholder="Search" 
+              (input)="courseTable.filterGlobal($event.target.value, 'contains')">   
+              <i class="fa fa-search"></i>      
+          </span>
         </div>
       </p-toolbar>
-      <p-table #courseTable [value]="displayCourses | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true">
+      <p-table #courseTable [value]="displayCourses | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
         <ng-template pTemplate="header">
           <tr>
             <th [pSortableColumn]="'name'">

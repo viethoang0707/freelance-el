@@ -15,6 +15,7 @@ import { SelectItem } from 'primeng/api';
 	moduleId: module.id,
 	selector: 'select-group-dialog',
 	templateUrl: 'select-group-dialog.component.html',
+	styleUrls: ['select-group-dialog.component.css'],
 })
 export class SelectGroupDialog extends BaseComponent {
 
