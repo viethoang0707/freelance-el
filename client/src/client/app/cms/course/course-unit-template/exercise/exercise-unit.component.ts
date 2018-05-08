@@ -26,6 +26,11 @@ import { QuestionRegister } from '../../../../assessment/question/question-templ
 })
 export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit,OnInit{
 
+	tree: TreeNode[];
+	selectedNode: TreeNode;
+	selectedQuestions: Question[];
+	questions:Question[];
+
 	@Input() mode;
 	unit: CourseUnit;
 	exerciseQuestions: ExerciseQuestion[];
@@ -173,6 +178,19 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		if (this.qIndex > 0) {
 			this.displayQuestion(this.qIndex - 1);
 		}
+	}
+
+	delete(questions) {
+        if (questions && questions.length)
+            this.confirm('Are you sure to delete ?', () => {
+                var subscriptions = _.map(questions,(question:Question) => {
+                    return question.delete(this);
+                });
+                Observable.forkJoin(...subscriptions).subscribe(()=> {
+                    this.selectedQuestions = [];
+					this.render(this.unit);
+                });
+            });
 	}
 
 }
