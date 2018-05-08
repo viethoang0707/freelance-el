@@ -21,7 +21,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
 	user: User;
 	langs: SelectItem[];
-	viewModes: SelectItem[];
 	viewMode: string;
 	@Input() selectedLang: string;
 	@Input() adminMode: boolean;
@@ -32,10 +31,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 			return { label: val, value: key};
 		});
 		this.selectedLang = this.langService.Lang;
-		this.viewModes = [
-			{label: this.translateService.instant('Administrator mode'), value:'admin'},
-			{label: this.translateService.instant('Learning mode'), value:'lms'},
-		];
 	}
 
 	ngOnInit() {
@@ -51,8 +46,9 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		this.langService.Lang = $event.value;
 	}
 
-	setViewMode($event:any) {
-		this.settingService.ViewMode = $event.value;
+	setViewMode(mode) {
+		this.viewMode = mode;
+		this.settingService.ViewMode = mode;
 		this.router.navigate(['/dashboard']);
 	}
 }

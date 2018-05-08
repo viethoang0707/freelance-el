@@ -39,25 +39,27 @@ export abstract class BaseModel {
     save(context:APIContext):Observable<any> {
     	var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        var success =  context.dataAccessService.checkPermission(this,'CREATE');
-        if (!success)
-            return Observable.throw('Data access forbidden');
-    	if (!this.id)
-    		return context.apiService.create(model, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint).map(data=> {
-                this.id = data.id;
-                return this;
-            });
-        else
-        	return context.apiService.update(model, this.id, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint);
+        return context.dataAccessService.filter(this,'SAVE').flatMap(success=> {
+            if (!success)
+                return Observable.throw('Data access forbidden');
+            if (!this.id)
+                return context.apiService.create(model, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint).map(data=> {
+                    this.id = data.id;
+                    return this;
+                });
+            else
+                return context.apiService.update(model, this.id, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint);
+        });        
     }
 
     delete(context:APIContext):Observable<any> {
     	var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        var success =  context.dataAccessService.checkPermission(this,'DELETE');
-        if (!success)
-            return Observable.throw('Data access forbidden');
-    	return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
+        return context.dataAccessService.filter(this,'DELETE').flatMap(success=> {
+            if (!success)
+                return Observable.throw('Data access forbidden');
+            return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
+        });
     }
 
     static get(context:APIContext,id:number):Observable<any> {
@@ -65,11 +67,12 @@ export abstract class BaseModel {
         var cloud_acc = context.authService.CloudAcc;
     	return context.apiService.get(model, id, [],cloud_acc.id, cloud_acc.api_endpoint).do(item => {
              var record =   MapUtils.deserializeModel(model, item);
-             var success =  context.dataAccessService.checkPermission(record,'GET');
-             if (!success)
-                return Observable.throw('Data access forbidden');
-             else
-                return Observable.of(record);
+             return context.dataAccessService.filter(record,'GET').flatMap(success=> {
+                 if (!success)
+                    return Observable.throw('Data access forbidden');
+                 else
+                    return Observable.of(record);
+             });             
         });
     }
 
@@ -84,13 +87,19 @@ export abstract class BaseModel {
     static search(context:APIContext, fields:string[], domain:string):Observable<any[]> {
         var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.search(model, fields, domain, cloud_acc.id, cloud_acc.api_endpoint).do(items => {
-            var records = _.map(items, (item)=> {
-               return  MapUtils.deserializeModel(model, item);
+        return context.apiService.search(model, fields, domain, cloud_acc.id, cloud_acc.api_endpoint).flatMap(items => {
+            var records = [];
+            var subscriptions = _.map(items, (item)=> {
+               var record =  MapUtils.deserializeModel(model, item);
+               return context.dataAccessService.filter(record,'GET').do(success=> {
+                   if (success) {
+                       records.push(record);
+                   }
+               }); 
+           });
+            return Observable.forkJoin(subscriptions).map(()=> {
+                return records;
             });
-            return _.filter(records, (record => {
-                return context.dataAccessService.checkPermission(record,'GET');
-            }));
         });
     }
 
@@ -103,13 +112,18 @@ export abstract class BaseModel {
             return Observable.of([]);
         var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint).map(items => {
-            var records = _.map(items, (item)=> {
-               return  MapUtils.deserializeModel(model, item);
+        return context.apiService.list(model,ids,[],cloud_acc.id, cloud_acc.api_endpoint).flatMap(items => {
+            var records = [];
+            var subscriptions = _.map(items, (item)=> {
+               var record =  MapUtils.deserializeModel(model, item);
+               return context.dataAccessService.filter(record,'GET').do(success=> {
+                   if (success)
+                       records.push(record);
+               }); 
+           });
+            return Observable.forkJoin(subscriptions).map(()=> {
+                return records;
             });
-            return _.filter(records, (record => {
-                return context.dataAccessService.checkPermission(record,'GET');
-            }));
         });
     }
 
