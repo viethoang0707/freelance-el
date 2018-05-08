@@ -5,15 +5,18 @@ import { AuthService } from '../services/auth.service';
 import { APIService } from '../services/api.service';
 import { APIContext } from '../models/context';
 import { CourseMember } from '../models/elearning/course-member.model';
+import { DataAccessService } from '../services/data-access.service';
 
 @Injectable()
 export class TeacherGuard implements CanActivate, APIContext {
 
 	apiService: APIService;
 	authService: AuthService;
-	constructor(apiService: APIService, authService: AuthService, private router: Router) {
+	dataAccessService: DataAccessService;
+	constructor(apiService: APIService, authService: AuthService,  dataAccessService: DataAccessService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
+		this.dataAccessService = dataAccessService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

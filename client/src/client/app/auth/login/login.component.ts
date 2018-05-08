@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { Credential } from '../../shared/models/credential.model';
-import { CacheService } from '../../shared/services/cache.service';
+import { SettingService } from '../../shared/services/setting.service';
 import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Permission } from '../../shared/models/elearning/permission.model';

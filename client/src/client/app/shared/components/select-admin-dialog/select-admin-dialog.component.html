@@ -1,33 +1,33 @@
-<p-dialog header="{{'Select question'|translate}}" [(visible)]="display" modal="true" width="1000" height="650" position="top: 20px" [responsive]="true" appendTo="body">
+<p-dialog header="{{'Select users'|translate}}" [(visible)]="display" modal="true" width="800" height="100%" [responsive]="true" appendTo="body" positionTop="50">
   <div class="ui-g ui-fluid form-group">
-    <div class="ui-g-4">
+    <div class="ui-g-5">
       <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode" ></p-tree>
     </div>
-    <div  style="height: 530px; overflow: auto;" class="ui-g-8">
-      <p-table  [value]="questions" [(selection)]="selectedQuestions" >
+    <div class="ui-g-7">
+      <p-table  [value]="users" [(selection)]="selectedAdmin" >
         <ng-template pTemplate="header" >
           <tr>
-            <th style="width: 2.25em">
+             <th style="width: 2.25em">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
-            <th>
-              {{'Title'|translate}}
+            <th >
+              {{'Name'|translate}}
             </th>
             <th>
-              {{'Type'|translate}}
+              {{'Group'|translate}}
             </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData>
           <tr [pSelectableRow]="rowData">
             <td>
-              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
             </td>
             <td >
-              {{rowData.title}}
+              {{rowData.name}}
             </td>
             <td >
-              {{QUESTION_TYPE[rowData.type]}}
+              {{rowData.group_id__DESC__}}
             </td>
           </tr>
         </ng-template>
@@ -35,7 +35,7 @@
     </div>
   </div>
   <p-footer>
-    <button type="button" [disabled]="!selectedQuestions.length" pButton icon="fa-check" label="{{'OK'|translate}}" (click)="selectCourse()"></button>
+    <button type="button" [disabled]="!selectedAdmin" pButton icon="fa-check" label="{{'OK'|translate}}" (click)="select()"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>

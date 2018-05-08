@@ -38,6 +38,10 @@
                             {{'Department'|translate}}
                             <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
                         </th>
+                        <th [pSortableColumn]="'group_id__DESC__'">
+                            {{'Permission'|translate}}
+                            <p-sortIcon [field]="'permission_id__DESC__'"></p-sortIcon>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-user>
@@ -47,6 +51,7 @@
                         <td class="showformb" style="text-align: left;">{{user.email}}</td>
                         <td class="showformb">{{user.phone}}</td>
                         <td class="showformb">{{user.group_id__DESC__}}</td>
+                        <td class="showformb">{{user.permission_id__DESC__}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
@@ -54,7 +59,7 @@
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td [attr.colspan]="5">
+                        <td [attr.colspan]="6">
                             {{'No records found'|translate}}
                         </td>
                     </tr>

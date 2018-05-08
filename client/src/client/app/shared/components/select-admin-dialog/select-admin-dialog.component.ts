@@ -13,14 +13,14 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'select-user-dialog',
-	templateUrl: 'select-user-dialog.component.html',
+	selector: 'select-admin-dialog',
+	templateUrl: 'select-admin-dialog.component.html',
 })
-export class SelectUsersDialog extends BaseComponent {
+export class SelectAdminDialog extends BaseComponent {
 
 	tree: TreeNode[];
 	selectedNode: TreeNode;
-	selectedUsers: User[];
+	selectedAdmin: User;
 	users:User[];
 	display: boolean;
 
@@ -30,7 +30,6 @@ export class SelectUsersDialog extends BaseComponent {
 	constructor(private treeUtils: TreeUtils) {
 		super();
 		this.display = false;
-		this.selectedUsers = [];
 	}
 
 	hide() {
@@ -40,22 +39,24 @@ export class SelectUsersDialog extends BaseComponent {
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			User.listByGroup(this,this.selectedNode.data.id).subscribe(users => {
-				this.users = users;
+				this.users = _.filter(users, (user=> {
+					return user.is_admin;
+				}));
 			});
 		}
 	}
 
 	show() {
 		this.display = true;
-		this.selectedUsers = [];
+		this.selectedNode = null;
+		this.selectedAdmin = null;
 		Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 		});
 	}
 
 	select() {
-		this.onSelectUsersReceiver.next(this.selectedUsers);
-		this.selectedUsers=[];
+		this.onSelectUsersReceiver.next(this.selectedAdmin);
 		this.hide();
 	}
 

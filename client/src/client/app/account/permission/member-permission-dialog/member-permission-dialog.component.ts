@@ -33,6 +33,7 @@ export class MemberPermissionDialog extends BaseComponent {
 	show(permission:Permission) {
 		this.display = true;
 		this.permission = permission;
+        this.loadUsers();
 	}
 
 	hide() {

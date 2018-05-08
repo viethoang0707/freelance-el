@@ -104,7 +104,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     loadGroups() {
         Group.listByCategory(this, this.category).subscribe(groups => {
             this.groups = groups;
-            this.tree = this.treeUtils.buildTree(groups);
+            this.tree = this.treeUtils.buildGroupTree(groups);
         });
     }
     

@@ -12,7 +12,7 @@ import { SupervisorGuard } from './guards/supervisor.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
-import { CacheService } from './services/cache.service';
+import { DataAccessService } from './services/data-access.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
@@ -35,6 +35,7 @@ import { SelectCoursesDialog } from './components/select-course-dialog/select-co
 import { SelectQuestionsDialog } from './components/select-question-dialog/select-question-dialog.component';
 import { SelectGroupDialog } from './components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from './components/select-user-dialog/select-user-dialog.component';
+import { SelectAdminDialog } from './components/select-admin-dialog/select-admin-dialog.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
@@ -212,7 +213,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectUsersDialog,
         SelectCoursesDialog,
         SelectQuestionsDialog,
-        SelectGroupDialog
+        SelectGroupDialog,
+        SelectAdminDialog
     ],
     exports: [
         // Angular modules
@@ -237,6 +239,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectUsersDialog,
         SelectGroupDialog,
         SelectQuestionsDialog,
+        SelectAdminDialog,
         // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,
@@ -327,7 +330,7 @@ export class ErpSharedModule {
                 AuthService,
                 MessageService,
                 LangService,
-                CacheService,
+                DataAccessService,
                 MeetingService,
                 TreeUtils,
                 WindowRef,

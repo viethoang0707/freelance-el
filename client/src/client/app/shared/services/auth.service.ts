@@ -7,7 +7,6 @@ import { Permission } from '../models/elearning/permission.model';
 import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service';
-import { CacheService } from './cache.service';
 declare function escape(s:string): string;
 declare function unescape(s:string): string;
 
@@ -52,7 +51,7 @@ export class AuthService {
     }
 
     set UserPermission(perm: Permission) {
-        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(Permission)))));
+        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(perm)))));
     }
 
     clearUserPermission() {
