@@ -40,12 +40,13 @@ export class QuestionListComponent extends BaseComponent {
 
     ngOnInit() {
         Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
-            this.tree = this.treeUtils.buildTree(groups);
+            this.tree = this.treeUtils.buildGroupTree(groups);
         });
         this.loadQuestions();
         this.items = [
-            { label: this.translateService.instant(QUESTION_TYPE['sc']), command: () => { this.add('sc') } },
-            { label: this.translateService.instant(QUESTION_TYPE['ext']), command: () => { this.add('ext') } },
+            {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.add('sc')}},
+            {label: this.translateService.instant(QUESTION_TYPE['mc']), command: ()=> { this.add('mc')}},
+            {label: this.translateService.instant(QUESTION_TYPE['ext']), command: ()=> { this.add('ext')}},
         ];
     }
 
@@ -77,11 +78,6 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     loadQuestions() {
-        // if (this.selectedNode)
-        //     Question.listByGroup(this, this.selectedNode.data.id).subscribe(questions => {
-        //         this.questions = questions;
-        //     });
-        // else
         Question.all(this).subscribe(questions => {
             this.questions = questions;
         });

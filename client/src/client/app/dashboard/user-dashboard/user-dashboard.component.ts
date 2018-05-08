@@ -110,6 +110,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             var examIds = _.pluck(members, 'exam_id');
+            examIds = _.filter(examIds, (id) => {
+                return id && id != '';
+            });
             Exam.array(this, examIds)
                 .subscribe(exams => {
                     _.each(exams, (exam) => {

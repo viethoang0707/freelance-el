@@ -46,7 +46,7 @@ export class UserListComponent extends BaseComponent {
 
     ngOnInit() {
         Group.listByCategory(this,GROUP_CATEGORY.USER).subscribe(groups => {
-            this.tree = this.treeUtils.buildTree(groups);
+            this.tree = this.treeUtils.buildGroupTree(groups);
         });
         this.loadUsers();
     }
@@ -71,9 +71,34 @@ export class UserListComponent extends BaseComponent {
         if(this.selectedUser)
         {
             this.user = this.selectedUser;
-            this.checkExamMember(this.user);
+            this.checkMember(this.user);
+        }
+    }
+    //
+    checkMember(member)
+    {
+        ExamMember.listByUser(this, member.id).subscribe(
+            exams => {
+                this.totalExam = exams;
+                CourseMember.listByUser(this, member.id).subscribe(
+                    courses => this.totalCourse = courses,
+                    () => this.totalCourse,
+                    () => {
+                        this.deleteMember();
+                    },
+                );
+            },
+        );
+    }
+    //
+    deleteMember(){
+        if(this.totalExam && this.totalCourse){
             
-            if(this.totalExam.length == 0){
+            if(this.totalExam.length > 0 || this.totalCourse.length >0)
+            {   
+                alert("Có khóa học hoặc kỳ thi đã được người dùng đăng ký!");
+            }
+            else{
                 this.confirm('Are you sure to delete ?', () => {
                     this.selectedUser.delete(this).subscribe(() => {
                         this.loadUsers();
@@ -81,26 +106,9 @@ export class UserListComponent extends BaseComponent {
                     })
                 });
             }
-            else{
-                alert("Có kỳ thi người dùng này đã đăng ký!");
-            }
         }
     }
-
-    checkExamMember(member)
-    {
-        ExamMember.listByUser(this, member.id).subscribe(exams => {
-            this.totalExam = exams;
-        });
-    }
-    checkCourseMember(member)
-    {
-        CourseMember.listByUser(this, member.id).subscribe(courses => {
-            this.totalCourse = courses;
-        });
-    }
-
-
+    //
     export() {
         this.userExportDialog.show(this.users);
     }

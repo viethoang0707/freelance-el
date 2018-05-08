@@ -30,7 +30,7 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 	ngOnInit() {
 		this.onShow.subscribe(object => {
 			Group.listByCategory(this, object.category).subscribe(groups => {
-				this.tree = this.treeUtils.buildTree(groups);
+				this.tree = this.treeUtils.buildGroupTree(groups);
 				if (object.id) {
 					var node = this.treeUtils.findTreeNode(this.tree, object.id);
 					node.selectable = false;

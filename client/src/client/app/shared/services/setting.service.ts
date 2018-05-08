@@ -30,5 +30,13 @@ export class SettingService {
   	this.viewMode = data;
     this.viewModeEventReceiver.next(data);
   }
+
+  set Lang(lang: string) {
+        localStorage.setItem('language', lang);
+    }
+
+   get Lang():string {
+       return  localStorage.getItem('language');
+   }
   	
 }

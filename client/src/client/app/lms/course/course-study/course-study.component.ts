@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -10,8 +9,8 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
+import { Conference } from '../../../shared/models/elearning/conference.model';import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -26,22 +25,24 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
-// import { SelectItem } from 'primeng/api';
+import { CourseLog } from '../../../shared/models/elearning/log.model';
+import { SelectItem } from 'primeng/api';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
-// import { Group } from '../../../shared/models/elearning/group.model';
-// import { Submission } from '../../../shared/models/elearning/submission.model';
-// import { SelectItem } from 'primeng/api';
+import { Group } from '../../../shared/models/elearning/group.model';
 import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../exam/exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
-import { Route } from '@angular/router';
+import { Route, } from '@angular/router';
 import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { CertificatePrintDialog } from '../certificate-print/certificate-print.dialog.component';
 import { AnswerPrintDialog } from '../../exam/answer-print/answer-print.dialog.component';
-import { CourseUnitStudyDialog } from '../course-unit-study-dialog/course-unit-study.dialog.component';
+import { MeetingService } from '../../../shared/services/meeting.service';
+import { CourseUnitRegister } from '../../../cms/course/course-unit-template/unit.decorator';
+import { CourseUnitContainerDirective } from '../../../cms/course/course-unit-template/unit-container.directive';
+import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.interface';
 
 @Component({
     moduleId: module.id,
@@ -62,24 +63,31 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	exams: Exam[];
 	completedExams: Exam[];
 	certificate: Certificate;
-	classes: CourseClass[];
+	conference: Conference;
+	conferenceMember: ConferenceMember;
+	treeList: TreeNode[];
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
     @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
-    @ViewChild(CourseUnitStudyDialog) courseStudyDialog: CourseUnitStudyDialog;
+    @ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
+	componentRef: any;
 
     COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	EXAM_STATUS = EXAM_STATUS;
 
 
-	constructor(private router: Router, private route: ActivatedRoute, private sylUtils:SyllabusUtils,private reportUtils: ReportUtils) {
+	constructor(private router: Router, private route: ActivatedRoute, 
+		private sylUtils:SyllabusUtils, private reportUtils: ReportUtils,
+		private meetingSerivce:MeetingService,private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.course = new Course();
 		this.member = new CourseMember();
 		this.certificate = new Certificate();
+		this.conference = new Conference();
+		this.conferenceMember = new ConferenceMember();
 	}
 
 	ngOnInit() {
@@ -90,25 +98,23 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	        	CourseMember.get(this, memberId).subscribe(member => {
 	        		this.member =  member;
 					this.course =  course;
-					CourseClass.listByCourse(this, course.id)
-					.map(classList => {
-						return _.filter(classList, (obj:CourseClass)=> {
-							return member.class_id == obj.id;
-						});
-					})
-					.subscribe(classList => {
-						this.classes =  classList;
-					});
 					this.loadFaqs();
 					this.loadMaterials();
 					this.loadExam();
 					this.loadGradebook();
 					this.loadCertificate();
+					this.loadConference();
 	        	});
 	        	CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
 		        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
 						this.units = units;
-						this.tree = this.sylUtils.buildTree(units);
+						this.tree = this.sylUtils.buildGroupTree(units);
+						this.treeList = this.sylUtils.flattenTree(this.tree);
+						CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt:CourseLog)=> {
+							if (attempt) {
+								this.selectedNode =  this.sylUtils.findTreeNode(this.tree, attempt.res_id);
+							}
+						});
 			        });
 		        });
 	        });
@@ -119,18 +125,119 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	nodeSelect(event:any) {
 		if (this.selectedNode) {
 			this.selectedUnit =  this.selectedNode.data;
+			this.selectedUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success=> {
+				this.selectedUnit["completed"]  =success;
+			});
 		}
 	}
 
+	prevUnit() {
+		if (this.selectedUnit)  {
+			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+			var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
+			this.selectedNode =  this.sylUtils.findTreeNode(this.tree, prevUnit.id);
+		} 
+	}
+
+	nextUnit() {
+		if (this.selectedUnit)  {
+			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
+			this.selectedNode =  this.sylUtils.findTreeNode(this.tree, nextUnit.id);
+		} 
+	}
+
+	completeUnit() {
+		if (this.selectedUnit)  {
+			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+			this.selectedUnit["completed"] = true;
+		} 
+	}
+
+	computedPrevUnit(currentUnitId:number):CourseUnit {
+		var currentNodeIndex = 0;
+		for (;currentNodeIndex < this.treeList.length; currentNodeIndex++) {
+			var node = this.treeList[currentNodeIndex];
+			if (node.data.id == currentUnitId)
+				break;
+		}
+		currentNodeIndex--;
+		while (currentNodeIndex >=0) {
+			var node = this.treeList[currentNodeIndex];
+			if (node.data.type !='folder')
+				break;
+			currentNodeIndex--;
+		}
+		return (currentNodeIndex>=0?this.treeList[currentNodeIndex].data:null);
+	}
+
+	computedNextUnit(currentUnitId:number):CourseUnit {
+		var currentNodeIndex = 0;
+		for (;currentNodeIndex < this.treeList.length; currentNodeIndex++) {
+			var node = this.treeList[currentNodeIndex];
+			if (node.data.id == currentUnitId)
+				break;
+		}
+		currentNodeIndex--;
+		while (currentNodeIndex >=0) {
+			var node = this.treeList[currentNodeIndex];
+			if (node.data.type !='folder')
+				break;
+			currentNodeIndex--;
+		}
+		return (currentNodeIndex<this.treeList.length?this.treeList[currentNodeIndex].data:null);
+	}
+
 	studyUnit() {
-		if (this.selectedUnit)
-			this.courseStudyDialog.show(this.selectedUnit);
+		if (this.selectedUnit) {
+			if (this.course.complete_unit_by_order) {
+				let prevUnit:CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
+				prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success=> {
+					if (success) {
+						this.openUnit(this.selectedUnit);
+						CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+					}
+					else
+						this.error('You have not completed previous unit');
+				});
+			} 
+			else {
+				this.openUnit(this.selectedUnit);
+				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+			}
+		}
+	}
+
+	openUnit(unit:CourseUnit) {
+		var detailComponent = CourseUnitRegister.Instance.lookup(unit.type);
+			let viewContainerRef = this.unitHost.viewContainerRef;
+			if (detailComponent) {
+				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+				viewContainerRef.clear();
+				this.componentRef = viewContainerRef.createComponent(componentFactory);
+				(<ICourseUnit>this.componentRef.instance).mode = 'study';
+				(<ICourseUnit>this.componentRef.instance).render(unit);
+			} else {
+				viewContainerRef.clear();
+				this.componentRef = null;
+			}
+
 	}
 
 	loadCertificate() {
 		Certificate.byMember(this, this.member.id).subscribe((certificate:any) => {
             this.certificate = certificate;
         });
+	}
+
+	loadConference() {
+		ConferenceMember.byCourseMember(this, this.member.id)
+            .subscribe(member => {
+            	this.conferenceMember =  member;
+                Conference.get(this, member.conference_id).subscribe(conference => {
+                    this.conference = conference;
+                });
+            });
 	}
 
 	loadExam() {
@@ -238,5 +345,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
                 this.examStudyDialog.show(exam, member);
             }
         );
+    }
+
+    joinConference() {
+    	if (this.conference.id && this.conferenceMember.id)
+        	this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
     }
 }

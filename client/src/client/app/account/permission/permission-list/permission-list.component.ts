@@ -8,9 +8,11 @@ import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
 import { Permission } from '../../../shared/models/elearning/permission.model';
 import { PermissionDialog} from '../permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog } from '../menu-permission-dialog/menu-permission-dialog.component';
-import { AccessPermissionDialog } from '../access-permission-dialog/access-permission-dialog.component';
+import { SelectGroupDialog } from '../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
+import { Group } from '../../../shared/models/elearning/group.model';
+import { MemberPermissionDialog} from '../member-permission-dialog/member-permission-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -22,7 +24,8 @@ export class PermissionListComponent extends BaseComponent {
 
     @ViewChild(PermissionDialog) permissionDialog: PermissionDialog;
     @ViewChild(MenuPermissionDialog) menuPermissionDialog: MenuPermissionDialog;
-    @ViewChild(AccessPermissionDialog) accessPermissionDialog: AccessPermissionDialog;
+    @ViewChild(MemberPermissionDialog) memberPermissionDialog: MemberPermissionDialog;
+    @ViewChild(SelectGroupDialog) userPermissionDialog: SelectGroupDialog;
 
     selectedPermission: Permission;
     permissions: Permission[];
@@ -57,6 +60,11 @@ export class PermissionListComponent extends BaseComponent {
         });
     }
 
+    permissionMember(){
+        if (this.selectedPermission)
+            this.memberPermissionDialog.show(this.selectedPermission);
+    }
+
     permissionMenu(){
         if (this.selectedPermission)
             this.menuPermissionDialog.show(this.selectedPermission);
@@ -64,6 +72,12 @@ export class PermissionListComponent extends BaseComponent {
 
     permissionAccess(){
         if (this.selectedPermission)
-            this.accessPermissionDialog.show(this.selectedPermission);
+            this.userPermissionDialog.show();
+        this.userPermissionDialog.onSelectGroup.subscribe((group:Group)=> {
+            this.selectedPermission.user_group_id = group.id;
+            this.selectedPermission.save(this).subscribe(()=> {
+                this.loadPermission();
+            });
+        });
     }
 }

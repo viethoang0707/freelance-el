@@ -5,19 +5,19 @@ import { Credential } from '../models/credential.model';
 import { User } from '../models/elearning/user.model';
 import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
-import { CacheService } from './cache.service'
+import { SettingService } from '../../shared/services/setting.service';
 import { TranslateService } from '@ngx-translate/core';
 
 
 @Injectable()
 export class LangService {
 
-    constructor(private translationService: TranslateService, private cacheService:CacheService) {
+    constructor(private translationService: TranslateService, private settingService:SettingService) {
     }
 
     initSetting() {
         this.translationService.setDefaultLang('vn');
-        var defaultLang = this.cacheService.Lang?this.cacheService.Lang:'vn';
+        var defaultLang = this.settingService.Lang?this.settingService.Lang:'vn';
         this.translationService.use(defaultLang);
     }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, AfterViewInit, NgZone } from '@ang
 import { Observable, Subject } from 'rxjs/Rx';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
-import { SlideLecture } from '../../../../shared/models/elearning/lecture_slide.model';
+import { SlideLecture } from '../../../../shared/models/elearning/lecture-slide.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
@@ -55,13 +55,13 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 
 	uploadFile(file) {
 		this.uploadInprogress = true;
-		this.lecture.filename = file.filename;
+		this.lecture.filename = file.name;
 		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.uploadInprogress = false;
 				if (data["result"]) {
 					this.ngZone.run(()=> {
-						if (file.filename.endsWith('pdf'))
+						if (file.name.endsWith('pdf'))
 							this.lecture.slide_url = data["url"];
 						else {
 							var serverFile = data["filename"]

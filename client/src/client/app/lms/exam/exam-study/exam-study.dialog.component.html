@@ -18,8 +18,8 @@
         <h4 class="mt10 mb10">{{'Username'|translate}}:</h4>
       </div>
       <div class="ui-g-6 removePd">
-          <h4 class="mt10 mb10">{{member.login}}</h4>
-        </div>
+        <h4 class="mt10 mb10">{{member.login}}</h4>
+      </div>
     </div>
     <div class="ui-g-6 removePd">
       <div class="ui-g-6 removePd">
@@ -69,11 +69,18 @@
           </li>
         </ul>
         <div>
-          <button type="button" pButton class="mt10 lineHeight2-25" *ngFor="let question of examQuestions; let i = index" (click)="displayQuestion(i)">{{ i + 1 }}</button>
+          <div class="dpInB fLeft" *ngFor="let question of examQuestions; let i = index">
+            <button type="button" pButton [ngClass]="{'mt10': true, 'lineHeight2-25': true, 'ui-button-success':question.checkAnswer}"
+              (click)="displayQuestion(i)">{{ i + 1 }}</button>
+          </div>
+          <div class="clear"></div>
+          <div>
+            <p-messages [(value)]="msgs"></p-messages>
+          </div>
         </div>
       </div>
     </div>
-    <submission-dialog></submission-dialog>
+
     <p-footer>
       <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}"
         class=" purple-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>

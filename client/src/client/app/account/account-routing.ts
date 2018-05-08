@@ -4,6 +4,7 @@ import { GroupListComponent } from '../shared/components/group-list/group-list.c
 import { UserListComponent } from './user/user-list/user-list.component';
 import { PermissionListComponent } from './permission/permission-list/permission-list.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
+import { ApprovalTreeComponent } from './workflow/approval-tree/approval-tree.component';
 
 export const AccountRoutes: Routes = [
   {
@@ -35,8 +36,14 @@ export const AccountRoutes: Routes = [
         data: {
           breadcrumb: 'Permission'
         },
+      },
+      {
+        path: "workflow",
+        component: ApprovalTreeComponent,
+        data: {
+          breadcrumb: 'Workflow'
+        },
       }
-
     ]
   }
 

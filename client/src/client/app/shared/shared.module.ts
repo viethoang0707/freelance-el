@@ -12,8 +12,9 @@ import { SupervisorGuard } from './guards/supervisor.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
-import { CacheService } from './services/cache.service';
+import { DataAccessService } from './services/data-access.service';
 import { ExcelService } from './services/excel.service';
+import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
 import { MeetingService } from './services/meeting.service';
 import { WindowRef } from './helpers/windonw.ref';
@@ -34,6 +35,7 @@ import { SelectCoursesDialog } from './components/select-course-dialog/select-co
 import { SelectQuestionsDialog } from './components/select-question-dialog/select-question-dialog.component';
 import { SelectGroupDialog } from './components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from './components/select-user-dialog/select-user-dialog.component';
+import { SelectAdminDialog } from './components/select-admin-dialog/select-admin-dialog.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
@@ -108,6 +110,7 @@ import { TooltipModule } from 'primeng/primeng';
 import { TreeModule } from 'primeng/primeng';
 import { TreeTableModule } from 'primeng/primeng';
 import { MessageService } from 'primeng/components/common/messageservice';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 @NgModule({
@@ -192,6 +195,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TreeModule,
         TreeTableModule,
         TranslateModule,
+        PdfViewerModule
         ],
     declarations: [
         // App components
@@ -209,7 +213,8 @@ import { MessageService } from 'primeng/components/common/messageservice';
         SelectUsersDialog,
         SelectCoursesDialog,
         SelectQuestionsDialog,
-        SelectGroupDialog
+        SelectGroupDialog,
+        SelectAdminDialog
     ],
     exports: [
         // Angular modules
@@ -234,6 +239,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         SelectUsersDialog,
         SelectGroupDialog,
         SelectQuestionsDialog,
+        SelectAdminDialog,
         // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,
@@ -308,6 +314,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
         TreeModule,
         TreeTableModule,
         TranslateModule,
+        PdfViewerModule
         ],
 })
 export class ErpSharedModule {
@@ -323,12 +330,13 @@ export class ErpSharedModule {
                 AuthService,
                 MessageService,
                 LangService,
-                CacheService,
+                DataAccessService,
                 MeetingService,
                 TreeUtils,
                 WindowRef,
                 SyllabusUtils,
                 ExcelService,
+                MenuService,
                 SettingService,
                 ConfirmationService]
         };
