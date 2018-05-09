@@ -16,34 +16,38 @@ import * as _ from 'underscore';
 @Injectable()
 export class DataAccessService {
 
-	private userGroups: Group[];
+	private cacheUserGroups: Group[];
 
     constructor(private authService: AuthService, private apiService:APIService) {
-    	this.userGroups = [];
-    	this.getUserGroups().subscribe(groups=> {
-    		this.userGroups =  groups;
-    	});
+    	this.cacheUserGroups = [];
     }
 
-    checkPermission(record:BaseModel, method:string):boolean {
+    filter(record:BaseModel, method:string):Observable<any> {
     	if (this.authService.UserProfile.IsSuperAdmin)
-    		return true;
+    		return Observable.of(true);
     	if (record.Model == User.Model) {
-    		var userAccess = new UserAccess(this.authService.UserPermission, this.userGroups);
-    		return userAccess.checkPermission(record as User,method);
-    	} else
-    		return true;
+    		return this.getUserGroups().map((groups)=> {
+    			var userAccess = new UserAccess(this.authService.UserPermission, groups);
+    			return userAccess.checkPermission(record as User,method);
+    		});
+    	} 
+    	if (record.Model == Group.Model) {
+    		var groupAccess = new GroupAccess(this.authService.UserProfile);
+    		return Observable.of(groupAccess.checkPermission(record as Group,method));
+    	}
+    	return Observable.of(true);
     }
 
     private getUserGroups():Observable<any> {
-    	if (this.userGroups.length)
-    		return Observable.of(this.userGroups);
+    	if (this.cacheUserGroups.length)
+    		return Observable.of(this.cacheUserGroups);
     	else{
     		var model = Group.Model;
         	var cloud_acc = this.authService.CloudAcc;
 	        return this.apiService.search(model, [], "[('category','=','organization')]", cloud_acc.id, cloud_acc.api_endpoint).map(items => {
 	            return _.map(items, (item)=> {
-	               return  MapUtils.deserializeModel(model, item);
+	               this.cacheUserGroups = MapUtils.deserializeModel(model, item);
+	               return this.cacheUserGroups;
 	            });
 	        });
 	    }
@@ -89,3 +93,21 @@ class UserAccess implements IAccessible<User> {
 	}
 }
 
+class GroupAccess implements IAccessible<Group> {
+
+	private user: User;
+
+	constructor( user: User) {
+		this.user =  user;
+    }
+
+	checkPermission(record:Group, method:string):boolean {
+		if (record.category =='organization' && method == 'SAVE') {
+			if (this.user.IsSuperAdmin)
+				return true;
+			else
+				return false;
+		}
+		return true;
+	}
+}

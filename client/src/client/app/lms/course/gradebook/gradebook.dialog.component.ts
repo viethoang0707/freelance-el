@@ -59,8 +59,10 @@ export class GradebookDialog extends BaseComponent {
     }
 
     issueCertificate() {
-        var certificate = new Certificate();
-
+        if (this.member.enroll_status !='completed') {
+            this.error('This member has not completed the course');
+            return;
+        }
         var certificate = new Certificate();
         certificate.date_issue = new Date();
         certificate.course_id = this.member.course_id;
