@@ -11,6 +11,7 @@ import { TreeNode } from 'primeng/api';
 	moduleId: module.id,
 	selector: 'group-dialog',
 	templateUrl: 'group-dialog.component.html',
+	styleUrls: ['group-dialog.component.css'],
 })
 export class GroupDialog extends BaseDialog<Group> implements OnInit {
 

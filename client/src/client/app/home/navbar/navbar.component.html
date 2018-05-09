@@ -53,7 +53,7 @@
           </ng-template>
         </p-dropdown>
       </li>
-      <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)">
+      <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)" *ngIf="user.is_admin === true">
         <button pButton type="button" label="{{'Administration'|translate}}" class="pink-btn" (click)="setViewMode('lms')" icon="ui-icon-swap-horiz" *ngIf="viewMode=='admin'"></button>
         <button pButton type="button" label="{{'LMS'|translate}}" class="blue-btn" (click)="setViewMode('admin')" icon="ui-icon-swap-horiz" *ngIf="viewMode=='lms'"></button>
       </li>
