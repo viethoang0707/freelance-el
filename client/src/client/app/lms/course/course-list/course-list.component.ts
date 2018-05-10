@@ -43,7 +43,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             courseIds = _.filter(courseIds, (id=> {
                 return id;
             }));
-            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
+            Observable.forkJoin(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
             .map(courses => {
                 return _.flatten(courses);
             })
@@ -68,11 +68,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
                 });
                 this.courses = courses;
-
-                this.courses.sort((exam1, exam2): any => {
-                    if (exam1.create_date > exam2.create_date)
+                this.courses.sort((course1, course2): any => {
+                    if (course1.create_date > course2.create_date)
                         return -1;
-                    else if (exam1.create_date < exam2.create_date)
+                    else if (course1.create_date < course2.create_date)
                         return 1;
                     else
                         return 0;

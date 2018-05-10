@@ -116,7 +116,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
         if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {
                 var subscriptions = _.map(members,(member:CourseMember) => {
-                    return member.delete(this);
+                    return member.deleteMember(this);
                 });
                 Observable.forkJoin(...subscriptions).subscribe(()=> {
                     this.selectedStudents = [];
