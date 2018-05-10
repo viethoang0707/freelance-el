@@ -15,6 +15,7 @@ import { SelectQuestionsDialog } from '../../../../shared/components/select-ques
 import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
 import { IQuestion } from '../../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../../assessment/question/question-template/question.decorator';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	moduleId: module.id,
@@ -25,6 +26,12 @@ import { QuestionRegister } from '../../../../assessment/question/question-templ
 	type:'exercise'
 })
 export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit,OnInit{
+
+	tree: TreeNode[];
+	selectedNode: TreeNode;
+	selectedQuestions: Question[];
+	questions:Question[];
+	public subscription : Subscription;
 
 	@Input() mode;
 	unit: CourseUnit;
@@ -107,15 +114,40 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	}
 
 	selectQuestion() {
-		this.removeOldQuestions().subscribe(() => {
-			this.questionDialog.show();
-			this.questionDialog.onSelectQuestions.subscribe(questions => {
-				this.createExerciseQuestionFromQuestionBank(questions).subscribe(examQuestions => {
-					this.exerciseQuestions =  examQuestions;
-				});
+		this.questionDialog.show();
+		this.subscription = this.questionDialog.onSelectQuestions.subscribe(questions => {
+			var subscriptions = [];
+			_.each(questions, (question:Question)=> {
+				var exerciseQuestion = new ExerciseQuestion();
+				exerciseQuestion.unit_id = this.unit.id;
+				exerciseQuestion.question_id = question.id;
+				exerciseQuestion.type =  question.type;
+				exerciseQuestion.title =  question.title;
+				
+				subscriptions.push(exerciseQuestion.save(this));
+				this.subscription.unsubscribe();
+			});
+			Observable.zip(...subscriptions).subscribe(exerciseQuestions => {
+				this.loadExerciseQuestions();
 			});
 		});
 	}
+	loadExerciseQuestions() {
+		ExerciseQuestion.listByExercise(this, this.unit.id).subscribe(exerciseQuestions => {
+			this.exerciseQuestions =  exerciseQuestions;
+			});
+	}
+
+	// selectQuestion() {
+	// 	this.removeOldQuestions().subscribe(() => {
+	// 		this.questionDialog.show();
+	// 		this.questionDialog.onSelectQuestions.subscribe(questions => {
+	// 			this.createExerciseQuestionFromQuestionBank(questions).subscribe(examQuestions => {
+	// 				this.exerciseQuestions =  examQuestions;
+	// 			});
+	// 		});
+	// 	});
+	// }
 
 	createExerciseQuestionFromQuestionBank(questions: Question[]):Observable<any> {
 		if (this.unit.id) {
@@ -173,6 +205,24 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		if (this.qIndex > 0) {
 			this.displayQuestion(this.qIndex - 1);
 		}
+	}
+
+	delete(questions) {
+        if (questions && questions.length)
+            this.confirm('Are you sure to delete ?', () => {
+                var subscriptions = _.map(questions,(question:Question) => {
+                    return question.delete(this);
+                });
+                Observable.forkJoin(...subscriptions).subscribe(()=> {
+                    // this.selectedQuestions = [];
+					if(this.exerciseQuestions.length > 1){
+						this.render(this.unit);
+					}
+					else{
+						this.exerciseQuestions = [];
+					}
+                });
+            });
 	}
 
 }
