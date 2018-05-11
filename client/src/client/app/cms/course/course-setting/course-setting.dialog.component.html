@@ -13,7 +13,7 @@
     <select-course-dialog></select-course-dialog>
   </p-scrollPanel>
   <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="selectedNode==null"></button>
+    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>

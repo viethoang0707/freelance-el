@@ -28,10 +28,10 @@
               <label>{{'Login'|translate}}</label>
             </span>
           </div>
-          <div class="ui-g-6" *ngIf="user.IsAdmin">
+          <div class="ui-g-12" *ngIf="user.is_admin === true">
             <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
           </div>
-          <div class="ui-g-6" *ngIf="user.IsAdmin">
+          <div class="ui-g-12" *ngIf="user.is_admin === true">
             <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="object.banned"></p-checkbox>
           </div>
         </div>

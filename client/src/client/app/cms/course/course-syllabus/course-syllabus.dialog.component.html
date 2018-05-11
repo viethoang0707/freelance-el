@@ -1,5 +1,5 @@
-<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" width="1000" height="600" [responsive]="true" [positionTop]="20">
-  <div class="ui-g" style="height: 500px;">
+<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" width="1000" height="100%" [responsive]="true" [positionTop]="50">
+  <div class="ui-g">
     <div class="ui-g-12 course-syllabus">
       <p-toolbar>
         <div class="ui-toolbar-group-left">
@@ -19,7 +19,7 @@
           <div class="image-box-content">
             <div>
               <h3>{{selectedUnit.name}}</h3>
-              <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
+              <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]|translate}}</span>
             </div>
             <div class="image-box-footer">
               <button pButton type="button" label="{{'Move up'|translate}}" class="purple-btn" icon="ui-icon-arrow-upward" (click)="moveUp()"></button>

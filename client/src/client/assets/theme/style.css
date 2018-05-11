@@ -290,3 +290,14 @@ body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
   min-height: 155px;
 }
 
+.question p{
+  margin: 0;
+}
+
+.workflow table{
+  width: 100%;
+}
+
+.display-button{
+  display: none;
+}
