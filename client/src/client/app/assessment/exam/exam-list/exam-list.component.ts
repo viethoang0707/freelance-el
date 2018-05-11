@@ -106,7 +106,6 @@ export class ExamListComponent extends BaseComponent {
                 else
                     return 0;
             });
-            console.log(this.exams);
         });
     }
 }

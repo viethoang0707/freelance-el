@@ -97,9 +97,12 @@ export abstract class BaseModel {
                    }
                }); 
            });
-            return Observable.forkJoin(subscriptions).map(()=> {
-                return records;
-            });
+            if (subscriptions.length)
+                return Observable.forkJoin(subscriptions).map(()=> {
+                    return records;
+                });
+            else
+                return Observable.of(records);
         });
     }
 
@@ -121,9 +124,12 @@ export abstract class BaseModel {
                        records.push(record);
                }); 
            });
-            return Observable.forkJoin(subscriptions).map(()=> {
-                return records;
-            });
+            if (subscriptions.length)
+                return Observable.forkJoin(subscriptions).map(()=> {
+                    return records;
+                });
+            else
+                return Observable.of(records);
         });
     }
 
