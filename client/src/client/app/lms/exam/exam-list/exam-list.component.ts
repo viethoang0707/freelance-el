@@ -83,9 +83,12 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
-        this.confirm('Are you sure to start ?', () => {
+        this.confirmationService.confirm({
+            message: this.translateService.instant('Are you sure to start?'),
+            accept: () => {
                 this.examStudyDialog.show(exam, member);
             }
-        );
+        });
     }
+
 }

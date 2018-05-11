@@ -312,6 +312,11 @@
 	"Approval tree": "Cây phê duyệt",
 	"Workflow": "Quy trình quản lý",
 	"Select supervisor": "Xét quyền quản lý",
-	"Clear supervisor": "Xóa quyền quản lý"
+	"Clear supervisor": "Xóa quyền quản lý",
+	"Exam Name": "Tên kỳ thi",
+	"Name Member": "Tên học viên",
+	"Exam Date": "Ngày thi",
+	"Exam Code": "Mã đề",
+	"Are you sure to start?": "Bạn sẵn sàng để bắt đầu?"
 
 }
