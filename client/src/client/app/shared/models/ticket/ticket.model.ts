@@ -32,4 +32,12 @@ export class Ticket extends BaseModel{
     date_open: Date;
     @FieldProperty<Date>()
     date_close: Date;
+
+    static listByApproveUser(context:APIContext, userId):Observable<any> {
+        return Ticket.search(context,[], "[('approve_user_id','=',"+userId+")]");
+    }
+
+    static listBySubmitUser(context:APIContext, userId):Observable<any> {
+        return Ticket.search(context,[], "[('submit_user_id','=',"+userId+")]");
+    }
 }

@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { ErpSharedModule } from './shared/shared.module';
+import { WorkflowModule } from './workflow/workflow.module';
 import { SettingModule } from './setting/setting.module';
 import { AccountModule } from './account/account.module';
 import { CourseModule } from './course/course.module';
@@ -37,6 +38,7 @@ import {ScheduleModule} from 'primeng/schedule';
         CourseModule,
         AssessmentModule,
         AnalysisModule,
+        WorkflowModule,
         CMSModule,
         LMSModule,
         ErpSharedModule.forRoot(),

@@ -39,6 +39,13 @@ export class MenuService {
                     ]
                 },
                 {
+                    label: 'Workflow', icon: 'widgets',code:'WORKFLOW',
+                    items: [
+                        { label: 'Ticket', routerLink: ['/workflow/tickets'],code:'WORKFLOW-TICKET' },
+                        { label: 'Hierachy', routerLink: ['/workflow/hierachy'],code:'WORKFLOW-TREE' }
+                    ]
+                },
+                {
                     label: 'Accounts', icon: 'people',code:'ACCOUNT',
                     items: [
                         { label: 'User', routerLink: ['/account/users'],code:'ACCOUNT-USER' },
