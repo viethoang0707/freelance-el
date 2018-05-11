@@ -68,47 +68,15 @@ export class UserListComponent extends BaseComponent {
     }
 
     delete() {
-        if(this.selectedUser)
-        {
-            this.user = this.selectedUser;
-            this.checkMember(this.user);
+        if (this.selectedUser)
+        this.confirm('Are you sure to delete ?', () => {
+            this.selectedUser.delete(this).subscribe(() => {
+                this.loadUsers();
+                this.selectedUser = null;
+                })
+            });
         }
-    }
-    //
-    checkMember(member)
-    {
-        ExamMember.listByUser(this, member.id).subscribe(
-            exams => {
-                this.totalExam = exams;
-                CourseMember.listByUser(this, member.id).subscribe(
-                    courses => this.totalCourse = courses,
-                    () => this.totalCourse,
-                    () => {
-                        this.deleteMember();
-                    },
-                );
-            },
-        );
-    }
-    //
-    deleteMember(){
-        if(this.totalExam && this.totalCourse){
-            
-            if(this.totalExam.length > 0 || this.totalCourse.length >0)
-            {   
-                alert("Có khóa học hoặc kỳ thi đã được người dùng đăng ký!");
-            }
-            else{
-                this.confirm('Are you sure to delete ?', () => {
-                    this.selectedUser.delete(this).subscribe(() => {
-                        this.loadUsers();
-                        this.selectedUser = null;
-                    })
-                });
-            }
-        }
-    }
-    //
+
     export() {
         this.userExportDialog.show(this.users);
     }

@@ -19,6 +19,7 @@ import { CertificatePrintDialog } from '../../../lms/course/certificate-print/ce
     moduleId: module.id,
     selector: 'user-profile-dialog',
     templateUrl: 'profile-dialog.component.html',
+    styleUrls: ['profile-dialog.component.css'],
 })
 export class UserProfileDialog extends BaseDialog<User> {
 	user: User;
