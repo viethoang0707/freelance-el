@@ -37,13 +37,7 @@ export const AccountRoutes: Routes = [
           breadcrumb: 'Permission'
         },
       },
-      {
-        path: "workflow",
-        component: ApprovalTreeComponent,
-        data: {
-          breadcrumb: 'Workflow'
-        },
-      }
+      
     ]
   }
 

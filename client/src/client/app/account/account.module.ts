@@ -11,7 +11,6 @@ import { PermissionListComponent } from './permission/permission-list/permission
 import { PermissionDialog} from './permission/permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog} from './permission/menu-permission-dialog/menu-permission-dialog.component';
 import { MemberPermissionDialog} from './permission/member-permission-dialog/member-permission-dialog.component';
-import { ApprovalTreeComponent } from './workflow/approval-tree/approval-tree.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule, LMSModule],
@@ -24,7 +23,6 @@ import { ApprovalTreeComponent } from './workflow/approval-tree/approval-tree.co
                     PermissionDialog,
                     MenuPermissionDialog,
                     MemberPermissionDialog,
-                    ApprovalTreeComponent
                 ],
     exports: [UserProfileDialog],
     providers: []

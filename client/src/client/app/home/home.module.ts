@@ -12,9 +12,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { BreadcrumbComponent } from './breadcumb/breadcrumb.component';
 import { HomeEventManager } from './home-manager.service';
 import { AccountModule } from '../account/account.module';
+import { WorkflowModule } from '../workflow/workflow.module';
 
 @NgModule({
-  imports: [ HomeRoutingModule, ErpSharedModule, AccountModule ],
+  imports: [ HomeRoutingModule, ErpSharedModule, AccountModule,WorkflowModule ],
   declarations: [ HomeComponent, NavbarComponent, SideMenuComponent, 
   FooterComponent,SubMenuComponent,BreadcrumbComponent,ChangePasswordDialog ],
   exports: [],

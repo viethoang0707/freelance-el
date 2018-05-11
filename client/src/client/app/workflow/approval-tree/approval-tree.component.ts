@@ -1,16 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { APIService } from '../../../shared/services/api.service';
-import { AuthService } from '../../../shared/services/auth.service';
+import { BaseComponent } from '../../shared/components/base/base.component';
+import { APIService } from '../../shared/services/api.service';
+import { AuthService } from '../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
-import { Permission } from '../../../shared/models/elearning/permission.model';
-import { SelectAdminDialog } from '../../../shared/components/select-admin-dialog/select-admin-dialog.component';
-import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { USER_STATUS, GROUP_CATEGORY } from '../../shared/models/constants'
+import { Permission } from '../../shared/models/elearning/permission.model';
+import { SelectAdminDialog } from '../../shared/components/select-admin-dialog/select-admin-dialog.component';
+import { TreeUtils } from '../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { Group } from '../../../shared/models/elearning/group.model';
-import { User } from '../../../shared/models/elearning/user.model';
+import { Group } from '../../shared/models/elearning/group.model';
+import { User } from '../../shared/models/elearning/user.model';
 
 @Component({
     moduleId: module.id,

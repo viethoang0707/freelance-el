@@ -5,7 +5,7 @@ import { APIContext } from '../context';
 import * as _ from 'underscore';
 
 @Model('eticket.notification')
-export class Comment extends BaseModel{
+export class Notification extends BaseModel{
 
     constructor(){
         super();
@@ -23,4 +23,8 @@ export class Comment extends BaseModel{
     target_user_id__DESC__: string;
     @FieldProperty<Date>()
     date_open: Date;
+
+    static listByUser(context:APIContext, userId):Observable<any> {
+        return Notification.search(context,[], "[('target_user_id','=',"+userId+")]");
+    }
 }
