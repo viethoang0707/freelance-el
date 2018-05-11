@@ -32,7 +32,7 @@
               <span class="image-box-tag">{{COURSE_MODE[course.mode]}}</span>
               <p class="summary">{{course.summary}}</p>
               <div class="image-box-footer">
-                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="joinCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="studyCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
                 <button pButton type="button" icon="ui-icon-edit" title="{{'Edit syllabus'| translate}}" label="{{'Edit'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
                 <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageCourse(course.member, course)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
               </div>

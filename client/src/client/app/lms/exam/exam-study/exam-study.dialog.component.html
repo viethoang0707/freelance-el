@@ -78,6 +78,10 @@
             <p-messages [(value)]="msgs"></p-messages>
           </div>
         </div>
+        <div>
+          <p>{{timeLeft}}</p>
+          <p>{{exam.duration}}</p>
+        </div>
       </div>
     </div>
 
@@ -87,7 +91,7 @@
       <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn"
         style="margin-right:4px;" (click)="next()" *ngIf="qIndex < examQuestions.length-1"></button>
       <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn"
-        style="margin-right:4px;" (click)="submitExam()" *ngIf="qIndex==examQuestions.length-1"></button>
+        style="margin-right:4px;" (click)="submitExam()" *ngIf="qIndex==examQuestions.length-1 && timeLeft <= (exam.duration* 60 * 1000)/2"></button>
     </p-footer>
   </p-card>
 </p-dialog>

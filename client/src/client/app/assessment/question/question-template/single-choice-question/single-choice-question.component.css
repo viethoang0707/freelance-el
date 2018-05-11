@@ -17,3 +17,7 @@
   width: 2em;
   height: 2em;
 }
+
+p.question{
+	margin:0;
+}

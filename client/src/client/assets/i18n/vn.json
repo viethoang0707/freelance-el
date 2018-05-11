@@ -305,6 +305,13 @@
 	"Course setting": "Cài đặt khóa học",
 	"Select prequisite course": "Chọn khóa học tiên quyết",
 	"Presentation": "Trình chiếu",
-	" Complete unit by order user": "Hoàn thành bài học theo thứ tự"
+	" Complete unit by order user": "Hoàn thành bài học theo thứ tự",
+	"Administration": "Trang quản trị",
+	"LMS": "Trang đào tạo",
+	"SCORM lecture": "Bài giảng SCORM",
+	"Approval tree": "Cây phê duyệt",
+	"Workflow": "Quy trình quản lý",
+	"Select supervisor": "Xét quyền quản lý",
+	"Clear supervisor": "Xóa quyền quản lý"
 
 }

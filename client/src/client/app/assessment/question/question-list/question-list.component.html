@@ -20,6 +20,7 @@
             <p-table #questionTable [value]="questions | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedQuestion" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>#</th>
                         <th [pSortableColumn]="'title'">
                             {{'Title'|translate}}
                             <p-sortIcon [field]="'title'"></p-sortIcon>
@@ -35,8 +36,9 @@
                         </th>    
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-question>
+                <ng-template pTemplate="body" let-question let-i="rowIndex">
                     <tr [pSelectableRow]="question">
+                        <td>{{i}}</td>
                         <td style="text-align: left;">{{question.title}}</td>
                         <td class="q-content" [innerHTML]="question.content">{{question.content}}</td>
                         <td class="showformb">{{QUESTION_LEVEL[question.level] | translate}}</td>
@@ -44,7 +46,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
-                    {{'Total records'|translate}} : {{total}}
+                    {{'Total records'|translate}} : {{questions?.length}}
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
                     <tr>
