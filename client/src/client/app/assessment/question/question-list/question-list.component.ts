@@ -35,7 +35,6 @@ export class QuestionListComponent extends BaseComponent {
 
     constructor(private treeUtils: TreeUtils) {
         super();
-        this.filterGroups = [];
     }
 
     ngOnInit() {
@@ -81,6 +80,18 @@ export class QuestionListComponent extends BaseComponent {
         Question.all(this).subscribe(questions => {
             this.questions = questions;
         });
+
+        // Question.search(this, [],"[('group_id','=',[70,99])]").subscribe( questions =>{
+        //     this.questions = questions;
+        // });
+    }
+
+    loadQuestionsFilter(idgroup)
+    {
+        console.log(idgroup);
+        Question.search(this, [],"[('group_id','=',["+idgroup+"])]").subscribe( questions =>{
+            this.questions = questions;
+        });
     }
 
     import() {
@@ -88,5 +99,12 @@ export class QuestionListComponent extends BaseComponent {
         this.questionImportDialog.onImportComplete.subscribe(() => {
             this.loadQuestions();
         });
+    }
+
+    nodeSelect($event){
+        console.log($event);
+        // console.log(this.selectedGroupNodes);
+        const groupId = this.selectedGroupNodes.map(item => item.data.id);
+        this.loadQuestionsFilter(groupId);
     }
 }
