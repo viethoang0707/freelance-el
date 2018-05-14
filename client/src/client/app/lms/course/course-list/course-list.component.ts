@@ -104,7 +104,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     studyCourse( course:Course,member: CourseMember) {
         if ( course.status =='published') {
             CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
-                if (syl.status == 'published')
+                if (syl && syl.status == 'published')
                     this.router.navigate(['/lms/courses/study',course.id, member.id]);
                 else
                     this.error('The course has not been published');
@@ -118,7 +118,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     manageCourse( course: Course,member: CourseMember) {
         if ( course.status =='published') {
             CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
-                if (syl.status == 'published')
+                if (syl && syl.status == 'published')
                     this.router.navigate(['/lms/courses/manage',course.id, member.id]);
                 else
                     this.error('The course has not been published');

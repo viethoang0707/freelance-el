@@ -4,7 +4,7 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 
-@Model('eticket.room')
+@Model('eticket.ticket')
 export class Ticket extends BaseModel{
 
     constructor(){
@@ -46,7 +46,7 @@ export class Ticket extends BaseModel{
     }
 
     static byWorkflowObject(context:APIContext, id: number, model: string):Observable<any> {
-        return Ticket.search(context,[],"[('res_id','=',"+id+"),('res_model','=',"+model+"),('status','=','open')]")
+        return Ticket.search(context,[],"[('res_id','=',"+id+"),('res_model','=','"+model+"'),('status','=','open')]")
         .map(tickets => {
             if (tickets.length)
                 return tickets[0];

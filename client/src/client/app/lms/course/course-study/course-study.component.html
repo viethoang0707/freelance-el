@@ -14,13 +14,13 @@
             </div>
             <div class="image-box-footer">
               <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
-              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder'"></button>
+              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder' && !studyMode"></button>
               <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
             </div>
             <div>
               <ng-template course-unit-container></ng-template>
               <div>
-                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn" style="margin-right:4px;" (click)="completeUnit()" [disabled]="selectedUnit.completed" *ngIf="selectedUnit.type!='folder'"></button>
+                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn" style="margin-right:4px;" (click)="completeUnit()" [disabled]="selectedUnit.completed" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
               </div>
             </div>
           </div>

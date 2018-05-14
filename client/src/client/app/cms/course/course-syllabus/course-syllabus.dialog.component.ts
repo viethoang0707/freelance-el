@@ -187,5 +187,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 		});
 	}
 
+	updateStatus() {
+		this.syl.save(this).subscribe(()=> {
+			this.success('Syllabus status updated');
+		});
+	}
+
 }
 

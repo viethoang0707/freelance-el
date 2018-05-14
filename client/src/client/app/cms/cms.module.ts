@@ -23,7 +23,7 @@ import { CourseSyllabusSettingDialog } from './course/syllabus-setting/syllabus-
 	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,
 		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSyllabusSettingDialog, SlideLectureCourseUnitComponent,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent, CourseUnitDialog],
-	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog],
+	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective],
 	providers: [],
 	entryComponents: [FolderCourseUnitComponent, ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
 		VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]

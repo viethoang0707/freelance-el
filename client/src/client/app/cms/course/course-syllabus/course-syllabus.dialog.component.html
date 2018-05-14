@@ -1,6 +1,7 @@
 <p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" width="1000" height="100%" [responsive]="true" [positionTop]="50">
   <div class="ui-g">
     <div class="ui-g-12 course-syllabus">
+      <p-selectButton [disabled]="!allowToChangeState" [options]="courseStatus" [(ngModel)]="syl.status" name="status" (onChange)="updateStatus()"></p-selectButton>
       <p-toolbar>
         <div class="ui-toolbar-group-left">
           <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
@@ -9,15 +10,9 @@
         </div>
         <div class="ui-toolbar-group-right">
           <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings" (click)="showSetting()" label="{{'Setting'|translate}}"></button>
+          <button pButton type="button" class="orange-btn"  (click)="submitForReview()" label="{{'Submit for review'|translate}}" *ngIf="syl.status!='published' && course.author_id == user.id && !allowToChangeState && !openTicket"></button>
         </div>
       </p-toolbar>
-      <div class="ui-g-12">
-          <p-selectButton [disabled]="!allowToChangeState" [options]="courseStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
-        </div>
-        <div class="ui-g-12">
-          <button pButton type="button" class="orange-btn"  (click)="submitForReview()" label="{{'Submit for review'|translate}}" *ngIf="object.status!='published' && course.author_id == user.id && !allowToChangeState && !openTicket"></button>
-          </div>
-
       <div class="ui-g-4">
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" [style]="{width: '100%'}"></p-tree>
       </div>
@@ -42,6 +37,7 @@
   <course-unit-dialog></course-unit-dialog>
   <course-unit-preview-dialog></course-unit-preview-dialog>
   <p-footer>
+    
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>
