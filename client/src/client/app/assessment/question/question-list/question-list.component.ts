@@ -85,10 +85,25 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
+    loadQuestionsFilter(idgroup)
+    {
+        console.log(idgroup);
+        Question.search(this, [],"[('group_id','=',["+idgroup+"])]").subscribe( questions =>{
+            this.questions = questions;
+        });
+    }
+
     import() {
         this.questionImportDialog.show();
         this.questionImportDialog.onImportComplete.subscribe(() => {
             this.loadQuestions();
         });
+    }
+
+    nodeSelect($event){
+        console.log($event);
+        // console.log(this.selectedGroupNodes);
+        const groupId = this.selectedGroupNodes.map(item => item.data.id);
+        this.loadQuestionsFilter(groupId);
     }
 }
