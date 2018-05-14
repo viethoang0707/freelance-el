@@ -44,7 +44,7 @@
       <div class="ui-g-12 ">
         <p-toolbar>
           <div class="ui-toolbar-group-left ">
-            <button pButton type="button " label="{{ 'Answer sheet'|translate}} " class="purple-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet() " [disabled]="!selectedRecord "></button>
+            <button pButton type="button " label="{{ 'Answer sheet'|translate}} " class="purple-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedScoreRecord "></button>
           </div>
         </p-toolbar>
         <p-table #scoreTable [value]="scoreRecords" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedScoreRecord" [responsive]="true " sortField="role">

@@ -52,6 +52,7 @@ export class ExamStudyDialog extends BaseComponent {
 	height: number;
 	examCode: any;
 	msgs: Message[] = [];
+	validAnswer: number;
 
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -74,6 +75,7 @@ export class ExamStudyDialog extends BaseComponent {
 			attempt: 0,
 			unattempt: 0
 		}
+		this.validAnswer = 0;
 	}
 
 	show(exam: Exam, member: ExamMember) {
@@ -136,7 +138,15 @@ export class ExamStudyDialog extends BaseComponent {
 		ExamLog.startExam(this, this.member.user_id, this.exam.id, this.submission);
 		this.fetchAnswers().subscribe(answers => {
 			this.answers = answers;
-			this.stats.attempt = answers.length;
+			var validAnswers = _.filter(this.answers, (ans: any) => {
+				return ans.option_id != "" && ans.option_id != "0";
+			});
+			if (validAnswers.length > 0) {
+				this.validAnswer = validAnswers.length;
+			} else {
+				this.validAnswer = 0;
+			}
+			this.stats.attempt = this.validAnswer;
 			this.stats.unattempt = this.stats.total - this.stats.attempt;
 			this.startTimer();
 			this.displayQuestion(0);
@@ -161,11 +171,15 @@ export class ExamStudyDialog extends BaseComponent {
 		});
 		if (!answer) {
 			var answer = new Answer();
+			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
 			return answer.save(this).do(ans => {
 				this.answers.push(answer);
-				this.stats.attempt = this.answers.length;
+				if (answer.option_id != 0) {
+					this.validAnswer = this.validAnswer + 1;
+				}
+				this.stats.attempt = this.validAnswer;
 				this.stats.unattempt = this.stats.total - this.stats.attempt;
 			});
 		} else
@@ -181,6 +195,7 @@ export class ExamStudyDialog extends BaseComponent {
 			return ans.option_id != null || ans.text != null;
 		});
 		if (this.examQuestions.length)
+			this.validAnswer = validAnswers.length;
 			this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
 	}
 
@@ -191,6 +206,14 @@ export class ExamStudyDialog extends BaseComponent {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
 				ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer);
 				this.currentAnswer = answer;
+				var validAnswers = _.filter(this.answers, (ans: any) => {
+					return ans.option_id != "" && ans.option_id != '0';
+				});
+				if (this.examQuestions.length) {
+					this.validAnswer = validAnswers.length;
+					this.progress = Math.floor(this.validAnswer / this.examQuestions.length * 100);
+				}
+				this.checkAnswer();
 				var detailComponent = QuestionRegister.Instance.lookup(question.type);
 				let viewContainerRef = this.questionHost.viewContainerRef;
 				if (detailComponent) {
@@ -270,4 +293,16 @@ export class ExamStudyDialog extends BaseComponent {
         this.msgs.push({severity:'warn', summary:'Warn Message', detail:'5 minutes remaining!'});
     }
 
+    checkAnswer() {
+		var validQuestion = _.filter(this.answers, (ans: any) => {
+			return ans.option_id != "" && ans.option_id != '0';
+		});
+		this.examQuestions.forEach((ques: any) => {
+			validQuestion.forEach(answer => {
+				if (answer.question_id === ques.question_id) {
+					ques.checkAnswer = true;
+				}
+			})
+		});
+	}
 }

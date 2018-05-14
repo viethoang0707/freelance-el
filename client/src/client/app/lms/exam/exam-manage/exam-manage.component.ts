@@ -34,6 +34,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 	
 	exam:Exam;
 	member: ExamMember;
+    submit: Submission;
 	markRecords: any;
     selectedMarkRecord: any;
     scoreRecords: any;
@@ -44,7 +45,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
-
 		this.exam = new Exam();
 		this.member = new ExamMember();
 	}
