@@ -4,7 +4,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, EXAM_STATUS, EXAM_TIME_WARNING } from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
@@ -279,7 +279,7 @@ export class ExamStudyDialog extends BaseComponent {
 				.takeUntil(this.timerSubject)
 				.subscribe(() => {
 					this.timeLeft -= 1000;
-					if(this.timeLeft <= 300000 && this.timeLeft > 299000)
+					if(this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
 					{
 						this.showWarn();
 					}
@@ -290,7 +290,7 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 	showWarn() {
         this.msgs = [];
-        this.msgs.push({severity:'warn', summary:'Warn Message', detail:'5 minutes remaining!'});
+        this.msgs.push({severity:'warn', summary:'Warn Message', detail:' A little minutes remaining!'});
     }
 
     checkAnswer() {
