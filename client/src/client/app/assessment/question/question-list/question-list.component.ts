@@ -25,6 +25,8 @@ export class QuestionListComponent extends BaseComponent {
 
     tree: TreeNode[];
     items: MenuItem[];
+    selectedNode: TreeNode;
+    selectedQuestions: Question[];
     questions: Question[];
     selectedQuestion: any;
     filterGroups: Group[];
@@ -44,9 +46,9 @@ export class QuestionListComponent extends BaseComponent {
         });
         this.loadQuestions();
         this.items = [
-            {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.add('sc')}},
-            {label: this.translateService.instant(QUESTION_TYPE['mc']), command: ()=> { this.add('mc')}},
-            {label: this.translateService.instant(QUESTION_TYPE['ext']), command: ()=> { this.add('ext')}},
+            { label: this.translateService.instant(QUESTION_TYPE['sc']), command: () => { this.add('sc') } },
+            { label: this.translateService.instant(QUESTION_TYPE['mc']), command: () => { this.add('mc') } },
+            { label: this.translateService.instant(QUESTION_TYPE['ext']), command: () => { this.add('ext') } },
         ];
     }
 
@@ -67,12 +69,15 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    delete() {
-        if (this.selectedQuestion)
+    delete(questions) {
+        if (questions && questions.length)
             this.confirm('Are you sure to delete ?', () => {
-                this.selectedQuestion.delete(this).subscribe(() => {
+                var subscriptions = _.map(questions, (question: Question) => {
+                    return question.delete(this);
+                });
+                Observable.forkJoin(...subscriptions).subscribe(() => {
+                    this.selectedQuestions = [];
                     this.loadQuestions();
-                    this.selectedQuestion = null;
                 });
             });
     }
