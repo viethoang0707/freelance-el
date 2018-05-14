@@ -301,3 +301,11 @@ body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
 .display-button{
   display: none;
 }
+.ui-progress-spinner-svg{
+  width:50%;
+  height: 50%;
+}
+
+.course-study .ui-tree{
+  width: 100%;
+}

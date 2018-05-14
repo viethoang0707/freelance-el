@@ -15,3 +15,9 @@
     color: #E8EAF6;
     font-size: 28px;
 }
+
+.c-summary{
+  overflow: hidden;
+  white-space: nowrap; 
+  text-overflow: ellipsis;
+}

@@ -2,20 +2,20 @@
   <h1>{{'Course study'|translate}}: {{course.name}} </h1>
   <p-tabView [style]="{width: '100%', height: '460px'}">
     <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
-      <div class="ui-g-3">
+      <div class="ui-g-3 course-study">
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
       </div>
       <div class="ui-g-9" *ngIf="selectedUnit">
         <div class="card">
           <div class="image-box-content">
             <div>
-              <h3>{{selectedUnit.name}}</h3>
-              <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
+              <h3 class="removeMT">{{selectedUnit.name}}</h3>
+              <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type] |translate }}</span>
             </div>
             <div class="image-box-footer">
               <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
+              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder'"></button>
               <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
-              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="cyan-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder'"></button>
             </div>
             <div>
               <ng-template course-unit-container></ng-template>

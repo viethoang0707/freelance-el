@@ -37,7 +37,7 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-member>
-              <tr [pSelectableRow]="member ">
+              <tr [pSelectableRow]="member">
                 <td>
                 <p-tableCheckbox [value]="member"></p-tableCheckbox>
             </td>
@@ -49,7 +49,7 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="summary">
-              {{'Total records'|translate}} : {{members?.length}}
+              {{'Total records'|translate}} : {{candidates?.length}}
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>
@@ -109,7 +109,7 @@
               </tr>
             </ng-template>
             <ng-template pTemplate="summary">
-              {{'Total records'|translate}} : {{members?.length}}
+              {{'Total records'|translate}} : {{supervisors?.length}}
             </ng-template>
             <ng-template pTemplate="emptymessage">
               <tr>

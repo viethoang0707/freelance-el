@@ -34,6 +34,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 	
 	exam:Exam;
 	member: ExamMember;
+    submit: Submission;
 	markRecords: any;
     selectedMarkRecord: any;
     scoreRecords: any;
@@ -44,7 +45,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
-
 		this.exam = new Exam();
 		this.member = new ExamMember();
 	}
@@ -107,15 +107,15 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     loadAnswers() {
         ExamGrade.listByExam(this, this.exam.id).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
-                this.scoreRecords = [];
+                this.scoreRecords = members;
                 _.each(members, (member: ExamMember)=> {
-                    var record = member;
+                    // var record = member;
                     member.examScore(this, this.exam.id).subscribe(score=> {
-                        record["score"] = score;
+                        member["score"] = score;
                         var grade = member.examGrade(grades, score);
                         if (grade)
-                                record["grade"] = grade.name;
-                            this.scoreRecords.push(record);
+                                member["grade"] = grade.name;
+                            // this.scoreRecords.push(record);
                     });
                 });
             });
