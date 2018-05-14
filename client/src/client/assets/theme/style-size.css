@@ -5,6 +5,9 @@
 
 /* Remove margin */
 .removeM{ margin: 0px !important}
+.removeMT{ margin-top: 0px !important}
+.removeMB{ margin-bottom: 0px !important}
+
 
 /* Margin Left */
 .ml1{ margin-left: 1px !important}

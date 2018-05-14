@@ -305,3 +305,7 @@ body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
   width:50%;
   height: 50%;
 }
+
+.course-study .ui-tree{
+  width: 100%;
+}

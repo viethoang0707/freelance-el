@@ -48,6 +48,7 @@ import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.inter
     moduleId: module.id,
     selector: 'course-study',
     templateUrl: 'course-study.component.html',
+    styleUrls: ['course-study.component.css'],
 })
 export class CourseStudyComponent extends BaseComponent implements OnInit{
 
