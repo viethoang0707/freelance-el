@@ -19,11 +19,15 @@ export class Ticket extends BaseModel{
         this.approve_user_id__DESC__ = undefined;
         this.date_open = undefined;
         this.date_close = undefined;
+        this.res_model =  undefined;
+        this.res_id = undefined;
     }
 
     title: string;
     content: string;
     status: string;
+    res_id: number;
+    res_model: string;
     submit_user_id: number;
     approve_user_id: number;
     submit_user_id__DESC__: string;
@@ -40,4 +44,16 @@ export class Ticket extends BaseModel{
     static listBySubmitUser(context:APIContext, userId):Observable<any> {
         return Ticket.search(context,[], "[('submit_user_id','=',"+userId+")]");
     }
+
+    static byWorkflowObject(context:APIContext, id: number, model: string):Observable<any> {
+        return Ticket.search(context,[],"[('res_id','=',"+id+"),('res_model','=',"+model+"),('status','=','open')]")
+        .map(tickets => {
+            if (tickets.length)
+                return tickets[0];
+            else
+                return null;
+        });
+    }
+
+
 }

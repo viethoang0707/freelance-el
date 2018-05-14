@@ -41,7 +41,7 @@ export abstract class BaseModel {
         var cloud_acc = context.authService.CloudAcc;
         return context.dataAccessService.filter(this,'SAVE').flatMap(success=> {
             if (!success)
-                return Observable.throw('Data access forbidden');
+                return Observable.throw('Permission denied');
             if (!this.id)
                 return context.apiService.create(model, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint).map(data=> {
                     this.id = data.id;
@@ -57,7 +57,7 @@ export abstract class BaseModel {
         var cloud_acc = context.authService.CloudAcc;
         return context.dataAccessService.filter(this,'DELETE').flatMap(success=> {
             if (!success)
-                return Observable.throw('Data access forbidden');
+                return Observable.throw('Permission denied');
             return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
         });
     }
@@ -69,7 +69,7 @@ export abstract class BaseModel {
              var record =   MapUtils.deserializeModel(model, item);
              return context.dataAccessService.filter(record,'GET').flatMap(success=> {
                  if (!success)
-                    return Observable.throw('Data access forbidden');
+                    return Observable.throw('Permission denied');
                  else
                     return Observable.of(record);
              });             

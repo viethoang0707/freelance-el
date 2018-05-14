@@ -34,7 +34,7 @@ export class WebSocketService {
 		this.socket.disconnect();
 	}
 
-	join(user: string, cloudid: number) {
+	join(user: number, cloudid: number) {
 		var message = {
 			user: user,
 			cloudid: cloudid
@@ -46,7 +46,7 @@ export class WebSocketService {
 		this.sendMessage('leave', {});
 	}
 
-	notify(title: string,user: string, cloudid: number) {
+	notify(title: string,user: number, cloudid: number) {
 		var message = {
 			title: title,
 			user: user,

@@ -28,12 +28,14 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     courses: Course[];
     currentUser: User;
+    reportUtils: ReportUtils;
     COURSE_STATUS = COURSE_STATUS;
     COURSE_MODE = COURSE_MODE;
     @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;
 
-    constructor(private router: Router, private reportUtils: ReportUtils) {
+    constructor(private router: Router) {
         super();
+        this.reportUtils = new ReportUtils();
     }
 
     ngOnInit() {
@@ -43,7 +45,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             courseIds = _.filter(courseIds, (id=> {
                 return id;
             }));
-            Observable.forkJoin(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
+            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
             .map(courses => {
                 return _.flatten(courses);
             })
@@ -100,11 +102,31 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     studyCourse( course:Course,member: CourseMember) {
-        if ( course.status =='published')
-            this.router.navigate(['/lms/courses/study',course.id, member.id]);
+        if ( course.status =='published') {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+                if (syl.status == 'published')
+                    this.router.navigate(['/lms/courses/study',course.id, member.id]);
+                else
+                    this.error('The course has not been published');
+            });
+        }
+        else {
+            this.error('The course has not been published');
+        }
     }
 
     manageCourse( course: Course,member: CourseMember) {
-        this.router.navigate(['/lms/courses/manage',course.id, member.id]);
+        if ( course.status =='published') {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+                if (syl.status == 'published')
+                    this.router.navigate(['/lms/courses/manage',course.id, member.id]);
+                else
+                    this.error('The course has not been published');
+            });
+        }
+        else {
+            this.error('The course has not been published');
+        }
+        
     }
 }

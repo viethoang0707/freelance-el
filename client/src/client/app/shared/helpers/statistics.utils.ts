@@ -8,7 +8,6 @@ import { SERVER_DATETIME_FORMAT} from '../models/constants';
 import { Injectable } from '@angular/core';
 import { APIContext } from '../models/context';
 
-@Injectable()
 export class StatsUtils {
 
 	constructor() {

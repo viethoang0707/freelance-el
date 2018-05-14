@@ -3,7 +3,7 @@
     <p-scrollPanel [style]="{width: '100%', height: '450px'}">
       <div class="ui-g ui-fluid form-group">
         <div class="ui-g-12">
-          <p-selectButton [options]="examStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
+          <p-selectButton [options]="examStatus" [(ngModel)]="object.status" name="status" [disabled]="!allowToChangeState" ></p-selectButton>
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
@@ -45,8 +45,6 @@
           </div>
         </div>
         <div class="ui-g-6">
-          <!-- <label>{{'Datetime'|translate}}</label> -->
-          <!-- <p-calendar [(ngModel)]="rangeDates" #date="ngModel" selectionMode="range" readonlyInput="true" name="date" required="true" [inline]="true" [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar> -->
           <label>{{'Start'|translate}}</label>
           <p-calendar [(ngModel)]="object.start" showTime="true" hourFormat="24" #start="ngModel"  name="start" required="true"></p-calendar>
           <div *ngIf="start.invalid" 

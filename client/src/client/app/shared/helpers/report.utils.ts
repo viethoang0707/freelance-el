@@ -8,7 +8,6 @@ import { ExamLog, CourseLog } from '../models/elearning/log.model';
 import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
 
-@Injectable()
 export class ReportUtils {
 
 	constructor() {

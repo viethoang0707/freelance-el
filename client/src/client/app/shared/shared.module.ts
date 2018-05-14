@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { TeacherGuard } from './guards/teacher.guard';
+import { StudentGuard } from './guards/student.guard';
 import { SupervisorGuard } from './guards/supervisor.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
@@ -326,6 +327,7 @@ export class ErpSharedModule {
                 AuthGuard,
                 AdminGuard,
                 TeacherGuard,
+                StudentGuard,
                 SupervisorGuard,
                 APIService,
                 AuthService,
@@ -333,9 +335,7 @@ export class ErpSharedModule {
                 LangService,
                 DataAccessService,
                 MeetingService,
-                TreeUtils,
                 WindowRef,
-                SyllabusUtils,
                 ExcelService,
                 MenuService,
                 SettingService,

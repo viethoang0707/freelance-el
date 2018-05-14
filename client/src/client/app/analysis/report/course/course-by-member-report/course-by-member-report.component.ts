@@ -34,9 +34,11 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	rowGroupMetadata: any;
 	flag: boolean= false;
 	GROUP_CATEGORY = GROUP_CATEGORY;
+    reportUtils: ReportUtils;
 
-    constructor(private reportUtils: ReportUtils, private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+    constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
+        this.reportUtils = new ReportUtils();
     }
 
     export() {

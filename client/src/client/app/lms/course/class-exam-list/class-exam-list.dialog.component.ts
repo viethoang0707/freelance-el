@@ -65,6 +65,7 @@ export class ClassExamListDialog extends BaseComponent {
 
 	add() {
 		var exam = new Exam();
+		exam.supervisor_id =  this.authService.UserProfile.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.subscribe(() => {
 			var classExam = new ClassExam();

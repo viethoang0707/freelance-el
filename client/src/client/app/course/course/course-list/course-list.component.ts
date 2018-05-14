@@ -32,12 +32,14 @@ export class CourseListComponent extends BaseComponent {
     filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
     selectedCourse: any;
+    treeUtils: TreeUtils;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 
-    constructor(private treeUtils: TreeUtils) {
+    constructor() {
         super();
         this.filterGroups = [];
+        this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
@@ -65,6 +67,10 @@ export class CourseListComponent extends BaseComponent {
 
     enroll() {
         if (this.selectedCourse) {
+            if (this.selectedCourse.status!='published') {
+                this.error('You have to publish the course first');
+                return;
+            }
             if (this.selectedCourse.mode=='self-study')
                 this.courseEnrollDialog.enrollCourse(this.selectedCourse);
             else if (this.selectedCourse.mode=='group')
@@ -87,41 +93,18 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
-    // nodeSelect(event: any) {
-    //     console.log(this.selectedNode);
-    //     if (this.selectedNode) {
-    //         if (this.selectedNode.children.length == 0) {
-    //             this.displayCourses = _.filter(this.courses, (course => {
-    //                 return course.group_id == this.selectedNode.data.id;
-    //             }));
-    //         } else {
-    //             this.displayCourses = [];
-    //             this.selectedNode.children.forEach(node => {
-    //                 var filter = _.filter(this.courses, (course => {
-    //                     return course.group_id == node.data.id;
-    //                 }));
-    //                 filter.forEach(course => {
-    //                     this.displayCourses.push(course);
-    //                 });
-    //             });
-
-    //         }
-    //     }
-
-    // }
-
 
     delete() {
         if (this.selectedCourse)
-            this.confirmationService.confirm({
-                message: this.translateService.instant('Are you sure to delete ?'),
-                accept: () => {
+            this.confirm('Are you sure to delete ?',() => {
                     this.selectedCourse.delete(this).subscribe(() => {
                         this.loadCourses();
                         this.selectedCourse = null;
+                    },()=> {
+                        this.error('Permission denied');
                     })
-                }
-            });
+                });
+            
     }
 
 }

@@ -66,6 +66,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	conference: Conference;
 	conferenceMember: ConferenceMember;
 	treeList: TreeNode[];
+	sylUtils:SyllabusUtils;
+	reportUtils: ReportUtils;
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -80,9 +82,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 
 
 	constructor(private router: Router, private route: ActivatedRoute, 
-		private sylUtils:SyllabusUtils, private reportUtils: ReportUtils,
 		private meetingSerivce:MeetingService,private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
+		this.reportUtils = new ReportUtils();
+		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
 		this.member = new CourseMember();
 		this.certificate = new Certificate();

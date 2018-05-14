@@ -32,9 +32,11 @@ export class QuestionListComponent extends BaseComponent {
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
     total: number;
+    treeUtils: TreeUtils;
 
-    constructor(private treeUtils: TreeUtils) {
+    constructor() {
         super();
+        this.treeUtils = new TreeUtils();
         this.filterGroups = [];
     }
 

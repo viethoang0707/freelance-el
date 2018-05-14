@@ -17,10 +17,10 @@ import { Course } from '../../../shared/models/elearning/course.model';
 
 @Component({
     moduleId: module.id,
-    selector: 'course-setting-dialog',
-    templateUrl: 'course-setting.dialog.component.html',
+    selector: 'syllabus-setting-dialog',
+    templateUrl: 'syllabus-setting.dialog.component.html',
 })
-export class CourseSettingDialog extends BaseDialog<Course> {
+export class CourseSyllabusSettingDialog extends BaseDialog<CourseSyllabus> {
 
     @ViewChild(SelectCoursesDialog) coursesDialog: SelectCoursesDialog;
 

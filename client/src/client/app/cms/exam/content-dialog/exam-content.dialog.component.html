@@ -3,9 +3,6 @@
     <p-tabView>
       <p-tabPanel header="{{'Question selection' |translate}}">
         <div class="ui-g ui-fluid form-group">
-          <div class="ui-g-12">
-            <p-selectButton [options]="examStatus" [(ngModel)]="exam.status" name="status" [disabled]="exam.status=='unpublished'"></p-selectButton>
-          </div>
           <div *ngFor="let level of QUESTION_LEVEL | keys" class="ui-g-12">
             <p-fieldset>
               <p-header>{{QUESTION_LEVEL[level]|translate}}</p-header>

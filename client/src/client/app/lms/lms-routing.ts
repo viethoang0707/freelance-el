@@ -7,6 +7,9 @@ import { ConferenceListComponent } from './conference/conference-list/conference
 import { CourseManageComponent } from './course/course-manage/course-manage.component';
 import { CourseStudyComponent } from './course/course-study/course-study.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
+import { StudentGuard } from '../shared/guards/student.guard';
+import { TeacherGuard } from '../shared/guards/teacher.guard';
+import { SupervisorGuard } from '../shared/guards/supervisor.guard';
 
 export const LMSRoutes: Routes = [
     {
@@ -29,7 +32,8 @@ export const LMSRoutes: Routes = [
                component: ExamManageComponent,
                data: {
                  breadcrumb:'Manage exam'
-               }
+               },
+               canActivate:[SupervisorGuard]
             },
             {
                path: "courses",
@@ -43,14 +47,16 @@ export const LMSRoutes: Routes = [
                component: CourseManageComponent,
                data: {
                  breadcrumb:'Manage course'
-               }
+               },
+               canActivate:[TeacherGuard]
             },
             {
                path: "courses/study/:courseId/:memberId",
                component: CourseStudyComponent,
                data: {
                  breadcrumb:'Study course'
-               }
+               },
+               canActivate:[StudentGuard]
             },
             {
                path: "meetings",

@@ -24,15 +24,17 @@ export class SelectCoursesDialog extends BaseComponent {
 	selectedCourses: Course[];
 	courses:Course[];
 	display: boolean;
+	treeUtils: TreeUtils;
 
 	private onSelectCoursesReceiver: Subject<any> = new Subject();
     onSelectCourses:Observable<any> =  this.onSelectCoursesReceiver.asObservable();
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
 		this.display = false;
 		this.selectedCourses = [];
 		this.courses = [];
+		this.treeUtils = new TreeUtils();
 	}
 
 	hide() {

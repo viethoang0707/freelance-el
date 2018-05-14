@@ -11,7 +11,8 @@
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="showProfile()"
                         *ngIf="selectedUser"></button>
-                    <!-- <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedUser"></button> -->
+                     <button pButton type="button" label="{{'Deactivate'|translate}}" class="red-btn" icon="ui-icon-lock" (click)="deactivate()" *ngIf="selectedUser && !selectedUser.banned"></button> 
+                     <button pButton type="button" label="{{'Activate'|translate}}" class="green-btn" icon="ui-icon-lock-open" (click)="activate()" *ngIf="selectedUser && selectedUser.banned"></button> 
                 </div>
                 <div class="ui-toolbar-group-right">
                     <button pButton type="button" label="{{'Export'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="export()"></button>

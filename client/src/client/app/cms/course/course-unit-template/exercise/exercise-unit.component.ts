@@ -42,11 +42,13 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	stage:string;
 	qIndex:number;
 	currentQuestion: ExerciseQuestion;
+	treeUtils: TreeUtils;
 
-	constructor(private treeUtils: TreeUtils, private componentFactoryResolver:ComponentFactoryResolver) {
+	constructor(private componentFactoryResolver:ComponentFactoryResolver) {
 		super();
 		this.exerciseQuestions = [];
 		this.currentQuestion =  new ExerciseQuestion();
+		this.treeUtils = new TreeUtils();
 	}
 
 	ngOnInit() {
