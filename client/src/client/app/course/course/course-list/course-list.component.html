@@ -22,7 +22,7 @@
           </span>
         </div>
       </p-toolbar>
-      <p-table #courseTable [value]="displayCourses | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
+      <p-table #totalRecords #courseTable [value]="displayCourses | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
         <ng-template pTemplate="header">
           <tr>
             <th [pSortableColumn]="'name'">
@@ -58,7 +58,7 @@
         </ng-template>
 
         <ng-template pTemplate="summary">
-          {{'Total records'|translate}} : {{displayCourses?.length}}
+          {{'Total records'|translate}} : {{totalRecords.value.length}}
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
