@@ -78,21 +78,32 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                 this.markRecords = [];
                 _.each(members, (member:ExamMember)=> {
                     Submission.byMember(this,member.id).subscribe((submit:Submission) => {
-                        Answer.listBySubmit(this, submit.id).subscribe(answers => {
-                            answers = _.filter(answers, (obj:Answer)=> {
-                                return _.contains(questionIds,obj.question_id);
+                        if (submit)
+                            Answer.listBySubmit(this, submit.id).subscribe(answers => {
+                                answers = _.filter(answers, (obj:Answer)=> {
+                                    return _.contains(questionIds,obj.question_id);
+                                });
+                                var record = {
+                                    name: member.name,
+                                    group_id__DESC__: member.group_id__DESC__,
+                                    member: member,
+                                    answers: answers
+                                }
+                                _.each(answers, (obj)=> {
+                                    record[obj.question_id] = obj.score;
+                                });
+                                this.markRecords.push(record);
                             });
+                        else {
                             var record = {
-                                name: member.name,
-                                group_id__DESC__: member.group_id__DESC__,
-                                member: member,
-                                answers: answers
+                                    name: member.name,
+                                    group_id__DESC__: member.group_id__DESC__,
+                                    member: member,
+                                    answers: []
+                                }
+                                this.markRecords.push(record);
                             }
-                            _.each(answers, (obj)=> {
-                                record[obj.question_id] = obj.score;
-                            });
-                            this.markRecords.push(record);
-                        });
+                        
                     })
                 });
             });
