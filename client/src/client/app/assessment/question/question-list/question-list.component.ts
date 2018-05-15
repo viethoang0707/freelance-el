@@ -32,6 +32,7 @@ export class QuestionListComponent extends BaseComponent {
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
     total: number;
+    questionsFilter: Question[];
 
     constructor(private treeUtils: TreeUtils) {
         super();
@@ -80,6 +81,7 @@ export class QuestionListComponent extends BaseComponent {
     loadQuestions() {
         Question.all(this).subscribe(questions => {
             this.questions = questions;
+            this.questionsFilter = questions;
         });
     }
 
@@ -87,6 +89,20 @@ export class QuestionListComponent extends BaseComponent {
         this.questionImportDialog.show();
         this.questionImportDialog.onImportComplete.subscribe(() => {
             this.loadQuestions();
+        });
+    }
+
+    selectQuestion(selectedGroupNodes)
+    {
+        this.questionsFilter = this.questions.filter(item => {
+            for(var i=0; i < selectedGroupNodes.length; i++)
+            {
+            if(selectedGroupNodes[i].data.id == item.group_id)
+            {
+                return true;
+            }
+            } 
+            return false;
         });
     }
 }
