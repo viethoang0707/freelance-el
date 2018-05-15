@@ -39,6 +39,7 @@ export class UserListComponent extends BaseComponent {
     totalExam: any;
     totalCourse: any;
     treeUtils: TreeUtils;
+    userFilter: User[];
 
     constructor() {
         super();
@@ -101,7 +102,23 @@ export class UserListComponent extends BaseComponent {
     loadUsers() {
         User.all(this).subscribe(users => {
             this.users = users;
+            this.userFilter = users;
         });
     }
+
+    selectUser(selectedGroupNodes)
+    {
+        this.userFilter = this.users.filter(item => {
+            for(var i=0; i < selectedGroupNodes.length; i++)
+            {
+            if(selectedGroupNodes[i].data.id == item.group_id)
+            {
+                return true;
+            }
+            } 
+            return false;
+        });
+    }
+
 
 }
