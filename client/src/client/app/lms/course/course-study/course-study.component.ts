@@ -203,14 +203,19 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 		if (this.selectedUnit) {
 			if (this.syl.complete_unit_by_order) {
 				let prevUnit:CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
-				prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success=> {
-					if (success) {
-						this.openUnit(this.selectedUnit);
-						CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
-					}
-					else
-						this.error('You have not completed previous unit');
-				});
+				if (prevUnit)
+					prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success=> {
+						if (success) {
+							this.openUnit(this.selectedUnit);
+							CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+						}
+						else
+							this.error('You have not completed previous unit');
+					});
+				else {
+					this.openUnit(this.selectedUnit);
+					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+				}
 			} 
 			else {
 				this.openUnit(this.selectedUnit);

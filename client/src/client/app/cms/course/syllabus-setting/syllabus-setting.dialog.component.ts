@@ -31,9 +31,12 @@ export class CourseSyllabusSettingDialog extends BaseDialog<CourseSyllabus> {
 
     selectCourse() {
         this.coursesDialog.show();
-        this.coursesDialog.onSelectCourses.subscribe(course => {
-            this.object.prequisite_course_id = course.id;
-            this.object.prequisite_course_id__DESC__ = course.name;
+        this.coursesDialog.onSelectCourses.subscribe(courses => {
+            if (courses && courses.length) {
+                this.object.prequisite_course_id = courses[0].id;
+                this.object.prequisite_course_id__DESC__ = courses[0].name;
+            }
+            
         });
     }
 }
