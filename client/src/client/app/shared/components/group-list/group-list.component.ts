@@ -23,9 +23,11 @@ export class GroupListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(GroupDialog) groupDialog: GroupDialog;
     actionItems: MenuItem[]; 
+    treeUtils: TreeUtils;
 
-    constructor(private treeUtils: TreeUtils, private route: ActivatedRoute) {
+    constructor( private route: ActivatedRoute) {
         super();
+        this.treeUtils = new TreeUtils();
     }
 
     tree: TreeNode[];
@@ -60,6 +62,8 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         this.confirm('Are you sure to delete ?', () => {
             this.selectedNode.data.delete(this).subscribe(()=> {
                 this.loadGroups();
+            }, ()=> {
+                this.error('Permission denied');
             });
         });
     }

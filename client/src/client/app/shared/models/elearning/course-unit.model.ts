@@ -29,7 +29,7 @@ export class CourseUnit extends BaseModel{
     type: string;
 
     completedByUser(context:APIContext, userId: number):Observable<any> {
-        var domain = "[('user_id','=',"+userId+"),('res_id','=',"+this.id+"),('res_model','=',"+CourseUnit.Model+"),('code','=','COMPLETE_COURSE_UNIT')]";
+        var domain = "[('user_id','=',"+userId+"),('res_id','=',"+this.id+"),('res_model','=','"+CourseUnit.Model+"'),('code','=','COMPLETE_COURSE_UNIT')]";
         return CourseLog.search(context,[], domain ).flatMap(logs=> {
             if (logs.length ==0)
                 return Observable.of(false);

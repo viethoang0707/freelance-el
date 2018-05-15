@@ -4,13 +4,10 @@ import { User } from '../models/elearning/user.model';
 import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
 
-@Injectable()
 export class TreeUtils {
 
   constructor() {
   }
-
-  
 
   getSubGroup(groups: Group[], parentId: number): any[] {
     return _.filter(groups, (group: Group) => {
@@ -116,7 +113,7 @@ export class TreeUtils {
   }
 
   private findTreeSubNode(node, id): any {
-    if (node.data.id == id)
+    if (node.data && node.data.id == id)
       return node;
     for (var i = 0; i < node.children.length; i++) {
       var childNode = node.children[i];

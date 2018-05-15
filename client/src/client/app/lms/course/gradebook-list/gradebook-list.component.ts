@@ -29,10 +29,12 @@ export class GradebookListDialog extends BaseComponent {
 	selectedRecord: any;
 	display: boolean;
 	courseClass: CourseClass;
+	reportUtils: ReportUtils;
 	@ViewChild(GradebookDialog) gradebookDialog : GradebookDialog;
 
-	constructor(private reportUtils: ReportUtils,private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+	constructor(,private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
+		this.reportUtils = new ReportUtils();
 	}
 
 	ngOnInit() {

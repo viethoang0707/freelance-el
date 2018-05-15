@@ -35,11 +35,13 @@ export class MemberByCourseReportComponent extends BaseComponent{
 	summary: any;
 	GROUP_CATEGORY =  GROUP_CATEGORY;
 	flag: boolean= false;
+    reportUtils: ReportUtils;
 
-    constructor(private reportUtils: ReportUtils, private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+    constructor( private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.records = [];
 		this.summary =  this.generateReportFooter(this.records);
+        this.reportUtils = new ReportUtils();
     }
 
     export() {

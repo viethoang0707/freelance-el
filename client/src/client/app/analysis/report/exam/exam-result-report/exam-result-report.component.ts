@@ -34,9 +34,11 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
     records: any;
     exams: Exam[];
     selectedExam: any;
+    reportUtils: ReportUtils;
 
-    constructor(private reportUtils: ReportUtils, private excelService: ExcelService, private datePipe: DatePipe) {
+    constructor( private excelService: ExcelService, private datePipe: DatePipe) {
         super();
+        this.reportUtils = new ReportUtils();
     }
 
     ngOnInit() {

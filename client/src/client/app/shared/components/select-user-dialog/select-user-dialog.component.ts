@@ -24,14 +24,16 @@ export class SelectUsersDialog extends BaseComponent {
 	selectedUsers: User[];
 	users:User[];
 	display: boolean;
+	treeUtils: TreeUtils;
 
 	private onSelectUsersReceiver: Subject<any> = new Subject();
     onSelectUsers:Observable<any> =  this.onSelectUsersReceiver.asObservable();
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
 		this.display = false;
 		this.selectedUsers = [];
+		this.treeUtils = new TreeUtils();
 	}
 
 	hide() {

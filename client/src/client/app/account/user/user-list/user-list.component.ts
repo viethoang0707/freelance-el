@@ -38,10 +38,12 @@ export class UserListComponent extends BaseComponent {
     selectedGroupNodes: TreeNode[];
     totalExam: any;
     totalCourse: any;
+    treeUtils: TreeUtils;
 
-    constructor(private treeUtils: TreeUtils) {
+    constructor() {
         super();
         this.filterGroups = [];
+        this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
@@ -67,15 +69,23 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    delete() {
-        if (this.selectedUser)
-        this.confirm('Are you sure to delete ?', () => {
-            this.selectedUser.delete(this).subscribe(() => {
-                this.loadUsers();
-                this.selectedUser = null;
-                })
-            });
+    activate() {
+        if (this.selectedUser) {
+            this.selectedUser.banned = false;
+            this.selectedUser.save(this).subscribe(()=> {}, ()=> {
+                this.error('Permission denied');
+            });    
         }
+    }
+
+    deactivate() {
+        if (this.selectedUser) {
+            this.selectedUser.banned = true;
+            this.selectedUser.save(this).subscribe(()=> {}, ()=> {
+                this.error('Permission denied');
+            });    
+        }
+    }
 
     export() {
         this.userExportDialog.show(this.users);

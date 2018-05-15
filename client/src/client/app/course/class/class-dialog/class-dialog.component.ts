@@ -28,6 +28,7 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	selectedMember: CourseMember;
 	members: CourseMember[];
 	items: MenuItem[];
+	treeUtils: TreeUtils;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
@@ -37,9 +38,10 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
 
-	constructor(private treeUtils: TreeUtils, private http: Http) {
+	constructor( private http: Http) {
 		super();
 		this.locale = DEFAULT_DATE_LOCALE;
+		this.treeUtils = new TreeUtils();
 	}
 
 	ngOnInit() {

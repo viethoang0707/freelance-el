@@ -23,13 +23,15 @@ export class SelectGroupDialog extends BaseComponent {
 	tree: TreeNode[];
 	selectedNode: TreeNode;
 	display: boolean;
+	treeUtils: TreeUtils;
 
 	private onSelectGroupReceiver: Subject<any> = new Subject();
     onSelectGroup:Observable<any> =  this.onSelectGroupReceiver.asObservable();
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
 		this.display = false;
+		this.treeUtils = new TreeUtils();
 	}
 
 	hide() {

@@ -48,6 +48,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	selectedNode: TreeNode;
 	units: CourseUnit[];
 	selectedUnit:CourseUnit;
+	 sylUtils:SyllabusUtils;
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -56,8 +57,9 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	
-	constructor(private router: Router, private route: ActivatedRoute, private sylUtils:SyllabusUtils) {
+	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
+		this. sylUtils = new SyllabusUtils();
 		this.classes = [];
 		this.faqs = [];
 		this.materials = [];

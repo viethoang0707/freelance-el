@@ -4,7 +4,6 @@
     <div class="ui-g-12">
       <label>{{'Course group'|translate}}</label>
       <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes"></p-tree>
-      <!-- <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree> -->
     </div>
     <div class="ui-g-12">
       <p-toolbar>
@@ -44,6 +43,14 @@
               {{'Status'|translate}}
               <p-sortIcon [field]="'status'"></p-sortIcon>
             </th>
+            <th style="width: 15%;" [pSortableColumn]="'supervisor_id__DESC__'">
+              {{'Created by'|translate}}
+              <p-sortIcon [field]="'supervisor_id__DESC__'"></p-sortIcon>
+            </th>
+            <th style="width: 15%;" [pSortableColumn]="'author_name'">
+              {{'Content editor'|translate}}
+              <p-sortIcon [field]="'author_name'"></p-sortIcon>
+            </th>
           </tr>
         </ng-template>
 
@@ -54,6 +61,8 @@
             <td class="showformb c-summary" style="text-align: left;">{{course.summary}}</td>
             <td class="showformb">{{COURSE_MODE[course.mode] | translate}}</td>
             <td class="showformb">{{COURSE_STATUS[course.status] | translate}}</td>
+            <td class="showformb">{{course.supervisor_id__DESC__}}</td>
+            <td class="showformb">{{course.author_name}}</td>
           </tr>
         </ng-template>
 
@@ -62,7 +71,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td [attr.colspan]="5">
+            <td [attr.colspan]="7">
               {{'No records found'|translate}}
             </td>
           </tr>

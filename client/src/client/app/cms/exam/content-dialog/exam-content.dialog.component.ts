@@ -35,7 +35,6 @@ export class ExamContentDialog extends BaseComponent {
 	grades: ExamGrade[];
 	examQuestions: ExamQuestion[];
 	groups: Group[];
-	examStatus: SelectItem[];
 	treeUtils: TreeUtils;
 	QUESTION_LEVEL = QUESTION_LEVEL;
 	totalScore: number;
@@ -55,12 +54,6 @@ export class ExamContentDialog extends BaseComponent {
 		this.selectors = [];
 		this.selectorGroups = {};
 		this.selectedNodes = {};
-		this.examStatus = _.map(EXAM_STATUS, (val, key) => {
-			return {
-				label: this.translateService.instant(val),
-				value: key
-			}
-		});
 		_.each(QUESTION_LEVEL, (val, key) => {
 			this.selectorGroups[key] = {};
 			this.selectorGroups[key]["number"] = 0;

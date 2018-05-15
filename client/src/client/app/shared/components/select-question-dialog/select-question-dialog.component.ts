@@ -23,15 +23,17 @@ export class SelectQuestionsDialog extends BaseComponent {
 	questions:Question[];
 	display: boolean;
 	QUESTION_TYPE =  QUESTION_TYPE;
+	treeUtils: TreeUtils;
 
 	private onSelectQuestionsReceiver: Subject<any> = new Subject();
     onSelectQuestions:Observable<any> =  this.onSelectQuestionsReceiver.asObservable();
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
 		this.display = false;
 		this.selectedQuestions = [];
 		this.questions = [];
+		this.treeUtils = new TreeUtils();
 	}
 
 	hide() {

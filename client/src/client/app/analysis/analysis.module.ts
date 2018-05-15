@@ -34,7 +34,7 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
         CourseActivityChartComponent
     ],
 	exports: [],
-	providers: [DatePipe, ReportUtils, TimeConvertPipe, StatsUtils]
+	providers: [DatePipe, TimeConvertPipe]
 })
 export class AnalysisModule {
 }
