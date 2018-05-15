@@ -131,13 +131,18 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	delete() {
-		if (this.selectedNode)
+		if (this.selectedNode) {
+			if (this.selectedNode.children.length) {
+				this.error('Cannot delete non-empty folder');
+				return;
+			}
             this.confirm('Are you sure to delete ?', () => {
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
                 })
              });
+		}
 	}
 
 	hide() {
