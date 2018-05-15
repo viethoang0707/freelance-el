@@ -102,7 +102,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	add(type:string) {
 		if (type!='folder' && (!this.selectedNode || this.selectedNode.data.type != 'folder')) {
-			this.error(this.translateService.instant('You need to select a folder.')) ;
+			this.error('You need to select a folder.') ;
 			return;
 		}
 		var maxOrder = this.selectedNode ? this.selectedNode.children.length : this.tree.length; 
@@ -131,22 +131,18 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	delete() {
-		if (this.selectedNode)
-            // this.confirm('Are you sure to delete?', () => {
-            //     this.selectedNode.data.delete(this).subscribe(() => {
-            //         this.buildCourseTree();
-            //         this.selectedNode = null;
-            //     })
-            //  });
-        this.confirmationService.confirm({
-            message: this.translateService.instant('Are you sure to delete?'),
-            accept: () => {
+		if (this.selectedNode) {
+			if (this.selectedNode.children.length) {
+				this.error('Cannot delete non-empty folder');
+				return;
+			}
+            this.confirm('Are you sure to delete ?', () => {
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
                 })
-            }
-        });
+             });
+		}
 	}
 
 	hide() {
@@ -207,7 +203,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	updateStatus() {
 		this.syl.save(this).subscribe(()=> {
-			this.success(this.translateService.instant('Syllabus status updated'));
+			this.success('Syllabus status updated');
 		});
 	}
 
