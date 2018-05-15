@@ -47,6 +47,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.exam = new Exam();
         this.member = new ExamMember();
         this.account = this.authService.CloudAcc;
+        this.submission = new Submission();
     }
 
     show(exam: Exam, member: ExamMember) {

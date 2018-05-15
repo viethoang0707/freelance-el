@@ -100,8 +100,12 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     viewAnswerSheet() {
-        if (this.selectedScoreRecord)
-            this.answerSheetDialog.show(this.exam, this.selectedScoreRecord.member);
+        if (this.selectedScoreRecord ) {
+            if (this.selectedScoreRecord.enroll_status !='completed')
+                this.info('Student has not completed the exam');
+            else
+                this.answerSheetDialog.show(this.exam, this.selectedScoreRecord);
+        }
     }
 
     loadAnswers() {
@@ -109,13 +113,11 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
                 this.scoreRecords = members;
                 _.each(members, (member: ExamMember)=> {
-                    // var record = member;
                     member.examScore(this, this.exam.id).subscribe(score=> {
                         member["score"] = score;
                         var grade = member.examGrade(grades, score);
                         if (grade)
-                                member["grade"] = grade.name;
-                            // this.scoreRecords.push(record);
+                            member["grade"] = grade.name;
                     });
                 });
             });
