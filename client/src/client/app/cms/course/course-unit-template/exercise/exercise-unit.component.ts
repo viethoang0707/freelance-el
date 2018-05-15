@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, QueryList, ViewChildren, ComponentFactoryResolver,ViewContainerRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
+import { Answer } from '../../../../shared/models/elearning/answer.model';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
 import { ExerciseQuestion } from '../../../../shared/models/elearning/exercise-question.model';
@@ -15,7 +16,6 @@ import { SelectQuestionsDialog } from '../../../../shared/components/select-ques
 import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
 import { IQuestion } from '../../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../../assessment/question/question-template/question.decorator';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	moduleId: module.id,
@@ -31,8 +31,6 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	selectedNode: TreeNode;
 	selectedQuestions: Question[];
 	questions:Question[];
-	public subscription : Subscription;
-
 	@Input() mode;
 	unit: CourseUnit;
 	exerciseQuestions: ExerciseQuestion[];
@@ -43,10 +41,13 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	qIndex:number;
 	currentQuestion: ExerciseQuestion;
 	treeUtils: TreeUtils;
+	currentAnswer: Answer;
+	componentRef: any;
 
 	constructor(private componentFactoryResolver:ComponentFactoryResolver) {
 		super();
 		this.exerciseQuestions = [];
+		this.currentAnswer = new Answer();
 		this.currentQuestion =  new ExerciseQuestion();
 		this.treeUtils = new TreeUtils();
 	}
@@ -117,7 +118,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	selectQuestion() {
 		this.questionDialog.show();
-		this.subscription = this.questionDialog.onSelectQuestions.subscribe(questions => {
+		this.questionDialog.onSelectQuestions.subscribe(questions => {
 			var subscriptions = [];
 			_.each(questions, (question:Question)=> {
 				var exerciseQuestion = new ExerciseQuestion();
@@ -125,31 +126,20 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				exerciseQuestion.question_id = question.id;
 				exerciseQuestion.type =  question.type;
 				exerciseQuestion.title =  question.title;
-				
 				subscriptions.push(exerciseQuestion.save(this));
-				this.subscription.unsubscribe();
 			});
 			Observable.zip(...subscriptions).subscribe(exerciseQuestions => {
 				this.loadExerciseQuestions();
 			});
 		});
 	}
+
 	loadExerciseQuestions() {
 		ExerciseQuestion.listByExercise(this, this.unit.id).subscribe(exerciseQuestions => {
 			this.exerciseQuestions =  exerciseQuestions;
 			});
 	}
 
-	// selectQuestion() {
-	// 	this.removeOldQuestions().subscribe(() => {
-	// 		this.questionDialog.show();
-	// 		this.questionDialog.onSelectQuestions.subscribe(questions => {
-	// 			this.createExerciseQuestionFromQuestionBank(questions).subscribe(examQuestions => {
-	// 				this.exerciseQuestions =  examQuestions;
-	// 			});
-	// 		});
-	// 	});
-	// }
 
 	createExerciseQuestionFromQuestionBank(questions: Question[]):Observable<any> {
 		if (this.unit.id) {
@@ -173,6 +163,8 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	answerQuestion() {
 		this.stage = 'answer';
+		if (this.componentRef)
+			(<IQuestion>this.componentRef.instance).mode = 'review';
 	}
 
 	prepareQuestion(question: ExerciseQuestion): Observable<any> {
@@ -189,9 +181,9 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			if (detailComponent) {
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 				viewContainerRef.clear();
-				var componentRef = viewContainerRef.createComponent(componentFactory);
-				(<IQuestion>componentRef.instance).mode = 'study';
-				(<IQuestion>componentRef.instance).render(question);
+				this.componentRef = viewContainerRef.createComponent(componentFactory);
+				(<IQuestion>this.componentRef.instance).mode = 'study';
+				(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
 			}
 		});
 
@@ -200,12 +192,18 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	next() {
 		if (this.qIndex < this.exerciseQuestions.length - 1) {
 			this.displayQuestion(this.qIndex + 1);
+			this.stage = 'question';
+			if (this.componentRef)
+				(<IQuestion>this.componentRef.instance).mode = 'study';
 		}
 	}
 
 	prev() {
 		if (this.qIndex > 0) {
 			this.displayQuestion(this.qIndex - 1);
+			this.stage = 'question';
+			if (this.componentRef)
+				(<IQuestion>this.componentRef.instance).mode = 'study';
 		}
 	}
 
@@ -216,7 +214,6 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
                     return question.delete(this);
                 });
                 Observable.forkJoin(...subscriptions).subscribe(()=> {
-                    // this.selectedQuestions = [];
 					if(this.exerciseQuestions.length > 1){
 						this.render(this.unit);
 					}

@@ -35,7 +35,7 @@ import {MessageModule} from 'primeng/message';
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,
     				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog],
-    exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog],
+    exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog, SubmissionDialog],
     providers: []
 })
 export class LMSModule {
