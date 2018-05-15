@@ -1,9 +1,11 @@
 <p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" width="1000" height="100%" [responsive]="true" [positionTop]="50">
   <div class="ui-g">
     <div class="ui-g-12 course-syllabus">
-      <p-selectButton [disabled]="!allowToChangeState" [options]="courseStatus" [(ngModel)]="syl.status" name="status" (onChange)="updateStatus()"></p-selectButton>
+      <div class="ui-fluid">
+        <p-selectButton [disabled]="!allowToChangeState" [options]="courseStatus" [(ngModel)]="syl.status" name="status" (onChange)="updateStatus()"></p-selectButton>
+      </div>
       <p-toolbar>
-        <div class="ui-toolbar-group-left">
+        <div class="ui-toolbar-group-left mt5">
           <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
           <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedNode"></button>
           <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedNode" label="{{'Delete'|translate}}"></button>
@@ -20,7 +22,7 @@
         <div class="card">
           <div class="image-box-content">
             <div>
-              <h3>{{selectedUnit.name}}</h3>
+              <h3 class="removeMT">{{selectedUnit.name}}</h3>
               <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]|translate}}</span>
             </div>
             <div class="image-box-footer">
