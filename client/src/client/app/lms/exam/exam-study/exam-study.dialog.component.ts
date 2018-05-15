@@ -212,7 +212,7 @@ export class ExamStudyDialog extends BaseComponent {
 				ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer);
 				this.currentAnswer = answer;
 				var validAnswers = _.filter(this.answers, (ans: any) => {
-					return ans.option_id != "" && ans.option_id != '0';
+					return ans.option_id;
 				});
 				if (this.examQuestions.length) {
 					this.validAnswer = validAnswers.length;
@@ -285,21 +285,19 @@ export class ExamStudyDialog extends BaseComponent {
 				.subscribe(() => {
 					this.timeLeft -= 1000;
 					if(this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
-					{
 						this.showWarn();
-					}
 					if (this.timeLeft <= 0)
 						this.finishExam();
 				});
 		}
 	}
 	showWarn() {
-        this.warn(this.translateService.instant('A little minutes remaining!'));
+        this.warn('A little minutes remaining!');
     }
 
     checkAnswer() {
 		var validQuestion = _.filter(this.answers, (ans: any) => {
-			return ans.option_id != "" && ans.option_id != '0';
+			return ans.option_id ;
 		});
 		this.examQuestions.forEach((ques: any) => {
 			validQuestion.forEach(answer => {
