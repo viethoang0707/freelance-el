@@ -1,7 +1,7 @@
 <p-dialog header="{{'Select question'|translate}}" [(visible)]="display" modal="true" width="800" height="100%" [responsive]="true" appendTo="body" [positionTop]="50">
   <div class="ui-g ui-fluid form-group">
     <div class="ui-g-4">
-      <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode" ></p-tree>
+      <p-tree [value]="tree" selectionMode="checkbox" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeSelect($event)" [(selection)]="selectedGroupNodes"></p-tree>
     </div>
     <div class="ui-g-8">
       <p-table  [value]="questions" [(selection)]="selectedQuestions" >

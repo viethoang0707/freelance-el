@@ -52,6 +52,7 @@ export class ExamStudyDialog extends BaseComponent {
 	height: number;
 	examCode: any;
 	validAnswer: number;
+	
 
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;

@@ -20,13 +20,14 @@ export class SelectQuestionsDialog extends BaseComponent {
 	tree: TreeNode[];
 	selectedNode: TreeNode;
 	selectedQuestions: Question[];
-	questions:Question[];
+	questions: Question[];
 	display: boolean;
-	QUESTION_TYPE =  QUESTION_TYPE;
+	QUESTION_TYPE = QUESTION_TYPE;
 	treeUtils: TreeUtils;
+	selectedGroupNodes: TreeNode[];
 
 	private onSelectQuestionsReceiver: Subject<any> = new Subject();
-    onSelectQuestions:Observable<any> =  this.onSelectQuestionsReceiver.asObservable();
+	onSelectQuestions: Observable<any> = this.onSelectQuestionsReceiver.asObservable();
 
 	constructor() {
 		super();
@@ -41,8 +42,12 @@ export class SelectQuestionsDialog extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
-		if (this.selectedNode) {
-			Question.listByGroup(this,this.selectedNode.data.id).subscribe(questions => {
+		if (this.selectedGroupNodes) {
+			var groupNodes = [];
+			this.selectedGroupNodes.forEach(node => {
+				groupNodes.push(node.data.id);
+			});
+			Question.listByGroups(this, groupNodes).subscribe(questions => {
 				this.questions = questions;
 			});
 		}

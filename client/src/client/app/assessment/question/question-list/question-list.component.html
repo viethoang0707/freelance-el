@@ -3,7 +3,7 @@
         <div class="ui-g">
             <div class="ui-g-12">
                 <label>{{'Question group'|translate}}</label>
-                <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="nodeSelect($event)"></p-tree>
+                <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (click)="selectQuestion(selectedGroupNodes)"></p-tree>
                 <!-- <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree> -->
             </div>
             <div class="ui-g-12">
@@ -46,7 +46,7 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">
-                        {{'Total records'|translate}} : {{totalRecords.value.length}}
+                        {{'Total records'|translate}} : {{questions.length}}
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                         <tr>

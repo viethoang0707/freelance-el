@@ -6,8 +6,7 @@
           <p-checkbox name="unit_complete" binary="true" label="{{'Complete unit by order user'|translate}}" [(ngModel)]="object.complete_unit_by_order"></p-checkbox>
           <button type="buton" pButton icon="ui-icon-change-history" label="{{object.prequisite_course_id?translateService.instant('Prequisite course') +':'+ object.prequisite_course_id__DESC__:translateService.instant('Select prequisite course')}}" (click)="selectCourse()" class="mt20 mb20"></button>
         </div>
-      </div>
-    </form>
+      </div>    
     <select-course-dialog></select-course-dialog>
   </p-scrollPanel>
   <p-footer>

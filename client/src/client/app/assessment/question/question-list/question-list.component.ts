@@ -38,6 +38,7 @@ export class QuestionListComponent extends BaseComponent {
         super();
         this.treeUtils = new TreeUtils();
         this.filterGroups = [];
+        this.questions = [];
     }
 
     ngOnInit() {
@@ -87,7 +88,7 @@ export class QuestionListComponent extends BaseComponent {
 
     loadQuestionsFilter(idgroup)
     {
-        console.log(idgroup);
+        // console.log(idgroup);
         Question.search(this, [],"[('group_id','=',["+idgroup+"])]").subscribe( questions =>{
             this.questions = questions;
         });
@@ -100,10 +101,16 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    nodeSelect($event){
-        console.log($event);
-        // console.log(this.selectedGroupNodes);
-        const groupId = this.selectedGroupNodes.map(item => item.data.id);
+    // nodeSelect($event){
+    //     console.log($event);
+    //     // console.log(this.selectedGroupNodes);
+    //     const groupId = this.selectedGroupNodes.map(item => item.data.id);
+    //     this.loadQuestionsFilter(groupId);
+    // }
+
+    selectQuestion(selectedGroupNodes)
+    {
+        const groupId = selectedGroupNodes.map(item => item.data.id);
         this.loadQuestionsFilter(groupId);
     }
 }
