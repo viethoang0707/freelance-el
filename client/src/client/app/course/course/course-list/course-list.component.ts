@@ -35,6 +35,7 @@ export class CourseListComponent extends BaseComponent {
     treeUtils: TreeUtils;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
+    courseFilter: Course[];
 
     constructor() {
         super();
@@ -81,8 +82,9 @@ export class CourseListComponent extends BaseComponent {
     loadCourses() {
         Course.all(this).subscribe(courses => {
             this.courses = courses;
-            this.displayCourses = courses;
-            this.displayCourses.sort((course1, course2): any => {
+            this.courseFilter = courses;
+            // this.displayCourses = courses;
+            this.courseFilter.sort((course1, course2): any => {
                 if (course1.id > course2.id)
                     return -1;
                 else if (course1.id < course2.id)
@@ -105,6 +107,20 @@ export class CourseListComponent extends BaseComponent {
                     })
                 });
             
+    }
+
+    selectCourse(selectedGroupNodes)
+    {
+        this.courseFilter = this.courses.filter(item => {
+            for(var i=0; i < selectedGroupNodes.length; i++)
+            {
+            if(selectedGroupNodes[i].data.id == item.group_id)
+            {
+                return true;
+            }
+            } 
+            return false;
+        });
     }
 
 }

@@ -3,7 +3,7 @@
   <div class="ui-g">
     <div class="ui-g-12">
       <label>{{'Course group'|translate}}</label>
-      <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes"></p-tree>
+      <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (click)="selectCourse(selectedGroupNodes)"></p-tree>
     </div>
     <div class="ui-g-12">
       <p-toolbar>
@@ -21,7 +21,7 @@
           </span>
         </div>
       </p-toolbar>
-      <p-table #totalRecords #courseTable [value]="displayCourses | groups:selectedGroupNodes" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
+      <p-table #totalRecords #courseTable [value]="courseFilter" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
         <ng-template pTemplate="header">
           <tr>
             <th [pSortableColumn]="'name'">
