@@ -10,10 +10,11 @@ export = () => {
   // Serve files from the coverage of this project
   browserSync.create().init({
     server: {
-      baseDir: './' + coverageFolder
+      baseDir: './' + coverageFolder,
     },
     port: Config.COVERAGE_PORT,
     files: watchedFiles,
-    logFileChanges: false
+    logFileChanges: false,
+    https: true
   });
 };
