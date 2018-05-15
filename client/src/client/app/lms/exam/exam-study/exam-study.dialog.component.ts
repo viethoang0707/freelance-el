@@ -52,7 +52,10 @@ export class ExamStudyDialog extends BaseComponent {
 	height: number;
 	examCode: any;
 	validAnswer: number;
-	
+	private onShowReceiver: Subject<any> = new Subject();
+    private onHideReceiver: Subject<any> = new Subject();
+    onShow: Observable<any> = this.onShowReceiver.asObservable();
+    onHide: Observable<any> = this.onHideReceiver.asObservable();
 
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -79,6 +82,7 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	show(exam: Exam, member: ExamMember) {
+		this.onShowReceiver.next();
 		this.display = true;
 		this.exam = exam;
 		this.member = member;
@@ -123,6 +127,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	hide() {
 		this.display = false;
+		this.onHideReceiver.next();
 	}
 
 	fetchAnswers(): Observable<any> {

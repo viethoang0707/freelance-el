@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild} from '@angular/core';
-import { Observable}     from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs/Rx';
 import { APIService } from '../../../shared/services/api.service';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { WebSocketService } from '../../../shared/services/socket.service';
@@ -40,6 +40,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 	allowToChangeState : boolean;
 	openTicket: Ticket;
 
+	private onShowReceiver: Subject<any> = new Subject();
+    private onHideReceiver: Subject<any> = new Subject();
+    onShow: Observable<any> = this.onShowReceiver.asObservable();
+    onHide: Observable<any> = this.onHideReceiver.asObservable();
+
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(CourseSyllabusSettingDialog) settingDialog: CourseSyllabusSettingDialog;
@@ -68,6 +73,7 @@ export class CourseSyllabusDialog extends BaseComponent {
     }
 
     show(syl: CourseSyllabus) {
+    	this.onShowReceiver.next();
 		this.display = true;
 		this.syl = syl;
 		this.buildCourseTree();		
@@ -147,6 +153,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	hide() {
 		this.display = false;
+		this.onHideReceiver.next();
 	}
 
 	moveUp() {

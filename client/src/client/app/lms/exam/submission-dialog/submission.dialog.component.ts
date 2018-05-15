@@ -30,9 +30,7 @@ export class SubmissionDialog extends BaseComponent {
     display: boolean;
     exam: Exam;
     submission: Submission;
-      trigger: Subject<void> = new Subject<void>();
-
-  
+    trigger: Subject<void> = new Subject<void>();
 
     private onConfirmReceiver: Subject<any> = new Subject();
     onConfirm: Observable<any> = this.onConfirmReceiver.asObservable();
@@ -43,6 +41,7 @@ export class SubmissionDialog extends BaseComponent {
         super();
         this.display = false;
         this.exam = new Exam();
+        this.submission =  new Submission();
     }
 
     show(exam: Exam, submission: Submission) {
@@ -66,7 +65,7 @@ export class SubmissionDialog extends BaseComponent {
 
    handleImage(webcamImage: WebcamImage): void {
     console.info('received webcam image', webcamImage);
-    this.submission.picture = webcamImage.imageAsDataUrl;
+    this.submission.picture = webcamImage.imageAsBase64;
     this.onConfirmReceiver.next();
     this.hide();
   }
