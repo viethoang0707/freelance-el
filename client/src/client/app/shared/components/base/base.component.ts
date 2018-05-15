@@ -32,19 +32,19 @@ export abstract class BaseComponent implements APIContext {
 	}
 
 	error(msg:string) {
-		this.messageService.add({ severity: 'error', summary: 'Error', detail: this.translateService.instant(msg) });
+		this.messageService.add({ severity: 'error', summary: this.translateService.instant('Error'), detail: this.translateService.instant(msg) });
 	}
 
 	info(msg:string) {
-		this.messageService.add({ severity: 'info', summary: 'Info', detail: this.translateService.instant(msg) });
+		this.messageService.add({ severity: 'info', summary: this.translateService.instant('Info'), detail: this.translateService.instant(msg) });
 	}
 
 	success(msg:string) {
-		this.messageService.add({ severity: 'success', summary: 'Success', detail: this.translateService.instant(msg) });
+		this.messageService.add({ severity: 'success', summary: this.translateService.instant('Success'), detail: this.translateService.instant(msg) });
 	}
 
 	warn(msg:string) {
-		this.messageService.add({ severity: 'warn', summary: 'Warn', detail: this.translateService.instant(msg) });
+		this.messageService.add({ severity: 'warn', summary: this.translateService.instant('Warn'), detail: this.translateService.instant(msg) });
 	}
 
 	confirm(prompt:string, callback:()=> any) {

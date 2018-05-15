@@ -15,7 +15,7 @@
         </div>
         <div class="ui-toolbar-group-right">
           <span class="md-inputfield search">
-              <input type="text" pInputText placeholder="Search" 
+              <input type="text" pInputText placeholder="{{'Search'|translate}}" 
               (input)="courseTable.filterGlobal($event.target.value, 'contains')">   
               <i class="fa fa-search"></i>      
           </span>
@@ -28,26 +28,26 @@
               {{'Name'|translate}}
               <p-sortIcon [field]="'name'"></p-sortIcon>
             </th>
-            <th style="width: 15%;" [pSortableColumn]="'code'">
+            <th style="width: 10%;" [pSortableColumn]="'code'">
               {{'Code'|translate}}
               <p-sortIcon [field]="'code'"></p-sortIcon>
             </th>
-            <th style="width: 30%;">
+            <th style="width: 20%;">
               {{'Summary'|translate}}
             </th>
-            <th style="width: 15%;" [pSortableColumn]="'mode'">
+            <th style="width: 12%;" [pSortableColumn]="'mode'">
               {{'Mode'|translate}}
               <p-sortIcon [field]="'mode'"></p-sortIcon>
             </th>
-            <th style="width: 15%;" [pSortableColumn]="'status'">
+            <th style="width: 10%;" [pSortableColumn]="'status'">
               {{'Status'|translate}}
               <p-sortIcon [field]="'status'"></p-sortIcon>
             </th>
-            <th style="width: 15%;" [pSortableColumn]="'supervisor_id__DESC__'">
+            <th [pSortableColumn]="'supervisor_id__DESC__'">
               {{'Created by'|translate}}
               <p-sortIcon [field]="'supervisor_id__DESC__'"></p-sortIcon>
             </th>
-            <th style="width: 15%;" [pSortableColumn]="'author_name'">
+            <th [pSortableColumn]="'author_name'">
               {{'Content editor'|translate}}
               <p-sortIcon [field]="'author_name'"></p-sortIcon>
             </th>

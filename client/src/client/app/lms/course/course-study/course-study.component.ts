@@ -222,17 +222,13 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 							CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
 						}
 						else
-							this.error('You have not completed previous unit');
+							this.error(this.translateService.instant('You have not completed previous unit'));
 					});
 				else {
 					this.openUnit(this.selectedUnit);
 					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
 				}
 			} 
-			else {
-				this.openUnit(this.selectedUnit);
-				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
-			}
 		}
 	}
 
