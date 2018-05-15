@@ -25,7 +25,7 @@ export class Conference extends BaseModel{
     status: string;
     name: string;
 
-    delete(context:APIContext):Observable<any> {
+    deleteConference(context:APIContext):Observable<any> {
         return Room.byRef(context,this.room_ref).flatMap(room => {
             if (!room)
                 return this.delete(context);
