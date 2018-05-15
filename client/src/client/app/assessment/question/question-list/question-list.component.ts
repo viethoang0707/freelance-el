@@ -32,6 +32,7 @@ export class QuestionListComponent extends BaseComponent {
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
     total: number;
+    questionsFilter: Question[];
     treeUtils: TreeUtils;
 
     constructor() {
@@ -83,6 +84,7 @@ export class QuestionListComponent extends BaseComponent {
     loadQuestions() {
         Question.all(this).subscribe(questions => {
             this.questions = questions;
+            this.questionsFilter = questions;
         });
     }
 
@@ -101,16 +103,17 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    // nodeSelect($event){
-    //     console.log($event);
-    //     // console.log(this.selectedGroupNodes);
-    //     const groupId = this.selectedGroupNodes.map(item => item.data.id);
-    //     this.loadQuestionsFilter(groupId);
-    // }
-
     selectQuestion(selectedGroupNodes)
     {
-        const groupId = selectedGroupNodes.map(item => item.data.id);
-        this.loadQuestionsFilter(groupId);
+        this.questionsFilter = this.questions.filter(item => {
+            for(var i=0; i < selectedGroupNodes.length; i++)
+            {
+            if(selectedGroupNodes[i].data.id == item.group_id)
+            {
+                return true;
+            }
+            } 
+            return false;
+        });
     }
 }
