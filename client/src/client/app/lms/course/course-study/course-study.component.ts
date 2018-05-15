@@ -229,6 +229,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
 				}
 			} 
+ 			else {
+ 				this.openUnit(this.selectedUnit);
+ 				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+			} 
 		}
 	}
 
