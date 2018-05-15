@@ -21,6 +21,6 @@
 <div *ngIf="mode=='preview'" style="height: 430px;">
   <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
 </div>
-<div *ngIf="mode=='study'">
+<div *ngIf="mode=='study'" style="height: 410px;">
   <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
 </div>
