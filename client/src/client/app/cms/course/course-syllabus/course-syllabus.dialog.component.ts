@@ -83,6 +83,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 		});
 	}
 
+	clearSelection() {
+		this.selectedNode =  null;
+		this.selectedUnit = null;
+	}
+
 	buildCourseTree() {
 		if (this.syl)
 			CourseUnit.listBySyllabus(this,this.syl.id).subscribe(units => {
@@ -163,8 +168,12 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	nodeSelect(event:any) {
 		if (this.selectedNode) {
-			this.selectedUnit =  this.selectedNode.data;
-		}
+			if (this.selectedUnit && this.selectedUnit.id == this.selectedNode.data.id) {
+				this.clearSelection();
+			} 
+			else
+				this.selectedUnit =  this.selectedNode.data;
+		} 
 	}
 
 	previewUnit() {
