@@ -27,9 +27,11 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	componentRef: any;
+	treeUtils: TreeUtils;
 
-	constructor(private treeUtils: TreeUtils, private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor( private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
+		this.treeUtils = new TreeUtils();
 	}
 
 	ngOnInit() {

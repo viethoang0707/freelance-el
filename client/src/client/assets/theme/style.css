@@ -309,3 +309,23 @@ body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
 .course-study .ui-tree{
   width: 100%;
 }
+
+.ui-scrollpanel-content{
+  width: 100%;
+}
+
+.course-study .ng2-pdf-viewer-container{
+  height: 410px;
+}
+
+body .ui-fieldset.f-print{
+  border: none;
+  padding: 0;
+  margin-top: -10px;
+}
+
+body .ui-fieldset.f-print .ui-fieldset-legend{
+  border: none;
+  margin: 0;
+  padding: 0;
+}

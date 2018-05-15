@@ -16,10 +16,12 @@ import { TreeNode } from 'primeng/api';
 export class GroupDialog extends BaseDialog<Group> implements OnInit {
 
 	tree: TreeNode[];
+	treeUtils: TreeUtils;
     selectedNode: TreeNode;
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
+		this.treeUtils = new TreeUtils();
 	}
 
 	nodeSelect(event:any) {

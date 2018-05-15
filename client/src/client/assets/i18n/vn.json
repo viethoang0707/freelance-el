@@ -105,7 +105,7 @@
 	"Teacher": "Giáo viên",
 	"Teachers": "Giáo viên",
 	"Confirmation": "Xác nhận",
-	"Are you sure to delete ?": "Bạn có chắc chắn xóa không?",
+	"Are you sure to delete?": "Bạn có chắc chắn xóa không?",
 	"Exam enrollment": "Kỳ thi tuyển sinh",
 	"Course enrollment": "Tuyển sinh khóa học",
 	"Title": "Tiêu đề",
@@ -323,6 +323,19 @@
 	"Study": "Học",
 	"Complete": "Hoàn thành",
 	"Take picture on submit": "Chụp ảnh",
-	"Exam manage": "Quản lý kì thi"
+	"Exam manage": "Quản lý kì thi",
+	"Created by": "Người tạo",
+	"Content editor": "Tác giả",
+	"Search": "Tìm kiếm",
+	"Managed group": "Nhóm quản lý",
+	"A little minutes remaining!": "Còn 1 phút nữa!",
+	"Syllabus status updated": "Đã cập nhật trạng thái giáo trình",
+	"You need to select a folder.": "Bạn cần chọn 1 thư mục.",
+	"Error": "Lỗi",
+	"Info": "Thông tin",
+	"Success": "Thành công",
+	"Warn": "Cảnh báo",
+	"Subject": "Môn học",
+	"Degree": "Trình độ"
 
 }

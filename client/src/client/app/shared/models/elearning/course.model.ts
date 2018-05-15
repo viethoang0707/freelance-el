@@ -23,14 +23,15 @@ export class Course extends BaseModel{
         this.author_name = undefined;
         this.syllabus_id = undefined;
         this.group_id__DESC__ = undefined;
-        this.prequisite_course_id = undefined;
-        this.prequisite_course_id__DESC__ = undefined;
-        this.complete_unit_by_order = undefined;
+        this.supervisor_id =  undefined;
+        this.supervisor_name = undefined;
 	}
 
     name:string;
     syllabus_id:number;
     group_id:number;
+    supervisor_id: number;
+    supervisor_name: string;
     group_id__DESC__: string;
     author_name:string;
     author_id:number;
@@ -40,9 +41,7 @@ export class Course extends BaseModel{
     status: string;
     mode: string;
     logo: string;
-    prequisite_course_id:number;
-    prequisite_course_id__DESC__:string;
-    complete_unit_by_order: boolean;
+    
 
     static listByAuthor(context:APIContext, authorId):Observable<any> {
         return Course.search(context,[], "[('author_id','=',"+authorId+")]");

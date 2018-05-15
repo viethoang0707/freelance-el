@@ -26,12 +26,14 @@ export class UserProfileDialog extends BaseDialog<User> {
     tree: TreeNode[];
     selectedNode: TreeNode;
     members: CourseMember[];
+    treeUtils: TreeUtils;
     COURSE_MEMBER_ENROLL_STATUS =  COURSE_MEMBER_ENROLL_STATUS;
 
     @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
+		this.treeUtils = new TreeUtils();
 		this.members = [];
 	}
 

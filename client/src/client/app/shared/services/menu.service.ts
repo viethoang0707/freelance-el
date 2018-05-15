@@ -51,7 +51,6 @@ export class MenuService {
                         { label: 'User', routerLink: ['/account/users'],code:'ACCOUNT-USER' },
                         { label: 'Group', routerLink: ['/account/groups'],code:'ACCOUNT-USER_GROUP' },
                         { label: 'Permission', routerLink: ['/account/permissions'],code:'ACCOUNT-PERMISSION' },
-                        { label: 'Workflow', routerLink: ['/account/workflow'],code:'ACCOUNT-WORKFLOW' }
                     ]
                 }
             ];

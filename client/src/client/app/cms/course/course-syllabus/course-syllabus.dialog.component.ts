@@ -2,18 +2,20 @@ import { Component, OnInit, Input, ViewChild} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
+import { WebSocketService } from '../../../shared/services/socket.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus }  from '../../../shared/models/elearning/course-syllabus.model';
-import { TreeNode, MenuItem } from 'primeng/api';
-import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON } from '../../../shared/models/constants';
+import { TreeNode, MenuItem, SelectItem } from 'primeng/api';
+import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, COURSE_STATUS } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { CourseSettingDialog } from '../course-setting/course-setting.dialog.component';
+import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-setting.dialog.component';
 import * as _ from 'underscore';
+import { Ticket } from '../../../shared/models/ticket/ticket.model';
 
 @Component({
     moduleId: module.id,
@@ -30,14 +32,21 @@ export class CourseSyllabusDialog extends BaseComponent {
 	items: MenuItem[];
 	units: CourseUnit[];
 	selectedUnit:CourseUnit;
+	sylUtils : SyllabusUtils;
+	course: Course;
+	user: User;
+	courseStatus: SelectItem[];
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
+	allowToChangeState : boolean;
+	openTicket: Ticket;
 
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-	@ViewChild(CourseSettingDialog) settingDialog: CourseSettingDialog;
+	@ViewChild(CourseSyllabusSettingDialog) settingDialog: CourseSyllabusSettingDialog;
 
-    constructor(private sylUtils : SyllabusUtils ) {
+    constructor(private socketService:WebSocketService) {
         super();
+        this.sylUtils = new SyllabusUtils();
         this.items = [
             {label: this.translateService.instant(COURSE_UNIT_TYPE['folder']), command: ()=> { this.add('folder')}},
             {label: this.translateService.instant(COURSE_UNIT_TYPE['html']), command: ()=> { this.add('html')}},
@@ -48,12 +57,35 @@ export class CourseSyllabusDialog extends BaseComponent {
 
         ];
         this.syl = new CourseSyllabus();
+        this.course = new Course();
+        this.courseStatus = _.map(COURSE_STATUS, (val, key)=> {
+			return {
+				label: this.translateService.instant(val),
+				value: key
+			}
+		});
+		this.user = this.authService.UserProfile;
     }
 
     show(syl: CourseSyllabus) {
 		this.display = true;
 		this.syl = syl;
 		this.buildCourseTree();		
+		Course.get(this, this.syl.course_id).subscribe(course => {
+			this.course = course;
+			this.dataAccessService.filter(course, 'SAVE').subscribe(success=> {
+				this.allowToChangeState = !this.course.supervisor_id || 
+				this.user.IsSuperAdmin ;
+			});
+		});
+		Ticket.byWorkflowObject(this, syl.id, CourseSyllabus.Model).subscribe((ticket)=> {
+				this.openTicket =  ticket;
+		});
+	}
+
+	clearSelection() {
+		this.selectedNode =  null;
+		this.selectedUnit = null;
 	}
 
 	buildCourseTree() {
@@ -65,14 +97,12 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	showSetting() {
-		Course.get(this, this.syl.course_id).subscribe(course=> {
-			this.settingDialog.show(course);
-		});
+		this.settingDialog.show(this.syl);
 	}
 
 	add(type:string) {
 		if (type!='folder' && (!this.selectedNode || this.selectedNode.data.type != 'folder')) {
-			this.error('You need to select a folder.') ;
+			this.error(this.translateService.instant('You need to select a folder.')) ;
 			return;
 		}
 		var maxOrder = this.selectedNode ? this.selectedNode.children.length : this.tree.length; 
@@ -102,12 +132,21 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	delete() {
 		if (this.selectedNode)
-            this.confirm('Are you sure to delete ?', () => {
+            // this.confirm('Are you sure to delete?', () => {
+            //     this.selectedNode.data.delete(this).subscribe(() => {
+            //         this.buildCourseTree();
+            //         this.selectedNode = null;
+            //     })
+            //  });
+        this.confirmationService.confirm({
+            message: this.translateService.instant('Are you sure to delete?'),
+            accept: () => {
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
                 })
-             });
+            }
+        });
 	}
 
 	hide() {
@@ -138,14 +177,38 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	nodeSelect(event:any) {
 		if (this.selectedNode) {
-			this.selectedUnit =  this.selectedNode.data;
-		}
+			if (this.selectedUnit && this.selectedUnit.id == this.selectedNode.data.id) {
+				this.clearSelection();
+			} 
+			else
+				this.selectedUnit =  this.selectedNode.data;
+		} 
 	}
 
 	previewUnit() {
 		if (this.selectedNode) {
 			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
+	}
+
+	submitForReview() {
+		var ticket = new Ticket();
+		ticket.res_id =  this.syl.id;
+		ticket.res_model =  CourseSyllabus.Model;
+		ticket.content = `Course syllabus ${this.syl.name} is request to be published`;
+		ticket.date_open =  new Date();
+		ticket.submit_user_id =  this.user.id;
+		ticket.approve_user_id = this.course.supervisor_id;
+		ticket.title = 'Course syllabus published request';
+		ticket.save(this).subscribe(()=> {
+			this.socketService.notify(ticket.title, this.course.supervisor_id,this.authService.CloudAcc.id);
+		});
+	}
+
+	updateStatus() {
+		this.syl.save(this).subscribe(()=> {
+			this.success(this.translateService.instant('Syllabus status updated'));
+		});
 	}
 
 }

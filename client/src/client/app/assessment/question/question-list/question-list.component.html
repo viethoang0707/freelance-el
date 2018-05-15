@@ -18,6 +18,7 @@
                     </div>
                 </p-toolbar>
                 <p-table #totalRecords #questionTable [value]="questionsFilter " [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedQuestion" [responsive]="true">
+                
                     <ng-template pTemplate="header">
                         <tr>
                             <th width="3%">#</th>
@@ -46,6 +47,8 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">
+                        
+                        {{'Total records'|translate}} : {{questions.length}}
 
                     </ng-template>
                     <ng-template pTemplate="emptymessage">

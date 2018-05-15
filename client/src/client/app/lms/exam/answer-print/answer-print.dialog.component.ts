@@ -47,6 +47,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.exam = new Exam();
         this.member = new ExamMember();
         this.account = this.authService.CloudAcc;
+        this.submission = new Submission();
     }
 
     show(exam: Exam, member: ExamMember) {
@@ -91,7 +92,8 @@ export class AnswerPrintDialog extends BaseComponent {
                     var componentHostArr =  this.questionsComponents.toArray();
                         for (var i =0;i<examQuestions.length;i++) {
                             var examQuestion =  examQuestions[i];
-                            var componentHost = componentHostArr[i+1];
+                            var componentHost = componentHostArr[i];
+                            console.log(i,componentHost);
                             this.displayQuestion(examQuestion,componentHost);
                         }
                     }, 0); 

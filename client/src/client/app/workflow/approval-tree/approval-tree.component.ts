@@ -25,9 +25,11 @@ export class ApprovalTreeComponent extends BaseComponent {
     tree: TreeNode[];    
     selectedNode: TreeNode;
     selectedUser:User;
+    treeutils: TreeUtils;
 
-    constructor(private treeutils: TreeUtils) {
+    constructor() {
         super();
+        this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
@@ -48,7 +50,6 @@ export class ApprovalTreeComponent extends BaseComponent {
     buildTree() {
         User.allAdmin(this).subscribe(users => {
            this.tree = this.treeutils.buildApprovalTree(users);
-           console.log(this.tree);
            this.selectedUser =  null;
        });
     }

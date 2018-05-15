@@ -33,10 +33,13 @@ export class QuestionListComponent extends BaseComponent {
     QUESTION_TYPE = QUESTION_TYPE;
     total: number;
     questionsFilter: Question[];
+    treeUtils: TreeUtils;
 
-    constructor(private treeUtils: TreeUtils) {
+    constructor() {
         super();
+        this.treeUtils = new TreeUtils();
         this.filterGroups = [];
+        this.questions = [];
     }
 
     ngOnInit() {
@@ -82,6 +85,14 @@ export class QuestionListComponent extends BaseComponent {
         Question.all(this).subscribe(questions => {
             this.questions = questions;
             this.questionsFilter = questions;
+        });
+    }
+
+    loadQuestionsFilter(idgroup)
+    {
+        // console.log(idgroup);
+        Question.search(this, [],"[('group_id','=',["+idgroup+"])]").subscribe( questions =>{
+            this.questions = questions;
         });
     }
 

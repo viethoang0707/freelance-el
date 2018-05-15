@@ -20,9 +20,11 @@ export class UserDialog extends BaseDialog<User> {
 
     tree: TreeNode[];
     selectedNode: TreeNode;
+    treeUtils: TreeUtils;
 
-	constructor(private treeUtils: TreeUtils) {
+	constructor() {
 		super();
+		this.treeUtils = new TreeUtils();
 	}
 
 	nodeSelect(event:any) {

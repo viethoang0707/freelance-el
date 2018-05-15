@@ -156,17 +156,38 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    studyCourse(course: Course,member: CourseMember ) {
-        if (course.status == 'published')
-            this.router.navigate(['/lms/courses/study', course.id, member.id]);
+    studyCourse( course:Course,member: CourseMember) {
+        if ( course.status =='published') {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+                if (syl && syl.status == 'published')
+                    this.router.navigate(['/lms/courses/study',course.id, member.id]);
+                else
+                    this.error('The course has not been published');
+            });
+        }
+        else {
+            this.error('The course has not been published');
+        }
     }
 
-    manageCourse(member: CourseMember, course: Course) {
-        this.router.navigate(['/lms/courses/manage', course.id, member.id]);
+    manageCourse( course: Course,member: CourseMember) {
+        if ( course.status =='published') {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+                if (syl && syl.status == 'published')
+                    this.router.navigate(['/lms/courses/manage',course.id, member.id]);
+                else
+                    this.error('The course has not been published');
+            });
+        }
+        else {
+            this.error('The course has not been published');
+        }
+        
     }
 
     manageExam(exam: Exam, member: ExamMember) {
-        this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
+        if ( exam.status =='published') 
+            this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
     }
 
     editContent(exam: Exam) {
@@ -174,11 +195,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
-        this.confirmationService.confirm({
-            message: this.translateService.instant('Are you sure to start?'),
-            accept: () => {
+        if ( exam.status =='published') 
+            this.confirm('Are you sure to start ?', () => {
                 this.examStudyDialog.show(exam, member);
-            }
-        });
+            });
     }
 }

@@ -13,10 +13,18 @@ export class CourseSyllabus extends BaseModel{
 		
 		this.name = undefined;
 		this.course_id = undefined;
-	}
+        this.prequisite_course_id = undefined;
+        this.prequisite_course_id__DESC__ = undefined;
+        this.complete_unit_by_order = undefined;
+        this.status = undefined;
+	}    
 
     name:string;
+    status:string;
     course_id: number;
+    prequisite_course_id:number;
+    prequisite_course_id__DESC__:string;
+    complete_unit_by_order: boolean;
 
     static byCourse(context:APIContext, courseId: number):Observable<any> {
         return CourseSyllabus.search(context,[],"[('course_id','=',"+courseId+")]")

@@ -3,7 +3,6 @@ import { CourseUnit } from '../models/elearning/course-unit.model';
 import * as _ from 'underscore';
 import { Injectable } from '@angular/core';
 
-@Injectable()
 export class SyllabusUtils {
 
   constructor() {

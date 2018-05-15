@@ -51,8 +51,8 @@ export class ExamStudyDialog extends BaseComponent {
 	stats: any;
 	height: number;
 	examCode: any;
-	msgs: Message[] = [];
 	validAnswer: number;
+	
 
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -289,8 +289,7 @@ export class ExamStudyDialog extends BaseComponent {
 		}
 	}
 	showWarn() {
-        this.msgs = [];
-        this.msgs.push({severity:'warn', summary:'Warn Message', detail:' A little minutes remaining!'});
+        this.warn(this.translateService.instant('A little minutes remaining!'));
     }
 
     checkAnswer() {
