@@ -137,6 +137,12 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 		}
 	}
 
+	unloadCurrentUnit() {
+		let viewContainerRef = this.unitHost.viewContainerRef;
+		if (viewContainerRef)
+			viewContainerRef.clear();
+	}
+
 	prevUnit() {
 		if (this.selectedUnit)  {
 			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
@@ -144,9 +150,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, prevUnit.id);
 				this.selectedUnit =  this.selectedNode.data;
 				this.studyMode = false;
-				let viewContainerRef = this.unitHost.viewContainerRef;
-				if (viewContainerRef)
-					viewContainerRef.clear();
+				this.unloadCurrentUnit();
 			});
 		} 
 	}
@@ -158,9 +162,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, nextUnit.id);
 				this.selectedUnit =  this.selectedNode.data;
 				this.studyMode = false;
-				let viewContainerRef = this.unitHost.viewContainerRef;
-				if (viewContainerRef)
-					viewContainerRef.clear();
+				this.unloadCurrentUnit();
 			});
 		} 
 	}
@@ -170,9 +172,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
 				this.selectedUnit["completed"] = true;
 				this.studyMode = false;
-				let viewContainerRef = this.unitHost.viewContainerRef;
-				if (viewContainerRef)
-					viewContainerRef.clear();
+				this.unloadCurrentUnit();
 			});
 		} 
 	}
@@ -228,6 +228,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 					this.openUnit(this.selectedUnit);
 					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
 				}
+			} 
+ 			else {
+ 				this.openUnit(this.selectedUnit);
+ 				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
 			} 
 		}
 	}

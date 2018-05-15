@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -44,8 +44,13 @@ export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 			}
 
 		});
-	}
 
+		this.onHide.subscribe(()=> {
+			let viewContainerRef = this.unitHost.viewContainerRef;
+			if (viewContainerRef)
+				viewContainerRef.clear();
+		});
+	}
 
 }
 
