@@ -84,7 +84,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     delete() {
         if (this.selectedClass)
         this.confirm('Are you sure to delete ?', () => {
-            this.selectedClass.delete(this).subscribe(() => {
+            this.selectedClass.deleteClass(this).subscribe(() => {
                 this.loadClasses();
             })
         });

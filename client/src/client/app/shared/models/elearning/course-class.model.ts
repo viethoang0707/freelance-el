@@ -35,12 +35,12 @@ export class CourseClass extends BaseModel{
         return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
     }
 
-    delete(context:APIContext):Observable<any> {
+    deleteClass(context:APIContext):Observable<any> {
         return Conference.byClass(context,this.id).flatMap(conference => {
             if (!conference)
                 return this.delete(context);
             else {
-                return Observable.zip(this.delete(context), conference.delete(context))
+                return Observable.zip(this.delete(context), conference.deleteConference(context))
             }
         });
     }
