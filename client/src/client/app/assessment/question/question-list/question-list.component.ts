@@ -38,6 +38,7 @@ export class QuestionListComponent extends BaseComponent {
         super();
         this.treeUtils = new TreeUtils();
         this.filterGroups = [];
+        this.questions = [];
     }
 
     ngOnInit() {
