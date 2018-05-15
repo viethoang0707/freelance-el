@@ -139,29 +139,41 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 
 	prevUnit() {
 		if (this.selectedUnit)  {
-			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
-			var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
-			this.selectedNode =  this.sylUtils.findTreeNode(this.tree, prevUnit.id);
-			this.selectedUnit =  this.selectedNode.data;
-			this.studyMode = false;
+			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
+				var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
+				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, prevUnit.id);
+				this.selectedUnit =  this.selectedNode.data;
+				this.studyMode = false;
+				let viewContainerRef = this.unitHost.viewContainerRef;
+				if (viewContainerRef)
+					viewContainerRef.clear();
+			});
 		} 
 	}
 
 	nextUnit() {
 		if (this.selectedUnit)  {
-			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
-			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
-			this.selectedNode =  this.sylUtils.findTreeNode(this.tree, nextUnit.id);
-			this.selectedUnit =  this.selectedNode.data;
-			this.studyMode = false;
+			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
+				var nextUnit = this.computedNextUnit(this.selectedUnit.id);
+				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, nextUnit.id);
+				this.selectedUnit =  this.selectedNode.data;
+				this.studyMode = false;
+				let viewContainerRef = this.unitHost.viewContainerRef;
+				if (viewContainerRef)
+					viewContainerRef.clear();
+			});
 		} 
 	}
 
 	completeUnit() {
 		if (this.selectedUnit)  {
-			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
-			this.selectedUnit["completed"] = true;
-			this.studyMode = false;
+			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
+				this.selectedUnit["completed"] = true;
+				this.studyMode = false;
+				let viewContainerRef = this.unitHost.viewContainerRef;
+				if (viewContainerRef)
+					viewContainerRef.clear();
+			});
 		} 
 	}
 
