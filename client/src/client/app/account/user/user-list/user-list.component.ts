@@ -48,7 +48,7 @@ export class UserListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listByCategory(this,GROUP_CATEGORY.USER).subscribe(groups => {
+        Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         });
         this.loadUsers();
@@ -73,18 +73,18 @@ export class UserListComponent extends BaseComponent {
     activate() {
         if (this.selectedUser) {
             this.selectedUser.banned = false;
-            this.selectedUser.save(this).subscribe(()=> {}, ()=> {
+            this.selectedUser.save(this).subscribe(() => { }, () => {
                 this.error('Permission denied');
-            });    
+            });
         }
     }
 
     deactivate() {
         if (this.selectedUser) {
             this.selectedUser.banned = true;
-            this.selectedUser.save(this).subscribe(()=> {}, ()=> {
+            this.selectedUser.save(this).subscribe(() => { }, () => {
                 this.error('Permission denied');
-            });    
+            });
         }
     }
 
@@ -94,7 +94,7 @@ export class UserListComponent extends BaseComponent {
 
     import() {
         this.userImportDialog.show();
-        this.userImportDialog.onImportComplete.subscribe(()=> {
+        this.userImportDialog.onImportComplete.subscribe(() => {
             this.loadUsers();
         });
     }
@@ -106,19 +106,23 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    selectUser(selectedGroupNodes)
-    {
+    selectUser(selectedGroupNodes) {
         this.userFilter = this.users.filter(item => {
-            for(var i=0; i < selectedGroupNodes.length; i++)
-            {
-            if(selectedGroupNodes[i].data.id == item.group_id)
-            {
-                return true;
+            for (var i = 0; i < selectedGroupNodes.length; i++) {
+                if (selectedGroupNodes[i].data.id == item.group_id) {
+                    return true;
+                }
             }
-            } 
             return false;
         });
     }
 
-
+    nodeSelect(event: any) {
+        if (this.selectedGroupNodes.length != 0) {
+            this.selectUser(this.selectedGroupNodes);
+            console.log(1);
+        } else {
+            this.loadUsers();
+        }
+    }
 }

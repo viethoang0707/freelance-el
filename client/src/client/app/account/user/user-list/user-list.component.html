@@ -3,7 +3,7 @@
     <div class="ui-g">
         <div class="ui-g-12">
             <label>{{'Organization'|translate}}</label>
-            <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (click)="selectUser(selectedGroupNodes)" styleClass="maxH200"></p-tree>
+            <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (click)="selectUser(selectedGroupNodes)" (onNodeUnselect)="nodeSelect($event)" styleClass="maxH200"></p-tree>
         </div>
         <div class="ui-g-12">
             <p-toolbar>
