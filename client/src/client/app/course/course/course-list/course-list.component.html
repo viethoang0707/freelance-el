@@ -42,9 +42,9 @@
               {{'Status'|translate}}
               <p-sortIcon [field]="'status'"></p-sortIcon>
             </th>
-            <th [pSortableColumn]="'supervisor_id__DESC__'">
+            <th [pSortableColumn]="'supervisor_name'">
               {{'Created by'|translate}}
-              <p-sortIcon [field]="'supervisor_id__DESC__'"></p-sortIcon>
+              <p-sortIcon [field]="'supervisor_name'"></p-sortIcon>
             </th>
             <th [pSortableColumn]="'author_name'">
               {{'Content editor'|translate}}
@@ -60,7 +60,7 @@
             <td class="showformb c-summary" style="text-align: left;">{{course.summary}}</td>
             <td class="showformb">{{COURSE_MODE[course.mode] | translate}}</td>
             <td class="showformb">{{COURSE_STATUS[course.status] | translate}}</td>
-            <td class="showformb">{{course.supervisor_id__DESC__}}</td>
+            <td class="showformb">{{course.supervisor_name}}</td>
             <td class="showformb">{{course.author_name}}</td>
           </tr>
         </ng-template>
