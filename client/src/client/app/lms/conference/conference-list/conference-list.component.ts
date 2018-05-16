@@ -31,6 +31,9 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
     	ConferenceMember.listByUser(this, this.authService.UserProfile.id)
     	.subscribe(members => {
+            members =  _.filter(members, (member=> {
+                return member.conference_id
+            }));
     		this.members = members;
     		_.each(members, (member)=> {
     			member.conference = new Conference();

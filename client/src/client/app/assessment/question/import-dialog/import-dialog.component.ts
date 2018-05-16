@@ -22,12 +22,12 @@ export class QuestionImportDialog extends BaseComponent {
 	display: boolean;
 	fileName: string;
 	records: any[];
-	percentage: number ;
-	completed:number;
+	percentage: number;
+	completed: number;
 	total: number;
 
 	private onImportCompleteReceiver: Subject<any> = new Subject();
-    onImportComplete:Observable<any> =  this.onImportCompleteReceiver.asObservable();
+	onImportComplete: Observable<any> = this.onImportCompleteReceiver.asObservable();
 
 	constructor(private excelService: ExcelService) {
 		super();
@@ -49,46 +49,48 @@ export class QuestionImportDialog extends BaseComponent {
 	import() {
 		var subscriptions = [];
 		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
-			for (var i=0; i < this.records.length;) {
+			for (var i = 0; i < this.records.length;) {
 				var record = this.records[i];
 				var question = new Question();
 				Object.assign(question, record);
-				var group = _.find(groups, (obj:Group)=> {
+				var group = _.find(groups, (obj: Group) => {
 					return obj.code == record["group_code"];
 				});
-				var type = 'record["type"]';
+				var type = record["type"];
 				if (group && type) {
 					question.group_id = group.id;
 					question.type = type;
 					var options = [];
 					var optionLength = 1;
-					while (i + optionLength < this.records.length && !this.records[i + optionLength]["group_code"])
+					while (i + optionLength < this.records.length && !this.records[i + optionLength]["group_code"]) {
 						optionLength++;
-					if ((type =="sc" || type =="mc") && optionLength) {
-						for (var j=0;j< optionLength && i < this.records.length;j++) {
-							var optionRecord = this.records[j+i];
-							var option = new QuestionOption();
-							option.is_correct = optionRecord["correct"] == 'Y';
-							option.content = optionRecord["option"];
-							options.push(option);
+						if ((type == "sc" || type == "mc") && optionLength) {
+							for (var j = 0; j < optionLength && i < this.records.length; j++) {
+								var optionRecord = this.records[j + i];
+								var option = new QuestionOption();
+								option.is_correct = optionRecord["correct"] == 'Y';
+								option.content = optionRecord["option"];
+								options.push(option);
+							}
+							options = _.shuffle(options);
+							var subscription = question.createWithOption(this, options);
+							subscriptions.push(subscription);
+						} else {
+							i += optionLength;
 						}
-						options = _.shuffle(options);
-						var subscription =  question.createWithOption(this,options);
-						subscriptions.push(subscription);
-					} 
-					i += optionLength ;
+					}
 				} else
 					i++;
 			}
 			Observable.merge(...subscriptions).subscribe(
-				()=> {
+				() => {
 					this.completed++;
-					this.percentage = Math.floor(this.completed /  this.total *100);
+					this.percentage = Math.floor(this.completed / this.total * 100);
 				},
-				(error)=> {
+				(error) => {
 					console.log(error);
 				},
-				()=> {
+				() => {
 					this.onImportCompleteReceiver.next();
 					this.hide();
 				});
@@ -101,6 +103,7 @@ export class QuestionImportDialog extends BaseComponent {
 		this.excelService.importFromExcelFile(file).subscribe(data => {
 			this.records = data;
 			this.total = this.records.length;
+			console.log(this.records);
 		})
 	}
 

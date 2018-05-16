@@ -78,6 +78,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                 this.markRecords = [];
                 _.each(members, (member:ExamMember)=> {
                     Submission.byMember(this,member.id).subscribe((submit:Submission) => {
+                        console.log(submit);
                         if (submit)
                             Answer.listBySubmit(this, submit.id).subscribe(answers => {
                                 answers = _.filter(answers, (obj:Answer)=> {

@@ -114,6 +114,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     loadConference() {
         ConferenceMember.listByUser(this, this.authService.UserProfile.id)
             .subscribe(members => {
+                members =  _.filter(members, (member=> {
+                    return member.conference_id
+                }));
                 this.confMembers = members;
                 _.each(members, (member) => {
                     member.conference = new Conference();
