@@ -25,6 +25,6 @@
   </pdf-viewer>
 </div>
 <div *ngIf="mode=='study'">
-   <pdf-viewer [stick-to-page]="true" [fit-to-page]="true" [src]="lecture.slide_url" [show-all]="true" [render-text]="true" style="display: block">
+   <pdf-viewer [stick-to-page]="true" [fit-to-page]="true" [src]="lecture.slide_url" [show-all]="true" [render-text]="true" style="display: block; height: 410px; overflow: auto;">
   </pdf-viewer> 
 </div>

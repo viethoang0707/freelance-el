@@ -5,6 +5,7 @@ import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
@@ -96,18 +97,21 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			});
 			Observable.zip(...subscriptions).subscribe((members) => {
 				this.processing = false;
-				if (this.course.prequisite_course_id) 
+				CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
+					if (syl && syl.prequisite_course_id) 
 					_.each(members, ((member:any)=> {
-						CourseMember.checkCourseEnrollCondition(this,member.user_id, this.course.prequisite_course_id).subscribe(success=> {
+						CourseMember.checkCourseEnrollCondition(this,member.user_id, syl.prequisite_course_id).subscribe(success=> {
 							if (!success) {
 								member.status = 'suspend';
 								member.save(this).subscribe();
 							}
 						});
 					}));
-				else {
-					this.loadMembers();
-				}
+					else {
+						this.loadMembers();
+					}
+				})
+				
 			});
 		});
 	}

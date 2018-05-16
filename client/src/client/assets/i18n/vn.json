@@ -336,6 +336,9 @@
 	"Success": "Thành công",
 	"Warn": "Cảnh báo",
 	"Subject": "Môn học",
-	"Degree": "Trình độ"
+	"Degree": "Trình độ",
+	"If you cannot see the SCORM unit, please ": "Nếu bạn không thấy bài giảng SCORM, vui lòng ",
+	"click here": "bấm vào đây",
+	"Live conference": "Lớp học trực tuyến"
 
 }

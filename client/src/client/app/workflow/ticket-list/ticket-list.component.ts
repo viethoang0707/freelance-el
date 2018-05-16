@@ -22,86 +22,11 @@ export class TicketListComponent extends BaseComponent {
     exams: Exam[];
     events: any[];
     header: any;
-    EXAM_STATUS = EXAM_STATUS;
 
-    constructor() {
-        super();
-        this.header = {
-            left: 'prev, today, next',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        };
-    }
-
-    enroll() {
-        if (this.selectedExam)
-            this.examEnrollDialog.enroll(this.selectedExam);
-    }
 
     ngOnInit() {
-        this.loadExams();
     }
 
 
-    add() {
-        var exam = new Exam();
-        this.examDialog.show(exam);
-        this.examDialog.onCreateComplete.subscribe(() => {
-            this.loadExams();
-        });
-    }
 
-    edit() {
-        if (this.selectedExam)
-            this.examDialog.show(this.selectedExam);
-        this.examDialog.onUpdateComplete.subscribe(() => {
-            this.loadExams();
-        });
-    }
-
-    delete() {
-        if (this.selectedExam)
-            this.confirm('Are you sure to delete ?', () => {
-                this.selectedExam.delete(this).subscribe(() => {
-                    this.loadExams();
-                    this.selectedExam = null;
-                })
-            }
-            );
-    }
-
-    onDayClick() {
-        this.add();
-    }
-
-    onEventClick(event) {
-        var examId = event.calEvent.id;
-        this.selectedExam = _.find(this.exams, (exam) => {
-            return exam.id == examId;
-        });
-        this.edit();
-    }
-
-    loadExams() {
-        Exam.all(this).subscribe(exams => {
-            this.exams = exams;
-            this.events = _.map(exams, (exam) => {
-                return {
-                    title: exam.name,
-                    start: exam.start,
-                    end: exam.end,
-                    id: exam.id,
-                    allDay: true
-                }
-            });
-            this.exams.sort((exam1, exam2): any => {
-                if (exam1.id > exam2.id)
-                    return -1;
-                else if (exam1.id < exam2.id)
-                    return 1;
-                else
-                    return 0;
-            });
-        });
-    }
 }

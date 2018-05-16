@@ -32,7 +32,7 @@ export class GradebookListDialog extends BaseComponent {
 	reportUtils: ReportUtils;
 	@ViewChild(GradebookDialog) gradebookDialog : GradebookDialog;
 
-	constructor(,private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+	constructor(private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
 		this.reportUtils = new ReportUtils();
 	}

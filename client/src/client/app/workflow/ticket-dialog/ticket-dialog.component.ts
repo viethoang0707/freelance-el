@@ -5,7 +5,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { BaseDialog } from '../../shared/components/base/base.dialog';
 import { Ticket } from '../../shared/models/ticket/ticket.model';
 import { Http, Response } from '@angular/http';
-import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
+import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../shared/models/constants'
 import {SelectItem, MenuItem} from 'primeng/api';
 import * as _ from 'underscore';
 import { TabPanel } from 'primeng/tabview';
@@ -23,13 +23,7 @@ export class TicketDialog extends BaseDialog<Ticket> {
     }
 
     ngOnInit() {
-        this.onShow.subscribe(object => {
-
-            });
-        });  
     }
-
-
 
 }
 
