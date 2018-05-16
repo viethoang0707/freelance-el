@@ -256,6 +256,15 @@ body .cont.ui-accordion .ui-accordion-header.ui-state-active{
   min-height: 230px;
 }
 */
+
+body .dashboard-courses-list .ui-panel .ui-panel-content{
+  height: 110px;
+}
+
+body .dashboard-courses-list .ui-panel .ui-panel-footer{
+  border-top: none;
+}
+
 body .linkPage.ui-paginator{
   background-color: #fff;
   border: none;
@@ -311,11 +320,7 @@ body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
 }
 
 .ui-scrollpanel-content{
-  width: 100%;
-}
-
-.course-study .ng2-pdf-viewer-container{
-  height: 410px;
+  /* width: 100%; */
 }
 
 body .ui-fieldset.f-print{

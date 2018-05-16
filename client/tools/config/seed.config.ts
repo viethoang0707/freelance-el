@@ -651,6 +651,7 @@ export class SeedConfig {
         startPath: this.APP_BASE,
         open: argv['b'] ? false : true,
         injectChanges: false,
+        https: true,
         server: {
           baseDir: `${this.DIST_DIR}/empty/`,
           routes: {

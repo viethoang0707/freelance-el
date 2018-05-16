@@ -23,7 +23,7 @@ import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dial
 import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
-import {PaginatorModule} from 'primeng/paginator';
+
 
 declare var $: any;
 declare var _: any;
@@ -55,19 +55,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.exams = [];
     }
 
-
-    ngOnInit() {
-        ConferenceMember.listByUser(this, this.authService.UserProfile.id)
-            .subscribe(members => {
-                this.confMembers = members;
-                _.each(members, (member) => {
-                    member.conference = new Conference();
-                    Conference.get(this, member.conference_id).subscribe(conference => {
-                        member.conference = conference;
-                    });
-                });
-            });
-        this.currentUser = this.authService.UserProfile;
+    loadCourse() {
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             var courseIds = _.pluck(members, 'course_id');
             courseIds = _.filter(courseIds, (id) => {
@@ -91,23 +79,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         course.member = _.find(members, (member: CourseMember) => {
                             return member.course_id == course.id;
                         });
-                        _.each(courses, (course) => {
-                            if (course.syllabus_id)
-                                CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                                    course.unit_count = count;
-                                });
-                            else
-                                course.unit_count = 0;
-                            course.member = _.find(members, (member: CourseMember) => {
-                                return member.course_id == course.id;
-                            });
-
-                        });
                         this.courses = courses;
                     });
                 });
         });
+    }
 
+    loadExam() {
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             var examIds = _.pluck(members, 'exam_id');
             examIds = _.filter(examIds, (id) => {
@@ -133,6 +111,29 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
+    loadConference() {
+        ConferenceMember.listByUser(this, this.authService.UserProfile.id)
+            .subscribe(members => {
+                members =  _.filter(members, (member=> {
+                    return member.conference_id
+                }));
+                this.confMembers = members;
+                _.each(members, (member) => {
+                    member.conference = new Conference();
+                    Conference.get(this, member.conference_id).subscribe(conference => {
+                        member.conference = conference;
+                    });
+                });
+            });
+    }
+
+    ngOnInit() {
+        this.currentUser = this.authService.UserProfile;
+        this.loadConference();
+        this.loadCourse();
+        this.loadExam();
+    }
+
     joinConference(member) {
         this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref)
     }
@@ -153,6 +154,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     editSyllabus(course: Course) {
         this.getCourseSyllabus(course).subscribe(syllabus => {
             this.syllabusDialog.show(syllabus);
+            this.syllabusDialog.onHide.subscribe(()=> {
+                this.loadCourse();
+            });
         });
     }
 
@@ -198,6 +202,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         if ( exam.status =='published') 
             this.confirm('Are you sure to start ?', () => {
                 this.examStudyDialog.show(exam, member);
+                this.examStudyDialog.onHide.subscribe(()=> {
+                    this.loadExam();
+                });
             });
     }
 }

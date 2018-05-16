@@ -52,7 +52,10 @@ export class ExamStudyDialog extends BaseComponent {
 	height: number;
 	examCode: any;
 	validAnswer: number;
-	
+	private onShowReceiver: Subject<any> = new Subject();
+    private onHideReceiver: Subject<any> = new Subject();
+    onShow: Observable<any> = this.onShowReceiver.asObservable();
+    onHide: Observable<any> = this.onHideReceiver.asObservable();
 
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -79,6 +82,7 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	show(exam: Exam, member: ExamMember) {
+		this.onShowReceiver.next();
 		this.display = true;
 		this.exam = exam;
 		this.member = member;
@@ -115,7 +119,7 @@ export class ExamStudyDialog extends BaseComponent {
 		return ExamQuestion.listBySheet(this, this.sheet.id).map(examQuestions => {
 			var offset = this.member.id;
 			return _.map(examQuestions, (obj, order) => {
-				var index = (order + this.sheet.seed + offset) % examQuestions.length;
+				var index = (order + offset) % examQuestions.length;
 				return examQuestions[index];
 			});
 		});
@@ -123,6 +127,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	hide() {
 		this.display = false;
+		this.onHideReceiver.next();
 	}
 
 	fetchAnswers(): Observable<any> {
@@ -135,8 +140,8 @@ export class ExamStudyDialog extends BaseComponent {
 	startExam() {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
-		ExamLog.startExam(this, this.member.user_id, this.exam.id, this.submission);
-		this.fetchAnswers().subscribe(answers => {
+		ExamLog.startExam(this, this.member.user_id, this.exam.id, this.submission).subscribe(()=> {
+			this.fetchAnswers().subscribe(answers => {
 			this.answers = answers;
 			var validAnswers = _.filter(this.answers, (ans: any) => {
 				return ans.option_id != "" && ans.option_id != "0";
@@ -151,6 +156,8 @@ export class ExamStudyDialog extends BaseComponent {
 			this.startTimer();
 			this.displayQuestion(0);
 		});
+		});
+		
 	}
 
 	finishExam() {
@@ -160,8 +167,10 @@ export class ExamStudyDialog extends BaseComponent {
 		subscriptions.push(this.member.save(this));
 		subscriptions.push(this.submission.save(this));
 		Observable.forkJoin(...subscriptions).subscribe(() => {
-			ExamLog.finishExam(this, this.member.user_id, this.exam.id, this.submission);
-			this.hide();
+			ExamLog.finishExam(this, this.member.user_id, this.exam.id, this.submission).subscribe(()=> {
+				this.hide();
+			})
+			
 		});
 	}
 
@@ -204,10 +213,10 @@ export class ExamStudyDialog extends BaseComponent {
 		this.currentQuestion = this.examQuestions[index];
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
-				ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer);
-				this.currentAnswer = answer;
+				ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer).subscribe(()=> {
+					this.currentAnswer = answer;
 				var validAnswers = _.filter(this.answers, (ans: any) => {
-					return ans.option_id != "" && ans.option_id != '0';
+					return ans.option_id;
 				});
 				if (this.examQuestions.length) {
 					this.validAnswer = validAnswers.length;
@@ -224,6 +233,8 @@ export class ExamStudyDialog extends BaseComponent {
 					(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
 					this.updateProgress();
 				}
+				})
+				
 			});
 		});
 
@@ -280,21 +291,19 @@ export class ExamStudyDialog extends BaseComponent {
 				.subscribe(() => {
 					this.timeLeft -= 1000;
 					if(this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
-					{
 						this.showWarn();
-					}
 					if (this.timeLeft <= 0)
 						this.finishExam();
 				});
 		}
 	}
 	showWarn() {
-        this.warn(this.translateService.instant('A little minutes remaining!'));
+        this.warn('A little minutes remaining!');
     }
 
     checkAnswer() {
 		var validQuestion = _.filter(this.answers, (ans: any) => {
-			return ans.option_id != "" && ans.option_id != '0';
+			return ans.option_id ;
 		});
 		this.examQuestions.forEach((ques: any) => {
 			validQuestion.forEach(answer => {
