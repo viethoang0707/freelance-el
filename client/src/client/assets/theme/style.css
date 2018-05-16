@@ -320,7 +320,7 @@ body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
 }
 
 .ui-scrollpanel-content{
-  width: 100%;
+  /* width: 100%; */
 }
 
 body .ui-fieldset.f-print{
