@@ -25,6 +25,7 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 	question: Question;
 	answer: Answer;
 	options: QuestionOption[];
+	checkTrueOption: string;
 
 	constructor() {
 		super();
@@ -33,17 +34,25 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 
 	render(question, answer?) {
 		this.question = question;
-		this.answer =  answer;
+		this.answer = answer;
+		this.checkTrueOption = '';
 		if (this.question.id)
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
+				options.forEach(opt => {
+					console.log(opt);
+					if (!opt.is_correct && opt.is_correct == true) {
+						this.checkTrueOption = 'true';
+					}
+				});
+				console.log(this.checkTrueOption);
 			});
 	}
 
 	saveEditor(): Observable<any> {
 		return this.question.save(this).flatMap(() => {
 			var subscriptions = [];
-			_.each(this.options, (option: QuestionOption)=> {
+			_.each(this.options, (option: QuestionOption) => {
 				option.question_id = this.question.id;
 				subscriptions.push(option.save(this));
 			});
@@ -52,11 +61,11 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 	}
 
 	concludeAnswer() {
-		var option = _.find(this.options, (obj)=> {
+		var option = _.find(this.options, (obj) => {
 			return obj.id == this.answer.option_id;
 		});
 		if (option)
-			this.answer.is_correct =  option.is_correct;
+			this.answer.is_correct = option.is_correct;
 	}
 
 	addOption() {
@@ -64,7 +73,7 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 	}
 
 	setOptionCorrect(option) {
-		_.each(this.options, (obj)=> {
+		_.each(this.options, (obj) => {
 			obj.is_correct = false;
 		});
 		option.is_correct = true;
@@ -73,12 +82,12 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 	removeOption(option: QuestionOption) {
 		if (option.id) {
 			option.delete(this).subscribe(() => {
-				this.options = _.reject(this.options, (obj)=> {
+				this.options = _.reject(this.options, (obj) => {
 					return obj == option;
 				});
 			})
 		} else
-			this.options = _.reject(this.options, (obj)=> {
+			this.options = _.reject(this.options, (obj) => {
 				return obj == option;
 			});
 	}
