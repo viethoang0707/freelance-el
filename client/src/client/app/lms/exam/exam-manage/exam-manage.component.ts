@@ -66,7 +66,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
 	mark() {
         if (this.selectedMarkRecord) {
-            this.questionMarkDialog.show(this.selectedMarkRecord.member,this.selectedMarkRecord.answers);
+            this.questionMarkDialog.show(this.selectedMarkRecord.member,this.selectedMarkRecord.answers, this.questions);
         }
     }
 
@@ -78,7 +78,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                 this.markRecords = [];
                 _.each(members, (member:ExamMember)=> {
                     Submission.byMember(this,member.id).subscribe((submit:Submission) => {
-                        console.log(submit);
                         if (submit)
                             Answer.listBySubmit(this, submit.id).subscribe(answers => {
                                 answers = _.filter(answers, (obj:Answer)=> {
@@ -95,15 +94,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                                 });
                                 this.markRecords.push(record);
                             });
-                        else {
-                            var record = {
-                                    name: member.name,
-                                    group_id__DESC__: member.group_id__DESC__,
-                                    member: member,
-                                    answers: []
-                                }
-                                this.markRecords.push(record);
-                            }
+          
                         
                     })
                 });
@@ -126,7 +117,8 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                 this.scoreRecords = members;
                 _.each(members, (member: ExamMember)=> {
                     member.examScore(this, this.exam.id).subscribe(score=> {
-                        member["score"] = score;
+                        if (score==null)
+                            member["score"] = "";
                         var grade = member.examGrade(grades, score);
                         if (grade)
                             member["grade"] = grade.name;

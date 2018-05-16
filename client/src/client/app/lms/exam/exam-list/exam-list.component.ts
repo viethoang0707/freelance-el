@@ -39,10 +39,10 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
+            members = _.filter(members, (member=> {
+                return (member.exam_id);
+            }));
             var examIds = _.pluck(members, 'exam_id');
-            examIds = _.filter(examIds, id=> {
-                    return id != null && id !='';
-                });
             Exam.array(this, examIds)
                 .subscribe(exams => {
                     _.each(exams, (exam) => {

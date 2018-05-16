@@ -57,10 +57,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     loadCourse() {
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
+            members = _.filter(members, (member=> {
+                return (member.course_id && (member.course_mode=='self-study' || member.class_id))
+            }));
             var courseIds = _.pluck(members, 'course_id');
-            courseIds = _.filter(courseIds, (id) => {
-                return id && id != '';
-            });
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
                 .map(courses => {
                     return _.flatten(courses);
@@ -87,10 +87,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     loadExam() {
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
+            members = _.filter(members, (member=> {
+                return (member.exam_id);
+            }));
             var examIds = _.pluck(members, 'exam_id');
-            examIds = _.filter(examIds, (id) => {
-                return id && id != '';
-            });
             Exam.array(this, examIds)
                 .subscribe(exams => {
                     _.each(exams, (exam) => {

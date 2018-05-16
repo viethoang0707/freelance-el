@@ -77,9 +77,9 @@
         <div class="ui-g-12">
           <p-toolbar>
             <div class="ui-toolbar-group-left">
-              <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
-              <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedMaterial"></button>
-              <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedMaterial"></button>
+              <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addMaterial()" icon="ui-icon-add"></button>
+              <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editMaterial()" *ngIf="selectedMaterial"></button>
+              <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteMaterial()" *ngIf="selectedMaterial"></button>
             </div>
           </p-toolbar>
           <p-table #materialTable [value]="materials" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMaterial" [responsive]="true">

@@ -13,6 +13,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { MemberPermissionDialog} from '../member-permission-dialog/member-permission-dialog.component';
+import { User } from '../../../shared/models/elearning/user.model';
 
 @Component({
     moduleId: module.id,
@@ -57,6 +58,22 @@ export class PermissionListComponent extends BaseComponent {
         this.permissionDialog.onUpdateComplete.subscribe(() => {
             this.loadPermission();
         });
+    }
+
+    delete() {
+        if (this.selectedPermission) {
+            User.listByPermission(this, this.selectedPermission.id).subscribe(users=> {
+                if (users.length)
+                    this.error('You cannot delete permission assigned to other uers')
+                else {
+                    this.confirm('Are you sure to delete ?', () => {
+                        this.selectedPermission.delete(this).subscribe(() => {
+                            this.loadPermission();
+                        })
+                    });
+                }
+            });
+        }
     }
 
     permissionMember(){

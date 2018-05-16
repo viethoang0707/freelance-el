@@ -41,10 +41,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.currentUser = this.authService.UserProfile;
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
-            var courseIds = _.pluck(members,'course_id');
-            courseIds = _.filter(courseIds, (id=> {
-                return id;
+            members = _.filter(members, (member=> {
+                return (member.course_id && (member.course_mode=='self-study' || member.class_id))
             }));
+            var courseIds = _.pluck(members,'course_id');
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
             .map(courses => {
                 return _.flatten(courses);

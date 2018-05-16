@@ -67,7 +67,7 @@ export class ExamMember extends BaseModel{
     examScore(context:APIContext, examId:number):Observable<any> {
         return Submission.byMember(context, this.id).flatMap(submit => {
             if (!submit)
-                return Observable.of(0);
+                return Observable.of(null);
             else
                 return Answer.listBySubmit(context, submit.id).map(answers => {
                     return _.reduce(answers,  (sum, ans)=> {
