@@ -1,17 +1,17 @@
 <div class="ui-g dashboard">
-  <div class="ui-g-12">
+  <div class="ui-g-12 dashboard-live-conference">
     <div class="ui-g-4" *ngFor="let member of confMembers;let i = index">
       <div class="task-box task-box-{{i%3 +1}}">
         <div class="task-box-header">
-          <button pButton type="button " label="{{ 'Join'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="joinConference(member) " [disabled]="member.conference.status!='open'"></button>
+          <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
         </div>
         <div class="task-box-content">
-          <h3>{{'Live conference'|translate}} : {{member.conference.name}}</h3>
-          <p>{{'Room password'|translate}} {{':'+member.conference.room_pass}}
+          <h3 style="font-size: 15px;">{{'Live conference'|translate}} : {{member.conference.name}}</h3>
+          <p class="mb10">{{'Room password'|translate}} {{':'+member.conference.room_pass}}
           </p>
         </div>
         <div class="task-box-footer">
-          <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
+          <button pButton type="button " label="{{ 'Join'|translate}} " class="btn-footer" icon="ui-icon-call " (click)="joinConference(member) " [disabled]="member.conference.status!='open'"></button>
         </div>
       </div>
     </div>

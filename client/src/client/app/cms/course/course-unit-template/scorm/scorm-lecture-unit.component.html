@@ -22,7 +22,7 @@
   <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
   <span>{{'If you cannot see the SCORM unit, please '|translate}}<a target="_blank" href="{{lecture.base_url+'/'+lecture.entry_file}}">{{'click here'|translate}}</a></span>
 </div>
-<div *ngIf="mode=='study'" style="height: 410px;">
+<div *ngIf="mode=='study'" style="height: 380px; margin-bottom: 25px;" class="scorm-study-mode">
   <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
   <span>{{'If you cannot see the SCORM unit, please '|translate}}<a target="_blank" href="{{lecture.base_url+'/'+lecture.entry_file}}">{{'click here'|translate}}</a></span>
 </div>
