@@ -25,7 +25,7 @@ export class ApprovalTreeComponent extends BaseComponent {
     tree: TreeNode[];    
     selectedNode: TreeNode;
     selectedUser:User;
-    treeutils: TreeUtils;
+    treeUtils: TreeUtils;
 
     constructor() {
         super();
@@ -49,7 +49,7 @@ export class ApprovalTreeComponent extends BaseComponent {
 
     buildTree() {
         User.allAdmin(this).subscribe(users => {
-           this.tree = this.treeutils.buildApprovalTree(users);
+           this.tree = this.treeUtils.buildApprovalTree(users);
            this.selectedUser =  null;
        });
     }

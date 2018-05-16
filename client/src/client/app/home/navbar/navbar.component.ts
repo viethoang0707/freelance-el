@@ -45,7 +45,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		this.user = this.authService.UserProfile;
 		this.viewMode = this.settingService.ViewMode;
 		this.loadNotification();
-		this.socketService.join(this.user.login, this.authService.CloudAcc.id);
+		this.socketService.join(this.user.id, this.authService.CloudAcc.id);
 		this.socketService.onNotify.subscribe(data=> {
 			this.loadNotification();
 		});

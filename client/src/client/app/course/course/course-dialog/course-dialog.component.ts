@@ -74,9 +74,10 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			Ticket.byWorkflowObject(this, object.id, Course.Model).subscribe((ticket)=> {
-				this.openTicket =  ticket;
-			});
+			if (object.id)
+				Ticket.byWorkflowObject(this, object.id, Course.Model).subscribe((ticket)=> {
+					this.openTicket =  ticket;
+				});
 			object.supervisor_id =  this.authService.UserProfile.id;
 			this.dataAccessService.filter(object, 'SAVE').subscribe(success=> {
 				this.allowToChangeState = !object.supervisor_id || 
