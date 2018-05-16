@@ -17,11 +17,10 @@
           <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)" class="remove-btn"></button>
         </li>
         <div *ngIf="!options.length" class="ui-message ui-messages-error ui-corner-all">
-            {{'Add options is required' | translate}}</div>
-        <div *ngFor="let option of options">
-          <div *ngIf="!(option.is_correct == true)" class="ui-message ui-messages-error ui-corner-all">
-            {{'Select the correct answer is required' | translate}}</div>
-        </div>     
+          {{'Add options is required' | translate}}</div>
+        <div *ngIf="checkTrueOption == 'true'" class="ui-message ui-messages-error ui-corner-all">
+          {{'Select the correct answer is required' | translate}}</div>
+
       </ul>
     </p-panel>
   </div>
@@ -32,7 +31,7 @@
   </div>
 </div>
 <div *ngIf="mode=='study'">
-    <div class="ui-g-12 ">
+  <div class="ui-g-12 ">
     <label>{{'Content'|translate}}</label>
     <p [innerHTML]="question.content"></p>
   </div>
@@ -47,14 +46,15 @@
   </div>
 </div>
 <div *ngIf="mode=='review'">
-    <div class="ui-g-12 ">
+  <div class="ui-g-12 ">
     <p class="question" [innerHTML]="question.content"></p>
   </div>
   <div class="ui-g-12">
     <p-fieldset styleClass="f-print">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-radioButton [(ngModel)]="answer.option_id" [disabled]="true" inputId="{{option.id}}" value="{{option.id}}" name="option_answer{{question.id}}" label="{{option.content}}" styleClass="radio"></p-radioButton>
+          <p-radioButton [(ngModel)]="answer.option_id" [disabled]="true" inputId="{{option.id}}" value="{{option.id}}" name="option_answer{{question.id}}"
+            label="{{option.content}}" styleClass="radio"></p-radioButton>
           <i class="material-icons" *ngIf="option.is_correct">done</i>
         </li>
       </ul>
@@ -62,7 +62,7 @@
   </div>
 </div>
 <div *ngIf="mode=='preview'">
-    <div class="ui-g-12 ">
+  <div class="ui-g-12 ">
     <p class="question" [innerHTML]="question.content"></p>
   </div>
   <div class="ui-g-12">
