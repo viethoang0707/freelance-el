@@ -334,3 +334,25 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
   margin: 0;
   padding: 0;
 }
+
+.ui-widget-content .scorm-study-mode a{
+  color: #3f51b5;
+}
+
+.dashboard-live-conference .task-box-footer .btn-footer{
+  float: right;
+}
+
+.dashboard-live-conference span.task-status{
+  color: #fff;
+}
+
+
+.dashboard-live-conference .task-box.task-box-1 .task-box-footer .btn-footer {
+  background-color: #e91e63; }
+
+.dashboard-live-conference .task-box.task-box-2 .task-box-footer .btn-footer {
+  background-color: #ffc107; }
+
+.dashboard-live-conference .task-box.task-box-3 .task-box-footer .btn-footer {
+  background-color: #00bcd4; }
