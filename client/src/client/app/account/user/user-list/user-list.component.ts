@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { APIService } from '../../../shared/services/api.service';
+import { LoadingService } from '../../../shared/services/loading.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
@@ -41,7 +41,7 @@ export class UserListComponent extends BaseComponent {
     treeUtils: TreeUtils;
     userFilter: User[];
 
-    constructor() {
+    constructor(private loadingService: LoadingService) {
         super();
         this.filterGroups = [];
         this.treeUtils = new TreeUtils();
@@ -100,9 +100,11 @@ export class UserListComponent extends BaseComponent {
     }
 
     loadUsers() {
+        this.loadingService.start();
         User.all(this).subscribe(users => {
             this.users = users;
             this.userFilter = users;
+            this.loadingService.finish();
         });
     }
 

@@ -6,13 +6,13 @@ import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
 import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog.component';
-/**
- * This class represents the lazy loaded HomeComponent.
- */
+import { LoadingService } from '../shared/services/loading.service';
+
 @Component({
     moduleId: module.id,
     selector: 'app-home',
-    templateUrl: 'home.component.html'
+    templateUrl: 'home.component.html',
+    styleUrls: ['home.component.css'],
 })
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
@@ -29,9 +29,17 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     sidebarActive: boolean;
     mobileMenuActive: boolean;
     darkMenu: boolean;
+    loading: boolean;
 
-    constructor( private router: Router, private eventManager :HomeEventManager) {
+    constructor( private router: Router, private eventManager :HomeEventManager,loadingService: LoadingService) {
         super();
+        this.loading =  false;
+        loadingService.onStart.subscribe(()=> {
+            this.loading = true;
+        });
+        loadingService.onFinish.subscribe(()=> {
+            this.loading = false;
+        });
         router.navigate(['/dashboard']);
     }
 

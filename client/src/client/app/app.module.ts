@@ -21,11 +21,9 @@ import { InterceptHttp } from './shared/helpers/intercept.http';
 import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
 import { CustomTranslationLoader } from './shared/helpers/translation.loader';
-import {ScheduleModule} from 'primeng/schedule';
 
 @NgModule({
     imports: [
-        ScheduleModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpModule,

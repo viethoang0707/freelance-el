@@ -18,6 +18,7 @@ import { DataAccessService } from './services/data-access.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
+import { LoadingService } from './services/loading.service';
 import { MeetingService } from './services/meeting.service';
 import { WindowRef } from './helpers/windonw.ref';
 import { TreeUtils } from './helpers/tree.utils';
@@ -337,6 +338,7 @@ export class ErpSharedModule {
                 MeetingService,
                 WindowRef,
                 ExcelService,
+                LoadingService,
                 MenuService,
                 SettingService,
                 WebSocketService,
