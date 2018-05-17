@@ -54,7 +54,7 @@ export class CourseListComponent extends BaseComponent {
         var course = new Course();
         this.courseDialog.show(course);
         this.courseDialog.onCreateComplete.subscribe(() => {
-            this.loadCourses();
+            this.loadCoursesAction();
         });
     }
 
@@ -95,12 +95,27 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
+    loadCoursesAction(){
+        Course.all(this).subscribe(courses => {
+            this.courses = courses;
+            this.courseFilter.sort((course1, course2): any => {
+                if (course1.id > course2.id)
+                    return -1;
+                else if (course1.id < course2.id)
+                    return 1;
+                else
+                    return 0;
+            });
+            this.selectCourse();
+        });
+    }
+
 
     delete() {
         if (this.selectedCourse)
             this.confirm('Are you sure to delete ?',() => {
                     this.selectedCourse.delete(this).subscribe(() => {
-                        this.loadCourses();
+                        this.loadCoursesAction();
                         this.selectedCourse = null;
                     },()=> {
                         this.error('Permission denied');
@@ -109,12 +124,12 @@ export class CourseListComponent extends BaseComponent {
             
     }
 
-    selectCourse(selectedGroupNodes)
+    selectCourse()
     {
         this.courseFilter = this.courses.filter(item => {
-            for(var i=0; i < selectedGroupNodes.length; i++)
+            for(var i=0; i < this.selectedGroupNodes.length; i++)
             {
-            if(selectedGroupNodes[i].data.id == item.group_id)
+            if(this.selectedGroupNodes[i].data.id == item.group_id)
             {
                 return true;
             }
@@ -122,5 +137,11 @@ export class CourseListComponent extends BaseComponent {
             return false;
         });
     }
-
+    nodeSelect(event: any) {
+        if (this.selectedGroupNodes.length != 0) {
+            this.selectCourse();
+        } else {
+            this.loadCourses();
+        }
+    }
 }
