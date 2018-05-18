@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="display" modal="true" [(height)]="height" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true"
+<p-dialog [(visible)]="display" modal="true" [(height)]="$(window).height()" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true"
   [closeOnEscape]="false" [closable]="false">
   <div class="ui-g-12 removePd">
     <div class="ui-g-6 removePd">
@@ -32,7 +32,7 @@
         <h4 class="mt10 mb10">{{'Exam Code'|translate}}:</h4>
       </div>
       <div class="ui-g-6 removePd">
-        <h4 class="mt10 mb10">{{ examCode }}</h4>
+        <h4 class="mt10 mb10">{{ exam.id + '' + member.id }}</h4>
       </div>
     </div>
   </div>

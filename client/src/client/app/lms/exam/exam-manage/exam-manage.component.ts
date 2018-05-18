@@ -59,7 +59,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 	        		this.member =  member;
 					this.exam =  exam;
 					this.loadScores();
-					this.loadAnswers();
                     this.closeTransaction();
 	        	});
 	        });
@@ -72,38 +71,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         }
     }
 
-    loadScores() {
-        this.startTransaction();
-        ExamQuestion.listOpenQuestionByExam(this, this.exam.id).subscribe(questions => {
-            this.questions = questions;
-            var questionIds = _.pluck(questions,'question_id');
-            ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
-                this.markRecords = [];
-                _.each(members, (member:ExamMember)=> {
-                    Submission.byMember(this,member.id).subscribe((submit:Submission) => {
-                        if (submit)
-                            Answer.listBySubmit(this, submit.id).subscribe(answers => {
-                                answers = _.filter(answers, (obj:Answer)=> {
-                                    return _.contains(questionIds,obj.question_id);
-                                });
-                                var record = {
-                                    name: member.name,
-                                    group_id__DESC__: member.group_id__DESC__,
-                                    member: member,
-                                    answers: answers
-                                }
-                                _.each(answers, (obj)=> {
-                                    record[obj.question_id] = obj.score;
-                                });
-                                this.markRecords.push(record);
-                            });
-                    })
-                });
-                this.closeTransaction();
-            });
-        });
-    }
-
     viewAnswerSheet() {
         if (this.selectedScoreRecord ) {
             if (this.selectedScoreRecord.enroll_status !='completed')
@@ -113,7 +80,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         }
     }
 
-    loadAnswers() {
+    loadScores() {
         this.startTransaction();
         ExamGrade.listByExam(this, this.exam.id).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {

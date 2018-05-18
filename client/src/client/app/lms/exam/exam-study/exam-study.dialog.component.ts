@@ -43,14 +43,11 @@ export class ExamStudyDialog extends BaseComponent {
 	answers: Answer[];
 	submission: Submission;
 	timer: any;
-	timerSubject: any;
 	currentAnswer: Answer;
 	currentQuestion: ExamQuestion;
 	timeLeft: number;
 	progress: number;
 	stats: any;
-	height: number;
-	examCode: any;
 	validAnswer: number;
 	private onShowReceiver: Subject<any> = new Subject();
     private onHideReceiver: Subject<any> = new Subject();
@@ -60,6 +57,7 @@ export class ExamStudyDialog extends BaseComponent {
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	componentRef: any;
+	$: any = $;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
@@ -72,7 +70,6 @@ export class ExamStudyDialog extends BaseComponent {
 		this.timeLeft = 0;
 		this.progress = 0;
 		this.member = new ExamMember();
-		this.examCode = '';
 		this.stats = {
 			total: 0,
 			attempt: 0,
@@ -86,9 +83,8 @@ export class ExamStudyDialog extends BaseComponent {
 		this.display = true;
 		this.exam = exam;
 		this.member = member;
-		this.examCode = this.exam.id + '' + this.member.id;
 		this.qIndex = 0;
-		this.height = $(window).height();
+		this.startTransaction();
 		this.createSubmission().subscribe((submit: Submission) => {
 			this.submission = submit;
 			QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
@@ -97,6 +93,7 @@ export class ExamStudyDialog extends BaseComponent {
 					this.examQuestions = examQuestions;
 					this.stats.total = examQuestions.length;
 					this.startExam();
+					this.closeTransaction();
 				});
 			});
 		});
@@ -137,25 +134,32 @@ export class ExamStudyDialog extends BaseComponent {
 			return Observable.of([]);
 	}
 
+	updateStats() {
+		var validAnswers = _.filter(this.answers, (ans: any) => {
+			return ans.option_id != "" && ans.option_id != "0";
+		});
+		if (validAnswers.length > 0) {
+			this.validAnswer = validAnswers.length;
+		} else {
+			this.validAnswer = 0;
+		}
+		this.stats.attempt = this.validAnswer;
+		this.stats.unattempt = this.stats.total - this.stats.attempt;
+		this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
+	}
+
 	startExam() {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
+		this.startTransaction();
 		ExamLog.startExam(this, this.member.user_id, this.exam.id, this.submission).subscribe(()=> {
 			this.fetchAnswers().subscribe(answers => {
-			this.answers = answers;
-			var validAnswers = _.filter(this.answers, (ans: any) => {
-				return ans.option_id != "" && ans.option_id != "0";
+				this.answers = answers;
+				this.updateStats();
+				this.startTimer();
+				this.displayQuestion(0);
+				this.closeTransaction();
 			});
-			if (validAnswers.length > 0) {
-				this.validAnswer = validAnswers.length;
-			} else {
-				this.validAnswer = 0;
-			}
-			this.stats.attempt = this.validAnswer;
-			this.stats.unattempt = this.stats.total - this.stats.attempt;
-			this.startTimer();
-			this.displayQuestion(0);
-		});
 		});
 		
 	}
@@ -167,9 +171,11 @@ export class ExamStudyDialog extends BaseComponent {
 		this.submission.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
 		subscriptions.push(this.member.save(this));
 		subscriptions.push(this.submission.save(this));
+		this.startTransaction();
 		Observable.forkJoin(...subscriptions).subscribe(() => {
 			ExamLog.finishExam(this, this.member.user_id, this.exam.id, this.submission).subscribe(()=> {
 				this.hide();
+				this.closeTransaction();
 			})
 			
 		});
@@ -184,13 +190,11 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
+			this.startTransaction();
 			return answer.save(this).do(ans => {
 				this.answers.push(answer);
-				if (answer.option_id != 0) {
-					this.validAnswer = this.validAnswer + 1;
-				}
-				this.stats.attempt = this.validAnswer;
-				this.stats.unattempt = this.stats.total - this.stats.attempt;
+				this.updateStats();
+				this.closeTransaction();
 			});
 		} else
 			return Observable.of(answer);
@@ -200,42 +204,27 @@ export class ExamStudyDialog extends BaseComponent {
 		return Question.get(this, question.question_id);
 	}
 
-	updateProgress() {
-		var validAnswers = _.filter(this.answers, (ans: Answer) => {
-			return ans.option_id != null || ans.text != null;
-		});
-		if (this.examQuestions.length)
-			this.validAnswer = validAnswers.length;
-			this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
-	}
-
 	displayQuestion(index: number) {
 		this.qIndex = index;
 		this.currentQuestion = this.examQuestions[index];
+		this.startTransaction();
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
 				ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer).subscribe(()=> {
 					this.currentAnswer = answer;
-				var validAnswers = _.filter(this.answers, (ans: any) => {
-					return ans.option_id;
+					this.checkAnswer();
+					var detailComponent = QuestionRegister.Instance.lookup(question.type);
+					let viewContainerRef = this.questionHost.viewContainerRef;
+					if (detailComponent) {
+						let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+						viewContainerRef.clear();
+						this.componentRef = viewContainerRef.createComponent(componentFactory);
+						(<IQuestion>this.componentRef.instance).mode = 'study';
+						(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
+						this.updateStats();
+					}
+					this.closeTransaction();
 				});
-				if (this.examQuestions.length) {
-					this.validAnswer = validAnswers.length;
-					this.progress = Math.floor(this.validAnswer / this.examQuestions.length * 100);
-				}
-				this.checkAnswer();
-				var detailComponent = QuestionRegister.Instance.lookup(question.type);
-				let viewContainerRef = this.questionHost.viewContainerRef;
-				if (detailComponent) {
-					let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-					viewContainerRef.clear();
-					this.componentRef = viewContainerRef.createComponent(componentFactory);
-					(<IQuestion>this.componentRef.instance).mode = 'study';
-					(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
-					this.updateProgress();
-				}
-				})
-				
 			});
 		});
 
@@ -247,39 +236,43 @@ export class ExamStudyDialog extends BaseComponent {
 			this.currentAnswer.score = this.currentQuestion.score;
 		} else
 			this.currentAnswer.score = 0;
-
 		return this.currentAnswer.save(this).do(() => {
-			ExamLog.finishAnswer(this, this.member.user_id, this.exam.id, this.currentAnswer);
+			ExamLog.finishAnswer(this, this.member.user_id, this.exam.id, this.currentAnswer).subscribe();
 		});
 	}
 
 	next() {
+		this.startTransaction();
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex < this.examQuestions.length - 1) {
 				this.displayQuestion(this.qIndex + 1);
 			}
+			this.closeTransaction();
 		});
 	}
 
 	prev() {
+		this.startTransaction();
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex > 0) {
 				this.displayQuestion(this.qIndex - 1);
 			}
+			this.closeTransaction();
 		});
 	}
 
 	submitExam() {
+		this.startTransaction();
 		this.submitAnswer().subscribe(() => {
 			this.submitDialog.show(this.exam, this.submission);
 			this.submitDialog.onConfirm.subscribe(()=> {
 				this.finishExam();
 			});
+			this.closeTransaction();
 		});
 	}
 
 	startTimer() {
-		this.timerSubject = new Subject();
 		var now = new Date();
 		var elapse = Math.floor((now.getTime() - this.submission.start.getTime()));
 		this.timeLeft = this.exam.duration * 60 * 1000 - elapse;
@@ -288,19 +281,16 @@ export class ExamStudyDialog extends BaseComponent {
 		else {
 			this.timer = Observable.timer(0, 1000);
 			this.timer
-				.takeUntil(this.timerSubject)
+				.takeUntil(new Subject())
 				.subscribe(() => {
 					this.timeLeft -= 1000;
 					if(this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
-						this.showWarn();
+						this.warn('A little minutes remaining!');
 					if (this.timeLeft <= 0)
 						this.finishExam();
 				});
 		}
 	}
-	showWarn() {
-        this.warn('A little minutes remaining!');
-    }
 
     checkAnswer() {
 		var validQuestion = _.filter(this.answers, (ans: any) => {
