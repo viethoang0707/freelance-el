@@ -105,7 +105,7 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    nodeSelect(event: any) {
+    filterUser() {
         if (this.selectedGroupNodes.length != 0) {
             this.displayUsers = _.filter(this.users, user => {
                 var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
