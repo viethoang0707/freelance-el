@@ -34,6 +34,8 @@ export class QuestionListComponent extends BaseComponent {
     total: number;
     questionsFilter: Question[];
     treeUtils: TreeUtils;
+    deleteMores: boolean = false;
+    selectedQuestions: any;
 
     constructor() {
         super();
@@ -71,14 +73,33 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    delete() {
-        if (this.selectedQuestion)
+    deleteMore(questions) {
+        if (questions && questions.length)
             this.confirm('Are you sure to delete ?', () => {
-                this.selectedQuestion.delete(this).subscribe(() => {
+                var subscriptions = _.map(questions, (question: Question) => {
+                        return question.delete(this);
+                    });
+                    Observable.forkJoin(...subscriptions).subscribe(() => {
+                    this.selectedQuestions = [];
+                    this.deleteMores = !this.deleteMores;
                     this.loadQuestionsAction();
                     this.selectedQuestion = null;
                 });
             });
+    }
+
+    delete(){
+        if(this.selectedQuestion)
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedQuestion.delete(this).subscribe(() => {
+                    this.loadQuestionsAction();
+                   this.selectedQuestion = null;
+                });
+            });
+    }
+
+    deleteState(){
+        this.deleteMores = !this.deleteMores;
     }
 
     loadQuestions() {
