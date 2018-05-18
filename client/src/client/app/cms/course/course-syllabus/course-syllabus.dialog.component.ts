@@ -90,7 +90,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	clearSelection() {
-		this.selectedNode =  null;
+		this.selectedNode = null;
 		this.selectedUnit = null;
 	}
 
@@ -108,7 +108,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	add(type:string) {
 		if (type!='folder' && (!this.selectedNode || this.selectedNode.data.type != 'folder')) {
-			this.error('You need to select a folder.') ;
+			this.error(this.translateService.instant('You need to select a folder.')) ;
 			return;
 		}
 		var maxOrder = this.selectedNode ? this.selectedNode.children.length : this.tree.length; 
@@ -139,7 +139,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	delete() {
 		if (this.selectedNode) {
 			if (this.selectedNode.children.length) {
-				this.error('Cannot delete non-empty folder');
+				this.error(this.translateService.instant('Cannot delete non-empty folder'));
 				return;
 			}
             this.confirm('Are you sure to delete ?', () => {
@@ -202,7 +202,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		ticket.date_open =  new Date();
 		ticket.submit_user_id =  this.user.id;
 		ticket.approve_user_id = this.course.supervisor_id;
-		ticket.title = 'Course syllabus published request';
+		ticket.title = this.translateService.instant('Course syllabus published request');
 		ticket.save(this).subscribe(()=> {
 			this.socketService.notify(ticket.title, this.course.supervisor_id,this.authService.CloudAcc.id);
 		});
@@ -210,7 +210,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	updateStatus() {
 		this.syl.save(this).subscribe(()=> {
-			this.success('Syllabus status updated');
+			this.success(this.translateService.instant('Syllabus status updated'));
 		});
 	}
 
