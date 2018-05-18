@@ -1,8 +1,8 @@
-
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
+import { CourseCache } from '../../services/cache.service';
 
 @Model('etraining.course')
 export class Course extends BaseModel{
@@ -42,17 +42,20 @@ export class Course extends BaseModel{
     mode: string;
     logo: string;
     
+    static all( context:APIContext): Observable<any[]> {
+        return CourseCache.all(context);
+    }
 
     static listByAuthor(context:APIContext, authorId):Observable<any> {
-        return Course.search(context,[], "[('author_id','=',"+authorId+")]");
+        return CourseCache.listByAuthor(context, authorId);
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return Course.search(context,[], "[('group_id','=',"+groupId+")]");
+        return CourseCache.listByGroup(context,groupId);
     }
 
     static listByGroupAndMode(context:APIContext, groupId, mode):Observable<any> {
-        return Course.search(context,[], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
+        return CourseCache.listByGroupAndMode(context,groupId, mode);
     }
 
 }

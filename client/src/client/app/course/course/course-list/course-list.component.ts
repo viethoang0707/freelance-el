@@ -28,45 +28,44 @@ export class CourseListComponent extends BaseComponent {
     tree: TreeNode[];
     courses: Course[];
     displayCourses: Course[];
-    // selectedNode: TreeNode;
-    filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
     selectedCourse: any;
     treeUtils: TreeUtils;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
-    courseFilter: Course[];
 
     constructor() {
         super();
-        this.filterGroups = [];
         this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
-        Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
-        });
+        this.buildCoursTree();
         this.loadCourses();
     }
 
-    add() {
-        var course = new Course();
-        this.courseDialog.show(course);
-        this.courseDialog.onCreateComplete.subscribe(() => {
-            this.loadCoursesAction();
+    buildCoursTree() {
+        this.startTransaction();
+        Group.listCourseGroup(this).subscribe(groups => {
+            this.tree = this.treeUtils.buildGroupTree(groups);
+            this.closeTransaction();
         });
     }
 
-    edit() {
-        if (this.selectedCourse)
-        this.courseDialog.show(this.selectedCourse);
-        this.courseDialog.onUpdateComplete.subscribe(() => {
+    addCourse() {
+        var course = new Course();
+        this.courseDialog.show(course);
+        this.courseDialog.onCreateComplete.subscribe(() => {
             this.loadCourses();
         });
     }
 
-    enroll() {
+    editCourse() {
+        if (this.selectedCourse)
+        this.courseDialog.show(this.selectedCourse);
+    }
+
+    enrollCourse() {
         if (this.selectedCourse) {
             if (this.selectedCourse.status!='published') {
                 this.error('You have to publish the course first');
@@ -80,11 +79,11 @@ export class CourseListComponent extends BaseComponent {
     }
 
     loadCourses() {
+        this.startTransaction();
         Course.all(this).subscribe(courses => {
             this.courses = courses;
-            this.courseFilter = courses;
-            // this.displayCourses = courses;
-            this.courseFilter.sort((course1, course2): any => {
+            this.displayCourses = courses;
+            this.displayCourses.sort((course1, course2): any => {
                 if (course1.id > course2.id)
                     return -1;
                 else if (course1.id < course2.id)
@@ -92,56 +91,20 @@ export class CourseListComponent extends BaseComponent {
                 else
                     return 0;
             });
+            this.closeTransaction();
         });
     }
 
-    loadCoursesAction(){
-        Course.all(this).subscribe(courses => {
-            this.courses = courses;
-            this.courseFilter.sort((course1, course2): any => {
-                if (course1.id > course2.id)
-                    return -1;
-                else if (course1.id < course2.id)
-                    return 1;
-                else
-                    return 0;
-            });
-            this.selectCourse();
-        });
-    }
-
-
-    delete() {
-        if (this.selectedCourse)
-            this.confirm('Are you sure to delete ?',() => {
-                    this.selectedCourse.delete(this).subscribe(() => {
-                        this.loadCoursesAction();
-                        this.selectedCourse = null;
-                    },()=> {
-                        this.error('Permission denied');
-                    })
-                });
-            
-    }
-
-    selectCourse()
-    {
-        this.courseFilter = this.courses.filter(item => {
-            for(var i=0; i < this.selectedGroupNodes.length; i++)
-            {
-            if(this.selectedGroupNodes[i].data.id == item.group_id)
-            {
-                return true;
-            }
-            } 
-            return false;
-        });
-    }
-    nodeSelect(event: any) {
+    filterCourse() {
         if (this.selectedGroupNodes.length != 0) {
-            this.selectCourse();
+            this.displayCourses = _.filter(this.courses, course => {
+                var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
+                    return node.data.id == course.group_id;
+                });
+                return parentGroupNode != null;
+            });
         } else {
-            this.loadCourses();
+            this.displayCourses =  this.courses;
         }
     }
 }

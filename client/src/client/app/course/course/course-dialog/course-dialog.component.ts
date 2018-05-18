@@ -84,7 +84,7 @@ export class CourseDialog extends BaseDialog<Course> {
 				this.user.IsSuperAdmin || 
 				(success && this.user.id != object.supervisor_id) ;
 			});
-			Group.listByCategory(this, GROUP_CATEGORY.COURSE).subscribe(groups => {
+			Group.listCourseGroup(this).subscribe(groups => {
 				this.tree = this.treeUtils.buildGroupTree(groups);
 				if (object.group_id) {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);

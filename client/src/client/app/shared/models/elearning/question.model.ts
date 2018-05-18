@@ -4,6 +4,7 @@ import { Model } from '../decorator';
 import { QuestionOption } from './option.model';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { QuestionCache } from '../../services/cache.service';
 
 @Model('etraining.question')
 export class Question extends BaseModel{
@@ -37,8 +38,12 @@ export class Question extends BaseModel{
         });
     }
 
+    static all( context:APIContext): Observable<any[]> {
+        return QuestionCache.all(context);
+    }
+
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return Question.search(context,[], "[('group_id','=',"+groupId+")]");
+        return QuestionCache.listByGroup(context, groupId);
     }
 
     static listByGroups(context:APIContext, groupIds):Observable<any> {

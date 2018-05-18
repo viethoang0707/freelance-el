@@ -10,6 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BaseModel } from '../models/base.model';
 import { APIContext } from '../models/context';
 import { Group } from '../models/elearning/group.model';
+import { Course } from '../models/elearning/course.model';
+import { Question } from '../models/elearning/question.model';
 
 const CACHE_TIMEOUT = 1000 * 60 * 5;
 
@@ -26,6 +28,18 @@ export class CacheService {
         if (record.Model == Group.Model) {
             var groupCache = new GroupCache();
             groupCache.updateCache(record, method);
+        }
+        if (record.Model == User.Model) {
+            var userCache = new UserCache();
+            userCache.updateCache(record, method);
+        }
+        if (record.Model == Course.Model) {
+            var courseCache = new CourseCache();
+            courseCache.updateCache(record, method);
+        }
+        if (record.Model == Question.Model) {
+            var questionCache = new QuestionCache();
+            questionCache.updateCache(record, method);
         }
     }
 
@@ -180,6 +194,94 @@ export class UserCache implements ICache<User> {
             });
         return User.search(context,[], "[('permission_id','=',"+permissionId+")]");
     }
+}
 
+
+
+export class CourseCache implements ICache<Course> {
+    updateCache(record: Course, method) {
+        if (context.cacheService.hit('COURSE')) {
+            var courses = context.cacheService.load('COURSE');
+            if (method == 'CREATE')
+                courses.push(record);
+            if (method == 'DELETE')
+                courses = _.reject(courses, (course=> {
+                    return course.id == record.id;
+                }));
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('COURSE'))
+            return Observable.of(context.cacheService.load('COURSE'));
+        return Course.search(context,[],'[]').do(courses=> {
+            context.cacheService.save('COURSE',courses);
+        });
+    }
+
+    static listByAuthor(context:APIContext, authorId):Observable<any> {
+        if (context.cacheService.hit('COURSE'))
+            return Observable.of(context.cacheService.load('COURSE')).map(courses=> {
+                courses = _.filter(courses, course=> {
+                    return course.author_id == authorId;
+                });
+            });
+        return Course.search(context,[], "[('author_id','=',"+authorId+")]");
+    }
+
+    static listByGroup(context:APIContext, groupId):Observable<any> {
+        if (context.cacheService.hit('COURSE'))
+            return Observable.of(context.cacheService.load('COURSE')).map(courses=> {
+                courses = _.filter(courses, course=> {
+                    return course.group_id == groupId;
+                });
+            });
+        return Course.search(context,[], "[('group_id','=',"+groupId+")]");
+    }
+
+    static listByGroupAndMode(context:APIContext, groupId, mode):Observable<any> {
+        if (context.cacheService.hit('COURSE'))
+            return Observable.of(context.cacheService.load('COURSE')).map(courses=> {
+                courses = _.filter(courses, course=> {
+                    return course.group_id == groupId && course.mode == mode;
+                });
+            });
+        return Course.search(context,[], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
+    }
+
+}
+
+
+
+export class QuestionCache implements ICache<Question> {
+    updateCache(record: Question, method) {
+        if (context.cacheService.hit('QUESTION')) {
+            var questions = context.cacheService.load('QUESTION');
+            if (method == 'CREATE')
+                questions.push(record);
+            if (method == 'DELETE')
+                questions = _.reject(questions, (q=> {
+                    return q.id == record.id;
+                }));
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('QUESTION'))
+            return Observable.of(context.cacheService.load('QUESTION'));
+        return Question.search(context,[],'[]').do(questions=> {
+            context.cacheService.save('QUESTION',questions);
+        });
+    }
+
+    static listByGroup(context:APIContext, groupId):Observable<any> {
+        if (context.cacheService.hit('QUESTION'))
+            return Observable.of(context.cacheService.load('QUESTION')).map(questions=> {
+                questions = _.filter(questions, q=> {
+                    return q.group_id == groupId;
+                });
+            });
+        return Question.search(context,[], "[('group_id','=',"+groupId+")]");
+    }
 
 }

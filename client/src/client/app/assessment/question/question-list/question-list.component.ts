@@ -26,28 +26,23 @@ export class QuestionListComponent extends BaseComponent {
     tree: TreeNode[];
     items: MenuItem[];
     questions: Question[];
-    selectedQuestion: any;
-    filterGroups: Group[];
+    displayQuestions: Question[];
     selectedGroupNodes: TreeNode[];
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
-    total: number;
-    questionsFilter: Question[];
     treeUtils: TreeUtils;
-    deleteMores: boolean = false;
     selectedQuestions: any;
+    selectMode: string;
 
     constructor() {
         super();
         this.treeUtils = new TreeUtils();
-        this.filterGroups = [];
         this.questions = [];
+        this.selectMode = "single";
     }
 
     ngOnInit() {
-        Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
-        });
+        this.buildQuestionGroup();
         this.loadQuestions();
         this.items = [
             {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.add('sc')}},
@@ -56,90 +51,70 @@ export class QuestionListComponent extends BaseComponent {
         ];
     }
 
-    add(type: string) {
+    buildQuestionGroup() {
+        this.startTransaction();
+        Group.listQuestionGroup(this).subscribe(groups => {
+            this.tree = this.treeUtils.buildGroupTree(groups);
+            this.closeTransaction();
+        });
+    }
+
+    addQuestion(type: string) {
         var question = new Question();
         question.type = type;
         this.questionDialog.show(question);
         this.questionDialog.onCreateComplete.subscribe(() => {
-            this.loadQuestionsAction();
+            this.loadQuestions();
         });
     }
 
-    edit() {
-        if (this.selectedQuestion)
-            this.questionDialog.show(this.selectedQuestion);
-        this.questionDialog.onUpdateComplete.subscribe(() => {
-            this.loadQuestionsAction();
-        });
+    editQuestion() {
+        if (this.selectedQuestions && this.selectMode=='single')
+            this.questionDialog.show(this.selectedQuestions);
     }
 
-    deleteMore(questions) {
-        if (questions && questions.length)
+    deleteMultipleQuestions(){
+        if(this.selectedQuestions && this.selectedQuestions.length)
             this.confirm('Are you sure to delete ?', () => {
-                var subscriptions = _.map(questions, (question: Question) => {
+                var subscriptions = _.map(this.selectedQuestions, (question: Question) => {
                         return question.delete(this);
                     });
-                    Observable.forkJoin(...subscriptions).subscribe(() => {
-                    this.selectedQuestions = [];
-                    this.deleteMores = !this.deleteMores;
-                    this.loadQuestionsAction();
-                    this.selectedQuestion = null;
+                this.startTransaction();
+                Observable.forkJoin(...subscriptions).subscribe(() => {
+                    this.selectedQuestions = null;
+                    this.loadQuestions();
+                    this.selectMode = "single";
+                    this.closeTransaction();
                 });
             });
-    }
-
-    delete(){
-        if(this.selectedQuestion)
-            this.confirm('Are you sure to delete ?', () => {
-                this.selectedQuestion.delete(this).subscribe(() => {
-                    this.loadQuestionsAction();
-                   this.selectedQuestion = null;
-                });
-            });
-    }
-
-    deleteState(){
-        this.deleteMores = !this.deleteMores;
     }
 
     loadQuestions() {
+        this.startTransaction();
         Question.all(this).subscribe(questions => {
             this.questions = questions;
-            this.questionsFilter = questions;
+            this.displayQuestions = questions;
+            this.closeTransaction();
         });
     }
-    loadQuestionsAction(){
-        Question.all(this).subscribe(questions => {
-            this.questions = questions;
-            this.selectQuestion();
-        });
-    }
-    import() {
+
+    importQuestion() {
         this.questionImportDialog.show();
         this.questionImportDialog.onImportComplete.subscribe(() => {
             this.loadQuestions();
         });
     }
 
-    selectQuestion()
-    {
-        this.questionsFilter = this.questions.filter(item => {
-            for(var i=0; i < this.selectedGroupNodes.length; i++)
-            {
-            if(this.selectedGroupNodes[i].data.id == item.group_id)
-            {
-                return true;
-            }
-            } 
-            return false;
-        });
-    }
-
-    nodeSelect(event: any) {
+    filterCourse() {
         if (this.selectedGroupNodes.length != 0) {
-            this.selectQuestion();
+            this.displayQuestions = _.filter(this.questions, course => {
+                var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
+                    return node.data.id == course.group_id;
+                });
+                return parentGroupNode != null;
+            });
         } else {
-            this.loadQuestions();
+            this.displayQuestions =  this.questions;
         }
     }
 }
