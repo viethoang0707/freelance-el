@@ -229,7 +229,7 @@
 	"Banned": "Từ chối",
 	"Previous": "Trước",
 	"Next": "Tiếp theo",
-	"Exam marking": "Đánh dấu kỳ thi",
+	"Exam marking": "Chấm điểm bài thi",
 	"Exam score": "Điểm thi",
 	"Answer sheet": "Phiếu trả lời",
 	"Submit": "Nộp",
@@ -339,6 +339,8 @@
 	"Degree": "Trình độ",
 	"If you cannot see the SCORM unit, please ": "Nếu bạn không thấy bài giảng SCORM, vui lòng ",
 	"click here": "bấm vào đây",
-	"Live conference": "Lớp học trực tuyến"
+	"Live conference": "Lớp học trực tuyến",
+	"Deactivate": "Hủy kích hoạt",
+	"Activate": "Kích hoạt"
 
 }
