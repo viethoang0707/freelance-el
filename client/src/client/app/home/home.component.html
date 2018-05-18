@@ -6,7 +6,7 @@
         <app-breadcrumb></app-breadcrumb>
         <div class="layout-content">
             <p-growl ></p-growl>
-            <div class="spinner" *ngIf="loading"></div>
+            <div class="spinner" [hidden]="!loading"></div>
             <router-outlet>
             </router-outlet>
             <div class="footer">

@@ -5,6 +5,7 @@ import { BaseModel } from '../base.model';
 import { Company } from './company.model';
 import { Permission } from './permission.model';
 import * as _ from 'underscore';
+import { UserCache } from '../../services/cache.service';
 
 @Model('res.users')
 export class User extends BaseModel{
@@ -66,19 +67,19 @@ export class User extends BaseModel{
     }
 
     static all( context:APIContext): Observable<any[]> {
-        return User.search(context,[],"[('login','!=','admin')]");
+        return UserCache.all(context);
     }
 
     static allAdmin( context:APIContext): Observable<any[]> {
-        return User.search(context,[],"[('is_admin','=',True)]");
+        return UserCache.allAdmin(context);
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return User.search(context,[], "[('group_id','=',"+groupId+")]");
+        return UserCache.listByGroup(context, groupId);
     }
 
     static listByPermission(context:APIContext, permissionId):Observable<any> {
-        return User.search(context,[], "[('permission_id','=',"+permissionId+")]");
+        return UserCache.listByPermission(context, permissionId);
     }
 
 }

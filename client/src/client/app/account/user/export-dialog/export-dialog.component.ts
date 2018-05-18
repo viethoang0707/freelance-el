@@ -38,7 +38,7 @@ export class UserExportDialog extends BaseComponent {
 		this.selectedFields = [];
         this.users = users;
         this.display = true;
-        Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
+        Group.listUserGroup(this).subscribe(groups => {
 			_.each(this.users, (user)=> {
 				if (user.group_id) {
 					var group = _.find(groups, (obj:Group) => {

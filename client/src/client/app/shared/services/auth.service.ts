@@ -7,13 +7,15 @@ import { Permission } from '../models/elearning/permission.model';
 import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service';
+import { CacheService } from './cache.service';
+
 declare function escape(s:string): string;
 declare function unescape(s:string): string;
 
 @Injectable()
 export class AuthService {
 
-    constructor(private apiService: APIService) {
+    constructor(private apiService: APIService, private cacheService: CacheService) {
     }
 
    get StoredCredential(): Credential {
@@ -104,6 +106,7 @@ export class AuthService {
     }
 
     logout() {
+        this.cacheService.invalidateAll();
         this.clearUserProfile();
         this.clearCloudAccount();
         this.clearUserPermission();

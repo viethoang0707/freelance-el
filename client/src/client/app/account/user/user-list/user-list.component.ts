@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { LoadingService } from '../../../shared/services/loading.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
@@ -32,29 +31,39 @@ export class UserListComponent extends BaseComponent {
 
     tree: TreeNode[];
     users: User[];
-    user: User;
     selectedUser: any;
-    filterGroups: Group[];
     selectedGroupNodes: TreeNode[];
-    totalExam: any;
-    totalCourse: any;
     treeUtils: TreeUtils;
-    userFilter: User[];
+    displayUsers: User[];
 
-    constructor(private loadingService: LoadingService) {
+    constructor() {
         super();
-        this.filterGroups = [];
         this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
-        Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
-        });
+        this.buildGroupTree();
         this.loadUsers();
     }
 
-    add() {
+    loadUsers() {
+        this.startTransaction();
+        User.all(this).subscribe(users => {
+            this.users = users;
+            this.displayUsers = users;
+            this.closeTransaction();
+        });
+    }
+
+    buildGroupTree() {
+        this.startTransaction();
+        Group.listUserGroup(this).subscribe(groups => {
+            this.tree = this.treeUtils.buildGroupTree(groups);
+            this.closeTransaction();
+        });
+    }
+
+    addUser() {
         var user = new User();
         this.userDialog.show(user);
         this.userDialog.onCreateComplete.subscribe(() => {
@@ -62,15 +71,12 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    showProfile() {
+    editUser() {
         if (this.selectedUser)
             this.userProfileDialog.show(this.selectedUser);
-        this.userProfileDialog.onUpdateComplete.subscribe(() => {
-            this.loadUsers();
-        });
     }
 
-    activate() {
+    activateUser() {
         if (this.selectedUser) {
             this.selectedUser.banned = false;
             this.selectedUser.save(this).subscribe(() => { }, () => {
@@ -79,7 +85,7 @@ export class UserListComponent extends BaseComponent {
         }
     }
 
-    deactivate() {
+    deactivateUser() {
         if (this.selectedUser) {
             this.selectedUser.banned = true;
             this.selectedUser.save(this).subscribe(() => { }, () => {
@@ -88,43 +94,27 @@ export class UserListComponent extends BaseComponent {
         }
     }
 
-    export() {
+    exportUser() {
         this.userExportDialog.show(this.users);
     }
 
-    import() {
+    importUser() {
         this.userImportDialog.show();
         this.userImportDialog.onImportComplete.subscribe(() => {
             this.loadUsers();
         });
     }
 
-    loadUsers() {
-        this.loadingService.start();
-        User.all(this).subscribe(users => {
-            this.users = users;
-            this.userFilter = users;
-            this.loadingService.finish();
-        });
-    }
-
-    selectUser(selectedGroupNodes) {
-        this.userFilter = this.users.filter(item => {
-            for (var i = 0; i < selectedGroupNodes.length; i++) {
-                if (selectedGroupNodes[i].data.id == item.group_id) {
-                    return true;
-                }
-            }
-            return false;
-        });
-    }
-
     nodeSelect(event: any) {
         if (this.selectedGroupNodes.length != 0) {
-            this.selectUser(this.selectedGroupNodes);
-            console.log(1);
+            this.displayUsers = _.filter(this.users, user => {
+                var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
+                    return node.data.id == user.group_id;
+                });
+                return parentGroupNode != null;
+            });
         } else {
-            this.loadUsers();
+            this.displayUsers =  this.users;
         }
     }
 }

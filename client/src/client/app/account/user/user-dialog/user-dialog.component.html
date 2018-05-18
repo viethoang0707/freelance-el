@@ -1,13 +1,12 @@
 <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-<p-dialog header="{{'User account'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
+  <p-dialog header="{{'User account'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
     <div class="ui-g ui-fluid form-group">
       <div class="ui-g-12">
         <label>{{'Parent group'|translate}}</label>
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
-          <div *ngIf="selectedNode==null"
-              class="ui-message ui-messages-error ui-corner-all">
-            {{'Selected group is required' | translate}}
-          </div>
+        <div [hidden]="selectedNode!=null" class="ui-message ui-messages-error ui-corner-all">
+          {{'Selected group is required' | translate}}
+        </div>
       </div>
       <div class="ui-g-12 ">
         <span class="md-inputfield">
@@ -34,7 +33,7 @@
         </span>
       </div>
       <div class="ui-g-6">
-          <span class="md-inputfield">
+        <span class="md-inputfield">
               <input type="password" pPassword [(ngModel)]="object.password" #password="ngModel" name="password" required>
               <label>{{'Password'|translate}}</label>
               <div *ngIf="password.invalid && (password.dirty || password.touched)"
@@ -45,7 +44,6 @@
               </div>
           </span>
       </div>
-
       <div class="ui-g-6">
         <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.email" #email="ngModel" name="email" required>
@@ -58,7 +56,6 @@
             </div>
         </span>
       </div>
-
       <div class="ui-g-6">
         <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.phone" #phone="ngModel" name="phone" required>
@@ -71,7 +68,6 @@
             </div>
         </span>
       </div>
-
       <div class="ui-g-12">
         <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
       </div>
@@ -83,5 +79,5 @@
       <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="selectedNode==null"></button>
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
-</p-dialog>
- </form>
+  </p-dialog>
+</form>

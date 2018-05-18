@@ -45,10 +45,13 @@ export abstract class BaseModel {
             if (!this.id)
                 return context.apiService.create(model, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint).map(data=> {
                     this.id = data.id;
+                    context.cacheService.objectChage(this,'CREATE');
                     return this;
                 });
             else
-                return context.apiService.update(model, this.id, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint);
+                return context.apiService.update(model, this.id, MapUtils.serialize(this), cloud_acc.id, cloud_acc.api_endpoint).do(()=> {
+                    context.cacheService.objectChage(this,'UPDATE');
+                });
         });        
     }
 
@@ -58,7 +61,9 @@ export abstract class BaseModel {
         return context.dataAccessService.filter(this,'DELETE').flatMap(success=> {
             if (!success)
                 return Observable.throw('Permission denied');
-            return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint);
+            return context.apiService.delete(model, this.id, cloud_acc.id, cloud_acc.api_endpoint).do(()=> {
+                context.cacheService.objectChage(this,'DELETE');
+            });
         });
     }
 
