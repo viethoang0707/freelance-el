@@ -69,8 +69,8 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     editQuestion() {
-        if (this.selectedQuestions && this.selectedQuestions.length==1)
-            this.questionDialog.show(this.selectedQuestions[0]);
+        if (this.selectedQuestions && this.selectMode=='single')
+            this.questionDialog.show(this.selectedQuestions);
     }
 
     deleteMultipleQuestions(){
