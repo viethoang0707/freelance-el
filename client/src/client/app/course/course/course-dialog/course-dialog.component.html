@@ -38,42 +38,43 @@
             </div>
           </span>
         </div>
-        <div class="ui-g-12 ">
-          <label>{{'Summary'|translate}}</label>
-          <textarea pInputTextarea [(ngModel)]="object.summary" name="summary"></textarea>
-        </div>
-        <div class="ui-g-12 ">
-          <label>{{'Description'|translate}}</label>
-          <textarea pInputTextarea [(ngModel)]="object.description" name="description"></textarea>
-        </div>
-        <div class="ui-g-12 ">
-          <div class="ui-g-6">
+        <div class="ui-g-12">
+          <div class="ui-g-3 logo-course">
             <label>{{'Logo'|translate}}</label>
             <image-base64 [(src64)]="object.logo"></image-base64>
           </div>
-          <div class="ui-g-6">
-            <label>{{'Mode'|translate}}</label>
-            <div style="margin:10px 0">
-              <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1" #mode="ngModel" required></p-radioButton>
-            </div>
-            <div style="margin-bottom:10px">
-              <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode" inputId="opt2" required></p-radioButton>
-            </div>
-            <div *ngIf="mode.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
-              <div *ngIf="mode.errors.required">
-                  {{'Mode is required' | translate}}
+          <div class="ui-g-3 mode-course">
+            <div>
+              <label>{{'Mode'|translate}}</label>
+              <div style="margin:10px 0">
+                <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1" #mode="ngModel" required></p-radioButton>
+              </div>
+              <div style="margin-bottom:10px">
+                <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode" inputId="opt2" required></p-radioButton>
+              </div>
+              <div *ngIf="mode.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+                <div *ngIf="mode.errors.required">
+                    {{'Mode is required' | translate}}
+                </div>
               </div>
             </div>
+            <div>
+              <button type="buton" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
+            </div>
           </div>
-          
+          <div class="ui-g-6">
+            <div>
+              <label>{{'Summary'|translate}}</label>
+              <textarea pInputTextarea [(ngModel)]="object.summary" name="summary"></textarea>
+            </div>
+            <div>
+              <label>{{'Description'|translate}}</label>
+              <textarea pInputTextarea [(ngModel)]="object.description" name="description"></textarea>
+            </div>
+          </div>
         </div>
       </div>
     </form>
-    <div class="ui-g ui-fluid form-group" style="margin-bottom: 20px;">
-      <div class="ui-g-6">
-        <button type="buton" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
-      </div>
-    </div>
     <select-user-dialog></select-user-dialog>
   </p-scrollPanel>
   <p-footer>
