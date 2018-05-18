@@ -1,10 +1,10 @@
-
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { CourseUnit } from './course-unit.model';
 import * as _ from 'underscore';
+import { GroupCache } from '../../services/cache.service';
 
 @Model('res.groups')
 export class Group extends BaseModel{
@@ -26,8 +26,16 @@ export class Group extends BaseModel{
     order: string;
     parent_id: number;
 
-    static listByCategory(context:APIContext, category):Observable<any> {
-        return Group.search(context,[], "[('category','=','"+category+"')]");
+    static listUserGroup(context:APIContext):Observable<any> {
+        return GroupCache.listUserGroup(context);
+    }
+
+    static listQuestionGroup(context:APIContext):Observable<any> {
+        return GroupCache.listQuestionGroup(context);
+    }
+
+    static listCourseGroup(context:APIContext):Observable<any> {
+        return GroupCache.listCourseGroup(context);
     }
 
     static listBySyllabus(context:APIContext, sylId:number):Observable<any> {

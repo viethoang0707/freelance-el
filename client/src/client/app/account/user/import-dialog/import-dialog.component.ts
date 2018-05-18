@@ -60,6 +60,7 @@ export class UserImportDialog extends BaseComponent {
 					subscriptions.push(user.save(this));
 				}
 			});
+			this.startTransaction();
 			Observable.merge(...subscriptions).subscribe(
 				()=> {
 					this.completed++;
@@ -71,6 +72,7 @@ export class UserImportDialog extends BaseComponent {
 				()=> {
 					this.onImportCompleteReceiver.next();
 					this.hide();
+					this.closeTransaction();
 				});
 		});
 	}

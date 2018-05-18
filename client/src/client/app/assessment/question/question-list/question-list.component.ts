@@ -34,6 +34,8 @@ export class QuestionListComponent extends BaseComponent {
     total: number;
     questionsFilter: Question[];
     treeUtils: TreeUtils;
+    deleteMores: boolean = false;
+    selectedQuestions: any;
 
     constructor() {
         super();
@@ -59,7 +61,7 @@ export class QuestionListComponent extends BaseComponent {
         question.type = type;
         this.questionDialog.show(question);
         this.questionDialog.onCreateComplete.subscribe(() => {
-            this.loadQuestions();
+            this.loadQuestionsAction();
         });
     }
 
@@ -67,18 +69,37 @@ export class QuestionListComponent extends BaseComponent {
         if (this.selectedQuestion)
             this.questionDialog.show(this.selectedQuestion);
         this.questionDialog.onUpdateComplete.subscribe(() => {
-            this.loadQuestions();
+            this.loadQuestionsAction();
         });
     }
 
-    delete() {
-        if (this.selectedQuestion)
+    deleteMore(questions) {
+        if (questions && questions.length)
             this.confirm('Are you sure to delete ?', () => {
-                this.selectedQuestion.delete(this).subscribe(() => {
-                    this.loadQuestions();
+                var subscriptions = _.map(questions, (question: Question) => {
+                        return question.delete(this);
+                    });
+                    Observable.forkJoin(...subscriptions).subscribe(() => {
+                    this.selectedQuestions = [];
+                    this.deleteMores = !this.deleteMores;
+                    this.loadQuestionsAction();
                     this.selectedQuestion = null;
                 });
             });
+    }
+
+    delete(){
+        if(this.selectedQuestion)
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedQuestion.delete(this).subscribe(() => {
+                    this.loadQuestionsAction();
+                   this.selectedQuestion = null;
+                });
+            });
+    }
+
+    deleteState(){
+        this.deleteMores = !this.deleteMores;
     }
 
     loadQuestions() {
@@ -87,7 +108,12 @@ export class QuestionListComponent extends BaseComponent {
             this.questionsFilter = questions;
         });
     }
-
+    loadQuestionsAction(){
+        Question.all(this).subscribe(questions => {
+            this.questions = questions;
+            this.selectQuestion();
+        });
+    }
     import() {
         this.questionImportDialog.show();
         this.questionImportDialog.onImportComplete.subscribe(() => {
@@ -95,17 +121,25 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    selectQuestion(selectedGroupNodes)
+    selectQuestion()
     {
         this.questionsFilter = this.questions.filter(item => {
-            for(var i=0; i < selectedGroupNodes.length; i++)
+            for(var i=0; i < this.selectedGroupNodes.length; i++)
             {
-            if(selectedGroupNodes[i].data.id == item.group_id)
+            if(this.selectedGroupNodes[i].data.id == item.group_id)
             {
                 return true;
             }
             } 
             return false;
         });
+    }
+
+    nodeSelect(event: any) {
+        if (this.selectedGroupNodes.length != 0) {
+            this.selectQuestion();
+        } else {
+            this.loadQuestions();
+        }
     }
 }

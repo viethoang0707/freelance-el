@@ -38,13 +38,16 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
     }
 
     save() {
+        this.startTransaction();
         if (!this.object.id) {
             this.object.save(this).subscribe(() => {
                 this.hide();
                 this.onCreateCompleteReceiver.next(this.object);
                 this.success('Object created successfully.');
+                this.closeTransaction();
             },()=> {
                 this.error('Permission denied');
+                this.closeTransaction();
             });
         }
         else {
@@ -52,8 +55,10 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
                 this.hide();
                 this.onUpdateCompleteReceiver.next(this.object);
                 this.success('Object saved successfully.') ;
+                this.closeTransaction();
             },()=> {
                 this.error('Permission denied');
+                this.closeTransaction();
             });
         }
     }

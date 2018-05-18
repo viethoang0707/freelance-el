@@ -69,34 +69,18 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     }
 
     delete() {
-        if(this.selectedNode.data.category == "course")
+        var subscription = null;
+        if(this.category == "course")
+            subscription =  Course.listByGroup(this, this.selectedNode.data.id);
+        if(this.category == "organization")
+            subscription =  User.listByGroup(this, this.selectedNode.data.id)
+        if(this.category == "question")
+            subscription =  Question.listByGroup(this, this.selectedNode.data.id);
+        if(subscription)
         {
-            Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
-                if(courses.length > 0){
-                    this.warn('The group contains course.');
-                }
-                else{
-                    this.confirmDelete();
-                }
-            });
-        }
-        if(this.selectedNode.data.category == "organization")
-        {
-            User.listByGroup(this, this.selectedNode.data.id).subscribe(users => {
-               if(users.length > 0){
-                    this.warn('The group contains user.');
-                }
-                else{
-                    this.confirmDelete();
-                }
-            });
-        }
-
-        if(this.selectedNode.data.category == "question")
-        {
-            Question.listByGroup(this, this.selectedNode.data.id).subscribe(questions => {
-                if(questions.length > 0){
-                    this.warn('The group contains question.');
+            subscription.subscribe(items => {
+                if(items.length > 0){
+                    this.warn('The group is used by another content.');
                 }
                 else{
                     this.confirmDelete();
@@ -106,10 +90,19 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     }
 
     loadGroups() {
-        Group.listByCategory(this, this.category).subscribe(groups => {
-            this.groups = groups;
-            this.tree = this.treeUtils.buildGroupTree(groups);
-        });
+        var subscription = null;
+        if(this.category == "course")
+            subscription =  Group.listCourseGroup(this);
+        if(this.category == "organization")
+            subscription =  Group.listUserGroup(this);
+        if(this.category == "question")
+            subscription =  Group.listQuestionGroup(this);
+         if (subscription)  
+            subscription.subscribe(groups => {
+                this.groups = groups;
+                this.tree = this.treeUtils.buildGroupTree(groups);
+            });
+        }
     }
     
 }
