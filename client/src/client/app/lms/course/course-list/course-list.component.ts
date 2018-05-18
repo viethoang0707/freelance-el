@@ -40,6 +40,11 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.currentUser = this.authService.UserProfile;
+        this.loadCourses();
+    }
+
+    loadCourses() {
+        this.startTransaction();
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             members = _.filter(members, (member=> {
                 return (member.course_id && (member.course_mode=='self-study' || member.class_id))
@@ -78,6 +83,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                     else
                         return 0;
                 });
+                this.closeTransaction();
             });
         });
     }
@@ -96,18 +102,22 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     editSyllabus(course:Course) {
+        this.startTransaction();
         this.getCourseSyllabus(course).subscribe(syllabus => {
             this.syllabusDialog.show(syllabus);
+            this.closeTransaction();
         });
     }
 
     studyCourse( course:Course,member: CourseMember) {
         if ( course.status =='published') {
+            this.startTransaction();
             CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
                 if (syl && syl.status == 'published')
                     this.router.navigate(['/lms/courses/study',course.id, member.id]);
                 else
                     this.error('The course has not been published');
+                this.closeTransaction();
             });
         }
         else {
@@ -117,11 +127,13 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     manageCourse( course: Course,member: CourseMember) {
         if ( course.status =='published') {
+            this.startTransaction();
             CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
                 if (syl && syl.status == 'published')
                     this.router.navigate(['/lms/courses/manage',course.id, member.id]);
                 else
                     this.error('The course has not been published');
+                this.closeTransaction();
             });
         }
         else {

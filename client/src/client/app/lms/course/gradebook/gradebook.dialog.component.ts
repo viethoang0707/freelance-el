@@ -76,9 +76,20 @@ export class GradebookDialog extends BaseComponent {
     show(member: CourseMember) {
         this.display = true;
         this.member = member;
-        Certificate.byMember(this, member.id).subscribe((certificate:any) => {
+        this.loadCertificate();
+        this.loadExamScore();
+    }
+
+    loadCertificate() {
+        this.startTransaction();
+        Certificate.byMember(this, this.member.id).subscribe((certificate:any) => {
             this.certificate = certificate;
+            this.closeTransaction();
         });
+    }
+
+    loadExamScore() {
+        this.startTransaction();
         ExamMember.listByUser(this, this.member.user_id).subscribe(members => {
             var examIds = _.pluck(members, 'exam_id');
             Exam.array(this, examIds)
@@ -103,6 +114,7 @@ export class GradebookDialog extends BaseComponent {
                         });
                     }));
                 });
+              this.closeTransaction();
         });
     }
 }

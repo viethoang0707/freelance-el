@@ -36,7 +36,7 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 		this.question = question;
 		this.answer = answer;
 		this.checkTrueOption = '';
-		if (this.question.id)
+		if (this.question.id) {
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
 				options.forEach(opt => {
@@ -47,6 +47,7 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 				});
 				console.log(this.checkTrueOption);
 			});
+		}
 	}
 
 	saveEditor(): Observable<any> {
@@ -81,10 +82,12 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 
 	removeOption(option: QuestionOption) {
 		if (option.id) {
+			this.startTransaction();
 			option.delete(this).subscribe(() => {
 				this.options = _.reject(this.options, (obj) => {
 					return obj == option;
 				});
+				this.closeTransaction();
 			})
 		} else
 			this.options = _.reject(this.options, (obj) => {

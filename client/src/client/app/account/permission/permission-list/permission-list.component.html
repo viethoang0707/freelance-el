@@ -4,9 +4,9 @@
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="edit()" *ngIf="selectedPermission"></button>
-                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" *ngIf="selectedPermission"></button>
+                    <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addPermission()" icon="ui-icon-add"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editPermission()" *ngIf="selectedPermission"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deletePermission()" *ngIf="selectedPermission"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <button pButton type="button" icon="ui-icon-people" class="secondary-btn" (click)="permissionMember()" label="{{'Members'|translate}}"*ngIf="selectedPermission"></button>

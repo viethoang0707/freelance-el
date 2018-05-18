@@ -38,6 +38,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.startTransaction();
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             members = _.filter(members, (member=> {
                 return (member.exam_id);
@@ -72,6 +73,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                         else
                             return 0;
                     });
+                    this.closeTransaction();
                 });
         });
     }

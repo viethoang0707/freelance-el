@@ -69,11 +69,7 @@ export class ExamMember extends BaseModel{
             if (!submit)
                 return Observable.of(null);
             else
-                return Answer.listBySubmit(context, submit.id).map(answers => {
-                    return _.reduce(answers,  (sum, ans)=> {
-                        return sum + (+ans.score);
-                    },0); 
-                });
+                return submit.score;
         });
     }
 

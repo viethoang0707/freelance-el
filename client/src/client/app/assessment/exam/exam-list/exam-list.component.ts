@@ -37,7 +37,7 @@ export class ExamListComponent extends BaseComponent {
         };
     }
 
-    enroll() {
+    enrollExam() {
         if (this.selectedExam)
             this.examEnrollDialog.enroll(this.selectedExam);
     }
@@ -47,7 +47,7 @@ export class ExamListComponent extends BaseComponent {
     }
 
 
-    add() {
+    addExam() {
         var exam = new Exam();
         exam.supervisor_id =  this.authService.UserProfile.id;
         this.examDialog.show(exam);
@@ -56,27 +56,23 @@ export class ExamListComponent extends BaseComponent {
         });
     }
 
-    edit() {
+    editExam() {
         if (this.selectedExam)
             this.examDialog.show(this.selectedExam);
-        this.examDialog.onUpdateComplete.subscribe(() => {
-            this.loadExams();
-        });
     }
 
-    delete() {
+    deleteExam() {
         if (this.selectedExam)
             this.confirm('Are you sure to delete ?', () => {
                 this.selectedExam.delete(this).subscribe(() => {
                     this.loadExams();
                     this.selectedExam = null;
                 })
-            }
-            );
+            });
     }
 
     onDayClick() {
-        this.add();
+        this.addExam();
     }
 
     onEventClick(event) {
@@ -84,10 +80,11 @@ export class ExamListComponent extends BaseComponent {
         this.selectedExam = _.find(this.exams, (exam) => {
             return exam.id == examId;
         });
-        this.edit();
+        this.editExam();
     }
 
     loadExams() {
+        this.startTransaction();
         Exam.all(this).subscribe(exams => {
             this.exams = exams;
             this.events = _.map(exams, (exam) => {
@@ -107,6 +104,7 @@ export class ExamListComponent extends BaseComponent {
                 else
                     return 0;
             });
+            this.closeTransaction();
         });
     }
 }

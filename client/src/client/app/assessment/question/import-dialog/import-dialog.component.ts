@@ -48,7 +48,7 @@ export class QuestionImportDialog extends BaseComponent {
 
 	import() {
 		var subscriptions = [];
-		Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
+		Group.listQuestionGroup(this).subscribe(groups => {
 			for (var i = 0; i < this.records.length;) {
 				var record = this.records[i];
 				var question = new Question();
@@ -82,6 +82,7 @@ export class QuestionImportDialog extends BaseComponent {
 				} else
 					i++;
 			}
+			this.startTransaction();
 			Observable.merge(...subscriptions).subscribe(
 				() => {
 					this.completed++;
@@ -93,6 +94,7 @@ export class QuestionImportDialog extends BaseComponent {
 				() => {
 					this.onImportCompleteReceiver.next();
 					this.hide();
+					this.closeTransaction();
 				});
 		});
 	}

@@ -57,28 +57,32 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		if (this.unit.id)
+		if (this.unit.id) {
+			 this.startTransaction();
 			 ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
 			 	this.exerciseQuestions =  exerciseQuestions;
 			 	if (this.mode=='preview')
 				 	setTimeout(()=>{
 	                    var componentHostArr =  this.questionsComponents.toArray();
-	                        for (var i =0;i<exerciseQuestions.length;i++) {
-	                            var exerciseQuestion =  exerciseQuestions[i];
-	                            var componentHost = componentHostArr[i];
-	                            this.previewQuestion(exerciseQuestion,componentHost);
-	                        }
-	                    }, 0); 
-				 if (this.mode=='study') {
+                        for (var i =0;i<exerciseQuestions.length;i++) {
+                            var exerciseQuestion =  exerciseQuestions[i];
+                            var componentHost = componentHostArr[i];
+                            this.previewQuestion(exerciseQuestion,componentHost);
+                        }
+                        this.closeTransaction();
+	               }, 0); 
+				 else if (this.mode=='study') {
 				 	this.qIndex = 0;
 				 	this.displayQuestion(this.qIndex);
+				 	this.closeTransaction();
 				 }
 			 });
-
+			}
 
 	}
 
 	previewQuestion(exerciseQuestion: ExerciseQuestion, componentHost:any) {
+		this.startTransaction();
         Question.get(this, exerciseQuestion.question_id).subscribe((question)=> {
             var detailComponent = QuestionRegister.Instance.lookup(question.type);
             if (detailComponent) {
@@ -86,25 +90,10 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
                 var componentRef = componentHost.viewContainerRef.createComponent(componentFactory);
                 (<IQuestion>componentRef.instance).mode = 'preview' ;
                 (<IQuestion>componentRef.instance).render(question);
-            }            
+            }
+            this.closeTransaction();            
         });
     }
-
-	removeOldQuestions():Observable<any> {
-		if (this.unit.id) {
-			var delSubscriptions = [];
-			_.each(this.exerciseQuestions, (question)=> {
-				delSubscriptions.push(question.delete(this));
-			});
-			if (delSubscriptions.length)
-				return Observable.forkJoin(...delSubscriptions);
-			else
-				return Observable.of(null);
-		} else {
-			this.exerciseQuestions = [];
-			return Observable.of(null);
-		}
-	}
 
 	saveEditor():Observable<any> {
 		return this.unit.save(this).flatMap(()=> {
@@ -128,16 +117,20 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				exerciseQuestion.title =  question.title;
 				subscriptions.push(exerciseQuestion.save(this));
 			});
+			this.startTransaction();
 			Observable.zip(...subscriptions).subscribe(exerciseQuestions => {
 				this.loadExerciseQuestions();
+				this.closeTransaction();
 			});
 		});
 	}
 
 	loadExerciseQuestions() {
+		this.startTransaction();
 		ExerciseQuestion.listByExercise(this, this.unit.id).subscribe(exerciseQuestions => {
 			this.exerciseQuestions =  exerciseQuestions;
-			});
+			this.closeTransaction();
+		});
 	}
 
 
@@ -175,6 +168,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		this.qIndex = index;
 		this.stage = 'question';
 		this.currentQuestion = this.exerciseQuestions[index];
+		this.startTransaction();
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			var detailComponent = QuestionRegister.Instance.lookup(question.type);
 			let viewContainerRef = this.studyQuestionComponent.viewContainerRef;
@@ -185,6 +179,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				(<IQuestion>this.componentRef.instance).mode = 'study';
 				(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
 			}
+			this.closeTransaction();
 		});
 
 	}

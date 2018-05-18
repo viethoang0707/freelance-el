@@ -64,7 +64,6 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
             this.studentCount = count;
         });    
         this.loadExams();
-        // this.loadRecentCourse();
         this.loadCourses();
     }
 
@@ -79,17 +78,11 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
     editExam(exam) {
         this.examDialog.show(exam);
-        this.examDialog.onUpdateComplete.subscribe(() => {
-            this.loadExams();
-        });
     }
 
     editCourse(course) {
         this.course = course;
         this.courseDialog.show(this.course);
-        this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.loadCourses();
-        });
     }
 
     onDayClick() {
@@ -105,6 +98,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     loadExams() {
+        this.startTransaction();
         Exam.all(this).subscribe(exams => {
             this.exams = exams;
             this.events = _.map(exams, (exam)=> {
@@ -116,25 +110,15 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
                     allDay: true
                 }
             });
+            this.closeTransaction();
         });
     }
 
-    loadRecentCourse() {
-        var cloud_acc = this.authService.CloudAcc;
-        var startDateStr = moment(this.dateUtils.firstDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
-        var endDateStr = moment(this.dateUtils.lastDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
-        this.apiService.search(Course.Model,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]",
-         cloud_acc.id, cloud_acc.api_endpoint).subscribe(courses => {
-             this.courses = courses;
-         });
-    }
-
     loadCourses() {
-        var cloud_acc = this.authService.CloudAcc;
-        var startDateStr = moment(this.dateUtils.firstDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
-        var endDateStr = moment(this.dateUtils.lastDateOfMonth(this.now)).format(SERVER_DATETIME_FORMAT);
-        Course.search(this,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]", ).subscribe(courses => {
+        this.startTransaction();
+        Course.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(courses => {
             this.courses = courses;
+            this.closeTransaction();
         });
     }
 

@@ -52,6 +52,7 @@ export class GradebookListDialog extends BaseComponent {
 	show(courseClass: CourseClass) {
 		this.display = true;
 		this.courseClass = courseClass;
+		this.startTransaction();
 		CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 			this.records = _.filter(members, (member)=> {
 				return member.role =='student';
@@ -75,6 +76,7 @@ export class GradebookListDialog extends BaseComponent {
 						    	record["completion"] = 0;
 						});
 					}));
+					this.closeTransaction();
 				});
 			});
 		});

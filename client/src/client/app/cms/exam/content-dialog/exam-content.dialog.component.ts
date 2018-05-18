@@ -86,6 +86,7 @@ export class ExamContentDialog extends BaseComponent {
 
 	generateQuestion() {
 		this.sheet.finalized = true;
+		this.startTransaction();
 		this.sheet.save(this).subscribe(() => {
 			this.examQuestions = [];
 			_.each(QUESTION_LEVEL, (val, key)=> {
@@ -108,13 +109,16 @@ export class ExamContentDialog extends BaseComponent {
 						});
 						var score = selectors[0].score;
 						questions = questions.slice(0, selectors[0].number);
+						this.startTransaction();
 						this.createExamQuestionFromQuestionBank(questions, score).subscribe(examQuestions => {
 							this.examQuestions = this.examQuestions.concat(examQuestions);
 							this.examQuestions = _.shuffle(this.examQuestions);
 							this.totalScore = _.reduce(examQuestions, (memo, q: ExamQuestion) => { return memo + +q.score; }, 0);
+							this.closeTransaction();
 						});
 					});
 			});
+			this.closeTransaction();
 		});
 	}
 
@@ -122,17 +126,31 @@ export class ExamContentDialog extends BaseComponent {
 		this.initControl();
 		this.display = true;
 		this.exam = exam;
-		ExamGrade.listByExam(this, exam.id).subscribe(grades => {
+		this.loadExamGrade();
+		this.loadQuestionSheet();
+	}
+
+	loadExamGrade() {
+		this.startTransaction();
+		ExamGrade.listByExam(this, this.exam.id).subscribe(grades => {
 			this.grades = grades;
+			this.closeTransaction();
 		});
-		QuestionSheet.byExam(this, exam.id).subscribe(sheet => {
+	}
+
+	loadQuestionSheet() {
+		this.startTransaction();
+		QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
+				this.startTransaction();
 				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
+					this.closeTransaction();
 				});
-				Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
+				this.startTransaction();
+				Group.listQuestionGroup(this).subscribe(groups => {
 					this.groups = groups;
 					QuestionSelector.listBySheet(this, this.sheet.id).subscribe(selectors => {
 						this.selectors = selectors;
@@ -151,20 +169,22 @@ export class ExamContentDialog extends BaseComponent {
 								return this.treeUtils.findTreeNode(this.tree[key], group_id);
 							}));
 						});
+						this.closeTransaction();
 					});
 				});
-
+				this.closeTransaction();
 			}
 			else {
 				this.sheet = new QuestionSheet();
-				this.sheet.exam_id = exam.id;
+				this.sheet.exam_id = this.exam.id;
 				this.sheet.save(this).subscribe(sheet => {
 					this.sheet = sheet;
-					Group.listByCategory(this, GROUP_CATEGORY.QUESTION).subscribe(groups => {
+					Group.listQuestionGroup(this).subscribe(groups => {
 						this.groups = groups;
 						_.each(QUESTION_LEVEL, (val, key)=> {
 							this.tree[key] = this.treeUtils.buildGroupTree(groups);
 						});
+						this.closeTransaction();
 					});
 				});
 			}
@@ -214,9 +234,11 @@ export class ExamContentDialog extends BaseComponent {
 				}
 			}));
 		});
+		this.startTransaction();
 		return Observable.forkJoin(...subscriptions).subscribe(() => {
 			this.hide();
-			this.messageService.add({ severity: 'success', summary: 'Success', detail: this.translateService.instant('Content saved successfully.') });
+			this.success('Content saved successfully.');
+			this.closeTransaction();
 		});
 	}
 
@@ -228,10 +250,12 @@ export class ExamContentDialog extends BaseComponent {
 
 	removeGrade(grade: ExamGrade) {
 		if (grade.id) {
+			this.startTransaction();
 			grade.delete(this).subscribe(() => {
 				this.grades = _.reject(this.grades, (obj) => {
 					return obj == grade;
 				});
+				this.closeTransaction();
 			})
 		} else
 			this.grades = _.reject(this.grades, (obj) => {

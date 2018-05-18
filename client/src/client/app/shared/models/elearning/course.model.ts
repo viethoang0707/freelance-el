@@ -58,4 +58,8 @@ export class Course extends BaseModel{
         return CourseCache.listByGroupAndMode(context,groupId, mode);
     }
 
+    static searchByDate(context:APIContext, start:Date, end:Date):Observable<any> {
+        return CourseCache.searchByDate(context, start, end);
+    }
+
 }

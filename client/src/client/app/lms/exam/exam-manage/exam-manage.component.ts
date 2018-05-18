@@ -53,12 +53,14 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => { 
 	        var memberId = +params['memberId']; 
 	        var examId = +params['examId']; 
+            this.startTransaction();
 	        Exam.get(this, examId).subscribe(exam => {
 	        	ExamMember.get(this, memberId).subscribe(member => {
 	        		this.member =  member;
 					this.exam =  exam;
 					this.loadScores();
 					this.loadAnswers();
+                    this.closeTransaction();
 	        	});
 	        });
 	    }); 
@@ -71,6 +73,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     loadScores() {
+        this.startTransaction();
         ExamQuestion.listOpenQuestionByExam(this, this.exam.id).subscribe(questions => {
             this.questions = questions;
             var questionIds = _.pluck(questions,'question_id');
@@ -94,10 +97,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                                 });
                                 this.markRecords.push(record);
                             });
-          
-                        
                     })
                 });
+                this.closeTransaction();
             });
         });
     }
@@ -112,6 +114,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     loadAnswers() {
+        this.startTransaction();
         ExamGrade.listByExam(this, this.exam.id).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
                 this.scoreRecords = members;
@@ -124,6 +127,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                             member["grade"] = grade.name;
                     });
                 });
+                this.closeTransaction();
             });
         });
     }

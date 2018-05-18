@@ -61,10 +61,12 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
 
     selectExam() {
     	if (this.selectedExam) {
+            this.startTransaction();
     		ExamMember.listByExam(this, this.selectedExam.id).subscribe(members => {
 				ExamGrade.listByExam(this,this.selectedExam.id).subscribe(grades => {
 					this.generateReport(this.selectedExam, grades, members).subscribe(records => {
 		    			this.records = records;
+                        this.closeTransaction();
 		    		});
 				});
 			});	

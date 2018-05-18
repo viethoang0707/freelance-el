@@ -29,19 +29,27 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-    	ConferenceMember.listByUser(this, this.authService.UserProfile.id)
-    	.subscribe(members => {
-            members =  _.filter(members, (member=> {
-                return member.conference_id
-            }));
-    		this.members = members;
-    		_.each(members, (member)=> {
-    			member.conference = new Conference();
-    			Conference.get(this, member.conference_id).subscribe(conference => {
-    				member.conference = conference;
-    			});
-    		});
-    	});
+    	this.loadConference();
+    }
+
+    loadConference() {
+        this.startTransaction();
+        ConferenceMember.listByUser(this, this.authService.UserProfile.id)
+            .subscribe(members => {
+                members =  _.filter(members, (member=> {
+                    return member.conference_id
+                }));
+                var confIds = _.pluck(members, 'conference_id');
+                Conference.array(this, confIds).subscribe(conferences=> {
+                    _.each(members, (member) => {
+                        member.conference = _.find(conferences, conference=> {
+                            return conference.id == member.conference_id;
+                        });
+                    });
+                    this.members = members;
+                });
+                this.closeTransaction();
+            });
     }
 
     joinConference(member) {

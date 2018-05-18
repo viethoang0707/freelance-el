@@ -64,4 +64,8 @@ export class ConferenceMember extends BaseModel{
     static listByClass( context:APIContext, classId: number): Observable<any[]> {
         return ConferenceMember.search(context,[],"[('class_id','=',"+classId+")]");
     }
+
+    static listByConference( context:APIContext, conferenceId: number): Observable<any[]> {
+        return ConferenceMember.search(context,[],"[('conference_id','=',"+conferenceId+")]");
+    }
 }

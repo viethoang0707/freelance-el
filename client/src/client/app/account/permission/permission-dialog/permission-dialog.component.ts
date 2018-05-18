@@ -18,23 +18,8 @@ import { GROUP_CATEGORY } from '../../../shared/models/constants';
 })
 export class PermissionDialog extends BaseDialog<Permission> {
 
-    tree: TreeNode[];
-    selectedNode: TreeNode;
-
 	constructor() {
 		super();
 	}
-
-	nodeSelect(event:any) {
-		if (this.selectedNode) {
-			this.object.etraining_group_id = this.selectedNode.data.id;
-		}
-	}
-
-	ngOnInit() {
-		
-	}
-
-
 }
 

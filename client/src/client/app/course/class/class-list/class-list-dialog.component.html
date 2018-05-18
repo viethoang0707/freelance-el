@@ -3,9 +3,9 @@
       <div class="ui-g-12 ">
         <p-toolbar>
           <div class="ui-toolbar-group-left ">
-            <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
-            <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="edit() " *ngIf="selectedClass"></button>
-            <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="delete() " *ngIf="selectedClass"></button>
+            <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addClass()" icon="ui-icon-add"></button>
+            <button pButton type="button " label="{{ 'Edit'|translate}} " class="purple-btn " icon="ui-icon-mode-edit " (click)="editClass() " *ngIf="selectedClass"></button>
+            <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteClass() " *ngIf="selectedClass"></button>
           </div>
           <div class="ui-toolbar-group-right ">
             <button pButton type="button " label="{{ 'Enroll'|translate}} " class="green-btn " icon="ui-icon-people " *ngIf="selectedClass" (click)="enroll() "></button>

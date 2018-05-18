@@ -1,10 +1,10 @@
-
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
+import { ExamCache } from '../../services/cache.service';
 
 @Model('etraining.exam')
 export class Exam extends BaseModel{
@@ -55,6 +55,10 @@ export class Exam extends BaseModel{
         if (this.end.getTime() < now.getTime())
             return false;
         return true;
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        return ExamCache.all(context);
     }
 
     containsOpenEndQuestion(context:APIContext):Observable<any> {

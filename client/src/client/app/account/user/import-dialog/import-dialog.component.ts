@@ -47,7 +47,7 @@ export class UserImportDialog extends BaseComponent {
 
 	import() {
 		var subscriptions = [];
-		Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
+		Group.listUserGroup(this).subscribe(groups => {
 			_.each(this.records, (record)=> {
 				var user = new User();
 				Object.assign(user, record);

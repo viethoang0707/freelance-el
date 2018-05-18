@@ -35,7 +35,6 @@ export class AnswerPrintDialog extends BaseComponent {
     submission: Submission;
     account: CloudAccount;
 
-
      @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
      @ViewChild('printSection') printSection;
 
@@ -57,11 +56,13 @@ export class AnswerPrintDialog extends BaseComponent {
         this.exam = exam;
         this.member = member;
         this.qIndex = 0;
+        this.startTransaction();
         Submission.byMember(this, this.member.id).subscribe((submit:Submission) => {
             if (submit) {
                 this.submission = submit;
                 this.startReview();
             }
+            this.closeTransaction();
         });
     }
 
@@ -77,14 +78,9 @@ export class AnswerPrintDialog extends BaseComponent {
     }
 
     startReview() {
+        this.startTransaction();
         QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
-            ExamQuestion.listBySheet(this, sheet.id).map(examQuestions => {
-                var offset = this.member.id;
-                return _.map(examQuestions, (obj, order)=> {
-                    var index = (offset + sheet.seed+order)%examQuestions.length;
-                    return examQuestions[index];
-                });
-            }).subscribe(examQuestions => {
+            ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions => {
                 this.examQuestions = examQuestions;
                 this.fetchAnswers().subscribe(answers => {
                     this.answers = answers;
@@ -93,12 +89,11 @@ export class AnswerPrintDialog extends BaseComponent {
                         for (var i =0;i<examQuestions.length;i++) {
                             var examQuestion =  examQuestions[i];
                             var componentHost = componentHostArr[i];
-                            console.log(i,componentHost);
                             this.displayQuestion(examQuestion,componentHost);
                         }
                     }, 0); 
-
                 });
+                this.closeTransaction();
             });
         });
     }

@@ -33,7 +33,7 @@ export class MemberPermissionDialog extends BaseComponent {
 	show(permission:Permission) {
 		this.display = true;
 		this.permission = permission;
-        this.loadUsers();
+        this.loadMembers();
 	}
 
 	hide() {
@@ -41,7 +41,7 @@ export class MemberPermissionDialog extends BaseComponent {
 	}
 
 
-	 add() {
+	 addMember() {
         this.usersDialog.show();
         this.usersDialog.onSelectUsers.subscribe(users => {
             var subscriptions = [];
@@ -50,28 +50,30 @@ export class MemberPermissionDialog extends BaseComponent {
                 subscriptions.push(user.save(this));
             });
             Observable.forkJoin(...subscriptions).subscribe(()=> {
-                this.loadUsers();
+                this.loadMembers();
             });
         });
     }
 
-    delete() {
+    deleteMember() {
         if (this.selectedUsers && this.selectedUsers.length)
             this.confirm('Are you sure to remove ?', () => {
-                    var subscriptions = _.map(this.selectedUsers,(user:User) => {
-                        user.permission_id = null;
-                        return user.save(this);
-                    });
-                    Observable.forkJoin(...subscriptions).subscribe(()=> {
-                        this.selectedUsers = [];
-                        this.loadUsers();
-                    });
+                var subscriptions = _.map(this.selectedUsers,(user:User) => {
+                    user.permission_id = null;
+                    return user.save(this);
                 });
+                Observable.forkJoin(...subscriptions).subscribe(()=> {
+                    this.selectedUsers = [];
+                    this.loadMembers();
+                });
+            });
     }
 
-    loadUsers() {
+    loadMembers() {
+        this.startTransaction();
         User.listByPermission(this, this.permission.id).subscribe(users => {
              this.users = users;
+             this.closeTransaction();
         });
     }
 }

@@ -32,7 +32,6 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	@ViewChild(SelectUsersDialog) userDialog : SelectUsersDialog;
 	records: any;
 	rowGroupMetadata: any;
-	flag: boolean= false;
 	GROUP_CATEGORY = GROUP_CATEGORY;
     reportUtils: ReportUtils;
 
@@ -58,15 +57,15 @@ export class CourseByMemberReportComponent extends BaseComponent{
     }
 
     selectUserGroup() {
+        this.startTransaction();
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
-			this.flag = true;
     		User.listByGroup(this, group.id).subscribe(users => {
     			this.generateReport(users).subscribe(records => {
 					records = records.filter( record => record.course_name != false);
 					this.records = records;
 					this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
-					this.flag = false;
+                    this.closeTransaction();
 				});
 			});	
     	});
@@ -75,12 +74,10 @@ export class CourseByMemberReportComponent extends BaseComponent{
     selectIndividualUsers() {
     	this.userDialog.show();
     	this.userDialog.onSelectUsers.subscribe((users:User[]) => {
-			this.flag = true;
 			this.generateReport(users).subscribe(records => {
 				records = records.filter( record => record.course_name != false);
 				this.records = records;
 				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
-				this.flag = false;
 			});
 		});
     }

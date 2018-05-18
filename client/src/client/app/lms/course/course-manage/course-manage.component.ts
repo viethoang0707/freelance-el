@@ -71,33 +71,43 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => { 
 	        var memberId = +params['memberId']; 
 	        var courseId = +params['courseId']; 
+	        this.startTransaction();
 	        Course.get(this, courseId).subscribe(course => {
 	        	CourseMember.get(this, memberId).subscribe(member => {
 	        		this.member =  member;
-					this.course =  course;
-					CourseClass.listByCourse(this, course.id)
-					.map(classList => {
-						return _.filter(classList, (obj:CourseClass)=> {
-							return member.class_id == obj.id;
-						});
-					})
-					.subscribe(classList => {
-						this.classes =  classList;
-					});
+					this.course = 	 course;
+					this.loadCourseClass();
 					this.loadFaqs();
 					this.loadMaterials();
+					this.loadCourseSyllabus();
+					this.closeTransaction();
 	        	});
-	        	CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
-		        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
-						this.units = units;
-						this.tree = this.sylUtils.buildGroupTree(units);
-			        });
-		        });
+	        	
 	        });
-	        
 	    }); 
+	}
 
-		
+	loadCourseClass() {
+		CourseClass.listByCourse(this, this.course.id)
+			.map(classList => {
+				return _.filter(classList, (obj:CourseClass)=> {
+					return this.member.class_id == obj.id;
+				});
+			})
+			.subscribe(classList => {
+				this.classes =  classList;
+			});
+	}
+
+	loadCourseSyllabus() {
+		this.startTransaction();
+    	CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
+        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
+				this.units = units;
+				this.tree = this.sylUtils.buildGroupTree(units);
+				this.closeTransaction();
+	        });
+        });
 	}
 
 	manageConference() {
@@ -119,9 +129,11 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	loadFaqs() {
+		this.startTransaction();
 		CourseFaq.listByCourse(this, this.course.id)
 			.subscribe(faqs => {
 				this.faqs = faqs;
+				this.closeTransaction();
 			})
 	}
 
@@ -137,25 +149,26 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	editFaq() {
 		if (this.selectedFaq)
 			this.faqDialog.show(this.selectedFaq);
-		this.faqDialog.onUpdateComplete.subscribe(() => {
-			this.loadFaqs();
-		});
 	}
 
 	deleteFaq() {
 		if (this.selectedFaq)
 			this.confirm('Are you sure to delete ?', () => {
-					this.selectedFaq.delete(this).subscribe(() => {
-						this.loadFaqs();
-						this.selectedFaq = null;
-					})
-				});
+				this.startTransaction();
+				this.selectedFaq.delete(this).subscribe(() => {
+					this.loadFaqs();
+					this.selectedFaq = null;
+					this.closeTransaction();
+				})
+			});
 	}
 
 	loadMaterials() {
+		this.startTransaction();
 		CourseMaterial.listByCourse(this, this.course.id)
 			.subscribe(materials => {
 				this.materials = materials;
+				this.closeTransaction();
 			});
 	}
 
@@ -174,19 +187,18 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	editMaterial() {
 		if (this.selectedMaterial)
 			this.materialDialog.show(this.selectedMaterial);
-		this.materialDialog.onUpdateComplete.subscribe(() => {
-			this.loadMaterials();
-		});
 	}
 
 	deleteMaterial() {
 		if (this.selectedMaterial)
 			this.confirm('Are you sure to delete ?',() => {
-					this.selectedMaterial.delete(this).subscribe(() => {
-						this.loadMaterials();
-						this.selectedMaterial = null;
-					})
-				});
+				this.startTransaction();
+				this.selectedMaterial.delete(this).subscribe(() => {
+					this.loadMaterials();
+					this.selectedMaterial = null;
+					this.closeTransaction();
+				})
+			});
 	}
 
 	nodeSelect(event:any) {

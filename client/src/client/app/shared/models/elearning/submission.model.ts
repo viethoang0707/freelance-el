@@ -16,6 +16,7 @@ export class Submission extends BaseModel{
         this.exam_id = undefined;
         this.end = undefined;
         this.start = undefined;
+        this.score = undefined;
 	}
     exam_id: number;
     user_id: number;
@@ -25,6 +26,7 @@ export class Submission extends BaseModel{
     end: Date;
     @FieldProperty<Date>()
     start: Date;
+    score: number;
 
     static byUser( context:APIContext, userId: number): Observable<any> {
         return Submission.search(context,[],"[('user_id','=',"+userId+")]").map(submits =>{

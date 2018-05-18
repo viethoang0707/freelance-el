@@ -34,7 +34,6 @@ export class MemberByCourseReportComponent extends BaseComponent{
 	records: any;
 	summary: any;
 	GROUP_CATEGORY =  GROUP_CATEGORY;
-	flag: boolean= false;
     reportUtils: ReportUtils;
 
     constructor( private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
@@ -61,28 +60,28 @@ export class MemberByCourseReportComponent extends BaseComponent{
     }
 
     selectCourseGroup() {
+        this.startTransaction();
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
-			this.flag = true;
     		this.summary = {};
     		Course.listByGroup(this, group.id).subscribe((courses:Course[]) => {
     			this.generateReport(courses).subscribe(records => {
 					this.records = records;
 					this.summary =  this.generateReportFooter(records);
-					this.flag = false;
+                    this.closeTransaction();
 				});
     		});
     	});
     }
 
     selectIndividualCourses() {
+        this.startTransaction();
 		this.courseDialog.show();
     	this.courseDialog.onSelectCourses.subscribe((courses:Course[]) => {
-			this.flag = true;
 			this.generateReport(courses).subscribe(records => {
 				this.records = records;
 				this.summary =  this.generateReportFooter(records);
-				this.flag = false;
+                this.closeTransaction();
 			});
 		});
     }

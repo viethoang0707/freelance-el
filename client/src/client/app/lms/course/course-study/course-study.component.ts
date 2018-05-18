@@ -110,22 +110,26 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 					this.loadCertificate();
 					this.loadConference();
 	        	});
-	        	CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
-		        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
-		        		this.syl = syl;
-						this.units = units;
-						this.tree = this.sylUtils.buildGroupTree(units);
-						this.treeList = this.sylUtils.flattenTree(this.tree);
-						CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt:CourseLog)=> {
-							if (attempt) {
-								this.selectedNode =  this.sylUtils.findTreeNode(this.tree, attempt.res_id);
-							}
-						});
-			        });
-		        });
 	        });
-	        
 	    }); 
+	}
+
+	loadCouseSyllabus() {
+		this.startTransaction();
+		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
+        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
+        		this.syl = syl;
+				this.units = units;
+				this.tree = this.sylUtils.buildGroupTree(units);
+				this.treeList = this.sylUtils.flattenTree(this.tree);
+				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt:CourseLog)=> {
+					if (attempt) {
+						this.selectedNode =  this.sylUtils.findTreeNode(this.tree, attempt.res_id);
+					}
+				});
+				this.closeTransaction();
+	        });
+        });
 	}
 
 	nodeSelect(event:any) {
@@ -145,34 +149,40 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 
 	prevUnit() {
 		if (this.selectedUnit)  {
+			this.startTransaction();
 			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
 				var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
 				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, prevUnit.id);
 				this.selectedUnit =  this.selectedNode.data;
 				this.studyMode = false;
 				this.unloadCurrentUnit();
+				this.closeTransaction();
 			});
 		} 
 	}
 
 	nextUnit() {
 		if (this.selectedUnit)  {
+			this.startTransaction();
 			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
 				var nextUnit = this.computedNextUnit(this.selectedUnit.id);
 				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, nextUnit.id);
 				this.selectedUnit =  this.selectedNode.data;
 				this.studyMode = false;
 				this.unloadCurrentUnit();
+				this.closeTransaction();
 			});
 		} 
 	}
 
 	completeUnit() {
 		if (this.selectedUnit)  {
+			this.startTransaction();
 			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
 				this.selectedUnit["completed"] = true;
 				this.studyMode = false;
 				this.unloadCurrentUnit();
+				this.closeTransaction();
 			});
 		} 
 	}
@@ -219,19 +229,19 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 					prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success=> {
 						if (success) {
 							this.openUnit(this.selectedUnit);
-							CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+							CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
 						}
 						else
 							this.error(this.translateService.instant('You have not completed previous unit'));
 					});
 				else {
 					this.openUnit(this.selectedUnit);
-					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
 				}
 			} 
  			else {
  				this.openUnit(this.selectedUnit);
- 				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit);
+ 				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
 			} 
 		}
 	}
@@ -253,12 +263,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	}
 
 	loadCertificate() {
+		this.startTransaction();
 		Certificate.byMember(this, this.member.id).subscribe((certificate:any) => {
             this.certificate = certificate;
+            this.closeTransaction();
         });
 	}
 
 	loadConference() {
+		this.startTransaction();
 		ConferenceMember.byCourseMember(this, this.member.id)
             .subscribe(member => {
             	this.conferenceMember =  member;
@@ -266,11 +279,13 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	                Conference.get(this, member.conference_id).subscribe(conference => {
 	                    this.conference = conference;
 	                });
+	            this.closeTransaction();
             });
 	}
 
 	loadExam() {
-		if (this.member.class_id)
+		if (this.member.class_id) {
+			this.startTransaction();
 			ClassExam.listByClass(this, this.member.class_id).subscribe(classExams=> {
 				var examIds = _.pluck(classExams, 'exam_id');
 				ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
@@ -309,11 +324,14 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 		                    });
 		                });
 		            });
+				this.closeTransaction();
 			});	
+		}
 	}
 
 	loadGradebook() {
-		if (this.member.class_id)
+		if (this.member.class_id) {
+			this.startTransaction();
 			ClassExam.listByClass(this, this.member.class_id).subscribe(classExams=> {
 				var examIds = _.pluck(classExams, 'exam_id');
 				ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
@@ -351,21 +369,27 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 		                            return 0;
 		                    });
 		                });
+		                this.closeTransaction();
 		            });
 			});	
+		}
 	}
 
 	loadFaqs() {
+		this.startTransaction();
 		CourseFaq.listByCourse(this, this.course.id)
 			.subscribe(faqs => {
 				this.faqs = faqs;
+				this.closeTransaction();
 			})
 	}
 
 	loadMaterials() {
+		this.startTransaction();
 		CourseMaterial.listByCourse(this, this.course.id)
 			.subscribe(materials => {
 				this.materials = materials;
+				this.closeTransaction();
 			});
 	}
 

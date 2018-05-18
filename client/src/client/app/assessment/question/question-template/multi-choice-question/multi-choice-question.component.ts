@@ -36,10 +36,12 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 	render(question, answer?) {
 		this.question = question;
 		this.answer =  answer;
-		if (this.question.id)
+		if (this.question.id) {
+			this.startTransaction();
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
-				if (this.answer && this.answer.id)
+				if (this.answer && this.answer.id) {
+					this.startTransaction();
 					SubAnswer.listByAnswer(this, answer.id).subscribe((subans: SubAnswer[]) => {
 						this.subanswers = subans;
 						_.each(options, (option=> {
@@ -56,8 +58,12 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 							}
 							option["subAns"] = subAns;
 						}));
+						this.closeTransaction();
 					});
+				}
+				this.closeTransaction();
 			});
+		}
 	}
 
 	saveEditor(): Observable<any> {
@@ -87,10 +93,12 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 
 	removeOption(option: QuestionOption) {
 		if (option.id) {
+			this.startTransaction();
 			option.delete(this).subscribe(() => {
 				this.options = _.reject(this.options, (obj)=> {
 					return obj == option;
 				});
+				this.closeTransaction();
 			})
 		} else
 			this.options = _.reject(this.options, (obj)=> {

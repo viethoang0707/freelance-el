@@ -77,6 +77,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.display = true;
 		this.syl = syl;
 		this.buildCourseTree();		
+		this.checkWorkflow();
+	}
+
+	checkWorkflow() {
 		Course.get(this, this.syl.course_id).subscribe(course => {
 			this.course = course;
 			this.dataAccessService.filter(course, 'SAVE').subscribe(success=> {
@@ -84,8 +88,8 @@ export class CourseSyllabusDialog extends BaseComponent {
 				this.user.IsSuperAdmin ;
 			});
 		});
-		Ticket.byWorkflowObject(this, syl.id, CourseSyllabus.Model).subscribe((ticket)=> {
-				this.openTicket =  ticket;
+		Ticket.byWorkflowObject(this, this.syl.id, CourseSyllabus.Model).subscribe((ticket)=> {
+			this.openTicket =  ticket;
 		});
 	}
 
@@ -95,18 +99,21 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	buildCourseTree() {
-		if (this.syl)
+		if (this.syl) {
+			this.startTransaction();
 			CourseUnit.listBySyllabus(this,this.syl.id).subscribe(units => {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
+				this.closeTransaction();
 	        });
+		}
 	}
 
 	showSetting() {
 		this.settingDialog.show(this.syl);
 	}
 
-	add(type:string) {
+	addUnit(type:string) {
 		if (type!='folder' && (!this.selectedNode || this.selectedNode.data.type != 'folder')) {
 			this.error('You need to select a folder.') ;
 			return;
@@ -119,15 +126,17 @@ export class CourseSyllabusDialog extends BaseComponent {
 		unit.name = 'New unit';
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
 		unit.order = maxOrder;
+		this.startTransaction();
 		unit.save(this).subscribe(()=> {
 			if (this.selectedNode)
-				this.sylUtils.addChildNode(this.selectedNode, unit)
+				this.sylUtils.addChildNode(this.selectedNode, unit);
 			else
-				this.sylUtils.addRootNode(this.tree, unit)
+				this.sylUtils.addRootNode(this.tree, unit);
+			this.closeTransaction();
 		});
 	}
 
-	edit() {
+	editUnit() {
 		if (this.selectedNode) {
 			this.unitDialog.show(this.selectedNode.data);
 			this.unitDialog.onUpdateComplete.subscribe(()=> {
@@ -136,16 +145,18 @@ export class CourseSyllabusDialog extends BaseComponent {
 		}
 	}
 
-	delete() {
+	deleteUnit() {
 		if (this.selectedNode) {
 			if (this.selectedNode.children.length) {
 				this.error('Cannot delete non-empty folder');
 				return;
 			}
             this.confirm('Are you sure to delete ?', () => {
+            	this.startTransaction();
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
+                    this.closeTransaction();
                 })
              });
 		}
@@ -163,7 +174,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 			var subscriptions = _.map(this.units, (unit) => {
 				return unit.save(this);
 			});
-			Observable.forkJoin(subscriptions).subscribe();
+			this.startTransaction();
+			Observable.forkJoin(subscriptions).subscribe(() => {
+				this.closeTransaction();
+			});
 		}
 	}
 
@@ -174,7 +188,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 			var subscriptions = _.map(this.units, (unit) => {
 				return unit.save(this);
 			});
-			Observable.forkJoin(subscriptions).subscribe();
+			this.startTransaction();
+			Observable.forkJoin(subscriptions).subscribe(()=> {
+				this.closeTransaction();
+			});
 		}
 	}
 
@@ -203,8 +220,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 		ticket.submit_user_id =  this.user.id;
 		ticket.approve_user_id = this.course.supervisor_id;
 		ticket.title = 'Course syllabus published request';
+		this.startTransaction();
 		ticket.save(this).subscribe(()=> {
 			this.socketService.notify(ticket.title, this.course.supervisor_id,this.authService.CloudAcc.id);
+			this.closeTransaction();
 		});
 	}
 

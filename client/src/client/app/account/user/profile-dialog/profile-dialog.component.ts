@@ -52,9 +52,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 				if (object.group_id) {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 				}
-				this.closeTransaction();
 			});
-			this.startTransaction();
 			CourseMember.listByUser(this, object.id)
 				.map(members => {
 					return _.filter(members, (member:CourseMember)=> {

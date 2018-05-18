@@ -12,11 +12,6 @@
       </p-fileUpload>
       <a href="{{lecture.slide_url}}" target="_blank" *ngIf="lecture.slide_url">{{lecture.filename}}</a>
     </div>
-    <div class="ui-g-9">
-      <div class="spinner" [hidden]="!uploadInprogress">
-        <p-progressSpinner></p-progressSpinner>
-      </div>
-    </div>
   </div>
 </div>
 <div *ngIf="mode=='preview'">

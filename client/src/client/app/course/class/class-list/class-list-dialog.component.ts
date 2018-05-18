@@ -48,8 +48,10 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     loadClasses() {
+        this.startTransaction();
         CourseClass.listByCourse(this, this.course.id).subscribe(classes => {
             this.classes = classes;
+            this.closeTransaction();
         });
     }
 
@@ -63,7 +65,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         this.loadClasses();
     }
 
-    add() {
+    addClass() {
         var clazz = new CourseClass();
         clazz.course_id =  this.course.id;
         clazz.course_name =  this.course.name;
@@ -73,15 +75,12 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         });        
     }
 
-    edit() {
+    editClass() {
         if (this.selectedClass)
             this.classDialog.show(this.selectedClass);
-        this.classDialog.onUpdateComplete.subscribe(() => {
-            this.loadClasses();
-        });
     }
 
-    delete() {
+    deleteClass() {
         if (this.selectedClass) {
             CourseMember.listByClass(this, this.selectedClass.id).subscribe((members)=> {
                 if (members.length)

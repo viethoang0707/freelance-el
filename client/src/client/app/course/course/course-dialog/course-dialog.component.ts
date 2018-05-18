@@ -79,17 +79,8 @@ export class CourseDialog extends BaseDialog<Course> {
 					this.openTicket =  ticket;
 				});
 			object.supervisor_id =  this.authService.UserProfile.id;
-			this.dataAccessService.filter(object, 'SAVE').subscribe(success=> {
-				this.allowToChangeState = !object.supervisor_id || 
-				this.user.IsSuperAdmin || 
-				(success && this.user.id != object.supervisor_id) ;
-			});
-			Group.listCourseGroup(this).subscribe(groups => {
-				this.tree = this.treeUtils.buildGroupTree(groups);
-				if (object.group_id) {
-					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
-				}
-			});
+			this.checkWorkflow(object);
+			this.buildCourseTree(object);
 		});
 		this.onCreateComplete.subscribe(object=> {
 			if (this.submitForReview)
@@ -98,6 +89,25 @@ export class CourseDialog extends BaseDialog<Course> {
 		this.onUpdateComplete.subscribe(object=> {
 			if (this.submitForReview)
 				this.review();
+		});
+	}
+
+	checkWorkflow(object) {
+		this.dataAccessService.filter(object, 'SAVE').subscribe(success=> {
+			this.allowToChangeState = !object.supervisor_id || 
+			this.user.IsSuperAdmin || 
+			(success && this.user.id != object.supervisor_id) ;
+		});
+	}
+
+	buildCourseTree(object) {
+		this.startTransaction();
+		Group.listCourseGroup(this).subscribe(groups => {
+			this.tree = this.treeUtils.buildGroupTree(groups);
+			if (object.group_id) {
+				this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
+			}
+			this.closeTransaction();
 		});
 	}
 
@@ -110,8 +120,10 @@ export class CourseDialog extends BaseDialog<Course> {
 		ticket.submit_user_id =  this.user.id;
 		ticket.approve_user_id = this.user.supervisor_id;
 		ticket.title = 'Course published request';
+		this.startTransaction();
 		ticket.save(this).subscribe(()=> {
 			this.socketService.notify(ticket.title, this.user.supervisor_id,this.authService.CloudAcc.id);
+			this.closeTransaction();
 		});
 	}
 }

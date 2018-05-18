@@ -12,6 +12,11 @@ import { APIContext } from '../models/context';
 import { Group } from '../models/elearning/group.model';
 import { Course } from '../models/elearning/course.model';
 import { Question } from '../models/elearning/question.model';
+import { CourseMember } from '../models/elearning/course-member.model';
+import { Exam } from '../models/elearning/exam.model';
+import * as _ from 'underscore';
+import * as moment from 'moment';
+import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '..//models/constants';
 
 const CACHE_TIMEOUT = 1000 * 60 * 5;
 
@@ -27,19 +32,19 @@ export class CacheService {
     objectChage(record, method) {
         if (record.Model == Group.Model) {
             var groupCache = new GroupCache();
-            groupCache.updateCache(record, method);
+            groupCache.updateCache(record, method, this);
         }
         if (record.Model == User.Model) {
             var userCache = new UserCache();
-            userCache.updateCache(record, method);
+            userCache.updateCache(record, method, this);
         }
         if (record.Model == Course.Model) {
             var courseCache = new CourseCache();
-            courseCache.updateCache(record, method);
+            courseCache.updateCache(record, method, this);
         }
         if (record.Model == Question.Model) {
             var questionCache = new QuestionCache();
-            questionCache.updateCache(record, method);
+            questionCache.updateCache(record, method, this);
         }
     }
 
@@ -77,40 +82,40 @@ export class CacheService {
 }
 
 export interface ICache<T extends BaseModel> {
-    updateCache(record:T, method:string):boolean
+    updateCache(record:T, method:string, cacheService: CacheService)
 }
 
 export class GroupCache implements ICache<Group> {
-    updateCache(record: Group, method) {
+    updateCache(record: Group, method:string, cacheService: CacheService) {
         if (record.category == 'organization') {
-            if (context.cacheService.hit('USER_GROUP')) {
-                var groups = context.cacheService.load('USER_GROUP');
+            if (cacheService.hit('USER_GROUP')) {
+                var groups = cacheService.load('USER_GROUP');
                 if (method == 'CREATE')
                     groups.push(record);
                 if (method == 'DELETE')
-                    groups = _.reject(groups, (group=> {
+                    groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
-                    }));
+                    });
             }
         }
         if (record.category == 'question') {
-            if (context.cacheService.hit('QUESTION_GROUP')) {
-                var groups = context.cacheService.load('QUESTION_GROUP');
+            if (cacheService.hit('QUESTION_GROUP')) {
+                var groups = cacheService.load('QUESTION_GROUP');
                 if (method == 'CREATE')
                     groups.push(record);
                 if (method == 'DELETE')
-                    groups = _.reject(groups, (group=> {
+                    groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
                     }));
             }
         }
         if (record.category == 'course') {
-            if (context.cacheService.hit('COURSE_GROUP')) {
-                var groups = context.cacheService.load('COURSE_GROUP');
+            if (cacheService.hit('COURSE_GROUP')) {
+                var groups = cacheService.load('COURSE_GROUP');
                 if (method == 'CREATE')
                     groups.push(record);
                 if (method == 'DELETE')
-                    groups = _.reject(groups, (group=> {
+                    groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
                     }));
             }
@@ -145,9 +150,9 @@ export class GroupCache implements ICache<Group> {
 
 
 export class UserCache implements ICache<User> {
-    updateCache(record: User, method) {
-        if (context.cacheService.hit('USER')) {
-            var users = context.cacheService.load('USER');
+    updateCache(record: User, method:string, cacheService: CacheService) {
+        if (cacheService.hit('USER')) {
+            var users = cacheService.load('USER');
             if (method == 'CREATE')
                 users.push(record);
             if (method == 'DELETE')
@@ -168,7 +173,7 @@ export class UserCache implements ICache<User> {
     static allAdmin( context:APIContext): Observable<any[]> {
         if (context.cacheService.hit('USER'))
             return Observable.of(context.cacheService.load('USER')).map(users=> {
-                users = _.filter(users, user=> {
+                return users = _.filter(users, (user:User)=> {
                     return user.is_admin;
                 });
             });
@@ -178,7 +183,7 @@ export class UserCache implements ICache<User> {
     static listByGroup(context:APIContext, groupId):Observable<any> {
         if (context.cacheService.hit('USER'))
             return Observable.of(context.cacheService.load('USER')).map(users=> {
-                users = _.filter(users, user=> {
+                users = _.filter(users, (user:User)=> {
                     return user.group_id == groupId;
                 });
             });
@@ -188,7 +193,7 @@ export class UserCache implements ICache<User> {
     static listByPermission(context:APIContext, permissionId):Observable<any> {
         if (context.cacheService.hit('USER'))
             return Observable.of(context.cacheService.load('USER')).map(users=> {
-                users = _.filter(users, user=> {
+                users = _.filter(users, (user:User)=> {
                     return user.permission_id == permissionId;
                 });
             });
@@ -199,9 +204,9 @@ export class UserCache implements ICache<User> {
 
 
 export class CourseCache implements ICache<Course> {
-    updateCache(record: Course, method) {
-        if (context.cacheService.hit('COURSE')) {
-            var courses = context.cacheService.load('COURSE');
+    updateCache(record: Course, method:string, cacheService: CacheService) {
+        if (cacheService.hit('COURSE')) {
+            var courses = cacheService.load('COURSE');
             if (method == 'CREATE')
                 courses.push(record);
             if (method == 'DELETE')
@@ -222,7 +227,7 @@ export class CourseCache implements ICache<Course> {
     static listByAuthor(context:APIContext, authorId):Observable<any> {
         if (context.cacheService.hit('COURSE'))
             return Observable.of(context.cacheService.load('COURSE')).map(courses=> {
-                courses = _.filter(courses, course=> {
+                courses = _.filter(courses, (course:Course)=> {
                     return course.author_id == authorId;
                 });
             });
@@ -232,7 +237,7 @@ export class CourseCache implements ICache<Course> {
     static listByGroup(context:APIContext, groupId):Observable<any> {
         if (context.cacheService.hit('COURSE'))
             return Observable.of(context.cacheService.load('COURSE')).map(courses=> {
-                courses = _.filter(courses, course=> {
+                courses = _.filter(courses, (course:Course)=> {
                     return course.group_id == groupId;
                 });
             });
@@ -242,21 +247,30 @@ export class CourseCache implements ICache<Course> {
     static listByGroupAndMode(context:APIContext, groupId, mode):Observable<any> {
         if (context.cacheService.hit('COURSE'))
             return Observable.of(context.cacheService.load('COURSE')).map(courses=> {
-                courses = _.filter(courses, course=> {
+                courses = _.filter(courses, (course:Course)=> {
                     return course.group_id == groupId && course.mode == mode;
                 });
             });
         return Course.search(context,[], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
 
+    static searchByDate(context:APIContext, start:Date, end:Date):Observable<any> {
+        if (context.cacheService.hit('COURSE'))
+            return Observable.of(context.cacheService.load('COURSE')).map(courses=> {
+                courses = _.filter(courses, (course:Course)=> {
+                    return course.create_date.getTime() >= start.getTime() && course.create_date.getTime() <= end.getTime();
+                });
+            });
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return Course.search(context,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]" );
+    }
 }
 
-
-
 export class QuestionCache implements ICache<Question> {
-    updateCache(record: Question, method) {
-        if (context.cacheService.hit('QUESTION')) {
-            var questions = context.cacheService.load('QUESTION');
+    updateCache(record: Question, method:string, cacheService: CacheService) {
+        if (cacheService.hit('QUESTION')) {
+            var questions = cacheService.load('QUESTION');
             if (method == 'CREATE')
                 questions.push(record);
             if (method == 'DELETE')
@@ -277,11 +291,33 @@ export class QuestionCache implements ICache<Question> {
     static listByGroup(context:APIContext, groupId):Observable<any> {
         if (context.cacheService.hit('QUESTION'))
             return Observable.of(context.cacheService.load('QUESTION')).map(questions=> {
-                questions = _.filter(questions, q=> {
+                questions = _.filter(questions, (q:Question)=> {
                     return q.group_id == groupId;
                 });
             });
         return Question.search(context,[], "[('group_id','=',"+groupId+")]");
+    }
+}
+
+export class ExamCache implements ICache<Exam> {
+    updateCache(record: Exam, method:string, cacheService: CacheService) {
+        if (cacheService.hit('EXAM')) {
+            var exams = cacheService.load('EXAM');
+            if (method == 'CREATE')
+                exams.push(record);
+            if (method == 'DELETE')
+                exams = _.reject(exams, (exam:Exam)=> {
+                    return exam.id == record.id;
+                });
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('EXAM'))
+            return Observable.of(context.cacheService.load('EXAM'));
+        return Exam.search(context,[],'[]').do(exams=> {
+            context.cacheService.save('EXAM',exams);
+        });
     }
 
 }

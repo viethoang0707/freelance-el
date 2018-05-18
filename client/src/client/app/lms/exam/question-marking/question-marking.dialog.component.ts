@@ -55,10 +55,12 @@ export class QuestionMarkingDialog extends BaseComponent {
 		var subscrptions = _.map(this.answers, (answer)=> {
 			return answer.save(this);
 		});
+		this.startTransaction();
 		Observable.forkJoin(...subscrptions).subscribe(()=> {
-			this.messageService.add({severity:'success', summary:'Marking', detail: 'Marking saved sucessfully'});
+			this.success('Marking saved sucessfully');
 			this.onMarkCompleteReceiver.next();
 			this.hide();
+			this.closeTransaction();
 		});
 	}
 }

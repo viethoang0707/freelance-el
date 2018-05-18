@@ -63,7 +63,7 @@ export class ClassExamListDialog extends BaseComponent {
 		}
 	}
 
-	add() {
+	addExam() {
 		var exam = new Exam();
 		exam.supervisor_id =  this.authService.UserProfile.id;
 		this.examDialog.show(exam);
@@ -79,34 +79,37 @@ export class ClassExamListDialog extends BaseComponent {
 				member.user_id = this.authService.UserProfile.id;
 				member.date_register = new Date();
 				member.status = 'active';
-				member.save(this).subscribe();
-				this.loadExams();
+				member.save(this).subscribe(()=> {
+					this.loadExams();
+				});
 			});
 		});
 	}
 
-	edit() {
+	editExam() {
 		if (this.selectedClassExam) {
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
-				this.examDialog.show(exam);
-				this.examDialog.onUpdateComplete.subscribe(() => {
-					this.loadExams();
-				});
+				this.examDialog.show(exam);;
 			});
 		}
 	}
 
 	manageExam() {
-		if (this.selectedClassExam) 
+		if (this.selectedClassExam)  {
+			this.startTransaction();
 			ExamMember.byExamAndUser(this,this.selectedClassExam.id, this.authService.UserProfile.id ).subscribe(member=> {
 				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.id, member.id]);
+				this.closeTransaction();
 			});
+		}
 	}
 
 	editContent() {
 		if (this.selectedClassExam) {
+			this.startTransaction();
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
-						this.examContentDialog.show(exam);
+				this.examContentDialog.show(exam);
+				this.closeTransaction();
 			});
 		}
 	}

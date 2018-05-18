@@ -37,7 +37,6 @@ declare var _: any;
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
 
-
     confMembers: ConferenceMember[];
     courses: Course[];
     currentUser: User;
@@ -56,6 +55,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     loadCourse() {
+        this.startTransaction();
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             members = _.filter(members, (member=> {
                 return (member.course_id && (member.course_mode=='self-study' || member.class_id))
@@ -81,11 +81,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         });
                         this.courses = courses;
                     });
+                    this.closeTransaction();
                 });
         });
     }
 
     loadExam() {
+        this.startTransaction();
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             members = _.filter(members, (member=> {
                 return (member.exam_id);
@@ -98,7 +100,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                             return member.exam_id == exam.id;
                         });
                         exam.member.examScore(this, exam.id).subscribe(score => {
-                            exam.member.score = score;
+                            if (score!=null)
+                                exam.member.score = score;
+                            else
+                                exam.member.score = '';
                         });
                         ExamQuestion.countByExam(this, exam.id).subscribe(count => {
                             exam.question_count = count;
@@ -107,23 +112,28 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     this.exams = _.filter(exams, (exam) => {
                         return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                     });
+                    this.closeTransaction();
                 });
         });
     }
 
     loadConference() {
+        this.startTransaction();
         ConferenceMember.listByUser(this, this.authService.UserProfile.id)
             .subscribe(members => {
                 members =  _.filter(members, (member=> {
                     return member.conference_id
                 }));
-                this.confMembers = members;
-                _.each(members, (member) => {
-                    member.conference = new Conference();
-                    Conference.get(this, member.conference_id).subscribe(conference => {
-                        member.conference = conference;
+                var confIds = _.pluck(members, 'conference_id');
+                Conference.array(this, confIds).subscribe(conferences=> {
+                    _.each(members, (member) => {
+                        member.conference = _.find(conferences, conference=> {
+                            return conference.id == member.conference_id;
+                        });
                     });
+                    this.confMembers = members;
                 });
+                this.closeTransaction();
             });
     }
 
@@ -152,7 +162,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editSyllabus(course: Course) {
+        this.startTransaction();
         this.getCourseSyllabus(course).subscribe(syllabus => {
+            this.closeTransaction();
             this.syllabusDialog.show(syllabus);
             this.syllabusDialog.onHide.subscribe(()=> {
                 this.loadCourse();
@@ -162,11 +174,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     studyCourse( course:Course,member: CourseMember) {
         if ( course.status =='published') {
+            this.startTransaction();
             CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
                 if (syl && syl.status == 'published')
                     this.router.navigate(['/lms/courses/study',course.id, member.id]);
                 else
                     this.error('The course has not been published');
+                this.closeTransaction();
             });
         }
         else {
@@ -176,11 +190,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     manageCourse( course: Course,member: CourseMember) {
         if ( course.status =='published') {
+            this.startTransaction();
             CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
                 if (syl && syl.status == 'published')
                     this.router.navigate(['/lms/courses/manage',course.id, member.id]);
                 else
                     this.error('The course has not been published');
+                this.closeTransaction();
             });
         }
         else {

@@ -27,7 +27,6 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	@Input() mode;
 	unit: CourseUnit;
 	lecture: SlideLecture;
-	uploadInprogress: boolean;
 
 
 	constructor(private ngZone: NgZone) {
@@ -38,6 +37,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
+		this.startTransaction();
 		SlideLecture.byCourseUnit(this, unit.id).subscribe((lecture: SlideLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -46,6 +46,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
 			}
+			this.closeTransaction();
 		});
 	}
 
@@ -54,11 +55,11 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
-		this.uploadInprogress = true;
+		this.startTransaction();
 		this.lecture.filename = file.name;
 		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				this.uploadInprogress = false;
+				this.closeTransaction();
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						if (file.name.endsWith('pdf'))
@@ -73,7 +74,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 				}
 			},
 			() => {
-				this.uploadInprogress = false;
+				this.closeTransaction();
 			}
 		);
 	}

@@ -164,6 +164,7 @@ export class ExamStudyDialog extends BaseComponent {
 		var subscriptions = [];
 		this.member.enroll_status = 'completed';
 		this.submission.end = new Date();
+		this.submission.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
 		subscriptions.push(this.member.save(this));
 		subscriptions.push(this.submission.save(this));
 		Observable.forkJoin(...subscriptions).subscribe(() => {

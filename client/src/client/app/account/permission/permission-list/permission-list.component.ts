@@ -40,27 +40,26 @@ export class PermissionListComponent extends BaseComponent {
     }
 
     loadPermission() {
+        this.startTransaction();
         Permission.all(this).subscribe(permissions => {
             this.permissions = permissions;
+            this.closeTransaction();
         });
     }
 
-    add(){
+    addPermission(){
         this.permissionDialog.show(new Permission());
         this.permissionDialog.onCreateComplete.subscribe(() => {
             this.loadPermission();
         });
     }
 
-    edit() {
+    editPermission() {
         if (this.selectedPermission)
             this.permissionDialog.show(this.selectedPermission);
-        this.permissionDialog.onUpdateComplete.subscribe(() => {
-            this.loadPermission();
-        });
     }
 
-    delete() {
+    deletePermission() {
         if (this.selectedPermission) {
             User.listByPermission(this, this.selectedPermission.id).subscribe(users=> {
                 if (users.length)

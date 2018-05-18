@@ -38,6 +38,7 @@ export class CourseActivityChartComponent extends BaseComponent implements OnIni
     }
 
     drawChart(duration:number) {
+        this..startTransaction();
         var end = new Date();
         var start = new Date(end.getTime() - duration * 24 * 60 * 60 * 1000);
         start.setHours(0, 0, 0, 0);
@@ -59,6 +60,7 @@ export class CourseActivityChartComponent extends BaseComponent implements OnIni
                     }
                 ]
             };
+            this.closeTransaction();
         });
 
     }

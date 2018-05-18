@@ -27,8 +27,6 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	@Input() mode;
 	unit: CourseUnit;
 	lecture: SCORMLecture;
-	uploadInprogress: boolean;
-
 
 	constructor(private ngZone: NgZone) {
 		super();
@@ -38,6 +36,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
+		this.startTransaction();
 		SCORMLecture.byCourseUnit(this, unit.id).subscribe((lecture: SCORMLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -46,6 +45,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
 			}
+			this.closeTransaction();
 		});
 	}
 
@@ -54,10 +54,10 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
-		this.uploadInprogress = true;
+		this.startTransaction();
 		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				this.uploadInprogress = false;
+				this.closeTransaction();
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.lecture.package_url = data["url"];
@@ -69,7 +69,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				}
 			},
 			() => {
-				this.uploadInprogress = false;
+				this.closeTransaction();
 			}
 		);
 	}

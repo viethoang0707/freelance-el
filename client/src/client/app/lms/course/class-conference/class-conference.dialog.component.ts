@@ -38,6 +38,7 @@ export class ClassConferenceDialog extends BaseComponent {
 	show(courseClass: CourseClass) {
 		this.display = true;
 		this.courseClass =  courseClass;
+		this.startTransaction();
 		Conference.byClass(this, courseClass.id).subscribe(conference => {
 			if (conference) {
 				this.conference = conference;
@@ -47,15 +48,18 @@ export class ClassConferenceDialog extends BaseComponent {
 			}
 			CourseMember.listByClass(this, courseClass.id).subscribe(members => {
 				this.members =  members;
-				_.each(members, (member)=> {
-					ConferenceMember.byCourseMember(this, member["id"]).subscribe(conferenceMember => {
-						if (conferenceMember) {
-							member["conferenceMember"] = conferenceMember;
-							member["is_active"] = conferenceMember.is_active;
-						} else
-							member["is_active"] = false;
+				if (this.conference) {
+					ConferenceMember.listByConference(this, this.conference.id).subscribe(confMembers=> {
+						_.each(members, (member)=> {
+							member["conferenceMember"] = _.find(confMembers, confMember=> {
+								return confMember.course_member_id == member.id;
+							});
+							member["is_active"] = member["conferenceMember"] && member["conferenceMember"].is_active;
+						});
+						
 					});
-				});
+				} 
+				this.closeTransaction();
 			});
 		});
 	}
@@ -67,11 +71,14 @@ export class ClassConferenceDialog extends BaseComponent {
 	openConference() {
 		if (this.conference.id && this.conference.status !='open' ) {
 			this.conference.status = 'open';
+			this.startTransaction();
 			this.conference.save(this).subscribe(()=> {
 				this.info('Conference open');
+				this.closeTransaction();
 			});
 		}
 		if (!this.conference.id ) {
+			this.startTransaction();
 			Room.createWebminarRoom(this, this.courseClass.name).subscribe(room => {
 				this.room = room;
 				this.conference.room_ref =  room.ref;
@@ -92,6 +99,7 @@ export class ClassConferenceDialog extends BaseComponent {
 							});
 						});
 					});
+					this.closeTransaction();
 				});
 			})
 			
@@ -102,8 +110,10 @@ export class ClassConferenceDialog extends BaseComponent {
 	closeConference() {
 		if (this.conference.id && this.conference.status !='closed') {
 			this.conference.status = 'closed';
+			this.startTransaction();
 			this.conference.save(this).subscribe(()=> {
-				this.messageService.add({severity:'info', summary:'Exam Info', detail: 'Conference closed'});
+				this.info('Conference closed');
+				this.closeTransaction();
 			});
 		}
 	}
@@ -111,23 +121,33 @@ export class ClassConferenceDialog extends BaseComponent {
 	accessControl(event:any, member: any) {
 		var conferenceMember = member.conferenceMember;
 		if (event.checked) {
+			this.startTransaction();
 			if (conferenceMember) {
 				conferenceMember.is_active = true;
-				conferenceMember.save(this).subscribe();
+				conferenceMember.save(this).subscribe(()=> {
+					this.closeTransaction();
+				});
 			} else {
 				RoomMember.createRoomMember(this, member.name, member.image, this.room.id, member.role).subscribe(roomMember => {
 					var conferenceMember = new ConferenceMember();
 					conferenceMember.conference_id =  this.conference.id;
 					conferenceMember.room_member_ref =  roomMember.ref;
 					conferenceMember.course_member_id =  member.id;
+					conferenceMember.is_active = true;
 					conferenceMember.save(this).subscribe(()=> {
 						member.conferenceMember = conferenceMember;
+						this.closeTransaction();
 					});
 				})
 			}
 		} else {
-			conferenceMember.is_active = false;
-			conferenceMember.save(this).subscribe();
+			this.startTransaction();
+			if (conferenceMember) {
+				conferenceMember.is_active = false;
+				conferenceMember.save(this).subscribe(()=> {
+					this.closeTransaction();
+				});
+			}
 		}
 	}
 }

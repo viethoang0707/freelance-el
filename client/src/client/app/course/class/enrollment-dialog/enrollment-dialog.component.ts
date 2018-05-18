@@ -75,7 +75,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	}
 
 
-	add(role: string) {
+	addMembers(role: string) {
 		this.usersDialog.show();
 		this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
 			this.processing = true;
@@ -116,7 +116,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-	delete(members) {
+	deleteMembers(members) {
         if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {
                 var subscriptions = _.map(members,(member:CourseMember) => {
@@ -131,7 +131,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	}
 	
 	loadMembers() {
-		if (this.course && !this.courseClass)
+		if (this.course && !this.courseClass) {
+			this.startTransaction();
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
@@ -141,8 +142,11 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					return member.role =='teacher';
 				});
 				this.selectedTeachers = [];
+				this.closeTransaction();
 			});
-		if (this.courseClass && this.courseClass)
+		}
+		if (this.courseClass && this.courseClass) {
+			this.startTransaction();
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
@@ -152,7 +156,9 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					return member.role =='teacher';
 				});
 				this.selectedTeachers = [];
+				this.closeTransaction();
 			});
+		}
 	}
 }
 

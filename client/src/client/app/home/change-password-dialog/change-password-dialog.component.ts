@@ -30,6 +30,7 @@ export class ChangePasswordDialog extends BaseComponent {
     }
 
     changePass() {
+        this.startTransaction();
         this.authService.changePass(this.old_pass, this.new_pass).subscribe((resp) => {
             if (resp.success) {
                 this.success('Action completed');
@@ -37,6 +38,7 @@ export class ChangePasswordDialog extends BaseComponent {
             } else {
                 this.success('Action failed');
             }
+            this.closeTransaction();
         });
     }
 
