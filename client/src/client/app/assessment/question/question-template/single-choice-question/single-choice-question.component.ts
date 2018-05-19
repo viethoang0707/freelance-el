@@ -40,12 +40,10 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
 				options.forEach(opt => {
-					console.log(opt);
 					if (!opt.is_correct && opt.is_correct == true) {
 						this.checkTrueOption = 'true';
 					}
 				});
-				console.log(this.checkTrueOption);
 			});
 		}
 	}

@@ -57,8 +57,9 @@ export class ExamStudyDialog extends BaseComponent {
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	componentRef: any;
+	WINDOW_HEIGHT:any;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver, private window:WindowRef) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.display = false;
 		this.examQuestions = [];
@@ -75,6 +76,7 @@ export class ExamStudyDialog extends BaseComponent {
 			unattempt: 0
 		}
 		this.validAnswer = 0;
+		this.WINDOW_HEIGHT =  $(window).height();
 	}
 
 	show(exam: Exam, member: ExamMember) {

@@ -34,11 +34,8 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 	
 	exam:Exam;
 	member: ExamMember;
-    submit: Submission;
-	markRecords: any;
-    selectedMarkRecord: any;
     scoreRecords: any;
-    selectedScoreRecord: any;
+    selectedRecord: any;
     questions: ExamQuestion[];
     @ViewChild(QuestionMarkingDialog) questionMarkDialog:QuestionMarkingDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog:AnswerPrintDialog;
@@ -66,17 +63,22 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 	}
 
 	mark() {
-        if (this.selectedMarkRecord) {
-            this.questionMarkDialog.show(this.selectedMarkRecord.member,this.selectedMarkRecord.answers, this.questions);
-        }
+        console.log(this.exam);
+        if (this.selectedRecord) 
+            this.exam.containsOpenEndQuestion(this).subscribe(success=> {
+                if (!success)
+                    this.warn('The exam does not contains any open question');
+                else
+                    this.questionMarkDialog.show(this.selectedRecord.member,this.selectedRecord.answers, this.questions);
+            });
     }
 
     viewAnswerSheet() {
-        if (this.selectedScoreRecord ) {
-            if (this.selectedScoreRecord.enroll_status !='completed')
+        if (this.selectedRecord ) {
+            if (this.selectedRecord.enroll_status !='completed')
                 this.info('Student has not completed the exam');
             else
-                this.answerSheetDialog.show(this.exam, this.selectedScoreRecord);
+                this.answerSheetDialog.show(this.exam, this.selectedRecord);
         }
     }
 

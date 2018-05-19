@@ -70,13 +70,14 @@ export abstract class BaseModel {
     static get(context:APIContext,id:number):Observable<any> {
     	var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-    	return context.apiService.get(model, id, [],cloud_acc.id, cloud_acc.api_endpoint).do(item => {
+    	return context.apiService.get(model, id, [],cloud_acc.id, cloud_acc.api_endpoint).flatMap(item => {
              var record =   MapUtils.deserializeModel(model, item);
              return context.dataAccessService.filter(record,'GET').flatMap(success=> {
                  if (!success)
                     return Observable.throw('Permission denied');
-                 else
+                 else {
                     return Observable.of(record);
+                }
              });             
         });
     }

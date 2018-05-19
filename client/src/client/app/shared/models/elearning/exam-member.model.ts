@@ -69,7 +69,7 @@ export class ExamMember extends BaseModel{
             if (!submit)
                 return Observable.of(null);
             else
-                return submit.score;
+                return Observable.of(submit.score);
         });
     }
 
