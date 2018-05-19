@@ -57,9 +57,9 @@ export class CourseByMemberReportComponent extends BaseComponent{
     }
 
     selectUserGroup() {
-        this.startTransaction();
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
+            this.startTransaction();
     		User.listByGroup(this, group.id).subscribe(users => {
     			this.generateReport(users).subscribe(records => {
 					records = records.filter( record => record.course_name != false);

@@ -13,6 +13,7 @@ import { SupervisorGuard } from './guards/supervisor.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { LangService } from './services/lang.service';
+import { WorkflowService } from './services/workflow.service';
 import { CacheService } from './services/cache.service';
 import { WebSocketService } from './services/socket.service';
 import { DataAccessService } from './services/data-access.service';
@@ -341,6 +342,7 @@ export class ErpSharedModule {
                 ExcelService,
                 CacheService,
                 LoadingService,
+                WorkflowService,
                 MenuService,
                 SettingService,
                 WebSocketService,

@@ -62,23 +62,21 @@ export class QuestionImportDialog extends BaseComponent {
 					question.type = type;
 					var options = [];
 					var optionLength = 1;
-					while (i + optionLength < this.records.length && !this.records[i + optionLength]["group_code"]) {
+					while (i + optionLength < this.records.length && !this.records[i + optionLength]["group_code"]) 
 						optionLength++;
-						if ((type == "sc" || type == "mc") && optionLength) {
-							for (var j = 0; j < optionLength && i < this.records.length; j++) {
-								var optionRecord = this.records[j + i];
-								var option = new QuestionOption();
-								option.is_correct = optionRecord["correct"] == 'Y';
-								option.content = optionRecord["option"];
-								options.push(option);
-							}
-							options = _.shuffle(options);
-							var subscription = question.createWithOption(this, options);
-							subscriptions.push(subscription);
-						} else {
-							i += optionLength;
+					if ((type == "sc" || type == "mc") && optionLength) {
+						for (var j = 0; j < optionLength && i < this.records.length; j++) {
+							var optionRecord = this.records[j + i];
+							var option = new QuestionOption();
+							option.is_correct = optionRecord["correct"] == 'Y';
+							option.content = optionRecord["option"];
+							options.push(option);
 						}
+						options = _.shuffle(options);
+						var subscription = question.createWithOption(this, options);
+						subscriptions.push(subscription);
 					}
+					i += optionLength;
 				} else
 					i++;
 			}

@@ -60,9 +60,9 @@ export class MemberByCourseReportComponent extends BaseComponent{
     }
 
     selectCourseGroup() {
-        this.startTransaction();
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
+            this.startTransaction();
     		this.summary = {};
     		Course.listByGroup(this, group.id).subscribe((courses:Course[]) => {
     			this.generateReport(courses).subscribe(records => {
@@ -75,9 +75,9 @@ export class MemberByCourseReportComponent extends BaseComponent{
     }
 
     selectIndividualCourses() {
-        this.startTransaction();
 		this.courseDialog.show();
     	this.courseDialog.onSelectCourses.subscribe((courses:Course[]) => {
+            this.startTransaction();
 			this.generateReport(courses).subscribe(records => {
 				this.records = records;
 				this.summary =  this.generateReportFooter(records);

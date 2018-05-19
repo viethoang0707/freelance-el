@@ -23,4 +23,8 @@ export class Comment extends BaseModel{
     submit_user_id__DESC__: string;
     @FieldProperty<Date>()
     date_submit: Date;
+
+    static listByTicket(context:APIContext, ticketId):Observable<any> {
+        return Comment.search(context,[], "[('ticket_id','=',"+ticketId+")]");
+    }
 }

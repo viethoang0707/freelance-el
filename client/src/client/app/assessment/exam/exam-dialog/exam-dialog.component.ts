@@ -12,7 +12,6 @@ import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS 
 import {SelectItem, MenuItem} from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
-import { TabPanel } from 'primeng/tabview';
 
 @Component({
     moduleId: module.id,

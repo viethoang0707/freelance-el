@@ -23,7 +23,7 @@ import { SubmissionDialog } from '../submission-dialog/submission.dialog.compone
 import 'rxjs/add/observable/timer';
 import {Message} from 'primeng/components/common/api';
 import {MessageService} from 'primeng/components/common/messageservice';
-
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
 declare var $: any;
 
 @Component({
@@ -57,9 +57,8 @@ export class ExamStudyDialog extends BaseComponent {
 	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	componentRef: any;
-	$: any = $;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver, private window:WindowRef) {
 		super();
 		this.display = false;
 		this.examQuestions = [];

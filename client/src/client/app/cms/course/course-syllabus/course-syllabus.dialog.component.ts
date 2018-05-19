@@ -16,6 +16,7 @@ import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-un
 import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-setting.dialog.component';
 import * as _ from 'underscore';
 import { Ticket } from '../../../shared/models/ticket/ticket.model';
+import { WorkflowService } from '../../../shared/services/workflow.service';
 
 @Component({
     moduleId: module.id,
@@ -49,7 +50,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(CourseSyllabusSettingDialog) settingDialog: CourseSyllabusSettingDialog;
 
-    constructor(private socketService:WebSocketService) {
+    constructor(private socketService:WebSocketService, private workflowService: WorkflowService) {
         super();
         this.sylUtils = new SyllabusUtils();
         this.items = [
@@ -81,12 +82,14 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	checkWorkflow() {
+		this.startTransaction();
 		Course.get(this, this.syl.course_id).subscribe(course => {
 			this.course = course;
 			this.dataAccessService.filter(course, 'SAVE').subscribe(success=> {
 				this.allowToChangeState = !this.course.supervisor_id || 
 				this.user.IsSuperAdmin ;
 			});
+			this.closeTransaction();
 		});
 		Ticket.byWorkflowObject(this, this.syl.id, CourseSyllabus.Model).subscribe((ticket)=> {
 			this.openTicket =  ticket;
@@ -94,7 +97,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	clearSelection() {
-		this.selectedNode =  null;
+		this.selectedNode = null;
 		this.selectedUnit = null;
 	}
 
@@ -115,7 +118,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	addUnit(type:string) {
 		if (type!='folder' && (!this.selectedNode || this.selectedNode.data.type != 'folder')) {
-			this.error('You need to select a folder.') ;
+			this.error(this.translateService.instant('You need to select a folder.')) ;
 			return;
 		}
 		var maxOrder = this.selectedNode ? this.selectedNode.children.length : this.tree.length; 
@@ -148,7 +151,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	deleteUnit() {
 		if (this.selectedNode) {
 			if (this.selectedNode.children.length) {
-				this.error('Cannot delete non-empty folder');
+				this.error(this.translateService.instant('Cannot delete non-empty folder'));
 				return;
 			}
             this.confirm('Are you sure to delete ?', () => {
@@ -212,24 +215,15 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	submitForReview() {
-		var ticket = new Ticket();
-		ticket.res_id =  this.syl.id;
-		ticket.res_model =  CourseSyllabus.Model;
-		ticket.content = `Course syllabus ${this.syl.name} is request to be published`;
-		ticket.date_open =  new Date();
-		ticket.submit_user_id =  this.user.id;
-		ticket.approve_user_id = this.course.supervisor_id;
-		ticket.title = 'Course syllabus published request';
 		this.startTransaction();
-		ticket.save(this).subscribe(()=> {
-			this.socketService.notify(ticket.title, this.course.supervisor_id,this.authService.CloudAcc.id);
+		this.workflowService.createCourseSyllabusPublishTicket(this, this.syl).subscribe(ticket=> {
 			this.closeTransaction();
 		});
 	}
 
 	updateStatus() {
 		this.syl.save(this).subscribe(()=> {
-			this.success('Syllabus status updated');
+			this.success(this.translateService.instant('Syllabus status updated'));
 		});
 	}
 

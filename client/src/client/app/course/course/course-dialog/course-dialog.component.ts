@@ -16,6 +16,7 @@ import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { WorkflowService } from '../../../shared/services/workflow.service';
 
 @Component({
 	moduleId: module.id,
@@ -30,17 +31,13 @@ export class CourseDialog extends BaseDialog<Course> {
 	selectedNode: TreeNode;
 	courseStatus: SelectItem[];
 	treeUtils: TreeUtils;
-	dataAccessService: DataAccessService;
-	socketService: WebSocketService;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	allowToChangeState : boolean;
 	submitForReview: boolean;
 	openTicket: Ticket;
 
-	constructor(dataAccessService: DataAccessService, socketService:WebSocketService) {
+	constructor(private socketService:WebSocketService, private workflowService: WorkflowService) {
 		super();
-		this.dataAccessService = dataAccessService;
-		this.socketService =  socketService;
 		this.treeUtils = new TreeUtils();
 		this.courseStatus = _.map(COURSE_STATUS, (val, key)=> {
 			return {
@@ -112,17 +109,8 @@ export class CourseDialog extends BaseDialog<Course> {
 	}
 
 	review() {
-		var ticket = new Ticket();
-		ticket.res_id =  this.object.id;
-		ticket.res_model =  Course.Model;
-		ticket.content = `Course ${this.object.name} is request to be published`;
-		ticket.date_open =  new Date();
-		ticket.submit_user_id =  this.user.id;
-		ticket.approve_user_id = this.user.supervisor_id;
-		ticket.title = 'Course published request';
 		this.startTransaction();
-		ticket.save(this).subscribe(()=> {
-			this.socketService.notify(ticket.title, this.user.supervisor_id,this.authService.CloudAcc.id);
+		this.workflowService.createCoursePublishTicket(this, this.object).subscribe(ticket=> {
 			this.closeTransaction();
 		});
 	}

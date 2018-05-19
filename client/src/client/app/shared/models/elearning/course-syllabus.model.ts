@@ -17,6 +17,8 @@ export class CourseSyllabus extends BaseModel{
         this.prequisite_course_id__DESC__ = undefined;
         this.complete_unit_by_order = undefined;
         this.status = undefined;
+        this.supervisor_id =  undefined;
+        this.supervisor_name = undefined;
 	}    
 
     name:string;
@@ -25,6 +27,8 @@ export class CourseSyllabus extends BaseModel{
     prequisite_course_id:number;
     prequisite_course_id__DESC__:string;
     complete_unit_by_order: boolean;
+    supervisor_id: number;
+    supervisor_name: string;
 
     static byCourse(context:APIContext, courseId: number):Observable<any> {
         return CourseSyllabus.search(context,[],"[('course_id','=',"+courseId+")]")

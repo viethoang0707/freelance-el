@@ -155,10 +155,12 @@ export class UserCache implements ICache<User> {
             var users = cacheService.load('USER');
             if (method == 'CREATE')
                 users.push(record);
-            if (method == 'DELETE')
-                users = _.reject(users, (user=> {
+            if (method == 'DELETE') {
+                users = _.reject(users, (user:User)=> {
                     return user.id == record.id;
-                }));
+                });
+                cacheService.save('USER',users);
+            }
         }
     }
 
@@ -209,10 +211,12 @@ export class CourseCache implements ICache<Course> {
             var courses = cacheService.load('COURSE');
             if (method == 'CREATE')
                 courses.push(record);
-            if (method == 'DELETE')
-                courses = _.reject(courses, (course=> {
+            if (method == 'DELETE') {
+                courses = _.reject(courses, (course:Course)=> {
                     return course.id == record.id;
-                }));
+                });
+                cacheService.save('COURSE',courses);
+            }
         }
     }
 
@@ -273,10 +277,12 @@ export class QuestionCache implements ICache<Question> {
             var questions = cacheService.load('QUESTION');
             if (method == 'CREATE')
                 questions.push(record);
-            if (method == 'DELETE')
-                questions = _.reject(questions, (q=> {
+            if (method == 'DELETE') {
+                questions = _.reject(questions, (q:Question)=> {
                     return q.id == record.id;
-                }));
+                });
+                cacheService.save('QUESTION',questions);
+            }
         }
     }
 
@@ -305,10 +311,12 @@ export class ExamCache implements ICache<Exam> {
             var exams = cacheService.load('EXAM');
             if (method == 'CREATE')
                 exams.push(record);
-            if (method == 'DELETE')
+            if (method == 'DELETE') {
                 exams = _.reject(exams, (exam:Exam)=> {
                     return exam.id == record.id;
                 });
+                cacheService.save('EXAM',exams);
+            }
         }
     }
 

@@ -21,11 +21,13 @@ export class Ticket extends BaseModel{
         this.date_close = undefined;
         this.res_model =  undefined;
         this.res_id = undefined;
+        this.code = undefined;
     }
 
     title: string;
     content: string;
     status: string;
+    code:string;
     res_id: number;
     res_model: string;
     submit_user_id: number;

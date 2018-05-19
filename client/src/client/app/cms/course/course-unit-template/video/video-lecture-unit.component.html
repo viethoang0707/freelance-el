@@ -1,14 +1,14 @@
 <div *ngIf ="mode=='design'">
   <div class="ui-g">
     <div class="ui-g-3" align='center'>
-      <div>
-        <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
+      <div class="mb10">
+        <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
         </p-fileUpload>
       </div>
       <div>
-        <button pButton type="button" label="{{'Record from camera'|translate}}" class="green-btn" icon="ui-icon-videocam" (click)="showToolbar=!showToolbar"></button>
+        <button pButton type="button" label="{{'Record from camera'|translate}}" class="green-btn mb10" icon="ui-icon-videocam" (click)="showToolbar=!showToolbar"></button>
         <p-toolbar *ngIf="showToolbar">
-          <div class="ui-toolbar">
+          <div>
             <button pButton type="button" pTooltip="{{'Start'|translate}}" icon="ui-icon-play-arrow" (click)="startRecording()"></button>
             <button pButton type="button" pTooltip="{{'Stop'|translate}}" icon="ui-icon-stop" (click)="stopRecording()"></button>
             <button pButton type="button" pTooltip="{{'Cancel'|translate}}" icon="ui-icon-cancel" (click)="cancelRecording()"></button>
