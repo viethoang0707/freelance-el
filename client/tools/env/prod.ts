@@ -5,7 +5,7 @@ const ProdConfig: EnvConfig = {
   CONFERENCE_ENDPOINT: 'https://meeting.erp.vietinterview.com',
   SOCKET_ENDPOINT: 'https://socket.erp.vietinterview.com',
   ENV: 'PROD',
-  VERSION: '1.0.0'
+  VERSION: '1.7.1'
 };
 
 export = ProdConfig;
