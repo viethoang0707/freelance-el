@@ -67,6 +67,10 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                             ExamQuestion.countByExam(this, exam.id).subscribe(count => {
                                 exam.question_count = count;
                             });
+                            exam.examMemberData = {};
+                            ExamMember.listByExam(this, exam.id).subscribe(members => {
+                                exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
+                            });
                         });
                         this.exams = _.filter(exams, (exam) => {
                             return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
