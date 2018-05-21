@@ -105,11 +105,14 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 				CourseMember.get(this, memberId).subscribe(member => {
 					this.member = member;
 					this.course = course;
+					console.log('course: ', this.course);
+					console.log('course: ', course);
 					this.loadFaqs();
 					this.loadMaterials();
 					this.loadExam();
 					this.loadCertificate();
 					this.loadConference();
+					this.loadCouseSyllabus();
 				});
 			});
 		});
@@ -122,8 +125,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 				this.syl = syl;
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
+				console.log('tree:', this.tree);
+				console.log('units: ', units);
 				this.treeList = this.sylUtils.flattenTree(this.tree);
-				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt: CourseLog) => {
+				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, this.course.id).subscribe((attempt: CourseLog) => {
 					if (attempt) {
 						this.selectedNode = this.sylUtils.findTreeNode(this.tree, attempt.res_id);
 					}
