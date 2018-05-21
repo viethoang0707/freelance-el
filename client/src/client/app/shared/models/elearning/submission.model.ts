@@ -51,7 +51,7 @@ export class Submission extends BaseModel{
     }
 
     static listByExam( context:APIContext, examId: number): Observable<any> {
-        return Submission.search(context,[],"[('examId','=',"+examId+")]");
+        return Submission.search(context,[],"[('exam_id','=',"+examId+")]");
     }
 
     static listByMember( context:APIContext, memberId: number): Observable<any> {
