@@ -28,8 +28,8 @@ export class Submission extends BaseModel{
     start: Date;
     score: number;
 
-    static byUser( context:APIContext, userId: number): Observable<any> {
-        return Submission.search(context,[],"[('user_id','=',"+userId+")]").map(submits =>{
+    static byUserAndExam( context:APIContext, userId: number, examId: number): Observable<any> {
+        return Submission.search(context,[],"[('user_id','=',"+userId+"),('examId','=',"+examId+")]").map(submits =>{
             if (submits.length)
                 return submits[0];
             else
@@ -37,12 +37,24 @@ export class Submission extends BaseModel{
         });
     }
 
-    static byMember( context:APIContext, member_id: number): Observable<any> {
-        return Submission.search(context,[],"[('member_id','=',"+member_id+")]").map(submits =>{
+    static byMemberAndExam( context:APIContext, member_id: number, examId: number): Observable<any> {
+        return Submission.search(context,[],"[('member_id','=',"+member_id+"),('exam_id','=',"+examId+")]").map(submits =>{
             if (submits.length)
                 return submits[0];
             else
                 return null;
         });
+    }
+
+    static listByUser( context:APIContext, userId: number): Observable<any> {
+        return Submission.search(context,[],"[('user_id','=',"+userId+")]");
+    }
+
+    static listByExam( context:APIContext, examId: number): Observable<any> {
+        return Submission.search(context,[],"[('examId','=',"+examId+")]");
+    }
+
+    static listByMember( context:APIContext, memberId: number): Observable<any> {
+        return Submission.search(context,[],"[('member_id','=',"+memberId+")]");
     }
 }

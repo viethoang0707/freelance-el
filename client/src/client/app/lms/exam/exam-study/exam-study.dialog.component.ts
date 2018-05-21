@@ -101,7 +101,7 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	createSubmission(): Observable<any> {
-		return Submission.byMember(this, this.member.id).flatMap((submit: Submission) => {
+		return Submission.byMemberAndExam(this, this.member.id, this.exam.id).flatMap((submit: Submission) => {
 			if (!submit) {
 				submit = new Submission();
 				submit.member_id = this.member.id;

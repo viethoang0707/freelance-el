@@ -38,43 +38,42 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loadExam();
+    }
+
+    loadExam() {
         this.startTransaction();
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
-            members = _.filter(members, (member=> {
+            members = _.filter(members, (member => {
                 return (member.exam_id);
             }));
-            var examIds = _.pluck(members, 'exam_id');
-            Exam.array(this, examIds)
-                .subscribe(exams => {
-                    _.each(exams, (exam) => {
-                        exam.member = _.find(members, (member: ExamMember) => {
-                            return member.exam_id == exam.id;
+            Submission.listByUser(this, this.authService.UserProfile.id).subscribe(submits => {
+                var examIds = _.pluck(members, 'exam_id');
+                Exam.array(this, examIds)
+                    .subscribe(exams => {
+                        _.each(exams, (exam) => {
+                            exam.member = _.find(members, (member: ExamMember) => {
+                                return member.exam_id == exam.id;
+                            });
+                            exam.submit = _.find(submits, (submit: Submission) => {
+                                return submit.member_id == exam.member.id && submit.exam_id == exam.id;
+                            });
+                            if (exam.submit) {
+                                if (exam.submit.score != null)
+                                    exam.score = exam.submit.score;
+                                else
+                                    exam.score = '';
+                            }
+                            ExamQuestion.countByExam(this, exam.id).subscribe(count => {
+                                exam.question_count = count;
+                            });
                         });
-                        exam.member.examScore(this, exam.id).subscribe(score => {
-                            exam.member.score = score;
+                        this.exams = _.filter(exams, (exam) => {
+                            return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                         });
-                        ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                            exam.question_count = count;
-                        });
-                        exam.examMemberData = {};
-                        ExamMember.listByExam(this, exam.id).subscribe(members => {
-                            exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
-                        });
+                        this.closeTransaction();
                     });
-                    this.exams = _.filter(exams, (exam) => {
-                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-                    });
-
-                    this.exams.sort((exam1, exam2): any => {
-                        if (exam1.create_date > exam2.create_date)
-                            return -1;
-                        else if (exam1.create_date < exam2.create_date)
-                            return 1;
-                        else
-                            return 0;
-                    });
-                    this.closeTransaction();
-                });
+             });
         });
     }
 

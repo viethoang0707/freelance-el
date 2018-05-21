@@ -11,8 +11,10 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
- COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+import {
+    GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+    COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS
+} from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Exam } from '../../../shared/models/elearning/exam.model';
@@ -31,14 +33,14 @@ import { AnswerPrintDialog } from '../answer-print/answer-print.dialog.component
 	templateUrl: 'exam-manage.component.html',
 })
 export class ExamManageComponent extends BaseComponent implements OnInit {
-	
-	exam:Exam;
+
+	exam: Exam;
 	member: ExamMember;
     scoreRecords: any;
     selectedRecord: any;
     questions: ExamQuestion[];
-    @ViewChild(QuestionMarkingDialog) questionMarkDialog:QuestionMarkingDialog;
-    @ViewChild(AnswerPrintDialog) answerSheetDialog:AnswerPrintDialog;
+    @ViewChild(QuestionMarkingDialog) questionMarkDialog: QuestionMarkingDialog;
+    @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -47,35 +49,40 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => { 
-	        var memberId = +params['memberId']; 
-	        var examId = +params['examId']; 
+		this.route.params.subscribe(params => {
+            var memberId = +params['memberId'];
+            var examId = +params['examId'];
             this.startTransaction();
-	        Exam.get(this, examId).subscribe(exam => {
-	        	ExamMember.get(this, memberId).subscribe(member => {
-	        		this.member =  member;
-					this.exam =  exam;
+            Exam.get(this, examId).subscribe(exam => {
+                ExamMember.get(this, memberId).subscribe(member => {
+                    this.member = member;
+					this.exam = exam;
 					this.loadScores();
                     this.closeTransaction();
-	        	});
-	        });
-	    }); 
+                });
+            });
+        });
 	}
 
 	mark() {
         console.log(this.exam);
-        if (this.selectedRecord) 
-            this.exam.containsOpenEndQuestion(this).subscribe(success=> {
-                if (!success)
+        if (this.selectedRecord)
+            this.exam.containsOpenEndQuestion(this).subscribe(success => {
+                if (!success) {
                     this.warn('The exam does not contains any open question');
-                else
-                    this.questionMarkDialog.show(this.selectedRecord.member,this.selectedRecord.answers, this.questions);
+                    return;
+                }
+                if (this.selectedRecord["submit"] ==  null) {
+                    this.warn('The member has not attempted the exam');
+                    return;
+                }
+                this.questionMarkDialog.show(this.selectedRecord.member, this.selectedRecord["submit"] , this.selectedRecord.answers, this.questions);
             });
     }
 
     viewAnswerSheet() {
-        if (this.selectedRecord ) {
-            if (this.selectedRecord.enroll_status !='completed')
+        if (this.selectedRecord) {
+            if (this.selectedRecord.enroll_status != 'completed')
                 this.info('Student has not completed the exam');
             else
                 this.answerSheetDialog.show(this.exam, this.selectedRecord);
@@ -86,20 +93,27 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         this.startTransaction();
         ExamGrade.listByExam(this, this.exam.id).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
-                this.scoreRecords = members;
-                _.each(members, (member: ExamMember)=> {
-                    member.examScore(this, this.exam.id).subscribe(score=> {
-                        if (score==null)
-                            member["score"] = "";
-                        var grade = member.examGrade(grades, score);
-                        if (grade)
-                            member["grade"] = grade.name;
+                Submission.listByExam(this, this.exam.id).subscribe(submits => {
+                    this.scoreRecords = members;
+                    _.each(members, (member: ExamMember) => {
+                        var submit = _.find(submits, (submit: Submission) => {
+                            return submit.member_id == member.id && submit.exam_id == this.exam.id;
+                        });
+                        member["submit"] = submit;
+                        if (submit) {
+                            if (submit.score != null)
+                                member["score"] = submit.score;
+                            else
+                                member["score"] = '';
+                        }
+
                     });
+                    this.closeTransaction();
                 });
-                this.closeTransaction();
+
             });
         });
     }
-	
+
 }
 

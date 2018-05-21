@@ -22,6 +22,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 export class QuestionMarkingDialog extends BaseComponent {
 
 	display: boolean;
+	submit: Submission;
 	answers: Answer[];
 	questions: any;
 	member: ExamMember;
@@ -37,13 +38,14 @@ export class QuestionMarkingDialog extends BaseComponent {
 		this.member =  new ExamMember();
 	}
 
-	show(member: ExamMember, answers: Answer[], questions: ExamQuestion[]) {
+	show(member: ExamMember, submit:Submission, answers: Answer[], questions: ExamQuestion[]) {
 		this.display = true;
 		this.questions = {};
 		_.each(questions, (question:ExamQuestion)=> {
 			this.questions[question.question_id] =  question;
 		});
 		this.member = member;
+		this.submit =  submit;
 		this.answers = answers;
 	}
 
@@ -55,6 +57,8 @@ export class QuestionMarkingDialog extends BaseComponent {
 		var subscrptions = _.map(this.answers, (answer)=> {
 			return answer.save(this);
 		});
+		this.submit.score = this.submit.score +  _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
+		subscrptions.push(this.submit.save(this));
 		this.startTransaction();
 		Observable.forkJoin(...subscrptions).subscribe(()=> {
 			this.success('Marking saved sucessfully');

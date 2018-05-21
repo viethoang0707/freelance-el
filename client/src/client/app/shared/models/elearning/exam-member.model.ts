@@ -64,15 +64,6 @@ export class ExamMember extends BaseModel{
         });
     }
 
-    examScore(context:APIContext, examId:number):Observable<any> {
-        return Submission.byMember(context, this.id).flatMap(submit => {
-            if (!submit)
-                return Observable.of(null);
-            else
-                return Observable.of(submit.score);
-        });
-    }
-
     examGrade(grades:ExamGrade[], score:number) {
         return _.find(grades, (obj)=> {
             return obj.min_score <= score && obj.max_score >= score;

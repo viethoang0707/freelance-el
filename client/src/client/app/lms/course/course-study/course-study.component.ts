@@ -10,8 +10,10 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
-import { Conference } from '../../../shared/models/elearning/conference.model';import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
- COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS } from '../../../shared/models/constants'
+import { Conference } from '../../../shared/models/elearning/conference.model'; import {
+	GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
+} from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
@@ -45,14 +47,14 @@ import { CourseUnitContainerDirective } from '../../../cms/course/course-unit-te
 import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.interface';
 
 @Component({
-    moduleId: module.id,
-    selector: 'course-study',
-    templateUrl: 'course-study.component.html',
-    styleUrls: ['course-study.component.css'],
+	moduleId: module.id,
+	selector: 'course-study',
+	templateUrl: 'course-study.component.html',
+	styleUrls: ['course-study.component.css'],
 })
-export class CourseStudyComponent extends BaseComponent implements OnInit{
+export class CourseStudyComponent extends BaseComponent implements OnInit {
 
-	course:Course;
+	course: Course;
 	member: CourseMember;
 	faqs: CourseFaq[];
 	materials: CourseMaterial[];
@@ -60,30 +62,30 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	syl: CourseSyllabus;
 	selectedNode: TreeNode;
 	units: CourseUnit[];
-	selectedUnit:CourseUnit;
+	selectedUnit: CourseUnit;
 	exams: Exam[];
 	completedExams: Exam[];
 	certificate: Certificate;
 	conference: Conference;
 	conferenceMember: ConferenceMember;
 	treeList: TreeNode[];
-	sylUtils:SyllabusUtils;
+	sylUtils: SyllabusUtils;
 	reportUtils: ReportUtils;
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
-    @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
-    @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
-    @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
-    @ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
+	@ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
+	@ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
+	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
+	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	componentRef: any;
 
-    COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
+	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	EXAM_STATUS = EXAM_STATUS;
 	studyMode: boolean;
 
-	constructor(private router: Router, private route: ActivatedRoute, 
-		private meetingSerivce:MeetingService,private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor(private router: Router, private route: ActivatedRoute,
+		private meetingSerivce: MeetingService, private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.reportUtils = new ReportUtils();
 		this.sylUtils = new SyllabusUtils();
@@ -92,51 +94,50 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 		this.certificate = new Certificate();
 		this.conference = new Conference();
 		this.conferenceMember = new ConferenceMember();
-		this.studyMode =  false;
+		this.studyMode = false;
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => { 
-	        var memberId = +params['memberId']; 
-	        var courseId = +params['courseId']; 
-	        Course.get(this, courseId).subscribe(course => {
-	        	CourseMember.get(this, memberId).subscribe(member => {
-	        		this.member =  member;
-					this.course =  course;
+		this.route.params.subscribe(params => {
+			var memberId = +params['memberId'];
+			var courseId = +params['courseId'];
+			Course.get(this, courseId).subscribe(course => {
+				CourseMember.get(this, memberId).subscribe(member => {
+					this.member = member;
+					this.course = course;
 					this.loadFaqs();
 					this.loadMaterials();
 					this.loadExam();
-					this.loadGradebook();
 					this.loadCertificate();
 					this.loadConference();
-	        	});
-	        });
-	    }); 
+				});
+			});
+		});
 	}
 
 	loadCouseSyllabus() {
 		this.startTransaction();
-		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
-        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
-        		this.syl = syl;
+		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl => {
+			CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
+				this.syl = syl;
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.treeList = this.sylUtils.flattenTree(this.tree);
-				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt:CourseLog)=> {
+				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt: CourseLog) => {
 					if (attempt) {
-						this.selectedNode =  this.sylUtils.findTreeNode(this.tree, attempt.res_id);
+						this.selectedNode = this.sylUtils.findTreeNode(this.tree, attempt.res_id);
 					}
 				});
 				this.closeTransaction();
-	        });
-        });
+			});
+		});
 	}
 
-	nodeSelect(event:any) {
+	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.selectedUnit =  this.selectedNode.data;
-			this.selectedUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success=> {
-				this.selectedUnit["completed"]  =success;
+			this.selectedUnit = this.selectedNode.data;
+			this.selectedUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success => {
+				this.selectedUnit["completed"] = success;
 			});
 		}
 	}
@@ -148,85 +149,85 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	}
 
 	prevUnit() {
-		if (this.selectedUnit)  {
+		if (this.selectedUnit) {
 			this.startTransaction();
-			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
+			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(() => {
 				var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
-				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, prevUnit.id);
-				this.selectedUnit =  this.selectedNode.data;
+				this.selectedNode = this.sylUtils.findTreeNode(this.tree, prevUnit.id);
+				this.selectedUnit = this.selectedNode.data;
 				this.studyMode = false;
 				this.unloadCurrentUnit();
 				this.closeTransaction();
 			});
-		} 
+		}
 	}
 
 	nextUnit() {
-		if (this.selectedUnit)  {
+		if (this.selectedUnit) {
 			this.startTransaction();
-			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
+			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(() => {
 				var nextUnit = this.computedNextUnit(this.selectedUnit.id);
-				this.selectedNode =  this.sylUtils.findTreeNode(this.tree, nextUnit.id);
-				this.selectedUnit =  this.selectedNode.data;
+				this.selectedNode = this.sylUtils.findTreeNode(this.tree, nextUnit.id);
+				this.selectedUnit = this.selectedNode.data;
 				this.studyMode = false;
 				this.unloadCurrentUnit();
 				this.closeTransaction();
 			});
-		} 
+		}
 	}
 
 	completeUnit() {
-		if (this.selectedUnit)  {
+		if (this.selectedUnit) {
 			this.startTransaction();
-			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(()=> {
+			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(() => {
 				this.selectedUnit["completed"] = true;
 				this.studyMode = false;
 				this.unloadCurrentUnit();
 				this.closeTransaction();
 			});
-		} 
+		}
 	}
 
-	computedPrevUnit(currentUnitId:number):CourseUnit {
+	computedPrevUnit(currentUnitId: number): CourseUnit {
 		var currentNodeIndex = 0;
-		for (;currentNodeIndex < this.treeList.length; currentNodeIndex++) {
+		for (; currentNodeIndex < this.treeList.length; currentNodeIndex++) {
 			var node = this.treeList[currentNodeIndex];
 			if (node.data.id == currentUnitId)
 				break;
 		}
 		currentNodeIndex--;
-		while (currentNodeIndex >=0) {
+		while (currentNodeIndex >= 0) {
 			var node = this.treeList[currentNodeIndex];
-			if (node.data.type !='folder')
+			if (node.data.type != 'folder')
 				break;
 			currentNodeIndex--;
 		}
-		return (currentNodeIndex>=0?this.treeList[currentNodeIndex].data:null);
+		return (currentNodeIndex >= 0 ? this.treeList[currentNodeIndex].data : null);
 	}
 
-	computedNextUnit(currentUnitId:number):CourseUnit {
+	computedNextUnit(currentUnitId: number): CourseUnit {
 		var currentNodeIndex = 0;
-		for (;currentNodeIndex < this.treeList.length; currentNodeIndex++) {
+		for (; currentNodeIndex < this.treeList.length; currentNodeIndex++) {
 			var node = this.treeList[currentNodeIndex];
 			if (node.data.id == currentUnitId)
 				break;
 		}
 		currentNodeIndex++;
-		while (currentNodeIndex <this.treeList.length) {
+		while (currentNodeIndex < this.treeList.length) {
 			var node = this.treeList[currentNodeIndex];
-			if (node.data.type !='folder')
+			if (node.data.type != 'folder')
 				break;
 			currentNodeIndex++;
 		}
-		return (currentNodeIndex<this.treeList.length?this.treeList[currentNodeIndex].data:null);
+		return (currentNodeIndex < this.treeList.length ? this.treeList[currentNodeIndex].data : null);
 	}
 
 	studyUnit() {
 		if (this.selectedUnit) {
 			if (this.syl.complete_unit_by_order) {
-				let prevUnit:CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
+				let prevUnit: CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
 				if (prevUnit)
-					prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success=> {
+					prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success => {
 						if (success) {
 							this.openUnit(this.selectedUnit);
 							CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
@@ -238,15 +239,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 					this.openUnit(this.selectedUnit);
 					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
 				}
-			} 
- 			else {
- 				this.openUnit(this.selectedUnit);
- 				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
-			} 
+			}
+			else {
+				this.openUnit(this.selectedUnit);
+				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+			}
 		}
 	}
 
-	openUnit(unit:CourseUnit) {
+	openUnit(unit: CourseUnit) {
 		var detailComponent = CourseUnitRegister.Instance.lookup(unit.type);
 		let viewContainerRef = this.unitHost.viewContainerRef;
 		if (detailComponent) {
@@ -264,116 +265,95 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 
 	loadCertificate() {
 		this.startTransaction();
-		Certificate.byMember(this, this.member.id).subscribe((certificate:any) => {
-            this.certificate = certificate;
-            this.closeTransaction();
-        });
+		Certificate.byMember(this, this.member.id).subscribe((certificate: any) => {
+			this.certificate = certificate;
+			this.closeTransaction();
+		});
 	}
 
 	loadConference() {
 		this.startTransaction();
 		ConferenceMember.byCourseMember(this, this.member.id)
-            .subscribe(member => {
-            	this.conferenceMember =  member;
-            	if (member)
-	                Conference.get(this, member.conference_id).subscribe(conference => {
-	                    this.conference = conference;
-	                });
-	            this.closeTransaction();
-            });
+			.subscribe(member => {
+				this.conferenceMember = member;
+				if (member)
+					Conference.get(this, member.conference_id).subscribe(conference => {
+						this.conference = conference;
+					});
+				this.closeTransaction();
+			});
 	}
 
 	loadExam() {
 		if (this.member.class_id) {
 			this.startTransaction();
-			ClassExam.listByClass(this, this.member.class_id).subscribe(classExams=> {
+			ClassExam.listByClass(this, this.member.class_id).subscribe(classExams => {
 				var examIds = _.pluck(classExams, 'exam_id');
 				ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
-					members = _.filter(members, member=> {
-						return member.enroll_status!='completed' && _.contains(examIds, member.exam_id);
+					members = _.filter(members, member => {
+						return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
 					});
-					var examIds = _.pluck(members, 'exam_id');
-		            Exam.array(this, examIds)
-		                .subscribe(exams => {
-		                    _.each(exams, (exam) => {
-		                        exam.member = _.find(members, (member: ExamMember) => {
-		                            return member.exam_id == exam.id;
-		                        });
-		                        exam.member.examScore(this, exam.id).subscribe(score => {
-		                            exam.member.score = score;
-		                        });
-		                        ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-		                            exam.question_count = count;
-		                        });
-		                        exam.examMemberData = {};
-		                        ExamMember.listByExam(this, exam.id).subscribe(members => {
-		                            exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
-		                        });
-		                    });
-		                    this.exams = _.filter(exams, (exam) => {
-		                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-		                    });
+					Submission.listByUser(this, this.authService.UserProfile.id).subscribe(submits => {
+						var examIds = _.pluck(members, 'exam_id');
+						Exam.array(this, examIds)
+							.subscribe(exams => {
+								_.each(exams, (exam) => {
+									exam.member = _.find(members, (member: ExamMember) => {
+										return member.exam_id == exam.id;
+									});
+									exam.submit = _.find(submits, (submit: Submission) => {
+										return submit.member_id == exam.member.id && submit.exam_id == exam.id;
+									});
+									if (exam.submit) {
+										if (exam.submit.score != null)
+											exam.score = exam.submit.score;
+										else
+											exam.score = '';
+									}
+									ExamQuestion.countByExam(this, exam.id).subscribe(count => {
+										exam.question_count = count;
+									});
+									exam.examMemberData = {};
+									ExamMember.listByExam(this, exam.id).subscribe(members => {
+										exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
+									});
+								});
+								this.exams = _.filter(exams, (exam) => {
+									return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+								});
 
-		                    this.exams.sort((exam1, exam2): any => {
-		                        if (exam1.create_date > exam2.create_date)
-		                            return -1;
-		                        else if (exam1.create_date < exam2.create_date)
-		                            return 1;
-		                        else
-		                            return 0;
-		                    });
-		                });
-		            });
+								this.exams.sort((exam1, exam2): any => {
+									if (exam1.create_date > exam2.create_date)
+										return -1;
+									else if (exam1.create_date < exam2.create_date)
+										return 1;
+									else
+										return 0;
+								});
+
+								this.completedExams = _.filter(exams, (exam) => {
+									return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+								});
+
+								this.completedExams.sort((exam1, exam2): any => {
+									if (exam1.create_date > exam2.create_date)
+										return -1;
+									else if (exam1.create_date < exam2.create_date)
+										return 1;
+									else
+										return 0;
+								});
+							});
+
+					});
+
+				});
 				this.closeTransaction();
-			});	
+			});
 		}
 	}
 
-	loadGradebook() {
-		if (this.member.class_id) {
-			this.startTransaction();
-			ClassExam.listByClass(this, this.member.class_id).subscribe(classExams=> {
-				var examIds = _.pluck(classExams, 'exam_id');
-				ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
-					members = _.filter(members, member=> {
-						return member.enroll_status=='completed' && _.contains(examIds, member.exam_id);
-					});
-					var examIds = _.pluck(members, 'exam_id');
-		            Exam.array(this, examIds)
-		                .subscribe(exams => {
-		                    _.each(exams, (exam) => {
-		                        exam.member = _.find(members, (member: ExamMember) => {
-		                            return member.exam_id == exam.id;
-		                        });
-		                        exam.member.examScore(this, exam.id).subscribe(score => {
-		                            exam.member.score = score;
-		                        });
-		                        ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-		                            exam.question_count = count;
-		                        });
-		                        exam.examMemberData = {};
-		                        ExamMember.listByExam(this, exam.id).subscribe(members => {
-		                            exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
-		                        });
-		                    });
-		                    this.completedExams = _.filter(exams, (exam) => {
-		                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-		                    });
 
-		                    this.completedExams.sort((exam1, exam2): any => {
-		                        if (exam1.create_date > exam2.create_date)
-		                            return -1;
-		                        else if (exam1.create_date < exam2.create_date)
-		                            return 1;
-		                        else
-		                            return 0;
-		                    });
-		                });
-		                this.closeTransaction();
-		            });
-			});	
-		}
-	}
 
 	loadFaqs() {
 		this.startTransaction();
@@ -394,14 +374,14 @@ export class CourseStudyComponent extends BaseComponent implements OnInit{
 	}
 
 	startExam(exam: Exam, member: ExamMember) {
-        this.confirm('Are you sure to start ?', () => {
-                this.examStudyDialog.show(exam, member);
-            }
-        );
-    }
+		this.confirm('Are you sure to start ?', () => {
+			this.examStudyDialog.show(exam, member);
+		}
+		);
+	}
 
-    joinConference() {
-    	if (this.conference.id && this.conferenceMember.id)
-        	this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
-    }
+	joinConference() {
+		if (this.conference.id && this.conferenceMember.id)
+			this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
+	}
 }

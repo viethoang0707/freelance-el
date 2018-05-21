@@ -57,7 +57,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.member = member;
         this.qIndex = 0;
         this.startTransaction();
-        Submission.byMember(this, this.member.id).subscribe((submit:Submission) => {
+        Submission.byMemberAndExam(this, this.member.id, this.exam.id).subscribe((submit:Submission) => {
             if (submit) {
                 this.submission = submit;
                 this.startReview();

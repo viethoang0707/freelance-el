@@ -64,41 +64,40 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
             this.startTransaction();
     		ExamMember.listByExam(this, this.selectedExam.id).subscribe(members => {
 				ExamGrade.listByExam(this,this.selectedExam.id).subscribe(grades => {
-					this.generateReport(this.selectedExam, grades, members).subscribe(records => {
-		    			this.records = records;
-                        this.closeTransaction();
-		    		});
+                    Submission.listByExam(this,this.selectedExam.id).subscribe(submits => {
+                            this.generateReport(this.selectedExam, grades, submits, members).subscribe(records => {
+                            this.records = records;
+                            this.closeTransaction();
+                        });
+                    });
 				});
 			});	
     	}
     }
 
 
-    generateReport(exam: Exam, grades: ExamGrade[], members: ExamMember[]):Observable<any> {
+    generateReport(exam: Exam, grades: ExamGrade[], submits: Submission[], members: ExamMember[]):Observable<any> {
         var subscriptions =[];
     	_.each(members, (member:ExamMember)=> {
     		var subscription = ExamLog.userExamActivity(this, member.user_id, exam.id).flatMap(logs => {
-    			return Submission.byMember(this, member.id).flatMap((submit:Submission) => {
-                    if (!submit)
-                        return Observable.of([]);
-    				return Answer.listBySubmit(this, submit.id).map(answers => {
-    					return this.generateReportRow(exam, grades, member, answers, logs);
-    				});
-    			});
+                var submit = _.find(submits, (obj=> {
+                    return obj.member_id == member.id;
+                }));
+                if (!submit)
+                    return Observable.of([]);
+                return Observable.of(this.generateReportRow(exam, grades, member, submit, logs));
     		});	
     		subscriptions.push(subscription);	
     	});		
     	return Observable.zip(...subscriptions);
     }
 
-    generateReportRow(exam:Exam, grades: ExamGrade[], member: ExamMember, answers: Answer[], logs: ExamLog[]):any {
+    generateReportRow(exam:Exam, grades: ExamGrade[], member: ExamMember,submit: Submission, logs: ExamLog[]):any {
     	var record = {};
 	    record["user_login"] =  member.login;
 	    record["user_name"] = member.name;
 	    record["user_group"] = member.group_id__DESC__;
-	    record["score"] = _.reduce(answers,  (sum, ans)=> {
-    		return sum + ans.score;
-		},0);
+	    record["score"] = submit.score;
 	    var result = this.reportUtils.analyzeExamActivity(logs);
 	    if (result[0] != Infinity)
 	    	record["date_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);

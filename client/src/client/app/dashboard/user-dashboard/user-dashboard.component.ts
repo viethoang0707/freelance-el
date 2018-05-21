@@ -23,6 +23,7 @@ import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dial
 import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
+import { Submission } from '../../shared/models/elearning/submission.model';
 
 
 declare var $: any;
@@ -57,8 +58,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     loadCourse() {
         this.startTransaction();
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
-            members = _.filter(members, (member=> {
-                return (member.course_id && (member.course_mode=='self-study' || member.class_id))
+            members = _.filter(members, (member => {
+                return (member.course_id && (member.course_mode == 'self-study' || member.class_id))
             }));
             var courseIds = _.pluck(members, 'course_id');
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
@@ -89,31 +90,36 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     loadExam() {
         this.startTransaction();
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
-            members = _.filter(members, (member=> {
+            members = _.filter(members, (member => {
                 return (member.exam_id);
             }));
-            var examIds = _.pluck(members, 'exam_id');
-            Exam.array(this, examIds)
-                .subscribe(exams => {
-                    _.each(exams, (exam) => {
-                        exam.member = _.find(members, (member: ExamMember) => {
-                            return member.exam_id == exam.id;
+            Submission.listByUser(this, this.authService.UserProfile.id).subscribe(submits => {
+                var examIds = _.pluck(members, 'exam_id');
+                Exam.array(this, examIds)
+                    .subscribe(exams => {
+                        _.each(exams, (exam) => {
+                            exam.member = _.find(members, (member: ExamMember) => {
+                                return member.exam_id == exam.id;
+                            });
+                            exam.submit = _.find(submits, (submit: Submission) => {
+                                return submit.member_id == exam.member.id && submit.exam_id == exam.id;
+                            });
+                            if (exam.submit) {
+                                if (exam.submit.score != null)
+                                    exam.score = exam.submit.score;
+                                else
+                                    exam.score = '';
+                            }
+                            ExamQuestion.countByExam(this, exam.id).subscribe(count => {
+                                exam.question_count = count;
+                            });
                         });
-                        exam.member.examScore(this, exam.id).subscribe(score => {
-                            if (score!=null)
-                                exam.member.score = score;
-                            else
-                                exam.member.score = '';
+                        this.exams = _.filter(exams, (exam) => {
+                            return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                         });
-                        ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                            exam.question_count = count;
-                        });
+                        this.closeTransaction();
                     });
-                    this.exams = _.filter(exams, (exam) => {
-                        return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-                    });
-                    this.closeTransaction();
-                });
+             });
         });
     }
 
@@ -121,13 +127,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.startTransaction();
         ConferenceMember.listByUser(this, this.authService.UserProfile.id)
             .subscribe(members => {
-                members =  _.filter(members, (member=> {
+                members = _.filter(members, (member => {
                     return member.conference_id
                 }));
                 var confIds = _.pluck(members, 'conference_id');
-                Conference.array(this, confIds).subscribe(conferences=> {
+                Conference.array(this, confIds).subscribe(conferences => {
                     _.each(members, (member) => {
-                        member.conference = _.find(conferences, conference=> {
+                        member.conference = _.find(conferences, conference => {
                             return conference.id == member.conference_id;
                         });
                     });
@@ -166,18 +172,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.getCourseSyllabus(course).subscribe(syllabus => {
             this.closeTransaction();
             this.syllabusDialog.show(syllabus);
-            this.syllabusDialog.onHide.subscribe(()=> {
+            this.syllabusDialog.onHide.subscribe(() => {
                 this.loadCourse();
             });
         });
     }
 
-    studyCourse( course:Course,member: CourseMember) {
-        if ( course.status =='published') {
+    studyCourse(course: Course, member: CourseMember) {
+        if (course.status == 'published') {
             this.startTransaction();
-            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
                 if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/study',course.id, member.id]);
+                    this.router.navigate(['/lms/courses/study', course.id, member.id]);
                 else
                     this.error('The course has not been published');
                 this.closeTransaction();
@@ -188,12 +194,12 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         }
     }
 
-    manageCourse( course: Course,member: CourseMember) {
-        if ( course.status =='published') {
+    manageCourse(course: Course, member: CourseMember) {
+        if (course.status == 'published') {
             this.startTransaction();
-            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
                 if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/manage',course.id, member.id]);
+                    this.router.navigate(['/lms/courses/manage', course.id, member.id]);
                 else
                     this.error('The course has not been published');
                 this.closeTransaction();
@@ -202,11 +208,11 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         else {
             this.error('The course has not been published');
         }
-        
+
     }
 
     manageExam(exam: Exam, member: ExamMember) {
-        if ( exam.status =='published') 
+        if (exam.status == 'published')
             this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
     }
 
@@ -215,10 +221,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
-        if ( exam.status =='published') 
+        if (exam.status == 'published')
             this.confirm('Are you sure to start ?', () => {
                 this.examStudyDialog.show(exam, member);
-                this.examStudyDialog.onHide.subscribe(()=> {
+                this.examStudyDialog.onHide.subscribe(() => {
                     this.loadExam();
                 });
             });
