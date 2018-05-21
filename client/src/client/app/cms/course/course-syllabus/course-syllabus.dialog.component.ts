@@ -166,6 +166,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	hide() {
+		this.clearSelection();
 		this.display = false;
 		this.onHideReceiver.next();
 	}
@@ -205,7 +206,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 			} 
 			else
 				this.selectedUnit =  this.selectedNode.data;
-		} 
+		}
 	}
 
 	previewUnit() {
