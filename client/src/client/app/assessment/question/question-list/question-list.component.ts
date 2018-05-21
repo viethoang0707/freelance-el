@@ -105,7 +105,7 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    filterCourse() {
+    filterQuestion() {
         if (this.selectedGroupNodes.length != 0) {
             this.displayQuestions = _.filter(this.questions, course => {
                 var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
