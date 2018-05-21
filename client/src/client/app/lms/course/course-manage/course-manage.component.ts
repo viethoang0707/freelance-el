@@ -32,6 +32,7 @@ import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview
 	moduleId: module.id,
 	selector: 'course-manage',
 	templateUrl: 'course-manage.component.html',
+	styleUrls: ['course-manage.component.css']
 })
 export class CourseManageComponent extends BaseComponent implements OnInit {
 	

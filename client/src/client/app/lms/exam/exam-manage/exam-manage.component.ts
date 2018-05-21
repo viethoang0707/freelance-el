@@ -31,6 +31,7 @@ import { AnswerPrintDialog } from '../answer-print/answer-print.dialog.component
 	moduleId: module.id,
 	selector: 'exam-manage',
 	templateUrl: 'exam-manage.component.html',
+    styleUrls: ['exam-manage.component.css'],
 })
 export class ExamManageComponent extends BaseComponent implements OnInit {
 
