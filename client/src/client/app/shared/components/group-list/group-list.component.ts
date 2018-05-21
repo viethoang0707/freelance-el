@@ -97,12 +97,11 @@ export class GroupListComponent extends BaseComponent implements OnInit {
             subscription =  Group.listUserGroup(this);
         if(this.category == "question")
             subscription =  Group.listQuestionGroup(this);
-         if (subscription)  
+        if (subscription)  
             subscription.subscribe(groups => {
                 this.groups = groups;
                 this.tree = this.treeUtils.buildGroupTree(groups);
             });
-        }
     }
     
 }
