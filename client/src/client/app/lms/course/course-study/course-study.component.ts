@@ -10,10 +10,11 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
-import { Conference } from '../../../shared/models/elearning/conference.model'; import {
+import { Conference } from '../../../shared/models/elearning/conference.model'; 
+import {
 	GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
-	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
-} from '../../../shared/models/constants'
+	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS, CONFERENCE_STATUS
+} from '../../../shared/models/constants';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
@@ -92,7 +93,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.course = new Course();
 		this.member = new CourseMember();
 		this.certificate = new Certificate();
-		this.conference = new Conference();
+		// this.conference = new Conference();
 		this.conferenceMember = new ConferenceMember();
 		this.studyMode = false;
 	}
@@ -123,7 +124,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.treeList = this.sylUtils.flattenTree(this.tree);
-				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, course.id).subscribe((attempt: CourseLog) => {
+				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, this.course.id).subscribe((attempt: CourseLog) => {
 					if (attempt) {
 						this.selectedNode = this.sylUtils.findTreeNode(this.tree, attempt.res_id);
 					}
@@ -278,6 +279,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 				this.conferenceMember = member;
 				if (member)
 					Conference.get(this, member.conference_id).subscribe(conference => {
+						console.log(conference);
 						this.conference = conference;
 					});
 				this.closeTransaction();
