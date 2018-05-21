@@ -1,9 +1,8 @@
 <form novalidate (ngSubmit)="save()" #f="ngForm" autocomplete="off">
-  <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1000" height="600" [responsive]="true"
-    [positionTop]="20">
-    <p-tabView>
+  <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1000" [responsive]="true" [positionTop]="20">
+    <p-tabView styleClass="profile-dialog">
       <p-tabPanel header="{{'Account info'|translate}}" leftIcon="ui-icon-people">
-        <div class="ui-g ui-fluid form-group" style="max-height: 400px; overflow: auto;">
+        <div class="ui-g ui-fluid form-group">
           <div class="ui-g-6">
             <label>{{'Parent group'|translate}}</label>
             <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
@@ -37,7 +36,7 @@
         </div>
       </p-tabPanel>
       <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
-        <div class="ui-g ui-fluid form-group" style="padding-top: 20px">
+        <div class="ui-g ui-fluid form-group pt20">
           <div class="ui-g-6">
             <span class="md-inputfield">
               <input type="text" pInputText [(ngModel)]="object.email" name="email" pKeyFilter="email">
@@ -52,7 +51,7 @@
           </div>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school">
+      <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school" [style]="{width: '100%', height: '430px'}">
         <p-table [value]="members">
           <ng-template pTemplate="header">
             <tr>

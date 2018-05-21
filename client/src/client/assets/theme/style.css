@@ -356,3 +356,9 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 
 .dashboard-live-conference .task-box.task-box-3 .task-box-footer .btn-footer {
   background-color: #00bcd4; }
+
+.profile-dialog{
+  width: 100%;
+  height: 480px;
+  overflow: auto;
+}

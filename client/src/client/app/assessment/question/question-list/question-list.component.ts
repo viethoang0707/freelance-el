@@ -45,9 +45,9 @@ export class QuestionListComponent extends BaseComponent {
         this.buildQuestionGroup();
         this.loadQuestions();
         this.items = [
-            {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.add('sc')}},
-            {label: this.translateService.instant(QUESTION_TYPE['mc']), command: ()=> { this.add('mc')}},
-            {label: this.translateService.instant(QUESTION_TYPE['ext']), command: ()=> { this.add('ext')}},
+            {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.addQuestion('sc')}},
+            {label: this.translateService.instant(QUESTION_TYPE['mc']), command: ()=> { this.addQuestion('mc')}},
+            {label: this.translateService.instant(QUESTION_TYPE['ext']), command: ()=> { this.addQuestion('ext')}},
         ];
     }
 
