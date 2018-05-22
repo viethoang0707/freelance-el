@@ -53,6 +53,9 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     }
 
     joinConference(member) {
-    	this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref)
+        if (member.is_active)
+    	    this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref);
+        else
+            this.error('You are  not allowed to join the conference');
     }
 }
