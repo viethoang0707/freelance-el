@@ -7,6 +7,7 @@ import { APIContext } from '../models/context';
 import { CourseMember } from '../models/elearning/course-member.model';
 import { DataAccessService } from '../services/data-access.service';
 import { CacheService } from '../services/cache.service';
+import * as _ from 'underscore';
 
 @Injectable()
 export class TeacherGuard implements CanActivate, APIContext {
@@ -28,11 +29,13 @@ export class TeacherGuard implements CanActivate, APIContext {
 		if (!courseId)
 			return Observable.of(false);
 		return CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId)
-		.map((member:CourseMember) => {
-            if (member && member.role=='teacher') {
-                return true;
-            } else
-            	return false;
+		.map(members=> {
+			if (members.length ==0)
+                return false;
+            var member = _.find(members, (obj:CourseMember)=> {
+                return obj.role == 'teacher' && obj.status == 'active';
+            });
+            return member != null;
         }).catch(() => {
             return Observable.of(false);
         });

@@ -37,7 +37,7 @@ import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview
 export class CourseManageComponent extends BaseComponent implements OnInit {
 	
 	course:Course;
-	member: CourseMember;
+	members: CourseMember[];
 	selectedClass: CourseClass;
 	classes: CourseClass[];
 	selectedFaq: CourseFaq;
@@ -65,25 +65,25 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.faqs = [];
 		this.materials = [];
 		this.course = new Course();
-		this.member = new CourseMember();
 	}
 
 	ngOnInit() {
 		this.route.params.subscribe(params => { 
-	        var memberId = +params['memberId']; 
 	        var courseId = +params['courseId']; 
 	        this.startTransaction();
 	        Course.get(this, courseId).subscribe(course => {
-	        	CourseMember.get(this, memberId).subscribe(member => {
-	        		this.member =  member;
-					this.course = 	 course;
+	        	CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId).subscribe(members=> {
+	        		this.course = course;
+	        		this.members = _.filter(members, (member:CourseMember)=> {
+	        				return member.role =='teacher';
+	        		});
 					this.loadCourseClass();
 					this.loadFaqs();
 					this.loadMaterials();
 					this.loadCourseSyllabus();
 					this.closeTransaction();
-	        	});
-	        	
+	        	})
+				
 	        });
 	    }); 
 	}
@@ -92,7 +92,10 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		CourseClass.listByCourse(this, this.course.id)
 			.map(classList => {
 				return _.filter(classList, (obj:CourseClass)=> {
-					return this.member.class_id == obj.id;
+					var member = _.find(this.members, (member:CourseMember)=> {
+						return member.class_id == obj.id;
+					});
+					return member != null;
 				});
 			})
 			.subscribe(classList => {

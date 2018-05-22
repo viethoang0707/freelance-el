@@ -64,6 +64,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             var courseIds = _.pluck(members, 'course_id');
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
                 .map(courses => {
+                    console.log(courses);
                     return _.flatten(courses);
                 })
                 .subscribe(courses => {
@@ -200,7 +201,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             this.startTransaction();
             CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
                 if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/manage', course.id, member.id]);
+                    this.router.navigate(['/lms/courses/manage', course.id]);
                 else
                     this.error('The course has not been published');
                 this.closeTransaction();

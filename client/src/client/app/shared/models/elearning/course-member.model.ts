@@ -1,9 +1,9 @@
-
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ConferenceMember } from './conference-member.model';
+import * as _ from 'underscore';
 
 @Model('etraining.course_member')
 export class CourseMember extends BaseModel {
@@ -71,13 +71,7 @@ export class CourseMember extends BaseModel {
     }
 
     static byCourseAndUser(context: APIContext, userId: number, courseId: number): Observable<any> {
-        return CourseMember.search(context, [], "[('user_id','='," + userId + "),('course_id','='," + courseId + ")]")
-            .map(members => {
-                if (members.length)
-                    return members[0];
-                else
-                    return null;
-            });
+        return CourseMember.search(context, [], "[('user_id','='," + userId + "),('course_id','='," + courseId + ")]");
     }
 
     deleteMember(context: APIContext): Observable<any> {
@@ -91,12 +85,13 @@ export class CourseMember extends BaseModel {
     }
 
     static checkCourseEnrollCondition(context: APIContext, userId: number, prequisiteCourseId: number): Observable<any> {
-        return CourseMember.byCourseAndUser(context, userId, prequisiteCourseId).map(member => {
-            if (!member || member.enroll_status != 'completed') {
+        return CourseMember.byCourseAndUser(context, userId, prequisiteCourseId).map(members => {
+            if (members.length ==0)
                 return false;
-            } else {
-                return true;
-            }
+            var member = _.find(members, (obj:CourseMember)=> {
+                return obj.enroll_status == 'completed';
+            });
+            return member != null;
         });
     }
 }
