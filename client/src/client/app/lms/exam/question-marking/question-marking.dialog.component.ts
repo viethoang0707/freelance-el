@@ -12,6 +12,7 @@ import { Answer } from '../../../shared/models/elearning/answer.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Group } from '../../../shared/models/elearning/group.model';
+import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 	display: boolean;
 	submit: Submission;
 	answers: Answer[];
+	markAnswers: Answer[];
 	questions: any;
 	member: ExamMember;
 	private onMarkCompleteReceiver: Subject<any> = new Subject();
@@ -38,15 +40,31 @@ export class QuestionMarkingDialog extends BaseComponent {
 		this.member =  new ExamMember();
 	}
 
-	show(member: ExamMember, submit:Submission, answers: Answer[], questions: ExamQuestion[]) {
+	show(member: ExamMember, submit:Submission) {
 		this.display = true;
 		this.questions = {};
-		_.each(questions, (question:ExamQuestion)=> {
-			this.questions[question.question_id] =  question;
-		});
 		this.member = member;
 		this.submit =  submit;
-		this.answers = answers;
+		this.startTransaction();
+		QuestionSheet.byExam(this, this.submit.exam_id).subscribe(sheet => {
+			ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions => {
+				_.each(examQuestions, (question:ExamQuestion)=> {
+					this.questions[question.question_id] =  question;
+				});
+				Answer.listBySubmit(this, this.submit.id).subscribe(answers=> {
+					this.answers = answers;
+					this.markAnswers =  _.filter(answers,(ans:Answer)=> {
+						var question = _.find(examQuestions, (q=> {
+							return ans.question_id == q.question_id;
+						}));
+						return question && question.type =='ext'; 
+					});
+					this.closeTransaction();
+				});
+			});
+		});
+		
+		
 	}
 
 	hide() {
@@ -57,7 +75,9 @@ export class QuestionMarkingDialog extends BaseComponent {
 		var subscrptions = _.map(this.answers, (answer)=> {
 			return answer.save(this);
 		});
-		this.submit.score = this.submit.score +  _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
+		if (!this.submit.score )
+			this.submit.score = 0;
+		this.submit.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
 		subscrptions.push(this.submit.save(this));
 		this.startTransaction();
 		Observable.forkJoin(...subscrptions).subscribe(()=> {

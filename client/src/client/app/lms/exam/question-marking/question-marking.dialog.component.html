@@ -5,7 +5,7 @@
           {{'Candidate'|translate}} {{member.name}}
         </span>
     </p-header>
-    <div *ngFor="let answer of answers" class="ui-g">
+    <div *ngFor="let answer of markAnswers" class="ui-g">
       <div class="ui-g-12 ">
         <label>{{'Question: '|translate}} {{questions[answer.question_id].title}} </label>
         <p [innerHTML]="questions[answer.question_id].content"></p>

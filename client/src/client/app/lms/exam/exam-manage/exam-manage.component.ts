@@ -77,7 +77,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                     this.warn('The member has not attempted the exam');
                     return;
                 }
-                this.questionMarkDialog.show(this.selectedRecord.member, this.selectedRecord["submit"] , this.selectedRecord.answers, this.questions);
+                this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"] );
             });
     }
 
@@ -102,12 +102,13 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                         });
                         member["submit"] = submit;
                         if (submit) {
-                            if (submit.score != null)
+                            if (submit.score != null) {
                                 member["score"] = submit.score;
+                                member["grade"] = member.examGrade(grades, submit.score);
+                            }
                             else
                                 member["score"] = '';
                         }
-
                     });
                     this.closeTransaction();
                 });
