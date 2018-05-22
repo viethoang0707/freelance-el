@@ -38,10 +38,10 @@ export class ReportUtils {
 	analyzeCourseActivity(logs: CourseLog[]) {
 		var onTime = 0;
 		var startCourseUnitLogs = _.filter(logs, (log)=> {
-			return log.start!=null && log.code =='START_UNIT';
+			return log.start!=null && log.code =='START_COURSE_UNIT';
 		});
 		var endCourseUnitLogs = _.filter(logs, (log)=> {
-			return log.start!=null && log.code =='FINISH_UNIT';
+			return log.start!=null && log.code =='COMPLETE_COURSE_UNIT';
 		});
 		var first_attempt = _.min(startCourseUnitLogs, (log)=> {
 			return log.start.getTime();
@@ -49,22 +49,28 @@ export class ReportUtils {
 		var last_attempt = _.max(endCourseUnitLogs, (log)=> {
 			return log.start.getTime();
 		});
+
+		var last_attempt_number = new Date(last_attempt.start).getTime();
+		var first_attempt_number = new Date(first_attempt.start).getTime();
+		var timeforunit = last_attempt_number - first_attempt_number;
+
+
 		var unitCount  = 0;
 		var unitLogs = {}
 		_.each(logs, (log)=> {
-			if (log.code == 'FINISH_COURSE_UNIT') {
+			if (log.code == 'COMPLETE_COURSE_UNIT') {
 				onTime += log.start.getTime();
 				unitLogs[log.id] = unitLogs[log.id]?unitLogs[log.id]+1:1;
 			}
-			if (log.code == 'START_COURSE_UNIT') {
-				onTime -= log.start.getTime();
-				unitLogs[log.id] = unitLogs[log.id]?unitLogs[log.id]+1:1;
-			}
+			// if (log.code == 'START_COURSE_UNIT') {
+			// 	onTime -= log.start.getTime();
+			// 	unitLogs[log.id] = unitLogs[log.id]?unitLogs[log.id]+1:1;
+			// }
 			if (unitLogs[log.id] && unitLogs[log.id]>=2)
 				unitCount++;
 		});
 
-		return [first_attempt, last_attempt, onTime, unitCount];
+		return [first_attempt.start, last_attempt.start, timeforunit, unitCount];
 	}
 
 	analyzeExamActivity(logs: ExamLog[]) {
