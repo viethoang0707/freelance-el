@@ -93,9 +93,9 @@ export class CourseMember extends BaseModel {
     static checkCourseEnrollCondition(context: APIContext, userId: number, prequisiteCourseId: number): Observable<any> {
         return CourseMember.byCourseAndUser(context, userId, prequisiteCourseId).map(member => {
             if (!member || member.enroll_status != 'completed') {
-                return Observable.of(false);
+                return false;
             } else {
-                return Observable.of(true);
+                return true;
             }
         });
     }

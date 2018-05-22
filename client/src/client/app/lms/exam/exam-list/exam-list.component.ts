@@ -45,7 +45,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         this.startTransaction();
         ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
             members = _.filter(members, (member => {
-                return (member.exam_id);
+                return (member.exam_id && member.status=='active');
             }));
             Submission.listByUser(this, this.authService.UserProfile.id).subscribe(submits => {
                 var examIds = _.pluck(members, 'exam_id');
