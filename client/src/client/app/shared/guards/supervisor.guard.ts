@@ -6,6 +6,7 @@ import { DataAccessService } from '../services/data-access.service';
 import { APIService } from '../services/api.service';
 import { APIContext } from '../models/context';
 import { ExamMember } from '../models/elearning/exam-member.model';
+import { CacheService } from '../services/cache.service';
 
 @Injectable()
 export class SupervisorGuard implements CanActivate, APIContext {
@@ -13,10 +14,13 @@ export class SupervisorGuard implements CanActivate, APIContext {
 	apiService: APIService;
 	authService: AuthService;
 	dataAccessService: DataAccessService;
-	constructor(apiService: APIService, authService: AuthService,  dataAccessService: DataAccessService, private router: Router) {
+	cacheService: CacheService;
+
+	constructor(apiService: APIService, authService: AuthService,  dataAccessService: DataAccessService, cacheService: CacheService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
 		this.dataAccessService = dataAccessService;
+		this.cacheService =  cacheService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

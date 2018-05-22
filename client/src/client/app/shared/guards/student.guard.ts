@@ -4,6 +4,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { AuthService } from '../services/auth.service';
 import { APIService } from '../services/api.service';
 import { APIContext } from '../models/context';
+import { CacheService } from '../services/cache.service';
 import { CourseMember } from '../models/elearning/course-member.model';
 import { DataAccessService } from '../services/data-access.service';
 
@@ -13,10 +14,13 @@ export class StudentGuard implements CanActivate, APIContext {
 	apiService: APIService;
 	authService: AuthService;
 	dataAccessService: DataAccessService;
-	constructor(apiService: APIService, authService: AuthService,  dataAccessService: DataAccessService, private router: Router) {
+	cacheService: CacheService;
+
+	constructor(apiService: APIService, authService: AuthService,  dataAccessService: DataAccessService, cacheService: CacheService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
 		this.dataAccessService = dataAccessService;
+		this.cacheService =  cacheService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -25,7 +29,7 @@ export class StudentGuard implements CanActivate, APIContext {
 			return Observable.of(false);
 		return CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId)
 		.map((member:CourseMember) => {
-            if (member && member.role=='student') {
+            if (member && member.role=='student' && member.status=='active') {
                 return true;
             } else
             	return false;
