@@ -60,7 +60,7 @@ export class CourseListComponent extends BaseComponent {
                 return course.code == obj.code;
             });
             if (sameCodeCourse)
-                this.warn('There is another course with same code in database');
+                this.warn(this.translateService.instant('There is another course with same code in database'));
             this.loadCourses();
         });
     }
@@ -73,14 +73,14 @@ export class CourseListComponent extends BaseComponent {
                 return this.selectedCourse.code == obj.code;
             });
             if (sameCodeCourse)
-                this.warn('There is another course with same code in database');
+                this.warn(this.translateService.instant('There is another course with same code in database'));
         });
     }
 
     enrollCourse() {
         if (this.selectedCourse) {
             if (this.selectedCourse.status!='published') {
-                this.error('You have to publish the course first');
+                this.error(this.translateService.instant('You have to publish the course first'));
                 return;
             }
             if (this.selectedCourse.mode=='self-study')
