@@ -47,7 +47,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.startTransaction();
         CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
             members = _.filter(members, (member=> {
-                return (member.course_id && (member.course_mode=='self-study' || member.class_id))
+                return member.course_id && (member.course_mode=='self-study' || member.class_id) && member.status=='active'
             }));
             var courseIds = _.pluck(members,'course_id');
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
@@ -130,7 +130,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             this.startTransaction();
             CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
                 if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/manage',course.id, member.id]);
+                    this.router.navigate(['/lms/courses/manage',course.id]);
                 else
                     this.error('The course has not been published');
                 this.closeTransaction();

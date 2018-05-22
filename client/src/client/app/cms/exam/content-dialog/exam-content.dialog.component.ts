@@ -237,7 +237,7 @@ export class ExamContentDialog extends BaseComponent {
 		this.startTransaction();
 		return Observable.forkJoin(...subscriptions).subscribe(() => {
 			this.hide();
-			this.success('Content saved successfully.');
+			this.success(this.translateService.instant('Content saved successfully.'));
 			this.closeTransaction();
 		});
 	}

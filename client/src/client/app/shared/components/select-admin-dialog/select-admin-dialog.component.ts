@@ -52,7 +52,8 @@ export class SelectAdminDialog extends BaseComponent {
 		this.display = true;
 		this.selectedNode = null;
 		this.selectedAdmin = null;
-		Group.listByCategory(this, GROUP_CATEGORY.USER).subscribe(groups => {
+		//, GROUP_CATEGORY.USER
+		Group.listUserGroup(this).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 		});
 	}

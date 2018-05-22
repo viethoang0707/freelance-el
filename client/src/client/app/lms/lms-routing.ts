@@ -43,7 +43,7 @@ export const LMSRoutes: Routes = [
                }
             },
             {
-               path: "courses/manage/:courseId/:memberId",
+               path: "courses/manage/:courseId",
                component: CourseManageComponent,
                data: {
                  breadcrumb:'Manage course'
