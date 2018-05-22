@@ -31,7 +31,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
 
-    constructor( private router: Router) {
+    constructor(private router: Router) {
         super();
         this.exams = [];
         this.reportUtils = new ReportUtils();
@@ -75,9 +75,17 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                         this.exams = _.filter(exams, (exam) => {
                             return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                         });
+                        this.exams.sort((exam1, exam2): any => {
+                            if (exam1.id > exam2.id)
+                                return -1;
+                            else if (exam1.id < exam2.id)
+                                return 1;
+                            else
+                                return 0;
+                        });
                         this.closeTransaction();
                     });
-             });
+            });
         });
     }
 

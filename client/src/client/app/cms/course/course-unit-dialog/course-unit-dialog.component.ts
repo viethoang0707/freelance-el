@@ -53,7 +53,7 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 		this.onUpdateComplete.subscribe(object => {
 			if (this.componentRef)
 				(<ICourseUnit>this.componentRef.instance).saveEditor().subscribe(() => {
-					this.success('Course unit saved.');
+					this.success(this.translateService.instant('Course unit saved.'));
 				});
 		})
 	}
