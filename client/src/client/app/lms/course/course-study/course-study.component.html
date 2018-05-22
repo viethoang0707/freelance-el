@@ -13,15 +13,19 @@
               <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type] |translate }}</span>
             </div>
             <div class="image-box-footer fRight">
-              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder' && !studyMode"></button>
-              <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
-              <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
+              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}"
+                class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder' && !studyMode"></button>
+              <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}"
+                class=" purple-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
+              <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn"
+                style="margin-right:4px;" (click)="nextUnit()"></button>
             </div>
             <div class="clearfix"></div>
             <div>
               <ng-template course-unit-container></ng-template>
               <div style="text-align: center;">
-                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn mt5" (click)="completeUnit()" [disabled]="selectedUnit.completed" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
+                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}"
+                  class="cyan-btn mt5" (click)="completeUnit()" [disabled]="selectedUnit.completed" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
               </div>
             </div>
           </div>
@@ -41,8 +45,8 @@
                 <div class="ui-g-8">
                   <h4 class="title">{{exam.name}}</h4>
                   <span class="e-status">
-              {{EXAM_STATUS[exam.status] | translate}}
-            </span>
+                    {{EXAM_STATUS[exam.status] | translate}}
+                  </span>
                   <div class="clearfix"></div>
                   <p-accordion styleClass="cont">
                     <p-accordionTab header="{{'Summary' | translate}}">
@@ -110,7 +114,8 @@
                       </li>
                     </ul>
                     <p-footer>
-                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(exam, exam.member)" [disabled]="!exam.IsAvailable || exam.member.enroll_status=='completed'"></button>
+                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn"
+                        style="margin-right:4px;" (click)="startExam(exam, exam.member)" [disabled]="!exam.IsAvailable || exam.member.enroll_status=='completed'"></button>
                     </p-footer>
                   </p-card>
                 </div>
@@ -127,7 +132,8 @@
       <div class="ui-g-12 ">
         <p-toolbar>
           <div class="ui-toolbar-group-left">
-            <button pButton type="button " label="{{ 'View certificate'|translate}} " class="purple-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
+            <button pButton type="button " label="{{ 'View certificate'|translate}} " class="purple-btn " icon="ui-icon-print " (click)="showCertificate()"
+              *ngIf="certificate"></button>
           </div>
         </p-toolbar>
         <p-dataList [value]="completedExams" [paginator]="true" [rows]="5">
@@ -180,7 +186,8 @@
                       </li>
                     </ul>
                     <p-footer>
-                      <button pButton type="button" icon="ui-icon-timeline" title="{{'Answer'| translate}}" label="{{'Answer'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="viewAnswer(exam)"></button>
+                      <button pButton type="button" icon="ui-icon-timeline" title="{{'Answer'| translate}}" label="{{'Answer'|translate}}" class="orange-btn"
+                        style="margin-right:4px;" (click)="viewAnswer(exam)"></button>
                     </p-footer>
                   </p-card>
                 </div>
@@ -196,7 +203,9 @@
       <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
         <ul class="task-list-container">
           <li *ngFor="let material of materials">
-            <a href="{{material.url}}"><span class="task-name">{{material.name}}</span></a>
+            <a href="{{material.url}}">
+              <span class="task-name">{{material.name}}</span>
+            </a>
             <i class="material-icons" *ngIf="material.type=='video'">videocam</i>
             <i class="material-icons" *ngIf="material.type=='audio'">mic</i>
             <i class="material-icons" *ngIf="material.type=='file'">attachment</i>
@@ -218,7 +227,8 @@
         <div class="ui-g-4">
           <div class="task-box task-box-1">
             <div class="task-box-header">
-              <button pButton type="button " label="{{ 'Join'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
+              <button pButton type="button " label="{{ 'Join'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="joinConference() "
+                [disabled]="conference.status!='open'"></button>
             </div>
             <div class="task-box-content">
               <h3>{{'Live conference'|translate}} : {{conference.name}}</h3>
