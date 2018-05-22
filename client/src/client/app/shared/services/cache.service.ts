@@ -46,6 +46,10 @@ export class CacheService {
             var questionCache = new QuestionCache();
             questionCache.updateCache(record, method, this);
         }
+        if (record.Model == Exam.Model) {
+            var examCache = new ExamCache();
+            examCache.updateCache(record, method, this);
+        }
     }
 
 
@@ -117,7 +121,7 @@ export class GroupCache implements ICache<Group> {
                 if (method == 'DELETE')
                     groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
-                    }));
+                    });
             }
         }
     }
