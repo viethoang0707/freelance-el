@@ -110,7 +110,7 @@ export class GroupCache implements ICache<Group> {
                 if (method == 'DELETE')
                     groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
-                    }));
+                    });
             }
         }
         if (record.category == 'course') {
