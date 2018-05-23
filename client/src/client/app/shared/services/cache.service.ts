@@ -100,6 +100,7 @@ export class GroupCache implements ICache<Group> {
                     groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
                     });
+                cacheService.save('USER_GROUP',groups);
             }
         }
         if (record.category == 'question') {
@@ -110,7 +111,8 @@ export class GroupCache implements ICache<Group> {
                 if (method == 'DELETE')
                     groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
-                    }));
+                    });
+                cacheService.save('QUESTION_GROUP',groups);
             }
         }
         if (record.category == 'course') {
@@ -122,6 +124,7 @@ export class GroupCache implements ICache<Group> {
                     groups = _.reject(groups, (group:Group)=> {
                         return group.id == record.id;
                     });
+                cacheService.save('COURSE_GROUP',groups);
             }
         }
     }

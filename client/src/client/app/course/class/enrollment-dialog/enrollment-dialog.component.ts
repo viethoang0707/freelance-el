@@ -44,8 +44,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	constructor() {
 		super();
 		this.items = [
-			{ label: this.translateService.instant('Student'),value:'student',command:()=> {this.add('student')}},
-			{ label: this.translateService.instant('Teacher'),value:'teacher',command:()=> {this.add('teacher')}},
+			{ label: this.translateService.instant('Student'),value:'student',command:()=> {this.addMembers('student')}},
+			{ label: this.translateService.instant('Teacher'),value:'teacher',command:()=> {this.addMembers('teacher')}},
 		
 		]
 		this.course = new Course();
