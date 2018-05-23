@@ -54,7 +54,6 @@ export class ReportUtils {
 		var first_attempt_number = new Date(first_attempt.start).getTime();
 		var timeforunit = last_attempt_number - first_attempt_number;
 
-
 		var unitCount  = 0;
 		var unitLogs = {}
 		_.each(logs, (log)=> {
