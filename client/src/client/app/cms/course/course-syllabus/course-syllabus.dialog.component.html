@@ -16,10 +16,10 @@
         </div>
       </p-toolbar>
       <div class="ui-g-4">
-        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" [style]="{width: '100%'}"></p-tree>
+        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-syllabus"></p-tree>
       </div>
       <div class="ui-g-8" *ngIf="selectedUnit">
-        <div class="card">
+        <div class="card course-syllabus-unit">
           <div class="image-box-content">
             <div>
               <h3 class="removeMT">{{selectedUnit.name}}</h3>
