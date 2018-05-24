@@ -8,6 +8,7 @@ import { CacheService } from '../services/cache.service';
 import { CourseMember } from '../models/elearning/course-member.model';
 import { DataAccessService } from '../services/data-access.service';
 import * as _ from 'underscore';
+import { CacheService } from '../services/cache.service';
 
 @Injectable()
 export class StudentGuard implements CanActivate, APIContext {
@@ -21,7 +22,7 @@ export class StudentGuard implements CanActivate, APIContext {
 		this.apiService =  apiService;
 		this.authService = authService;
 		this.dataAccessService = dataAccessService;
-		this.cacheService =  cacheService;
+		this.cacheService = cacheService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
