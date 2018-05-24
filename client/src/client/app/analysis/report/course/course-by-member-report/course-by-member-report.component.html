@@ -11,7 +11,7 @@
                 <button pButton type="button" label="{{'Export'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="export()"></button>
             </div>
         </p-toolbar>
-        <p-table #dataTable [value]="records" [responsive]="true">
+        <p-table #dataTable [value]="records" [responsive]="true" sortField="user_login" sortMode="single" (onSort)="onSort()">
             <ng-template pTemplate="caption">
                 {{'Course by member report'|translate}}
             </ng-template>
@@ -36,10 +36,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                 <tr>
-                    <td *ngIf="rowGroupMetadata[rowData.user_login].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.user_login].size">
+                    <td>
                         {{rowData.user_login}}
                     </td>
-                    <td *ngIf="rowGroupMetadata[rowData.user_login].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.user_login].size">
+                    <td>
                         {{rowData.user_name}}
                     </td>
                     <td>{{rowData.course_code}}</td>

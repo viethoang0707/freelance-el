@@ -30,6 +30,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 
 	@ViewChild(SelectGroupDialog) groupDialog : SelectGroupDialog;
 	@ViewChild(SelectUsersDialog) userDialog : SelectUsersDialog;
+	
 	records: any;
 	rowGroupMetadata: any;
 	GROUP_CATEGORY = GROUP_CATEGORY;
@@ -38,6 +39,35 @@ export class CourseByMemberReportComponent extends BaseComponent{
     constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.reportUtils = new ReportUtils();
+    }
+
+	ngOnInit() {
+        this.updateRowGroupMetaData();
+    }
+
+    onSort() {
+        this.updateRowGroupMetaData();
+    }
+
+    updateRowGroupMetaData() {
+        this.rowGroupMetadata = {};
+        if (this.records) {
+            for (let i = 0; i < this.records.length; i++) {
+                let rowData = this.records[i];
+                let brand = rowData.user_login;
+                if (i == 0) {
+                    this.rowGroupMetadata[brand] = { index: 0, size: 1 };
+                }
+                else {
+                    let previousRowData = this.records[i - 1];
+                    let previousRowGroup = previousRowData.brand;
+                    if (brand === previousRowGroup)
+                        this.rowGroupMetadata[brand].size++;
+                    else
+                        this.rowGroupMetadata[brand] = { index: i, size: 1 };
+                }
+            }
+        }
     }
 
     export() {
@@ -78,6 +108,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 				records = records.filter( record => record.course_name != false);
 				this.records = records;
 				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
+				console.log(this.rowGroupMetadata);
 			});
 		});
     }
@@ -125,7 +156,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 			// record["last_attempt"] =  result[1];
 			record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATE_FORMAT);
 
-		if(result[2] != NaN)
+		if(!Number.isNaN(result[2]))
 			record["time_spent"] =  this.timePipe.transform(+(result[2]),'min');
 		
 	    return record;
