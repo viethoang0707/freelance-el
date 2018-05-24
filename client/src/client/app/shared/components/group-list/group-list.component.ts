@@ -79,7 +79,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         if(subscription)
         {
             subscription.subscribe(items => {
-                if(items.length > 0){
+                if(items && items.length > 0){
                     this.warn('The group is used by another content.');
                 }
                 else{
