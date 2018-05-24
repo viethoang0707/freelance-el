@@ -375,6 +375,9 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
   overflow: auto;
 }
 
+.schedule-dashboard .fc-scroller{
+  height: 500px !important;
+}
 .spinner {
    position: absolute;
    left: 50%;
