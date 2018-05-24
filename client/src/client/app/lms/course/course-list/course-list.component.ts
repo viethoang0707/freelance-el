@@ -52,29 +52,29 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             var courseIds = _.pluck(members,'course_id');
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
             .map(courses => {
-                return _.flatten(courses);
-            })
-            .subscribe(courses => {
-                courses = _.uniq(courses, (course)=> {
+                var courstList = _.flatten(courses);
+                return _.uniq(courstList, (course)=> {
                     return course.id;
                 });
-                _.each(courses, (course)=> {
-                    course.courseMemberData = {};
+            })
+            .subscribe(courses => {
+                this.courses = courses;
+                _.each(this.courses, (course)=> {
+                    course["courseMemberData"] = {};
                     CourseMember.listByCourse(this, course.id).subscribe(members => {
-                        course.courseMemberData = this.reportUtils.analyseCourseMember(course,members);
+                        course["courseMemberData"] = this.reportUtils.analyseCourseMember(course,members);
                     });
                     if (course.syllabus_id)
                         CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                            course.unit_count = count;
+                            course["unit_count"] = count;
                         });
                     else
-                        course.unit_count  = 0;
-                    course.member = _.find(members, (member:CourseMember)=> {
+                        course["unit_count"]   = 0;
+                    course["member"] = _.find(members, (member:CourseMember)=> {
                         return member.course_id == course.id;
                     });
 
                 });
-                this.courses = courses;
                 this.courses.sort((course1, course2): any => {
                     if (course1.create_date > course2.create_date)
                         return -1;
