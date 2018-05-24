@@ -20,7 +20,7 @@ export class SupervisorGuard implements CanActivate, APIContext {
 		this.apiService =  apiService;
 		this.authService = authService;
 		this.dataAccessService = dataAccessService;
-		this.cacheService =  cacheService;
+		this.cacheService = cacheService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
