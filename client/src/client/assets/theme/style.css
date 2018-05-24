@@ -319,9 +319,15 @@ body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
   width: 100%;
 }
 
-.tree-unit-course{
+.tree-unit-course-study{
   width: 100%;
   height: 530px;
+  overflow: auto;
+}
+
+.tree-unit-course-syllabus{
+  width: 100%;
+  height: 270px;
   overflow: auto;
 }
 
