@@ -89,7 +89,7 @@ export class ReportUtils {
 			if (log.code == 'START_EXAM')
 				onTime -= log.start.getTime();
 		});
-		return [first_attempt, last_attempt, onTime];
+		return [first_attempt.start, last_attempt.start, onTime];
 	}
 
 	analyseCourseMember(course: Course, members: CourseMember[]):any {

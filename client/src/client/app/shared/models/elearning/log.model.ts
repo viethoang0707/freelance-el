@@ -99,6 +99,10 @@ export class CourseLog extends BaseModel{
         return log.save(context);
     }
 
+    static listByCourse( context:APIContext, courseId: number): Observable<any[]> {
+        return CourseLog.search(context,[],"[('course_id','=',"+courseId+")]");
+    }
+
 }
 
 
@@ -186,6 +190,10 @@ export class ExamLog extends BaseModel{
         log.code = "CLOSE_ANSWER";
         log.start = new Date();
         return log.save(context);
+    }
+
+    static listByExam( context:APIContext, examId: number): Observable<any[]> {
+        return ExamLog.search(context,[],"[('exam_id','=',"+examId+")]");
     }
 
 }
