@@ -118,6 +118,14 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         this.startTransaction();
         Course.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(courses => {
             this.courses = courses;
+            this.courses.sort((course1, course2): any => {
+                if (course1.create_date > course2.create_date)
+                    return -1;
+                else if (course1.create_date < course2.create_date)
+                    return 1;
+                else
+                    return 0;
+            });
             this.closeTransaction();
         });
     }

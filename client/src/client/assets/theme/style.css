@@ -362,3 +362,7 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
   height: 480px;
   overflow: auto;
 }
+
+.schedule-dashboard .fc-scroller{
+  height: 500px !important;
+}

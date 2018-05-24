@@ -8,7 +8,6 @@ import { CacheService } from '../services/cache.service';
 import { CourseMember } from '../models/elearning/course-member.model';
 import { DataAccessService } from '../services/data-access.service';
 import * as _ from 'underscore';
-import { CacheService } from '../services/cache.service';
 
 @Injectable()
 export class StudentGuard implements CanActivate, APIContext {
