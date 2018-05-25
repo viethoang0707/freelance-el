@@ -56,23 +56,24 @@ export class CourseListComponent extends BaseComponent {
         var course = new Course();
         this.courseDialog.show(course);
         this.courseDialog.onCreateComplete.subscribe(() => {
-            var sameCodeCourse = _.find(this.courses, obj=> {
+            var duplicateCates = _.filter(this.courses, obj=> {
                 return course.code == obj.code;
             });
-            if (sameCodeCourse)
+            if (duplicateCates.length >=2)
                 this.warn(this.translateService.instant('There is another course with same code in database'));
             this.loadCourses();
         });
     }
 
+
     editCourse() {
         if (this.selectedCourse)
             this.courseDialog.show(this.selectedCourse);
         this.courseDialog.onUpdateComplete.subscribe(() => {
-            var sameCodeCourse = _.find(this.courses, obj=> {
+            var duplicateCates = _.filter(this.courses, obj=> {
                 return this.selectedCourse.code == obj.code;
             });
-            if (sameCodeCourse)
+            if (duplicateCates.length >=2)
                 this.warn(this.translateService.instant('There is another course with same code in database'));
         });
     }
