@@ -73,7 +73,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                     course["member"] = _.find(members, (member:CourseMember)=> {
                         return member.course_id == course.id;
                     });
-
                 });
                 this.courses.sort((course1, course2): any => {
                     if (course1.create_date > course2.create_date)
