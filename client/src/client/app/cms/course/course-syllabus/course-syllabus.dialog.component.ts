@@ -211,6 +211,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	previewUnit() {
 		if (this.selectedNode) {
+			this.selectedNode.data.course_id = this.course.id;
 			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
 	}
