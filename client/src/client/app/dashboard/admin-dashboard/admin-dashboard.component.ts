@@ -13,6 +13,7 @@ import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.compon
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '../../shared/models/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     moduleId: module.id,
@@ -39,7 +40,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(CourseDialog) courseDialog: CourseDialog;
     
-    constructor(private dateUtils: DateUtils) {
+    constructor(private dateUtils: DateUtils, private translateService: TranslateService) {
         super();
         this.header = {
             left: 'prev, today, next',
