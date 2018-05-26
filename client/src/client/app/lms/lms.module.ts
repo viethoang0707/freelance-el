@@ -10,6 +10,7 @@ import { CourseListComponent} from './course/course-list/course-list.component';
 import { ClassConferenceDialog} from './course/class-conference/class-conference.dialog.component';
 import { QuestionMarkingDialog} from './exam/question-marking/question-marking.dialog.component';
 import { AnswerPrintDialog } from './exam/answer-print/answer-print.dialog.component';
+import { QuestionSheetPrintDialog } from './exam/question-sheet-print/question-sheet-print.dialog.component';
 import { ConferenceListComponent } from './conference/conference-list/conference-list.component';
 import { CourseMaterialDialog } from './course/course-material/course-material.dialog.component';
 import { CourseFaqDialog } from './course/course-faq/course-faq.dialog.component';
@@ -31,7 +32,7 @@ import {MessageModule} from 'primeng/message';
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,MessagesModule,MessageModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,AnswerPrintDialog,
     				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,
-    				 SubmissionDialog,ClassExamListDialog,ExamManageComponent,
+    				 SubmissionDialog,ClassExamListDialog,ExamManageComponent,QuestionSheetPrintDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,
     				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog],

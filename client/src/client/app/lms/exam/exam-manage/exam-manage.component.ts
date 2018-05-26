@@ -26,6 +26,8 @@ import { QuestionMarkingDialog } from '../question-marking/question-marking.dial
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Http, Response } from '@angular/http';
 import { AnswerPrintDialog } from '../answer-print/answer-print.dialog.component';
+import { QuestionSheetPrintDialog } from '../question-sheet-print/question-sheet-print.dialog.component';
+import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 
 @Component({
 	moduleId: module.id,
@@ -42,6 +44,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     questions: ExamQuestion[];
     @ViewChild(QuestionMarkingDialog) questionMarkDialog: QuestionMarkingDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
+    @ViewChild(QuestionSheetPrintDialog) questionSheetDialog: QuestionSheetPrintDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -65,8 +68,14 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         });
 	}
 
+    showQuestionSheet() {
+        QuestionSheet.byExam(this, this.exam.id).subscribe((sheet:QuestionSheet)=> {
+            if (!sheet || !sheet.finalized)
+                this.error('The exam questions has not been set up');
+        })
+    }
+
 	mark() {
-        console.log(this.exam);
         if (this.selectedRecord)
             this.exam.containsOpenEndQuestion(this).subscribe(success => {
                 if (!success) {
