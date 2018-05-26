@@ -19,12 +19,12 @@ import { ExcelService } from '../../../shared/services/excel.service';
 })
 export class QuestionImportDialog extends BaseComponent {
 
-	display: boolean;
-	fileName: string;
-	records: any[];
-	percentage: number;
-	completed: number;
-	total: number;
+	private display: boolean;
+	private fileName: string;
+	private records: any[];
+	private percentage: number;
+	private completed: number;
+	private total: number;
 
 	private onImportCompleteReceiver: Subject<any> = new Subject();
 	onImportComplete: Observable<any> = this.onImportCompleteReceiver.asObservable();

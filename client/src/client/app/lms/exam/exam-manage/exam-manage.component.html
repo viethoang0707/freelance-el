@@ -7,6 +7,10 @@
             <button pButton type="button " label="{{ 'Mark'|translate}} " class="purple-btn " icon="ui-icon-local-offer" (click)="mark()" [disabled]="!selectedRecord"></button>
             <button pButton type="button " label="{{ 'Answer sheet'|translate}} " class="purple-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedRecord"></button>
           </div>
+          <div class="ui-toolbar-group-right ">
+            <button pButton type="button " label="{{ 'Report'|translate}} " class="purple-btn " icon="ui-icon-data-usage" (click)="showExamReport()" ></button>
+            <button pButton type="button " label="{{ 'Statistics'|translate}} " class="purple-btn " icon="ui-icon-equalizer" (click)="showExamStats()" ></button>
+          </div>
         </p-toolbar>
         <p-table #scoreTable [value]="scoreRecords" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
          <!--  sortField="role" -->
@@ -53,4 +57,6 @@
       <question-marking-dialog></question-marking-dialog>
       <question-sheet-print-dialog></question-sheet-print-dialog>
       <answer-print-dialog></answer-print-dialog>
+      <exam-report-dialog></exam-report-dialog>
+      <exam-stats-dialog></exam-stats-dialog>
 </div>

@@ -17,7 +17,7 @@ import { QuestionContainerDirective } from '../../../assessment/question/questio
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
- import * as _ from 'underscore';
+import * as _ from 'underscore';
 
 @Component({
     moduleId: module.id,
@@ -26,101 +26,64 @@ import 'rxjs/add/observable/timer';
     styleUrls: ['question-sheet-print.dialog.component.css'],
 })
 export class QuestionSheetPrintDialog extends BaseComponent {
-    display: boolean;
-    qIndex: number;
-    examQuestions: ExamQuestion[];
-    answers: Answer[];
-    member: ExamMember;
-    exam: Exam;
-    submission: Submission;
-    account: CloudAccount;
+    
+    private display: boolean;
+    private examQuestions: ExamQuestion[];
+    private exam: Exam;
+    private sheet: QuestionSheet;
 
-     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
-     @ViewChild('printSection') printSection;
+    @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
+    @ViewChild('printSection') printSection;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
         this.display = false;
         this.examQuestions = [];
-        this.answers = [];
         this.exam = new Exam();
-        this.member = new ExamMember();
-        this.account = this.authService.CloudAcc;
-        this.submission = new Submission();
     }
 
-    show(exam: Exam, member: ExamMember) {
+    show(exam: Exam, sheet: QuestionSheet) {
         this.display = true;
         this.examQuestions = [];
-        this.answers = [];
         this.exam = exam;
-        this.member = member;
-        this.qIndex = 0;
-        this.startTransaction();
-        Submission.byMemberAndExam(this, this.member.id, this.exam.id).subscribe((submit:Submission) => {
-            if (submit) {
-                this.submission = submit;
-                this.startReview();
-            }
-            this.closeTransaction();
-        });
+        this.sheet = sheet;
+        this.startReview();
     }
 
     hide() {
         this.display = false;
     }
 
-    fetchAnswers(): Observable<any> {
-        if (this.submission.id)
-            return Answer.listBySubmit(this, this.submission.id);
-        else
-            return Observable.of([]);
-    }
+
 
     startReview() {
         this.startTransaction();
-        QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
-            ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions => {
-                this.examQuestions = examQuestions;
-                this.fetchAnswers().subscribe(answers => {
-                    this.answers = answers;
-                    setTimeout(()=>{
-                    var componentHostArr =  this.questionsComponents.toArray();
-                        for (var i =0;i<examQuestions.length;i++) {
-                            var examQuestion =  examQuestions[i];
-                            var componentHost = componentHostArr[i];
-                            this.displayQuestion(examQuestion,componentHost);
-                        }
-                    }, 0); 
-                });
-                this.closeTransaction();
-            });
+        ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
+            this.examQuestions = examQuestions;
+            setTimeout(()=> {
+                var componentHostArr = this.questionsComponents.toArray();
+                for (var i = 0; i < examQuestions.length; i++) {
+                    var examQuestion = examQuestions[i];
+                    var componentHost = componentHostArr[i];
+                    this.displayQuestion(examQuestion, componentHost);
+                }
+            this.closeTransaction();
+            },0)
+            
         });
-    }
-
-    prepareAnswer(question: ExamQuestion): Observable<any> {
-        var answer = _.find(this.answers, (ans: Answer)=> {
-            return ans.question_id == question.question_id;
-        });
-        if (!answer)
-            answer = new Answer();
-        return Observable.of(answer);
     }
 
     displayQuestion(examQuestion: ExamQuestion, componentHost) {
-        Question.get(this, examQuestion.question_id).subscribe((question)=> {
-            this.prepareAnswer(examQuestion).subscribe(answer => {
-                var detailComponent = QuestionRegister.Instance.lookup(question.type);
-                let viewContainerRef = componentHost.viewContainerRef;
-                if (detailComponent) {
-                    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-                    viewContainerRef.clear();
-                    var componentRef = viewContainerRef.createComponent(componentFactory);
-                    (<IQuestion>componentRef.instance).mode = 'review';
-                    (<IQuestion>componentRef.instance).render(question,answer);
-                }
-            });
-            
+        Question.get(this, examQuestion.question_id).subscribe((question) => {
+            var detailComponent = QuestionRegister.Instance.lookup(question.type);
+            let viewContainerRef = componentHost.viewContainerRef;
+            if (detailComponent) {
+                let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+                viewContainerRef.clear();
+                var componentRef = viewContainerRef.createComponent(componentFactory);
+                (<IQuestion>componentRef.instance).mode = 'preview';
+                (<IQuestion>componentRef.instance).render(question);
+            }
         });
     }
 

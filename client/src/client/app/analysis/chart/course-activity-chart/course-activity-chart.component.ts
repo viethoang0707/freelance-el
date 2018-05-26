@@ -25,8 +25,8 @@ import { StatsUtils } from '../../../shared/helpers/statistics.utils';
 })
 export class CourseActivityChartComponent extends BaseComponent implements OnInit {
 
-    chartData: any;
-    statsUtils: StatsUtils;
+    private chartData: any;
+    private statsUtils: StatsUtils;
 
     constructor() {
         super();

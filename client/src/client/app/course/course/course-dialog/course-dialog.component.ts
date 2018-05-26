@@ -25,16 +25,16 @@ import { WorkflowService } from '../../../shared/services/workflow.service';
 })
 export class CourseDialog extends BaseDialog<Course> {
 
-	tree: TreeNode[];
-	items: MenuItem[];
-	user: User;
-	selectedNode: TreeNode;
-	courseStatus: SelectItem[];
-	treeUtils: TreeUtils;
+	private tree: TreeNode[];
+	private items: MenuItem[];
+	private user: User;
+	private selectedNode: TreeNode;
+	private courseStatus: SelectItem[];
+	private treeUtils: TreeUtils;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
-	allowToChangeState : boolean;
-	submitForReview: boolean;
-	openTicket: Ticket;
+	private allowToChangeState : boolean;
+	private submitForReview: boolean;
+	private openTicket: Ticket;
 
 	constructor(private socketService:WebSocketService, private workflowService: WorkflowService) {
 		super();

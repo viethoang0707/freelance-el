@@ -34,3 +34,4 @@ export const QUESTION_LEVEL = {'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard
 export const LANGS = { 'vn': 'Vietnamese', 'gb': 'English' };
 export const TICKET_STATUS = { 'open': 'Open', 'approved': 'Approved', 'rejected': 'Rejected' };
 export const EXAM_TIME_WARNING = 60000;
+export const DEFAULT_LANG = 'gb';

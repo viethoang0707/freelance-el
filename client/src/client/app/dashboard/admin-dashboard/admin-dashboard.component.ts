@@ -23,24 +23,24 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
-    userCount: any;
-    studentCount: any;
-    teacherCount: any;
-    courseCount: any;
-    events: any[];
-    exams: Exam[];
-    courses: Course[];
-    course: Course;
-    selectedExam: any;
-    header: any;
-    now: Date;
+    private userCount: any;
+    private studentCount: any;
+    private teacherCount: any;
+    private courseCount: any;
+    private events: any[];
+    private exams: Exam[];
+    private courses: Course[];
+    private course: Course;
+    private selectedExam: any;
+    private header: any;
+    private now: Date;
     COURSE_MODE =  COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(CourseDialog) courseDialog: CourseDialog;
     
-    constructor(private dateUtils: DateUtils, private translateService: TranslateService) {
+    constructor(private dateUtils: DateUtils) {
         super();
         this.header = {
             left: 'prev, today, next',

@@ -20,10 +20,10 @@ import * as _ from 'underscore';
 })
 export class TicketDialog extends BaseDialog<Ticket> {
 
-    user: User;
+    private user: User;
     TICKET_STATUS = TICKET_STATUS;
     @Input() replyText;
-    comments: Comment[];
+    private comments: Comment[];
 
     constructor(private workflowService: WorkflowService, private socketService: WebSocketService) {
         super();

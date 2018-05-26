@@ -27,10 +27,11 @@ import {WebcamImage} from 'ngx-webcam';
     styleUrls: ['submission.dialog.component.css'],
 })
 export class SubmissionDialog extends BaseComponent {
-    display: boolean;
-    exam: Exam;
-    submission: Submission;
-    trigger: Subject<void> = new Subject<void>();
+    
+    private display: boolean;
+    private exam: Exam;
+    private submission: Submission;
+    private trigger: Subject<void> = new Subject<void>();
 
     private onConfirmReceiver: Subject<any> = new Subject();
     onConfirm: Observable<any> = this.onConfirmReceiver.asObservable();

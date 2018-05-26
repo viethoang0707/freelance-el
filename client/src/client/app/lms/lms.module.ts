@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
+import { AnalysisModule } from '../analysis/analysis.module';
 import { AssessmentModule } from '../assessment/assessment.module';
 import { CMSModule } from '../cms/cms.module';
 import { LMSComponent } from './lms.component';
@@ -24,18 +25,21 @@ import { CertificatePrintDialog } from './course/certificate-print/certificate-p
 import { CourseManageComponent } from './course/course-manage/course-manage.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { SubmissionDialog } from './exam/submission-dialog/submission.dialog.component';
-import {WebcamModule} from 'ngx-webcam';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
+import { ExamReportDialog } from './exam/exam-report/exam-report.dialog.component';
+import { ExamStatsDialog } from './exam/exam-stats/exam-stats.dialog.component';
+
+
+import { WebcamModule } from 'ngx-webcam';
 
 @NgModule({
-    imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,MessagesModule,MessageModule],
+    imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,AnalysisModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,AnswerPrintDialog,
     				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,
     				 SubmissionDialog,ClassExamListDialog,ExamManageComponent,QuestionSheetPrintDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,
-    				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog],
+    				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog,
+    				ExamReportDialog, ExamStatsDialog],
     exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog, SubmissionDialog],
     providers: []
 })

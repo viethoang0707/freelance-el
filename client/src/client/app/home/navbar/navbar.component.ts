@@ -22,10 +22,10 @@ import * as _ from 'underscore'
 })
 export class NavbarComponent extends BaseComponent implements OnInit {
 
-	user: User;
-	notifs: Notification[];
-	langs: SelectItem[];
-	viewMode: string;
+	private user: User;
+	private notifs: Notification[];
+	private langs: SelectItem[];
+	private viewMode: string;
 	@Input() selectedLang: string;
 	@Input() adminMode: boolean;
 	@ViewChild(TicketDialog) ticketDialog: TicketDialog;

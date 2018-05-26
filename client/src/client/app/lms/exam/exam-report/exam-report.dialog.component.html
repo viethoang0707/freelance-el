@@ -1,0 +1,7 @@
+<p-dialog header="{{'Exam submission confirmation'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true" appendTo="body">
+  <exam-result-report></exam-result-report>
+  <p-footer>
+    <button type="button" pButton icon="ui-icon-check" (click)="export()" label="{{'Export'|translate}}"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Cancel'|translate}}"></button>
+  </p-footer>
+</p-dialog>

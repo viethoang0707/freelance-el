@@ -22,13 +22,13 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
-	componentRef: any;
-	treeUtils: TreeUtils;
-	tree: TreeNode[];
-	treeList: TreeNode[];
-	selectedUnit: CourseUnit;
-	sylUtils: SyllabusUtils;
-	nameUnit: string;
+	private componentRef: any;
+	private treeUtils: TreeUtils;
+	private tree: TreeNode[];
+	private treeList: TreeNode[];
+	private selectedUnit: CourseUnit;
+	private sylUtils: SyllabusUtils;
+	private nameUnit: string;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();

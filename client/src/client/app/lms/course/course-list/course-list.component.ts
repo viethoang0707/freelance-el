@@ -26,9 +26,9 @@ import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course
 
 export class CourseListComponent extends BaseComponent implements OnInit {
 
-    courses: Course[];
-    currentUser: User;
-    reportUtils: ReportUtils;
+    private courses: Course[];
+    private currentUser: User;
+    private reportUtils: ReportUtils;
     COURSE_STATUS = COURSE_STATUS;
     COURSE_MODE = COURSE_MODE;
     @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;

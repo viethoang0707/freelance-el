@@ -7,6 +7,8 @@ import * as moment from 'moment';
 import { SERVER_DATETIME_FORMAT} from '../models/constants';
 import { Injectable } from '@angular/core';
 import { APIContext } from '../models/context';
+import { QuestionOption } from '../models/elearning/option.model';
+import { Answer } from '../models/elearning/answer.model';
 
 export class StatsUtils {
 
@@ -34,6 +36,40 @@ export class StatsUtils {
 		 });
 	}
 
-
+	examAnswerStatistics(answers: Answer[]): any {
+		var option2Question = {};
+		var optionIds = [];
+		var optionAttempts = {};
+		var questionAttempts = {};
+		_.each(answers, (ans:Answer)=> {
+			var selectedOptionIds = [];
+			if (ans.option_id) 
+				selectedOptionIds.push(ans.option_id);
+			else if (ans.json) 
+				selectedOptionIds = JSON.parse(ans.json);
+			optionIds =  optionIds.concat(selectedOptionIds);
+			_.each(selectedOptionIds, id=> {
+				option2Question[id] = ans.question_id;
+				if (!optionAttempts[id])
+					optionAttempts[id] = 1;
+				else
+					optionAttempts[id]++;
+			});
+			questionAttempts[ans.question_id] = 0;
+		});
+		optionIds = _.uniq(optionIds);
+		var optionPercentage  = {};
+		_.each(optionIds, optionId=> {
+			var questionId = option2Question[optionId];
+			var questionAttempt = questionAttempts[questionId];
+			var optionAttempt = optionAttempts[optionId];
+			if (questionAttempt) 
+				optionPercentage[optionId] = optionAttempt * 100 /questionAttempt;
+			else
+				optionPercentage[optionId] = 0;
+			
+		});
+		return optionPercentage;
+	}
 
 }

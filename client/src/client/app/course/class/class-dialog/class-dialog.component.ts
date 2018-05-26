@@ -22,13 +22,13 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 })
 export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit {
 
-	rangeDates: Date[];
-	locale:any;
-	processing: boolean;
-	selectedMember: CourseMember;
-	members: CourseMember[];
-	items: MenuItem[];
-	treeUtils: TreeUtils;
+	private rangeDates: Date[];
+	private locale:any;
+	private processing: boolean;
+	private selectedMember: CourseMember;
+	private members: CourseMember[];
+	private items: MenuItem[];
+	private treeUtils: TreeUtils;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;

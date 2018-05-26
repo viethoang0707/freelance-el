@@ -22,10 +22,10 @@ export class ApprovalTreeComponent extends BaseComponent {
 
     @ViewChild(SelectAdminDialog) adminDialog: SelectAdminDialog;
 
-    tree: TreeNode[];    
-    selectedNode: TreeNode;
-    selectedUser:User;
-    treeUtils: TreeUtils;
+    private tree: TreeNode[];    
+    private selectedNode: TreeNode;
+    private selectedUser:User;
+    private treeUtils: TreeUtils;
 
     constructor() {
         super();

@@ -27,9 +27,9 @@ export class SubMenuComponent {
     @Input() item: MenuItem;
     @Input() root: boolean;
     @Input() visible: boolean;
-    _reset: boolean;
-    activeIndex: number;
-    hover: boolean;
+    private _reset: boolean;
+    private activeIndex: number;
+    private hover: boolean;
 
     constructor(public app: HomeComponent, public router: Router, public location: Location) { }
 

@@ -22,27 +22,20 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 	templateUrl: 'course-by-member-report.component.html',
 	styleUrls: ['course-by-member-report.component.css'],
 })
-@Report({
-    title:'Course by member report',
-    category:REPORT_CATEGORY.COURSE
-})
 export class CourseByMemberReportComponent extends BaseComponent{
 
-	@ViewChild(SelectGroupDialog) groupDialog : SelectGroupDialog;
-	@ViewChild(SelectUsersDialog) userDialog : SelectUsersDialog;
-	
-	records: any;
-	rowGroupMetadata: any;
+	private records: any;
+	private rowGroupMetadata: any;
 	GROUP_CATEGORY = GROUP_CATEGORY;
-    reportUtils: ReportUtils;
+    private reportUtils: ReportUtils;
 
     constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.reportUtils = new ReportUtils();
     }
 
-	ngOnInit() {
-        this.updateRowGroupMetaData();
+    clear() {
+        this.records = [];
     }
 
     onSort() {
@@ -86,30 +79,12 @@ export class CourseByMemberReportComponent extends BaseComponent{
     	this.excelService.exportAsExcelFile(header.concat(this.records),'course_by_member_report');
     }
 
-    selectUserGroup() {
-    	this.groupDialog.show();
-    	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
-            this.startTransaction();
-    		User.listByGroup(this, group.id).subscribe(users => {
-    			this.generateReport(users).subscribe(records => {
-					records = records.filter( record => record.course_name != false);
-					this.records = records;
-					this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
-                    this.closeTransaction();
-				});
-			});	
-    	});
-    }
-
-    selectIndividualUsers() {
-    	this.userDialog.show();
-    	this.userDialog.onSelectUsers.subscribe((users:User[]) => {
-			this.generateReport(users).subscribe(records => {
-				records = records.filter( record => record.course_name != false);
-				this.records = records;
-				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
-				console.log(this.rowGroupMetadata);
-			});
+    render(users:User[]) {
+    	this.startTransaction();
+		this.generateReport(users).subscribe(records => {
+			this.records = records;
+			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
+            this.closeTransaction();
 		});
     }
 
@@ -138,7 +113,6 @@ export class CourseByMemberReportComponent extends BaseComponent{
     generateReportRow(member: CourseMember, logs: CourseLog[]):any {
 
     	var record = {};
-
 		record["user_login"] =  member.login;
 	    record["user_name"] = member.name;
 	    record["course_name"] = member.course_name;

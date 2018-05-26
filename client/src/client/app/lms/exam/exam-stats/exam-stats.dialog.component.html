@@ -1,0 +1,48 @@
+<p-dialog header="{{'Exam submission confirmation'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true" appendTo="body">
+  <div class="ui-g content">
+    <div class="ui-g-12">
+        <p-table #dataTable [value]="records" [responsive]="true">
+            <ng-template pTemplate="caption">
+                {{'Exam answer statistics'|translate}}
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>{{'Option'|translate}}</th>
+                    <th>{{'Percent check'|translate}}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                <tr>
+                    <td colspan="2">
+                        <span>{{'Question'|translate}} {{i+rowIndex}}:</span>
+                        <div>{{rowData.title}}</div>
+                         <p [innerHTML]="rowData.content"></p>
+                    </td>
+                </tr>
+                <tr *ngFor ="let option of rowData">
+                	<td>
+                		{{option.content}}
+                	</td>
+                	<td>
+                		{{getCheckPercentage(option)}} %
+                	</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                {{'Total records'|translate}} : {{records?.length}}
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td [attr.colspan]="10">
+                        {{'No records found'|translate}}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+  <p-footer>
+    <button type="button" pButton icon="ui-icon-check" (click)="export()" label="{{'Export'|translate}}"></button>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Cancel'|translate}}"></button>
+  </p-footer>
+</p-dialog>

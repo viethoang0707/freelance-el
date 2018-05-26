@@ -22,9 +22,9 @@ declare var jQuery: any;
 export class SideMenuComponent extends BaseComponent implements OnInit {
 
     @Input() reset: boolean;
-    account: CloudAccount;
-    menu: any[];
-    layoutMenuScroller: HTMLDivElement;
+    private account: CloudAccount;
+    private menu: any[];
+    private layoutMenuScroller: HTMLDivElement;
     @ViewChild('layoutMenuScroller') layoutMenuScrollerViewChild: ElementRef;
 
     constructor(public app: HomeComponent, private menuService: MenuService,

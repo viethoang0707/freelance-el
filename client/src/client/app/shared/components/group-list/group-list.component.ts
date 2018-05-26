@@ -22,8 +22,8 @@ import { Question } from '../../../shared/models/elearning/question.model';
 export class GroupListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(GroupDialog) groupDialog: GroupDialog;
-    actionItems: MenuItem[]; 
-    treeUtils: TreeUtils;
+    private actionItems: MenuItem[]; 
+    private treeUtils: TreeUtils;
 
     constructor( private route: ActivatedRoute) {
         super();

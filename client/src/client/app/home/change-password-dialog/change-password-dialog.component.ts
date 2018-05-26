@@ -12,7 +12,7 @@ export class ChangePasswordDialog extends BaseComponent {
 
     @Input() old_pass: string;
     @Input() new_pass: string;
-    display: boolean;
+    private display: boolean;
 
     constructor() {
         super();
