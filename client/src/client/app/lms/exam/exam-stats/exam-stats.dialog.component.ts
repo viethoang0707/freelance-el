@@ -19,7 +19,7 @@ import { QuestionRegister } from '../../../assessment/question/question-template
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
 import { QuestionOption } from '../../../shared/models/elearning/option.model';
-import { StatsUtils } from '../../../shared/helpers/statistics.utils';
+import { ExamResultStatsReportComponent } from '../../../analysis/report/exam/exam-result-stats-report/exam-result-stats-report.component';
 
 @Component({
     moduleId: module.id,
@@ -29,66 +29,29 @@ import { StatsUtils } from '../../../shared/helpers/statistics.utils';
 })
 export class ExamStatsDialog extends BaseComponent {
     
+    
     private display: boolean;
-    private records:any;
-    private statsUtils: StatsUtils;
-    private optionPercentage: any;
-   
-    constructor(private excelService: ExcelService) {
+    
+    @ViewChild(ExamResultStatsReportComponent) statsReport: ExamResultStatsReportComponent;
+
+    constructor() {
         super();
         this.display = false;
-        this.records = [];
-        this.optionPercentage = {};
-        this.statsUtils =  new StatsUtils();
     }
 
     show(exam: Exam) {
         this.display = true;
-        this.records = [];
-        this.optionPercentage = {};
-        this.startTransaction();
-        QuestionSheet.byExam(this, exam.id).subscribe((sheet:QuestionSheet)=> {
-            ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions=> {
-                this.records =  examQuestions;
-                var supscriptions = _.map(examQuestions, question=> {
-                    return QuestionOption.listByQuestion(this, question.id).do(options=> {
-                        question["options"] =  options;
-                    });
-                });
-                if (supscriptions.length)
-                    Observable.forkJoin(supscriptions).subscribe(()=> {
-                        Answer.listByExam(this, exam.id).subscribe(answers=> {
-                            this.optionPercentage = this.statsUtils.examAnswerStatistics(answers);
-                        })
-                    });
-                this.closeTransaction();
-            });
-        });
+        this.statsReport.render(exam);
     }
-
 
     hide() {
         this.display = false;
+        this.statsReport.clear();
     }
 
-    export(){
-      var header = [
-            this.translateService.instant('Question'),
-            this.translateService.instant('Option'),
-            this.translateService.instant('Percentage'),
-            
-        ]
-        this.excelService.exportAsExcelFile(header.concat(this.records),'answer_statis');
-    }
-
-    getCheckPercentage(option) {
-        if (this.optionPercentage[option.id])
-            return this.optionPercentage[option.id]
-        else
-            return 0;
-    }
-
-
+   export() {
+       this.statsReport.export();
+   }
 }
 
 

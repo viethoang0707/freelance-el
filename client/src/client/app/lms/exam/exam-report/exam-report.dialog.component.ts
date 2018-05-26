@@ -31,7 +31,6 @@ export class ExamReportDialog extends BaseComponent {
     private display: boolean;
     
     @ViewChild(ExamResultReportComponent) examReport: ExamResultReportComponent;
-    @ViewChild('printSection') printSection;
 
     constructor() {
         super();

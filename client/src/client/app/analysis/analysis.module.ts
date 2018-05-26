@@ -4,6 +4,8 @@ import { ErpSharedModule } from '../shared/shared.module';
 import { AnalysisComponent } from './analysis.component';
 import { ReportComponent } from './report/report.component';
 import { ChartComponent } from './chart/chart.component';
+import { ExamResultStatsReportComponent } from './report/exam/exam-result-stats-report/exam-result-stats-report.component';
+import { ExamResultStatsReportContainerComponent } from './report/exam/exam-result-stats-report/exam-result-stats-report-container.component';
 import { ExamResultReportComponent } from './report/exam/exam-result-report/exam-result-report.component';
 import { ExamResultReportContainerComponent } from './report/exam/exam-result-report/exam-result-report-container.component';
 import { CourseByMemberReportComponent } from './report/course/course-by-member-report/course-by-member-report.component';
@@ -32,14 +34,17 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
 	MemberByCourseReportComponent,
 	ChartContainerDirective,
 	CourseActivityChartComponent,
+	ExamResultStatsReportComponent,
+	ExamResultStatsReportContainerComponent
 	ReportContainerDirective],
 	entryComponents: [
 		ExamResultReportContainerComponent,
         CourseByMemberReportContainerComponent,
         MemberByCourseReportContainerComponent,
+        ExamResultStatsReportContainerComponent,
         CourseActivityChartComponent
     ],
-	exports: [ExamResultReportComponent],
+	exports: [ExamResultReportComponent,ExamResultStatsReportComponent],
 	providers: [DatePipe, TimeConvertPipe]
 })
 export class AnalysisModule {
