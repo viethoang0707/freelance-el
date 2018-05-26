@@ -14,6 +14,7 @@ import { MemberByCourseReportComponent } from './report/course/member-by-course-
 import { MemberByCourseReportContainerComponent } from './report/course/member-by-course-report/member-by-course-report-container.component';
 import { ReportContainerDirective } from './report/report-container.directive';
 import { CourseActivityChartComponent } from './chart/course-activity-chart/course-activity-chart.component';
+import { CourseActivityChartContainerComponent } from './chart/course-activity-chart/course-activity-chart-container.component';
 import { ChartContainerDirective } from './chart/chart-container.directive'
 import { DatePipe } from '@angular/common';
 import { ReportUtils } from '../shared/helpers/report.utils';
@@ -34,15 +35,16 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
 	MemberByCourseReportComponent,
 	ChartContainerDirective,
 	CourseActivityChartComponent,
+	CourseActivityChartContainerComponent,
 	ExamResultStatsReportComponent,
-	ExamResultStatsReportContainerComponent
+	ExamResultStatsReportContainerComponent,
 	ReportContainerDirective],
 	entryComponents: [
 		ExamResultReportContainerComponent,
         CourseByMemberReportContainerComponent,
         MemberByCourseReportContainerComponent,
         ExamResultStatsReportContainerComponent,
-        CourseActivityChartComponent
+        CourseActivityChartContainerComponent
     ],
 	exports: [ExamResultReportComponent,ExamResultStatsReportComponent],
 	providers: [DatePipe, TimeConvertPipe]
