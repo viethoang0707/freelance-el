@@ -70,8 +70,9 @@ export class ExamResultStatsReportComponent extends BaseComponent{
             ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions=> {
                 this.records =  examQuestions;
                 var supscriptions = _.map(examQuestions, question=> {
-                    return QuestionOption.listByQuestion(this, question.id).do(options=> {
+                    return QuestionOption.listByQuestion(this, question.question_id).do(options=> {
                         question["options"] =  options;
+                        console.log(question["options"] );
                     });
                 });
                 if (supscriptions.length)

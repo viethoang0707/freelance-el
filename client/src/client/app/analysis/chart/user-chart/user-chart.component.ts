@@ -14,29 +14,46 @@ import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../shared/models/constants'
 import { Chart } from '../chart.decorator';
 import { StatsUtils } from '../../../shared/helpers/statistics.utils';
-import { CourseActivityChartComponent } from './course-activity-chart.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'course-activity-chart-container',
-	templateUrl: 'course-activity-chart-container.component.html',
+    selector: 'user-chart',
+    templateUrl: 'user-chart.component.html',
 })
-@Chart({
-    title: 'Course activity chart',
-})
-export class CourseActivityChartContainerComponent extends BaseComponent implements OnInit {
+export class UserChartComponent extends BaseComponent  {
 
-	@ViewChild(CourseActivityChartComponent) courseChart : CourseActivityChartComponent;
+    private chartData: any;
+    private statsUtils: StatsUtils;
 
     constructor() {
         super();
+        this.statsUtils = new StatsUtils();
     }
 
-    ngOnInit() {
-    	this.drawChart(7);
+    drawChart() {
+        this.startTransaction();
+        User.countAll(this).subscribe(userCount => {
+            User.countAllAdmin(this).subscribe(adminCount=> {
+                this.chartData = {
+                    labels: ['Admin user','Normal user'],
+                    datasets: [
+                        {
+                            data: [adminCount, userCount-adminCount],
+                            backgroundColor: [
+                                "#FF6384",
+                                "#36A2EB",
+                            ],
+                            hoverBackgroundColor: [
+                                "#FF6384",
+                                "#36A2EB",
+                            ]
+                        }]    
+                    };
+                this.closeTransaction();
+            });
+        });
+        
+
     }
 
-   drawChart(day:number) {
-       this.courseChart.drawChart(day);
-   }
 }

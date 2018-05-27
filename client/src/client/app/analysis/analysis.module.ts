@@ -15,6 +15,8 @@ import { MemberByCourseReportContainerComponent } from './report/course/member-b
 import { ReportContainerDirective } from './report/report-container.directive';
 import { CourseActivityChartComponent } from './chart/course-activity-chart/course-activity-chart.component';
 import { CourseActivityChartContainerComponent } from './chart/course-activity-chart/course-activity-chart-container.component';
+import { UserChartComponent } from './chart/user-chart/user-chart.component';
+import { UserChartContainerComponent } from './chart/user-chart/user-chart-container.component';
 import { ChartContainerDirective } from './chart/chart-container.directive'
 import { DatePipe } from '@angular/common';
 import { ReportUtils } from '../shared/helpers/report.utils';
@@ -38,12 +40,15 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
 	CourseActivityChartContainerComponent,
 	ExamResultStatsReportComponent,
 	ExamResultStatsReportContainerComponent,
+	UserChartComponent,
+	UserChartContainerComponent,
 	ReportContainerDirective],
 	entryComponents: [
 		ExamResultReportContainerComponent,
         CourseByMemberReportContainerComponent,
         MemberByCourseReportContainerComponent,
         ExamResultStatsReportContainerComponent,
+        UserChartContainerComponent,
         CourseActivityChartContainerComponent
     ],
 	exports: [ExamResultReportComponent,ExamResultStatsReportComponent],

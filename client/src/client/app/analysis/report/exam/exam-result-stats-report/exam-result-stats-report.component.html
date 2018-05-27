@@ -13,12 +13,12 @@
             <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                 <tr>
                     <td colspan="2">
-                        <span>{{'Question'|translate}} {{i+rowIndex}}:</span>
+                        <span>{{'Question'|translate}} {{1+rowIndex}}:</span>
                         <div>{{rowData.title}}</div>
                          <p [innerHTML]="rowData.content"></p>
                     </td>
                 </tr>
-                <tr *ngFor ="let option of rowData">
+                <tr *ngFor ="let option of rowData.options">
                     <td>
                         {{option.content}}
                     </td>
@@ -32,7 +32,7 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td [attr.colspan]="10">
+                    <td [attr.colspan]="2">
                         {{'No records found'|translate}}
                     </td>
                 </tr>

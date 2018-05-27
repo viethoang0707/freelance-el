@@ -14,29 +14,27 @@ import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../shared/models/constants'
 import { Chart } from '../chart.decorator';
 import { StatsUtils } from '../../../shared/helpers/statistics.utils';
-import { CourseActivityChartComponent } from './course-activity-chart.component';
+import { UserChartComponent } from './user-chart.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'course-activity-chart-container',
-	templateUrl: 'course-activity-chart-container.component.html',
+    selector: 'user-chart-container',
+	templateUrl: 'user-chart-container.component.html',
 })
 @Chart({
-    title: 'Course activity chart',
+    title: 'User chart',
 })
-export class CourseActivityChartContainerComponent extends BaseComponent implements OnInit {
+export class UserChartContainerComponent extends BaseComponent implements OnInit {
 
-	@ViewChild(CourseActivityChartComponent) courseChart : CourseActivityChartComponent;
+	@ViewChild(UserChartComponent) userChart : UserChartComponent;
 
     constructor() {
         super();
     }
 
     ngOnInit() {
-    	this.drawChart(7);
+    	this.userChart.drawChart();
     }
 
-   drawChart(day:number) {
-       this.courseChart.drawChart(day);
-   }
+   
 }
