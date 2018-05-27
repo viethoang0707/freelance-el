@@ -6,6 +6,7 @@ import { SettingService } from '../../shared/services/setting.service';
 import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Permission } from '../../shared/models/elearning/permission.model';
+import { UserLog } from '../../shared/models/elearning/log.model';
 
 @Component({
     moduleId: module.id,
@@ -59,6 +60,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
             this.authService.CloudAcc = acc;
             this.authService.login(this.credential).subscribe(
                 user => {
+                    UserLog.login(this, user.id);
                     this.authService.Remember = this.remember;
                     this.authService.UserProfile = user;
                     if (this.remember)

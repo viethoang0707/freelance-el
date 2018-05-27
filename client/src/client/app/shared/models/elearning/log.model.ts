@@ -4,6 +4,7 @@ import { Model, FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ExamMember } from './exam-member.model';
 import { Answer } from './answer.model';
+import { User } from './user.model';
 import { Submission } from './submission.model';
 import { CourseUnit } from './course-unit.model';
 import * as _ from 'underscore';
@@ -194,6 +195,53 @@ export class ExamLog extends BaseModel{
 
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
         return ExamLog.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
+
+}
+
+
+
+@Model('etraining.user_log')
+export class UserLog extends BaseModel{
+
+    constructor(){
+        super();
+        this.res_id = undefined;
+        this.res_model = undefined;
+        this.user_id = undefined;
+        this.note = undefined;
+        this.code = undefined;
+        this.start = undefined;
+    }
+    res_id: number;
+    res_model: string;
+    user_id: number;
+    note: string;
+    code: string;
+    @FieldProperty<Date>()
+    start: Date;
+
+
+    static login(context:APIContext, userId:number):Observable<any> {
+        var log = new ExamLog();
+        log.user_id = userId;
+        log.res_id = userId;
+        log.res_model =  User.Model;
+        log.note = 'User login';
+        log.code = 'LOGIN';
+        log.start = new Date();
+        return log.save(context);
+    }
+
+    static logout(context:APIContext, userId:number):Observable<any> {
+        var log = new ExamLog();
+        log.user_id = userId;
+        log.res_id = userId;
+        log.res_model =  User.Model;
+        log.note = 'User logout';
+        log.code = 'LOGOUT';
+        log.start = new Date();
+        return log.save(context);
     }
 
 }

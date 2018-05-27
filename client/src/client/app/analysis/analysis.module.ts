@@ -15,6 +15,8 @@ import { MemberByCourseReportContainerComponent } from './report/course/member-b
 import { ReportContainerDirective } from './report/report-container.directive';
 import { CourseActivityChartComponent } from './chart/course-activity-chart/course-activity-chart.component';
 import { CourseActivityChartContainerComponent } from './chart/course-activity-chart/course-activity-chart-container.component';
+import { UserLoginActivityChartComponent } from './chart/user-login-activity-chart/user-login-activity-chart.component';
+import { UserLoginActivityChartContainerComponent } from './chart/user-login-activity-chart/user-login-activity-chart-container.component';
 import { UserChartComponent } from './chart/user-chart/user-chart.component';
 import { UserChartContainerComponent } from './chart/user-chart/user-chart-container.component';
 import { ChartContainerDirective } from './chart/chart-container.directive'
@@ -38,6 +40,8 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
 	ChartContainerDirective,
 	CourseActivityChartComponent,
 	CourseActivityChartContainerComponent,
+	UserLoginActivityChartComponent,
+	UserLoginActivityChartContainerComponent,
 	ExamResultStatsReportComponent,
 	ExamResultStatsReportContainerComponent,
 	UserChartComponent,
@@ -49,6 +53,7 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
         MemberByCourseReportContainerComponent,
         ExamResultStatsReportContainerComponent,
         UserChartContainerComponent,
+        UserLoginActivityChartContainerComponent,
         CourseActivityChartContainerComponent
     ],
 	exports: [ExamResultReportComponent,ExamResultStatsReportComponent],

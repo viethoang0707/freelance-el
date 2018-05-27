@@ -1,7 +1,7 @@
 import { Observable, Subject } from 'rxjs/Rx'
 import { DatePipe } from "@angular/common";
 import { Group } from '../models/elearning/group.model';
-import { CourseLog, ExamLog } from '../models/elearning/log.model';
+import { CourseLog, ExamLog, UserLog } from '../models/elearning/log.model';
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { SERVER_DATETIME_FORMAT} from '../models/constants';
@@ -55,7 +55,10 @@ export class StatsUtils {
 				else
 					optionAttempts[id]++;
 			});
-			questionAttempts[ans.question_id] = 0;
+			if (!questionAttempts[ans.question_id])
+				questionAttempts[ans.question_id] = 1;
+			else
+				questionAttempts[ans.question_id]++;
 		});
 		optionIds = _.uniq(optionIds);
 		var optionPercentage  = {};
@@ -70,6 +73,27 @@ export class StatsUtils {
 			
 		});
 		return optionPercentage;
+	}
+
+	userLoginStatisticByDate(context: APIContext, startDate: Date, endDate: Date):Observable<any> {
+		var cloud_acc = context.authService.CloudAcc;
+		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
+		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
+		return context.apiService.search(UserLog.Model,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','res.users'),('code','=','LOGIN')]",
+		 cloud_acc.id, cloud_acc.api_endpoint).map(logs => {
+		 	var dayLengthMills = 1000 * 60 * 60 * 24;
+		 	var slots = [];
+		 	var starTimeMillis = startDate.getTime();
+		 	var endTimeMills = endDate.getTime();
+		 	for (var i = 0; starTimeMillis + i * dayLengthMills < endTimeMills;i++)
+		 		slots.push(0);
+		 	_.each(logs, (log:UserLog)=> {
+		 		var start = new Date(log.start);
+		 		var index = Math.floor((start.getTime() -  starTimeMillis)/ dayLengthMills);
+		 		slots[index]++;
+		 	});
+		 	return slots;
+		 });
 	}
 
 }
