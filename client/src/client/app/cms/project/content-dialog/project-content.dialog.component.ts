@@ -16,7 +16,7 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 @Component({
     moduleId: module.id,
     selector: 'project-content-dialog',
-    templateUrl: 'project-content-dialog.component.html',
+    templateUrl: 'project-content.dialog.component.html',
 })
 export class ProjectContentDialog extends BaseDialog<Project> {
 
