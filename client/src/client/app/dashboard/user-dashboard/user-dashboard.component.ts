@@ -38,13 +38,13 @@ declare var _: any;
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
 
-    confMembers: ConferenceMember[];
-    courses: Course[];
-    currentUser: User;
+    private confMembers: ConferenceMember[];
+    private courses: Course[];
+    private currentUser: User;
     CONFERENCE_STATUS = CONFERENCE_STATUS;
     COURSE_MODE = COURSE_MODE;
     @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
-    exams: Exam[];
+    private exams: Exam[];
     EXAM_STATUS = EXAM_STATUS;
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -65,14 +65,15 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
                 .map(courses => {
                     console.log(courses);
-                    return _.flatten(courses);
+                    courses =  _.flatten(courses);
+                    return _.uniq(courses, (course) => {
+                        return course.id;
+                    });
                 })
                 .subscribe(courses => {
                     console.log(courses);
-                    courses = _.uniq(courses, (course) => {
-                        return course.id;
-                    });
-                    _.each(courses, (course) => {
+                    this.courses  = courses;
+                    _.each(this.courses , (course) => {
                         if (course.syllabus_id)
                             CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
                                 course.unit_count = count;
@@ -82,7 +83,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         course.member = _.find(members, (member: CourseMember) => {
                             return member.course_id == course.id;
                         });
-                        this.courses = courses;
                     });
                     this.closeTransaction();
                 });

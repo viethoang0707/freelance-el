@@ -10,7 +10,7 @@ import { HomeEventManager } from '../home/home-manager.service';
 })
 export class DashboardComponent extends BaseComponent implements OnInit{
 
-    viewMode:string;
+    private viewMode:string;
 
     constructor(private eventManager: HomeEventManager) {
         super();

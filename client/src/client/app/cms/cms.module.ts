@@ -4,6 +4,7 @@ import { AssessmentModule } from '../assessment/assessment.module';
 import { ErpSharedModule } from '../shared/shared.module';
 import { CMSComponent } from './cms.component';
 import { ExamContentDialog } from './exam/content-dialog/exam-content.dialog.component';
+import { ProjectContentDialog } from './project/content-dialog/project-content.dialog.component';
 import { CourseSyllabusDialog } from './course/course-syllabus/course-syllabus.dialog.component';
 import { ValidateGradePipe } from './exam/grade.pipe';
 import { SumPipe } from './exam/sum.pipe';
@@ -20,10 +21,10 @@ import { CourseSyllabusSettingDialog } from './course/syllabus-setting/syllabus-
 
 @NgModule({
 	imports: [ErpSharedModule, AuthModule, AssessmentModule],
-	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,
+	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,ProjectContentDialog,
 		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSyllabusSettingDialog, SlideLectureCourseUnitComponent,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent, CourseUnitDialog],
-	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective],
+	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, ProjectContentDialog],
 	providers: [],
 	entryComponents: [FolderCourseUnitComponent, ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
 		VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]

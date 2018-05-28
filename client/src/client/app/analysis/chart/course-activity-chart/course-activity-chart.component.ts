@@ -20,21 +20,14 @@ import { StatsUtils } from '../../../shared/helpers/statistics.utils';
     selector: 'course-activity-chart',
     templateUrl: 'course-activity-chart.component.html',
 })
-@Chart({
-    title: 'Course activity chart',
-})
-export class CourseActivityChartComponent extends BaseComponent implements OnInit {
+export class CourseActivityChartComponent extends BaseComponent  {
 
-    chartData: any;
-    statsUtils: StatsUtils;
+    private chartData: any;
+    private statsUtils: StatsUtils;
 
     constructor() {
         super();
         this.statsUtils = new StatsUtils();
-    }
-
-    ngOnInit() {
-        this.drawChart(7);
     }
 
     drawChart(duration:number) {

@@ -25,8 +25,8 @@ import { Route, Router } from '@angular/router';
 })
 export class ExamListComponent extends BaseComponent implements OnInit {
 
-    exams: Exam[];
-    reportUtils: ReportUtils;
+    private exams: Exam[];
+    private reportUtils: ReportUtils;
     EXAM_STATUS = EXAM_STATUS;
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;

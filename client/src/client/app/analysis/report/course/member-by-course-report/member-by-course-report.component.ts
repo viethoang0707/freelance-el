@@ -23,18 +23,12 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 	templateUrl: 'member-by-course-report.component.html',
 	styleUrls: ['member-by-course-report.component.css'],
 })
-@Report({
-    title:'Member by course report',
-    category:REPORT_CATEGORY.COURSE
-})
 export class MemberByCourseReportComponent extends BaseComponent{
 
-    @ViewChild(SelectGroupDialog) groupDialog : SelectGroupDialog;
-    @ViewChild(SelectCoursesDialog) courseDialog : SelectCoursesDialog;
-	records: any;
-	summary: any;
+	private records: any;
+	private summary: any;
 	GROUP_CATEGORY =  GROUP_CATEGORY;
-    reportUtils: ReportUtils;
+    private reportUtils: ReportUtils;
 
     constructor( private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
@@ -56,33 +50,20 @@ export class MemberByCourseReportComponent extends BaseComponent{
     		this.translateService.instant('Percentage completed'),
     		this.translateService.instant('Time'),
     	]
-    	this.excelService.exportAsExcelFile(header.concat(this.records),'course_by_member_report');
+    	this.excelService.exportAsExcelFile(header.concat(this.records),'member_by_course_report');
     }
 
-    selectCourseGroup() {
-    	this.groupDialog.show();
-    	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
-            this.startTransaction();
-    		this.summary = {};
-    		Course.listByGroup(this, group.id).subscribe((courses:Course[]) => {
-    			this.generateReport(courses).subscribe(records => {
-					this.records = records;
-					this.summary =  this.generateReportFooter(records);
-                    this.closeTransaction();
-				});
-    		});
-    	});
+    clear() {
+        this.records = [];
     }
 
-    selectIndividualCourses() {
-		this.courseDialog.show();
-    	this.courseDialog.onSelectCourses.subscribe((courses:Course[]) => {
-            this.startTransaction();
-			this.generateReport(courses).subscribe(records => {
-				this.records = records;
-				this.summary =  this.generateReportFooter(records);
-                this.closeTransaction();
-			});
+    render(courses:Course[]) {
+        this.startTransaction();
+		this.summary = {};
+		this.generateReport(courses).subscribe(records => {
+			this.records = records;
+			this.summary =  this.generateReportFooter(records);
+            this.closeTransaction();
 		});
     }
 

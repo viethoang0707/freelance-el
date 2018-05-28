@@ -23,11 +23,11 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
     @ViewChild(CourseClassDialog) classDialog : CourseClassDialog;
 
-    classes: CourseClass[];
-    selectedClass: any;
-    course:Course;
-    teachers: any;
-    display: boolean;
+    private classes: CourseClass[];
+    private selectedClass: any;
+    private course:Course;
+    private teachers: any;
+    private display: boolean;
 
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;

@@ -4,11 +4,12 @@ import { Config } from '../../env.config';
 import { AuthService } from './auth.service';
 import 'rxjs/add/operator/map';
 import { Observable, Subject, Observer } from 'rxjs/Rx';
+import { DEFAULT_LANG } from '../models/constants';
 
 @Injectable()
 export class SettingService {
   
-  viewMode: string;
+  private viewMode: string;
 
   constructor(private authService: AuthService) {
 
@@ -36,7 +37,10 @@ export class SettingService {
     }
 
    get Lang():string {
-       return  localStorage.getItem('language');
+       if  (localStorage.getItem('language'))
+         return localStorage.getItem('language');
+       else
+         return DEFAULT_LANG;
    }
   	
 }

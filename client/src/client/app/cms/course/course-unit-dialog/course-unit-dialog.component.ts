@@ -26,8 +26,8 @@ import { ICourseUnit } from '../course-unit-template/unit.interface';
 export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
-	componentRef: any;
-	treeUtils: TreeUtils;
+	private componentRef: any;
+	private treeUtils: TreeUtils;
 
 	constructor( private componentFactoryResolver: ComponentFactoryResolver) {
 		super();

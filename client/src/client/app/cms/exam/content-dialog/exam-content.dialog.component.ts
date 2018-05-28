@@ -25,19 +25,19 @@ import { TreeNode } from 'primeng/api';
 })
 export class ExamContentDialog extends BaseComponent {
 
-	display: boolean;
-	tree: any;
-	selectors: any;
-	selectorGroups: any;
-	selectedNodes: any;
-	exam: Exam;
-	sheet: QuestionSheet;
-	grades: ExamGrade[];
-	examQuestions: ExamQuestion[];
-	groups: Group[];
-	treeUtils: TreeUtils;
+	private display: boolean;
+	private tree: any;
+	private selectors: any;
+	private selectorGroups: any;
+	private selectedNodes: any;
+	private exam: Exam;
+	private sheet: QuestionSheet;
+	private grades: ExamGrade[];
+	private examQuestions: ExamQuestion[];
+	private groups: Group[];
+	private treeUtils: TreeUtils;
 	QUESTION_LEVEL = QUESTION_LEVEL;
-	totalScore: number;
+	private totalScore: number;
 
 	constructor() {
 		super();

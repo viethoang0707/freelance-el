@@ -17,14 +17,14 @@ import { SelectItem } from 'primeng/api';
 })
 export class SelectQuestionsDialog extends BaseComponent {
 
-	tree: TreeNode[];
-	selectedNode: TreeNode;
-	selectedQuestions: Question[];
-	questions: Question[];
-	display: boolean;
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
+	private selectedQuestions: Question[];
+	private questions: Question[];
+	private display: boolean;
 	QUESTION_TYPE = QUESTION_TYPE;
-	treeUtils: TreeUtils;
-	selectedGroupNodes: TreeNode[];
+	private treeUtils: TreeUtils;
+	private selectedGroupNodes: TreeNode[];
 
 	private onSelectQuestionsReceiver: Subject<any> = new Subject();
 	onSelectQuestions: Observable<any> = this.onSelectQuestionsReceiver.asObservable();

@@ -27,22 +27,22 @@ import { QuestionRegister } from '../../../../assessment/question/question-templ
 })
 export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit,OnInit{
 
-	tree: TreeNode[];
-	selectedNode: TreeNode;
-	selectedQuestions: Question[];
-	questions:Question[];
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
+	private selectedQuestions: Question[];
+	private questions:Question[];
 	@Input() mode;
-	unit: CourseUnit;
-	exerciseQuestions: ExerciseQuestion[];
+	private unit: CourseUnit;
+	private exerciseQuestions: ExerciseQuestion[];
 	@ViewChild(SelectQuestionsDialog) questionDialog : SelectQuestionsDialog;
 	@ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
 	@ViewChild(QuestionContainerDirective) studyQuestionComponent : QuestionContainerDirective;
-	stage:string;
-	qIndex:number;
-	currentQuestion: ExerciseQuestion;
-	treeUtils: TreeUtils;
-	currentAnswer: Answer;
-	componentRef: any;
+	private stage:string;
+	private qIndex:number;
+	private currentQuestion: ExerciseQuestion;
+	private treeUtils: TreeUtils;
+	private currentAnswer: Answer;
+	private componentRef: any;
 
 	constructor(private componentFactoryResolver:ComponentFactoryResolver) {
 		super();

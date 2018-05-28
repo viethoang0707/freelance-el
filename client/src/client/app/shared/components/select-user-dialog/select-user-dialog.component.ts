@@ -19,12 +19,12 @@ import { SelectItem } from 'primeng/api';
 })
 export class SelectUsersDialog extends BaseComponent {
 
-	tree: TreeNode[];
-	selectedNode: TreeNode;
-	selectedUsers: User[];
-	users:User[];
-	display: boolean;
-	treeUtils: TreeUtils;
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
+	private selectedUsers: User[];
+	private users:User[];
+	private display: boolean;
+	private treeUtils: TreeUtils;
 
 	private onSelectUsersReceiver: Subject<any> = new Subject();
     onSelectUsers:Observable<any> =  this.onSelectUsersReceiver.asObservable();

@@ -1,13 +1,14 @@
 <div class="login-body">
   <div class="login-panel ui-fluid">
+    <div class="spinner" [hidden]="!authenInProgress"></div>
     <div class="login-panel-header">
-      <img [src]='account.logo_url'>
+      <img src='assets/images/logo-slim.png'>
     </div>
     <div class="login-panel-content">
       <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate autocomplete="off">
         <div class="ui-g">
           <div class=" ui-g-12 ">
-            <h1>{{account.name}}</h1>
+            <h1>{{'Corporate E-learnining System'|translate}}</h1>
           </div>
           <div class=" ui-g-12 " [hidden]="buildMode=='prod'">
             <span class="md-inputfield">

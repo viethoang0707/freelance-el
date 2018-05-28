@@ -54,23 +54,23 @@ import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.inter
 })
 export class CourseStudyComponent extends BaseComponent implements OnInit {
 
-	course: Course;
-	member: CourseMember;
-	faqs: CourseFaq[];
-	materials: CourseMaterial[];
-	tree: TreeNode[];
-	syl: CourseSyllabus;
-	selectedNode: TreeNode;
-	units: CourseUnit[];
-	selectedUnit: CourseUnit;
-	exams: Exam[];
-	completedExams: Exam[];
-	certificate: Certificate;
-	conference: Conference;
-	conferenceMember: ConferenceMember;
-	treeList: TreeNode[];
-	sylUtils: SyllabusUtils;
-	reportUtils: ReportUtils;
+	private course: Course;
+	private member: CourseMember;
+	private faqs: CourseFaq[];
+	private materials: CourseMaterial[];
+	private tree: TreeNode[];
+	private syl: CourseSyllabus;
+	private selectedNode: TreeNode;
+	private units: CourseUnit[];
+	private selectedUnit: CourseUnit;
+	private exams: Exam[];
+	private completedExams: Exam[];
+	private certificate: Certificate;
+	private conference: Conference;
+	private conferenceMember: ConferenceMember;
+	private treeList: TreeNode[];
+	private sylUtils: SyllabusUtils;
+	private reportUtils: ReportUtils;
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -78,11 +78,11 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
-	componentRef: any;
+	private componentRef: any;
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	EXAM_STATUS = EXAM_STATUS;
-	studyMode: boolean;
+	private studyMode: boolean;
 
 	constructor(private router: Router, private route: ActivatedRoute,
 		private meetingSerivce: MeetingService, private componentFactoryResolver: ComponentFactoryResolver) {

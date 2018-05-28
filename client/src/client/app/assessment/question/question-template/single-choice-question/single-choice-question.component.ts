@@ -22,10 +22,10 @@ import { IQuestion } from '../question.interface';
 export class SingleChoiceQuestionComponent extends BaseComponent implements IQuestion {
 
 	mode: any;
-	question: Question;
-	answer: Answer;
-	options: QuestionOption[];
-	checkTrueOption: string;
+	private question: Question;
+	private answer: Answer;
+	private options: QuestionOption[];
+	private checkTrueOption: string;
 
 	constructor() {
 		super();

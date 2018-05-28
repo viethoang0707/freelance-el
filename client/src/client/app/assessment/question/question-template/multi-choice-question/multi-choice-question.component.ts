@@ -9,7 +9,6 @@ import { DEFAULT_PASSWORD, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../../sh
 import { TreeNode } from 'primeng/api';
 import { QuestionTemplate } from '../question.decorator';
 import { IQuestion } from '../question.interface';
-import { SubAnswer } from '../../../../shared/models/elearning/subanswer.model';
 
 @Component({
 	moduleId: module.id,
@@ -23,10 +22,9 @@ import { SubAnswer } from '../../../../shared/models/elearning/subanswer.model';
 export class MultiChoiceQuestionComponent extends BaseComponent implements IQuestion {
 
 	mode: any;
-	question: Question;
-	answer: Answer;
-	subanswers: SubAnswer[];
-	options: QuestionOption[];
+	private question: Question;
+	private answer: Answer;
+	private options: QuestionOption[];
 
 	constructor() {
 		super();
@@ -42,24 +40,16 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 				this.options = options;
 				if (this.answer && this.answer.id) {
 					this.startTransaction();
-					SubAnswer.listByAnswer(this, answer.id).subscribe((subans: SubAnswer[]) => {
-						this.subanswers = subans;
+					var selectedOptions = JSON.parse(this.answer.json);
 						_.each(options, (option=> {
-							option["subAns"] = new SubAnswer();
-							var subAns = _.find(subans, (obj)=> {
-								return obj.option_id == option.id;
+							var selected = _.find(selectedOptions, (obj)=> {
+								return obj == option.id;
 							});
-							if (!subAns) {
-								subAns = new SubAnswer();
-								subAns.option_id = option.id;
-								subAns.answer_id = this.answer.id;
-								this.subanswers.push(subAns);
-								subAns.save(this).subscribe();
-							}
-							option["subAns"] = subAns;
+							if (selected) 
+								option["is_selected"] = true;
+							option["is_selected"] = false;
 						}));
 						this.closeTransaction();
-					});
 				}
 				this.closeTransaction();
 			});
@@ -79,9 +69,12 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 
 	concludeAnswer() {
 		this.answer.is_correct  = true;
+		var selectedOptions = _.filter(this.options, option=> {
+			return option["is_selected"];
+		});
+		this.answer.json = JSON.stringify(_.pluck(selectedOptions,"id"));
 		_.each(this.options, (option=> {
-			var subAns = option["subAns"];
-			if ((option.is_correct && !subAns.is_selected) || (!option.is_correct && subAns.is_selected))
+			if ((option.is_correct && !option["]is_selected"]) || (!option.is_correct && option["is_selected"]))
 				this.answer.is_correct = false;
 		}));
 	}

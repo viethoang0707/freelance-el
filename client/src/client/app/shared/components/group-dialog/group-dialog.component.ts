@@ -15,9 +15,9 @@ import { TreeNode } from 'primeng/api';
 })
 export class GroupDialog extends BaseDialog<Group> implements OnInit {
 
-	tree: TreeNode[];
-	treeUtils: TreeUtils;
-    selectedNode: TreeNode;
+	private tree: TreeNode[];
+	private treeUtils: TreeUtils;
+    private selectedNode: TreeNode;
 
 	constructor() {
 		super();

@@ -7,7 +7,6 @@ import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { LANGS } from '../../shared/models/constants';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
-import { LangService } from '../../shared/services/lang.service';
 import { SettingService } from '../../shared/services/setting.service';
 import { SelectItem } from 'primeng/primeng';
 import { BaseComponent } from '../../shared/components/base/base.component';
@@ -23,10 +22,10 @@ import * as _ from 'underscore'
 })
 export class NavbarComponent extends BaseComponent implements OnInit {
 
-	user: User;
-	notifs: Notification[];
-	langs: SelectItem[];
-	viewMode: string;
+	private user: User;
+	private notifs: Notification[];
+	private langs: SelectItem[];
+	private viewMode: string;
 	@Input() selectedLang: string;
 	@Input() adminMode: boolean;
 	@ViewChild(TicketDialog) ticketDialog: TicketDialog;
@@ -37,7 +36,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		this.langs = _.map(LANGS, (val, key)=> {
 			return { label: val, value: key};
 		});
-		this.selectedLang = this.langService.Lang;
+		this.selectedLang = this.translateService.currentLang;
 		this.notifs = [];
 	}
 
@@ -66,12 +65,9 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		});
 	}
 
-	changeLang($event: any ) {
-		this.langService.Lang = $event.value;
-	}
-
 	selectLang($event: any) {
-		this.langService.Lang = $event.value;
+		this.settingService.Lang = $event.value;
+		this.translateService.use($event.value);
 	}
 
 	setViewMode(mode) {

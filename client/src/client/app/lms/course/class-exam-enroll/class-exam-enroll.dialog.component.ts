@@ -18,11 +18,11 @@ import { SelectItem } from 'primeng/api';
 })
 export class ClassExamEnrollDialog extends BaseComponent {
 
-	display: boolean;
-	courseClass: CourseClass;
-	exam: Exam;
-	members: ExamMember[];
-	selectedMember: ExamMember;
+	private display: boolean;
+	private courseClass: CourseClass;
+	private exam: Exam;
+	private members: ExamMember[];
+	private selectedMember: ExamMember;
 
 	constructor() {
 		super();

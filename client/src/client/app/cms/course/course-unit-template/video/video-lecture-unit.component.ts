@@ -24,12 +24,12 @@ import * as RecordRTC from 'recordrtc';
 export class VideoLectureCourseUnitComponent extends BaseComponent implements AfterViewInit, ICourseUnit {
 
 	@Input() mode;
-	unit: CourseUnit;
-	lecture: VideoLecture;
-	uploadInprogress: boolean;
-	stream: any;
-	recordRTC: any;
-	showToolbar: boolean;
+	private unit: CourseUnit;
+	private lecture: VideoLecture;
+	private uploadInprogress: boolean;
+	private stream: any;
+	private recordRTC: any;
+	private showToolbar: boolean;
 
 	@ViewChild('camera') video: any
 

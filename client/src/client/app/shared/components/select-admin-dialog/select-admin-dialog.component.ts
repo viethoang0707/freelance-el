@@ -18,12 +18,12 @@ import { SelectItem } from 'primeng/api';
 })
 export class SelectAdminDialog extends BaseComponent {
 
-	tree: TreeNode[];
-	selectedNode: TreeNode;
-	selectedAdmin: User;
-	users:User[];
-	display: boolean;
-	treeUtils: TreeUtils;
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
+	private selectedAdmin: User;
+	private users:User[];
+	private display: boolean;
+	private treeUtils: TreeUtils;
 
 	private onSelectUsersReceiver: Subject<any> = new Subject();
     onSelectUsers:Observable<any> =  this.onSelectUsersReceiver.asObservable();
