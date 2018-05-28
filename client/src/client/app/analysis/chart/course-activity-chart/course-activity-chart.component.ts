@@ -37,10 +37,10 @@ export class CourseActivityChartComponent extends BaseComponent  {
         start.setHours(0, 0, 0, 0);
         this.statsUtils.courseStatisticByDate(this, start, end).subscribe(slots => {
             var labels = [this.translateService.instant('Today')];
-            var data = [slots[0]];
+            var data = [slots[slots.length-1]];
             for (var i =1; i< slots.length;i++) {
                 labels.push(this.translateService.instant("Day-"+i));
-                data.push(slots[i]);
+                data.push(slots[slots.length-1-i]);
             }
             this.chartData = {
                 labels: labels,

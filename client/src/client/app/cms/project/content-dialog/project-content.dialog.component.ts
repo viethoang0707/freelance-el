@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,ViewChild} from '@angular/core';
+import { Component, OnInit, Input,ViewChild, NgZone} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -24,7 +24,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
     private projectStatus: SelectItem[];
     private rangeDates: Date[]; 
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private ngZone: NgZone) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
         this.projectStatus = _.map(PROJECT_STATUS, (val, key)=> {
@@ -36,7 +36,6 @@ export class ProjectContentDialog extends BaseDialog<Project> {
     }
 
     ngOnInit() {
-        this.user = this.authService.UserProfile;
         this.onShow.subscribe(object => {
             if (object.start && object.end) {
                 this.rangeDates = [object.start,object.end];
