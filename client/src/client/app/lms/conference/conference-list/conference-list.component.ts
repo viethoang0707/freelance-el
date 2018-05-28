@@ -18,6 +18,7 @@ import { MeetingService } from '../../../shared/services/meeting.service';
     moduleId: module.id,
     selector: 'conference-list',
     templateUrl: 'conference-list.component.html',
+    styleUrls: ['conference-list.component.css'],
 })
 export class ConferenceListComponent extends BaseComponent implements OnInit {
 
