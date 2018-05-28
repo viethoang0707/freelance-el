@@ -121,7 +121,6 @@ export class CourseByMemberReportComponent extends BaseComponent{
 		record["course_code"] = member.course_code
 		record["enroll_status"] = member.enroll_status;
 		record["date_register"] = this.datePipe.transform(member.date_register, EXPORT_DATE_FORMAT);
-
 		var result = this.reportUtils.analyzeCourseActivity(logs);
 		if (result[0] != Infinity)
 			record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
