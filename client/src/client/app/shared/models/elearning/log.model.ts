@@ -223,7 +223,7 @@ export class UserLog extends BaseModel{
 
 
     static login(context:APIContext, userId:number):Observable<any> {
-        var log = new ExamLog();
+        var log = new UserLog();
         log.user_id = userId;
         log.res_id = userId;
         log.res_model =  User.Model;
@@ -234,7 +234,7 @@ export class UserLog extends BaseModel{
     }
 
     static logout(context:APIContext, userId:number):Observable<any> {
-        var log = new ExamLog();
+        var log = new UserLog();
         log.user_id = userId;
         log.res_id = userId;
         log.res_model =  User.Model;

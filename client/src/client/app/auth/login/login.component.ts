@@ -60,7 +60,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
             this.authService.CloudAcc = acc;
             this.authService.login(this.credential).subscribe(
                 user => {
-                    UserLog.login(this, user.id);
+                    UserLog.login(this, user.id).subscribe();
                     this.authService.Remember = this.remember;
                     this.authService.UserProfile = user;
                     if (this.remember)

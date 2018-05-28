@@ -71,7 +71,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.userProfileDialog.show(user);
         });
         this.eventManager.logoutEvents.subscribe(() => {
-            UserLog.logout(this, this.authService.UserProfile.id);
+            UserLog.logout(this, this.authService.UserProfile.id).subscribe();
             this.authService.logout();
             this.router.navigate(['/auth']);
         });
