@@ -20,12 +20,12 @@ import { SelectItem } from 'primeng/api';
 })
 export class ClassConferenceDialog extends BaseComponent {
 
-	display: boolean;
-	courseClass: CourseClass;
-	members: CourseMember[];
-	conference: Conference;
-	selectedMember: CourseMember;
-	room: Room;
+	private display: boolean;
+	private courseClass: CourseClass;
+	private members: CourseMember[];
+	private conference: Conference;
+	private selectedMember: CourseMember;
+	private room: Room;
 
 	constructor() {
 		super();

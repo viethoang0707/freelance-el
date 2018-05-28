@@ -29,7 +29,7 @@ export class Submission extends BaseModel{
     score: number;
 
     static byUserAndExam( context:APIContext, userId: number, examId: number): Observable<any> {
-        return Submission.search(context,[],"[('user_id','=',"+userId+"),('examId','=',"+examId+")]").map(submits =>{
+        return Submission.search(context,[],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]").map(submits =>{
             if (submits.length)
                 return submits[0];
             else

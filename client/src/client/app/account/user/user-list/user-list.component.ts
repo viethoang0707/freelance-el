@@ -29,12 +29,12 @@ export class UserListComponent extends BaseComponent {
     @ViewChild(UserImportDialog) userImportDialog: UserImportDialog;
     @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
 
-    tree: TreeNode[];
-    users: User[];
-    selectedUser: any;
-    selectedGroupNodes: TreeNode[];
-    treeUtils: TreeUtils;
-    displayUsers: User[];
+    private tree: TreeNode[];
+    private users: User[];
+    private selectedUser: any;
+    private selectedGroupNodes: TreeNode[];
+    private treeUtils: TreeUtils;
+    private displayUsers: User[];
 
     constructor() {
         super();

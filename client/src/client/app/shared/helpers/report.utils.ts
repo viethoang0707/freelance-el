@@ -35,7 +35,7 @@ export class ReportUtils {
 		return rowGroupMetadata;
 	}
 
-	analyzeCourseActivity(logs: CourseLog[]) {
+	analyzeCourseActivity(logs: CourseLog[]):any {
 		var onTime = 0;
 		var startCourseUnitLogs = _.filter(logs, (log)=> {
 			return log.start!=null && log.code =='START_COURSE_UNIT';
@@ -50,9 +50,9 @@ export class ReportUtils {
 			return log.start.getTime();
 		});
 
-		var last_attempt_number = new Date(last_attempt.start).getTime();
-		var first_attempt_number = new Date(first_attempt.start).getTime();
-		var timeforunit = last_attempt_number - first_attempt_number;
+		var last_attempt_millis = new Date(last_attempt.start).getTime();
+		var first_attempt_millis = new Date(first_attempt.start).getTime();
+		var timeforunit = last_attempt_millis - first_attempt_millis;
 
 		var unitCount  = 0;
 		var unitLogs = {}
@@ -61,10 +61,7 @@ export class ReportUtils {
 				onTime += log.start.getTime();
 				unitLogs[log.id] = unitLogs[log.id]?unitLogs[log.id]+1:1;
 			}
-			// if (log.code == 'START_COURSE_UNIT') {
-			// 	onTime -= log.start.getTime();
-			// 	unitLogs[log.id] = unitLogs[log.id]?unitLogs[log.id]+1:1;
-			// }
+
 			if (unitLogs[log.id] && unitLogs[log.id]>=2)
 				unitCount++;
 		});
@@ -92,7 +89,7 @@ export class ReportUtils {
 			if (log.code == 'START_EXAM')
 				onTime -= log.start.getTime();
 		});
-		return [first_attempt, last_attempt, onTime];
+		return [first_attempt.start, last_attempt.start, onTime];
 	}
 
 	analyseCourseMember(course: Course, members: CourseMember[]):any {

@@ -36,20 +36,20 @@ import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview
 })
 export class CourseManageComponent extends BaseComponent implements OnInit {
 	
-	course:Course;
-	members: CourseMember[];
-	selectedClass: CourseClass;
-	classes: CourseClass[];
-	selectedFaq: CourseFaq;
-	faqs: CourseFaq[];
-	selectedMaterial: CourseMaterial;
-	materials: CourseMaterial[];
-	tree: TreeNode[];
-	syl: CourseSyllabus;
-	selectedNode: TreeNode;
-	units: CourseUnit[];
-	selectedUnit:CourseUnit;
-	 sylUtils:SyllabusUtils;
+	private course:Course;
+	private members: CourseMember[];
+	private selectedClass: CourseClass;
+	private classes: CourseClass[];
+	private selectedFaq: CourseFaq;
+	private faqs: CourseFaq[];
+	private selectedMaterial: CourseMaterial;
+	private materials: CourseMaterial[];
+	private tree: TreeNode[];
+	private syl: CourseSyllabus;
+	private selectedNode: TreeNode;
+	private units: CourseUnit[];
+	private selectedUnit:CourseUnit;
+	private  sylUtils:SyllabusUtils;
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;

@@ -16,7 +16,7 @@ import * as _ from 'underscore';
 })
 export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 
-	uploadInprogress: boolean;
+	private uploadInprogress: boolean;
 
 	constructor(private ngZone: NgZone) {
 		super();

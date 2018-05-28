@@ -25,8 +25,8 @@ import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.
 export class SCORMLectureCourseUnitComponent extends BaseComponent implements ICourseUnit {
 
 	@Input() mode;
-	unit: CourseUnit;
-	lecture: SCORMLecture;
+	private unit: CourseUnit;
+	private lecture: SCORMLecture;
 
 	constructor(private ngZone: NgZone) {
 		super();

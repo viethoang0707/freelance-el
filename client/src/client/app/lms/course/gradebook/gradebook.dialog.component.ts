@@ -33,10 +33,10 @@ import { CertificatePrintDialog } from '../certificate-print/certificate-print.d
 })
 export class GradebookDialog extends BaseComponent {
 
-    display: boolean;
-    member: CourseMember;
-    exams: Exam[];
-    certificate: Certificate;
+    private display: boolean;
+    private member: CourseMember;
+    private exams: Exam[];
+    private certificate: Certificate;
 
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
     @ViewChild(CourseCertificateDialog) certDialog: CourseCertificateDialog;

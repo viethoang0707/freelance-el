@@ -7,6 +7,7 @@ import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
 import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog.component';
 import { LoadingService } from '../shared/services/loading.service';
+import { UserLog } from '../shared/models/elearning/log.model';
 
 @Component({
     moduleId: module.id,
@@ -70,6 +71,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.userProfileDialog.show(user);
         });
         this.eventManager.logoutEvents.subscribe(() => {
+            UserLog.logout(this, this.authService.UserProfile.id).subscribe();
             this.authService.logout();
             this.router.navigate(['/auth']);
         });
