@@ -5,6 +5,12 @@
         <div class="ui-g-6 name-e">
           <span>{{exam.name}}</span>
         </div>
+        <div class="ui-g-3">
+          <span>{{'Start'|translate}}: {{exam.start | date : "dd/MM/yyyy"}}</span>
+        </div>
+        <div class="ui-g-3">
+          <span>{{'End'|translate}}: {{exam.end | date : "dd/MM/yyyy"}}</span>
+        </div>
         <div class="ui-g-12">
           <span class="label">{{'Duration'|translate}}: </span><span>{{exam.duration}} {{'minutes'|translate}}</span>
         </div>
@@ -14,7 +20,10 @@
         <div class="ui-g-6 student">
           <span>{{'Student'|translate}}: </span><span class="bold"> {{member.name}}</span>
         </div>
-        <div class="ui-g-6">
+        <div class="ui-g-3">
+          <span>{{'Submit'|translate}}: {{submission.end | date : "dd/MM/yyyy"}}</span>
+        </div>
+        <div class="ui-g-3">
           <span>{{'Score'|translate}}: </span><span class="bold"> {{member.score}}</span>
         </div>
         <p-dataList [value]="examQuestions" [rows]="examQuestions.length" styleClass="l-question">
