@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
 import { APIService } from '../../../../shared/services/api.service';
@@ -13,12 +13,12 @@ import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, C
 import { Report } from '../../report.decorator';
 import { SelectGroupDialog } from '../../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
-import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
+import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 
 @Component({
-    moduleId: module.id,
-    selector: 'course-by-member-report',
+	moduleId: module.id,
+	selector: 'course-by-member-report',
 	templateUrl: 'course-by-member-report.component.html',
 	styleUrls: ['course-by-member-report.component.css'],
 })
@@ -29,10 +29,11 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	GROUP_CATEGORY = GROUP_CATEGORY;
     private reportUtils: ReportUtils;
 
-    constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
-        super();
-        this.reportUtils = new ReportUtils();
-    }
+
+	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+		super();
+		this.reportUtils = new ReportUtils();
+	}
 
     clear() {
         this.records = [];
@@ -86,16 +87,16 @@ export class CourseByMemberReportComponent extends BaseComponent{
 			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
             this.closeTransaction();
 		});
-    }
+	}
 
-    generateReport(users:User[]):Observable<any> {
-    	var records = [];
-    	var subscriptions =[];
-    	_.each(users, (user:User)=> {
-    		var subscription = CourseMember.listByUser(this, user.id).flatMap(members => {
-    			return CourseLog.userStudyActivity(this, user.id,null).do(logs => {
-    				var memberRecords = _.map(members, (member:CourseMember)=> {
-						var courseLogs = _.filter(logs, (log: CourseLog)  => {
+	generateReport(users: User[]): Observable<any> {
+		var records = [];
+		var subscriptions = [];
+		_.each(users, (user: User) => {
+			var subscription = CourseMember.listByUser(this, user.id).flatMap(members => {
+				return CourseLog.userStudyActivity(this, user.id, null).do(logs => {
+					var memberRecords = _.map(members, (member: CourseMember) => {
+						var courseLogs = _.filter(logs, (log: CourseLog) => {
 							return log.course_id == member.course_id;
 						});
     					return this.generateReportRow(member, courseLogs);
@@ -117,18 +118,19 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	    record["user_name"] = member.name;
 	    record["course_name"] = member.course_name;
 		record["course_mode"] = member.course_mode;
-	    record["course_code"] = member.course_code
-	    record["enroll_status"] = member.enroll_status;
-	    record["date_register"] =  this.datePipe.transform(member.date_register,EXPORT_DATE_FORMAT);
+		record["course_code"] = member.course_code
+		record["enroll_status"] = member.enroll_status;
+		record["date_register"] = this.datePipe.transform(member.date_register, EXPORT_DATE_FORMAT);
+
 		var result = this.reportUtils.analyzeCourseActivity(logs);
 		if (result[0] != Infinity)
-			record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATE_FORMAT);
-    	if (result[1] != Infinity)
-			record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATE_FORMAT);
-		if(!Number.isNaN(result[2]))
-			record["time_spent"] =  this.timePipe.transform(+(result[2]),'min');
-		
-	    return record;
-    }
+			record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
+		if (result[1] != Infinity)
+			record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATE_FORMAT);
+		if (!Number.isNaN(result[2]))
+			record["time_spent"] = this.timePipe.transform(+(result[2]), 'min');
+
+		return record;
+	}
 
 }
