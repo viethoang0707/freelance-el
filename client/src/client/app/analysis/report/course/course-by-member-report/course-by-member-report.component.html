@@ -25,10 +25,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                 <tr>
-                    <td>
+                    <td *ngIf="rowGroupMetadata[rowData.user_login].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.user_login].size">
                         {{rowData.user_login}}
                     </td>
-                    <td>
+                    <td *ngIf="rowGroupMetadata[rowData.user_login].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.user_login].size">
                         {{rowData.user_name}}
                     </td>
                     <td>{{rowData.course_code}}</td>
