@@ -41,7 +41,7 @@
   </div>
   <div class="ui-g-6" style="text-align:center">
     <p-panel header="{{'Exam schedule'|translate}}">
-      <p-schedule #examSchedule [events]="events" (onDayClick)="onDayClick($event)" [header]="header" [editable]="true" (onEventClick)="onEventClick($event)"></p-schedule>
+      <p-schedule #examSchedule [events]="events" (onDayClick)="onDayClick($event)" [header]="header" [editable]="true" (onEventClick)="onEventClick($event)" styleClass="schedule-dashboard"></p-schedule>
       <exam-dialog></exam-dialog>
     </p-panel>
   </div>
@@ -65,7 +65,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let course of courses; let i = index">
+          <tr *ngFor="let course of courses | slice:0:8; let i = index">
             <td>{{i+1}}</td>
             <td>
                 <span class="profile-image-wrapper">
