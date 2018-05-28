@@ -1,18 +1,16 @@
 <div class="card card-w-title">
   <h1>{{'My exams'|translate}}</h1>
-  <p-dataList [value]="exams" [paginator]="true" [rows]="5">
+  <p-dataList [value]="exams" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
     <ng-template let-exam pTemplate="item">
-      <p-card>
-        <p-header>
-          <div class="head-exam">
-          </div>
-        </p-header>
-        <div class="ui-g body-exam">
+      <p-card styleClass="lms-exam-list-item">
+        <div class="ui-g">
           <div class="ui-g-8">
-            <h4 class="title">{{exam.name}}</h4>
-            <span class="e-status">
-              {{EXAM_STATUS[exam.status] | translate}}
-            </span>
+            <div class="mt5">
+              <h4 class="title">{{exam.name}}</h4>
+              <span class="e-status">
+                {{EXAM_STATUS[exam.status] | translate}}
+              </span>
+            </div>
             <div class="clearfix"></div>
             <p-accordion styleClass="cont">
               <p-accordionTab header="{{'Summary' | translate}}">
@@ -52,7 +50,7 @@
           <!-- </div> -->
           </div>
           <div class="ui-g-4">
-            <p-card>
+            <p-card styleClass="lms-exam-detail">
               <ul class="list-cmt">
                 <li class="clearfix">
                   <i class="material-icons">date_range</i>
@@ -88,8 +86,6 @@
             </p-card>
           </div>
         </div>
-        <p-footer>
-        </p-footer>
       </p-card>
     </ng-template>
   </p-dataList>
