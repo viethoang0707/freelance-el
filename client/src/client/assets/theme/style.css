@@ -374,7 +374,6 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
   height: 480px;
   overflow: auto;
 }
-<<<<<<< HEAD
 
 .schedule-dashboard .fc-scroller{
   height: 500px !important;
@@ -413,5 +412,4 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
    from {transform: rotate(0deg);}
    to {transform: rotate(359deg);}
 }
-=======
->>>>>>> edit show 8 course
+
