@@ -12,7 +12,7 @@ import { Config } from '../../env.config'
   encapsulation: ViewEncapsulation.None
 })
 export class FooterComponent {
-  version: string;
+  private version: string;
 
   constructor() {
     this.version = Config.VERSION;

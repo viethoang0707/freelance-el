@@ -22,10 +22,10 @@ export class ExamListComponent extends BaseComponent {
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
 
-    selectedExam: Exam;
-    exams: Exam[];
-    events: any[];
-    header: any;
+    private selectedExam: Exam;
+    private exams: Exam[];
+    private events: any[];
+    private header: any;
     EXAM_STATUS = EXAM_STATUS;
 
     constructor() {

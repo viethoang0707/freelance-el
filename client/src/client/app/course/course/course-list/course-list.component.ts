@@ -25,12 +25,12 @@ export class CourseListComponent extends BaseComponent {
     @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
     @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
 
-    tree: TreeNode[];
-    courses: Course[];
-    displayCourses: Course[];
-    selectedGroupNodes: TreeNode[];
-    selectedCourse: any;
-    treeUtils: TreeUtils;
+    private tree: TreeNode[];
+    private courses: Course[];
+    private displayCourses: Course[];
+    private selectedGroupNodes: TreeNode[];
+    private selectedCourse: any;
+    private treeUtils: TreeUtils;
     COURSE_MODE = COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 

@@ -28,8 +28,8 @@ export class PermissionListComponent extends BaseComponent {
     @ViewChild(MemberPermissionDialog) memberPermissionDialog: MemberPermissionDialog;
     @ViewChild(SelectGroupDialog) userPermissionDialog: SelectGroupDialog;
 
-    selectedPermission: Permission;
-    permissions: Permission[];
+    private selectedPermission: Permission;
+    private permissions: Permission[];
 
     constructor() {
         super();

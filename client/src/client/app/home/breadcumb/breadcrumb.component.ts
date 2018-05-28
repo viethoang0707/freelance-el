@@ -16,8 +16,8 @@ export interface IBreadcrumb {
 })
 export class BreadcrumbComponent implements OnInit {
 
-    subscription: Subscription;
-    items: MenuItem[];
+    private subscription: Subscription;
+    private items: MenuItem[];
 
     constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     }

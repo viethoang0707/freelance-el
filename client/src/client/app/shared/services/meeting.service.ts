@@ -9,7 +9,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 @Injectable()
 export class MeetingService {
 
-    nativeWindow: any;
+    private nativeWindow: any;
 
     constructor(private winRef: WindowRef, private authService: AuthService) {
          this.nativeWindow = winRef.getNativeWindow();

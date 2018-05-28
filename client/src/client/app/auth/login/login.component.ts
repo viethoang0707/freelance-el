@@ -6,6 +6,7 @@ import { SettingService } from '../../shared/services/setting.service';
 import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Permission } from '../../shared/models/elearning/permission.model';
+import { UserLog } from '../../shared/models/elearning/log.model';
 
 @Component({
     moduleId: module.id,
@@ -14,11 +15,12 @@ import { Permission } from '../../shared/models/elearning/permission.model';
 })
 
 export class LoginComponent extends BaseComponent implements OnInit {
-    credential: Credential;
-    account: CloudAccount;
-    returnUrl: string;
-    buildMode: string = "<%= BUILD_TYPE %>";
-    authenInProgress: boolean;
+    
+    private credential: Credential;
+    private account: CloudAccount;
+    private returnUrl: string;
+    private buildMode: string = "<%= BUILD_TYPE %>";
+    private authenInProgress: boolean;
 
     @Input() remember: boolean;
     @Input() cloudid: string;
@@ -58,6 +60,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
             this.authService.CloudAcc = acc;
             this.authService.login(this.credential).subscribe(
                 user => {
+                    UserLog.login(this, user.id).subscribe();
                     this.authService.Remember = this.remember;
                     this.authService.UserProfile = user;
                     if (this.remember)

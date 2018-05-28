@@ -70,8 +70,16 @@ export class User extends BaseModel{
         return UserCache.all(context);
     }
 
+    static countAll( context:APIContext): Observable<any> {
+        return UserCache.countAll(context);
+    }
+
     static allAdmin( context:APIContext): Observable<any[]> {
         return UserCache.allAdmin(context);
+    }
+
+    static countAllAdmin( context:APIContext): Observable<any> {
+        return UserCache.countAllAdmin(context);
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {

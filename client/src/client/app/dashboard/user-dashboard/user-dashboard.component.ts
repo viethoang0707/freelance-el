@@ -38,13 +38,13 @@ declare var _: any;
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
 
-    confMembers: ConferenceMember[];
-    courses: Course[];
-    currentUser: User;
+    private confMembers: ConferenceMember[];
+    private courses: Course[];
+    private currentUser: User;
     CONFERENCE_STATUS = CONFERENCE_STATUS;
     COURSE_MODE = COURSE_MODE;
     @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
-    exams: Exam[];
+    private exams: Exam[];
     EXAM_STATUS = EXAM_STATUS;
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;

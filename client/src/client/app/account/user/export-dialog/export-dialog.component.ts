@@ -17,10 +17,10 @@ import { GROUP_CATEGORY } from '../../../shared/models/constants';
 })
 export class UserExportDialog extends BaseComponent {
 
-	users: User[];
-	fields: SelectItem[];
-	selectedFields: string[];
-	display:boolean;
+	private users: User[];
+	private fields: SelectItem[];
+	private selectedFields: string[];
+	private display:boolean;
 
 	constructor(private excelService: ExcelService) {
 		super();
