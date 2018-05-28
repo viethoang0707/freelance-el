@@ -74,7 +74,7 @@
       </div>
     </div>
     <p-footer>
-      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="selectedNode==null"></button>
+      <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="!f.valid || selectedNode==null"></button>
       <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
   </p-dialog>
