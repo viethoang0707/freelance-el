@@ -397,7 +397,8 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 }
 
 .dashboard-live-conference .task-box.task-box-1 .task-box-footer .btn-footer {
-  background-color: #e91e63; }
+  background-color: #e91e63; 
+}
 
 .lms-course-list-item,
 .lms-exam-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all{
@@ -494,3 +495,5 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
    from {transform: rotate(0deg);}
    to {transform: rotate(359deg);}
 }
+
+
