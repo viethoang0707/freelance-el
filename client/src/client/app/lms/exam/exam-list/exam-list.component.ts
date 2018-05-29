@@ -90,6 +90,15 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     manageExam(exam: Exam, member: ExamMember) {
+        var now = new Date();
+        if (exam.start && exam.start.getTime() > now.getTime()) {
+            this.warn('Exam has not been started');
+            return;
+        }
+        if (exam.end && exam.end.getTime() < now.getTime()) {
+            this.warn('Exam has ended');
+            return;
+        }
         this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
     }
 

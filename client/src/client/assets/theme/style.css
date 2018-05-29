@@ -436,6 +436,23 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
   position: unset;
 }
 
+.lms-course-list-item .status-bars ul li i{
+  position: unset;
+}
+
+.lms-exam-detail .ui-card-footer{
+  padding-top: 8px !important;
+}
+
+.lms-exam-list-item .ui-card-footer{
+  padding-top: 0;
+}
+
+/*lms-conference-list-item*/
+body .lms-conference-list-item .ui-panel .ui-panel-footer{
+  border-top: none;
+}
+
 .schedule-dashboard .fc-scroller{
   height: 500px !important;
 }
@@ -474,19 +491,4 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
    to {transform: rotate(359deg);}
 }
 
-.lms-course-list-item .status-bars ul li i{
-  position: unset;
-}
 
-.lms-exam-detail .ui-card-footer{
-  padding-top: 8px !important;
-}
-
-.lms-exam-list-item .ui-card-footer{
-  padding-top: 0;
-}
-
-/*lms-conference-list-item*/
-body .lms-conference-list-item .ui-panel .ui-panel-footer{
-  border-top: none;
-}

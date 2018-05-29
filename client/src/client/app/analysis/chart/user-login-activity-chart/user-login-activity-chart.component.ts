@@ -36,11 +36,12 @@ export class UserLoginActivityChartComponent extends BaseComponent  {
         var start = new Date(end.getTime() - duration * 24 * 60 * 60 * 1000);
         start.setHours(0, 0, 0, 0);
         this.statsUtils.userLoginStatisticByDate(this, start, end).subscribe(slots => {
+            console.log(slots);
             var labels = [this.translateService.instant('Today')];
-            var data = [slots[0]];
+            var data = [slots[slots.length-1]];
             for (var i =1; i< slots.length;i++) {
                 labels.push(this.translateService.instant("Day-"+i));
-                data.push(slots[i]);
+                data.push(slots[slots.length-1-i]);
             }
             this.chartData = {
                 labels: labels,
