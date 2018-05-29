@@ -454,6 +454,10 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 /*lms-conference-list-item*/
 body .lms-conference-list-item .ui-panel .ui-panel-footer{
   border-top: none;
+}
+
+.schedule-dashboard .fc-scroller{
+  height: 500px !important;
 
 .spinner {
    position: absolute;
