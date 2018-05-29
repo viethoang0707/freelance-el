@@ -1,5 +1,5 @@
 <div class="ui-g content">
-    <div class="ui-g-12">
+    <div class="ui-g-12 removePd">
         <p-table #dataTable [value]="records" [responsive]="true" sortField="user_login" sortMode="single" (onSort)="onSort()">
             <ng-template pTemplate="caption">
                 {{'Course by member report'|translate}}
