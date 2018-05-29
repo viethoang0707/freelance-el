@@ -12,7 +12,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import {
-	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	GROUP_CATEGORY,CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -27,11 +27,11 @@ import { CourseMaterialDialog } from '../course-material/course-material.dialog.
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
-import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { ProjectListDialog } from '../project-list/project-list.dialog.component';
+import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';import { ProjectListDialog } from '../project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { ClassSurveyListDialog } from '../class-survey-list/class-survey-list.dialog.component';
-
+import { MessageDialog } from '../course-message/course-message.dialog.component';
+import { CourseMessage } from '../../../shared/models/elearning/course-message.model';
 
 @Component({
 	moduleId: module.id,
@@ -66,6 +66,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
 	@ViewChild(ClassSurveyListDialog) surveyListDialog : ClassSurveyListDialog;
+	@ViewChild(MessageDialog) messageDialog: MessageDialog;
+
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -246,5 +248,10 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		}
 	}
 
+	addMessage() {
+		var message = new CourseMessage();
+		message.course_id = this.course.id;
+		this.messageDialog.show(message);
+	}
 }
 
