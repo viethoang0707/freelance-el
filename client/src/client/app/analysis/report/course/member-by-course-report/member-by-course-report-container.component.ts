@@ -39,7 +39,7 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     }
 
     export() {
-    	this.memberReport.export)_;
+    	this.memberReport.export();
     }
 
     selectCourseGroup() {

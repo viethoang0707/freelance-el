@@ -32,7 +32,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private selectedNode: TreeNode;
 	private items: MenuItem[];
 	private units: CourseUnit[];
-	private electedUnit:CourseUnit;
+	private selectedUnit:CourseUnit;
 	private sylUtils : SyllabusUtils;
 	private course: Course;
 	private user: User;

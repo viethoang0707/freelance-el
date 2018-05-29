@@ -368,5 +368,10 @@
 	"My tickets": "Thông báo",
 	"Question saved.": "Câu hỏi đã lưu",
 	"Course unit attempt": "Lượng truy cập khóa học",
-	"Corporate E-learnining System":"Hệ thống đào tạo nội bộ"
+	"Corporate E-learnining System":"Hệ thống đào tạo nội bộ",
+	"Project has not been started": "Dự án chưa được bắt đầu",
+	"Project has ended": "Dự án đã kết thúc",
+	"Exam has not been started": "Kỳ thi chưa bắt đầu",
+	"Exam has ended": "Kỳ thi đã kết thúc",
+	"Time spent (mintes)": "Thời gian dành cho từng bài giảng (phút)"
 }

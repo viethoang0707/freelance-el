@@ -31,6 +31,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	private courseClass: CourseClass;
 	private items: any[];
 	public subscription : Subscription;
+	private processing : boolean;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
