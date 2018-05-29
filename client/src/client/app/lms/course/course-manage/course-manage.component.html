@@ -25,6 +25,7 @@
           <p-toolbar>
             <div class="ui-toolbar-group-left ">
               <button pButton type="button " label="{{ 'Students'|translate}} " class="purple-btn " icon="ui-icon-people " (click)="manageStudent(selectedClass) " [disabled]="!selectedClass"></button>
+              <button pButton type="button " label="{{ 'Projects'|translate}} " class="purple-btn " icon="ui-icon-assignment " (click)="manageProject(selectedClass) " [disabled]="!selectedClass"></button>
               <button pButton type="button " label="{{ 'Exams'|translate}} " class="purple-btn " icon="ui-icon-grade " (click)="manageExam(selectedClass) " [disabled]="!selectedClass"></button>
               <button pButton type="button " label="{{ 'Conferences'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="manageConference(selectedClass) " [disabled]="!selectedClass"></button>
             </div>
@@ -71,6 +72,7 @@
         </div>
         <class-conference-dialog></class-conference-dialog>
         <class-exam-list-dialog></class-exam-list-dialog>
+        <project-list-dialog></project-list-dialog>
         <gradebook-list-dialog></gradebook-list-dialog>
       </p-tabPanel>
       <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download">

@@ -8,9 +8,8 @@ import * as io from 'socket.io-client';
 
 Injectable()
 export class WebSocketService {
+	
 	private socket;
-	
-	
 	private onNotifyReceiver: Subject<any> = new Subject();
 	onNotify: Observable<any> = this.onNotifyReceiver.asObservable();
 	

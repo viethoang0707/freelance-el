@@ -26,20 +26,20 @@ import { WorkflowService } from '../../../shared/services/workflow.service';
 })
 export class CourseSyllabusDialog extends BaseComponent {
 
-	display: boolean;
-	tree: TreeNode[];
-	syl: CourseSyllabus;
-	selectedNode: TreeNode;
-	items: MenuItem[];
-	units: CourseUnit[];
-	selectedUnit:CourseUnit;
-	sylUtils : SyllabusUtils;
-	course: Course;
-	user: User;
-	courseStatus: SelectItem[];
+	private display: boolean;
+	private tree: TreeNode[];
+	private syl: CourseSyllabus;
+	private selectedNode: TreeNode;
+	private items: MenuItem[];
+	private units: CourseUnit[];
+	private electedUnit:CourseUnit;
+	private sylUtils : SyllabusUtils;
+	private course: Course;
+	private user: User;
+	private courseStatus: SelectItem[];
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
-	allowToChangeState : boolean;
-	openTicket: Ticket;
+	private allowToChangeState : boolean;
+	private openTicket: Ticket;
 
 	private onShowReceiver: Subject<any> = new Subject();
     private onHideReceiver: Subject<any> = new Subject();
@@ -211,6 +211,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	previewUnit() {
 		if (this.selectedNode) {
+			this.selectedNode.data.course_id = this.course.id;
 			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
 	}

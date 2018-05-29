@@ -6,6 +6,7 @@ import { SettingService } from '../../shared/services/setting.service';
 import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Permission } from '../../shared/models/elearning/permission.model';
+import { UserLog } from '../../shared/models/elearning/log.model';
 
 @Component({
     moduleId: module.id,
@@ -14,10 +15,12 @@ import { Permission } from '../../shared/models/elearning/permission.model';
 })
 
 export class LoginComponent extends BaseComponent implements OnInit {
-    credential: Credential;
-    account: CloudAccount;
-    returnUrl: string;
-    buildMode: string = "<%= BUILD_TYPE %>";
+    
+    private credential: Credential;
+    private account: CloudAccount;
+    private returnUrl: string;
+    private buildMode: string = "<%= BUILD_TYPE %>";
+    private authenInProgress: boolean;
 
     @Input() remember: boolean;
     @Input() cloudid: string;
@@ -26,6 +29,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         super();
         this.account = new CloudAccount();
         this.credential =  new Credential();
+        this.authenInProgress =  false;
     }
 
     ngOnInit() {
@@ -51,10 +55,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
 
     login() {
+        this.authenInProgress =  true;
         this.getCloudInfo().subscribe((acc)=> {
             this.authService.CloudAcc = acc;
             this.authService.login(this.credential).subscribe(
                 user => {
+                    UserLog.login(this, user.id).subscribe();
                     this.authService.Remember = this.remember;
                     this.authService.UserProfile = user;
                     if (this.remember)
@@ -62,10 +68,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
                     user.getPermission(this).subscribe(permission=> {
                         this.authService.UserPermission =  permission;
                         this.router.navigate([this.returnUrl]);
+                        this.authenInProgress = false;
                     });
                 },
                 error => {
                     this.error('Login failed.');
+                    this.authenInProgress = false;
                 });
         });
     }

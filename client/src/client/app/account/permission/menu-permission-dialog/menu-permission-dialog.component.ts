@@ -19,8 +19,8 @@ import { GROUP_CATEGORY } from '../../../shared/models/constants';
 })
 export class MenuPermissionDialog extends BaseDialog<Permission> implements OnInit {
 
-    menuTree: TreeNode[];
-    selectedMenus: TreeNode[];
+    private menuTree: TreeNode[];
+    private selectedMenus: TreeNode[];
 
 	constructor(private menuService: MenuService) {
 		super();

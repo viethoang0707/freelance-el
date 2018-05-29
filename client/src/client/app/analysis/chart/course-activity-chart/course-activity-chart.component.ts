@@ -20,21 +20,14 @@ import { StatsUtils } from '../../../shared/helpers/statistics.utils';
     selector: 'course-activity-chart',
     templateUrl: 'course-activity-chart.component.html',
 })
-@Chart({
-    title: 'Course activity chart',
-})
-export class CourseActivityChartComponent extends BaseComponent implements OnInit {
+export class CourseActivityChartComponent extends BaseComponent  {
 
-    chartData: any;
-    statsUtils: StatsUtils;
+    private chartData: any;
+    private statsUtils: StatsUtils;
 
     constructor() {
         super();
         this.statsUtils = new StatsUtils();
-    }
-
-    ngOnInit() {
-        this.drawChart(7);
     }
 
     drawChart(duration:number) {
@@ -44,10 +37,10 @@ export class CourseActivityChartComponent extends BaseComponent implements OnIni
         start.setHours(0, 0, 0, 0);
         this.statsUtils.courseStatisticByDate(this, start, end).subscribe(slots => {
             var labels = [this.translateService.instant('Today')];
-            var data = [slots[0]];
+            var data = [slots[slots.length-1]];
             for (var i =1; i< slots.length;i++) {
                 labels.push(this.translateService.instant("Day-"+i));
-                data.push(slots[i]);
+                data.push(slots[slots.length-1-i]);
             }
             this.chartData = {
                 labels: labels,

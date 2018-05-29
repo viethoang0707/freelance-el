@@ -22,8 +22,8 @@ import { IQuestion } from '../question.interface';
 export class OpenEndQuestionComponent extends BaseComponent implements IQuestion{
 
 	mode:any;
-	question:Question;
-	answer: Answer;
+	private question:Question;
+	private answer: Answer;
 
 	constructor() {
 		super();

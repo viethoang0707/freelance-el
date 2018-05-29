@@ -22,12 +22,12 @@ import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.m
 })
 export class QuestionMarkingDialog extends BaseComponent {
 
-	display: boolean;
-	submit: Submission;
-	answers: Answer[];
-	markAnswers: Answer[];
-	questions: any;
-	member: ExamMember;
+	private display: boolean;
+	private submit: Submission;
+	private answers: Answer[];
+	private markAnswers: Answer[];
+	private questions: any;
+	private member: ExamMember;
 	private onMarkCompleteReceiver: Subject<any> = new Subject();
     onMarkComplete:Observable<any> =  this.onMarkCompleteReceiver.asObservable();
 

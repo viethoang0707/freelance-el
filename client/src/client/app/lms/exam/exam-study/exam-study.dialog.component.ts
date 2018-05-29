@@ -19,7 +19,7 @@ import { SelectItem } from 'primeng/api';
 import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
-import { SubmissionDialog } from '../submission-dialog/submission.dialog.component';
+import { ExamSubmissionDialog } from '../exam-submit/exam-submission.dialog.component';
 import 'rxjs/add/observable/timer';
 import {Message} from 'primeng/components/common/api';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -34,29 +34,29 @@ declare var $: any;
 })
 export class ExamStudyDialog extends BaseComponent {
 
-	display: boolean;
-	exam: Exam;
-	member: ExamMember;
-	sheet: QuestionSheet;
-	qIndex: number;
-	examQuestions: ExamQuestion[];
-	answers: Answer[];
-	submission: Submission;
-	timer: any;
-	currentAnswer: Answer;
-	currentQuestion: ExamQuestion;
-	timeLeft: number;
-	progress: number;
-	stats: any;
-	validAnswer: number;
+	private display: boolean;
+	private exam: Exam;
+	private member: ExamMember;
+	private sheet: QuestionSheet;
+	private qIndex: number;
+	private examQuestions: ExamQuestion[];
+	private answers: Answer[];
+	private submission: Submission;
+	private timer: any;
+	private currentAnswer: Answer;
+	private currentQuestion: ExamQuestion;
+	private timeLeft: number;
+	private progress: number;
+	private stats: any;
+	private validAnswer: number;
 	private onShowReceiver: Subject<any> = new Subject();
     private onHideReceiver: Subject<any> = new Subject();
     onShow: Observable<any> = this.onShowReceiver.asObservable();
     onHide: Observable<any> = this.onHideReceiver.asObservable();
 
-	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
+	@ViewChild(ExamSubmissionDialog) submitDialog: ExamSubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
-	componentRef: any;
+	private componentRef: any;
 	WINDOW_HEIGHT:any;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {

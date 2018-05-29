@@ -1,10 +1,15 @@
 <div class="card card-w-title exam-manage">
-  <h1>{{'Exam manage'|translate}}: {{exam.name}} </h1>
+  <h1>{{'Exam'|translate}}: {{exam.name}} </h1>
   <div class="ui-g-12 ">
         <p-toolbar>
           <div class="ui-toolbar-group-left ">
+            <button pButton type="button " label="{{ 'Question sheet'|translate}} " class="purple-btn " icon="ui-icon-question-answer" (click)="showQuestionSheet()" ></button>
             <button pButton type="button " label="{{ 'Mark'|translate}} " class="purple-btn " icon="ui-icon-local-offer" (click)="mark()" [disabled]="!selectedRecord"></button>
             <button pButton type="button " label="{{ 'Answer sheet'|translate}} " class="purple-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedRecord"></button>
+          </div>
+          <div class="ui-toolbar-group-right ">
+            <button pButton type="button " label="{{ 'Result report'|translate}} " class="purple-btn " icon="ui-icon-data-usage" (click)="showExamReport()" ></button>
+            <button pButton type="button " label="{{ 'Statistics'|translate}} " class="purple-btn " icon="ui-icon-equalizer" (click)="showExamStats()" ></button>
           </div>
         </p-toolbar>
         <p-table #scoreTable [value]="scoreRecords" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
@@ -15,9 +20,9 @@
                 {{'Name'|translate}}
                 <p-sortIcon [field]="'name'"></p-sortIcon>
               </th>
-              <th [pSortableColumn]="'etraining_group__DESC__'">
+              <th [pSortableColumn]="'group_id__DESC__'">
                 {{'Group'|translate}}
-                <p-sortIcon [field]="'etraining_group__DESC__'"></p-sortIcon>
+                <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
               </th>
               <th [pSortableColumn]="'score'">
                 {{'Score'|translate}}
@@ -50,5 +55,8 @@
         </p-table>
       </div>
       <question-marking-dialog></question-marking-dialog>
+      <question-sheet-print-dialog></question-sheet-print-dialog>
       <answer-print-dialog></answer-print-dialog>
+      <exam-report-dialog></exam-report-dialog>
+      <exam-stats-dialog></exam-stats-dialog>
 </div>

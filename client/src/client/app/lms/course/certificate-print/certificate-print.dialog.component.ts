@@ -27,8 +27,8 @@ import 'rxjs/add/observable/timer'; import * as _ from 'underscore';
 export class CertificatePrintDialog extends BaseComponent {
     @ViewChild('printSection') printSection;
 
-    display:boolean;
-    certificate: Certificate;
+    private display:boolean;
+    private certificate: Certificate;
 
     constructor() {
         super();

@@ -13,6 +13,7 @@ import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.compon
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '../../shared/models/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     moduleId: module.id,
@@ -22,17 +23,17 @@ import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from 
 })
 export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
-    userCount: any;
-    studentCount: any;
-    teacherCount: any;
-    courseCount: any;
-    events: any[];
-    exams: Exam[];
-    courses: Course[];
-    course: Course;
-    selectedExam: any;
-    header: any;
-    now: Date;
+    private userCount: any;
+    private studentCount: any;
+    private teacherCount: any;
+    private courseCount: any;
+    private events: any[];
+    private exams: Exam[];
+    private courses: Course[];
+    private course: Course;
+    private selectedExam: any;
+    private header: any;
+    private now: Date;
     COURSE_MODE =  COURSE_MODE;
     COURSE_STATUS = COURSE_STATUS;
 
@@ -118,6 +119,14 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         this.startTransaction();
         Course.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(courses => {
             this.courses = courses;
+            this.courses.sort((course1, course2): any => {
+                if (course1.create_date > course2.create_date)
+                    return -1;
+                else if (course1.create_date < course2.create_date)
+                    return 1;
+                else
+                    return 0;
+            });
             this.closeTransaction();
         });
     }

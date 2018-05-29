@@ -35,18 +35,18 @@ export class ReportUtils {
 		return rowGroupMetadata;
 	}
 
-	analyzeCourseActivity(logs: CourseLog[]):any {
+	analyzeCourseActivity(logs: CourseLog[]): any {
 		var onTime = 0;
-		var startCourseUnitLogs = _.filter(logs, (log)=> {
-			return log.start!=null && log.code =='START_COURSE_UNIT';
+		var startCourseUnitLogs = _.filter(logs, (log) => {
+			return log.start != null && log.code == 'START_COURSE_UNIT';
 		});
-		var endCourseUnitLogs = _.filter(logs, (log)=> {
-			return log.start!=null && log.code =='COMPLETE_COURSE_UNIT';
+		var endCourseUnitLogs = _.filter(logs, (log) => {
+			return log.start != null && log.code == 'COMPLETE_COURSE_UNIT';
 		});
-		var first_attempt = _.min(startCourseUnitLogs, (log)=> {
+		var first_attempt = _.min(startCourseUnitLogs, (log) => {
 			return log.start.getTime();
 		});
-		var last_attempt = _.max(endCourseUnitLogs, (log)=> {
+		var last_attempt = _.max(endCourseUnitLogs, (log) => {
 			return log.start.getTime();
 		});
 
@@ -54,15 +54,15 @@ export class ReportUtils {
 		var first_attempt_millis = new Date(first_attempt.start).getTime();
 		var timeforunit = last_attempt_millis - first_attempt_millis;
 
-		var unitCount  = 0;
+		var unitCount = 0;
 		var unitLogs = {}
-		_.each(logs, (log)=> {
+		_.each(logs, (log) => {
 			if (log.code == 'COMPLETE_COURSE_UNIT') {
 				onTime += log.start.getTime();
-				unitLogs[log.id] = unitLogs[log.id]?unitLogs[log.id]+1:1;
+				unitLogs[log.id] = unitLogs[log.id] ? unitLogs[log.id] + 1 : 1;
 			}
 
-			if (unitLogs[log.id] && unitLogs[log.id]>=2)
+			if (unitLogs[log.id] && unitLogs[log.id] >= 2)
 				unitCount++;
 		});
 
@@ -71,80 +71,80 @@ export class ReportUtils {
 
 	analyzeExamActivity(logs: ExamLog[]) {
 		var onTime = 0;
-		var startCourseUnitLogs = _.filter(logs, (log)=> {
-			return log.start && log.code =='START_EXAM';
+		var startCourseUnitLogs = _.filter(logs, (log) => {
+			return log.start && log.code == 'START_EXAM';
 		});
-		var endCourseUnitLogs = _.filter(logs, (log)=> {
-			return log.start && log.code =='FINISH_EXAM';
+		var endCourseUnitLogs = _.filter(logs, (log) => {
+			return log.start && log.code == 'FINISH_EXAM';
 		});
-		var first_attempt = _.min(startCourseUnitLogs, (log)=> {
+		var first_attempt = _.min(startCourseUnitLogs, (log) => {
 			return log.start.getTime();
 		});
-		var last_attempt = _.max(startCourseUnitLogs, (log)=> {
+		var last_attempt = _.max(startCourseUnitLogs, (log) => {
 			return log.start.getTime();
 		});
-		_.each(logs, (log)=> {
+		_.each(logs, (log) => {
 			if (log.code == 'FINISH_EXAM')
 				onTime += log.start.getTime();
 			if (log.code == 'START_EXAM')
 				onTime -= log.start.getTime();
 		});
-		return [first_attempt, last_attempt, onTime];
+		return [first_attempt.start, last_attempt.start, onTime];
 	}
 
-	analyseCourseMember(course: Course, members: CourseMember[]):any {
+	analyseCourseMember(course: Course, members: CourseMember[]): any {
 		var record = {};
-		
-		var studentMembers = _.filter(members, (member: CourseMember)=> {
+
+		var studentMembers = _.filter(members, (member: CourseMember) => {
 			return member.role == 'student';
 		});
 
-	    var registeredMembers = _.filter(studentMembers, (member:CourseMember)=> {
-	    	return member.enroll_status == 'registered';
-	    });
-	    var inprogressMembers = _.filter(studentMembers, (member:CourseMember)=> {
-	    	return member.enroll_status == 'in-study';
-	    });
-	    var completededMembers = _.filter(studentMembers, (member:CourseMember)=> {
-	    	return member.enroll_status == 'completed';
+		var registeredMembers = _.filter(studentMembers, (member: CourseMember) => {
+			return member.enroll_status == 'registered';
+		});
+		var inprogressMembers = _.filter(studentMembers, (member: CourseMember) => {
+			return member.enroll_status == 'in-study';
+		});
+		var completededMembers = _.filter(studentMembers, (member: CourseMember) => {
+			return member.enroll_status == 'completed';
 		});
 		record["total_member"] = members.length;
 		record["total_member_student"] = studentMembers.length;
-	    record["total_member_registered"] = registeredMembers.length;
-	    record["percentage_member_registered"] = studentMembers.length ? Math.floor(registeredMembers.length/studentMembers.length*100):0;
-	    record["total_member_inprogress"] = inprogressMembers.length;
-	    record["percentage_member_inprogress"] = studentMembers.length ? Math.floor(inprogressMembers.length/studentMembers.length*100):0;
-	    record["total_member_completed"] = completededMembers.length;
-	    record["percentage_member_completed"] = studentMembers.length ? Math.floor(completededMembers.length/studentMembers.length*100):0;
-	    return record;
-    }
+		record["total_member_registered"] = registeredMembers.length;
+		record["percentage_member_registered"] = studentMembers.length ? Math.floor(registeredMembers.length / studentMembers.length * 100) : 0;
+		record["total_member_inprogress"] = inprogressMembers.length;
+		record["percentage_member_inprogress"] = studentMembers.length ? Math.floor(inprogressMembers.length / studentMembers.length * 100) : 0;
+		record["total_member_completed"] = completededMembers.length;
+		record["percentage_member_completed"] = studentMembers.length ? Math.floor(completededMembers.length / studentMembers.length * 100) : 0;
+		return record;
+	}
 
-    analyseExamMember(exam: Exam, members: ExamMember[]):any {
+	analyseExamMember(exam: Exam, members: ExamMember[]): any {
 		var record = {};
 		record["total_member"] = members.length;
 
-		var candidateMembers = _.filter(members, (member: ExamMember)=> {
+		var candidateMembers = _.filter(members, (member: ExamMember) => {
 			return member.role == 'candidate';
 		});
 
-	    var registeredMembers = _.filter(candidateMembers, (member:ExamMember)=> {
-	    	return member.enroll_status == 'registered';
-	    });
-	    var inprogressMembers = _.filter(candidateMembers, (member:ExamMember)=> {
-	    	return member.enroll_status == 'in-study';
-	    });
-	    var completededMembers = _.filter(candidateMembers, (member:ExamMember)=> {
-	    	return member.enroll_status == 'completed';
+		var registeredMembers = _.filter(candidateMembers, (member: ExamMember) => {
+			return member.enroll_status == 'registered';
 		});
-		
+		var inprogressMembers = _.filter(candidateMembers, (member: ExamMember) => {
+			return member.enroll_status == 'in-study';
+		});
+		var completededMembers = _.filter(candidateMembers, (member: ExamMember) => {
+			return member.enroll_status == 'completed';
+		});
+
 		record["total_member_candidate"] = candidateMembers.length;
-	    record["total_member_registered"] = registeredMembers.length;
-	    record["percentage_member_registered"] = candidateMembers.length ? Math.floor(registeredMembers.length/candidateMembers.length*100):0;
-	    record["total_member_inprogress"] = inprogressMembers.length;
-	    record["percentage_member_inprogress"] = candidateMembers.length ? Math.floor(inprogressMembers.length/candidateMembers.length*100):0;
-	    record["total_member_completed"] = completededMembers.length;
-	    record["percentage_member_completed"] = candidateMembers.length ? Math.floor(completededMembers.length/candidateMembers.length*100):0;
-	    return record;
-    }
+		record["total_member_registered"] = registeredMembers.length;
+		record["percentage_member_registered"] = candidateMembers.length ? Math.floor(registeredMembers.length / candidateMembers.length * 100) : 0;
+		record["total_member_inprogress"] = inprogressMembers.length;
+		record["percentage_member_inprogress"] = candidateMembers.length ? Math.floor(inprogressMembers.length / candidateMembers.length * 100) : 0;
+		record["total_member_completed"] = completededMembers.length;
+		record["percentage_member_completed"] = candidateMembers.length ? Math.floor(completededMembers.length / candidateMembers.length * 100) : 0;
+		return record;
+	}
 
 }

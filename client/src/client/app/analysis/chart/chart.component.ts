@@ -13,9 +13,9 @@ import { ChartContainerDirective } from './chart-container.directive';
 })
 export class ChartComponent extends BaseComponent implements OnInit {
 
-	chartData: any;
-	charts: SelectItem[];
-    selectedChart: any;
+	private chartData: any;
+	private charts: SelectItem[];
+    private selectedChart: any;
 
     @ViewChild(ChartContainerDirective) container: ChartContainerDirective;
 

@@ -25,11 +25,11 @@ import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
 export class GradebookListDialog extends BaseComponent {
 
 	COURSE_MEMBER_ENROLL_STATUS =  COURSE_MEMBER_ENROLL_STATUS;
-	records: any;
-	selectedRecord: any;
-	display: boolean;
-	courseClass: CourseClass;
-	reportUtils: ReportUtils;
+	private records: any;
+	private selectedRecord: any;
+	private display: boolean;
+	private courseClass: CourseClass;
+	private reportUtils: ReportUtils;
 	@ViewChild(GradebookDialog) gradebookDialog : GradebookDialog;
 
 	constructor(private datePipe: DatePipe, private timePipe: TimeConvertPipe) {

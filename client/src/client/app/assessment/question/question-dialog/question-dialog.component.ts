@@ -19,11 +19,12 @@ import { QuestionRegister } from '../question-template/question.decorator';
 	templateUrl: 'question-dialog.component.html',
 })
 export class QuestionDialog extends BaseDialog<Question>  {
-	tree: TreeNode[];
-	selectedNode: TreeNode;
+	
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
-	componentRef: any;
-	treeUtils: TreeUtils;
+	private componentRef: any;
+	private treeUtils: TreeUtils;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,private changeDetectionRef: ChangeDetectorRef) {
 		super();

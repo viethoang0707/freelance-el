@@ -18,8 +18,8 @@ import { SelectItem } from 'primeng/api';
 })
 export class TicketListComponent extends BaseComponent {
 
-    submitTickets: Ticket[];
-    approvalTickets: Ticket[];
+    private submitTickets: Ticket[];
+    private approvalTickets: Ticket[];
     TICKET_STATUS = TICKET_STATUS;
 
     @ViewChild(TicketDialog) ticketDialog: TicketDialog;

@@ -13,8 +13,7 @@ import { Company } from '../../shared/models/elearning/company.model';
 })
 export class SettingAppComponent extends BaseComponent {
 
-    company: Company;
-    originCompany: Company;
+    private company: Company;
 
     constructor() {
         super();

@@ -21,7 +21,7 @@ import { MeetingService } from '../../../shared/services/meeting.service';
 })
 export class ConferenceListComponent extends BaseComponent implements OnInit {
 
-	members: ConferenceMember[];
+	private members: ConferenceMember[];
 	CONFERENCE_STATUS =  CONFERENCE_STATUS;
 
 	constructor(private meetingSerivce:MeetingService) {

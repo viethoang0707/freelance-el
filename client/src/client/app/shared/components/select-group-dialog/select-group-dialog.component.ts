@@ -20,10 +20,10 @@ import { SelectItem } from 'primeng/api';
 export class SelectGroupDialog extends BaseComponent {
 
 	@Input() category: string;
-	tree: TreeNode[];
-	selectedNode: TreeNode;
-	display: boolean;
-	treeUtils: TreeUtils;
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
+	private display: boolean;
+	private treeUtils: TreeUtils;
 
 	private onSelectGroupReceiver: Subject<any> = new Subject();
     onSelectGroup:Observable<any> =  this.onSelectGroupReceiver.asObservable();

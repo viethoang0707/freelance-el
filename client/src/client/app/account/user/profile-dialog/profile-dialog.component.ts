@@ -22,11 +22,12 @@ import { CertificatePrintDialog } from '../../../lms/course/certificate-print/ce
     styleUrls: ['profile-dialog.component.css'],
 })
 export class UserProfileDialog extends BaseDialog<User> {
-	user: User;
-    tree: TreeNode[];
-    selectedNode: TreeNode;
-    members: CourseMember[];
-    treeUtils: TreeUtils;
+	
+	private user: User;
+    private tree: TreeNode[];
+    private selectedNode: TreeNode;
+    private members: CourseMember[];
+    private treeUtils: TreeUtils;
     COURSE_MEMBER_ENROLL_STATUS =  COURSE_MEMBER_ENROLL_STATUS;
 
     @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;

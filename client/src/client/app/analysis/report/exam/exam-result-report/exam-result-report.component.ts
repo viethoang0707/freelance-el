@@ -25,27 +25,16 @@ import { ExcelService } from '../../../../shared/services/excel.service';
     selector: 'exam-result-report',
     templateUrl: 'exam-result-report.component.html',
 })
-@Report({
-    title:'Exam result report',
-    category:REPORT_CATEGORY.EXAM
-})
-export class ExamResultReportComponent extends BaseComponent implements OnInit{
+export class ExamResultReportComponent extends BaseComponent{
 
-    records: any;
-    exams: Exam[];
-    selectedExam: any;
-    reportUtils: ReportUtils;
+    private records: any;
+    private reportUtils: ReportUtils;
 
     constructor( private excelService: ExcelService, private datePipe: DatePipe) {
         super();
         this.reportUtils = new ReportUtils();
     }
 
-    ngOnInit() {
-    	Exam.all(this).subscribe(exams => {
-    		this.exams = exams;
-    	});
-    }
 
     export() {
     	var header = [
@@ -59,37 +48,38 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
     	this.excelService.exportAsExcelFile(header.concat(this.records),'course_by_member_report');
     }
 
-    selectExam() {
-    	if (this.selectedExam) {
-            this.startTransaction();
-    		ExamMember.listByExam(this, this.selectedExam.id).subscribe(members => {
-				ExamGrade.listByExam(this,this.selectedExam.id).subscribe(grades => {
-                    Submission.listByExam(this,this.selectedExam.id).subscribe(submits => {
-                            this.generateReport(this.selectedExam, grades, submits, members).subscribe(records => {
-                            this.records = records;
-                            this.closeTransaction();
-                        });
+    clear() {
+        this.records = [];
+    }
+
+    render(exam:Exam) {
+        this.startTransaction();
+		ExamMember.listByExam(this, exam.id).subscribe(members => {
+			ExamGrade.listByExam(this,exam.id).subscribe(grades => {
+                Submission.listByExam(this,exam.id).subscribe(submits => {
+                    ExamLog.listByExam(this,exam.id).subscribe(logs => {
+                        this.records = this.generateReport(exam, grades, submits, logs, members);
+                        this.closeTransaction();
                     });
-				});
-			});	
-    	}
+                });
+			});
+		});	
+    	
     }
 
 
-    generateReport(exam: Exam, grades: ExamGrade[], submits: Submission[], members: ExamMember[]):Observable<any> {
-        var subscriptions =[];
+    generateReport(exam: Exam, grades: ExamGrade[], submits: Submission[], logs: ExamLog[],members: ExamMember[]) {
+        var rows =[];
     	_.each(members, (member:ExamMember)=> {
-    		var subscription = ExamLog.userExamActivity(this, member.user_id, exam.id).flatMap(logs => {
-                var submit = _.find(submits, (obj=> {
-                    return obj.member_id == member.id;
-                }));
-                if (!submit)
-                    return Observable.of([]);
-                return Observable.of(this.generateReportRow(exam, grades, member, submit, logs));
-    		});	
-    		subscriptions.push(subscription);	
-    	});		
-    	return Observable.zip(...subscriptions);
+            var userLogs = _.filter(logs, (log:ExamLog) => {
+                return log.user_id == member.user_id;
+            });
+            var submit = _.find(submits, (obj:Submission)=> {
+                return obj.member_id == member.id;
+            });
+            rows.push(this.generateReportRow(exam, grades, member, submit, userLogs));
+    	});	
+    	return rows;
     }
 
     generateReportRow(exam:Exam, grades: ExamGrade[], member: ExamMember,submit: Submission, logs: ExamLog[]):any {
@@ -97,15 +87,20 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit{
 	    record["user_login"] =  member.login;
 	    record["user_name"] = member.name;
 	    record["user_group"] = member.group_id__DESC__;
-	    record["score"] = submit.score;
-	    var result = this.reportUtils.analyzeExamActivity(logs);
-	    if (result[0] != Infinity)
-	    	record["date_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
-    	var grade = _.find(grades, (obj)=> {
-    		return obj.min_score <= record["score"] && obj.max_score >= record["score"]
-    	});
-    	if (grade)
-    		record["grade"] = grade.name;
+        if (submit) {
+	        record["score"] = submit.score;
+            var grade = _.find(grades, (obj)=> {
+            return obj.min_score <= record["score"] && obj.max_score >= record["score"]
+            });
+            if (grade)
+                record["grade"] = grade.name;
+        }
+        if (logs && logs.length) {
+            var result = this.reportUtils.analyzeExamActivity(logs);
+            if (result[0])
+                record["date_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
+        }
+	    
 	    return record;
     }
 

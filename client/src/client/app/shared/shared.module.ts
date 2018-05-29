@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend } from '@angular/http';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { TeacherGuard } from './guards/teacher.guard';
@@ -12,7 +13,6 @@ import { StudentGuard } from './guards/student.guard';
 import { SupervisorGuard } from './guards/supervisor.guard';
 import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
-import { LangService } from './services/lang.service';
 import { WorkflowService } from './services/workflow.service';
 import { CacheService } from './services/cache.service';
 import { WebSocketService } from './services/socket.service';
@@ -335,7 +335,6 @@ export class ErpSharedModule {
                 APIService,
                 AuthService,
                 MessageService,
-                LangService,
                 DataAccessService,
                 MeetingService,
                 WindowRef,

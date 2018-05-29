@@ -19,10 +19,10 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class MemberPermissionDialog extends BaseComponent {
 
-	display: boolean;
-    users: User[];
-    selectedUsers: any;
-    permission: Permission;
+	private display: boolean;
+    private users: User[];
+    private selectedUsers: any;
+    private permission: Permission;
 
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	

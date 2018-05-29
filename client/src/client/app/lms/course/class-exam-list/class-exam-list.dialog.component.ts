@@ -22,10 +22,10 @@ import { Router } from '@angular/router';
 })
 export class ClassExamListDialog extends BaseComponent {
 
-	display: boolean;
-	courseClass: CourseClass;
-	classExams: ClassExam[];
-	selectedClassExam: ClassExam;
+	private display: boolean;
+	private courseClass: CourseClass;
+	private classExams: ClassExam[];
+	private selectedClassExam: ClassExam;
 	EXAM_STATUS = EXAM_STATUS;
 
 	@ViewChild(ExamDialog) examDialog: ExamDialog;

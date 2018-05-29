@@ -26,6 +26,7 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
+import { ProjectListDialog } from '../project-list/project-list.dialog.component';
 
 
 @Component({
@@ -36,20 +37,20 @@ import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview
 })
 export class CourseManageComponent extends BaseComponent implements OnInit {
 	
-	course:Course;
-	members: CourseMember[];
-	selectedClass: CourseClass;
-	classes: CourseClass[];
-	selectedFaq: CourseFaq;
-	faqs: CourseFaq[];
-	selectedMaterial: CourseMaterial;
-	materials: CourseMaterial[];
-	tree: TreeNode[];
-	syl: CourseSyllabus;
-	selectedNode: TreeNode;
-	units: CourseUnit[];
-	selectedUnit:CourseUnit;
-	 sylUtils:SyllabusUtils;
+	private course:Course;
+	private members: CourseMember[];
+	private selectedClass: CourseClass;
+	private classes: CourseClass[];
+	private selectedFaq: CourseFaq;
+	private faqs: CourseFaq[];
+	private selectedMaterial: CourseMaterial;
+	private materials: CourseMaterial[];
+	private tree: TreeNode[];
+	private syl: CourseSyllabus;
+	private selectedNode: TreeNode;
+	private units: CourseUnit[];
+	private selectedUnit:CourseUnit;
+	private  sylUtils:SyllabusUtils;
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -57,7 +58,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(ClassExamListDialog) examListDialog : ClassExamListDialog;
 	@ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-	
+	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
+
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
 		this. sylUtils = new SyllabusUtils();
@@ -129,6 +131,12 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	manageExam() {
 		if (this.selectedClass) {
 			this.examListDialog.show(this.selectedClass);
+		}
+	}
+
+	manageProject() {
+		if (this.selectedClass) {
+			this.projectListDialog.show(this.selectedClass);
 		}
 	}
 

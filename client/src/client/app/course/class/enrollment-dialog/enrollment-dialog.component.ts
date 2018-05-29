@@ -23,15 +23,13 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class CourseEnrollDialog extends BaseDialog<Course> {
 
-	display: boolean;
-	processing: boolean;
-	selectedStudents: any;
-	students: CourseMember[];
-	selectedTeachers: any;
-	teachers: CourseMember[];
-	course: Course;
-	courseClass: CourseClass;
-	items: any[];
+	private selectedStudents: any;
+	private students: CourseMember[];
+	private selectedTeachers: any;
+	private teachers: CourseMember[];
+	private course: Course;
+	private courseClass: CourseClass;
+	private items: any[];
 	public subscription : Subscription;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
