@@ -458,6 +458,7 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
 
 .schedule-dashboard .fc-scroller{
   height: 500px !important;
+}
 
 .spinner {
    position: absolute;
@@ -492,5 +493,4 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
 @keyframes rotation {
    from {transform: rotate(0deg);}
    to {transform: rotate(359deg);}
-
-
+}
