@@ -456,6 +456,9 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
   border-top: none;
 }
 
+.schedule-dashboard .fc-scroller{
+  height: 500px !important;
+}
 .spinner {
    position: absolute;
    left: 50%;
