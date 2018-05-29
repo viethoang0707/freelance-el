@@ -6,6 +6,7 @@ import { APIService } from '../services/api.service';
 import { APIContext } from '../models/context';
 import { CourseMember } from '../models/elearning/course-member.model';
 import { DataAccessService } from '../services/data-access.service';
+import { CacheService } from '../services/cache.service';
 import * as _ from 'underscore';
 
 @Injectable()
