@@ -396,9 +396,6 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
   border: none;
 }
 
-.dashboard-live-conference .task-box.task-box-1 .task-box-footer .btn-footer {
-  background-color: #e91e63; }
-
 .lms-course-list-item,
 .lms-exam-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all{
   margin-bottom: 10px;
@@ -459,7 +456,6 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
 .schedule-dashboard .fc-scroller{
   height: 500px !important;
 }
-
 .spinner {
    position: absolute;
    left: 50%;
@@ -494,3 +490,5 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
    from {transform: rotate(0deg);}
    to {transform: rotate(359deg);}
 }
+
+
