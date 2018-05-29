@@ -1,0 +1,16 @@
+.task-status{
+	background-color: #e91e63;
+	border-radius: 9px;
+    padding: 2px 8px;
+    color: #fff;
+    float: right;
+}
+
+.heading-conference{
+	font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0;
+    float: left;
+}
