@@ -19,9 +19,13 @@ export class Survey extends BaseModel{
         this.start = undefined;
         this.end = undefined;
         this.status = undefined;
+        this.course_id = undefined;
+        this.class_id = undefined;
 	}
 
     name:string;
+    course_id: number;
+    class_id: number;
     summary: string;
     instruction: string;
     @FieldProperty<Date>()
