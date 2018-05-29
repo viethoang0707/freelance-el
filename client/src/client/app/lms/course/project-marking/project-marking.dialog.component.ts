@@ -14,6 +14,7 @@ import { ExamQuestion } from '../../../shared/models/elearning/exam-question.mod
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
+import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 
 
 @Component({
@@ -24,17 +25,23 @@ import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.m
 export class ProjectMarkingDialog extends BaseDialog<ProjectSubmission>  implements OnInit{
 
 	private member: CourseMember;
+	private setting: ExamSetting;
 	
 	constructor() {
 		super();
 		this.display = false;
 		this.member =  new CourseMember();
+		this.setting =  new ExamSetting();
 	}
 
 	ngOnInit() {
 		this.onShow.subscribe(object=> {
 			CourseMember.get(this, object.member_id).subscribe(member=> {
 				this.member = member;
+				ExamSetting.appSetting(this).subscribe(setting=> {
+					if (setting)
+						this.setting =  setting;
+				});
 			});
 		});
 	}

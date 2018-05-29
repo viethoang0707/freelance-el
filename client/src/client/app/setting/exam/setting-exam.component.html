@@ -1,0 +1,39 @@
+<div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
+  <p-panel header="Exams">
+    <button pButton type="button" icon="ui-icon-menu" class="secondary-btn" (click)="saveExamSetting()"></button>
+    <div class="ui-g ui-fluid form-group">
+      <div class="ui-g-6">
+        <span class="md-inputfield">
+              <input type="text"  pInputText name="scale" [(ngModel)]="setting.scale" pKeyFilter="pint">
+              <label for="scale">{{'Scale' | translate}}</label>
+            </span>
+      </div>
+      <div class="ui-g-6">
+        <p-checkbox name="take_pic" binary="true" label="{{'Take picture on submit'|translate}}" [(ngModel)]="setting.take_picture_on_submit"></p-checkbox>
+      </div>
+      <div class="ui-g-12">
+        <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addGrade()" pTooltip="{{'Add grade'|translate}}"></button>
+        <ul class="options-question">
+          <li *ngFor="let grade of grades">
+            <span class="md-inputfield">
+                  <input type="text" pInputText [(ngModel)]="grade.name" name="grade_name">
+                   <label for="grade_name">{{'Name' | translate}}</label>
+              </span>
+            <span class="md-inputfield">
+                  <p-spinner  [(ngModel)]="grade.min_score" name="grade_min"></p-spinner>
+                  <label for="grade_min">{{'Min' | translate}}</label>
+              </span>
+            <span class="md-inputfield">
+                <p-spinner  [(ngModel)]="grade.max_score" name="grade_max"></p-spinner>
+                  <label for="grade_max">{{'Max' | translate}}</label>
+              </span>
+            <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeGrade(grade)" class="remove-btn"></button>
+          </li>
+        </ul>
+        <div *ngIf="grades | validateGrade:setting.scale" class="ui-message ui-messages-error ui-corner-all">
+          {{'Invalid grade options' | translate}}
+        </div>
+      </div>
+    </div>
+  </p-panel>
+</div>

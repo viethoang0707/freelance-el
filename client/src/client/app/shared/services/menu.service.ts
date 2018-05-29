@@ -28,7 +28,8 @@ export class MenuService {
                     items: [
                         { label: 'Question banks', routerLink: ['/assessment/questions'],code:'ASSESSMENT-QUESTION' },
                         { label: 'Question category', routerLink: ['/assessment/groups'],code:'ASSESSMENT-QUESTION_GROUP' },
-                        { label: 'Exam', routerLink: ['/assessment/exams'] ,code:'ASSESSMENT-EXAM'}
+                        { label: 'Exam', routerLink: ['/assessment/exams'] ,code:'ASSESSMENT-EXAM'},
+                        { label: 'Question sheets', routerLink: ['/assessment/question-sheets'],code:'ASSESSMENT-QUESTION_SHEET' },
                     ]
                 },
                 {
@@ -51,6 +52,12 @@ export class MenuService {
                         { label: 'User', routerLink: ['/account/users'],code:'ACCOUNT-USER' },
                         { label: 'Group', routerLink: ['/account/groups'],code:'ACCOUNT-USER_GROUP' },
                         { label: 'Permission', routerLink: ['/account/permissions'],code:'ACCOUNT-PERMISSION' },
+                    ]
+                },
+                {
+                    label: 'Settings', icon: 'settings',code:'SETTING',
+                    items: [
+                        { label: 'Exam', routerLink: ['/setting/exam'],code:'SETTING-EXAM' },
                     ]
                 }
             ];

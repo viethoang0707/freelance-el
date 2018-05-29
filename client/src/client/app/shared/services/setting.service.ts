@@ -12,7 +12,6 @@ export class SettingService {
   private viewMode: string;
 
   constructor(private authService: AuthService) {
-
   }
 
   private viewModeEventReceiver: Subject<string> = new Subject();
