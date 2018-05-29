@@ -374,7 +374,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					this.projects =  projects;
 					_.each(projects, (project) => {
 						project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
-							return submit.project_id == project.id;
+							return submit.project_id == projects.id;
 						});
 						if (project["submit"]) {
 							if (project["submit"].score != null)
@@ -412,14 +412,14 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	startExam(exam: Exam, member: ExamMember) {
 		var now = new Date();
 		if (exam.start && exam.start.getTime() > now.getTime()) {
-			this.warn('Exam has not been started');
+			this.warn(this.translateService.instant('Exam has not been started'));
 			return;
 		}
 		if (exam.end && exam.end.getTime() < now.getTime()) {
-			this.warn('Exam has ended');
+			this.warn(this.translateService.instant('Exam has ended'));
 			return;
 		}
-		this.confirm('Are you sure to start ?', () => {
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			this.examStudyDialog.show(exam, member);
 		}
 		);
@@ -433,14 +433,14 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	submitProject(project: Project) {
 		var now = new Date();
 		if (project.start && project.start.getTime() > now.getTime()) {
-			this.warn('Project has not been started');
+			this.warn(this.translateService.instant('Project has not been started'));
 			return;
 		}
 		if (project.end && project.end.getTime() < now.getTime()) {
-			this.warn('Project has ended');
+			this.warn(this.translateService.instant('Project has ended'));
 			return;
 		}
-		this.confirm('Are you sure to start ?', () => {
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			this.projectSubmitDialog.show(project, this.member);
 		}
 		);
