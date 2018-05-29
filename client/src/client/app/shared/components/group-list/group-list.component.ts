@@ -22,8 +22,8 @@ import { Question } from '../../../shared/models/elearning/question.model';
 export class GroupListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(GroupDialog) groupDialog: GroupDialog;
-    actionItems: MenuItem[]; 
-    treeUtils: TreeUtils;
+    private actionItems: MenuItem[]; 
+    private treeUtils: TreeUtils;
 
     constructor( private route: ActivatedRoute) {
         super();
@@ -79,7 +79,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         if(subscription)
         {
             subscription.subscribe(items => {
-                if(items.length > 0){
+                if(items && items.length > 0){
                     this.warn('The group is used by another content.');
                 }
                 else{

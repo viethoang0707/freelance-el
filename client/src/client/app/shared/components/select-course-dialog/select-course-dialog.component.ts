@@ -19,12 +19,12 @@ import { SelectItem } from 'primeng/api';
 })
 export class SelectCoursesDialog extends BaseComponent {
 
-	tree: TreeNode[];
-	selectedNode: TreeNode;
-	selectedCourses: Course[];
-	courses:Course[];
-	display: boolean;
-	treeUtils: TreeUtils;
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
+	private selectedCourses: Course[];
+	private courses:Course[];
+	private display: boolean;
+	private treeUtils: TreeUtils;
 
 	private onSelectCoursesReceiver: Subject<any> = new Subject();
     onSelectCourses:Observable<any> =  this.onSelectCoursesReceiver.asObservable();

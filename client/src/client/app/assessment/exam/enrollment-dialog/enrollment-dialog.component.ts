@@ -22,17 +22,15 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ExamEnrollDialog extends BaseDialog<Course> {
 
-	display: boolean;
-	processing: boolean;
-	exam: Exam;
-    candidates: ExamMember[];
-    selectedCandidates: any;
-    supervisors: ExamMember[];
-    selectedSupervisors: any;
+	private exam: Exam;
+    private candidates: ExamMember[];
+    private selectedCandidates: any;
+    private supervisors: ExamMember[];
+    private selectedSupervisors: any;
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
     EXAM_STATUS =  EXAM_STATUS;
     EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
-    public subscription : Subscription;
+    private subscription : Subscription;
 
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	

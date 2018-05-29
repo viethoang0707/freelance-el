@@ -23,16 +23,16 @@ export class QuestionListComponent extends BaseComponent {
     @ViewChild(QuestionDialog) questionDialog: QuestionDialog;
     @ViewChild(QuestionImportDialog) questionImportDialog: QuestionImportDialog;
 
-    tree: TreeNode[];
-    items: MenuItem[];
-    questions: Question[];
-    displayQuestions: Question[];
-    selectedGroupNodes: TreeNode[];
+    private tree: TreeNode[];
+    private items: MenuItem[];
+    private questions: Question[];
+    private displayQuestions: Question[];
+    private selectedGroupNodes: TreeNode[];
     QUESTION_LEVEL = QUESTION_LEVEL;
     QUESTION_TYPE = QUESTION_TYPE;
-    treeUtils: TreeUtils;
-    selectedQuestions: any;
-    selectMode: string;
+    private treeUtils: TreeUtils;
+    private selectedQuestions: any;
+    private selectMode: string;
 
     constructor() {
         super();

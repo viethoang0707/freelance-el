@@ -20,11 +20,11 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 })
 export class ExamDialog extends BaseDialog<Exam> {
 
-    locale:any;
-    examStatus: SelectItem[];
-    rangeDates: Date[]; 
-    allowToChangeState: boolean;
-    user: User;
+    private locale:any;
+    private examStatus: SelectItem[];
+    private rangeDates: Date[]; 
+    private allowToChangeState: boolean;
+    private user: User;
 
     constructor(private http: Http) {
         super();

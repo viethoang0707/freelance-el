@@ -138,7 +138,7 @@ export class CourseByMemberReportComponent extends BaseComponent {
 		record["user_name"] = member.name;
 		record["course_name"] = member.course_name;
 		record["course_mode"] = member.course_mode;
-		record["course_code"] = member.course_code
+		record["course_code"] = member.course_code;
 		record["enroll_status"] = member.enroll_status;
 		record["date_register"] = this.datePipe.transform(member.date_register, EXPORT_DATE_FORMAT);
 		var result = this.reportUtils.analyzeCourseActivity(logs);

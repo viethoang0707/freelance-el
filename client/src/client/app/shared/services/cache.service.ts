@@ -23,7 +23,7 @@ const CACHE_TIMEOUT = 1000 * 60 * 5;
 @Injectable()
 export class CacheService {
 
-    inlineStorage: any;
+    private inlineStorage: any;
 
     constructor() {
         this.inlineStorage = {};
@@ -179,6 +179,12 @@ export class UserCache implements ICache<User> {
         });
     }
 
+    static countAll( context:APIContext): Observable<any> {
+        if (context.cacheService.hit('USER'))
+            return Observable.of(context.cacheService.load('USER').length);
+        return User.count(context,"[('login','!=','admin')]");
+    }
+
     static allAdmin( context:APIContext): Observable<any[]> {
         if (context.cacheService.hit('USER'))
             return Observable.of(context.cacheService.load('USER')).map(users=> {
@@ -187,6 +193,17 @@ export class UserCache implements ICache<User> {
                 });
             });
         return User.search(context,[],"[('is_admin','=',True)]");
+    }
+
+    static countAllAdmin( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('USER'))
+            return Observable.of(context.cacheService.load('USER')).map(users=> {
+                users = _.filter(users, (user:User)=> {
+                    return user.is_admin;
+                });
+                return users.length;
+            });
+        return User.count(context,"[('is_admin','=',True)]");
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
@@ -209,8 +226,6 @@ export class UserCache implements ICache<User> {
         return User.search(context,[], "[('permission_id','=',"+permissionId+")]");
     }
 }
-
-
 
 export class CourseCache implements ICache<Course> {
     updateCache(record: Course, method:string, cacheService: CacheService) {

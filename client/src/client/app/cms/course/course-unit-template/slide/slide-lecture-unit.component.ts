@@ -25,8 +25,8 @@ import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.
 export class SlideLectureCourseUnitComponent extends BaseComponent implements ICourseUnit {
 
 	@Input() mode;
-	unit: CourseUnit;
-	lecture: SlideLecture;
+	private unit: CourseUnit;
+	private lecture: SlideLecture;
 
 
 	constructor(private ngZone: NgZone) {

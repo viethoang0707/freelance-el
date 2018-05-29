@@ -1,13 +1,13 @@
 <p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false" width="960" height="100%" [responsive]="true">
   <p-scrollPanel [style]="{width: '100%', height: '450px'}">
-    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm"  autocomplete="off">
+    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
       <div class="ui-g ui-fluid form-group">
         <div class="ui-g-12">
           <p-selectButton [disabled]="!allowToChangeState" [options]="courseStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
         </div>
         <div class="ui-g-12">
-            <p-checkbox name="review" binary="true" label="{{'Submit for reivew'|translate}}" [(ngModel)]="submitForReview" *ngIf="object.status!='published' && object.supervisor_id == user.id && !allowToChangeState && !openTicket"></p-checkbox>
-          </div>
+          <p-checkbox name="review" binary="true" label="{{'Submit for reivew'|translate}}" [(ngModel)]="submitForReview" *ngIf="object.status!='published' && object.supervisor_id == user.id && !allowToChangeState && !openTicket"></p-checkbox>
+        </div>
         <div class="ui-g-12">
           <label>{{'Parent group'|translate}}</label>
           <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
@@ -54,12 +54,12 @@
               </div>
               <div *ngIf="mode.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
                 <div *ngIf="mode.errors.required">
-                    {{'Mode is required' | translate}}
+                  {{'Mode is required' | translate}}
                 </div>
               </div>
             </div>
             <div>
-              <button type="buton" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
+              <button type="button" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
             </div>
           </div>
           <div class="ui-g-6">

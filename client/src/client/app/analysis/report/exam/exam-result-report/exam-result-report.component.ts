@@ -31,10 +31,10 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 })
 export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
-    records: any;
-    exams: Exam[];
-    selectedExam: any;
-    reportUtils: ReportUtils;
+    private records: any;
+    private exams: Exam[];
+    private selectedExam: any;
+    private reportUtils: ReportUtils;
 
     constructor(private excelService: ExcelService, private datePipe: DatePipe) {
         super();

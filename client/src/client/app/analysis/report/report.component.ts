@@ -16,8 +16,8 @@ import { REPORT_CATEGORY } from '../../shared/models/constants'
 })
 export class ReportComponent extends BaseComponent implements OnInit {
 
-	items: SelectItem[];
-	selectedItem: any;
+	private items: SelectItem[];
+	private selectedItem: any;
 	@ViewChild(ReportContainerDirective) container: ReportContainerDirective;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
