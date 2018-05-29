@@ -11,7 +11,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model'; import {
-	GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -45,6 +45,9 @@ import { MeetingService } from '../../../shared/services/meeting.service';
 import { CourseUnitRegister } from '../../../cms/course/course-unit-template/unit.decorator';
 import { CourseUnitContainerDirective } from '../../../cms/course/course-unit-template/unit-container.directive';
 import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.interface';
+import { Project } from '../../../shared/models/elearning/project.model';
+import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
+import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -71,6 +74,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private treeList: TreeNode[];
 	private sylUtils: SyllabusUtils;
 	private reportUtils: ReportUtils;
+	private projects: Project[];
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -78,10 +82,12 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
+	@ViewChild(ProjectSubmissionDialog) projectSubmitDialog: ProjectSubmissionDialog;
 	private componentRef: any;
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	EXAM_STATUS = EXAM_STATUS;
+	PROJECT_STATUS = PROJECT_STATUS;
 	private studyMode: boolean;
 
 	constructor(private router: Router, private route: ActivatedRoute,
@@ -108,6 +114,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					this.loadFaqs();
 					this.loadMaterials();
 					this.loadExam();
+					this.loadProject();
 					this.loadCertificate();
 					this.loadConference();
 					this.loadCouseSyllabus();
@@ -359,6 +366,30 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 
+	loadProject() {
+		if (this.member.class_id) {
+			this.startTransaction();
+			Project.listByClass(this, this.member.class_id).subscribe(projects => {
+				ProjectSubmission.listByMember(this, this.member.id).subscribe(submits => {
+					this.projects =  projects;
+					_.each(projects, (project) => {
+						project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
+							return submit.project_id == project.id;
+						});
+						if (project["submit"]) {
+							if (project["submit"].score != null)
+								project["score"] = project["submit"].score;
+							else
+								project["score"] = '';
+						}
+					});
+
+				});
+			});
+			this.closeTransaction();
+		}
+	}
+
 
 	loadFaqs() {
 		this.startTransaction();
@@ -379,6 +410,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	startExam(exam: Exam, member: ExamMember) {
+		var now = new Date();
+		if (exam.start && exam.start.getTime() > now.getTime()) {
+			this.warn('Exam has not been started');
+			return;
+		}
+		if (exam.end && exam.end.getTime() < now.getTime()) {
+			this.warn('Exam has ended');
+			return;
+		}
 		this.confirm('Are you sure to start ?', () => {
 			this.examStudyDialog.show(exam, member);
 		}
@@ -388,5 +428,21 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	joinConference() {
 		if (this.conference.id && this.conferenceMember.id)
 			this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
+	}
+
+	submitProject(project: Project) {
+		var now = new Date();
+		if (project.start && project.start.getTime() > now.getTime()) {
+			this.warn('Project has not been started');
+			return;
+		}
+		if (project.end && project.end.getTime() < now.getTime()) {
+			this.warn('Project has ended');
+			return;
+		}
+		this.confirm('Are you sure to start ?', () => {
+			this.projectSubmitDialog.show(project, this.member);
+		}
+		);
 	}
 }

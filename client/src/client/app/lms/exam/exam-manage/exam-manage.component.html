@@ -1,5 +1,5 @@
 <div class="card card-w-title exam-manage">
-  <h1>{{'Exam manage'|translate}}: {{exam.name}} </h1>
+  <h1>{{'Exam'|translate}}: {{exam.name}} </h1>
   <div class="ui-g-12 ">
         <p-toolbar>
           <div class="ui-toolbar-group-left ">
@@ -20,9 +20,9 @@
                 {{'Name'|translate}}
                 <p-sortIcon [field]="'name'"></p-sortIcon>
               </th>
-              <th [pSortableColumn]="'etraining_group__DESC__'">
+              <th [pSortableColumn]="'group_id__DESC__'">
                 {{'Group'|translate}}
-                <p-sortIcon [field]="'etraining_group__DESC__'"></p-sortIcon>
+                <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
               </th>
               <th [pSortableColumn]="'score'">
                 {{'Score'|translate}}

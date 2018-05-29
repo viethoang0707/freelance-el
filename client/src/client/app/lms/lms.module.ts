@@ -24,9 +24,13 @@ import { CourseCertificateDialog } from './course/course-certificate/course-cert
 import { CertificatePrintDialog } from './course/certificate-print/certificate-print.dialog.component';
 import { CourseManageComponent } from './course/course-manage/course-manage.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
-import { SubmissionDialog } from './exam/submission-dialog/submission.dialog.component';
+import { ExamSubmissionDialog } from './exam/exam-submit/exam-submission.dialog.component';
 import { ExamReportDialog } from './exam/exam-report/exam-report.dialog.component';
 import { ExamStatsDialog } from './exam/exam-stats/exam-stats.dialog.component';
+import { ProjectManageDialog } from './course/project-manage/project-manage.dialog.component';
+import { ProjectListDialog } from './course/project-list/project-list.dialog.component';
+import { ProjectMarkingDialog } from './course/project-marking/project-marking.dialog.component';
+import { ProjectSubmissionDialog } from './course/project-submit/project-submission.dialog.component';
 
 
 import { WebcamModule } from 'ngx-webcam';
@@ -35,12 +39,12 @@ import { WebcamModule } from 'ngx-webcam';
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,AnalysisModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,AnswerPrintDialog,
     				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,
-    				 SubmissionDialog,ClassExamListDialog,ExamManageComponent,QuestionSheetPrintDialog,
+    				 ExamSubmissionDialog,ClassExamListDialog,ExamManageComponent,QuestionSheetPrintDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
-    				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,
+    				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,ProjectSubmissionDialog,
     				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog,
-    				ExamReportDialog, ExamStatsDialog],
-    exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog, SubmissionDialog],
+    				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog],
+    exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []
 })
 export class LMSModule {

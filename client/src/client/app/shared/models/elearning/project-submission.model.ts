@@ -21,6 +21,7 @@ export class ProjectSubmission extends BaseModel{
         this.start = undefined;
         this.score = undefined;
         this.date_submit =  undefined;
+        this.scale =  undefined;
 	}
    
 
@@ -38,23 +39,11 @@ export class ProjectSubmission extends BaseModel{
     @FieldProperty<Date>()
     start: Date;
     score: number;
+    scale: number;
 
-    static byUserAndProject( context:APIContext, userId: number, projectId: number): Observable<any> {
-        return ProjectSubmission.search(context,[],"[('user_id','=',"+userId+"),('project_id','=',"+projectId+")]").map(submits =>{
-            if (submits.length)
-                return submits[0];
-            else
-                return null;
-        });
-    }
 
-    static byMemberAndExam( context:APIContext, member_id: number, projectId: number): Observable<any> {
-        return ProjectSubmission.search(context,[],"[('member_id','=',"+member_id+"),('project_id','=',"+projectId+")]").map(submits =>{
-            if (submits.length)
-                return submits[0];
-            else
-                return null;
-        });
+    static byMemberAndProject( context:APIContext, member_id: number, projectId: number): Observable<any> {
+        return ProjectSubmission.search(context,[],"[('member_id','=',"+member_id+"),('project_id','=',"+projectId+")]");
     }
 
     static listByUser( context:APIContext, userId: number): Observable<any> {
