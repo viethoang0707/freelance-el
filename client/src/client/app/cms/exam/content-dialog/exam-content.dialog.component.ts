@@ -76,6 +76,19 @@ export class ExamContentDialog extends BaseComponent {
 		});
 	}
 
+	save() {
+		this.startTransaction();
+		var subscriptions = _.map(this.examQuestions, examQuestion=> {
+			return examQuestion.save(this);
+		});
+		subscriptions.push(this.sheet.save(this));
+		Observable.forkJoin(...subscriptions).subscribe(()=> {
+			this.hide();
+			this.success(this.translateService.instant('Content saved successfully.'));
+			this.closeTransaction();
+		});
+	}
+
 	hide() {
 		this.display = false;
 	}
