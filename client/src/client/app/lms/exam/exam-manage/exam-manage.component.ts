@@ -108,7 +108,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
     loadScores() {
         this.startTransaction();
-        ExamGrade.listByExam(this, this.exam.id).subscribe(grades => {
+        ExamGrade.all(this).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
                 Submission.listByExam(this, this.exam.id).subscribe(submits => {
                     this.scoreRecords = members;

@@ -7,7 +7,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
-import { CloudAccount } from '../../../shared/models/cloud/cloud-account.model';
+import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
@@ -32,6 +32,7 @@ export class ExamSubmissionDialog extends BaseComponent {
     private exam: Exam;
     private submission: Submission;
     private trigger: Subject<void> = new Subject<void>();
+    private setting: ExamSetting;
 
     private onConfirmReceiver: Subject<any> = new Subject();
     onConfirm: Observable<any> = this.onConfirmReceiver.asObservable();
@@ -43,12 +44,17 @@ export class ExamSubmissionDialog extends BaseComponent {
         this.display = false;
         this.exam = new Exam();
         this.submission =  new Submission();
+        this.setting =  new ExamSetting();
     }
 
     show(exam: Exam, submission: Submission) {
         this.display = true;
         this.exam = exam;
         this.submission = submission;
+        ExamSetting.appSetting(this).subscribe(setting=> {
+            if (setting)
+                this.setting =  setting;
+        });
     }
 
     hide() {
@@ -56,7 +62,7 @@ export class ExamSubmissionDialog extends BaseComponent {
     }
 
     confirm(){
-        if (this.exam.take_picture_on_submit)
+        if (this.setting.take_picture_on_submit)
             this.trigger.next();
         else {
             this.onConfirmReceiver.next();

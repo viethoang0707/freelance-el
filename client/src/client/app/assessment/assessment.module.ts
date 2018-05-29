@@ -12,14 +12,16 @@ import { OpenEndQuestionComponent } from './question/question-template/open-end-
 import { QuestionImportDialog } from './question/import-dialog/import-dialog.component';
 import { ExamEnrollDialog } from './exam/enrollment-dialog/enrollment-dialog.component';
 import { MultiChoiceQuestionComponent } from './question/question-template/multi-choice-question/multi-choice-question.component';
+import { QuestionSheetListComponent } from './question/question-sheet-list/question-sheet-list.component';
+import { QuestionSheetPreviewDialog } from './question/question-sheet-preview/question-sheet-preview.dialog.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule],
-    declarations: [AssessmentComponent, ExamListComponent, ExamDialog,
+    declarations: [AssessmentComponent, ExamListComponent, ExamDialog,QuestionSheetListComponent,QuestionSheetPreviewDialog,
     				QuestionListComponent, QuestionDialog, QuestionContainerDirective,MultiChoiceQuestionComponent,
     				SingleChoiceQuestionComponent, OpenEndQuestionComponent, QuestionImportDialog, ExamEnrollDialog],
     providers: [],
-    exports: [QuestionContainerDirective, ExamDialog],
+    exports: [QuestionContainerDirective, ExamDialog, QuestionSheetPreviewDialog],
     entryComponents: [SingleChoiceQuestionComponent, OpenEndQuestionComponent, MultiChoiceQuestionComponent]
 })
 export class AssessmentModule {

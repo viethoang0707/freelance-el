@@ -14,7 +14,10 @@ export class QuestionSheet extends BaseModel{
         this.exercise_id = undefined;
         this.seed = undefined;
         this.finalized = undefined;
+        this.name = undefined;
 	}
+
+    name: string;
     exam_id: number;
     exercise_id: number;
     seed:number;
@@ -23,6 +26,11 @@ export class QuestionSheet extends BaseModel{
     static byExam( context:APIContext, examId: number): Observable<any> {
         return QuestionSheet.search(context,[],"[('exam_id','=',"+examId+")]").map(sheets =>{
             return sheets.length ? sheets[0]: null;
+        });
+    }
+
+    static listTemplate( context:APIContext): Observable<any> {
+        return QuestionSheet.search(context,[],"[('exam_id','=',False)]");
         });
     }
 }

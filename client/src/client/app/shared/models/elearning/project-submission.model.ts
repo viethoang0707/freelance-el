@@ -21,7 +21,6 @@ export class ProjectSubmission extends BaseModel{
         this.start = undefined;
         this.score = undefined;
         this.date_submit =  undefined;
-        this.scale =  undefined;
 	}
    
 
@@ -39,7 +38,6 @@ export class ProjectSubmission extends BaseModel{
     @FieldProperty<Date>()
     start: Date;
     score: number;
-    scale: number;
 
 
     static byMemberAndProject( context:APIContext, member_id: number, projectId: number): Observable<any> {

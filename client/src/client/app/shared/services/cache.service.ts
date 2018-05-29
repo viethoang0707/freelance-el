@@ -14,6 +14,8 @@ import { Course } from '../models/elearning/course.model';
 import { Question } from '../models/elearning/question.model';
 import { CourseMember } from '../models/elearning/course-member.model';
 import { Exam } from '../models/elearning/exam.model';
+import { ExamSetting } from '../models/elearning/exam-setting.model';
+import { ExamGrade } from '../models/elearning/exam-grade.model';
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '..//models/constants';
@@ -347,6 +349,58 @@ export class ExamCache implements ICache<Exam> {
             return Observable.of(context.cacheService.load('EXAM'));
         return Exam.search(context,[],'[]').do(exams=> {
             context.cacheService.save('EXAM',exams);
+        });
+    }
+
+}
+
+export class ExamSettingCache implements ICache<ExamSetting> {
+    
+    updateCache(record: ExamSetting, method:string, cacheService: CacheService) {
+        if (cacheService.hit('EXAM_SETTING')) {
+            var settings = cacheService.load('EXAM_SETTING');
+            if (method == 'CREATE')
+                settings.push(record);
+            if (method == 'DELETE') {
+                settings = _.reject(settings, (setting:ExamSetting)=> {
+                    return setting.id == record.id;
+                });
+                cacheService.save('EXAM_SETTING',settings);
+            }
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('EXAM_SETTING'))
+            return Observable.of(context.cacheService.load('EXAM_SETTING'));
+        return ExamSetting.search(context,[],'[]').do(settings=> {
+            context.cacheService.save('EXAM_SETTING',settings);
+        });
+    }
+
+}
+
+export class ExamGradeCache implements ICache<ExamGrade> {
+    
+    updateCache(record: ExamGrade, method:string, cacheService: CacheService) {
+        if (cacheService.hit('EXAM_GRADE')) {
+            var grades = cacheService.load('EXAM_GRADE');
+            if (method == 'CREATE')
+                grades.push(record);
+            if (method == 'DELETE') {
+                grades = _.reject(grades, (grade:ExamGrade)=> {
+                    return grade.id == record.id;
+                });
+                cacheService.save('EXAM_GRADE',grades);
+            }
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('EXAM_GRADE'))
+            return Observable.of(context.cacheService.load('EXAM_GRADE'));
+        return ExamGrade.search(context,[],'[]').do(grades=> {
+            context.cacheService.save('EXAM_GRADE',grades);
         });
     }
 

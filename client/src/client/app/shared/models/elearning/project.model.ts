@@ -22,14 +22,12 @@ export class Project extends BaseModel{
         this.file_url = undefined;
         this.start = undefined;
         this.end = undefined;
-        this.scale =  undefined;
 	}
 
     name:string;
     status:string;
     content:string;
     filename: string;
-    scale:number;
     class_id:number;
     course_id: number;
     file_url: string;

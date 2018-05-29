@@ -24,16 +24,6 @@
             </p-editor>
           </div>
         </div>
-        <span class="md-inputfield">
-                <input type="text" pInputText [(ngModel)]="object.scale" #scale="ngModel" name="scale" pKeyFilter="pint" required>
-                <label>{{'Score scale'|translate}}</label>
-                <div *ngIf="scale.invalid && (scale.dirty || scale.touched)" 
-                  class="ui-message ui-messages-error ui-corner-all">
-                  <div *ngIf="scale.errors.required">
-                      {{'Score scale is required' | translate}}
-                  </div>
-                </div>
-              </span>
         <div class="ui-g-6">
           <label>{{'Start'|translate}}</label>
           <p-calendar [(ngModel)]="object.start" showTime="true" hourFormat="24" #start="ngModel" name="start" required="true" dateFormat="dd/mm/yy"></p-calendar>

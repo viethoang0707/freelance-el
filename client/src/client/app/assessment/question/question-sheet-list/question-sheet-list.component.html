@@ -1,0 +1,43 @@
+<div class="card card-w-title">
+        <h1>{{'Question sheet bank'|translate}}</h1>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p-toolbar>
+                    <div class="ui-toolbar-group-left">
+                       <button pButton type="button" label="{{'Preview'|translate}}" class="purple-btn" icon="ui-icon-remove-red-eye" (click)="previewSheet()" *ngIf="selectedSheet"></button> 
+                       <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteSheet()" *ngIf="selectedSheet"></button> 
+                    </div>
+                </p-toolbar>
+                <p-table  #questionSheetTable [value]="sheets" [paginator]="true" [rows]="10"  [(selection)]="selectedSheet" [responsive]="true" selectionMode="single">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th [pSortableColumn]="'name'">
+                                {{'Name'|translate}}
+                                <p-sortIcon [field]="'name'"></p-sortIcon>
+                            </th>
+                            <th >
+                                {{'Number of question'|translate}}
+                            </th>  
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-sheet let-i="rowIndex">
+                        <tr [pSelectableRow]="sheet">
+                            <td style="text-align: left;">{{sheet.name}}</td>
+                            <td >{{sheet.question_count}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        {{'Total records'|translate}} : {{sheets?.length}}
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td [attr.colspan]="3">
+                                {{'No records found'|translate}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <question-sheet-preview-dialog></question-sheet-preview-dialog>
+            </div>
+        </div>
+    </div>
