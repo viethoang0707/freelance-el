@@ -10,25 +10,29 @@
 </style>
 <div class="card card-w-title">
   <h1>{{'My courses'|translate}}</h1>
-  <p-dataList [value]="courses" [paginator]="true" [rows]="5">
+  <p-dataList [value]="courses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
     <ng-template let-course pTemplate="item">
-      <p-card>
-        <p-header>
-        </p-header>
+      <p-card styleClass="lms-course-list-item">
         <div class="ui-g">
           <div class="ui-g-8">
-            <div class="ui-g-5">
+            <div class="ui-g-12 border">
+              <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn" style="margin-right:4px;" (click)="studyCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
+              <button pButton type="button" icon="ui-icon-edit" title="{{'Edit syllabus'| translate}}" label="{{'Edit course'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
+              <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage course'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageCourse(course,course.member)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
+            </div>
+            <div class="ui-g-3">
               <span class="profile-image-wrapper">
                 <img [src]='course.logo | imageBase64' />
               </span>
             </div>
-            <div class="ui-g-7">
-              <h4 style="font-weight: 600;">
+            <div class="ui-g-9">
+              <h4 class="heading-course">
                 <span>{{course.name}}</span>
               </h4>
               <span class="c-status">
                 {{COURSE_STATUS[course.status]|translate}}
               </span>
+              <div class="clearfix"></div>
               <p-accordion styleClass="cont">
                 <p-accordionTab header="{{'Summary' | translate}}">
                   {{course.summary}}
@@ -46,29 +50,29 @@
                     <div class="status-bar status-bar-2">
                       <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_registered}}%">{{course.courseMemberData.percentage_member_registered}}%</div>
                     </div>
-                    <span>{{'Registered'|translate}}</span>
                     <i class="material-icons">&#xE86C;</i>
+                    <span>{{'Registered'|translate}}</span>
                   </li>
                   <li>
                     <div class="status-bar status-bar-3">
                       <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_inprogress}}%">{{course.courseMemberData.percentage_member_inprogress}}%</div>
                     </div>
-                    <span>{{'In-progress'|translate}}</span>
                     <i class="material-icons">&#xE868;</i>
+                    <span>{{'In-progress'|translate}}</span>
                   </li>
                   <li>
                     <div class="status-bar status-bar-4">
                       <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_completed}}%">{{course.courseMemberData.percentage_member_completed}}</div>
                     </div>
-                    <span>{{'Completed'|translate}}</span>
                     <i class="material-icons">&#xE8B2;</i>
+                    <span>{{'Completed'|translate}}</span>
                   </li>
                 </ul>
               <!-- </div> -->
             </div>
           </div>
           <div class="ui-g-4">
-            <p-card>
+            <p-card styleClass="lms-course-detail">
               <ul class="list-cmt">
                 <li class="clearfix">
                   <i class="material-icons">toys</i>
@@ -90,20 +94,12 @@
                   <span class="cmt-title">{{'Number of unit'|translate}}</span>
                   <span class="cmt-detail">{{course.unit_count}}</span>
                 </li>
-                <li class="clearfix">
+                <li class="clearfix" style="border-bottom: none;">
                   <i class="material-icons">toc</i>
                   <span class="cmt-title">{{'Group'|translate}}</span>
                   <span class="cmt-detail">{{course.group_id__DESC__}}</span>
                 </li>
               </ul>
-              <p-footer>
-                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn"
-                  style="margin-right:4px;" (click)="studyCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
-                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit syllabus'| translate}}" label="{{'Edit course'|translate}}"
-                  class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
-                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage course'|translate}}"
-                  class="orange-btn" style="margin-right:4px;" (click)="manageCourse(course,course.member)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
-              </p-footer>
             </p-card>
           </div>
         </div>
