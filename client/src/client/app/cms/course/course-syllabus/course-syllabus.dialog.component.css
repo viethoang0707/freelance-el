@@ -2,6 +2,7 @@
 	margin-top: 10px;
 }
 
-.course-syllabus{
-	min-height: 300px;
+.course-syllabus-unit{
+	height: 268px;
+	margin-bottom: 0;
 }

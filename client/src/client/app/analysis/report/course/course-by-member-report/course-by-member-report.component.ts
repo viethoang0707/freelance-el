@@ -151,9 +151,7 @@ export class CourseByMemberReportComponent extends BaseComponent{
 
 		if (result[0] != Infinity)
 			record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATE_FORMAT);
-	    	// record["first_attempt"] =  result[0];
     	if (result[1] != Infinity)
-			// record["last_attempt"] =  result[1];
 			record["last_attempt"] =  this.datePipe.transform(result[1],EXPORT_DATE_FORMAT);
 
 		if(!Number.isNaN(result[2]))
