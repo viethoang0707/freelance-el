@@ -1,6 +1,24 @@
-<div class="card card-w-title">
+<div class="card card-w-title lms-conference-list-item">
   <h1>{{'My conferences'|translate}}</h1>
-  <p-dataList [value]="members" [paginator]="true" [rows]="5">
+  <p-dataGrid [value]="members" [paginator]="true" [rows]="12">
+      <ng-template let-member pTemplate="item">
+        <div class="ui-g-4 lms-conference-item">
+          <p-panel>
+            <p-header>
+              <h3 class="heading-conference">{{member.conference.name}}</h3>
+              <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
+            </p-header>
+            <div>
+              <p>{{'Room password'|translate}}: {{member.conference.room_pass}}</p>
+            </div>
+            <p-footer>
+              <button pButton type="button " label="{{ 'Join'|translate}} " class="green-btn" icon="ui-icon-call " (click)="joinConference(member) " [disabled]="member.conference.status!='open'"></button>
+            </p-footer>
+          </p-panel>
+        </div>
+      </ng-template>
+    </p-dataGrid>
+  <!-- <p-dataList [value]="members" [paginator]="true" [rows]="5">
     <ng-template let-member pTemplate="item">
       <p-card>
         <p-header>
@@ -15,7 +33,5 @@
       </p-card>
     
     </ng-template>
-  </p-dataList>
-
-  
+  </p-dataList> -->
 </div>
