@@ -32,7 +32,8 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     @ViewChild(SelectGroupDialog) groupDialog : SelectGroupDialog;
     @ViewChild(SelectCoursesDialog) courseDialog : SelectCoursesDialog;
 	@ViewChild(MemberByCourseReportComponent) memberReport: MemberByCourseReportComponent;
-
+    GROUP_CATEGORY = GROUP_CATEGORY;
+    
     constructor() {
         super();
     }

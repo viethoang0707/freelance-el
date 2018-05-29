@@ -19,7 +19,7 @@ import { SelectItem } from 'primeng/api';
 import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
-import { SubmissionDialog } from '../submission-dialog/submission.dialog.component';
+import { ExamSubmissionDialog } from '../exam-submit/exam-submission.dialog.component';
 import 'rxjs/add/observable/timer';
 import {Message} from 'primeng/components/common/api';
 import {MessageService} from 'primeng/components/common/messageservice';
@@ -54,7 +54,7 @@ export class ExamStudyDialog extends BaseComponent {
     onShow: Observable<any> = this.onShowReceiver.asObservable();
     onHide: Observable<any> = this.onHideReceiver.asObservable();
 
-	@ViewChild(SubmissionDialog) submitDialog: SubmissionDialog;
+	@ViewChild(ExamSubmissionDialog) submitDialog: ExamSubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	private componentRef: any;
 	WINDOW_HEIGHT:any;
