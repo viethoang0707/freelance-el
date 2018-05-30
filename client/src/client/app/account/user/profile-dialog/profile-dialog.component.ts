@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewChild} from '@angular/core';
-import { Observable}     from 'rxjs/Observable';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -16,21 +16,22 @@ import { CertificatePrintDialog } from '../../../lms/course/certificate-print/ce
 
 
 @Component({
-    moduleId: module.id,
-    selector: 'user-profile-dialog',
-    templateUrl: 'profile-dialog.component.html',
-    styleUrls: ['profile-dialog.component.css'],
+	moduleId: module.id,
+	selector: 'user-profile-dialog',
+	templateUrl: 'profile-dialog.component.html',
+	styleUrls: ['profile-dialog.component.css'],
 })
 export class UserProfileDialog extends BaseDialog<User> {
-	
-	private user: User;
-    private tree: TreeNode[];
-    private selectedNode: TreeNode;
-    private members: CourseMember[];
-    private treeUtils: TreeUtils;
-    COURSE_MEMBER_ENROLL_STATUS =  COURSE_MEMBER_ENROLL_STATUS;
 
-    @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
+	private user: User;
+	private tree: TreeNode[];
+	private selectedNode: TreeNode;
+	private members: CourseMember[];
+	private treeUtils: TreeUtils;
+	private obj: any;
+	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
+
+	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
 	constructor() {
 		super();
@@ -38,7 +39,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 		this.members = [];
 	}
 
-	nodeSelect(event:any) {
+	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.object.group_id = this.selectedNode.data.id;
 		}
@@ -47,6 +48,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 	ngOnInit() {
 		this.user = this.authService.UserProfile;
 		this.onShow.subscribe(object => {
+			this.obj = { selectedNode: object.group_id, image: object.image, name: object.name, email: object.email, phone: object.phone, is_admin: object.is_admin, banned: object.banned };
 			this.startTransaction();
 			Group.listUserGroup(this).subscribe(groups => {
 				this.tree = this.treeUtils.buildGroupTree(groups);
@@ -56,17 +58,17 @@ export class UserProfileDialog extends BaseDialog<User> {
 			});
 			CourseMember.listByUser(this, object.id)
 				.map(members => {
-					return _.filter(members, (member:CourseMember)=> {
+					return _.filter(members, (member: CourseMember) => {
 						return member.role == 'student';
 					});
 				})
 				.subscribe(members => {
 					this.members = members;
-					Certificate.listByUser(this, object.id).subscribe(certificates=> {
-						_.each(members, (member:CourseMember)=> {
-								member["certificate"] = _.find(certificates, (cert=> {
-									return cert.member_id == member.id;
-								}));
+					Certificate.listByUser(this, object.id).subscribe(certificates => {
+						_.each(members, (member: CourseMember) => {
+							member["certificate"] = _.find(certificates, (cert => {
+								return cert.member_id == member.id;
+							}));
 						});
 					});
 					this.closeTransaction();
@@ -78,6 +80,15 @@ export class UserProfileDialog extends BaseDialog<User> {
 		this.certPrintDialog.show(certificate);
 	}
 
-
+	off() {
+		this.object.group_id = this.obj.selectedNode;
+		this.object.image = this.obj.image;
+		this.object.name = this.obj.name;
+		this.object.email = this.obj.email;
+		this.object.phone = this.obj.phone;
+		this.object.is_admin = this.obj.is_admin;
+		this.object.banned = this.obj.banned;
+		this.display = false;
+	}
 }
 
