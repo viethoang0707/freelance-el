@@ -8,15 +8,16 @@ import { Survey } from '../../../shared/models/elearning/survey.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
-import { QuestionSheetPreviewDialog } from '../../../assessment/question/survey-sheet-preview/survey-sheet-preview.dialog.component';
+import { SurveySheetPreviewDialog } from '../../../assessment/question/survey-sheet-preview/survey-sheet-preview.dialog.component';
 import { SurveySheetSaveDialog } from '../survey-sheet-save/survey-sheet-save.dialog.component';
 import { Http, Response } from '@angular/http';
 import { QUESTION_SELECTION, GROUP_CATEGORY, EXAM_STATUS, QUESTION_TYPE, EXAM_MEMBER_STATUS, QUESTION_LEVEL } from '../../../shared/models/constants'
 import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
-import { SelectQuestionSheetDialog } from '../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
+import { SelectSurveySheetDialog } from '../../../shared/components/select-survey-sheet-dialog/select-survey-sheet-dialog.component';
 import { TreeNode } from 'primeng/api';
+import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -26,44 +27,43 @@ import { TreeNode } from 'primeng/api';
 export class SurveyContentDialog extends BaseComponent {
 
 	private display: boolean;
-	private survey: Exam;
-	private sheet: QuestionSheet;
-	private surveyQuestions: ExamQuestion[];
+	private survey: Survey;
+	private sheet: SurveySheet;
+	private surveyQuestions: SurveyQuestion[];
 
 
-	@ViewChild(QuestionSheetPreviewDialog) previewDialog : QuestionSheetPreviewDialog;
-	@ViewChild(SelectQuestionSheetDialog) selectSheetDialog: SelectQuestionSheetDialog;
-	@ViewChild(QuestionSheetEditorDialog) editorDialog: QuestionSheetEditorDialog;
-	@ViewChild(QuestionSheetSaveDialog) saveDialog: QuestionSheetSaveDialog;
+	@ViewChild(SurveySheetPreviewDialog) previewDialog : SurveySheetPreviewDialog;
+	@ViewChild(SelectSurveySheetDialog) selectSheetDialog: SelectSurveySheetDialog;
+	@ViewChild(SelectQuestionsDialog) selectQuestionDialog: SelectQuestionsDialog;
+	@ViewChild(SurveySheetSaveDialog) saveDialog: SurveySheetSaveDialog;
 
 	constructor() {
 		super();
-		this.sheet = new QuestionSheet();
-		this.examQuestions = [];
-		this.exam = new Exam();
+		this.sheet = new SurveySheet();
+		this.surveyQuestions = [];
+		this.survey = new Survey();
 	}
 
-	show(exam: Exam) {
+	show(survey: Survey) {
 		this.display = true;
-		this.exam = exam;
-		this.loadQuestionSheet();
+		this.survey = survey;
+		this.loadSurveynSheet();
 	}
 
-	loadQuestionSheet() {
+	loadSurveynSheet() {
 		this.startTransaction();
-		QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
+		SurveySheet.bySurvey(this, this.survey.id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
 				this.startTransaction();
-				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
-					this.examQuestions = examQuestions;
-					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
+				SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions => {
+					this.surveyQuestions = surveyQuestions;
 					this.closeTransaction();
 				});
 			}
 			else {
-				this.sheet = new QuestionSheet();
-				this.sheet.exam_id = this.exam.id;
+				this.sheet = new SurveySheet();
+				this.sheet.survey_id = this.survey.id;
 				this.startTransaction();
 				this.sheet.save(this).subscribe(sheet => {
 					this.sheet = sheet;
@@ -75,8 +75,8 @@ export class SurveyContentDialog extends BaseComponent {
 
 	save() {
 		this.startTransaction();
-		var subscriptions = _.map(this.examQuestions, examQuestion=> {
-			return examQuestion.save(this);
+		var subscriptions = _.map(this.surveyQuestions, surveyQuestion=> {
+			return surveyQuestion.save(this);
 		});
 		subscriptions.push(this.sheet.save(this));
 		Observable.forkJoin(...subscriptions).subscribe(()=> {
@@ -96,24 +96,24 @@ export class SurveyContentDialog extends BaseComponent {
 
 	clearSheet() {
 		this.sheet.finalized =  false;
-		var subscriptions = _.map(this.examQuestions, examQuestion=> {
-			return examQuestion.delete(this);
+		var subscriptions = _.map(this.surveyQuestions, surveyQuestion=> {
+			return surveyQuestion.delete(this);
 		});
 		subscriptions.push(this.sheet.save(this));
 		this.startTransaction();
 		Observable.forkJoin(subscriptions).subscribe(()=> {
-			this.examQuestions = [];
+			this.surveyQuestions = [];
 			this.closeTransaction();
 		});
 	}
 
 	loadSheetTemplate() {
-		if (!this.sheet.finalized  && this.examQuestions.length ==0)
+		if (!this.sheet.finalized  && this.surveyQuestions.length ==0)
 			this.selectSheetDialog.show();
-			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:QuestionSheet) => {
+			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:SurveySheet) => {
 				this.startTransaction();
-				ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
-					examQuestions = _.map(examQuestions, examQuestion=> {
+				SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
+					surveyQuestions = _.map(surveyQuestions, surveyQuestion=> {
 						var newExamQuestion = new ExamQuestion();
 						newExamQuestion.exam_id =  this.exam.id;
 						newExamQuestion.score = examQuestion.score;
