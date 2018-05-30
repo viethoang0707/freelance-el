@@ -7,6 +7,7 @@ import { QuestionListComponent } from './question/question-list/question-list.co
 import { QuestionDialog } from './question/question-dialog/question-dialog.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
+import { QuestionSheetListComponent } from './question/question-sheet-list/question-sheet-list.component';
 
 export const AssessmentRoutes: Routes = [
   {
@@ -30,6 +31,13 @@ export const AssessmentRoutes: Routes = [
         component: QuestionListComponent,
         data: {
           breadcrumb: 'Questions'
+        }
+      },
+      {
+        path: "question-sheets",
+        component: QuestionSheetListComponent,
+        data: {
+          breadcrumb: 'Question sheets'
         }
       },
       {
