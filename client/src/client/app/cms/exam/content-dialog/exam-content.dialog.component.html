@@ -25,10 +25,11 @@
             </p-fieldset>
           </div>
         </div>
-      </p-tabPanel>
-      <p-tabPanel header="{{'Exam content'|translate}}">
-        <button pButton type="button" label="{{'Generate question'|translate}}" class="orange-btn" icon="ui-icon-check" (click)="generateQuestion()" [disabled]="!sheet.id ||  sheet.finalized"></button>
-        <p-table #examQuestionTable [value]="examQuestions" [responsive]="true" styleClass="table-content">
+        <div class="ui-toolbar-group-right">
+          <button pButton type="button" class="purple-btn" icon="ui-icon-settings" (click)="previewSheet()" label="{{'Preview'|translate}}"  *ngIf="sheet && sheet.finalized"></button>
+        </div>
+      </p-toolbar>
+      <p-table #examQuestionTable [value]="examQuestions" [responsive]="true" styleClass="table-content">
           <ng-template pTemplate="header">
             <tr>
               <th>#</th>
@@ -58,44 +59,15 @@
             </tr>
           </ng-template>
         </p-table>
-      </p-tabPanel>
-      <p-tabPanel header="{{'Grade'|translate}}">
-        <div class="ui-g ui-fluid form-group">
-          <div class="ui-g-12">
-            <span class="md-inputfield">
-              <input type="text"  pInputText name="scale" [(ngModel)]="exam.scale" pKeyFilter="pint">
-              <label for="scale">{{'Scale' | translate}}</label>
-          </span>
-          </div>
-          <div class="ui-g-12">
-            <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addGrade()" pTooltip="{{'Add grade'|translate}}"></button>
-            <ul class="options-question">
-              <li *ngFor="let grade of grades">
-                <span class="md-inputfield">
-                  <input type="text" pInputText [(ngModel)]="grade.name" name="grade_name">
-                   <label for="grade_name">{{'Name' | translate}}</label>
-              </span>
-                <span class="md-inputfield">
-                  <p-spinner  [(ngModel)]="grade.min_score" name="grade_min"></p-spinner>
-                  <label for="grade_min">{{'Min' | translate}}</label>
-              </span>
-                <span class="md-inputfield">
-                <p-spinner  [(ngModel)]="grade.max_score" name="grade_max"></p-spinner>
-                  <label for="grade_max">{{'Max' | translate}}</label>
-              </span>
-                <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeGrade(grade)" class="remove-btn"></button>
-              </li>
-            </ul>
-            <div *ngIf="grades | validateGrade:exam.scale" class="ui-message ui-messages-error ui-corner-all">
-              {{'Invalid grade options' | translate}}
-            </div>
-          </div>
-        </div>
-      </p-tabPanel>
-    </p-tabView>
-  </p-scrollPanel>
+    </div>
+  </div>
+  <question-sheet-preview-dialog></question-sheet-preview-dialog>
+  <select-question-sheet-dialog></select-question-sheet-dialog>
+  <question-sheet-editor-dialog></question-sheet-editor-dialog>
+  <question-sheet-save-dialog></question-sheet-save-dialog>
   <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="save()"></button>
+    <button type="submit" pButton icon="fa-check" (click)="save()"  label="{{'Save'|translate}}"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>
+

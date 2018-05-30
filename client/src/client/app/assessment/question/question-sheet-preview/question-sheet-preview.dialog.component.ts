@@ -22,31 +22,27 @@ import {PRINT_DIALOG_STYLE} from  '../../../shared/models/constants';
 
 @Component({
     moduleId: module.id,
-    selector: 'question-sheet-print-dialog',
-    templateUrl: 'question-sheet-print.dialog.component.html',
-    styleUrls: ['question-sheet-print.dialog.component.css'],
+    selector: 'question-sheet-preview-dialog',
+    templateUrl: 'question-sheet-preview.dialog.component.html',
+    styleUrls: ['question-sheet-preview.dialog.component.css'],
 })
-export class QuestionSheetPrintDialog extends BaseComponent {
+export class QuestionSheetPreviewDialog extends BaseComponent {
     
     private display: boolean;
     private examQuestions: ExamQuestion[];
-    private exam: Exam;
     private sheet: QuestionSheet;
 
     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
-    @ViewChild('printSection') printSection;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
         this.display = false;
         this.examQuestions = [];
-        this.exam = new Exam();
     }
 
-    show(exam: Exam, sheet: QuestionSheet) {
+    show(sheet: QuestionSheet) {
         this.display = true;
         this.examQuestions = [];
-        this.exam = exam;
         this.sheet = sheet;
         this.startReview();
     }
@@ -54,8 +50,6 @@ export class QuestionSheetPrintDialog extends BaseComponent {
     hide() {
         this.display = false;
     }
-
-
 
     startReview() {
         this.startTransaction();
@@ -86,23 +80,6 @@ export class QuestionSheetPrintDialog extends BaseComponent {
                 (<IQuestion>componentRef.instance).render(question);
             }
         });
-    }
-
-    print() {
-        let printContents, popupWin;
-        printContents = this.printSection.nativeElement.innerHTML;
-        popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-        popupWin.document.open();
-        popupWin.document.write(`
-          <html>
-            <head>
-                <title>Exam paper</title>
-                ${PRINT_DIALOG_STYLE}
-            </head>
-            <body onload="window.print();window.close()">${printContents}</body>
-          </html>`
-        );
-        popupWin.document.close();
     }
 }
 

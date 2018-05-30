@@ -10,7 +10,7 @@
 
 .list-cmt li{
 	list-style: none;
-	padding: 16px 24px;
+	padding: 10px 14px;
     border-bottom: 1px solid #dbdbdb;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .list-cmt li .cmt-detail{
-	color: #757575;
+	color: #283593;
 	float: right;
 }
 
@@ -45,4 +45,19 @@
 
 .profile-image-wrapper img{
 	width: 100%;
+	border: 1px solid #dbdbdb;
+}
+
+.border{
+	border-bottom: 1px solid #dbdbdb;
+}
+
+.heading-course{
+	font-weight: 600;
+	color: #192fa9;
+	float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 5px 10px 0 0;
 }

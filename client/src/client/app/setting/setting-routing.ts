@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
-import { SettingAppComponent } from './application/setting-app.component';
+import { SettingExamComponent } from './exam/setting-exam.component';
 import { SettingComponent } from './setting.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 
@@ -15,10 +15,10 @@ export const SettingRoutes: Routes = [
     children:
     [
       {
-        path: "app",
-        component: SettingAppComponent,
+        path: "exam",
+        component: SettingExamComponent,
         data: {
-          breadcrumb: 'Application'
+          breadcrumb: 'Exam'
         }
       },
 

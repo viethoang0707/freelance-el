@@ -43,6 +43,10 @@ export class ExamQuestion extends BaseModel{
         return ExamQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
     }
 
+    static countBySheet( context:APIContext, sheetId: number): Observable<any> {
+        return ExamQuestion.count(context,"[('sheet_id','=',"+sheetId+")]");
+    }
+
     static countByExam( context:APIContext, examId: number): Observable<any[]> {
         return ExamQuestion.count(context,"[('exam_id','=',"+examId+")]");
     }

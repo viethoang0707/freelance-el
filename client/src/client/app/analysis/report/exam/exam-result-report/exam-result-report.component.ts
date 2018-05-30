@@ -64,12 +64,29 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
                     Submission.listByExam(this, this.selectedExam.id).subscribe(submits => {
                         ExamLog.listByExam(this, this.selectedExam.id).subscribe(logs => {
                             this.records = this.generateReport(this.selectedExam, grades, submits, logs, members);
-                            this.closeTransaction();
                         });
                     });
                 });
             });
         }
+    }
+
+    render(exam: Exam) {
+        this.startTransaction();
+        ExamMember.listByExam(this, exam.id).subscribe(members => {
+            ExamMember.listByExam(this, exam.id).subscribe(members => {
+                var memberStudents = members.filter(member => member.role === 'candidate');
+                ExamGrade.listByExam(this, exam.id).subscribe(grades => {
+                    Submission.listByExam(this, exam.id).subscribe(submits => {
+                        ExamLog.listByExam(this, exam.id).subscribe(logs => {
+                            this.records = this.generateReport(exam, grades, submits, logs, memberStudents);
+                            this.closeTransaction();
+                        });
+                    });
+                });
+            });
+        });
+
     }
 
 

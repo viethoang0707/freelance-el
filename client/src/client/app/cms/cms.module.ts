@@ -6,7 +6,6 @@ import { CMSComponent } from './cms.component';
 import { ExamContentDialog } from './exam/content-dialog/exam-content.dialog.component';
 import { ProjectContentDialog } from './project/content-dialog/project-content.dialog.component';
 import { CourseSyllabusDialog } from './course/course-syllabus/course-syllabus.dialog.component';
-import { ValidateGradePipe } from './exam/grade.pipe';
 import { SumPipe } from './exam/sum.pipe';
 import { CourseUnitContainerDirective } from './course/course-unit-template/unit-container.directive';
 import { FolderCourseUnitComponent } from './course/course-unit-template/folder/folder-unit.component';
@@ -18,11 +17,14 @@ import { HtmlLectureCourseUnitComponent } from './course/course-unit-template/le
 import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from './course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { CourseSyllabusSettingDialog } from './course/syllabus-setting/syllabus-setting.dialog.component';
+import { QuestionSheetEditorDialog } from './exam/question-sheet-editor/question-sheet-editor.dialog.component';
+import { QuestionSheetSaveDialog } from './exam/question-sheet-save/question-sheet-save.dialog.component';
 
 @NgModule({
 	imports: [ErpSharedModule, AuthModule, AssessmentModule],
-	declarations: [CMSComponent, ValidateGradePipe, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,ProjectContentDialog,
-		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSyllabusSettingDialog, SlideLectureCourseUnitComponent,
+	declarations: [CMSComponent, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,ProjectContentDialog,
+		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSyllabusSettingDialog, 
+		SlideLectureCourseUnitComponent,QuestionSheetEditorDialog, QuestionSheetSaveDialog,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent, CourseUnitDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, ProjectContentDialog],
 	providers: [],

@@ -22,7 +22,7 @@
 
 .list-cmt li{
 	list-style: none;
-	padding: 16px 24px;
+	padding: 10px 14px;
     border-bottom: 1px solid #dbdbdb;
 }
 
@@ -56,13 +56,16 @@
 }
 
 .status-bars{
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-right: 20px;
 }
 
 h4.title{
-	margin-top: 0;
 	float: left;
-	margin-right: 10px;
 	font-weight: 600;
+	color: #192fa9;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 5px 10px 0 15px;
 }

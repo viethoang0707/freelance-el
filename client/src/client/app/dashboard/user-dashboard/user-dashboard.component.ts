@@ -62,16 +62,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status=='active';
             }));
             var courseIds = _.pluck(members, 'course_id');
-            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
+            Observable.forkJoin(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
                 .map(courses => {
-                    console.log(courses);
                     courses =  _.flatten(courses);
                     return _.uniq(courses, (course) => {
                         return course.id;
                     });
                 })
                 .subscribe(courses => {
-                    console.log(courses);
                     this.courses  = courses;
                     _.each(this.courses , (course) => {
                         if (course.syllabus_id)
