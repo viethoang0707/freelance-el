@@ -19,7 +19,9 @@ export class Answer extends BaseModel{
         this.score = undefined;
         this.exam_id =  undefined;
         this.json = undefined;
+        this.survey_id =  undefined;
 	}
+    survey_id: number;
     exam_id: number;
     question_id: number;
     option_id: number;
@@ -43,6 +45,10 @@ export class Answer extends BaseModel{
 
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
         return Answer.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
+
+    static listBySurvey( context:APIContext, surveyId: number): Observable<any[]> {
+        return Answer.search(context,[],"[('survey_id','=',"+surveyId+")]");
     }
 
 }

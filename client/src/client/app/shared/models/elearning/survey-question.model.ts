@@ -50,7 +50,6 @@ export class SurveyQuestion extends BaseModel{
         return new SearchReadAPI(SurveyQuestion.Model, [],"[('sheet_id','=',"+sheetId+")]");
     }
 
-
     static __api__countBySheet(sheetId: number): SearchCountAPI {
         return new SearchCountAPI(SurveyQuestion.Model, "[('sheet_id','=',"+sheetId+")]");
     }
@@ -77,6 +76,7 @@ export class SurveyQuestion extends BaseModel{
     static countBySheet( context:APIContext, sheetId: number): Observable<any> {
         return SurveyQuestion.count(context,"[('sheet_id','=',"+sheetId+")]");
     }
+
 
     static byQuestion( context:APIContext, questionId: number): Observable<any[]> {
         return SurveyQuestion.search(context,[],"[('question_id','=',"+questionId+")]").map(questions =>{

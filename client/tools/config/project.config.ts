@@ -60,7 +60,7 @@ export class ProjectConfig extends SeedConfig {
             { src: `${this.ASSETS_SRC}/fonts/flag-icon-css/css/flag-icon.min.css`, inject: true, vendor: true },
             { src: `${this.ASSETS_SRC}/layout/css/layout-lightblue.css`, inject: true, vendor: false },
             // { src: `${this.ASSETS_SRC}/layout/css/layout-cityscape.css`, inject: true, vendor: false },
-            { src: `${this.ASSETS_SRC}/theme/theme-indigo.css`, inject: true, vendor: false },
+            { src: `${this.ASSETS_SRC}/theme/theme-grey.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/style.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/style-size.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/style-custom.css`, inject: true, vendor: false },
