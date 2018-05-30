@@ -57,7 +57,7 @@ export class ExamResultReportComponent extends BaseComponent {
         ExamMember.listByExam(this, exam.id).subscribe(members => {
             ExamMember.listByExam(this, exam.id).subscribe(members => {
                 var memberStudents = members.filter(member => member.role === 'candidate');
-                ExamGrade.listByExam(this, exam.id).subscribe(grades => {
+                ExamGrade.all(this).subscribe(grades => {
                     Submission.listByExam(this, exam.id).subscribe(submits => {
                         ExamLog.listByExam(this, exam.id).subscribe(logs => {
                             this.records = this.generateReport(exam, grades, submits, logs, memberStudents);
