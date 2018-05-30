@@ -72,7 +72,7 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			this.obj = { logo: object.logo, name: object.name, status: object.status, code: object.code, summary: object.summary, description: object.description, author_name: object.author_name };
+			this.obj = { selectedNode: object.group_id, logo: object.logo, name: object.name, status: object.status, code: object.code, summary: object.summary, description: object.description, author_name: object.author_name };
 			if (object.id)
 				Ticket.byWorkflowObject(this, object.id, Course.Model).subscribe((ticket) => {
 					this.openTicket = ticket;
@@ -125,6 +125,7 @@ export class CourseDialog extends BaseDialog<Course> {
 		this.object.description = this.obj.description;
 		this.object.author_name = this.obj.author_name;
 		this.object.logo = this.obj.logo;
+		this.object.group_id = this.obj.selectedNode;
 		this.display = false;
 	}
 }
