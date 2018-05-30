@@ -5,28 +5,27 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
-import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
+import { Question } from '../../../shared/models/elearning/question.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
-import { QuestionSheetPreviewDialog } from '../question-sheet-preview/question-sheet-preview.dialog.component';
-import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
-import { Question } from '../../../shared/models/elearning/question.model';
+import { SurveySheetPreviewDialog } from '../survey-sheet-preview/survey-sheet-preview.dialog.component';
+import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
+import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
 
 @Component({
     moduleId: module.id,
-    selector: 'question-sheet-list',
-    templateUrl: 'question-sheet-list.component.html',
-    styleUrls: ['question-sheet-list.component.css'],
+    selector: 'survey-sheet-list',
+    templateUrl: 'survey-sheet-list.component.html',
+    styleUrls: ['survey-sheet-list.component.css'],
 })
-export class QuestionSheetListComponent extends BaseComponent {
+export class SurveySheetListComponent extends BaseComponent {
+
+    @ViewChild(SurveySheetPreviewDialog) sheetDialog: SurveySheetPreviewDialog;
 
     private sheets: Question[];
     private selectedSheet: any;
-
-    @ViewChild(QuestionSheetPreviewDialog) sheetDialog: QuestionSheetPreviewDialog;
-
 
     constructor() {
         super();
@@ -34,36 +33,35 @@ export class QuestionSheetListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.loadQuestionSheets();
+        this.loadSurveySheets();
     }
 
     deleteSheet(){
         if(this.selectedSheet)
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+            this.confirm('Are you sure to delete ?', () => {
+                this.startTransaction();
                 this.selectedSheet.delete(this).subscribe(() => {
                     this.selectedSheet = null;
-                    this.loadQuestionSheets();
-                    
+                    this.loadSurveySheets();
+                    this.closeTransaction();
                 });
             });
     }
 
     previewSheet() {
-        if(this.selectedSheet) {
-            ExamQuestion.listBySheet(this, this.selectedSheet.id).subscribe(examQuestion=> {
-                this.sheetDialog.show(this.selectedSheet,examQuestion);
-            });
-        }
+        if(this.selectedSheet)
+            this.sheetDialog.show(this.selectedSheet);
     }
 
-    loadQuestionSheets() {
-        QuestionSheet.listTemplate(this).subscribe(sheets => {
+    loadSurveySheets() {
+        this.startTransaction();
+        SurveySheet.listTemplate(this).subscribe(sheets => {
             this.sheets =  sheets;
             _.each(sheets, sheet=> {
-                ExamQuestion.countBySheet(this, sheet["id"]).subscribe(count=> {
+                SurveyQuestion.countBySheet(this, sheet["id"]).subscribe(count=> {
                     sheet["question_count"] = count;
                 });
-            })
+            });
         });
     }
 

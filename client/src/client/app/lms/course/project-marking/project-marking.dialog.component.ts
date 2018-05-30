@@ -39,11 +39,7 @@ export class ProjectMarkingDialog extends BaseDialog<ProjectSubmission>  impleme
 			CourseMember.get(this, object.member_id).subscribe(member=> {
 				this.member = member;
 				ExamSetting.all(this).subscribe(settings=> {
-<<<<<<< HEAD
 					if (settings.length)
-=======
-					if (settings)
->>>>>>> Merge
 						this.setting =  settings[0];
 				});
 			});

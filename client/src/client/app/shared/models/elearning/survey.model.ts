@@ -19,7 +19,10 @@ export class Survey extends BaseModel{
         this.start = undefined;
         this.end = undefined;
         this.status = undefined;
+        this.supervisor_id =  undefined;
+        this.supervisor_name = undefined;
 	}
+
 
     name:string;
     summary: string;
@@ -29,7 +32,8 @@ export class Survey extends BaseModel{
     @FieldProperty<Date>()
     end: Date;
     status: string;
-
+    supervisor_id: number;
+    supervisor_name: string;
 
     get IsAvailable():boolean {
         if (this.status !='published')

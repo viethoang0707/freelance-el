@@ -7,6 +7,8 @@ import { QuestionListComponent } from './question/question-list/question-list.co
 import { QuestionDialog } from './question/question-dialog/question-dialog.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
+import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
+import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 import { QuestionSheetListComponent } from './question/question-sheet-list/question-sheet-list.component';
 
 export const AssessmentRoutes: Routes = [
@@ -24,6 +26,27 @@ export const AssessmentRoutes: Routes = [
         component: ExamListComponent,
         data: {
           breadcrumb: 'Exams'
+        }
+      },
+      {
+        path: "question-sheets",
+        component: QuestionSheetListComponent,
+        data: {
+          breadcrumb: 'Question sheets'
+        }
+      },
+      {
+        path: "surveys",
+        component: SurveyListComponent,
+        data: {
+          breadcrumb: 'Surveys'
+        }
+      },
+      {
+        path: "survey-sheets",
+        component: SurveySheetListComponent,
+        data: {
+          breadcrumb: 'Survey sheets'
         }
       },
       {

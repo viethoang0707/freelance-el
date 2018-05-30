@@ -29,7 +29,9 @@ export class MenuService {
         { label: 'Question banks', routerLink: ['/assessment/questions'], code: 'ASSESSMENT-QUESTION' },
         { label: 'Question category', routerLink: ['/assessment/groups'], code: 'ASSESSMENT-QUESTION_GROUP' },
         { label: 'Exam', routerLink: ['/assessment/exams'], code: 'ASSESSMENT-EXAM' },
+        { label: 'Survey', routerLink: ['/assessment/surveys'], code: 'ASSESSMENT-SURVEY' },
         { label: 'Question sheets', routerLink: ['/assessment/question-sheets'], code: 'ASSESSMENT-QUESTION_SHEET' },
+        { label: 'Survey sheets', routerLink: ['/assessment/survey-sheets'], code: 'ASSESSMENT-SURVEY_SHEET' },
       ]
     },
     {
