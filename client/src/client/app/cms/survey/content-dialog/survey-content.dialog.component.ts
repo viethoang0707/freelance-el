@@ -1,0 +1,150 @@
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { APIService } from '../../../shared/services/api.service';
+import { AuthService } from '../../../shared/services/auth.service';
+import { Group } from '../../../shared/models/elearning/group.model';
+import { BaseComponent } from '../../../shared/components/base/base.component';
+import { Survey } from '../../../shared/models/elearning/survey.model';
+import { Question } from '../../../shared/models/elearning/question.model';
+import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
+import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
+import { QuestionSheetPreviewDialog } from '../../../assessment/question/survey-sheet-preview/survey-sheet-preview.dialog.component';
+import { SurveySheetSaveDialog } from '../survey-sheet-save/survey-sheet-save.dialog.component';
+import { Http, Response } from '@angular/http';
+import { QUESTION_SELECTION, GROUP_CATEGORY, EXAM_STATUS, QUESTION_TYPE, EXAM_MEMBER_STATUS, QUESTION_LEVEL } from '../../../shared/models/constants'
+import { SelectItem, MenuItem } from 'primeng/api';
+import * as _ from 'underscore';
+import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { SelectQuestionSheetDialog } from '../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
+import { TreeNode } from 'primeng/api';
+
+@Component({
+	moduleId: module.id,
+	selector: 'survey-content-dialog',
+	templateUrl: 'survey-content.dialog.component.html',
+})
+export class SurveyContentDialog extends BaseComponent {
+
+	private display: boolean;
+	private survey: Exam;
+	private sheet: QuestionSheet;
+	private surveyQuestions: ExamQuestion[];
+
+
+	@ViewChild(QuestionSheetPreviewDialog) previewDialog : QuestionSheetPreviewDialog;
+	@ViewChild(SelectQuestionSheetDialog) selectSheetDialog: SelectQuestionSheetDialog;
+	@ViewChild(QuestionSheetEditorDialog) editorDialog: QuestionSheetEditorDialog;
+	@ViewChild(QuestionSheetSaveDialog) saveDialog: QuestionSheetSaveDialog;
+
+	constructor() {
+		super();
+		this.sheet = new QuestionSheet();
+		this.examQuestions = [];
+		this.exam = new Exam();
+	}
+
+	show(exam: Exam) {
+		this.display = true;
+		this.exam = exam;
+		this.loadQuestionSheet();
+	}
+
+	loadQuestionSheet() {
+		this.startTransaction();
+		QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
+			if (sheet) {
+				this.sheet = sheet;
+				this.startTransaction();
+				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
+					this.examQuestions = examQuestions;
+					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
+					this.closeTransaction();
+				});
+			}
+			else {
+				this.sheet = new QuestionSheet();
+				this.sheet.exam_id = this.exam.id;
+				this.startTransaction();
+				this.sheet.save(this).subscribe(sheet => {
+					this.sheet = sheet;
+					this.closeTransaction();
+				});
+			}
+		});
+	}
+
+	save() {
+		this.startTransaction();
+		var subscriptions = _.map(this.examQuestions, examQuestion=> {
+			return examQuestion.save(this);
+		});
+		subscriptions.push(this.sheet.save(this));
+		Observable.forkJoin(...subscriptions).subscribe(()=> {
+			this.hide();
+			this.success(this.translateService.instant('Content saved successfully.'));
+			this.closeTransaction();
+		});
+	}
+
+	hide() {
+		this.display = false;
+	}
+
+	previewSheet() {
+		this.previewDialog.show(this.sheet);
+	}
+
+	clearSheet() {
+		this.sheet.finalized =  false;
+		var subscriptions = _.map(this.examQuestions, examQuestion=> {
+			return examQuestion.delete(this);
+		});
+		subscriptions.push(this.sheet.save(this));
+		this.startTransaction();
+		Observable.forkJoin(subscriptions).subscribe(()=> {
+			this.examQuestions = [];
+			this.closeTransaction();
+		});
+	}
+
+	loadSheetTemplate() {
+		if (!this.sheet.finalized  && this.examQuestions.length ==0)
+			this.selectSheetDialog.show();
+			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:QuestionSheet) => {
+				this.startTransaction();
+				ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
+					examQuestions = _.map(examQuestions, examQuestion=> {
+						var newExamQuestion = new ExamQuestion();
+						newExamQuestion.exam_id =  this.exam.id;
+						newExamQuestion.score = examQuestion.score;
+						newExamQuestion.sheet_id =  this.sheet.id;
+						return newExamQuestion; 
+					});
+					this.sheet.finalized =  true;
+					var subscriptions = _.map(examQuestions, examQuestion=> {
+						return examQuestion.save(this);
+					});
+					subscriptions.push(this.sheet.save(this));
+					Observable.forkJoin(subscriptions).subscribe(()=> {
+						this.loadQuestionSheet();
+						this.closeTransaction();
+					});
+				});
+			});
+	}
+
+	saveToTemplate() {
+		if (this.sheet && this.sheet.finalized) {
+			this.saveDialog.show(this.sheet, this.examQuestions);
+		}
+	}
+
+	designSheet() {
+		if (this.sheet && this.sheet.finalized) {
+			this.editorDialog.show(this.sheet);
+			this.editorDialog.onSave.subscribe(()=> {
+				this.loadQuestionSheet();
+			})
+		}
+	}
+}
