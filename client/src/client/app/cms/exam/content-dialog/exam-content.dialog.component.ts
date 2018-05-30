@@ -145,9 +145,15 @@ export class ExamContentDialog extends BaseComponent {
 
 	designSheet() {
 		if (this.sheet && this.sheet.finalized) {
-			this.editorDialog.show(this.sheet);
-			this.editorDialog.onSave.subscribe(()=> {
-				this.loadQuestionSheet();
+			this.editorDialog.show();
+			this.editorDialog.onSave.subscribe((examQuestions)=> {
+				var subscriptions = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
+					examQuestion.sheet_id =  this.sheet.id;
+					return examQuestion.save(this);
+				});
+				Observable.forkJoin(subscriptions).subscribe(()=> {
+					this.loadQuestionSheet();
+				});
 			})
 		}
 	}

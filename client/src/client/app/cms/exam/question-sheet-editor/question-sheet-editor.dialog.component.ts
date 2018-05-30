@@ -34,7 +34,6 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	private groups: Group[];
 	private treeUtils: TreeUtils;
 	private examQuestions: ExamQuestion[];
-	private sheet: QuestionSheet;
 	private onSaveReceiver: Subject<any> = new Subject();
     onSave: Observable<any> = this.onSaveReceiver.asObservable();
 
@@ -69,7 +68,6 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	createExamQuestionFromQuestionBank(questions: Question[], score)  {
 		return  _.map(questions, (question:Question) => {
 			var examQuestion = new ExamQuestion();
-			examQuestion.sheet_id = this.sheet.id;
 			examQuestion.question_id = question.id;
 			examQuestion.score = score;
 			return examQuestion;
@@ -104,10 +102,9 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 		return subscriptions;
 	}
 
-	show(sheet: QuestionSheet) {
+	show() {
 		this.initControl();
 		this.display = true;
-		this.sheet = sheet;
 	}
 
 
@@ -123,7 +120,6 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 				this.success(this.translateService.instant('Content saved successfully.'));
 			})
 		})
-		
 	}
 
 	
