@@ -35,7 +35,7 @@ export class CourseByMemberReportComponent extends BaseComponent {
 	records: any;
 	rowGroupMetadata: any;
 	GROUP_CATEGORY = GROUP_CATEGORY;
-  private reportUtils: ReportUtils;
+	private reportUtils: ReportUtils;
 
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -44,6 +44,10 @@ export class CourseByMemberReportComponent extends BaseComponent {
 
 	ngOnInit() {
 		this.updateRowGroupMetaData();
+	}
+
+	clear() {
+		this.records = [];
 	}
 
 	onSort() {
@@ -78,7 +82,7 @@ export class CourseByMemberReportComponent extends BaseComponent {
 			output.push(course);
 		});
 
-		this.excelService.exportAsExcelFile(output,'course_by_member_report');
+		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
 	}
 
 	selectUserGroup() {
@@ -105,6 +109,15 @@ export class CourseByMemberReportComponent extends BaseComponent {
 				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
 				console.log(this.rowGroupMetadata);
 			});
+		});
+	}
+
+	render(users: User[]) {
+		this.startTransaction();
+		this.generateReport(users).subscribe(records => {
+			this.records = records;
+			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
+			this.closeTransaction();
 		});
 	}
 
