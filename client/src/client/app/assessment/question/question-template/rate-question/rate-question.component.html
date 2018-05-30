@@ -1,0 +1,57 @@
+<div *ngIf="mode=='edit'">
+  <div class="ui-g-12 ">
+    <label>{{'Content'|translate}}</label>
+    <p-editor [(ngModel)]="question.content" [style]="{'height':'120px'}" name="content">
+    </p-editor>
+  </div>
+  <div class="ui-g-12">
+    <input type="text" pInputText [(ngModel)]="question.max_rating" #duration="ngModel" name="duration" pKeyFilter="pint" required>
+  </div>
+
+</div>
+<div *ngIf="mode=='study'">
+  <div class="ui-g-12 ">
+    <label>{{'Content'|translate}}</label>
+    <p [innerHTML]="question.content"></p>
+  </div>
+  <div class="ui-g-12">
+    <p-fieldset legend="{{'Options'|translate}}">
+      <ul class="options-question">
+        <li *ngFor="let option of options">
+          <p-radioButton [(ngModel)]="answer.option_id" value="{{option.id}}" name="option_answer" label="{{option.content}}"></p-radioButton>
+        </li>
+      </ul>
+    </p-fieldset>
+  </div>
+</div>
+<div *ngIf="mode=='review'">
+  <div class="ui-g-12 ">
+    <p class="question" [innerHTML]="question.content"></p>
+  </div>
+  <div class="ui-g-12">
+    <p-fieldset styleClass="f-print">
+      <ul class="options-question">
+        <li *ngFor="let option of options" style="list-style-type: none;">
+          <p-radioButton [(ngModel)]="answer.option_id" [disabled]="true" inputId="{{option.id}}" value="{{option.id}}" name="option_answer{{question.id}}"
+            label="{{option.content}}" styleClass="radio"></p-radioButton>
+          <i class="material-icons" *ngIf="option.is_correct">done</i>
+        </li>
+      </ul>
+    </p-fieldset>
+  </div>
+</div>
+<div *ngIf="mode=='preview'">
+  <div class="ui-g-12 ">
+    <p class="question" [innerHTML]="question.content"></p>
+  </div>
+  <div class="ui-g-12">
+    <p-fieldset legend="{{'Options'|translate}}" styleClass="f-print">
+      <ul class="options-question">
+        <li *ngFor="let option of options" style="list-style-type: none;">
+          <p-radioButton [disabled]="true" value="{{option.id}}" name="option_answer" label="{{option.content}}"></p-radioButton>
+          <i class="material-icons" *ngIf="option.is_correct">done</i>
+        </li>
+      </ul>
+    </p-fieldset>
+  </div>
+</div>
