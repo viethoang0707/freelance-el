@@ -5,7 +5,7 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
-import { Question } from '../../../shared/models/elearning/question.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
@@ -55,6 +55,11 @@ export class QuestionSheetListComponent extends BaseComponent {
     loadQuestionSheets() {
         QuestionSheet.listTemplate(this).subscribe(sheets => {
             this.sheets =  sheets;
+            _.each(sheets, sheet=> {
+                ExamQuestion.countBySheet(this, sheet["id"]).subscribe(count=> {
+                    sheet["question_count"] = count;
+                });
+            })
         });
     }
 
