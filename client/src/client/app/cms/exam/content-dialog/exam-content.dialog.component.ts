@@ -144,7 +144,7 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	designSheet() {
-		if (this.sheet && this.sheet.finalized) {
+		if (this.sheet && !this.sheet.finalized) {
 			this.editorDialog.show();
 			this.editorDialog.onSave.subscribe((examQuestions)=> {
 				var subscriptions = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
