@@ -30,7 +30,8 @@ import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-s
 		SlideLectureCourseUnitComponent,QuestionSheetEditorDialog, QuestionSheetSaveDialog,SurveySheetSaveDialog,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,
 		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog],
-	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, ProjectContentDialog],
+	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, 
+	ProjectContentDialog, SurveyContentDialog],
 	providers: [],
 	entryComponents: [FolderCourseUnitComponent, ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
 		VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]

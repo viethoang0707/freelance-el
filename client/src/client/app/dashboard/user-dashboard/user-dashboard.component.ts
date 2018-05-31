@@ -219,7 +219,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     loadSurvey() {
-        Survey.listAvailableSurvey(this, this.authService.UserProfile.id).subscribe(surveys=> {
+        Survey.listAvailableSurvey(this).subscribe(surveys=> {
             SurveyMember.listByUser(this, this.authService.UserProfile.id).subscribe(members=> {
                 surveys =  _.filter(surveys, (survey:Survey)=> {
                     survey["member"] = _.find(members, (m:SurveyMember)=> {

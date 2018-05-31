@@ -44,14 +44,14 @@ export class SurveySheetSaveDialog extends BaseComponent {
 		sheet.name = this.sheet.name;
 		this.startTransaction();
 		sheet.save(this).subscribe(()=> {
-			var examQuestions = _.map(this.surveyQuestions, question=> {
+			var surveyQuestions = _.map(this.surveyQuestions, question=> {
 				var questionTempl = new SurveyQuestion();
 				questionTempl.question_id =  question.question_id;
 				questionTempl.sheet_id =  sheet.id;
 				return questionTempl;
 			});
-			var subscriptions = _.map(examQuestions, examQuestion=> {
-				return examQuestion.save(this);
+			var subscriptions = _.map(surveyQuestions, surveyQuestion=> {
+				return surveyQuestion.save(this);
 			});
 			subscriptions.push(this.sheet.save(this));
 			Observable.forkJoin(subscriptions).subscribe(()=> {

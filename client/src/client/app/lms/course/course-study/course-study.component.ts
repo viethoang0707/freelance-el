@@ -47,10 +47,17 @@ import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+<<<<<<< HEAD
 import { BaseModel } from '../../../shared/models/base.model';
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
+=======
+import { Survey } from '../../../shared/models/elearning/survey.model';
+import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
+import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
+import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog.component';
+>>>>>>> Fix survey
 
 @Component({
 	moduleId: module.id,
@@ -88,7 +95,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private enableLogging: boolean;
 	private currentUser: User;
 	private logs: CourseLog[];
-
+	private componentRef: any;
+	
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -96,6 +104,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	@ViewChild(ProjectSubmissionDialog) projectSubmitDialog: ProjectSubmissionDialog;
+	@ViewChild(SurveyStudyDialog) surveyDialog: SurveyStudyDialog;
+	
 
 
 	constructor(private router: Router, private route: ActivatedRoute,
@@ -414,5 +424,11 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
                 this.closeTransaction();
             });           
         });
+    }
+
+    startSurvey(survey: Survey, member: SurveyMember) {
+    	if (this.member.enroll_status!='completed') {
+    		this.surveyDialog.show(survey, member);
+    	}
     }
 }

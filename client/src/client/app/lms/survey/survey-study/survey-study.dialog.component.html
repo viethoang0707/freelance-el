@@ -75,7 +75,7 @@
         class=" purple-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
       <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn"
         style="margin-right:4px;" (click)="next()" *ngIf="qIndex < surveyQuestions.length-1"></button>
-      <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" style="margin-left: 550px;" (click)="submitExam()" ></button>
+      <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" style="margin-left: 550px;" (click)="submitSurvey()" ></button>
     </p-footer>
   </p-card>
 </p-dialog>

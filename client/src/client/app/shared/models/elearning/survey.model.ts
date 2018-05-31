@@ -46,10 +46,10 @@ export class Survey extends BaseModel{
         return true;
     }
 
-    static listAvailableSurvey(context:APIContext, userId: number):Observable<any> {
+    static listAvailableSurvey(context:APIContext):Observable<any> {
         var now = new Date();
         var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
-        return Survey.search(context,[],"[('start','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','published'),('user_id','=',"+userId+")]",
+        return Survey.search(context,[],"[('start','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','published')]",
     }
 
 }

@@ -60,7 +60,7 @@ import { SurveyResultStatsReportContainerComponent } from './report/survey/surve
         CourseActivityChartContainerComponent,
         SurveyResultStatsReportContainerComponent
     ],
-	exports: [ExamResultReportComponent,ExamResultStatsReportComponent],
+	exports: [ExamResultReportComponent,SurveyResultStatsReportComponent,ExamResultStatsReportComponent],
 	providers: [DatePipe, TimeConvertPipe]
 })
 export class AnalysisModule {

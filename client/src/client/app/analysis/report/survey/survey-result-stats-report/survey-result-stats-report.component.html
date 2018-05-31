@@ -18,22 +18,9 @@
                          <p [innerHTML]="rowData.content"></p>
                     </td>
                 </tr>
-                <tr *ngIf="rowData.type=='sc' || rowData.type=='mc'" *ngFor ="let option of rowData.options">
-                    <td>
-                        {{option.content}}
-                    </td>
-                    <td>
-                        {{getCheckPercentage(option)}} %
-                    </td>
-                </tr>
                 <tr *ngIf="rowData.type=='rate'">
                     <td>
                         {{getRatePercentage(rowData)}} / {{rowData.max_rating}}
-                    </td>
-                </tr>
-                <tr *ngIf="rowData.type=='open'" *ngFor ="let ans of getOpenAnswer(rowData)">
-                    <td>
-                        {{ans}}
                     </td>
                 </tr>
             </ng-template>

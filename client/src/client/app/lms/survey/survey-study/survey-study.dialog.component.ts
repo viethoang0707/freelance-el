@@ -76,7 +76,7 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	createSubmission(): Observable<any> {
-		return Submission.byMemberAndSurvey(this, this.member.id, this.exam.id).flatMap((submit: Submission) => {
+		return Submission.byMemberAndSurvey(this, this.member.id, this.survey.id).flatMap((submit: Submission) => {
 			if (!submit) {
 				submit = new Submission();
 				submit.member_id = this.member.id;
@@ -180,20 +180,18 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.startTransaction();
 		var question = this.prepareQuestion(this.currentQuestion);
 		this.prepareAnswer(this.currentQuestion).subscribe(answer => {
-			ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer).subscribe(()=> {
-				this.currentAnswer = answer;
-				var detailComponent = QuestionRegister.Instance.lookup(question.type);
-				let viewContainerRef = this.questionHost.viewContainerRef;
-				if (detailComponent) {
-					let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-					viewContainerRef.clear();
-					this.componentRef = viewContainerRef.createComponent(componentFactory);
-					(<IQuestion>this.componentRef.instance).mode = 'study';
-					(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
-					this.updateStats();
-				}
-				this.closeTransaction();
-			});
+			this.currentAnswer = answer;
+			var detailComponent = QuestionRegister.Instance.lookup(question.type);
+			let viewContainerRef = this.questionHost.viewContainerRef;
+			if (detailComponent) {
+				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+				viewContainerRef.clear();
+				this.componentRef = viewContainerRef.createComponent(componentFactory);
+				(<IQuestion>this.componentRef.instance).mode = 'study';
+				(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
+				this.updateStats();
+			}
+			this.closeTransaction();
 		});
 	}
 

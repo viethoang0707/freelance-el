@@ -62,6 +62,7 @@ export class SurveySheetListComponent extends BaseComponent {
                     sheet["question_count"] = count;
                 });
             });
+            this.closeTransaction();
         });
     }
 
