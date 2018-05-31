@@ -56,6 +56,7 @@ import { MessageDialog } from './course/course-message/course-message.dialog.com
 
     exports: [CertificatePrintDialog, ExamStudyDialog, SurveyStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []
+
 })
 export class LMSModule {
 }

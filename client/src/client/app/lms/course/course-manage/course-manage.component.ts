@@ -31,7 +31,6 @@ import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview
 import { BaseModel } from '../../../shared/models/base.model';
 import { ClassSurveyListDialog } from '../class-survey-list/class-survey-list.dialog.component';
 import { MessageDialog } from '../course-message/course-message.dialog.component';
-import { CourseMessage } from '../../../shared/models/elearning/course-message.model';
 
 @Component({
 	moduleId: module.id,
@@ -249,9 +248,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	addMessage() {
-		var message = new CourseMessage();
-		message.course_id = this.course.id;
-		this.messageDialog.show(message);
+		//this.messageDialog.show(message);
 	}
 }
 

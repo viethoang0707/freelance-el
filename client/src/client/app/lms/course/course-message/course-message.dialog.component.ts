@@ -24,3 +24,4 @@ export class MessageDialog extends BaseDialog<CourseFaq> {
     }
 
 }
+
