@@ -25,6 +25,9 @@ import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.com
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
 import { Submission } from '../../shared/models/elearning/submission.model';
 import { BaseModel } from '../../shared/models/base.model';
+import { Survey } from '../../shared/models/elearning/survey.model';
+import { SurveyStudyDialog} from '../../lms/survey/survey-study/survey-study.dialog.component';
+import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
 
 import * as _ from 'underscore';
 
@@ -50,6 +53,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
+    @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
 
     constructor(private meetingSerivce: MeetingService, private router: Router) {
         super();
@@ -138,6 +142,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         ConferenceMember.populateConferenceForArray(this, this.conferenceMembers).subscribe(() => {
             
         });
+
     }
 
     ngOnInit() {
@@ -210,6 +215,25 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     startExam(exam: Exam, member: ExamMember) {
         this.confirm('Are you sure to start ?', () => {
             this.examStudyDialog.show(exam, member);
+        });
+    }
+
+    loadSurvey() {
+        Survey.listAvailableSurvey(this, this.authService.UserProfile.id).subscribe(surveys=> {
+            SurveyMember.listByUser(this, this.authService.UserProfile.id).subscribe(members=> {
+                surveys =  _.filter(surveys, (survey:Survey)=> {
+                    survey["member"] = _.find(members, (m:SurveyMember)=> {
+                        return m.id == survey.id && m.enroll_status !='completed';
+                    });
+                    return survey["member"] != null;
+                });
+                if (surveys && surveys.length) {
+                    var survey = surveys[0];
+                    this.confirm(`You are invited to survey ${survey.name}. Do you want to join ?`, ()=> {
+                         this.surveyStudyDialog.show(survey, survey["member"]);
+                    });
+                }
+            });           
         });
     }
 }

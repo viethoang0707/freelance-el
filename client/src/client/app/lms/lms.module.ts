@@ -48,7 +48,7 @@ import { WebcamModule } from 'ngx-webcam';
     				GradebookDialog, ClassManageDialog, ClassExamEnrollDialog, CourseCertificateDialog,
     				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog,
                     ClassSurveyEnrollDialog, SurveyStatsDialog, ClassSurveyListDialog, SurveyStudyDialog],
-    exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
+    exports: [CertificatePrintDialog, ExamStudyDialog, SurveyStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []
 })
 export class LMSModule {

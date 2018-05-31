@@ -48,6 +48,9 @@ import { ProjectSubmission } from '../../../shared/models/elearning/project-subm
 import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { BaseModel } from '../../../shared/models/base.model';
+import { Survey } from '../../../shared/models/elearning/survey.model';
+import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
+import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
 
 @Component({
 	moduleId: module.id,
@@ -398,4 +401,18 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 		this.projectSubmitDialog.show(project, this.member);
 	}
+
+	loadSurveys() {
+		this.startTransaction();
+        ClassSurvey.listByClass(this, this.member.course_id).subscribe(surveys=> {
+            SurveyMember.listByUser(this, this.authService.UserProfile.id).subscribe(members=> {
+                _.each(surveys, (survey:ClassSurvey)=> {
+                    survey["member"] = _.find(members, (m:SurveyMember)=> {
+                        return m.id == survey.survey_id && m.enroll_status !='completed';
+                    });
+                });
+                this.closeTransaction();
+            });           
+        });
+    }
 }

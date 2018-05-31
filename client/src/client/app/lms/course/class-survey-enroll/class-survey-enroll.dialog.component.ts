@@ -4,7 +4,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, SURVEY_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Survey } from '../../../shared/models/elearning/survey.model';
@@ -23,6 +23,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 	private survey: Survey;
 	private members: SurveyMember[];
 	private selectedMember: SurveyMember;
+	SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
 
 	constructor() {
 		super();

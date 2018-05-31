@@ -9,7 +9,7 @@ import { Survey } from '../../../shared/models/elearning/survey.model';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { Http, Response } from '@angular/http';
-import { DEFAULT_DATE_LOCALE, SURVEY_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
+import { DEFAULT_DATE_LOCALE, SURVEY_STATUS, EXAM_MEMBER_ROLE, SURVEY_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import {SelectItem, MenuItem} from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -27,7 +27,8 @@ export class SurveyEnrollDialog extends BaseComponent {
     private members: SurveyMember[];
     private selectedMembers: any;
     SURVEY_STATUS =  SURVEY_STATUS;
-
+    SURVEY_MEMBER_ENROLL_STATUS =  SURVEY_MEMBER_ENROLL_STATUS;
+    
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	
 	constructor() {

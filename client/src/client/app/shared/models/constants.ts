@@ -37,6 +37,7 @@ export const LANGS = { 'vn': 'Vietnamese', 'gb': 'English' };
 export const TICKET_STATUS = { 'open': 'Open', 'approved': 'Approved', 'rejected': 'Rejected' };
 export const EXAM_TIME_WARNING = 60000;
 export const DEFAULT_LANG = 'gb';
+<<<<<<< HEAD
 export const PROJECT_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const SURVEY_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const SCHEDULER_HEADER = {
@@ -44,6 +45,7 @@ export const SCHEDULER_HEADER = {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         }
+export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };
 export const PRINT_DIALOG_STYLE = `<style>
                   //........Customized style.......
                     .header{

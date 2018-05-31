@@ -5,6 +5,8 @@ import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import * as moment from 'moment';
+import { SERVER_DATETIME_FORMAT} from '../constants';
 
 @Model('etraining.survey')
 export class Survey extends BaseModel{
@@ -44,6 +46,10 @@ export class Survey extends BaseModel{
         return true;
     }
 
-
+    static listAvailableSurvey(context:APIContext, userId: number):Observable<any> {
+        var now = new Date();
+        var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
+        return Survey.search(context,[],"[('start','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','published'),('user_id','=',"+userId+")]",
+    }
 
 }

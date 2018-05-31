@@ -75,17 +75,29 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.WINDOW_HEIGHT =  $(window).height();
 	}
 
+	createSubmission(): Observable<any> {
+		return Submission.byMemberAndSurvey(this, this.member.id, this.exam.id).flatMap((submit: Submission) => {
+			if (!submit) {
+				submit = new Submission();
+				submit.member_id = this.member.id;
+				submit.start = new Date();
+				return submit.save(this);
+			} else {
+				return Observable.of(submit);
+			}
+		});
+	}
+
 	show(survey: Survey, member: SurveyMember) {
 		this.onShowReceiver.next();
 		this.display = true;
 		this.survey = survey;
 		this.member = member;
 		this.qIndex = 0;
-		this.submission = new Submission();
-		this.submission.member_id = this.member.id;
-		this.submission.start = new Date();
 		this.startTransaction();
-		SurveySheet.bySurvey(this, this.survey.id).subscribe(sheet => {
+		this.createSubmission().subscribe(submit=> {
+			this.submission =  submit;
+			SurveySheet.bySurvey(this, this.survey.id).subscribe(sheet => {
 			this.sheet = sheet;
 			SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions=> {
 				this.surveyQuestions = surveyQuestions;
@@ -95,6 +107,7 @@ export class SurveyStudyDialog extends BaseComponent {
 					this.questions = questions;
 					this.startSurvey();
 					this.closeTransaction();
+					});
 				});
 			});
 		});
@@ -116,12 +129,24 @@ export class SurveyStudyDialog extends BaseComponent {
 		}
 		this.stats.attempt = this.validAnswer;
 		this.stats.unattempt = this.stats.total - this.stats.attempt;
-		this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
+		this.progress = Math.floor(validAnswers.length / this.surveyQuestions.length * 100)
 	}
 
 	startSurvey() {
-		this.updateStats();
-		this.displayQuestion(0);
+		this.startTransaction();
+		this.fetchAnswers().subscribe(answers => {
+			this.answers =  answers;
+			this.updateStats();
+			this.displayQuestion(0);
+			this.closeTransaction();
+		});
+	}
+
+	fetchAnswers(): Observable<any> {
+		if (this.submission.id)
+			return Answer.listBySubmit(this, this.submission.id);
+		else
+			return Observable.of([]);
 	}
 
 	prepareAnswer(question: SurveyQuestion): Observable<any> {
@@ -157,7 +182,6 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.prepareAnswer(this.currentQuestion).subscribe(answer => {
 			ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer).subscribe(()=> {
 				this.currentAnswer = answer;
-				this.checkAnswer();
 				var detailComponent = QuestionRegister.Instance.lookup(question.type);
 				let viewContainerRef = this.questionHost.viewContainerRef;
 				if (detailComponent) {
@@ -198,6 +222,7 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	submitSurvey() {
+		this.member.enroll_status = 'completed';
 		this.submission.end = new Date();
 		this.startTransaction();
 		this.submission.save(this).subscribe(() => {

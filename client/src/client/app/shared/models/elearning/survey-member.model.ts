@@ -23,6 +23,7 @@ export class SurveyMember extends BaseModel{
         this.user_id = undefined;
         this.group_id = undefined;
         this.group_id__DESC__ = undefined;
+        this.enroll_status = undefined;
     }
 
     survey_id: number;
@@ -35,6 +36,7 @@ export class SurveyMember extends BaseModel{
     phone: string;
     group_id: number;
     group_id__DESC__: string;
+    enroll_status: string;
 
     static listBySurvey( context:APIContext, surveyId: number): Observable<any[]> {
         return SurveyMember.search(context,[],"[('survey_id','=',"+surveyId+")]");
