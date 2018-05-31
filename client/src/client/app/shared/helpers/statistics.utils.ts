@@ -36,6 +36,49 @@ export class StatsUtils {
 	}
 
 	examAnswerStatistics(answers: Answer[]): any {
+		var multichoiceAnswer = _.filter(answers, ans=> {
+			return ans.question_type == 'sc' || ans.question_type == 'mc';
+		});
+		var ratingAnswer = _.filter(answers, ans=> {
+			return ans.question_type == 'rate' ;
+		});
+		var openAnswer = _.filter(answers, ans=> {
+			return ans.question_type == 'ext' ;
+		});
+		return {
+				'multichoice': this.multichoiceAnswerStatistics(answers),
+				'rating': this.ratingAnswerStatistics(answers),
+				'open': this.openAnswerStatistics(answers)}
+	}
+
+	openAnswerStatistics(answers: Answer[]): any {
+		var questionAttempts = {};
+		_.each(answers, ans=> {
+			if (!questionAttempts[ans.question_id])
+				questionAttempts[ans.question_id] = [];
+			questionAttempts[ans.question_id].push(ans.text);
+		});
+	}
+
+	ratingAnswerStatistics(answers: Answer[]): any {
+		var ratingPercentage  = {};
+		var questionAttempts = {};
+		_.each(answers, ans=> {
+			if (!questionAttempts[ans.question_id])
+				questionAttempts[ans.question_id] = 1;
+			else
+				questionAttempts[ans.question_id]++;
+			if (!ratingPercentage[ans.question_id])
+				ratingPercentage[ans.question_id] = 0;
+			if (ans.text) 
+				ratingPercentage[ans.question_id] += +ans.text;
+		});
+		return _.map(ratingPercentage, (rate,id)=> {
+			return ratingPercentage[id]/ questionAttempts[id];
+		});
+	}
+
+	multichoiceAnswerStatistics(answers: Answer[]): any {
 		var option2Question = {};
 		var optionIds = [];
 		var optionAttempts = {};

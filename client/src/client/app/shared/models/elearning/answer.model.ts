@@ -15,6 +15,8 @@ export class Answer extends BaseModel{
         this.option_id = undefined;
         this.is_correct = undefined;
         this.submission_id = undefined;
+        this.question_type = undefined;
+        this.question_level = undefined;
         this.text = undefined;
         this.score = undefined;
         this.exam_id =  undefined;
@@ -30,6 +32,8 @@ export class Answer extends BaseModel{
     submission_id: number;
     text:string;
     json:string;
+    question_level: string;
+    question_type: string;
 
     static __api__listBySubmit(submitId: number): SearchReadAPI {
         return new SearchReadAPI(Answer.Model, [],"[('submission_id','=',"+submitId+")]");

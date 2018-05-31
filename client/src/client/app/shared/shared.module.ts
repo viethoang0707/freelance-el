@@ -40,14 +40,11 @@ import { SelectQuestionsDialog } from './components/select-question-dialog/selec
 import { SelectGroupDialog } from './components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from './components/select-user-dialog/select-user-dialog.component';
 import { SelectAdminDialog } from './components/select-admin-dialog/select-admin-dialog.component';
-<<<<<<< HEAD
 import { SelectQuestionSheetDialog } from './components/select-question-sheet-dialog/select-question-sheet-dialog.component';
 import { SelectCompetencyDialog } from './components/select-competency-dialog/select-competency-dialog.component';
 import { SelectCompetencyLevelDialog } from './components/select-competency-level-dialog/select-competency-level-dialog.component';
-=======
 import { SelectQuestionSheetDialog } from './components//select-question-sheet-dialog/select-question-sheet-dialog.component';
 import { SelectSurveySheetDialog } from './components//select-survey-sheet-dialog/select-survey-sheet-dialog.component';
->>>>>>> Add survery form
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
@@ -228,12 +225,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectGroupDialog,
         SelectAdminDialog,
         SelectQuestionSheetDialog,
-<<<<<<< HEAD
         SelectCompetencyDialog,
         SelectCompetencyLevelDialog,
-=======
         SelectSurveySheetDialog
->>>>>>> Add survery form
     ],
     exports: [
         // Angular modules
@@ -260,12 +254,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectQuestionsDialog,
         SelectAdminDialog,
         SelectQuestionSheetDialog,
-<<<<<<< HEAD
         SelectCompetencyDialog,
         SelectCompetencyLevelDialog,
-=======
         SelectSurveySheetDialog,
->>>>>>> Add survery form
         // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,

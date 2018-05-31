@@ -31,7 +31,10 @@ import { ProjectManageDialog } from './course/project-manage/project-manage.dial
 import { ProjectListDialog } from './course/project-list/project-list.dialog.component';
 import { ProjectMarkingDialog } from './course/project-marking/project-marking.dialog.component';
 import { ProjectSubmissionDialog } from './course/project-submit/project-submission.dialog.component';
-
+import { SurveyStatsDialog } from './survey/survey-stats/survey-stats.dialog.component';
+import { ClassSurveyEnrollDialog } from './course/class-survey-enroll/class-survey-enroll.dialog.component';
+import { ClassSurveyListDialog } from './course/class-survey-list/class-survey-list.dialog.component';
+import { SurveyStudyDialog} from './survey/survey-study/survey-study.dialog.component';
 
 import { WebcamModule } from 'ngx-webcam';
 
@@ -43,7 +46,8 @@ import { WebcamModule } from 'ngx-webcam';
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,ProjectSubmissionDialog,
     				GradebookDialog, ClassManageDialog, ClassExamEnrollDialog, CourseCertificateDialog,
-    				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog],
+    				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog,
+                    ClassSurveyEnrollDialog, SurveyStatsDialog, ClassSurveyListDialog, SurveyStudyDialog],
     exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []
 })

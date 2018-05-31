@@ -23,7 +23,8 @@ import { ChartContainerDirective } from './chart/chart-container.directive'
 import { DatePipe } from '@angular/common';
 import { ReportUtils } from '../shared/helpers/report.utils';
 import { TimeConvertPipe} from '../shared/pipes/time.pipe';
-import { StatsUtils } from '../shared/helpers/statistics.utils';
+import { SurveyResultStatsReportComponent } from './report/survey/survey-result-stats-report/survey-result-stats-report.component';
+import { SurveyResultStatsReportContainerComponent } from './report/survey/survey-result-stats-report/survey-result-stats-report-container.component';
 
 @NgModule({
 	imports: [ErpSharedModule, AuthModule],
@@ -44,6 +45,8 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
 	UserLoginActivityChartContainerComponent,
 	ExamResultStatsReportComponent,
 	ExamResultStatsReportContainerComponent,
+	SurveyResultStatsReportComponent,
+	SurveyResultStatsReportContainerComponent,
 	UserChartComponent,
 	UserChartContainerComponent,
 	ReportContainerDirective],
@@ -54,7 +57,8 @@ import { StatsUtils } from '../shared/helpers/statistics.utils';
         ExamResultStatsReportContainerComponent,
         UserChartContainerComponent,
         UserLoginActivityChartContainerComponent,
-        CourseActivityChartContainerComponent
+        CourseActivityChartContainerComponent,
+        SurveyResultStatsReportContainerComponent
     ],
 	exports: [ExamResultReportComponent,ExamResultStatsReportComponent],
 	providers: [DatePipe, TimeConvertPipe]

@@ -112,21 +112,20 @@ export class SurveyContentDialog extends BaseComponent {
 			this.selectSheetDialog.show();
 			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:SurveySheet) => {
 				this.startTransaction();
-				SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
+				SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(surveyQuestions=> {
 					surveyQuestions = _.map(surveyQuestions, surveyQuestion=> {
-						var newExamQuestion = new ExamQuestion();
-						newExamQuestion.exam_id =  this.exam.id;
-						newExamQuestion.score = examQuestion.score;
-						newExamQuestion.sheet_id =  this.sheet.id;
-						return newExamQuestion; 
+						var newSurveyQuestion = new SurveyQuestion();
+						newSurveyQuestion.score = surveyQuestion.score;
+						newSurveyQuestion.sheet_id =  this.sheet.id;
+						return newSurveyQuestion; 
 					});
 					this.sheet.finalized =  true;
-					var subscriptions = _.map(examQuestions, examQuestion=> {
-						return examQuestion.save(this);
+					var subscriptions = _.map(surveyQuestions, surveyQuestion=> {
+						return surveyQuestion.save(this);
 					});
 					subscriptions.push(this.sheet.save(this));
 					Observable.forkJoin(subscriptions).subscribe(()=> {
-						this.loadQuestionSheet();
+						this.loadSurveynSheet();
 						this.closeTransaction();
 					});
 				});
@@ -135,16 +134,22 @@ export class SurveyContentDialog extends BaseComponent {
 
 	saveToTemplate() {
 		if (this.sheet && this.sheet.finalized) {
-			this.saveDialog.show(this.sheet, this.examQuestions);
+			this.saveDialog.show(this.sheet, this.surveyQuestions);
 		}
 	}
 
 	designSheet() {
 		if (this.sheet && this.sheet.finalized) {
-			this.editorDialog.show(this.sheet);
-			this.editorDialog.onSave.subscribe(()=> {
-				this.loadQuestionSheet();
-			})
+			this.selectQuestionDialog.show();
+			this.selectQuestionDialog.onSelectQuestions.subscribe(surveyQuestions=> {
+				var subscriptions = _.map(surveyQuestions, (surverQyestion:SurveyQuestion)=> {
+					surverQyestion.sheet_id = this.sheet.id;
+					return surverQyestion.save(this);
+				});
+				Observable.forkJoin(subscriptions).subscribe(()=> {
+					this.loadSurveynSheet();
+				});
+			});
 		}
 	}
 }

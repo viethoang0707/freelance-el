@@ -47,8 +47,10 @@ export class ClassExamListDialog extends BaseComponent {
 	}
 
 	loadExams() {
+		this.startTransaction();
 		ClassExam.listByClass(this, this.courseClass.id).subscribe(classExams => {
 			this.classExams = classExams;
+			this.closeTransaction();
 		});
 	}
 
@@ -66,6 +68,7 @@ export class ClassExamListDialog extends BaseComponent {
 		var exam = new Exam();
 		exam.supervisor_id =  this.authService.UserProfile.id;
 		this.examDialog.show(exam);
+		this.startTransaction();
 		this.examDialog.onCreateComplete.subscribe(() => {
 			var classExam = new ClassExam();
 			classExam.exam_id = exam.id;
@@ -79,6 +82,7 @@ export class ClassExamListDialog extends BaseComponent {
 				member.date_register = new Date();
 				member.status = 'active';
 				member.save(this).subscribe(()=> {
+					this.closeTransaction();
 					this.loadExams();
 				});
 			});
@@ -87,7 +91,9 @@ export class ClassExamListDialog extends BaseComponent {
 
 	editExam() {
 		if (this.selectedClassExam) {
+			this.startTransaction();
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
+				this.closeTransaction();
 				this.examDialog.show(exam);;
 			});
 		}
