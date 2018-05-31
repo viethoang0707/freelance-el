@@ -247,8 +247,10 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	addMessage() {
-		//this.messageDialog.show(message);
+
+	sendMessage() {
+		if (this.selectedClass) 
+			this.messageDialog.show(this.selectedClass);
 	}
 }
 
