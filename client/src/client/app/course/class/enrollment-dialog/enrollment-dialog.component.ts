@@ -52,7 +52,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	enrollCourse(course:Course) {
 		this.course = course;
 		this.display = true;
-		this.processing = false;
 		this.selectedStudents = [];
 		this.selectedTeachers = [];
 		this.loadMembers();
@@ -62,7 +61,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.course = course;
 		this.courseClass = courseClass;
 		this.display = true;
-		this.processing = false;
 		this.selectedStudents = [];
 		this.selectedTeachers = [];
 		this.loadMembers();
@@ -76,7 +74,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	addMembers(role: string) {
 		this.usersDialog.show();
 		this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
-			this.processing = true;
 			var subscriptions = [];
 			_.each(users, (user:User)=> {
 				var member = new CourseMember();
@@ -94,7 +91,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				this.subscription.unsubscribe();
 			});
 			Observable.zip(...subscriptions).subscribe((members) => {
-				this.processing = false;
 				CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
 					if (syl && syl.prequisite_course_id) 
 					_.each(members, ((member:any)=> {

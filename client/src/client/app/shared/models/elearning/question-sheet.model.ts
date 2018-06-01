@@ -31,6 +31,5 @@ export class QuestionSheet extends BaseModel{
 
     static listTemplate( context:APIContext): Observable<any> {
         return QuestionSheet.search(context,[],"[('exam_id','=',False)]");
-        });
     }
 }

@@ -103,7 +103,7 @@ export class GradebookDialog extends BaseComponent {
                         });
                         exam["member"].examScore(this, exam.id).subscribe(score => {
                             exam["member"]["score"] = score;
-                            ExamGrade.listByExam(this, exam.id).subscribe(grades => {
+                            ExamGrade.all(this).subscribe(grades => {
                                 var grade = exam["member"].examGrade(grades, score);
                                 if (grade)
                                     exam["member"]["grade"] = grade.name;

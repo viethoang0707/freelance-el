@@ -374,7 +374,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					this.projects =  projects;
 					_.each(projects, (project) => {
 						project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
-							return submit.project_id == project.id;
+							return submit.project_id == project["id"];
 						});
 						if (project["submit"]) {
 							if (project["submit"].score != null)
