@@ -8,7 +8,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
 @Component({

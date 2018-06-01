@@ -14,7 +14,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { WorkflowService } from '../../../shared/services/workflow.service';
 
@@ -40,7 +40,7 @@ export class CourseDialog extends BaseDialog<Course> {
 	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
 		super();
 		this.treeUtils = new TreeUtils();
-		this.courseStatus = _.map(COURSE_STATUS, (val, key) => {
+		this.courseStatus = _.map(CONTENT_STATUS, (val, key) => {
 			return {
 				label: this.translateService.instant(val),
 				value: key

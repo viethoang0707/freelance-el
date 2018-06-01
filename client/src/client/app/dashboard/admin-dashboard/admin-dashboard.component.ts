@@ -12,7 +12,7 @@ import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '../../shared/models/constants';
+import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, CONTENT_STATUS } from '../../shared/models/constants';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -35,7 +35,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     private header: any;
     private now: Date;
     COURSE_MODE =  COURSE_MODE;
-    COURSE_STATUS = COURSE_STATUS;
+    CONTENT_STATUS = CONTENT_STATUS;
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(CourseDialog) courseDialog: CourseDialog;

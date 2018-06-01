@@ -18,7 +18,9 @@ import { ExamSetting } from '../models/elearning/exam-setting.model';
 import { ExamGrade } from '../models/elearning/exam-grade.model';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '..//models/constants';
+import { Competency } from '../models/elearning/competency.model';
+import { CompetencyLevel } from '../models/elearning/competency-level.model';
+import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, CONTENT_STATUS } from '..//models/constants';
 
 const CACHE_TIMEOUT = 1000 * 60 * 5;
 
@@ -129,6 +131,18 @@ export class GroupCache implements ICache<Group> {
                 cacheService.save('COURSE_GROUP',groups);
             }
         }
+        if (record.category == 'competency') {
+            if (cacheService.hit('COMPETENCY_GROUP')) {
+                var groups = cacheService.load('COMPETENCY_GROUP');
+                if (method == 'CREATE')
+                    groups.push(record);
+                if (method == 'DELETE')
+                    groups = _.reject(groups, (group:Group)=> {
+                        return group.id == record.id;
+                    });
+                cacheService.save('COMPETENCY_GROUP',groups);
+            }
+        }
     }
 
     static listUserGroup(context:APIContext):Observable<any> {
@@ -152,6 +166,14 @@ export class GroupCache implements ICache<Group> {
             return Observable.of(context.cacheService.load('COURSE_GROUP'));
         return Group.search(context,[], "[('category','=','course')]").do(groups=> {
             context.cacheService.save('COURSE_GROUP', groups);
+        });
+    }
+
+    static listCompetencyGroup(context:APIContext):Observable<any> {
+        if (context.cacheService.hit('COMPETENCY_GROUP'))
+            return Observable.of(context.cacheService.load('COMPETENCY_GROUP'));
+        return Group.search(context,[], "[('category','=','competency')]").do(groups=> {
+            context.cacheService.save('COMPETENCY_GROUP', groups);
         });
     }
 
@@ -401,6 +423,58 @@ export class ExamGradeCache implements ICache<ExamGrade> {
             return Observable.of(context.cacheService.load('EXAM_GRADE'));
         return ExamGrade.search(context,[],'[]').do(grades=> {
             context.cacheService.save('EXAM_GRADE',grades);
+        });
+    }
+
+}
+
+export class CompetencyCache implements ICache<Competency> {
+    
+    updateCache(record: CompetencyCache, method:string, cacheService: CacheService) {
+        if (cacheService.hit('COMPETENCY')) {
+            var competencies = cacheService.load('COMPETENCY');
+            if (method == 'CREATE')
+                grades.push(record);
+            if (method == 'DELETE') {
+                competencies = _.reject(competencies, (competency:Competency)=> {
+                    return competency.id == record.id;
+                });
+                cacheService.save('COMPETENCY',competencies);
+            }
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('COMPETENCY'))
+            return Observable.of(context.cacheService.load('COMPETENCY'));
+        return CompetencyCache.search(context,[],'[]').do(competencies=> {
+            context.cacheService.save('COMPETENCY',competencies);
+        });
+    }
+
+}
+
+export class CompetencyLevelCache implements ICache<CompetencyLevel> {
+    
+    updateCache(record: CompetencyLevel, method:string, cacheService: CacheService) {
+        if (cacheService.hit('COMPETENCY_LEVEL')) {
+            var levels = cacheService.load('COMPETENCY_LEVEL');
+            if (method == 'CREATE')
+                grades.push(record);
+            if (method == 'DELETE') {
+                levels = _.reject(levels, (level:CompetencyLevel)=> {
+                    return level.id == record.id;
+                });
+                cacheService.save('COMPETENCY_LEVEL',levels);
+            }
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('COMPETENCY_LEVEL'))
+            return Observable.of(context.cacheService.load('COMPETENCY_LEVEL'));
+        return CompetencyLevel.search(context,[],'[]').do(levels=> {
+            context.cacheService.save('COMPETENCY_LEVEL',levels);
         });
     }
 

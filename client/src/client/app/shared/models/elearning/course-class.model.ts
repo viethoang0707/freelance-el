@@ -18,6 +18,7 @@ export class CourseClass extends BaseModel{
         this.supervisor_name = undefined;
         this.start = undefined;
         this.end = undefined;
+        this.status = undefined;
 	}
 
     name:string;
@@ -25,6 +26,7 @@ export class CourseClass extends BaseModel{
     supervisor_name:string;
     course_id: number;
     supervisor_id: number;
+    status: string;
 
     @FieldProperty<Date>()
     start: Date;

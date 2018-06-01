@@ -11,7 +11,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -35,7 +35,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
-	COURSE_STATUS = COURSE_STATUS;
+	CONTENT_STATUS = CONTENT_STATUS;
 	COURSE_MEMBER_ROLE = COURSE_MEMBER_ROLE;
 	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;

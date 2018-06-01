@@ -33,6 +33,14 @@ export class MenuService {
                     ]
                 },
                 {
+                    label: 'Competency', icon: 'grade',code:'COMPETENCY',
+                    items: [
+                        { label: 'Competency list', routerLink: ['/competency/list'],code:'COMPETENCY-LIST' },
+                        { label: 'Competency category', routerLink: ['/competency/groups'],code:'COMPETENCY-GROUP' },
+                        { label: 'Competency matrix', routerLink: ['/competency/matrix'] ,code:'COMPETENCY-MATRIX'},
+                    ]
+                },
+                {
                     label: 'Analysis', icon: 'pie_chart',code:'ANALYSIS',
                     items: [
                         { label: 'Report', routerLink: ['/analysis/reports'],code:'ANALYSIS-REPORT' },
