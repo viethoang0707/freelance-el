@@ -25,7 +25,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                 <tr>
-                    <td>
+                    <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
                         {{rowData.user_login}} {{rowData.index}} {{rowData.size}}
                     </td>
                     <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
