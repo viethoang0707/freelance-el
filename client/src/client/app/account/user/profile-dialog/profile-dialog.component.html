@@ -7,31 +7,33 @@
             <label>{{'Parent group'|translate}}</label>
             <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
           </div>
-          <div class="ui-g-6 ">
+          <div class="ui-g-6">
             <div class="ui-g">
-              <div class="ui-g-12">
+              <div class="ui-g-12 mt5 mb25">
+                <span class="md-inputfield">
+                  <input type="text" pInputText [(ngModel)]="object.name" name="name">
+                  <label>{{'Name'|translate}}</label>
+                </span>
+              </div>
+              <div class="ui-g-12 mb10">
+                <span class="md-inputfield">
+                  <input type="text" pInputText [(ngModel)]="object.login" name="login" [disabled]="true">
+                  <label>{{'Login'|translate}}</label>
+                </span>
+              </div>
+              <div class="ui-g-6">
+                <div class="mb10" *ngIf="user.IsAdmin">
+                  <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
+                </div>
+                <div *ngIf="user.IsAdmin">
+                  <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="object.banned"></p-checkbox>
+                </div>
+              </div>
+              <div class="ui-g-6">
                 <label>{{'Avatar'|translate}}</label>
                 <image-base64 [(src64)]="object.image"></image-base64>
               </div>
             </div>
-          </div>
-          <div class="ui-g-6">
-            <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.name" name="name">
-              <label>{{'Name'|translate}}</label>
-            </span>
-          </div>
-          <div class="ui-g-6">
-            <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.login" name="login" [disabled]="true">
-              <label>{{'Login'|translate}}</label>
-            </span>
-          </div>
-          <div class="ui-g-12" *ngIf="user.IsAdmin">
-            <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
-          </div>
-          <div class="ui-g-12" *ngIf="user.IsAdmin">
-            <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="object.banned"></p-checkbox>
           </div>
         </div>
       </p-tabPanel>
