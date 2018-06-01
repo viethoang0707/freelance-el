@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
-import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
@@ -44,15 +43,11 @@ export class MessageDialog extends BaseComponent {
 
     send() {
     	var cloudId = this.authService.CloudAcc.id;
-    	var subscription = _.map(this.members, member=> {
-    		return this.apiService.sendMail(this.subject, this.body, member.email, cloudId);
-    	});
-    	this.startTransaction();
-    	Observable.forkJoin(subscriptions).subscribe(()=> {
+    	this.notifService.broadcast(this.subject, this.body, member.email, cloudId).subscribe(()=> {
     		this.succes('Sending mail successfully');
     		this.hide();
     		this.closeTransaction();
-    	})
+    	});
     }
 
 }
