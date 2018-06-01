@@ -26,7 +26,6 @@ import { QuestionSheet } from '../../../../shared/models/elearning/question-shee
 import { Http, Response } from '@angular/http';
 import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
 import 'rxjs/add/observable/timer';
-import * as _ from 'underscore';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
 
 
