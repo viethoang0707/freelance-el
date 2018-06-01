@@ -19,14 +19,15 @@ import { QuestionRegister } from '../question-template/question.decorator';
 	templateUrl: 'question-dialog.component.html',
 })
 export class QuestionDialog extends BaseDialog<Question>  {
-	
+
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
+	private obj: any;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,private changeDetectionRef: ChangeDetectorRef) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver, private changeDetectionRef: ChangeDetectorRef) {
 		super();
 		this.treeUtils = new TreeUtils();
 	}
@@ -39,6 +40,7 @@ export class QuestionDialog extends BaseDialog<Question>  {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
+			this.obj = { selectedNode: object.group_id, title: object.title, level: object.level };
 			Group.listQuestionGroup(this).subscribe(groups => {
 				this.tree = this.treeUtils.buildGroupTree(groups);
 				if (object.group_id) {
@@ -73,13 +75,14 @@ export class QuestionDialog extends BaseDialog<Question>  {
 		})
 	}
 
-	hide(){
-		this.display= false;
+	hide() {
+		this.display = false;
 	}
 
-	saveQuestion(){
+	saveQuestion() {
 		this.save();
 	}
+
 }
 
 

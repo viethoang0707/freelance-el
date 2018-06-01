@@ -17,14 +17,15 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 
 	private tree: TreeNode[];
 	private treeUtils: TreeUtils;
-    private selectedNode: TreeNode;
+	private selectedNode: TreeNode;
+	private obj: any;
 
 	constructor() {
 		super();
 		this.treeUtils = new TreeUtils();
 	}
 
-	nodeSelect(event:any) {
+	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.object.parent_id = this.selectedNode.data.id;
 		}
@@ -32,17 +33,18 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
+			this.obj = { selectedNode: object.parent_id, name: object.name, code: object.code };
 			var subscription = null;
-	        if(object.category == "course")
-	            subscription =  Group.listCourseGroup(this);
-	        if(object.category == "organization")
-	            subscription =  Group.listUserGroup(this);
-	        if(object.category == "question")
-	            subscription =  Group.listQuestionGroup(this);
-	         if (subscription) {
-	         	this.startTransaction();
-	         	subscription.subscribe(groups => {
-	                this.tree = this.treeUtils.buildGroupTree(groups);
+			if (object.category == "course")
+				subscription = Group.listCourseGroup(this);
+			if (object.category == "organization")
+				subscription = Group.listUserGroup(this);
+			if (object.category == "question")
+				subscription = Group.listQuestionGroup(this);
+			if (subscription) {
+				this.startTransaction();
+				subscription.subscribe(groups => {
+					this.tree = this.treeUtils.buildGroupTree(groups);
 					if (object.id) {
 						var node = this.treeUtils.findTreeNode(this.tree, object.id);
 						node.selectable = false;
@@ -51,10 +53,17 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 						this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.parent_id);
 					}
 					this.closeTransaction();
-	            });
-	         }  
-	            
+				});
+			}
+
 		});
+	}
+
+	off() {
+		this.object.parent_id = this.obj.selectedNode;
+		this.object.name = this.obj.name;
+		this.object.code = this.obj.code;
+		this.display = false;
 	}
 
 }

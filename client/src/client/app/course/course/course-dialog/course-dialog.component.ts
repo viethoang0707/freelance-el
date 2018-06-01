@@ -32,14 +32,15 @@ export class CourseDialog extends BaseDialog<Course> {
 	private courseStatus: SelectItem[];
 	private treeUtils: TreeUtils;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
-	private allowToChangeState : boolean;
+	private allowToChangeState: boolean;
 	private submitForReview: boolean;
 	private openTicket: Ticket;
+	private obj: any;
 
-	constructor(private socketService:WebSocketService, private workflowService: WorkflowService) {
+	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
 		super();
 		this.treeUtils = new TreeUtils();
-		this.courseStatus = _.map(COURSE_STATUS, (val, key)=> {
+		this.courseStatus = _.map(COURSE_STATUS, (val, key) => {
 			return {
 				label: this.translateService.instant(val),
 				value: key
@@ -71,29 +72,30 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
+			this.obj = { selectedNode: object.group_id, logo: object.logo, name: object.name, status: object.status, code: object.code, summary: object.summary, description: object.description, author_name: object.author_name };
 			if (object.id)
-				Ticket.byWorkflowObject(this, object.id, Course.Model).subscribe((ticket)=> {
-					this.openTicket =  ticket;
+				Ticket.byWorkflowObject(this, object.id, Course.Model).subscribe((ticket) => {
+					this.openTicket = ticket;
 				});
-			object.supervisor_id =  this.authService.UserProfile.id;
+			object.supervisor_id = this.authService.UserProfile.id;
 			this.checkWorkflow(object);
 			this.buildCourseTree(object);
 		});
-		this.onCreateComplete.subscribe(object=> {
+		this.onCreateComplete.subscribe(object => {
 			if (this.submitForReview)
 				this.review();
 		});
-		this.onUpdateComplete.subscribe(object=> {
+		this.onUpdateComplete.subscribe(object => {
 			if (this.submitForReview)
 				this.review();
 		});
 	}
 
 	checkWorkflow(object) {
-		this.dataAccessService.filter(object, 'SAVE').subscribe(success=> {
-			this.allowToChangeState = !object.supervisor_id || 
-			this.user.IsSuperAdmin || 
-			(success && this.user.id != object.supervisor_id) ;
+		this.dataAccessService.filter(object, 'SAVE').subscribe(success => {
+			this.allowToChangeState = !object.supervisor_id ||
+				this.user.IsSuperAdmin ||
+				(success && this.user.id != object.supervisor_id);
 		});
 	}
 
@@ -110,9 +112,21 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	review() {
 		this.startTransaction();
-		this.workflowService.createCoursePublishTicket(this, this.object).subscribe(ticket=> {
+		this.workflowService.createCoursePublishTicket(this, this.object).subscribe(ticket => {
 			this.closeTransaction();
 		});
+	}
+
+	off() {
+		this.object.name = this.obj.name;
+		this.object.status = this.obj.status;
+		this.object.code = this.obj.code;
+		this.object.summary = this.obj.summary;
+		this.object.description = this.obj.description;
+		this.object.author_name = this.obj.author_name;
+		this.object.logo = this.obj.logo;
+		this.object.group_id = this.obj.selectedNode;
+		this.display = false;
 	}
 }
 

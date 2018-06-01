@@ -18,11 +18,10 @@
           <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
             <label>{{'Name'|translate}}</label>
-            <div *ngIf="name.invalid && (name.dirty || name.touched)"
-              class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="name.errors.required">
-                    {{'Name is required' | translate}}
-                </div>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
+              <div *ngIf="name.errors.required">
+                {{'Name is required' | translate}}
+              </div>
             </div>
           </span>
         </div>
@@ -30,10 +29,9 @@
           <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.code" #code="ngModel" name="code" required>
             <label>{{'Code'|translate}}</label>
-            <div *ngIf="code.invalid && (code.dirty || code.touched)" 
-              class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="code.invalid && (code.dirty || code.touched)" class="ui-message ui-messages-error ui-corner-all">
               <div *ngIf="code.errors.required">
-                  {{'Code is required' | translate}}
+                {{'Code is required' | translate}}
               </div>
             </div>
           </span>
@@ -47,10 +45,12 @@
             <div>
               <label>{{'Mode'|translate}}</label>
               <div style="margin:10px 0">
-                <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1" #mode="ngModel" required></p-radioButton>
+                <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode"
+                  inputId="opt1" #mode="ngModel" required></p-radioButton>
               </div>
               <div style="margin-bottom:10px">
-                <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode" inputId="opt2" required></p-radioButton>
+                <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode"
+                  inputId="opt2" required></p-radioButton>
               </div>
               <div *ngIf="mode.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
                 <div *ngIf="mode.errors.required">
@@ -59,7 +59,8 @@
               </div>
             </div>
             <div>
-              <button type="button" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}" (click)="selectAuthor()"></button>
+              <button type="button" pButton icon="ui-icon-change-history" label="{{object.author_id?translateService.instant('Author') +':'+ object.author_name:translateService.instant('Select author')}}"
+                (click)="selectAuthor()"></button>
             </div>
           </div>
           <div class="ui-g-6">
@@ -79,6 +80,6 @@
   </p-scrollPanel>
   <p-footer>
     <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="selectedNode==null"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    <button type="button" pButton icon="fa-close" (click)="off()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>
