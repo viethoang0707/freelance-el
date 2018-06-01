@@ -101,18 +101,19 @@ export class ExamContentDialog extends BaseComponent {
 	clearSheet() {
 		this.sheet.finalized =  false;
 		var subscriptions = _.map(this.examQuestions, examQuestion=> {
-			return examQuestion.delete(this);
+			if (examQuestion["id"])
+				return examQuestion.delete(this);
+			return Observable.of(true);
 		});
 		subscriptions.push(this.sheet.save(this));
 		
 		Observable.forkJoin(subscriptions).subscribe(()=> {
 			this.examQuestions = [];
-			
 		});
 	}
 
 	loadSheetTemplate() {
-		if (!this.sheet.finalized  && this.examQuestions.length ==0)
+		if (this.sheet && !this.sheet.finalized )
 			this.selectSheetDialog.show();
 			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:QuestionSheet) => {
 				
@@ -125,14 +126,8 @@ export class ExamContentDialog extends BaseComponent {
 						return newExamQuestion; 
 					});
 					this.sheet.finalized =  true;
-					var subscriptions = _.map(examQuestions, examQuestion=> {
-						return examQuestion.save(this);
-					});
-					subscriptions.push(this.sheet.save(this));
-					Observable.forkJoin(subscriptions).subscribe(()=> {
-						this.loadQuestionSheet();
-						
-					});
+					this.examQuestions = examQuestions;
+					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
 				});
 			});
 	}
@@ -146,15 +141,14 @@ export class ExamContentDialog extends BaseComponent {
 	designSheet() {
 		if (this.sheet && !this.sheet.finalized) {
 			this.editorDialog.show();
-			this.editorDialog.onSave.subscribe((examQuestions)=> {
-				var subscriptions = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
+			this.editorDialog.onSave.subscribe(examQuestions=> {
+				_.each(examQuestions, (examQuestion:ExamQuestion)=> {
 					examQuestion.sheet_id =  this.sheet.id;
-					return examQuestion.save(this);
 				});
-				Observable.forkJoin(subscriptions).subscribe(()=> {
-					this.loadQuestionSheet();
-				});
-			})
+				this.sheet.finalized =  true;
+				this.examQuestions = examQuestions;
+				this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
+			});
 		}
 	}
 }

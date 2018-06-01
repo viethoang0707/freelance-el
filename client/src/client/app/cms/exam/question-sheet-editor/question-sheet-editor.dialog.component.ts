@@ -39,6 +39,10 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	constructor() {
 		super();
 		this.treeUtils = new TreeUtils();
+		
+	}
+
+	ngOnInit() {
 		this.examQuestions = [];
 		this.tree = {};
 		this.selectorGroups = {};
@@ -51,9 +55,6 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 			this.selectorGroups[key]["group_ids"] = [];
 			this.selectedNodes[key] = [];
 		});
-	}
-
-	ngOnInit() {
 		this.startTransaction();
 		Group.listQuestionGroup(this).subscribe(groups => {
 			_.each(QUESTION_LEVEL, (val, key) => {
@@ -77,6 +78,9 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 			var examQuestion = new ExamQuestion();
 			examQuestion.question_id = question.id;
 			examQuestion.score = score;
+			examQuestion.title = question.title;
+			examQuestion.group_id = question.group_id;
+			examQuestion.group_id__DESC__ = question.group_id__DESC__;
 			return examQuestion;
 		});
 	}
