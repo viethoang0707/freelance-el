@@ -1,75 +1,118 @@
 <p-dialog header="{{'Student list'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true" appendTo="body">
-  <p-scrollPanel [style]="{width: '100%', height: '480px'}">
-    <div class="ui-g-12 ">
-      <p-toolbar>
-        <div class="ui-toolbar-group-left">
-          <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook() " *ngIf="!selectedRecord"></button>
+    <p-scrollPanel [style]="{width: '100%', height: '480px'}">
+        <div class="ui-g-12 ">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                    <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook() " *ngIf="!selectedRecord"></button>
+                </div>
+                <div class="ui-toolbar-group-right">
+                    <p-selectButton [options]="viewModes" [(ngModel)]="viewMode"></p-selectButton>
+                </div>
+            </p-toolbar>
+            <div [hidden]="viewMode=='detail'">
+                <p-table #outlineTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th [pSortableColumn]="'name'">
+                                {{'Name'|translate}}
+                                <p-sortIcon [field]="'name'"></p-sortIcon>
+                            </th>
+                            <th [pSortableColumn]="'email'">
+                                {{'Email'|translate}}
+                                <p-sortIcon [field]="'email'"></p-sortIcon>
+                            </th>
+                            <th [pSortableColumn]="'group_id__DESC__'">
+                                {{'Group'|translate}}
+                                <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                            </th>
+                            <th [pSortableColumn]="'enroll_status'">
+                                {{'Enroll status'|translate}}
+                                <p-sortIcon [field]="'enroll_status'"></p-sortIcon>
+                            </th>
+                            <th>
+                                {{'First attempt'|translate}}
+                            </th>
+                            <th>
+                                {{'Last attempt'|translate}}
+                            </th>
+                            <th>
+                                {{'Time spend'|translate}}
+                            </th>
+                            <th>
+                                {{'% completion'|translate}}
+                            </th>
+                            <th>
+                                {{'Certificate'|translate}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-record>
+                        <tr [pSelectableRow]="record">
+                            <td>{{record.name}}</td>
+                            <td>{{record.email}}</td>
+                            <td>{{record.group_id__DESC__}}</td>
+                            <td>{{record.first_attempt}} %</td>
+                            <td>{{record.last_attempt}} %</td>
+                            <td>{{record.time_spent}} {{'minute'|translate}}</td>
+                            <td>{{record.completion}} %</td>
+                            <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status]}}</td>
+                            <td>{{record.certificate !=null}} %</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        {{'Total records'|translate}} : {{records?.length}}
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td [attr.colspan]="9">
+                                {{'No records found'|translate}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <div [hidden]="viewMode=='outline'">
+                <p-table #detailTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th [pSortableColumn]="'name'">
+                                {{'Name'|translate}}
+                                <p-sortIcon [field]="'name'"></p-sortIcon>
+                            </th>
+                            <th [pSortableColumn]="'group_id__DESC__'">
+                                {{'Group'|translate}}
+                                <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                            </th>
+
+                            <th *ngFor="let unit of courseUnits">
+                                {{unit.name}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-record>
+                        <tr [pSelectableRow]="record">
+                            <td>{{record.name}}</td>
+                            <td>{{record.group_id__DESC__}}</td>
+                            <td *ngFor="let unit of courseUnits">{{checkUnitComplete(record,unit)}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        {{'Total records'|translate}} : {{records?.length}}
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td [attr.colspan]="9">
+                                {{'No records found'|translate}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
         </div>
-      </p-toolbar>
-      <p-table #classTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
-        <ng-template pTemplate="header">
-          <tr>
-            <th [pSortableColumn]="'name'">
-              {{'Name'|translate}}
-              <p-sortIcon [field]="'name'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'email'">
-              {{'Email'|translate}}
-              <p-sortIcon [field]="'email'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'group_id__DESC__'">
-              {{'Group'|translate}}
-              <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'enroll_status'">
-              {{'Enroll status'|translate}}
-              <p-sortIcon [field]="'enroll_status'"></p-sortIcon>
-            </th>
-            <th>
-              {{'First attempt'|translate}}
-            </th>
-            <th>
-              {{'Last attempt'|translate}}
-            </th>
-            <th>
-              {{'Time spend'|translate}}
-            </th>
-            <th>
-              {{'% completion'|translate}}
-            </th>
-            <th>
-              {{'Certificate'|translate}}
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-record>
-          <tr [pSelectableRow]="record">
-            <td>{{record.name}}</td>
-            <td>{{record.email}}</td>
-            <td>{{record.group_id__DESC__}}</td>
-            <td>{{record.first_attempt}} %</td>
-            <td>{{record.last_attempt}} %</td>
-            <td>{{record.time_spent}} {{'minute'|translate}}</td>
-            <td>{{record.completion}} %</td>
-            <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status]}}</td>
-            <td>{{record.certificate !=null}} %</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-          {{'Total records'|translate}} : {{records?.length}}
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td [attr.colspan]="9">
-              {{'No records found'|translate}}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </p-scrollPanel>
-  <gradebook-dialog></gradebook-dialog>
-  <p-footer>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+    </p-scrollPanel>
+    <gradebook-dialog></gradebook-dialog>
+    <p-footer>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
 </p-dialog>

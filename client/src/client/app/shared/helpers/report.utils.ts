@@ -35,7 +35,7 @@ export class ReportUtils {
 		return rowGroupMetadata;
 	}
 
-	analyzeCourseActivity(logs: CourseLog[]): any {
+	analyzeCourseMemberActivity(logs: CourseLog[]): any {
 		var onTime = 0;
 		var startCourseUnitLogs = _.filter(logs, (log) => {
 			return log.start != null && log.code == 'START_COURSE_UNIT';
@@ -69,7 +69,9 @@ export class ReportUtils {
 		return [first_attempt.start, last_attempt.start, timeforunit, unitCount];
 	}
 
-	analyzeExamActivity(logs: ExamLog[]) {
+	
+
+	analyzeExamMemberActivity(logs: ExamLog[]) {
 		var onTime = 0;
 		var startCourseUnitLogs = _.filter(logs, (log) => {
 			return log.start && log.code == 'START_EXAM';

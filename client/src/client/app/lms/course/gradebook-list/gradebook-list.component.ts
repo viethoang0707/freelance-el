@@ -30,11 +30,18 @@ export class GradebookListDialog extends BaseComponent {
 	private display: boolean;
 	private courseClass: CourseClass;
 	private reportUtils: ReportUtils;
+	private viewModes:SelectItem[];
+	private viewMode: any;
+	private courseUnits: CourseUnit[];
 	@ViewChild(GradebookDialog) gradebookDialog : GradebookDialog;
 
 	constructor(private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
 		this.reportUtils = new ReportUtils();
+		this.viewModes = [
+            { value: 'outline',title: 'Outline',  icon: 'ui-icon-dehaze'},
+            { value: 'detail', title: 'Detail', icon: 'ui-icon-apps'},
+        ];
 	}
 
 	ngOnInit() {
@@ -49,22 +56,24 @@ export class GradebookListDialog extends BaseComponent {
 			this.gradebookDialog.show(this.selectedRecord);
 	}
 
-	show(courseClass: CourseClass) {
-		this.display = true;
-		this.courseClass = courseClass;
+	loadMemberStats() {
 		this.startTransaction();
 		CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 			this.records = _.filter(members, (member)=> {
 				return member.role =='student';
 			});
-			CourseSyllabus.byCourse(this, courseClass.course_id).subscribe(syllabus=> {
-				CourseUnit.countBySyllabus(this, syllabus.id).subscribe(totalUnit=> {
+			CourseSyllabus.byCourse(this, this.courseClass.course_id).subscribe(syllabus=> {
+				CourseUnit.listBySyllabus(this, syllabus.id).subscribe(courseUnits=> {
+					this.courseUnits = _.filter(courseUnits, unit=> {
+						return unit.type !='folder';
+					});
+					var totalUnit = this.courseUnits.length;
 					_.each(this.records,(record=> {
 						Certificate.byMember(this, record["id"]).subscribe(certificate=> {
 							record["certificate"] = certificate;
 						});
 						CourseLog.userStudyActivity(this,record["user_id"], this.courseClass.id).subscribe(logs => {
-							var result = this.reportUtils.analyzeCourseActivity(logs);
+							var result = this.reportUtils.analyzeCourseMemberActivity(logs);
 						    if (result[0] != Infinity)
 						    	record["first_attempt"] =  this.datePipe.transform(result[0],EXPORT_DATETIME_FORMAT);
 					    	if (result[1] != Infinity)
@@ -74,11 +83,29 @@ export class GradebookListDialog extends BaseComponent {
 						    	record["completion"] = Math.floor(+result[3]*100/+totalUnit);
 						    else
 						    	record["completion"] = 0;
+						    record["logs"] = logs;
 						});
 					}));
 					this.closeTransaction();
 				});
 			});
 		});
+	}
+
+	checkUnitComplete(record, unit) {
+		var log = _.find(record["logs"],log=> {
+			return log.res_model == CourseUnit.Model && log.res_id == unit.id && log.code =='COMPLETE_COURSE_UNIT';
+		});
+		if (log)
+			return 1;
+		else
+			return 0;
+	}
+
+	show(courseClass: CourseClass) {
+		this.display = true;
+		this.viewMode = "outline";
+		this.courseClass = courseClass;
+		this.loadMemberStats();
 	}
 }

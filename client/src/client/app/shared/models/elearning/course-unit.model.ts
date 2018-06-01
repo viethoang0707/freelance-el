@@ -43,6 +43,6 @@ export class CourseUnit extends BaseModel{
     }
 
     static countBySyllabus(context:APIContext, sylId:number):Observable<any> {
-        return CourseUnit.count(context, "[('syllabus_id','=',"+sylId+")]");
+        return CourseUnit.count(context, "[('syllabus_id','=',"+sylId+"),('type','!=','folder')]");
     }
 }
