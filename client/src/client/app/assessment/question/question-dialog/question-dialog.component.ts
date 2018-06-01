@@ -83,12 +83,6 @@ export class QuestionDialog extends BaseDialog<Question>  {
 		this.save();
 	}
 
-	out() {
-		this.object.title = this.obj.title;
-		this.object.level = this.obj.level;
-		this.object.group_id = this.obj.selectedNode;
-		this.display = false;
-	}
 }
 
 
