@@ -28,6 +28,8 @@ export class CourseByMemberReportComponent extends BaseComponent{
 	private rowGroupMetadata: any;
 	GROUP_CATEGORY = GROUP_CATEGORY;
     private reportUtils: ReportUtils;
+    COURSE_MODE = COURSE_MODE;
+    COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
 
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
