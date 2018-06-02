@@ -73,6 +73,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 .subscribe(courses => {
                     console.log(courses);
                     this.courses  = courses;
+                    this.courses.sort((course1, course2): any => {
+                        if (course1.create_date > course2.create_date)
+                            return -1;
+                        else if (course1.create_date < course2.create_date)
+                            return 1;
+                        else
+                            return 0;
+                    });
                     _.each(this.courses , (course) => {
                         if (course.syllabus_id)
                             CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
@@ -119,6 +127,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         this.exams = _.filter(exams, (exam) => {
                             return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
                         });
+                        this.exams.sort((exam1, exam2): any => {
+                            if (exam1.create_date > exam2.create_date)
+                                return -1;
+                            else if (exam1.create_date < exam2.create_date)
+                                return 1;
+                            else
+                                return 0;
+                        });
                         this.closeTransaction();
                     });
              });
@@ -140,7 +156,15 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         });
                     });
                     this.confMembers = members;
-                });
+                    this.confMembers.sort((confMember1, confMember2): any => {
+                        if (confMember1.create_date > confMember2.create_date)
+                            return -1;
+                        else if (confMember1.create_date < confMember2.create_date)
+                            return 1;
+                        else
+                            return 0;
+                        });
+            });
                 this.closeTransaction();
             });
     }
