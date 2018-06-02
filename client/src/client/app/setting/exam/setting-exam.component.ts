@@ -11,6 +11,7 @@ import * as _ from 'underscore';
     moduleId: module.id,
     selector: 'setting-exam',
     templateUrl: 'setting-exam.component.html',
+    styleUrls: ['setting-exam.component.css'],
 })
 export class SettingExamComponent extends BaseComponent implements OnInit {
 

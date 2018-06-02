@@ -496,4 +496,15 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
    to {transform: rotate(359deg);}
 }
 
+body .settings-exam .ui-fluid .ui-spinner .ui-spinner-button{
+  margin: 0;
+}
 
+.settings-exam .options-question .md-inputfield .ui-inputtext{
+  width: 100%;
+}
+
+.setting-exam{
+  height: 400px;
+  overflow: auto;
+}
