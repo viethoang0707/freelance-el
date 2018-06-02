@@ -154,7 +154,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 				this.error(this.translateService.instant('Cannot delete non-empty folder'));
 				return;
 			}
-            this.confirm('Are you sure to delete ?', () => {
+            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             	this.startTransaction();
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();

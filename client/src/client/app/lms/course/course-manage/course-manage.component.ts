@@ -203,7 +203,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	deleteMaterial() {
 		if (this.selectedMaterial)
-			this.confirm('Are you sure to delete ?',() => {
+			this.confirm(this.translateService.instant('Are you sure to delete?'),() => {
 				this.startTransaction();
 				this.selectedMaterial.delete(this).subscribe(() => {
 					this.loadMaterials();
