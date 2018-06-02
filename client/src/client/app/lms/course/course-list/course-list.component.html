@@ -41,9 +41,8 @@
                   <p [innerHTML]="course.description"></p>
                 </p-accordionTab>
               </p-accordion>
-            </div>
-
-            <div class="ui-g-12 status-bars" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group'">
+              
+              <div class="status-bars" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group'">
               <!-- <div class="card"> -->
                 <ul>
                   <li>
@@ -69,8 +68,10 @@
                   </li>
                 </ul>
               <!-- </div> -->
+              </div>
             </div>
           </div>
+          
           <div class="ui-g-4">
             <p-card styleClass="lms-course-detail">
               <ul class="list-cmt">
