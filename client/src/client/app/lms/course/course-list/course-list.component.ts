@@ -6,7 +6,7 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE } from '../../../shared/models/constants'
 import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
@@ -29,7 +29,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     private courses: Course[];
     private currentUser: User;
     private reportUtils: ReportUtils;
-    COURSE_STATUS = COURSE_STATUS;
+    CONTENT_STATUS = CONTENT_STATUS;
     COURSE_MODE = COURSE_MODE;
     @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;
 

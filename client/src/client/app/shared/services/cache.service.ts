@@ -18,7 +18,9 @@ import { ExamSetting } from '../models/elearning/exam-setting.model';
 import { ExamGrade } from '../models/elearning/exam-grade.model';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, COURSE_STATUS } from '..//models/constants';
+import { Competency } from '../models/elearning/competency.model';
+import { CompetencyLevel } from '../models/elearning/competency-level.model';
+import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, CONTENT_STATUS } from '..//models/constants';
 
 const CACHE_TIMEOUT = 1000 * 60 * 5;
 
@@ -32,26 +34,23 @@ export class CacheService {
     }
 
     objectChage(record, method) {
-        if (record.Model == Group.Model) {
-            var groupCache = new GroupCache();
-            groupCache.updateCache(record, method, this);
-        }
-        if (record.Model == User.Model) {
-            var userCache = new UserCache();
-            userCache.updateCache(record, method, this);
-        }
-        if (record.Model == Course.Model) {
-            var courseCache = new CourseCache();
-            courseCache.updateCache(record, method, this);
-        }
-        if (record.Model == Question.Model) {
-            var questionCache = new QuestionCache();
-            questionCache.updateCache(record, method, this);
-        }
-        if (record.Model == Exam.Model) {
-            var examCache = new ExamCache();
-            examCache.updateCache(record, method, this);
-        }
+        var cache = null;
+        if (record.Model == Group.Model) 
+            cache = new GroupCache();
+        if (record.Model == User.Model) 
+            cache = new UserCache();
+        if (record.Model == Course.Model) 
+            cache = new CourseCache();
+        if (record.Model == Question.Model) 
+            cache = new QuestionCache();
+        if (record.Model == Exam.Model) 
+            cache = new ExamCache();
+        if (record.Model == Competency.Model) 
+            cache = new CompetencyCache();
+        if (record.Model == CompetencyLevel.Model) 
+            cache = new CompetencyLevelCache();
+        if (cache)
+            cache.updateCache(record, method, this);
     }
 
 
@@ -129,6 +128,18 @@ export class GroupCache implements ICache<Group> {
                 cacheService.save('COURSE_GROUP',groups);
             }
         }
+        if (record.category == 'competency') {
+            if (cacheService.hit('COMPETENCY_GROUP')) {
+                var groups = cacheService.load('COMPETENCY_GROUP');
+                if (method == 'CREATE')
+                    groups.push(record);
+                if (method == 'DELETE')
+                    groups = _.reject(groups, (group:Group)=> {
+                        return group.id == record.id;
+                    });
+                cacheService.save('COMPETENCY_GROUP',groups);
+            }
+        }
     }
 
     static listUserGroup(context:APIContext):Observable<any> {
@@ -152,6 +163,14 @@ export class GroupCache implements ICache<Group> {
             return Observable.of(context.cacheService.load('COURSE_GROUP'));
         return Group.search(context,[], "[('category','=','course')]").do(groups=> {
             context.cacheService.save('COURSE_GROUP', groups);
+        });
+    }
+
+    static listCompetencyGroup(context:APIContext):Observable<any> {
+        if (context.cacheService.hit('COMPETENCY_GROUP'))
+            return Observable.of(context.cacheService.load('COMPETENCY_GROUP'));
+        return Group.search(context,[], "[('category','=','competency')]").do(groups=> {
+            context.cacheService.save('COMPETENCY_GROUP', groups);
         });
     }
 
@@ -190,7 +209,7 @@ export class UserCache implements ICache<User> {
     static allAdmin( context:APIContext): Observable<any[]> {
         if (context.cacheService.hit('USER'))
             return Observable.of(context.cacheService.load('USER')).map(users=> {
-                return users = _.filter(users, (user:User)=> {
+                return  _.filter(users, (user:User)=> {
                     return user.is_admin;
                 });
             });
@@ -214,6 +233,7 @@ export class UserCache implements ICache<User> {
                 users = _.filter(users, (user:User)=> {
                     return user.group_id == groupId;
                 });
+                return users;
             });
         return User.search(context,[], "[('group_id','=',"+groupId+")]");
     }
@@ -224,6 +244,7 @@ export class UserCache implements ICache<User> {
                 users = _.filter(users, (user:User)=> {
                     return user.permission_id == permissionId;
                 });
+                return users;
             });
         return User.search(context,[], "[('permission_id','=',"+permissionId+")]");
     }
@@ -258,6 +279,7 @@ export class CourseCache implements ICache<Course> {
                 courses = _.filter(courses, (course:Course)=> {
                     return course.author_id == authorId;
                 });
+                return courses;
             });
         return Course.search(context,[], "[('author_id','=',"+authorId+")]");
     }
@@ -268,6 +290,7 @@ export class CourseCache implements ICache<Course> {
                 courses = _.filter(courses, (course:Course)=> {
                     return course.group_id == groupId;
                 });
+                return courses;
             });
         return Course.search(context,[], "[('group_id','=',"+groupId+")]");
     }
@@ -278,6 +301,7 @@ export class CourseCache implements ICache<Course> {
                 courses = _.filter(courses, (course:Course)=> {
                     return course.group_id == groupId && course.mode == mode;
                 });
+                return courses;
             });
         return Course.search(context,[], "[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
@@ -324,6 +348,7 @@ export class QuestionCache implements ICache<Question> {
                 questions = _.filter(questions, (q:Question)=> {
                     return q.group_id == groupId;
                 });
+                return questions;
             });
         return Question.search(context,[], "[('group_id','=',"+groupId+")]");
     }
@@ -402,6 +427,80 @@ export class ExamGradeCache implements ICache<ExamGrade> {
         return ExamGrade.search(context,[],'[]').do(grades=> {
             context.cacheService.save('EXAM_GRADE',grades);
         });
+    }
+
+}
+
+export class CompetencyCache implements ICache<Competency> {
+    
+    updateCache(record: CompetencyCache, method:string, cacheService: CacheService) {
+        if (cacheService.hit('COMPETENCY')) {
+            var competencies = cacheService.load('COMPETENCY');
+            if (method == 'CREATE')
+                competencies.push(record);
+            if (method == 'DELETE') {
+                competencies = _.reject(competencies, (competency:Competency)=> {
+                    return competency.id == record.id;
+                });
+                cacheService.save('COMPETENCY',competencies);
+            }
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('COMPETENCY'))
+            return Observable.of(context.cacheService.load('COMPETENCY'));
+        return Competency.search(context,[],'[]').do(competencies=> {
+            context.cacheService.save('COMPETENCY',competencies);
+        });
+    }
+
+    static listByGroup(context:APIContext, groupId):Observable<any> {
+        if (context.cacheService.hit('COMPETENCY'))
+            return Observable.of(context.cacheService.load('COMPETENCY')).map(competencies=> {
+                competencies = _.filter(competencies, (c:Competency)=> {
+                    return c.group_id == groupId;
+                });
+                return competencies;
+            });
+        return Competency.search(context,[], "[('group_id','=',"+groupId+")]");
+    }
+
+}
+
+export class CompetencyLevelCache implements ICache<CompetencyLevel> {
+    
+    updateCache(record: CompetencyLevel, method:string, cacheService: CacheService) {
+        if (cacheService.hit('COMPETENCY_LEVEL')) {
+            var levels = cacheService.load('COMPETENCY_LEVEL');
+            if (method == 'CREATE')
+                levels.push(record);
+            if (method == 'DELETE') {
+                levels = _.reject(levels, (level:CompetencyLevel)=> {
+                    return level.id == record.id;
+                });
+                cacheService.save('COMPETENCY_LEVEL',levels);
+            }
+        }
+    }
+
+    static all( context:APIContext): Observable<any[]> {
+        if (context.cacheService.hit('COMPETENCY_LEVEL'))
+            return Observable.of(context.cacheService.load('COMPETENCY_LEVEL'));
+        return CompetencyLevel.search(context,[],'[]').do(levels=> {
+            context.cacheService.save('COMPETENCY_LEVEL',levels);
+        });
+    }
+
+    static listByCompetency(context:APIContext, competencyId):Observable<any> {
+        if (context.cacheService.hit('COMPETENCY_LEVEL'))
+            return Observable.of(context.cacheService.load('COMPETENCY_LEVEL')).map(levels=> {
+                levels = _.filter(levels, (l:CompetencyLevel)=> {
+                    return l.competency_id == competencyId;
+                });
+                return levels;
+            });
+        return CompetencyLevel.search(context,[], "[('competency_id','=',"+competencyId+")]");
     }
 
 }

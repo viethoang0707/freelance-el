@@ -44,4 +44,8 @@ export class Conference extends BaseModel{
                 return null;
         });
     }
+
+    static listOpenConference(context:APIContext):Observable<any> {
+        return Conference.search(context,[],"[('status','=','open')]");
+    }
 }

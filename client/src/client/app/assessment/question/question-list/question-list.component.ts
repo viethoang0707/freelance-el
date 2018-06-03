@@ -107,9 +107,9 @@ export class QuestionListComponent extends BaseComponent {
 
     filterQuestion() {
         if (this.selectedGroupNodes.length != 0) {
-            this.displayQuestions = _.filter(this.questions, course => {
+            this.displayQuestions = _.filter(this.questions, question => {
                 var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
-                    return node.data.id == course.group_id;
+                    return node.data.id == question.group_id;
                 });
                 return parentGroupNode != null;
             });

@@ -10,7 +10,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus }  from '../../../shared/models/elearning/course-syllabus.model';
 import { TreeNode, MenuItem, SelectItem } from 'primeng/api';
-import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, COURSE_STATUS } from '../../../shared/models/constants';
+import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, CONTENT_STATUS } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-setting.dialog.component';
@@ -64,7 +64,7 @@ export class CourseSyllabusDialog extends BaseComponent {
         ];
         this.syl = new CourseSyllabus();
         this.course = new Course();
-        this.courseStatus = _.map(COURSE_STATUS, (val, key)=> {
+        this.courseStatus = _.map(CONTENT_STATUS, (val, key)=> {
 			return {
 				label: this.translateService.instant(val),
 				value: key

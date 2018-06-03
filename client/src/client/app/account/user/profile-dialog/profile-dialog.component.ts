@@ -28,7 +28,6 @@ export class UserProfileDialog extends BaseDialog<User> {
 	private selectedNode: TreeNode;
 	private members: CourseMember[];
 	private treeUtils: TreeUtils;
-	private obj: any;
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
@@ -48,7 +47,6 @@ export class UserProfileDialog extends BaseDialog<User> {
 	ngOnInit() {
 		this.user = this.authService.UserProfile;
 		this.onShow.subscribe(object => {
-			this.obj = { selectedNode: object.group_id, image: object.image, name: object.name, email: object.email, phone: object.phone, is_admin: object.is_admin, banned: object.banned };
 			this.startTransaction();
 			Group.listUserGroup(this).subscribe(groups => {
 				this.tree = this.treeUtils.buildGroupTree(groups);
@@ -80,15 +78,5 @@ export class UserProfileDialog extends BaseDialog<User> {
 		this.certPrintDialog.show(certificate);
 	}
 
-	off() {
-		this.object.group_id = this.obj.selectedNode;
-		this.object.image = this.obj.image;
-		this.object.name = this.obj.name;
-		this.object.email = this.obj.email;
-		this.object.phone = this.obj.phone;
-		this.object.is_admin = this.obj.is_admin;
-		this.object.banned = this.obj.banned;
-		this.display = false;
-	}
 }
 

@@ -18,6 +18,7 @@ export class CourseClass extends BaseModel{
         this.supervisor_name = undefined;
         this.start = undefined;
         this.end = undefined;
+        this.status = undefined;
 	}
 
     name:string;
@@ -25,11 +26,21 @@ export class CourseClass extends BaseModel{
     supervisor_name:string;
     course_id: number;
     supervisor_id: number;
+    status: string;
 
     @FieldProperty<Date>()
     start: Date;
     @FieldProperty<Date>()
     end: Date;
+
+    get IsAvailable():boolean {
+        if (this.status !='open')
+            return false;
+        var now = new Date();
+        if (this.end.getTime() < now.getTime())
+            return false;
+        return true;
+    }
 
     static listByCourse(context:APIContext, courseId):Observable<any> {
         return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
