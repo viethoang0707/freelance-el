@@ -73,7 +73,7 @@ export class ClassConferenceDialog extends BaseComponent {
 			this.conference.status = 'open';
 			this.startTransaction();
 			this.conference.save(this).subscribe(()=> {
-				this.info('Conference open');
+				this.info(this.translateService.instant('Conference open'));
 				this.closeTransaction();
 			});
 		}
@@ -86,7 +86,7 @@ export class ClassConferenceDialog extends BaseComponent {
 				this.conference.class_id =  this.courseClass.id;
 				this.conference.status = 'open';
 				this.conference.save(this).subscribe(()=> {
-					this.info('Conference open');
+					this.info(this.translateService.instant('Conference open'));
 					_.each(this.members, (member)=> {
 						RoomMember.createRoomMember(this, member.name, member.image, room.id, member.role).subscribe(roomMember => {
 							var conferenceMember = new ConferenceMember();
