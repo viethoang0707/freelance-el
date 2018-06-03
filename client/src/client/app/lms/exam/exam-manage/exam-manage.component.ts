@@ -141,5 +141,14 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         this.statsDialog.show(this.exam);
     }
 
+    closeExam() {
+        if (this.selectedRecord) {
+            this.selectedRecord.status = 'closed';
+            this.selectedRecord.save(this).subscribe(()=> {
+                this.success('Exam close');
+            });
+        }
+    }
+
 }
 

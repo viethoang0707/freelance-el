@@ -11,6 +11,8 @@ import { TreeNode } from 'primeng/api';
 import { CourseUnitRegister } from '../course-unit-template/unit.decorator';
 import { CourseUnitContainerDirective } from '../course-unit-template/unit-container.directive';
 import { ICourseUnit } from '../course-unit-template/unit.interface';
+import { SelectItem, MenuItem } from 'primeng/api';
+import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 
 @Component({
 	moduleId: module.id,
@@ -28,10 +30,17 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
+	private contentStatus: SelectItem[];
 
 	constructor( private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.treeUtils = new TreeUtils();
+		this.contentStatus = _.map(CONTENT_STATUS, (val, key) => {
+			return {
+				label: this.translateService.instant(val),
+				value: key
+			}
+		});
 	}
 
 	ngOnInit() {

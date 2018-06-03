@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { CompetencyComponent } from './competency.component'
 import { CompetencyListComponent } from './competency-list/competency-list.component';
-import { CompetencyDialog } from './competency-dialog/question-competency.component';
+import { CompetencyDialog } from './competency-dialog/competency-dialog.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
+import { CompetencyMatrixComponent } from './competency-matrix/competency-matrix.component';
 
 export const CompetencyRoutes: Routes = [
   {
@@ -21,6 +22,13 @@ export const CompetencyRoutes: Routes = [
         component: CompetencyListComponent,
         data: {
           breadcrumb: 'List'
+        }
+      },
+      {
+        path: "matrix",
+        component: CompetencyMatrixComponent,
+        data: {
+          breadcrumb: 'Matrix'
         }
       },
       {

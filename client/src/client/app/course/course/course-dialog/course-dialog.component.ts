@@ -17,6 +17,7 @@ import { SelectItem, MenuItem } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { WorkflowService } from '../../../shared/services/workflow.service';
+import { SelectCompetencyLevelDialog } from '../../../shared/components/select-competency-level-dialog/select-competency-level-dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -32,10 +33,10 @@ export class CourseDialog extends BaseDialog<Course> {
 	private courseStatus: SelectItem[];
 	private treeUtils: TreeUtils;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
+	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 	private allowToChangeState: boolean;
 	private submitForReview: boolean;
 	private openTicket: Ticket;
-	private obj: any;
 
 	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
 		super();
@@ -70,9 +71,18 @@ export class CourseDialog extends BaseDialog<Course> {
 		});
 	}
 
+	selectCompetencyLevel() {
+		this.competencyLevelDialog.show();
+		this.competencyLevelDialog.onSelectCompetencyLevel.subscribe(level => {
+				this.object.competency_level_id = level.id;
+				this.object.competency_level_name = level.name;
+				this.object.competency_id = level.competency_id;
+				this.object.competency_name = level.competency_name;
+		});
+	}
+
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			this.obj = { selectedNode: object.group_id, logo: object.logo, name: object.name, status: object.status, code: object.code, summary: object.summary, description: object.description, author_name: object.author_name };
 			if (object.id)
 				Ticket.byWorkflowObject(this, object.id, Course.Model).subscribe((ticket) => {
 					this.openTicket = ticket;
@@ -117,16 +127,5 @@ export class CourseDialog extends BaseDialog<Course> {
 		});
 	}
 
-	off() {
-		this.object.name = this.obj.name;
-		this.object.status = this.obj.status;
-		this.object.code = this.obj.code;
-		this.object.summary = this.obj.summary;
-		this.object.description = this.obj.description;
-		this.object.author_name = this.obj.author_name;
-		this.object.logo = this.obj.logo;
-		this.object.group_id = this.obj.selectedNode;
-		this.display = false;
-	}
 }
 

@@ -109,7 +109,9 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.startTransaction();
     	CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
         	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
-				this.units = units;
+				this.units = _.filter(units, (unit:CourseUnit)=> {
+					return unit.status == 'published';
+				});
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.closeTransaction();
 	        });
@@ -224,5 +226,16 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
 	}
+
+
+
+    closeClass() {
+        if (this.selectedClass) {
+            this.selectedClass.status = 'closed';
+            this.selectedClass.save(this).subscribe(()=> {
+                this.success('Class close');
+            });
+        }
+    }
 }
 

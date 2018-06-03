@@ -70,7 +70,10 @@ export class GradebookListDialog extends BaseComponent {
 					var totalUnit = this.courseUnits.length;
 					_.each(this.records,(record=> {
 						Certificate.byMember(this, record["id"]).subscribe(certificate=> {
-							record["certificate"] = certificate;
+							if (certificate)
+								record["certificate"] = certificate.name;
+							else
+								record["certificate"] = '';
 						});
 						CourseLog.userStudyActivity(this,record["user_id"], this.courseClass.id).subscribe(logs => {
 							var result = this.reportUtils.analyzeCourseMemberActivity(logs);

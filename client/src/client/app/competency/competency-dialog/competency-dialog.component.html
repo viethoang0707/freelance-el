@@ -1,4 +1,4 @@
-<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && saveWithLevel()" #f="ngForm" autocomplete="off">
     <p-dialog header="{{'Competency'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true">
         <p-scrollPanel [style]="{width: '100%', height: '460px'}">
             <div class="ui-g ui-fluid form-group">
@@ -21,6 +21,36 @@
                     </div>
                 </div>
             </span>
+                </div>
+                <div class=" ui-g-12 ">
+                    <p-toolbar>
+                        <div class="ui-toolbar-group-left">
+                            <button pButton type="button" label="{{'New level'|translate}}" class="green-btn" (click)="addCompetencyLevel()" icon="ui-icon-add"></button>
+                        </div>
+                    </p-toolbar>
+                    <p-table #levelTable [value]="levels" [paginator]="false" [rows]="10" [(selection)]="selectedLevel" [responsive]="true" selectionMode="single">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>
+                                    {{'Name'|translate}}
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-level let-i="rowIndex">
+                            <tr [pSelectableRow]="level">
+                                <td pEditableColumn>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input type="text" name="name" [(ngModel)]="level.name">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{level.name}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
             </div>
         </p-scrollPanel>

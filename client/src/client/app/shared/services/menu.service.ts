@@ -33,10 +33,10 @@ export class MenuService {
                     ]
                 },
                 {
-                    label: 'Competency', icon: 'grade',code:'COMPETENCY',
+                    label: 'Competency', icon: 'linear_scale',code:'COMPETENCY',
                     items: [
-                        { label: 'Competency list', routerLink: ['/competency/list'],code:'COMPETENCY-LIST' },
-                        { label: 'Competency category', routerLink: ['/competency/groups'],code:'COMPETENCY-GROUP' },
+                        { label: 'Competency', routerLink: ['/competency/list'],code:'COMPETENCY-LIST' },
+                        { label: 'Category', routerLink: ['/competency/groups'],code:'COMPETENCY-GROUP' },
                         { label: 'Competency matrix', routerLink: ['/competency/matrix'] ,code:'COMPETENCY-MATRIX'},
                     ]
                 },

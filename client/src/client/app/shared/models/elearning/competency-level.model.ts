@@ -14,14 +14,24 @@ export class CompetencyLevel extends BaseModel{
 		this.name = undefined;
 		this.order = undefined;
 		this.competency_id = undefined;
+        this.competency_name = undefined;
+        this.competency_group_id = undefined;
+        this.competency_group_name = undefined;
 	}
 
     name:string;
     order: number;
     competency_id: number;
+    competency_name: string;
+    competency_group_id: number;
+    competency_group_name: string;
 
     static all( context:APIContext): Observable<any[]> {
         return CompetencyLevelCache.all(context);
+    }
+
+    static listByCompetency(context:APIContext, competencyId):Observable<any> {
+        return CompetencyLevelCache.listByCompetency(context, competencyId);
     }
 
 }

@@ -33,6 +33,15 @@ export class CourseClass extends BaseModel{
     @FieldProperty<Date>()
     end: Date;
 
+    get IsAvailable():boolean {
+        if (this.status !='open')
+            return false;
+        var now = new Date();
+        if (this.end.getTime() < now.getTime())
+            return false;
+        return true;
+    }
+
     static listByCourse(context:APIContext, courseId):Observable<any> {
         return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
     }

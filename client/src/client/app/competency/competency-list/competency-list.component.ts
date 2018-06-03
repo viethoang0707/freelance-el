@@ -1,16 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { APIService } from '../../../shared/services/api.service';
-import { AuthService } from '../../../shared/services/auth.service';
+import { BaseComponent } from '../../shared/components/base/base.component';
+import { APIService } from '../../shared/services/api.service';
+import { AuthService } from '../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
-import { Competency } from '../../../shared/models/elearning/competency.model';
-import { Group } from '../../../shared/models/elearning/group.model';
+import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../shared/models/constants'
+import { Competency } from '../../shared/models/elearning/competency.model';
+import { Group } from '../../shared/models/elearning/group.model';
 import { CompetencyDialog } from '../competency-dialog/competency-dialog.component';
-import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { TreeUtils } from '../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
-import { QuestionImportDialog } from '../import-dialog/import-dialog.component';
+import { CompetencyLevel } from '../../shared/models/elearning/competency-level.model';
 
 @Component({
     moduleId: module.id,
@@ -25,6 +25,7 @@ export class CompetencyListComponent extends BaseComponent {
     private tree: TreeNode[];
     private items: MenuItem[];
     private competencies: Competency[];
+    private levels: CompetencyLevel[];
     private displayCompetencies: Competency[];
     private selectedGroupNodes: TreeNode[];
     private treeUtils: TreeUtils;
@@ -57,9 +58,12 @@ export class CompetencyListComponent extends BaseComponent {
         });
     }
 
-    editQuestion() {
+    editCompetency() {
         if (this.selectedCompetency )
             this.competencyDialog.show(this.selectedCompetency);
+        this.competencyDialog.onUpdateComplete.subscribe(() => {
+            this.loadCompetencies();
+        });
     }
 
     deleteCompetency(){
@@ -77,9 +81,20 @@ export class CompetencyListComponent extends BaseComponent {
     loadCompetencies() {
         this.startTransaction();
         Competency.all(this).subscribe(competencies => {
+            _.each(competencies , competency=> {
+                competency["levels"] = [];
+            });
             this.competencies = competencies;
             this.displayCompetencies = competencies;
-            this.closeTransaction();
+            CompetencyLevel.all(this).subscribe(levels => {
+                _.each(this.competencies , competency=> {
+                    CompetencyLevel.listByCompetency(this, competency["id"]).subscribe(levels=> {
+                        competency["levels"] = _.reduce(levels, function(memo, level){ return memo + level.name+','; }, '');
+                    });
+                });
+                this.closeTransaction();
+            });
+            
         });
     }
 
@@ -95,4 +110,6 @@ export class CompetencyListComponent extends BaseComponent {
             this.displayCompetencies =  this.competencies;
         }
     }
+
+
 }

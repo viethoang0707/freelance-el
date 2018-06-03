@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 
 export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
 
+    originalObject: any;
     object: any;
     display: boolean;
     private onCreateCompleteReceiver: Subject<any> = new Subject();
@@ -28,8 +29,15 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
 
     show(object: any) {
         this.object = object;
+        this.originalObject = {};
+        Object.assign(this.originalObject, this.object);
         this.display = true;
         this.onShowReceiver.next(object);
+    }
+
+    cancel() {
+        Object.assign(this.object, this.originalObject);
+        this.hide();
     }
 
     hide() {
@@ -52,10 +60,10 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
         }
         else {
             this.object.save(this).subscribe(() => {
-                this.hide();
                 this.onUpdateCompleteReceiver.next(this.object);
                 this.success('Object saved successfully.') ;
                 this.closeTransaction();
+                this.hide();
             },()=> {
                 this.error('Permission denied');
                 this.closeTransaction();
