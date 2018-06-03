@@ -15,6 +15,7 @@ import { SelectGroupDialog } from '../../../../shared/components/select-group-di
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	moduleId: module.id,
@@ -22,7 +23,7 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 	templateUrl: 'course-by-member-report.component.html',
 	styleUrls: ['course-by-member-report.component.css'],
 })
-export class CourseByMemberReportComponent extends BaseComponent{
+export class CourseByMemberReportComponent extends BaseComponent {
 
 	private records: any;
 	private rowGroupMetadata: any;
@@ -31,63 +32,68 @@ export class CourseByMemberReportComponent extends BaseComponent{
     COURSE_MODE = COURSE_MODE;
     COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
-
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
 		this.reportUtils = new ReportUtils();
 	}
 
-    clear() {
-        this.records = [];
-    }
+	clear() {
+		this.records = [];
+	}
 
-    onSort() {
-        this.updateRowGroupMetaData();
-    }
+	onSort() {
+		this.updateRowGroupMetaData();
+	}
 
-    updateRowGroupMetaData() {
-        this.rowGroupMetadata = {};
-        if (this.records) {
-            for (let i = 0; i < this.records.length; i++) {
-                let rowData = this.records[i];
-                let brand = rowData.user_login;
-                if (i == 0) {
-                    this.rowGroupMetadata[brand] = { index: 0, size: 1 };
-                }
-                else {
-                    let previousRowData = this.records[i - 1];
-                    let previousRowGroup = previousRowData.brand;
-                    if (brand === previousRowGroup)
-                        this.rowGroupMetadata[brand].size++;
-                    else
-                        this.rowGroupMetadata[brand] = { index: i, size: 1 };
-                }
-            }
-        }
-    }
+	updateRowGroupMetaData() {
+		this.rowGroupMetadata = {};
+		if (this.records) {
+			for (let i = 0; i < this.records.length; i++) {
+				let rowData = this.records[i];
+				let brand = rowData.user_login;
+				if (i == 0) {
+					this.rowGroupMetadata[brand] = { index: 0, size: 1 };
+				}
+				else {
+					let previousRowData = this.records[i - 1];
+					let previousRowGroup = previousRowData.brand;
+					if (brand === previousRowGroup)
+						this.rowGroupMetadata[brand].size++;
+					else
+						this.rowGroupMetadata[brand] = { index: i, size: 1 };
+				}
+			}
+		}
+	}
 
-    export() {
-    	var header = [
-    		this.translateService.instant('Login'),
-    		this.translateService.instant('Name'),
-    		this.translateService.instant('Course code'),
-    		this.translateService.instant('Course name'),
-    		this.translateService.instant('Course mode'),
-    		this.translateService.instant('Register date'),
-    		this.translateService.instant('First attempt'),
-    		this.translateService.instant('Last attempt'),
-    		this.translateService.instant('Enroll status'),
-    		this.translateService.instant('Time spent')
-    	]
-    	this.excelService.exportAsExcelFile(header.concat(this.records),'course_by_member_report');
-    }
+	export() {
+		var header = [
+			this.translateService.instant('Login'),
+			this.translateService.instant('Name'),
+			this.translateService.instant('Course code'),
+			this.translateService.instant('Course name'),
+			this.translateService.instant('Course mode'),
+			this.translateService.instant('Register date'),
+			this.translateService.instant('First attempt'),
+			this.translateService.instant('Last attempt'),
+			this.translateService.instant('Enroll status'),
+			this.translateService.instant('Time spent')
+		]
+		this.excelService.exportAsExcelFile(header.concat(this.records), 'course_by_member_report');
+	}
 
-    render(users:User[]) {
-    	this.startTransaction();
+	render(users: User[]) {
+		this.startTransaction();
 		this.generateReport(users).subscribe(records => {
 			this.records = records;
-			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records,"user_login");
-            this.closeTransaction();
+			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
+			this.records.forEach(record => {
+				record.index = this.rowGroupMetadata[record.user_login].index;
+				record.size = this.rowGroupMetadata[record.user_login].size;
+			});
+			console.log('record: ', this.records);
+			console.log('rowGroup: ', this.rowGroupMetadata);
+			this.closeTransaction();
 		});
 	}
 
@@ -101,26 +107,29 @@ export class CourseByMemberReportComponent extends BaseComponent{
 						var courseLogs = _.filter(logs, (log: CourseLog) => {
 							return log.course_id == member.course_id;
 						});
-    					return this.generateReportRow(member, courseLogs);
-    				})
-    				records = records.concat(memberRecords);
-	    		});
-    		});	
-    		subscriptions.push(subscription);	
-    	});		
-    	return Observable.forkJoin(...subscriptions).map(()=> {
-            return records;
-        });
-    }
+						return this.generateReportRow(member, courseLogs);
+					});
+					memberRecords = memberRecords.filter((memberRecord: any) => {
+						return memberRecord.course_code !== '' && memberRecord.course_mode !== '' && memberRecord.course_name !== '';
+					});
+					records = records.concat(memberRecords);
+				});
+			});
+			subscriptions.push(subscription);
+		});
+		return Observable.forkJoin(...subscriptions).map(() => {
+			return records;
+		});
+	}
 
-    generateReportRow(member: CourseMember, logs: CourseLog[]):any {
+	generateReportRow(member: CourseMember, logs: CourseLog[]): any {
 
-    	var record = {};
-		record["user_login"] =  member.login;
-	    record["user_name"] = member.name;
-	    record["course_name"] = member.course_name;
+		var record = {};
+		record["user_login"] = member.login;
+		record["user_name"] = member.name;
+		record["course_name"] = member.course_name;
 		record["course_mode"] = member.course_mode;
-		record["course_code"] = member.course_code
+		record["course_code"] = member.course_code;
 		record["enroll_status"] = member.enroll_status;
 		record["date_register"] = this.datePipe.transform(member.date_register, EXPORT_DATE_FORMAT);
 		var result = this.reportUtils.analyzeCourseMemberActivity(logs);
