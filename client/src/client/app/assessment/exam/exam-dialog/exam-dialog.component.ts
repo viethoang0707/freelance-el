@@ -12,6 +12,7 @@ import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS 
 import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { SelectCompetencyLevelDialog } from '../../../shared/components/select-competency-level-dialog/select-competency-level-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -25,7 +26,7 @@ export class ExamDialog extends BaseDialog<Exam> {
     private rangeDates: Date[];
     private allowToChangeState: boolean;
     private user: User;
-    private obj: any;
+    @ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 
     constructor(private http: Http) {
         super();
@@ -41,7 +42,6 @@ export class ExamDialog extends BaseDialog<Exam> {
     ngOnInit() {
         this.user = this.authService.UserProfile;
         this.onShow.subscribe(object => {
-            this.obj = { name: object.name, status: object.status, instruction: object.instruction, summary: object.summary, duration: object.duration, start: object.start, end: object.end };
             if (object.start && object.end) {
                 this.rangeDates = [object.start, object.end];
             }
@@ -63,16 +63,16 @@ export class ExamDialog extends BaseDialog<Exam> {
         }
     }
 
-    off() {
-        this.object.name = this.obj.name;
-        this.object.status = this.obj.status;
-        this.object.summary = this.obj.summary;
-        this.object.instruction = this.obj.instruction;
-        this.object.duration = this.obj.duration;
-        this.object.start = this.obj.start;
-        this.object.end = this.obj.end;
-        this.display = false;
+    selectCompetencyLevel() {
+        this.competencyLevelDialog.show();
+        this.competencyLevelDialog.onSelectCompetencyLevel.subscribe(level => {
+                this.object.competency_level_id = level.id;
+                this.object.competency_level_name = level.name;
+                this.object.competency_id = level.competency_id;
+                this.object.competency_name = level.competency_name;
+        });
     }
+
 
 }
 

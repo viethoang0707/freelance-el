@@ -38,7 +38,7 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
         ConferenceMember.listByUser(this, this.authService.UserProfile.id)
             .subscribe(members => {
                 members =  _.filter(members, (member=> {
-                    return member.conference_id
+                    return member.conference_id && member.conference_status =='open';
                 }));
                 var confIds = _.pluck(members, 'conference_id');
                 Conference.array(this, confIds).subscribe(conferences=> {

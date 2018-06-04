@@ -17,6 +17,7 @@ import { AnalysisModule } from './analysis/analysis.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CMSModule } from './cms/cms.module';
 import { LMSModule } from './lms/lms.module';
+import { CompetencyModule } from './competency/competency.module';
 import { InterceptHttp } from './shared/helpers/intercept.http';
 import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
@@ -39,6 +40,7 @@ import { TranslateService } from '@ngx-translate/core';
         AnalysisModule,
         WorkflowModule,
         CMSModule,
+        CompetencyModule,
         LMSModule,
         ErpSharedModule.forRoot(),
         TranslateModule.forRoot({

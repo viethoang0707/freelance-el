@@ -38,6 +38,10 @@ export class Group extends BaseModel{
         return GroupCache.listCourseGroup(context);
     }
 
+    static listCompetencyGroup(context:APIContext):Observable<any> {
+        return GroupCache.listCompetencyGroup(context);
+    }
+
     static listBySyllabus(context:APIContext, sylId:number):Observable<any> {
         return CourseUnit.listBySyllabus(context, sylId).flatMap(units => {
             var groupIds = _.pluck(units, 'group_id');

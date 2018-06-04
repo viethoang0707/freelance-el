@@ -76,7 +76,7 @@
             <td>{{course.code}}</td>
             <!-- <td>{{course.summary}}</td> -->
             <td>{{COURSE_MODE[course.mode] | translate}}</td>
-            <td>{{COURSE_STATUS[course.status] | translate}}</td>
+            <td>{{CONTENT_STATUS[course.status] | translate}}</td>
             <td>
               <button pButton type="button" title="{{'Edit'|translate}}" class="message-btn secondary-btn" icon="ui-icon-mode-edit" (click)="editCourse(course)"></button>
             </td>

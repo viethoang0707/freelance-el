@@ -9,7 +9,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { DEFAULT_DATE_LOCALE, GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+import { DEFAULT_DATE_LOCALE, GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
@@ -32,7 +32,7 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
-	COURSE_STATUS = COURSE_STATUS;
+	CONTENT_STATUS = CONTENT_STATUS;
 	COURSE_MEMBER_ROLE = COURSE_MEMBER_ROLE;
 	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;

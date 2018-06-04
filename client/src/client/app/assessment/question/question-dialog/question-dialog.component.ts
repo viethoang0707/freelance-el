@@ -25,7 +25,6 @@ export class QuestionDialog extends BaseDialog<Question>  {
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
-	private obj: any;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private changeDetectionRef: ChangeDetectorRef) {
 		super();
@@ -40,7 +39,6 @@ export class QuestionDialog extends BaseDialog<Question>  {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			this.obj = { selectedNode: object.group_id, title: object.title, level: object.level };
 			Group.listQuestionGroup(this).subscribe(groups => {
 				this.tree = this.treeUtils.buildGroupTree(groups);
 				if (object.group_id) {
@@ -73,14 +71,6 @@ export class QuestionDialog extends BaseDialog<Question>  {
 					this.success(this.translateService.instant('Question saved.'));
 				});
 		})
-	}
-
-	hide() {
-		this.display = false;
-	}
-
-	saveQuestion() {
-		this.save();
 	}
 
 }

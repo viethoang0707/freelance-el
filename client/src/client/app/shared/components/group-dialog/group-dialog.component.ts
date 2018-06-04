@@ -18,7 +18,6 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 	private tree: TreeNode[];
 	private treeUtils: TreeUtils;
 	private selectedNode: TreeNode;
-	private obj: any;
 
 	constructor() {
 		super();
@@ -33,7 +32,6 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			this.obj = { selectedNode: object.parent_id, name: object.name, code: object.code };
 			var subscription = null;
 			if (object.category == "course")
 				subscription = Group.listCourseGroup(this);
@@ -58,14 +56,6 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 
 		});
 	}
-
-	off() {
-		this.object.parent_id = this.obj.selectedNode;
-		this.object.name = this.obj.name;
-		this.object.code = this.obj.code;
-		this.display = false;
-	}
-
 }
 
 

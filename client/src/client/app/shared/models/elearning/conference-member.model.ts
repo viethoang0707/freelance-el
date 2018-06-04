@@ -23,6 +23,7 @@ export class ConferenceMember extends BaseModel{
         this.group_id__DESC__ = undefined;
         this.is_active =  undefined;
         this.class_id = undefined;
+        this.conference_status = undefined;
     }
 
     course_member_id: number;
@@ -35,6 +36,7 @@ export class ConferenceMember extends BaseModel{
     group_id: number;
     user_id: number;
     conference_id: number;
+    conference_status: number;
     group_id__DESC__: string;
 
     deleteMember(context:APIContext):Observable<any> {

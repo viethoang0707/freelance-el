@@ -12,7 +12,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import {
-    GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+    GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
     COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -139,6 +139,15 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
     showExamStats() {
         this.statsDialog.show(this.exam);
+    }
+
+    closeExam() {
+        if (this.selectedRecord) {
+            this.selectedRecord.status = 'closed';
+            this.selectedRecord.save(this).subscribe(()=> {
+                this.success('Exam close');
+            });
+        }
     }
 
 }

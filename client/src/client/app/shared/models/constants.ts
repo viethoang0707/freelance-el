@@ -1,7 +1,7 @@
 export const DEFAULT_PASSWORD = '123456';
 export const USER_STATUS = { 'true': 'Active', 'false': 'Suspended' };
 export const GENDER = { 'male': 'Male', 'female': 'Female', 'other': 'Other' };
-export const GROUP_CATEGORY = { USER: 'organization', QUESTION: 'question', COURSE: 'course' };
+export const GROUP_CATEGORY = { USER: 'organization', QUESTION: 'question', COURSE: 'course', COMPETENCY: 'competency' };
 export const SERVER_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const DEFAULT_DATE_LOCALE = {
 	firstDayOfWeek: 0,
@@ -13,7 +13,8 @@ export const DEFAULT_DATE_LOCALE = {
 	today: 'Today',
 	clear: 'Clear'
 };
-export const EXAM_STATUS = { 'draft': 'Draft', 'published': 'Published', 'unpublished': 'Unpublished' };
+export const EXAM_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const CLASS_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM' };
 export const EXPORT_DATETIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
 export const EXPORT_DATE_FORMAT = "dd-MM-yyyy";
@@ -24,7 +25,7 @@ export const EXAM_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'comple
 export const COURSE_UNIT_TYPE = { 'folder': 'Folder', 'exercise': 'Exercise', 'html': 'HTML Lecture', 'video': 'Video lecture', 'scorm': 'SCORM lecture', 'slide': 'Presentation' };
 export const COURSE_UNIT_ICON = { 'folder': 'ui-icon-folder', 'exercise': 'ui-icon-play-for-work', 'html': 'ui-icon-text-fields', 'video': 'ui-icon-videocam', 'scorm': 'ui-icon-unarchive', 'slide': 'ui-icon-slideshow' };
 export const CONFERENCE_STATUS = { 'open': 'Open', 'closed': 'Closed' };
-export const COURSE_STATUS = { 'draft': 'Draft', 'published': 'Published', 'unpublished': 'Unpublished' };
+export const CONTENT_STATUS = { 'draft': 'Draft', 'published': 'Published', 'unpublished': 'Unpublished' };
 export const COURSE_MODE = { 'self-study': 'Self-study', 'group': 'Group-study' };
 export const COURSE_MEMBER_ROLE = { 'student': 'Student', 'teacher': 'Teacher' };
 export const COURSE_MEMBER_STATUS = { 'active': 'Active', 'withdraw': 'Withdraw', 'suspend': 'Suspended' };
@@ -35,7 +36,8 @@ export const LANGS = { 'vn': 'Vietnamese', 'gb': 'English' };
 export const TICKET_STATUS = { 'open': 'Open', 'approved': 'Approved', 'rejected': 'Rejected' };
 export const EXAM_TIME_WARNING = 60000;
 export const DEFAULT_LANG = 'gb';
-export const PROJECT_STATUS = { 'draft': 'Draft', 'open': 'Open', 'closed': 'Closed' };
+export const PROJECT_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const SURVEY_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 
 export const PRINT_DIALOG_STYLE = `<style>
                   //........Customized style.......

@@ -73,7 +73,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                             });
                         });
                         this.exams = _.filter(exams, (exam) => {
-                            return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+                            return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.IsAvailable);
                         });
                         this.exams.sort((exam1, exam2): any => {
                             if (exam1.id > exam2.id)

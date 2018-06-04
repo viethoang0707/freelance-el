@@ -10,6 +10,7 @@ import { LMSRoutes } from '../lms/lms-routing';
 import { AnalysisRoutes } from '../analysis/analysis-routing';
 import { DashboardRoutes } from '../dashboard/dashboard-routing';
 import { WorkflowRoutes } from '../workflow/workflow-routing';
+import { CompetencyRoutes } from '../competency/competency-routing';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { WorkflowRoutes } from '../workflow/workflow-routing';
           ...AssessmentRoutes,
           ...AnalysisRoutes,
           ...LMSRoutes,
-          ...WorkflowRoutes
+          ...WorkflowRoutes,
+          ...CompetencyRoutes
         ]
       },
       {path: '**', redirectTo: ''}
