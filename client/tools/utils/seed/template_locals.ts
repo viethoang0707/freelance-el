@@ -29,14 +29,14 @@ export class TemplateLocalsBuilder {
     const envOnlyConfig = this.getConfig(configPath, configEnvName);
     const baseConfig = this.getConfig(configPath, 'base');
     const packageJSON = require('../../../package.json');
-    const versionJSON = { version : packageJSON.VERSION };
+    const versionJSON = { VERSION : packageJSON.version };
 
     if (!envOnlyConfig) {
       throw new Error(configEnvName + ' is an invalid configuration name');
     }
 
     const envConfig = Object.assign({}, baseConfig, envOnlyConfig, versionJSON);
-    let locals = Object.assign({},
+    const locals = Object.assign({},
       Config,
       { ENV_CONFIG: this.stringifyEnvConfig ? JSON.stringify(envConfig) : envConfig }
     );

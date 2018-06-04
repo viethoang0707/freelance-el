@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, NgZone, ViewChild } from '@angular/core';
+import { DatePipe} from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -43,16 +44,18 @@ export class GradebookDialog extends BaseComponent {
     private projects: Project[];
     private certificate: Certificate;
     private stats: any;
+    private reportUtils: ReportUtils;
 
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
     @ViewChild(CourseCertificateDialog) certDialog: CourseCertificateDialog;
     @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
-    constructor(private excelService:ExcelService) {
+    constructor(private excelService:ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.exams = [];
         this.projects = [];
         this.stats = [];
+        this.reportUtils = new ReportUtils();
     }
 
     ngOnInit() {
@@ -68,7 +71,7 @@ export class GradebookDialog extends BaseComponent {
             return [exam["name"], exam["score"]];
         }));
         records = records.concat(_.map(this.projects, project=> {
-            return [projects["name"], projects["score"]];
+            return [project["name"], project["score"]];
         }));
         this.excelService.exportAsExcelFile(header.concat(records), 'gradebook_report');
     }
@@ -107,9 +110,9 @@ export class GradebookDialog extends BaseComponent {
 
     computeCourseStats() {
         var record = {};
-        CourseSyllabus.byCourse(this, member.course_id).subscribe(syllabus => {
+        CourseSyllabus.byCourse(this, this.member.course_id).subscribe(syllabus => {
             CourseUnit.countBySyllabus(this, syllabus.id).subscribe(totalUnit => {
-                CourseLog.userStudyActivity(this, record["user_id"], this.courseClass.id).subscribe(logs => {
+                CourseLog.userStudyActivity(this, record["user_id"], this.member.class_id).subscribe(logs => {
                     record["total_unit"] = totalUnit;
                     var result = this.reportUtils.analyzeCourseMemberActivity(logs);
                     if (result[0] != Infinity)
@@ -143,7 +146,7 @@ export class GradebookDialog extends BaseComponent {
                 var examIds = _.pluck(members, 'exam_id');
                 Exam.array(this, examIds)
                     .subscribe(exams => {
-                        this.exams = _.filter(exams, (exam => {
+                        this.exams = _.filter(exams, exam => {
                             return exam.status == 'published';
                         });
                         _.each(this.exams, (exam => {
@@ -151,7 +154,7 @@ export class GradebookDialog extends BaseComponent {
                                 return examMember.exam_id == exam.id;
                             });
                             exam["member"] = member;
-                            Submission.byMemberAndExam(this, this.member_id, exam.id).subscribe(submit => {
+                            Submission.byMemberAndExam(this, member.id, exam.id).subscribe(submit => {
                                 if (submit) {
                                     exam["score"] = submit.score;
                                     exam["submit"] = submit;
@@ -175,11 +178,11 @@ export class GradebookDialog extends BaseComponent {
         Project.listByClass(this, this.member.class_id).subscribe(projects => {
             ProjectSubmission.listByMember(this, this.member.id).subscribe(submits => {
                 this.projects = projects;
-                this.projects = _.filter(projects, (project => {
+                this.projects = _.filter(projects, project => {
                     return project.status == 'published';
                 });
                 _.each(this.projects, project => {
-                    let submit: ProjectSubmission = _.find(submits, (submit: Submission) => {
+                    var submit =  _.find(submits, (submit: ProjectSubmission) => {
                         return submit.project_id == project.id;
                     });
                     if (submit) {

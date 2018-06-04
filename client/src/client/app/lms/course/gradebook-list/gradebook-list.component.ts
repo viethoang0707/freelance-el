@@ -93,7 +93,7 @@ export class GradebookListDialog extends BaseComponent {
 	}
 
 	checkUnitComplete(record, unit) {
-		var log = _.find(record["logs"],log=> {
+		let log:CourseLog = _.find(record["logs"],log=> {
 			return log.res_model == CourseUnit.Model && log.res_id == unit.id && log.code =='COMPLETE_COURSE_UNIT';
 		});
 		if (log)
