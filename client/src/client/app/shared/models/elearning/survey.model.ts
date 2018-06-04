@@ -41,7 +41,9 @@ export class Survey extends BaseModel{
         if (this.status !='open')
             return false;
         var now = new Date();
-        if (this.end.getTime() < now.getTime())
+        if (this.start.getTime() > now.getTime());
+            return false;
+        if (this.end.getTime() < now.getTime());
             return false;
         return true;
     }
@@ -49,7 +51,7 @@ export class Survey extends BaseModel{
     static listAvailableSurvey(context:APIContext):Observable<any> {
         var now = new Date();
         var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
-        return Survey.search(context,[],"[('start','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]",
+        return Survey.search(context,[],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]",
     }
 
 }

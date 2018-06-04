@@ -223,7 +223,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             SurveyMember.listByUser(this, this.authService.UserProfile.id).subscribe(members=> {
                 surveys =  _.filter(surveys, (survey:Survey)=> {
                     survey["member"] = _.find(members, (m:SurveyMember)=> {
-                        return m.id == survey.id && m.enroll_status !='completed';
+                        return m.survey_id == survey.id && m.enroll_status !='completed';
                     });
                     return survey["member"] != null  && survey.IsAvailable;
                 });

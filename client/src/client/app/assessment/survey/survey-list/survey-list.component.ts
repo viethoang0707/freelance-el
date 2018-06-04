@@ -107,4 +107,22 @@ export class SurveyListComponent extends BaseComponent {
             this.closeTransaction();
         });
     }
+
+    closeSurvey() {
+        if (this.selectedSurvey) {
+            this.selectedSurvey.status = 'closed';
+            this.selectedSurvey.save(this).subscribe(()=> {
+                this.success('Survey close');
+            });
+        }
+    }
+
+    openSurvey() {
+        if (this.selectedSurvey) {
+            this.selectedSurvey.status = 'open';
+            this.selectedSurvey.save(this).subscribe(()=> {
+                this.success('Survey open');
+            });
+        }
+    }
 }
