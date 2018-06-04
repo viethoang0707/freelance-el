@@ -38,7 +38,7 @@ export class Survey extends BaseModel{
     supervisor_name: string;
 
     get IsAvailable():boolean {
-        if (this.status !='published')
+        if (this.status !='open')
             return false;
         var now = new Date();
         if (this.end.getTime() < now.getTime())
@@ -49,7 +49,7 @@ export class Survey extends BaseModel{
     static listAvailableSurvey(context:APIContext):Observable<any> {
         var now = new Date();
         var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
-        return Survey.search(context,[],"[('start','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','published')]",
+        return Survey.search(context,[],"[('start','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]",
     }
 
 }

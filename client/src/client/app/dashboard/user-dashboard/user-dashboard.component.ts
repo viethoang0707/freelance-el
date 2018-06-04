@@ -225,7 +225,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     survey["member"] = _.find(members, (m:SurveyMember)=> {
                         return m.id == survey.id && m.enroll_status !='completed';
                     });
-                    return survey["member"] != null;
+                    return survey["member"] != null  && survey.IsAvailable;
                 });
                 if (surveys && surveys.length) {
                     var survey = surveys[0];

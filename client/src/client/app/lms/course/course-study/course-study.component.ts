@@ -47,17 +47,14 @@ import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
-<<<<<<< HEAD
 import { BaseModel } from '../../../shared/models/base.model';
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
-=======
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
 import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog.component';
->>>>>>> Fix survey
 
 @Component({
 	moduleId: module.id,
@@ -400,16 +397,12 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	submitProject(project: Project) {
-		var now = new Date();
-		if (project.start && project.start.getTime() > now.getTime()) {
-			this.warn(this.translateService.instant('Project has not been started'));
-			return;
+		if (!project.IsAvailable)
+			this.error('Project is not active');
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
+			this.projectSubmitDialog.show(project, this.member);
 		}
-		if (project.end && project.end.getTime() < now.getTime()) {
-			this.warn(this.translateService.instant('Project has ended'));
-			return;
-		}
-		this.projectSubmitDialog.show(project, this.member);
+		);
 	}
 
 	loadSurveys() {
@@ -427,7 +420,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
     }
 
     startSurvey(survey: Survey, member: SurveyMember) {
-    	if (this.member.enroll_status!='completed') {
+    	if (this.member.enroll_status!='completed' && survey.IsAvailable) {
     		this.surveyDialog.show(survey, member);
     	}
     }

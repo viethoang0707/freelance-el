@@ -42,6 +42,17 @@ export class Project extends BaseModel{
         return new SearchReadAPI(Project.Model, [],"[('class_id','=',"+classId+")]");
     }
     
+    get IsAvailable():boolean {
+        if (this.status !='open')
+            return false;
+        var now = new Date();
+        if (this.end.getTime() < now.getTime())
+            return false;
+        return true;
+    }
+
+
+
     static listByClass(context:APIContext, classId):Observable<any> {
         return Project.search(context,[], "[('class_id','=',"+classId+")]");
     }
