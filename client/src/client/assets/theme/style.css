@@ -247,16 +247,6 @@ body .cont.ui-accordion .ui-accordion-header.ui-state-active{
   background-color: #dcf0f9;
 }
 
-/*dashboard*/
-/*.dashboard .user-card .user-card-content .user-detail ul{
-  padding: 0;
-}
-
-.dashboard .user-card .user-card-content{
-  min-height: 230px;
-}
-*/
-
 body .dashboard-courses-list .ui-panel .ui-panel-content{
   height: 110px;
 }
@@ -283,34 +273,26 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active{
   color: #fff;
 }
 
-body .dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
+/*body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
   height: 100px;
   overflow: hidden;
   padding: 0;
 }
 
-body .dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
+body .user-dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
   height: 180px;
   overflow: hidden;
   padding: 0;
+}*/
+
+.dashboard-courses-list .image-box-content{
+  height: 155px;
 }
 
-.dashboard-courses-list .ui-panel-content-wrapper{
-  min-height: 155px;
-}
-
-body .dashboard .ui-widget-header{
+/*body .dashboard .ui-widget-header{
   background-color: #00bcd4;
   border: 1px solid #00bcd4;
-}
-
-body .dashboard .ui-paginator{
-  background-color: #03a9f4;
-}
-
-body .dashboard .ui-paginator .ui-paginator-pages a.ui-state-active{
-  background-color: #ffc107;
-}
+}*/
 
 .dashboard-live-conference .task-box-footer .btn-footer{
   float: right;
@@ -320,16 +302,21 @@ body .dashboard .ui-paginator .ui-paginator-pages a.ui-state-active{
   color: #fff;
 }
 
+.dashboard-live-conference .task-box.task-box-1 .task-box-header,
 .dashboard-live-conference .task-box.task-box-1 .task-box-footer .btn-footer {
   background-color: #e91e63; }
 
+.dashboard-live-conference .task-box.task-box-2 .task-box-header,
 .dashboard-live-conference .task-box.task-box-2 .task-box-footer .btn-footer {
+  background-color: #00bcd4; }
+
+.dashboard-live-conference .task-box.task-box-3 .task-box-header,
+.dashboard-live-conference .task-box.task-box-3 .task-box-footer .btn-footer {
   background-color: #ffc107; }
 
-.dashboard-live-conference .task-box.task-box-3 .task-box-footer .btn-footer {
-  background-color: #71a23c; }
-
-.dashboard .task-box.task-box-3 .task-box-header{
+.dashboard-live-conference .task-box.task-box-4 .task-box-header,
+.dashboard-live-conference .task-box.task-box-4 .task-box-footer .btn-footer {
+ /* background-color: #616161;*/
   background-color: #71a23c; }
 
 .question p{
@@ -364,8 +351,8 @@ body .dashboard .ui-paginator .ui-paginator-pages a.ui-state-active{
   overflow: auto;
 }
 
-.ui-scrollpanel-content{
-  /* width: 100%; */
+.class-list-dialog .ui-scrollpanel-content{
+   width: 100%; 
 }
 
 body .ui-fieldset.f-print{
@@ -394,10 +381,6 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 .lms-course-list .ui-datalist-content.ui-widget-content, 
 .lms-exam-list .ui-datalist-content.ui-widget-content{
   border: none;
-}
-
-.dashboard-live-conference .task-box.task-box-1 .task-box-footer .btn-footer {
-  background-color: #e91e63; 
 }
 
 .lms-course-list-item,
@@ -431,7 +414,7 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
   margin-bottom: 5px;
 }
 
-.lms-course-list-item .status-bars .status-bar{
+/*.lms-course-list-item .status-bars .status-bar{
   position: absolute;
   left: 200px;
 }
@@ -442,6 +425,10 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 
 .lms-course-list-item .status-bars ul li i{
   position: unset;
+}*/
+
+.lms-course-list-item .status-bars ul li{
+  padding: 5px;
 }
 
 .lms-exam-detail .ui-card-footer{

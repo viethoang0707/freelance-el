@@ -19,14 +19,14 @@ import { QuestionRegister } from '../question-template/question.decorator';
 	templateUrl: 'question-dialog.component.html',
 })
 export class QuestionDialog extends BaseDialog<Question>  {
-	
+
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,private changeDetectionRef: ChangeDetectorRef) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver, private changeDetectionRef: ChangeDetectorRef) {
 		super();
 		this.treeUtils = new TreeUtils();
 	}
@@ -73,13 +73,6 @@ export class QuestionDialog extends BaseDialog<Question>  {
 		})
 	}
 
-	hide(){
-		this.display= false;
-	}
-
-	saveQuestion(){
-		this.save();
-	}
 }
 
 

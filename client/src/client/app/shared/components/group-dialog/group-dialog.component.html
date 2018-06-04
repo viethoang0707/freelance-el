@@ -7,20 +7,20 @@
       </div>
       <div class="ui-g-12 ">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.name" name="name">
-            <label>{{'Name'|translate}}</label>
+          <input type="text" pInputText [(ngModel)]="object.name" name="name">
+          <label>{{'Name'|translate}}</label>
         </span>
       </div>
       <div class="ui-g-12">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.code" name="code">
-            <label>{{'Code'|translate}}</label>
+          <input type="text" pInputText [(ngModel)]="object.code" name="code">
+          <label>{{'Code'|translate}}</label>
         </span>
       </div>
     </div>
     <p-footer>
       <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
-      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+      <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
     </p-footer>
   </p-dialog>
 </form>

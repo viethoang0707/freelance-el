@@ -104,6 +104,10 @@ export class CourseLog extends BaseModel{
         return CourseLog.search(context,[],"[('course_id','=',"+courseId+")]");
     }
 
+    static listCompleteUnitByCourse( context:APIContext, courseId: number): Observable<any[]> {
+        return CourseLog.search(context,[],"[('course_id','=',"+courseId+"),('code','=','COMPLETE_COURSE_UNIT')]");
+    }
+
 }
 
 

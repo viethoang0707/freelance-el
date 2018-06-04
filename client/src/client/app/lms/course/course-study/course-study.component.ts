@@ -11,7 +11,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model'; import {
-	GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
+	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -48,6 +48,7 @@ import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.inter
 import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 
 @Component({
 	moduleId: module.id,
@@ -58,6 +59,7 @@ import { ProjectSubmissionDialog } from '../project-submit/project-submission.di
 export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	private course: Course;
+	private courseClass: CourseClass;
 	private member: CourseMember;
 	private faqs: CourseFaq[];
 	private materials: CourseMaterial[];
@@ -89,6 +91,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	EXAM_STATUS = EXAM_STATUS;
 	PROJECT_STATUS = PROJECT_STATUS;
 	private studyMode: boolean;
+	private enableLogging: boolean;
 
 	constructor(private router: Router, private route: ActivatedRoute,
 		private meetingSerivce: MeetingService, private componentFactoryResolver: ComponentFactoryResolver) {
@@ -101,6 +104,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.conference = new Conference();
 		this.conferenceMember = new ConferenceMember();
 		this.studyMode = false;
+		this.enableLogging =  false;
 	}
 
 	ngOnInit() {
@@ -108,7 +112,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
 			Course.get(this, courseId).subscribe(course => {
-				CourseMember.get(this, memberId).subscribe(member => {
+				CourseMember.get(this, memberId).subscribe((member:CourseMember) => {
 					this.member = member;
 					this.course = course;
 					this.loadFaqs();
@@ -118,6 +122,12 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					this.loadCertificate();
 					this.loadConference();
 					this.loadCouseSyllabus();
+					if (course.mode=='group')
+						CourseClass.get(this,member.class_id).subscriber(courseClass=> {
+							this.courseClass = courseClass;
+							if (this.courseClass.IsAvailable)
+								this.enableLogging = true;
+						});
 				});
 			});
 		});
@@ -128,7 +138,9 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl => {
 			CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
 				this.syl = syl;
-				this.units = units;
+				this.units = _.filter(units, (unit:CourseUnit)=> {
+					return unit.status == 'published';
+				});
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.treeList = this.sylUtils.flattenTree(this.tree);
 				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, this.course.id).subscribe((attempt: CourseLog) => {
@@ -162,41 +174,35 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	prevUnit() {
 		if (this.selectedUnit) {
-			this.startTransaction();
-			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(() => {
-				var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
-				this.selectedNode = this.sylUtils.findTreeNode(this.tree, prevUnit.id);
-				this.selectedUnit = this.selectedNode.data;
-				this.studyMode = false;
-				this.unloadCurrentUnit();
-				this.closeTransaction();
-			});
+			if (this.enableLogging)
+				CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+			var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
+			this.selectedNode = this.sylUtils.findTreeNode(this.tree, prevUnit.id);
+			this.selectedUnit = this.selectedNode.data;
+			this.studyMode = false;
+			this.unloadCurrentUnit();
 		}
 	}
 
 	nextUnit() {
 		if (this.selectedUnit) {
-			this.startTransaction();
-			CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(() => {
-				var nextUnit = this.computedNextUnit(this.selectedUnit.id);
-				this.selectedNode = this.sylUtils.findTreeNode(this.tree, nextUnit.id);
-				this.selectedUnit = this.selectedNode.data;
-				this.studyMode = false;
-				this.unloadCurrentUnit();
-				this.closeTransaction();
-			});
+			if (this.enableLogging)
+				CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
+			this.selectedNode = this.sylUtils.findTreeNode(this.tree, nextUnit.id);
+			this.selectedUnit = this.selectedNode.data;
+			this.studyMode = false;
+			this.unloadCurrentUnit();
 		}
 	}
 
 	completeUnit() {
 		if (this.selectedUnit) {
-			this.startTransaction();
-			CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe(() => {
-				this.selectedUnit["completed"] = true;
-				this.studyMode = false;
-				this.unloadCurrentUnit();
-				this.closeTransaction();
-			});
+			if (this.enableLogging)
+				CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+			this.selectedUnit["completed"] = true;
+			this.studyMode = false;
+			this.unloadCurrentUnit();
 		}
 	}
 
@@ -242,7 +248,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success => {
 						if (success) {
 							this.openUnit(this.selectedUnit);
-							CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+							if (this.enableLogging)
+								CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
 						}
 						else
 							this.error(this.translateService.instant('You have not completed previous unit'));
@@ -254,7 +261,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			}
 			else {
 				this.openUnit(this.selectedUnit);
-				CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+				if (this.enableLogging)
+					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
 			}
 		}
 	}
@@ -344,7 +352,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 								});
 
 								this.completedExams = _.filter(exams, (exam) => {
-									return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
+									return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.member.enroll_status == 'completed');
 								});
 
 								this.completedExams.sort((exam1, exam2): any => {
@@ -374,7 +382,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					this.projects =  projects;
 					_.each(projects, (project) => {
 						project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
-							return submit.project_id == project.id;
+							return submit.project_id == projects.id;
 						});
 						if (project["submit"]) {
 							if (project["submit"].score != null)
@@ -412,14 +420,14 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	startExam(exam: Exam, member: ExamMember) {
 		var now = new Date();
 		if (exam.start && exam.start.getTime() > now.getTime()) {
-			this.warn('Exam has not been started');
+			this.warn(this.translateService.instant('Exam has not been started'));
 			return;
 		}
 		if (exam.end && exam.end.getTime() < now.getTime()) {
-			this.warn('Exam has ended');
+			this.warn(this.translateService.instant('Exam has ended'));
 			return;
 		}
-		this.confirm('Are you sure to start ?', () => {
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			this.examStudyDialog.show(exam, member);
 		}
 		);
@@ -433,14 +441,14 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	submitProject(project: Project) {
 		var now = new Date();
 		if (project.start && project.start.getTime() > now.getTime()) {
-			this.warn('Project has not been started');
+			this.warn(this.translateService.instant('Project has not been started'));
 			return;
 		}
 		if (project.end && project.end.getTime() < now.getTime()) {
-			this.warn('Project has ended');
+			this.warn(this.translateService.instant('Project has ended'));
 			return;
 		}
-		this.confirm('Are you sure to start ?', () => {
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			this.projectSubmitDialog.show(project, this.member);
 		}
 		);

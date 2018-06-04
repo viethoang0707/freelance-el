@@ -1,5 +1,5 @@
 <div class="ui-g content">
-    <div class="ui-g-12">
+    <div class="ui-g-12 removePd">
         <p-table #dataTable [value]="records" [responsive]="true" sortField="user_login" sortMode="single" (onSort)="onSort()">
             <ng-template pTemplate="caption">
                 {{'Course by member report'|translate}}
@@ -20,24 +20,24 @@
                     <th>{{'First attempt'|translate}}</th>
                     <th>{{'Last attempt'|translate}}</th>
                     <th>{{'Enroll status'|translate}}</th>
-                    <th>{{'Time spent'|translate}} (phút)</th>
+                    <th>{{'Time spent (mintes)'|translate}}</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                 <tr>
-                    <td *ngIf="rowGroupMetadata[rowData.user_login].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.user_login].size">
-                        {{rowData.user_login}}
+                    <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
+                        {{rowData.user_login}} {{rowData.index}} {{rowData.size}}
                     </td>
-                    <td *ngIf="rowGroupMetadata[rowData.user_login].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.user_login].size">
+                    <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
                         {{rowData.user_name}}
                     </td>
                     <td>{{rowData.course_code}}</td>
                     <td>{{rowData.course_name}}</td>
-                    <td>{{rowData.course_mode}}</td>
+                    <td>{{COURSE_MODE[rowData.course_mode] | translate}}</td>
                     <td>{{rowData.date_register}}</td>
                     <td>{{rowData.first_attempt}}</td>
                     <td>{{rowData.last_attempt}}</td>
-                    <td>{{rowData.enroll_status}}</td>
+                    <td>{{COURSE_MEMBER_ENROLL_STATUS[rowData.enroll_status] | translate}}</td>
                     <td>{{rowData.time_spent}}</td>
                 </tr>
             </ng-template>

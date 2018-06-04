@@ -189,7 +189,41 @@ export class SeedConfig {
    * `index.html`.
    * @type {string}
    */
-  APP_TITLE = 'Welcome to angular-seed!';
+  APP_TITLE = 'Welome to Vietinterview E-learning System!';
+
+  TEMPLATE_CONFIG = {
+    /**
+     * Used to detect `data` property values to be HTML-escaped.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    escape: /<%-([\s\S]+?)%>/g,
+
+    /**
+     * Used to detect code to be evaluated.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    evaluate: /<%([\s\S]+?)%>/g,
+
+    /**
+     * Used to detect `data` property values to inject.
+     *
+     * @memberOf _.templateSettings
+     * @type {RegExp}
+     */
+    interpolate: /<%=([\s\S]+?)%>/g,
+
+    /**
+     * Used to reference the data object in the template text.
+     *
+     * @memberOf _.templateSettings
+     * @type {string}
+     */
+    variable: ''
+  };
 
   /**
    * Tracking ID.

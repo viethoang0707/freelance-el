@@ -10,7 +10,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus }  from '../../../shared/models/elearning/course-syllabus.model';
 import { TreeNode, MenuItem, SelectItem } from 'primeng/api';
-import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, COURSE_STATUS } from '../../../shared/models/constants';
+import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, CONTENT_STATUS } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-setting.dialog.component';
@@ -32,7 +32,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private selectedNode: TreeNode;
 	private items: MenuItem[];
 	private units: CourseUnit[];
-	private electedUnit:CourseUnit;
+	private selectedUnit:CourseUnit;
 	private sylUtils : SyllabusUtils;
 	private course: Course;
 	private user: User;
@@ -64,7 +64,7 @@ export class CourseSyllabusDialog extends BaseComponent {
         ];
         this.syl = new CourseSyllabus();
         this.course = new Course();
-        this.courseStatus = _.map(COURSE_STATUS, (val, key)=> {
+        this.courseStatus = _.map(CONTENT_STATUS, (val, key)=> {
 			return {
 				label: this.translateService.instant(val),
 				value: key
@@ -154,7 +154,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 				this.error(this.translateService.instant('Cannot delete non-empty folder'));
 				return;
 			}
-            this.confirm('Are you sure to delete ?', () => {
+            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             	this.startTransaction();
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();

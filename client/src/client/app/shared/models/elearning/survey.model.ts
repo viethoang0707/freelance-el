@@ -2,7 +2,6 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
-import { SurveyQuestion } from './survey-question.model';
 import * as _ from 'underscore';
 
 @Model('etraining.survey')

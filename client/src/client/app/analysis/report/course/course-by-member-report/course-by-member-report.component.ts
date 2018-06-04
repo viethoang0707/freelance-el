@@ -16,6 +16,7 @@ import { SelectUsersDialog } from '../../../../shared/components/select-user-dia
 import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	moduleId: module.id,
@@ -27,15 +28,17 @@ import { TranslateService } from '@ngx-translate/core';
 	title: 'Course by member report',
 	category: REPORT_CATEGORY.COURSE
 })
-export class CourseByMemberReportComponent extends BaseComponent {
+export class CourseByMemberReportComponent extends BaseComponent implements OnInit {
 
 	@ViewChild(SelectGroupDialog) groupDialog: SelectGroupDialog;
 	@ViewChild(SelectUsersDialog) userDialog: SelectUsersDialog;
 
-	records: any;
-	rowGroupMetadata: any;
-	GROUP_CATEGORY = GROUP_CATEGORY;
 	private reportUtils: ReportUtils;
+	private records: any;
+	private rowGroupMetadata: any;
+	private GROUP_CATEGORY = GROUP_CATEGORY;
+	private COURSE_MODE = COURSE_MODE;
+	private COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -117,6 +120,12 @@ export class CourseByMemberReportComponent extends BaseComponent {
 		this.generateReport(users).subscribe(records => {
 			this.records = records;
 			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
+			this.records.forEach(record => {
+				record.index = this.rowGroupMetadata[record.user_login].index;
+				record.size = this.rowGroupMetadata[record.user_login].size;
+			});
+			console.log('record: ', this.records);
+			console.log('rowGroup: ', this.rowGroupMetadata);
 			this.closeTransaction();
 		});
 	}
@@ -132,7 +141,10 @@ export class CourseByMemberReportComponent extends BaseComponent {
 							return log.course_id == member.course_id;
 						});
 						return this.generateReportRow(member, courseLogs);
-					})
+					});
+					memberRecords = memberRecords.filter((memberRecord: any) => {
+						return memberRecord.course_code !== '' && memberRecord.course_mode !== '' && memberRecord.course_name !== '';
+					});
 					records = records.concat(memberRecords);
 				});
 			});
@@ -146,7 +158,6 @@ export class CourseByMemberReportComponent extends BaseComponent {
 	generateReportRow(member: CourseMember, logs: CourseLog[]): any {
 
 		var record = {};
-
 		record["user_login"] = member.login;
 		record["user_name"] = member.name;
 		record["course_name"] = member.course_name;
@@ -154,7 +165,7 @@ export class CourseByMemberReportComponent extends BaseComponent {
 		record["course_code"] = member.course_code;
 		record["enroll_status"] = member.enroll_status;
 		record["date_register"] = this.datePipe.transform(member.date_register, EXPORT_DATE_FORMAT);
-		var result = this.reportUtils.analyzeCourseActivity(logs);
+		var result = this.reportUtils.analyzeCourseMemberActivity(logs);
 		if (result[0] != Infinity)
 			record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
 		if (result[1] != Infinity)

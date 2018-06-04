@@ -11,7 +11,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -109,7 +109,9 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.startTransaction();
     	CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
         	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
-				this.units = units;
+				this.units = _.filter(units, (unit:CourseUnit)=> {
+					return unit.status == 'published';
+				});
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.closeTransaction();
 	        });
@@ -203,7 +205,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	deleteMaterial() {
 		if (this.selectedMaterial)
-			this.confirm('Are you sure to delete ?',() => {
+			this.confirm(this.translateService.instant('Are you sure to delete?'),() => {
 				this.startTransaction();
 				this.selectedMaterial.delete(this).subscribe(() => {
 					this.loadMaterials();
@@ -224,5 +226,16 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
 	}
+
+
+
+    closeClass() {
+        if (this.selectedClass) {
+            this.selectedClass.status = 'closed';
+            this.selectedClass.save(this).subscribe(()=> {
+                this.success('Class close');
+            });
+        }
+    }
 }
 

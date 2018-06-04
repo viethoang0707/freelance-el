@@ -2,7 +2,7 @@
   <h1>{{'Reports'|translate}}</h1>
   <div class="ui-g">
      <div class="ui-g-12">
-      <p-dropdown [options]="items" [(ngModel)]="selectedItem" placeholder="Select a report" (onChange)="selectReport()" styleClass="report-items"></p-dropdown>
+      <p-dropdown [options]="items" [(ngModel)]="selectedItem" placeholder="{{'Select a report'| translate}}" (onChange)="selectReport()" styleClass="report-items"></p-dropdown>
     </div>
     <div class="ui-g-12">
       <ng-template report-container></ng-template>

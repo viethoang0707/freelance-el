@@ -11,7 +11,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
  COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -31,10 +31,11 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	private courseClass: CourseClass;
 	private items: any[];
 	public subscription : Subscription;
+	private processing : boolean;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
-	COURSE_STATUS = COURSE_STATUS;
+	CONTENT_STATUS = CONTENT_STATUS;
 	COURSE_MEMBER_ROLE = COURSE_MEMBER_ROLE;
 	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
@@ -52,7 +53,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	enrollCourse(course:Course) {
 		this.course = course;
 		this.display = true;
-		this.processing = false;
 		this.selectedStudents = [];
 		this.selectedTeachers = [];
 		this.loadMembers();
@@ -62,7 +62,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.course = course;
 		this.courseClass = courseClass;
 		this.display = true;
-		this.processing = false;
 		this.selectedStudents = [];
 		this.selectedTeachers = [];
 		this.loadMembers();
@@ -76,7 +75,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	addMembers(role: string) {
 		this.usersDialog.show();
 		this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
-			this.processing = true;
 			var subscriptions = [];
 			_.each(users, (user:User)=> {
 				var member = new CourseMember();
@@ -94,7 +92,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				this.subscription.unsubscribe();
 			});
 			Observable.zip(...subscriptions).subscribe((members) => {
-				this.processing = false;
 				CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
 					if (syl && syl.prequisite_course_id) 
 					_.each(members, ((member:any)=> {

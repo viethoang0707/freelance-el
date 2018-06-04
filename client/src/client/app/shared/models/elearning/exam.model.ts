@@ -24,8 +24,20 @@ export class Exam extends BaseModel{
         this.publish_score = undefined;
         this.supervisor_id =  undefined;
         this.supervisor_name = undefined;
+        this.competency_id = undefined;
+        this.competency_name = undefined;
+        this.competency_group_id =  undefined;
+        this.competency_group_name =  undefined;
+        this.competency_level_id =  undefined;
+        this.competency_level_name =  undefined;
 	}
 
+    competency_id: number;
+    competency_name: string;
+    competency_group_id: number;
+    competency_group_name: string;
+    competency_level_id: number;
+    competency_level_name: string;
     name:string;
     summary: string;
     instruction: string;
@@ -41,7 +53,7 @@ export class Exam extends BaseModel{
     supervisor_name: string;
 
     get IsAvailable():boolean {
-        if (this.status !='published')
+        if (this.status !='open')
             return false;
         var now = new Date();
         if (this.end.getTime() < now.getTime())

@@ -12,6 +12,7 @@ import { GroupDialog } from '../group-dialog/group-dialog.component';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { Question } from '../../../shared/models/elearning/question.model';
+import { CompetencyLevel } from '../../../shared/models/elearning/competency-level.model';
 
 @Component({
     moduleId: module.id,
@@ -76,6 +77,8 @@ export class GroupListComponent extends BaseComponent implements OnInit {
             subscription =  User.listByGroup(this, this.selectedNode.data.id)
         if(this.category == "question")
             subscription =  Question.listByGroup(this, this.selectedNode.data.id);
+        if(this.category == "competency")
+            subscription =  CompetencyLevel.listByGroup(this, this.selectedNode.data.id);
         if(subscription)
         {
             subscription.subscribe(items => {
@@ -97,6 +100,8 @@ export class GroupListComponent extends BaseComponent implements OnInit {
             subscription =  Group.listUserGroup(this);
         if(this.category == "question")
             subscription =  Group.listQuestionGroup(this);
+        if(this.category == "competency")
+            subscription =  Group.listCompetencyGroup(this);
         if (subscription)  
             subscription.subscribe(groups => {
                 this.groups = groups;

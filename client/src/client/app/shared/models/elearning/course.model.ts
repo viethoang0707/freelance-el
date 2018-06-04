@@ -25,8 +25,21 @@ export class Course extends BaseModel{
         this.group_id__DESC__ = undefined;
         this.supervisor_id =  undefined;
         this.supervisor_name = undefined;
+        this.competency_id = undefined;
+        this.competency_name = undefined;
+        this.competency_group_id =  undefined;
+        this.competency_group_name =  undefined;
+        this.competency_level_id =  undefined;
+        this.competency_level_name =  undefined;
+
 	}
 
+    competency_id: number;
+    competency_name: string;
+    competency_group_id: number;
+    competency_group_name: string;
+    competency_level_id: number;
+    competency_level_name: string;
     name:string;
     syllabus_id:number;
     group_id:number;

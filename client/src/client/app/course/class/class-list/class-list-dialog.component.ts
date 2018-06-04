@@ -8,7 +8,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE } from '../../../shared/models/constants'
 import { CourseEnrollDialog } from '../enrollment-dialog/enrollment-dialog.component';
 import { CourseClassDialog } from '../class-dialog/class-dialog.component';
 
@@ -30,7 +30,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     private display: boolean;
 
     COURSE_MODE = COURSE_MODE;
-    COURSE_STATUS = COURSE_STATUS;
+    CONTENT_STATUS = CONTENT_STATUS;
 
     constructor() {
         super();

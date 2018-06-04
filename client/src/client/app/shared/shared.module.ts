@@ -42,6 +42,8 @@ import { SelectGroupDialog } from './components/select-group-dialog/select-group
 import { SelectUsersDialog } from './components/select-user-dialog/select-user-dialog.component';
 import { SelectAdminDialog } from './components/select-admin-dialog/select-admin-dialog.component';
 import { SelectQuestionSheetDialog } from './components/select-question-sheet-dialog/select-question-sheet-dialog.component';
+import { SelectCompetencyDialog } from './components/select-competency-dialog/select-competency-dialog.component';
+import { SelectCompetencyLevelDialog } from './components/select-competency-level-dialog/select-competency-level-dialog.component';
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
@@ -221,7 +223,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectQuestionsDialog,
         SelectGroupDialog,
         SelectAdminDialog,
-        SelectQuestionSheetDialog
+        SelectQuestionSheetDialog,
+        SelectCompetencyDialog,
+        SelectCompetencyLevelDialog,
     ],
     exports: [
         // Angular modules
@@ -248,6 +252,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectQuestionsDialog,
         SelectAdminDialog,
         SelectQuestionSheetDialog,
+        SelectCompetencyDialog,
+        SelectCompetencyLevelDialog,
         // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,

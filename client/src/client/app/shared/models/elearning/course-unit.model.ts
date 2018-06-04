@@ -18,6 +18,7 @@ export class CourseUnit extends BaseModel{
         this.parent_id = undefined;
         this.syllabus_id = undefined;
         this.icon = undefined;
+        this.status = undefined;
 	}
 
     name:string;
@@ -27,6 +28,7 @@ export class CourseUnit extends BaseModel{
     syllabus_id: number;
     lecture: string;
     type: string;
+    status: string;
 
     completedByUser(context:APIContext, userId: number):Observable<any> {
         var domain = "[('user_id','=',"+userId+"),('res_id','=',"+this.id+"),('res_model','=','"+CourseUnit.Model+"'),('code','=','COMPLETE_COURSE_UNIT')]";
@@ -43,6 +45,6 @@ export class CourseUnit extends BaseModel{
     }
 
     static countBySyllabus(context:APIContext, sylId:number):Observable<any> {
-        return CourseUnit.count(context, "[('syllabus_id','=',"+sylId+")]");
+        return CourseUnit.count(context, "[('syllabus_id','=',"+sylId+"),('type','!=','folder')]");
     }
 }
