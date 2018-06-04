@@ -123,7 +123,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					this.loadConference();
 					this.loadCouseSyllabus();
 					if (course.mode=='group')
-						CourseClass.get(this,member.class_id).subscriber(courseClass=> {
+						CourseClass.get(this,member.class_id).subscribe(courseClass=> {
 							this.courseClass = courseClass;
 							if (this.courseClass.IsAvailable)
 								this.enableLogging = true;
