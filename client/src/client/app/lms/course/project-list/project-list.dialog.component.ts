@@ -73,7 +73,7 @@ export class ProjectListDialog extends BaseComponent {
 	deleteProject() {
 		if (this.selectedProject) {
 			this.confirm('Are you sure to delete ?', () => {
-				this.this.selectedProject.delete(this).subscribe(()=> {
+				this.selectedProject.delete(this).subscribe(()=> {
 					this.success('Project deleted');
 					this.loadProjects();
 				});
