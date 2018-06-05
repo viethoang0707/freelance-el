@@ -42,6 +42,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
 	private exam: Exam;
 	private member: ExamMember;
+    private members: ExamMember[];
     private scoreRecords: any;
     private selectedRecord: any;
     private questions: ExamQuestion[];
@@ -110,6 +111,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         this.startTransaction();
         ExamGrade.all(this).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
+                this.members =  members;
                 Submission.listByExam(this, this.exam.id).subscribe(submits => {
                     this.scoreRecords = members;
                     _.each(members, (member: ExamMember) => {
@@ -144,8 +146,15 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     closeExam() {
         if (this.selectedRecord) {
             this.selectedRecord.status = 'closed';
-            this.selectedRecord.save(this).subscribe(()=> {
-                this.success('Exam close');
+            var subscriptions = _.map(this.members, (member: ExamMember)=> {
+                member.enroll_status = 'completed';
+                return member.save(this);
+            });
+            subscriptions.push(this.selectedRecord.save(this));
+            this.startTransaction();
+            Observable.forkJoin(subscriptions).subscribe(()=> {
+                 this.success('Exam close');
+                 this.closeTransaction();
             });
         }
     }
