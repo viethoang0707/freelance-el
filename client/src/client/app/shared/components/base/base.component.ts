@@ -15,7 +15,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 
 export abstract class BaseComponent implements APIContext {
 	apiService: APIService;
-	cloudApiService: APIService;
+	cloudApiService: CloudAPIService;
 	authService: AuthService;
 	messageService: MessageService;
 	confirmationService: ConfirmationService;

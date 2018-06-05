@@ -71,7 +71,7 @@ export class CompetencyListComponent extends BaseComponent {
             this.confirm('Are you sure to delete ?', () => {
                 this.startTransaction();
                 this.selectedCompetency.delete(this).subscribe(() => {
-                    this.this.selectedCompetency = null;
+                    this.selectedCompetency = null;
                     this.loadCompetencies();
                     this.closeTransaction();
                 });
@@ -89,7 +89,7 @@ export class CompetencyListComponent extends BaseComponent {
             CompetencyLevel.all(this).subscribe(levels => {
                 _.each(this.competencies , competency=> {
                     CompetencyLevel.listByCompetency(this, competency["id"]).subscribe(levels=> {
-                        competency["levels"] = _.reduce(levels, function(memo, level){ return memo + level.name+','; }, '');
+                        competency["levels"] = _.reduce(levels, function(memo, level){ return memo + level["name"]+','; }, '');
                     });
                 });
                 this.closeTransaction();

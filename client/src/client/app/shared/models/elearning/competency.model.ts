@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { CompetencyCache } from '../../services/cache.service';
+import * as _ from 'underscore';
 
 @Model('etraining.competency')
 export class Competency extends BaseModel{

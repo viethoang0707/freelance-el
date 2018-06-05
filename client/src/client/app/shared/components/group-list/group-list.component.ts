@@ -12,7 +12,7 @@ import { GroupDialog } from '../group-dialog/group-dialog.component';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { Question } from '../../../shared/models/elearning/question.model';
-import { CompetencyLevel } from '../../../shared/models/elearning/competency-level.model';
+import { Competency } from '../../../shared/models/elearning/competency.model';
 
 @Component({
     moduleId: module.id,
@@ -78,7 +78,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         if(this.category == "question")
             subscription =  Question.listByGroup(this, this.selectedNode.data.id);
         if(this.category == "competency")
-            subscription =  CompetencyLevel.listByGroup(this, this.selectedNode.data.id);
+            subscription =  Competency.listByGroup(this, this.selectedNode.data.id);
         if(subscription)
         {
             subscription.subscribe(items => {

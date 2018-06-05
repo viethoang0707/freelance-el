@@ -433,7 +433,7 @@ export class ExamGradeCache implements ICache<ExamGrade> {
 
 export class CompetencyCache implements ICache<Competency> {
     
-    updateCache(record: CompetencyCache, method:string, cacheService: CacheService) {
+    updateCache(record: Competency, method:string, cacheService: CacheService) {
         if (cacheService.hit('COMPETENCY')) {
             var competencies = cacheService.load('COMPETENCY');
             if (method == 'CREATE')

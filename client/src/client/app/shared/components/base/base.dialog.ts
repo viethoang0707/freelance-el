@@ -11,10 +11,10 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
     originalObject: any;
     object: any;
     display: boolean;
-    private onCreateCompleteReceiver: Subject<any> = new Subject();
-    private onUpdateCompleteReceiver: Subject<any> = new Subject();
-    private onShowReceiver: Subject<any> = new Subject();
-    private onHideReceiver: Subject<any> = new Subject();
+    protected onCreateCompleteReceiver: Subject<any> = new Subject();
+    protected onUpdateCompleteReceiver: Subject<any> = new Subject();
+    protected onShowReceiver: Subject<any> = new Subject();
+    protected onHideReceiver: Subject<any> = new Subject();
     onCreateComplete: Observable<any> = this.onCreateCompleteReceiver.asObservable();
     onUpdateComplete: Observable<any> = this.onUpdateCompleteReceiver.asObservable();
     onShow: Observable<any> = this.onShowReceiver.asObservable();

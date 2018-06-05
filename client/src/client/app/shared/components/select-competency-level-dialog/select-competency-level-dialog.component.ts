@@ -34,7 +34,8 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 	constructor() {
 		super();
 		this.display = false;
-		this.competencies = [];
+		this.levels = [];
+		this.displayLevels = [];
 		this.treeUtils = new TreeUtils();
 	}
 
@@ -47,7 +48,7 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 			this.displayLevels =  [];
 			Competency.listByGroup(this,this.selectedNode.data.id).subscribe(competencies => {
 				_.each(competencies, (competency:Competency)=> {
-					var levels = _.filter(this.levels, (level:Competency)=> {
+					var levels = _.filter(this.levels, (level:CompetencyLevel)=> {
 						return level.competency_id == competency.id;
 					});
 					this.displayLevels = this.displayLevels.concat(levels);

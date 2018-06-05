@@ -13,8 +13,7 @@ export class APIService {
     login(username: string, password: string, cloudid:number, api_endpoint:string):Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        var api = new LoginAPI(username: string, password: string, cloudid:number, api_endpoint:string);
-        return this.http.post(this.api_endpoint + '/api/login', JSON.stringify({username: this.username, password: this.password, cloudid: this.cloudid}), options)
+        return this.http.post(api_endpoint + '/api/login', JSON.stringify({username: username, password: password, cloudid: cloudid}), options)
             .map((response: Response) => response.json());
     }
 
@@ -81,7 +80,7 @@ export class APIService {
             .map((response: Response) => response.json());
     }
 
-    bulk_search(stacks:stacks,cloudid:number, api_endpoint:string): Observable<any[]> {
+    bulk_search(stacks:any,cloudid:number, api_endpoint:string): Observable<any[]> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(api_endpoint + '/api/bulk_search_read', JSON.stringify({stacks:stacks, cloudid: cloudid  }), options)
@@ -109,7 +108,7 @@ export class APIService {
             .map((response: Response) => response.json()[0]);
     }
 
-    bulk_get(stacks:any,, cloudid:number, api_endpoint:string): Observable<any> {
+    bulk_get(stacks:any, cloudid:number, api_endpoint:string): Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(api_endpoint + '/api/bulk_read', JSON.stringify({ stacks:stacks, cloudid: cloudid  }), options)

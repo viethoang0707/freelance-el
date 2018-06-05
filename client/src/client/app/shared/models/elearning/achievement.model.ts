@@ -1,4 +1,3 @@
-import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { CompetencyCache } from '../../services/cache.service';
 import { Model,FieldProperty } from '../decorator';
@@ -7,6 +6,8 @@ import { Course } from './course.model';
 import { User } from './user.model';
 import { Competency } from './competency.model';
 import { CompetencyLevel } from './competency-level.model';
+import { Observable, Subject } from 'rxjs/Rx';
+import { BaseModel } from '../base.model';
 
 
 @Model('etraining.achivement')
@@ -46,7 +47,7 @@ export class Achivement extends BaseModel{
 		subscriptions.push(Exam.get(context, this.exam_id));
 		subscriptions.push(Competency.get(context, this.competency_id));
 		subscriptions.push(CompetencyLevel.get(context, this.competency_level_id));
-		return Obserable.forkJoin(subscriptions);
+		return Observable.forkJoin(subscriptions);
 	}
 
 	static populateArray() {

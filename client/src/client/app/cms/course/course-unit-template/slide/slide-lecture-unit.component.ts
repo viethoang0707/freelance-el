@@ -66,7 +66,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 							this.lecture.slide_url = data["url"];
 						else {
 							var serverFile = data["filename"]
-							this.apiService.convert2Pdf(serverFile, this.authService.CloudAcc.id).subscribe((data)=> {
+							this.cloudApiService.convert2Pdf(serverFile, this.authService.CloudAcc.id).subscribe((data)=> {
 								this.lecture.slide_url = data["url"];
 							});
 						}

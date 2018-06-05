@@ -51,11 +51,11 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 
 	addCompetencyLevel() {
         var level = new CompetencyLevel();
-        level.name 'New level';
+        level.name ='New level';
         this.levels.push(level);
     }
 
-    updateCompetencyLevel() {
+    updateCompetencyLevel():Observable<any> {
     	var subscriptions =  _.map(this.levels, (level:CompetencyLevel)=> {
     		if (!level.name || level.name =='') {
     			if (level.id)

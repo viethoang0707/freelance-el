@@ -71,7 +71,7 @@ export class GradebookListDialog extends BaseComponent {
 					_.each(this.records,(record=> {
 						Certificate.byMember(this, record["id"]).subscribe(certificate=> {
 							if (certificate)
-								record["certificate"] = certificate.name;
+								record["certificate"] = certificate["name"];
 							else
 								record["certificate"] = '';
 						});

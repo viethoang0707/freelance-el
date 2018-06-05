@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { User } from '../../../shared/models/elearning/user.model';
-import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
