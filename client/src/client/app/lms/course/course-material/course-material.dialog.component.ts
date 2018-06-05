@@ -29,7 +29,7 @@ export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 
 	uploadFile(file) {
 		this.uploadInprogress = true;
-		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.uploadInprogress = false;
 				if (data["result"]) {

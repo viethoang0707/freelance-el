@@ -37,7 +37,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.credential = this.authService.StoredCredential || new Credential();
         this.remember = this.authService.Remember;
         if (this.buildMode=='prod') {
-            this.apiService.cloudInfo().subscribe(account=> {
+            this.cloudApiService.cloudInfo().subscribe(account=> {
                 this.authService.CloudAcc = this.account = account;
             });
         }
@@ -48,9 +48,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
             return Observable.of(this.authService.CloudAcc);
         else {
             if (this.buildMode=='prod')
-                return this.apiService.cloudInfo();
+                return this.cloudApiService.cloudInfo();
             else
-                return this.apiService.cloudInfo(this.cloudid);
+                return this.cloudApiService.cloudInfo(this.cloudid);
         }
     }
 

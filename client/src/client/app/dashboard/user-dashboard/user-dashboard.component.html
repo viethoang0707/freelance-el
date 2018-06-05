@@ -1,4 +1,23 @@
 <div class="ui-g user-dashboard">
+   <div class="ui-g-12 dashboard-live-conference">
+    <h3 class="dashboard-list-title"><i class="material-icons icon">perm_phone_msg</i>{{'Live conference'|translate}}</h3>
+    <div class="ui-g-3" *ngFor="let member of confMembers | slice:0:4; let i = index">
+      <div class="task-box task-box-{{i%4 +1}}">
+        <div class="task-box-header">
+          <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
+        </div>
+        <div class="task-box-content">
+          <h4>{{member.conference.name}}</h4>
+          <p class="mb10">{{'Room password'|translate}} {{':'+member.conference.room_pass}}
+          </p>
+        </div>
+        <div class="task-box-footer">
+          <button pButton type="button " label="{{ 'Join'|translate}} " class="btn-footer" icon="ui-icon-call " (click)="joinConference(member) " [disabled]="member.conference.status!='open'"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="ui-g-12 dashboard-courses-list">
     <h3 class="dashboard-list-title"><i class="material-icons icon">school</i>{{'My courses'|translate}}</h3>
     <div class="ui-g-3 image-box card-course" *ngFor="let course of courses | slice:0:4">
@@ -74,23 +93,5 @@
       <exam-study-dialog></exam-study-dialog>
   </div>
 
-  <div class="ui-g-12 dashboard-live-conference">
-    <h3 class="dashboard-list-title"><i class="material-icons icon">perm_phone_msg</i>{{'Live conference'|translate}}</h3>
-    <div class="ui-g-3" *ngFor="let member of confMembers | slice:0:4; let i = index">
-      <div class="task-box task-box-{{i%4 +1}}">
-        <div class="task-box-header">
-          <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
-        </div>
-        <div class="task-box-content">
-          <h4>{{member.conference.name}}</h4>
-          <p class="mb10">{{'Room password'|translate}} {{':'+member.conference.room_pass}}
-          </p>
-        </div>
-        <div class="task-box-footer">
-          <button pButton type="button " label="{{ 'Join'|translate}} " class="btn-footer" icon="ui-icon-call " (click)="joinConference(member) " [disabled]="member.conference.status!='open'"></button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+ 
 </div>

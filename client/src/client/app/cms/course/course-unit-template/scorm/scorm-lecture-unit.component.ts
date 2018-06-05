@@ -55,14 +55,14 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 
 	uploadFile(file) {
 		this.startTransaction();
-		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.closeTransaction();
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.lecture.package_url = data["url"];
 						var serverFile = data["filename"]
-						this.apiService.unzip(serverFile, this.authService.CloudAcc.id).subscribe((data)=> {
+						this.cloudApiService.unzip(serverFile, this.authService.CloudAcc.id).subscribe((data)=> {
 							this.lecture.base_url = data["url"];
 						});
 					});
