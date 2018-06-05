@@ -11,8 +11,10 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
- COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE } from '../../../shared/models/constants'
+import {
+	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE
+} from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
@@ -36,8 +38,8 @@ import { ProjectListDialog } from '../project-list/project-list.dialog.component
 	styleUrls: ['course-manage.component.css']
 })
 export class CourseManageComponent extends BaseComponent implements OnInit {
-	
-	private course:Course;
+
+	private course: Course;
 	private members: CourseMember[];
 	private selectedClass: CourseClass;
 	private classes: CourseClass[];
@@ -49,20 +51,20 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	private syl: CourseSyllabus;
 	private selectedNode: TreeNode;
 	private units: CourseUnit[];
-	private selectedUnit:CourseUnit;
-	private  sylUtils:SyllabusUtils;
+	private selectedUnit: CourseUnit;
+	private sylUtils: SyllabusUtils;
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
-	@ViewChild(ClassConferenceDialog) conferenceDialog : ClassConferenceDialog;
-	@ViewChild(ClassExamListDialog) examListDialog : ClassExamListDialog;
+	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
+	@ViewChild(ClassExamListDialog) examListDialog: ClassExamListDialog;
 	@ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
-		this. sylUtils = new SyllabusUtils();
+		this.sylUtils = new SyllabusUtils();
 		this.classes = [];
 		this.faqs = [];
 		this.materials = [];
@@ -70,52 +72,52 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => { 
-	        var courseId = +params['courseId']; 
-	        this.startTransaction();
-	        Course.get(this, courseId).subscribe(course => {
-	        	CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId).subscribe(members=> {
-	        		this.course = course;
-	        		this.members = _.filter(members, (member:CourseMember)=> {
-	        				return member.role =='teacher';
-	        		});
+		this.route.params.subscribe(params => {
+			var courseId = +params['courseId'];
+			this.startTransaction();
+			Course.get(this, courseId).subscribe(course => {
+				CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId).subscribe(members => {
+					this.course = course;
+					this.members = _.filter(members, (member: CourseMember) => {
+						return member.role == 'teacher';
+					});
 					this.loadCourseClass();
 					this.loadFaqs();
 					this.loadMaterials();
 					this.loadCourseSyllabus();
 					this.closeTransaction();
-	        	})
-				
-	        });
-	    }); 
+				})
+
+			});
+		});
 	}
 
 	loadCourseClass() {
 		CourseClass.listByCourse(this, this.course.id)
 			.map(classList => {
-				return _.filter(classList, (obj:CourseClass)=> {
-					var member = _.find(this.members, (member:CourseMember)=> {
+				return _.filter(classList, (obj: CourseClass) => {
+					var member = _.find(this.members, (member: CourseMember) => {
 						return member.class_id == obj.id;
 					});
 					return member != null;
 				});
 			})
 			.subscribe(classList => {
-				this.classes =  classList;
+				this.classes = classList;
 			});
 	}
 
 	loadCourseSyllabus() {
 		this.startTransaction();
-    	CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
-        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
-				this.units = _.filter(units, (unit:CourseUnit)=> {
+		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl => {
+			CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
+				this.units = _.filter(units, (unit: CourseUnit) => {
 					return unit.status == 'published';
 				});
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.closeTransaction();
-	        });
-        });
+			});
+		});
 	}
 
 	manageConference() {
@@ -205,7 +207,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	deleteMaterial() {
 		if (this.selectedMaterial)
-			this.confirm(this.translateService.instant('Are you sure to delete?'),() => {
+			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				this.startTransaction();
 				this.selectedMaterial.delete(this).subscribe(() => {
 					this.loadMaterials();
@@ -215,9 +217,9 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 			});
 	}
 
-	nodeSelect(event:any) {
+	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.selectedUnit =  this.selectedNode.data;
+			this.selectedUnit = this.selectedNode.data;
 		}
 	}
 
@@ -228,22 +230,26 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	closeClass() {
-        if (this.selectedClass) {
-            this.selectedClass.status = 'closed';
-            this.startTransaction();
-            CourseMember.listByClass(this, this.selectedClass.id).subscribe(members=> {
-            	var subscriptions = _.map(members, (member: CourseMember)=> {
-	                member.enroll_status = 'completed';
-	                return member.save(this);
-		        });
-	            subscriptions.push(this.selectedClass.save(this));
-	            Observable.forkJoin(...subscriptions).subscribe(()=> {
-	                 this.success('Class close');
-	                 this.closeTransaction();
-	            });
-            });
-            
-        }
-    }
+		if (this.selectedClass) {
+			this.selectedClass.status = 'closed';
+			this.startTransaction();
+			CourseMember.listByClass(this, this.selectedClass.id).subscribe(members => {
+
+				var subscriptions = _.map(members, (member: CourseMember) => {
+
+					member.enroll_status = 'completed';
+					return member.save(this);
+				});
+				subscriptions.push(this.selectedClass.save(this));
+
+				Observable.forkJoin(...subscriptions).subscribe(() => {
+
+					this.success('Class close');
+					this.closeTransaction();
+				});
+			});
+
+		}
+	}
 }
 
