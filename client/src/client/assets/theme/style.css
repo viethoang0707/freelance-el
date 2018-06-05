@@ -457,10 +457,6 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer{
   border-top: none;
 }
 
-.schedule-dashboard .fc-scroller{
-  height: 500px !important;
-}
-
 .spinner {
    position: absolute;
    left: 50%;
@@ -505,6 +501,6 @@ body .settings-exam .ui-fluid .ui-spinner .ui-spinner-button{
 }
 
 .setting-exam{
-  height: 400px;
+  height: 430px;
   overflow: auto;
 }
