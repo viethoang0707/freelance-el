@@ -12,6 +12,7 @@ import { TeacherGuard } from './guards/teacher.guard';
 import { StudentGuard } from './guards/student.guard';
 import { SupervisorGuard } from './guards/supervisor.guard';
 import { APIService } from './services/api.service';
+import { CloudAPIService } from './services/cloud-api.service';
 import { AuthService } from './services/auth.service';
 import { WorkflowService } from './services/workflow.service';
 import { CacheService } from './services/cache.service';
@@ -341,6 +342,7 @@ export class ErpSharedModule {
                 TeacherGuard,
                 StudentGuard,
                 SupervisorGuard,
+                CloudAPIService,
                 APIService,
                 AuthService,
                 MessageService,

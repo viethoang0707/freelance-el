@@ -57,7 +57,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
 
     uploadFile(file) {
 		this.startTransaction();
-		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.closeTransaction();
 				if (data["result"]) {

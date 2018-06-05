@@ -66,7 +66,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	uploadFile(file) {
 		this.startTransaction();
-		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.closeTransaction();
 				if (data["result"]) {

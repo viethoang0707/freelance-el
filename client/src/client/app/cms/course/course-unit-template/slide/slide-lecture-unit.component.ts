@@ -57,7 +57,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	uploadFile(file) {
 		this.startTransaction();
 		this.lecture.filename = file.name;
-		this.apiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.closeTransaction();
 				if (data["result"]) {

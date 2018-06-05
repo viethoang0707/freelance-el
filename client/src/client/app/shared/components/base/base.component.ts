@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import { APIService } from '../../services/api.service';
+import { CloudAPIService } from '../../services/cloud-api.service';
 import { AuthService } from '../../services/auth.service';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { APIContext } from '../../models/context';
@@ -14,6 +15,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 
 export abstract class BaseComponent implements APIContext {
 	apiService: APIService;
+	cloudApiService: APIService;
 	authService: AuthService;
 	messageService: MessageService;
 	confirmationService: ConfirmationService;
@@ -26,6 +28,7 @@ export abstract class BaseComponent implements APIContext {
 
 	constructor() {
 		this.apiService = ServiceLocator.injector.get(APIService);
+		this.cloudApiService = ServiceLocator.injector.get(CloudAPIService);
 		this.loadingService = ServiceLocator.injector.get(LoadingService);
 		this.authService = ServiceLocator.injector.get(AuthService);
 		this.messageService = ServiceLocator.injector.get(MessageService);
