@@ -27,6 +27,15 @@ export class QuestionSheet extends BaseModel{
 
     static __api__byExam(examId: number): SearchReadAPI {
         return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',"+examId+")]");
+    
+    clone():QuestionSheet {
+        var sheet = new QuestionSheet();
+        sheet.name = this.name;
+        sheet.exam_id = this.exam_id;
+        sheet.exercise_id = this.exercise_id;
+        sheet.finalized = this.finalized;
+        sheet.seed = this.seed;
+        return sheet;
     }
 
     static byExam( context:APIContext, examId: number): Observable<any> {

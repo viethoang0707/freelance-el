@@ -48,8 +48,9 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 		
 		sheet.save(this).subscribe(()=> {
 			var examQuestions = _.map(this.examQuestions, question=> {
-				var questionTempl = new ExamQuestion();
-				questionTempl.question_id =  question.question_id;
+				var questionTempl = question.clone();
+				questionTempl.exam_id =  null;
+				questionTempl.exercise_id = null;
 				questionTempl.sheet_id =  sheet.id;
 				return questionTempl;
 			});

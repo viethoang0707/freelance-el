@@ -50,6 +50,7 @@ export class ExamContentDialog extends BaseComponent {
 	show(exam: Exam) {
 		this.display = true;
 		this.exam = exam;
+		this.examQuestions = [];
 		this.loadQuestionSheet();
 	}
 
@@ -62,7 +63,6 @@ export class ExamContentDialog extends BaseComponent {
 				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
-					
 				});
 			}
 			else {
@@ -95,7 +95,7 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	previewSheet() {
-		this.previewDialog.show(this.sheet);
+		this.previewDialog.show(this.sheet, this.examQuestions);
 	}
 
 	clearSheet() {
@@ -118,12 +118,11 @@ export class ExamContentDialog extends BaseComponent {
 			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:QuestionSheet) => {
 				
 				ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
-					examQuestions = _.map(examQuestions, examQuestion=> {
-						var newExamQuestion = new ExamQuestion();
-						newExamQuestion.exam_id =  this.exam.id;
-						newExamQuestion.score = examQuestion.score;
-						newExamQuestion.sheet_id =  this.sheet.id;
-						return newExamQuestion; 
+					this.examQuestions = _.map(examQuestions, examQuestion=> {
+						return examQuestion.clone();
+					});
+					_.each(this.examQuestions, (examQuestion:ExamQuestion)=> {
+						examQuestion.sheet_id =  this.sheet.id;
 					});
 					this.sheet.finalized =  true;
 					this.examQuestions = examQuestions;
@@ -147,7 +146,6 @@ export class ExamContentDialog extends BaseComponent {
 				});
 				this.sheet.finalized =  true;
 				this.examQuestions = examQuestions;
-				this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
 			});
 		}
 	}
