@@ -48,6 +48,10 @@ body .language .ui-dropdown .ui-dropdown-trigger{
   line-height: 30px;
 }
 
+.language .ui-dropdown .ui-dropdown-label{
+  padding-right: 1.5em !important;
+}
+
 .ui-treetable td.group-code{
   text-align: center;
 }
