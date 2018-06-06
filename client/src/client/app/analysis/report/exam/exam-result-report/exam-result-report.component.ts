@@ -25,10 +25,6 @@ import { ExcelService } from '../../../../shared/services/excel.service';
     selector: 'exam-result-report',
     templateUrl: 'exam-result-report.component.html',
 })
-@Report({
-    title: 'Exam result report',
-    category: REPORT_CATEGORY.EXAM
-})
 export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
     private records: any;

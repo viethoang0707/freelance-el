@@ -24,10 +24,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 	templateUrl: 'course-by-member-report.component.html',
 	styleUrls: ['course-by-member-report.component.css'],
 })
-@Report({
-	title: 'Course by member report',
-	category: REPORT_CATEGORY.COURSE
-})
+
 export class CourseByMemberReportComponent extends BaseComponent implements OnInit {
 
 	@ViewChild(SelectGroupDialog) groupDialog: SelectGroupDialog;
