@@ -251,5 +251,6 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 		}
 	}
+
 }
 
