@@ -319,6 +319,18 @@ body .user-dashboard .ui-datagrid .card-course .ui-panel .ui-panel-titlebar{
  /* background-color: #616161;*/
   background-color: #71a23c; }
 
+body .user-dashboard .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler{
+  display: none;
+}
+
+body .user-dashboard .ui-fieldset .ui-fieldset-legend{
+  padding: 0;
+}
+
+body .user-dashboard  .ui-fieldset.ui-widget-content{
+  border: none;
+}
+
 .question p{
   margin: 0;
 }
@@ -442,10 +454,6 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 /*lms-conference-list-item*/
 body .lms-conference-list-item .ui-panel .ui-panel-footer{
   border-top: none;
-}
-
-.schedule-dashboard .fc-scroller{
-  height: 500px !important;
 }
 
 .spinner {
