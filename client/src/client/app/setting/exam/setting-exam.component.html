@@ -19,20 +19,20 @@
             <div class="ui-g-12">
             <div class="ui-g-4">
               <span class="md-inputfield mg">
+                <input type="text" pInputText [(ngModel)]="grade.name" name="grade_name">
                 <label for="grade_name">{{'Name' | translate}}</label>
-                <input type="text" pInputText [(ngModel)]="grade.name" name="grade_name">              
               </span>
             </div>
             <div class="ui-g-4">
               <span class="md-inputfield mg">
+                <p-spinner [(ngModel)]="grade.min_score" name="grade_min"></p-spinner>
                 <label for="grade_min">{{'Min' | translate}}</label>
-                <p-spinner [(ngModel)]="grade.min_score" name="grade_min"></p-spinner>             
-                </span>
+              </span>
             </div>
             <div class="ui-g-4">
               <span class="md-inputfield mg">
-                <label for="grade_max">{{'Max' | translate}}</label>
                 <p-spinner [(ngModel)]="grade.max_score" name="grade_max"></p-spinner>
+                <label for="grade_max">{{'Max' | translate}}</label>
               </span>
             </div>
             </div>
