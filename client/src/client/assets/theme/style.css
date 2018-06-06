@@ -407,7 +407,7 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 
 .lms-course-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all:hover,
 .lms-exam-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all:hover{
-  box-shadow: 0 0 11px rgba(33,33,33,.2);
+  box-shadow: 0 0 11px #03a9f4;
 }
 
 .lms-course-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all,

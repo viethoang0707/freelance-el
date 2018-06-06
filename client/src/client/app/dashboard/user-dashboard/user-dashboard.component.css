@@ -92,3 +92,7 @@ h4.title{
 	color: #0e22b5;
 	margin: 0;
 }
+
+.task-box:hover, .card:hover{
+	box-shadow: 0 0 11px #03a9f4;
+}
