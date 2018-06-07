@@ -23,9 +23,11 @@ import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
 import { CustomTranslationLoader } from './shared/helpers/translation.loader';
 import { TranslateService } from '@ngx-translate/core';
+import { ProgressBarModule } from 'primeng/primeng';
 
 @NgModule({
     imports: [
+        ProgressBarModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpModule,
@@ -44,7 +46,7 @@ import { TranslateService } from '@ngx-translate/core';
         LMSModule,
         ErpSharedModule.forRoot(),
         TranslateModule.forRoot({
-            loader: {provide: TranslateLoader, useClass: CustomTranslationLoader}
+            loader: { provide: TranslateLoader, useClass: CustomTranslationLoader }
         })
     ],
     declarations: [AppComponent],
@@ -56,7 +58,7 @@ import { TranslateService } from '@ngx-translate/core';
         BaseRequestOptions,
         {
             provide: Http,
-            useFactory: (options: BaseRequestOptions, realBackend: XHRBackend)=> {
+            useFactory: (options: BaseRequestOptions, realBackend: XHRBackend) => {
                 return new InterceptHttp(realBackend, options);
             },
             deps: [BaseRequestOptions, XHRBackend]
