@@ -30,6 +30,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	private stream: any;
 	private recordRTC: any;
 	private showToolbar: boolean;
+	openFileStatus: boolean = false;
 
 	@ViewChild('camera') video: any
 
@@ -65,13 +66,15 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	}
 
 	uploadFile(file) {
+		this.openFileStatus = true;
 		this.startTransaction();
 		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
 				this.closeTransaction();
 				if (data["result"]) {
-					this.ngZone.run(()=> {
+					this.ngZone.run(() => {
 						this.lecture.video_url = data["url"];
+						this.openFileStatus = false;
 					})
 				}
 			},
