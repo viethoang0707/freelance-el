@@ -41,9 +41,9 @@ export class Survey extends BaseModel{
         if (this.status !='open')
             return false;
         var now = new Date();
-        if (this.start.getTime() > now.getTime());
+        if (this.start.getTime() > now.getTime())
             return false;
-        if (this.end.getTime() < now.getTime());
+        if (this.end.getTime() < now.getTime())
             return false;
         return true;
     }

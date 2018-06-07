@@ -220,7 +220,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     loadSurvey() {
         Survey.listAvailableSurvey(this).subscribe(surveys=> {
+            console.log(surveys);
             SurveyMember.listByUser(this, this.authService.UserProfile.id).subscribe(members=> {
+                console.log(members);
                 surveys =  _.filter(surveys, (survey:Survey)=> {
                     survey["member"] = _.find(members, (m:SurveyMember)=> {
                         return m.survey_id == survey.id && m.enroll_status !='completed';
