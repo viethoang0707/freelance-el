@@ -5,7 +5,8 @@ import { BaseModel } from '../base.model';
 import { Company } from './company.model';
 import { Permission } from './permission.model';
 import * as _ from 'underscore';
-import { UserCache } from '../../services/cache.service';
+import { Cache } from '../../helpers/cache.utils';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('res.users')
 export class User extends BaseModel{

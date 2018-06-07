@@ -3,6 +3,8 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.survey')
 export class Survey extends BaseModel{

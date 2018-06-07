@@ -5,6 +5,8 @@ import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import { Exam } from './exam.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.project')
 export class Project extends BaseModel{

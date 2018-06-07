@@ -3,6 +3,8 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { Conference } from './conference.model';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.course_class')
 export class CourseClass extends BaseModel{

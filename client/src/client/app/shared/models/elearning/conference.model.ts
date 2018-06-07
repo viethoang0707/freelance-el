@@ -6,6 +6,8 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { Room } from '../meeting/room.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.conference')
 export class Conference extends BaseModel{

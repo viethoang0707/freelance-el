@@ -1,4 +1,4 @@
-
+import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { Submission } from './submission.model';
 import { ExamGrade } from './exam-grade.model';
@@ -7,6 +7,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.exam_member')
 export class ExamMember extends BaseModel{

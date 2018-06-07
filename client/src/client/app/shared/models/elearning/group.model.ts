@@ -4,7 +4,8 @@ import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { CourseUnit } from './course-unit.model';
 import * as _ from 'underscore';
-import { GroupCache } from '../../services/cache.service';
+import { Cache } from '../../helpers/cache.utils';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('res.groups')
 export class Group extends BaseModel{

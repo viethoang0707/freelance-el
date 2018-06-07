@@ -2,8 +2,9 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
-import { CompetencyCache } from '../../services/cache.service';
+import { Cache } from '../../helpers/cache.utils';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.competency')
 export class Competency extends BaseModel{
@@ -26,19 +27,33 @@ export class Competency extends BaseModel{
     group_id__DESC__: string;
 
     static all( context:APIContext): Observable<any[]> {
-        return CompetencyCache.all(context);
+        if (Cache.hit(Competency.Model))
+            return Observable.of(Cache.load(Competency.Model));
+        return Competency.search(context,[],"[]");
     }
 
-    static listByGroup(context:APIContext, groupId):Observable<any> {
-        return CompetencyCache.listByGroup(context, groupId);
+    static __api__listByGroup(groupId: number): SearchReadAPI {
+        return new SearchReadAPI(Competency.Model, [],"[('group_id','=',"+groupId+")]");
     }
 
-    static listByGroups(context:APIContext, groupIds):Observable<any> {
-        var subscriptions = [];
+    static listByGroup(context:APIContext, groupId:number):Observable<any> {
+        return Competency.listByGroup(context, groupId);
+    }
+
+    static __api__listByGroups(groupIds: number[]): SearchReadAPI[] {
+        var apiList = [];
         _.each(groupIds, (groupId)=> {
-            subscriptions.push(Competency.listByGroup(context,groupId));
+            apiList.push(Competency.__api__listByGroup(groupId));
         });
-        return Observable.zip(...subscriptions).map(questionArrs => {
+        return apiList
+    }
+
+    static listByGroups(context:APIContext, groupIds:number[]):Observable<any> {
+        var apiList = [];
+        _.each(groupIds, (groupId)=> {
+            apiList.push(Competency.__api__listByGroup(groupId));
+        });
+        return context.apiService.execute(Competency.__api__bulk_search(apiList), context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint).map(questionArrs => {
             return _.flatten(questionArrs);
         });
     }

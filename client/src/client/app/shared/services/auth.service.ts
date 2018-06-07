@@ -7,7 +7,10 @@ import { Permission } from '../models/elearning/permission.model';
 import { CloudAccount } from '../models/cloud/cloud-account.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service';
-import { CacheService } from './cache.service';
+import { Cache } from '../helpers/cache.utils';
+import { LoginAPI } from './api/login.api';
+import { ChangePassAPI } from './api/change-pass.api';
+import { ResetPassAPI } from './api/reset-pass.api';
 
 declare function escape(s:string): string;
 declare function unescape(s:string): string;
@@ -89,7 +92,8 @@ export class AuthService {
 
     login(info: Credential): Observable<User> {
         var cloud_acc = this.CloudAcc;
-        return this.apiService.login(info.username, info.password, cloud_acc.id,  cloud_acc.api_endpoint).map(user => {
+        var api = new LoginAPI(info.username, info.password);
+        return this.apiService.execute(api,  cloud_acc.id, cloud_acc.api_endpoint).map(user => {
            this.UserProfile = MapUtils.deserialize(User, user);
             return this.UserProfile;
         });
@@ -97,16 +101,18 @@ export class AuthService {
 
     resetPass(email: string): Observable<any> {
         var cloud_acc = this.CloudAcc;
-        return this.apiService.resetPass(email, cloud_acc.id, cloud_acc.api_endpoint);
+        var api = new ResetPassAPI(email);
+        return this.apiService.execute(api, cloud_acc.id,cloud_acc.api_endpoint);
     }
 
     changePass(old_pass: string, new_pass: string): Observable<any> {
         var cloud_acc = this.CloudAcc;
-        return this.apiService.changePass(this.UserProfile.id, old_pass, new_pass, cloud_acc.id, cloud_acc.api_endpoint);
+        var api = new ChangePassAPI(this.UserProfile.id, old_pass, new_pass);
+        return this.apiService.execute(api, cloud_acc.id, cloud_acc.api_endpoint);
     }
 
     logout() {
-        this.cacheService.invalidateAll();
+        Cache.invalidateAll();
         this.clearUserProfile();
         this.clearCloudAccount();
         this.clearUserPermission();

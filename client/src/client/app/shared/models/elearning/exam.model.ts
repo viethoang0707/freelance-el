@@ -4,7 +4,8 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
-import { ExamCache } from '../../services/cache.service';
+import { Cache } from '../../helpers/cache.utils';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.exam')
 export class Exam extends BaseModel{
@@ -64,11 +65,4 @@ export class Exam extends BaseModel{
     static all( context:APIContext): Observable<any[]> {
         return ExamCache.all(context);
     }
-
-    containsOpenEndQuestion(context:APIContext):Observable<any> {
-        return ExamQuestion.listOpenQuestionByExam(context, this.id).flatMap(questions => {
-            return Observable.of(questions.length > 0);
-        });
-    }
-
 }

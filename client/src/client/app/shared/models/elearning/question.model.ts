@@ -4,7 +4,8 @@ import { Model } from '../decorator';
 import { QuestionOption } from './option.model';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
-import { QuestionCache } from '../../services/cache.service';
+import { Cache } from '../../helpers/cache.utils';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.question')
 export class Question extends BaseModel{

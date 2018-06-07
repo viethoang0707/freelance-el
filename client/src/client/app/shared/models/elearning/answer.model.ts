@@ -2,6 +2,7 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.answer')
 export class Answer extends BaseModel{
@@ -27,6 +28,14 @@ export class Answer extends BaseModel{
     submission_id: number;
     text:string;
     json:string;
+
+    static __api__listBySubmit(submitId: number): SearchReadAPI {
+        return new SearchReadAPI(Answer.Model, [],"[('submission_id','=',"+submitId+")]");
+    }
+
+    static __api__listByExam(examId: number): SearchReadAPI {
+        return new SearchReadAPI(Answer.Model, [],"[('exam_id','=',"+examId+")]");
+    }
 
     static listBySubmit( context:APIContext, submitId: number): Observable<any[]> {
         return Answer.search(context,[],"[('submission_id','=',"+submitId+")]");

@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import from '../../helpers/reflect';
 
 export class MethodRegister
 {

@@ -15,6 +15,7 @@ import { TreeUtils } from '../helpers/tree.utils';
 import { Permission } from '../models/elearning/permission.model';
 import { Group } from '../models/elearning/group.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from './api/search-read.api';
 
 @Injectable()
 export class DataAccessService {
@@ -51,13 +52,14 @@ export class DataAccessService {
     	return Observable.of(true);
     }
 
+
     private getUserGroups():Observable<any> {
     	if (this.cacheUserGroups.length)
     		return Observable.of(this.cacheUserGroups);
     	else{
     		var model = Group.Model;
         	var cloud_acc = this.authService.CloudAcc;
-	        return this.apiService.search(model, [], "[('category','=','organization')]", cloud_acc.id, cloud_acc.api_endpoint).map(items => {
+	        return this.apiService.execute(new SearchReadAPI(model, [], "[('category','=','organization')]"), cloud_acc.id, cloud_acc.api_endpoint).map(items => {
 	            return _.map(items, (item)=> {
 	               this.cacheUserGroups = MapUtils.deserializeModel(model, item);
 	               return this.cacheUserGroups;
@@ -72,7 +74,7 @@ export class DataAccessService {
     	else{
     		var model = User.Model;
         	var cloud_acc = this.authService.CloudAcc;
-	        return this.apiService.search(model, [], "[('is_admin','=',True)]", cloud_acc.id, cloud_acc.api_endpoint).map(items => {
+	        return this.apiService.execute(new SearchReadAPI(model, [], "[('is_admin','=',True)]"), cloud_acc.id, cloud_acc.api_endpoint).map(items => {
 	            return _.map(items, (item)=> {
 	               this.cacheAdminUsers = MapUtils.deserializeModel(model, item);
 	               return this.cacheAdminUsers;

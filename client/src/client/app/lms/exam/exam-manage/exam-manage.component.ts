@@ -85,18 +85,12 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
 	mark() {
         if (this.selectedRecord)
-            this.exam.containsOpenEndQuestion(this).subscribe(success => {
-                if (!success) {
-                    this.warn('The exam does not contains any open question');
-                    return;
-                }
-                if (this.selectedRecord["submit"] ==  null) {
-                    this.warn('The member has not attempted the exam');
-                    return;
-                }
-                this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"] );
-            });
-    }
+            if (this.selectedRecord["submit"] ==  null) {
+                this.warn('The member has not attempted the exam');
+                return;
+            }
+            this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"] );
+}
 
     viewAnswerSheet() {
         if (this.selectedRecord) {

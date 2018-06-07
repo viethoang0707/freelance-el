@@ -1,4 +1,4 @@
-
+import { Cache } from '../../helpers/cache.utils';
 import { BaseModel } from '../base.model';
 import { Submission } from './submission.model';
 import { Answer } from './answer.model';
@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('emeeting.room')
 export class Room extends BaseModel{

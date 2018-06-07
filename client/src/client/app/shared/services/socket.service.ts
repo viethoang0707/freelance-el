@@ -8,11 +8,11 @@ import * as io from 'socket.io-client';
 
 Injectable()
 export class WebSocketService {
-	
+
 	private socket;
 	private onNotifyReceiver: Subject<any> = new Subject();
 	onNotify: Observable<any> = this.onNotifyReceiver.asObservable();
-	
+
 
 	constructor() {
 		this.socket = io(Config.SOCKET_ENDPOINT + '/notification');
@@ -21,7 +21,7 @@ export class WebSocketService {
 			console.log('notify', data);
 			this.onNotifyReceiver.next(data);
 		});
-		
+
 	}
 
 	sendMessage(event, message) {
@@ -45,7 +45,7 @@ export class WebSocketService {
 		this.sendMessage('leave', {});
 	}
 
-	notify(title: string,user: number, cloudid: number) {
+	notify(title: string, user: number, cloudid: number) {
 		var message = {
 			title: title,
 			user: user,
@@ -54,6 +54,6 @@ export class WebSocketService {
 		this.sendMessage('notify', message);
 	}
 
-	
+
 
 }

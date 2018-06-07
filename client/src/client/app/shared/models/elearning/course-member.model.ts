@@ -4,6 +4,8 @@ import { Model, FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ConferenceMember } from './conference-member.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.course_member')
 export class CourseMember extends BaseModel {
@@ -72,16 +74,6 @@ export class CourseMember extends BaseModel {
 
     static byCourseAndUser(context: APIContext, userId: number, courseId: number): Observable<any> {
         return CourseMember.search(context, [], "[('user_id','='," + userId + "),('course_id','='," + courseId + ")]");
-    }
-
-    deleteMember(context: APIContext): Observable<any> {
-        return ConferenceMember.byCourseMember(context, this.id).flatMap(conferenceMember => {
-            if (!conferenceMember)
-                return this.delete(context);
-            else {
-                return Observable.forkJoin(this.delete(context), conferenceMember.deleteMember(context))
-            }
-        });
     }
 
     static checkCourseEnrollCondition(context: APIContext, userId: number, prequisiteCourseId: number): Observable<any> {

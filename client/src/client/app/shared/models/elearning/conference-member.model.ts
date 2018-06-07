@@ -6,6 +6,10 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { RoomMember } from '../meeting/room-member.model';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
+import { DeleteAPI } from '../../services/api/delete.api';
+import { BulkDeleteAPI } from '../../services/api/bulk-delete.api';
 
 @Model('etraining.conference_member')
 export class ConferenceMember extends BaseModel{
@@ -39,14 +43,9 @@ export class ConferenceMember extends BaseModel{
     conference_status: number;
     group_id__DESC__: string;
 
-    deleteMember(context:APIContext):Observable<any> {
-        return RoomMember.byRef(context,this.room_member_ref).flatMap(roomMember => {
-            if (!roomMember)
-                return this.delete(context);
-            else {
-                return Observable.zip(this.delete(context), roomMember.delete(context))
-            }
-        });
+
+    static __api__byCourseMember(memberId: number): SearchReadAPI {
+        return new SearchReadAPI(ConferenceMember.Model, [],"[('course_member_id','=',"+memberId+")]");
     }
 
     static byCourseMember(context:APIContext, memberId: number):Observable<any> {
@@ -57,6 +56,18 @@ export class ConferenceMember extends BaseModel{
             else
                 return null;
         });
+    }
+
+    static __api__listByUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(ConferenceMember.Model, [],"[('user_id','=',"+userId+")]");
+    }
+
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(ConferenceMember.Model, [],"[('class_id','=',"+classId+")]");
+    }
+
+    static __api__listByConference(conferenceId: number): SearchReadAPI {
+        return new SearchReadAPI(ConferenceMember.Model, [],"[('conference_id','=',"+conferenceId+")]");
     }
 
     static listByUser( context:APIContext, userId: number): Observable<any[]> {
