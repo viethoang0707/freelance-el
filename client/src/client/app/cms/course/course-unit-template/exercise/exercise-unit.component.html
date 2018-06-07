@@ -32,7 +32,7 @@
     <select-question-dialog></select-question-dialog>
   </div>
   <div *ngIf="mode=='preview'">
-    <div *ngFor="let question of exerciseQuestions;let i = index">
+    <div *ngFor="let question of exerciseQuestions;let i = index ">
       <span>{{'Question'|translate}} : {{i+1}} </span>
       <div question-container>
       </div>
