@@ -58,13 +58,6 @@
                 <ng-template pTemplate="summary">
                     {{'Total records'|translate}} : {{displayUsers?.length}}
                 </ng-template>
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td [attr.colspan]="6">
-                            {{'No records found'|translate}}
-                        </td>
-                    </tr>
-                </ng-template>
             </p-table>
             <user-dialog></user-dialog>
             <user-export-dialog></user-export-dialog>
