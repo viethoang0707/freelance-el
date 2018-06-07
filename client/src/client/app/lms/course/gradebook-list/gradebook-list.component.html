@@ -3,14 +3,16 @@
         <div class="ui-g-12 ">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook() " *ngIf="!selectedRecord"></button>
+                    <button pButton type="button " label="{{ 'View'|translate}} " class="purple-btn " icon="ui-icon-visibility " (click)="viewGradebook() "
+                        *ngIf="!selectedRecord"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <p-selectButton [options]="viewModes" [(ngModel)]="viewMode"></p-selectButton>
                 </div>
             </p-toolbar>
             <div [hidden]="viewMode=='detail'">
-                <p-table #outlineTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #outlineTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord"
+                    [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">
@@ -73,7 +75,8 @@
             </div>
 
             <div [hidden]="viewMode=='outline'">
-                <p-table #detailTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #detailTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord"
+                    [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">
