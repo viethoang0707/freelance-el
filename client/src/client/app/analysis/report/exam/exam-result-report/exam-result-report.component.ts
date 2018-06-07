@@ -43,6 +43,10 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         });
     }
 
+    clear() {
+        this.records = [];
+    }
+
     export() {
         var output = [];
         this.records.forEach(record => {
