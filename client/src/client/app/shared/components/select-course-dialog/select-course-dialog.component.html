@@ -1,13 +1,15 @@
-<p-dialog header="{{'Select course'|translate}}" [positionTop]="50" [(visible)]="display" modal="true" width="800" height="100%" [responsive]="true" appendTo="body">
+<p-dialog header="{{'Select course'|translate}}" [positionTop]="50" [(visible)]="display" modal="true" width="800" height="100%"
+  [responsive]="true" appendTo="body">
   <div class="ui-g ui-fluid form-group">
     <div class="ui-g-5">
-      <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode" ></p-tree>
+      <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode"></p-tree>
     </div>
     <div class="ui-g-7">
-      <p-table  [value]="courses" [(selection)]="selectedCourses" >
-        <ng-template pTemplate="header" >
+      <p-table [value]="courses" [(selection)]="selectedCourses">
+        <ng-template pTemplate="header">
           <tr>
             <th style="width: 2.25em">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th style="width: 100px;">
               {{'Code'|translate}}
@@ -20,12 +22,12 @@
         <ng-template pTemplate="body" let-rowData>
           <tr [pSelectableRow]="rowData">
             <td>
-              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
             </td>
-            <td >
+            <td>
               {{rowData.code}}
             </td>
-            <td >
+            <td>
               {{rowData.name}}
             </td>
           </tr>
