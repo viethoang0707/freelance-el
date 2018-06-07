@@ -40,15 +40,13 @@ export class SurveySheetSaveDialog extends BaseComponent {
 	}
 
 	save() {
-		var sheet = new SurveySheet();
-		sheet.name = this.sheet.name;
+		var sheet = this.sheet.clone()
 		this.startTransaction();
 		sheet.save(this).subscribe(()=> {
 			var surveyQuestions = _.map(this.surveyQuestions, question=> {
-				var questionTempl = new SurveyQuestion();
-				questionTempl.question_id =  question.question_id;
-				questionTempl.sheet_id =  sheet.id;
-				return questionTempl;
+				var surveyQuestion = question.clone();
+				surveyQuestion.sheet_id = sheet.id;
+				return surveyQuestion;
 			});
 			var subscriptions = _.map(surveyQuestions, surveyQuestion=> {
 				return surveyQuestion.save(this);

@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import { APIContext } from '../models/context';
 import { QuestionOption } from '../models/elearning/option.model';
 import { Answer } from '../models/elearning/answer.model';
+import { SurveyAnswer } from '../models/elearning/survey-answer.model';
 
 export class StatsUtils {
 
@@ -36,6 +37,22 @@ export class StatsUtils {
 	}
 
 	examAnswerStatistics(answers: Answer[]): any {
+		var multichoiceAnswer = _.filter(answers, ans=> {
+			return ans.question_type == 'sc' || ans.question_type == 'mc';
+		});
+		var ratingAnswer = _.filter(answers, ans=> {
+			return ans.question_type == 'rate' ;
+		});
+		var openAnswer = _.filter(answers, ans=> {
+			return ans.question_type == 'ext' ;
+		});
+		return {
+				'multichoice': this.multichoiceAnswerStatistics(answers),
+				'rating': this.ratingAnswerStatistics(answers),
+				'open': this.openAnswerStatistics(answers)}
+	}
+
+	surveyAnswerStatistics(answers: SurveyAnswer[]): any {
 		var multichoiceAnswer = _.filter(answers, ans=> {
 			return ans.question_type == 'sc' || ans.question_type == 'mc';
 		});

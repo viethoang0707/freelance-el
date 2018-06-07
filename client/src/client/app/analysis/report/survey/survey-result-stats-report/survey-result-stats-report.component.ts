@@ -9,7 +9,7 @@ import { User } from '../../../../shared/models/elearning/user.model';
 import { ExamLog } from '../../../../shared/models/elearning/log.model';
 import { ExamGrade } from '../../../../shared/models/elearning/exam-grade.model';
 import { Submission } from '../../../../shared/models/elearning/submission.model';
-import { Answer } from '../../../../shared/models/elearning/answer.model';
+import { SurveyAnswer } from '../../../../shared/models/elearning/survey-answer.model';
 import { SurveyMember } from '../../../../shared/models/elearning/survey-member.model';
 import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../../shared/models/constants'
@@ -79,7 +79,7 @@ export class SurveyResultStatsReportComponent extends BaseComponent{
                 });
                 if (supscriptions.length)
                     Observable.forkJoin(supscriptions).subscribe(()=> {
-                        Answer.listBySurvey(this, survey.id).subscribe(answers=> {
+                        SurveyAnswer.listBySurvey(this, survey.id).subscribe(answers=> {
                             var statistics = this.statsUtils.examAnswerStatistics(answers);
                             this.optionPercentage = statistics['multichoice'];
                             this.ratingPercentage = statistics['rating'];

@@ -57,15 +57,6 @@ export class Submission extends BaseModel{
         return new SearchReadAPI(Submission.Model, [],"[('user_id','=',"+userId+")]");
     }
 
-    static byMemberAndSurvey( context:APIContext, member_id: number, surveyId: number): Observable<any> {
-        return Submission.search(context,[],"[('member_id','=',"+member_id+"),('survey_id','=',"+surveyId+")]").map(submits =>{
-            if (submits.length)
-                return submits[0];
-            else
-                return null;
-        });
-    }
-
     static listByUser( context:APIContext, userId: number): Observable<any> {
         return Submission.search(context,[],"[('user_id','=',"+userId+")]");
     }
@@ -76,11 +67,6 @@ export class Submission extends BaseModel{
 
     static listByExam( context:APIContext, examId: number): Observable<any> {
         return Submission.search(context,[],"[('exam_id','=',"+examId+")]");
-    }
-
-
-    static listBySurvey( context:APIContext, surveyId: number): Observable<any> {
-        return Submission.search(context,[],"[('survey_id','=',"+surveyId+")]");
     }
 
     static listByMember( context:APIContext, memberId: number): Observable<any> {

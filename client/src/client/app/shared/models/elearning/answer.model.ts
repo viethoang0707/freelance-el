@@ -51,8 +51,4 @@ export class Answer extends BaseModel{
         return Answer.search(context,[],"[('exam_id','=',"+examId+")]");
     }
 
-    static listBySurvey( context:APIContext, surveyId: number): Observable<any[]> {
-        return Answer.search(context,[],"[('survey_id','=',"+surveyId+")]");
-    }
-
 }

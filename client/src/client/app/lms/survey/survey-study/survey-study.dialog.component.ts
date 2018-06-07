@@ -6,10 +6,10 @@ import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, EXAM_TIME_WARNING } from '../../../shared/models/constants'
 import { Survey } from '../../../shared/models/elearning/survey.model';
-import { Submission } from '../../../shared/models/elearning/submission.model';
+import { SurveySubmission } from '../../../shared/models/elearning/survey-submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
-import { Answer } from '../../../shared/models/elearning/answer.model';
+import { SurveyAnswer } from '../../../shared/models/elearning/survey-answer.model';
 import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -40,9 +40,9 @@ export class SurveyStudyDialog extends BaseComponent {
 	private questions: Question[];
 	private qIndex: number;
 	private surveyQuestions: SurveyQuestion[];
-	private answers: Answer[];
-	private submission: Submission;
-	private currentAnswer: Answer;
+	private answers: SurveyAnswer[];
+	private submission: SurveySubmission;
+	private currentAnswer: SurveyAnswer;
 	private currentQuestion: SurveyQuestion;
 	private progress: number;
 	private stats: any;
@@ -76,9 +76,9 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	createSubmission(): Observable<any> {
-		return Submission.byMemberAndSurvey(this, this.member.id, this.survey.id).flatMap((submit: Submission) => {
+		return SurveySubmission.byMemberAndSurvey(this, this.member.id, this.survey.id).flatMap((submit: Submission) => {
 			if (!submit) {
-				submit = new Submission();
+				submit = new SurveySubmission();
 				submit.member_id = this.member.id;
 				submit.start = new Date();
 				return submit.save(this);
@@ -144,13 +144,13 @@ export class SurveyStudyDialog extends BaseComponent {
 
 	fetchAnswers(): Observable<any> {
 		if (this.submission.id)
-			return Answer.listBySubmit(this, this.submission.id);
+			return SurveyAnswer.listBySubmit(this, this.submission.id);
 		else
 			return Observable.of([]);
 	}
 
 	prepareAnswer(question: SurveyQuestion): Observable<any> {
-		var answer = _.find(this.answers, (ans: Answer) => {
+		var answer = _.find(this.answers, (ans: SurveyAnswer) => {
 			return ans.question_id == question.question_id;
 		});
 		if (!answer) {
@@ -187,7 +187,7 @@ export class SurveyStudyDialog extends BaseComponent {
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 				viewContainerRef.clear();
 				this.componentRef = viewContainerRef.createComponent(componentFactory);
-				(<IQuestion>this.componentRef.instance).mode = 'study';
+				(<IQuestion>this.componentRef.instance).mode = 'survey';
 				(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
 				this.updateStats();
 			}
