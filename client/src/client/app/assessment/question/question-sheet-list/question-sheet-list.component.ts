@@ -12,6 +12,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { QuestionSheetPreviewDialog } from '../question-sheet-preview/question-sheet-preview.dialog.component';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
+import { ExamQuestion } from '../../../shared/models/elearning/exam-question-sheet.model';
 
 @Component({
     moduleId: module.id,
@@ -48,8 +49,11 @@ export class QuestionSheetListComponent extends BaseComponent {
     }
 
     previewSheet() {
-        if(this.selectedSheet)
-            this.sheetDialog.show(this.selectedSheet);
+        if(this.selectedSheet) {
+            ExamQuestion.listBySheet(this, this.selectedSheet.id).subscribe(examQuestion=> {
+                this.sheetDialog.show(this.selectedSheet,examQuestion);
+            });
+        }
     }
 
     loadQuestionSheets() {
