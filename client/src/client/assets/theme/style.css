@@ -397,6 +397,7 @@ body .ui-fieldset.f-print .ui-fieldset-legend{
 .lms-course-list .ui-datalist-content.ui-widget-content, 
 .lms-exam-list .ui-datalist-content.ui-widget-content{
   border: none;
+  min-height: 300px;
 }
 
 .lms-course-list-item,
@@ -510,4 +511,8 @@ body .settings-exam .ui-fluid .ui-spinner .ui-spinner-button{
 
 body .course-syllabus-dialog .ui-dialog-content.ui-widget-content{
   height: 100% !important;
+}
+
+.ui-datalist-emptymessage{
+  display: none;
 }

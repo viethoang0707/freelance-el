@@ -51,13 +51,6 @@
             <ng-template pTemplate="summary">
               {{'Total records'|translate}} : {{candidates?.length}}
             </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td [attr.colspan]="6 ">
-                  {{'No records found'|translate}}
-                </td>
-              </tr>
-            </ng-template>
           </p-table>
         </div>
       </p-tabPanel>
@@ -110,13 +103,6 @@
             </ng-template>
             <ng-template pTemplate="summary">
               {{'Total records'|translate}} : {{supervisors?.length}}
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td [attr.colspan]="6 ">
-                  {{'No records found'|translate}}
-                </td>
-              </tr>
             </ng-template>
           </p-table>
         </div>
