@@ -155,7 +155,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
-			this.selectedUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success => {
+			this.member.completeUnit(this, this.selectedUnit.id).subscribe(success => {
 				this.selectedUnit["completed"] = success;
 			});
 			if (this.studyMode == true) {
@@ -174,7 +174,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	prevUnit() {
 		if (this.selectedUnit) {
 			if (this.enableLogging)
-				CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+				CourseLog.stopCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
 			this.selectedNode = this.sylUtils.findTreeNode(this.tree, prevUnit.id);
 			this.selectedUnit = this.selectedNode.data;
@@ -186,7 +186,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	nextUnit() {
 		if (this.selectedUnit) {
 			if (this.enableLogging)
-				CourseLog.finishCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+				CourseLog.stopCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
 			this.selectedNode = this.sylUtils.findTreeNode(this.tree, nextUnit.id);
 			this.selectedUnit = this.selectedNode.data;
@@ -198,7 +198,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	completeUnit() {
 		if (this.selectedUnit) {
 			if (this.enableLogging)
-				CourseLog.completeCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+				CourseLog.completeCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			this.selectedUnit["completed"] = true;
 			this.studyMode = false;
 			this.unloadCurrentUnit();
@@ -244,24 +244,24 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			if (this.syl.complete_unit_by_order) {
 				let prevUnit: CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
 				if (prevUnit)
-					prevUnit.completedByUser(this, this.authService.UserProfile.id).subscribe(success => {
+					this.member.completeUnit(this, this.selectedUnit.id).subscribe(success => {
 						if (success) {
 							this.openUnit(this.selectedUnit);
 							if (this.enableLogging)
-								CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+								CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 						}
 						else
 							this.error(this.translateService.instant('You have not completed previous unit'));
 					});
 				else {
 					this.openUnit(this.selectedUnit);
-					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+					CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 				}
 			}
 			else {
 				this.openUnit(this.selectedUnit);
 				if (this.enableLogging)
-					CourseLog.startCourseUnit(this, this.authService.UserProfile.id, this.course.id, this.selectedUnit).subscribe();
+					CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			}
 		}
 	}

@@ -27,14 +27,8 @@ export class Conference extends BaseModel{
     status: string;
     name: string;
 
-    deleteConference(context:APIContext):Observable<any> {
-        return Room.byRef(context,this.room_ref).flatMap(room => {
-            if (!room)
-                return this.delete(context);
-            else {
-                return Observable.zip(this.delete(context), room.delete(context))
-            }
-        });
+    static __api__byClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(Conference.Model, [],"[('class_id','=',"+classId+")]");
     }
 
     static byClass(context:APIContext, classId: number):Observable<any> {
@@ -45,6 +39,10 @@ export class Conference extends BaseModel{
             else
                 return null;
         });
+    }
+
+    static __api__listOpenConference(classId: number): SearchReadAPI {
+        return new SearchReadAPI(Conference.Model, [],"[('status','=','open')]");
     }
 
     static listOpenConference(context:APIContext):Observable<any> {

@@ -25,10 +25,18 @@ export class QuestionSheet extends BaseModel{
     seed:number;
     finalized:boolean;
 
+    static __api__byExam(examId: number): SearchReadAPI {
+        return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',"+examId+")]");
+    }
+
     static byExam( context:APIContext, examId: number): Observable<any> {
         return QuestionSheet.search(context,[],"[('exam_id','=',"+examId+")]").map(sheets =>{
             return sheets.length ? sheets[0]: null;
         });
+    }
+
+    static __api__listTemplate(): SearchReadAPI {
+        return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',False)]");
     }
 
     static listTemplate( context:APIContext): Observable<any> {

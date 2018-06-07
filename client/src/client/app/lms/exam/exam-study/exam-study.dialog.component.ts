@@ -153,7 +153,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
 		this.startTransaction();
-		ExamLog.startExam(this, this.member.user_id, this.exam.id, this.submission).subscribe(()=> {
+		ExamLog.startExam(this, this.member.id, this.submission.id).subscribe(()=> {
 			this.fetchAnswers().subscribe(answers => {
 				this.answers = answers;
 				this.updateStats();
@@ -174,7 +174,7 @@ export class ExamStudyDialog extends BaseComponent {
 		subscriptions.push(this.submission.save(this));
 		this.startTransaction();
 		Observable.forkJoin(...subscriptions).subscribe(() => {
-			ExamLog.finishExam(this, this.member.user_id, this.exam.id, this.submission).subscribe(()=> {
+			ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe(()=> {
 				this.hide();
 				this.closeTransaction();
 			})
@@ -211,7 +211,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.startTransaction();
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
-				ExamLog.startAnswer(this, this.member.user_id, this.exam.id, answer).subscribe(()=> {
+				ExamLog.startAnswer(this, this.member.id, answer.id).subscribe(()=> {
 					this.currentAnswer = answer;
 					this.checkAnswer();
 					var detailComponent = QuestionRegister.Instance.lookup(question.type);
@@ -238,7 +238,7 @@ export class ExamStudyDialog extends BaseComponent {
 		} else
 			this.currentAnswer.score = 0;
 		return this.currentAnswer.save(this).do(() => {
-			ExamLog.finishAnswer(this, this.member.user_id, this.exam.id, this.currentAnswer).subscribe();
+			ExamLog.finishAnswer(this, this.member.id, this.currentAnswer.id).subscribe();
 		});
 	}
 

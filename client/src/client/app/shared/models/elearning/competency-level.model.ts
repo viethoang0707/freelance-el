@@ -28,12 +28,6 @@ export class CompetencyLevel extends BaseModel{
     competency_group_id: number;
     competency_group_name: string;
 
-    static all( context:APIContext): Observable<any[]> {
-        if (Cache.hit(CompetencyLevel.Model))
-            return Observable.of(Cache.load(CompetencyLevel.Model));
-        return CompetencyLevel.search(context,[],"[]");
-    }
-
     static __api__listByCompetency(competencyId: number): SearchReadAPI {
         return new SearchReadAPI(CompetencyLevel.Model, [],"[('competency_id','=',"+competencyId+")]");
     }

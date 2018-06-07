@@ -27,6 +27,10 @@ export class RoomMember extends BaseModel{
     email: string;
     room_id: number;
 
+    static __api__byRef(ref: string): SearchReadAPI {
+        return new SearchReadAPI(RoomMember.Model, [],"[('ref','=',"+ref+")]");
+    }
+
     static byRef(context:APIContext, ref: string):Observable<any> {
         return RoomMember.search(context,[],"[('ref','=','"+ref+"')]")
         .map(members => {

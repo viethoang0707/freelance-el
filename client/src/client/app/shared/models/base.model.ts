@@ -142,39 +142,24 @@ export abstract class BaseModel {
 
     save(context: APIContext): Observable<any> {
         var cloud_acc = context.authService.CloudAcc;
-        var dataAccessLayer = context.dataAccessService.filter(this, 'SAVE').flatMap(success => {
-            if (!success)
-                return Observable.throw('Permission denied');
-            else
-                return Observable.of(true);
-        });
-        var apiLayer = Observable.of(null);
         if (!this.id) {
-            apiLayer = context.apiService.execute(this.__api__create(), cloud_acc.id, cloud_acc.api_endpoint).map(data => {
+            return context.apiService.execute(this.__api__create(), cloud_acc.id, cloud_acc.api_endpoint).map(data => {
                 this.id = data.id;
                 Cache.objectChage(this, 'CREATE');
                 return this;
             });
         } else {
-            apiLayer = context.apiService.execute(this.__api__update(), cloud_acc.id, cloud_acc.api_endpoint).do(() => {
+            return context.apiService.execute(this.__api__update(), cloud_acc.id, cloud_acc.api_endpoint).do(() => {
                 Cache.objectChage(this, 'UPDATE');
             });
         }
-        return Observable.concat(dataAccessLayer, apiLayer);
     }  
 
     delete(context: APIContext): Observable<any> {
         var cloud_acc = context.authService.CloudAcc;
-        var dataAccessLayer = context.dataAccessService.filter(this, 'DELETE').flatMap(success => {
-            if (!success)
-                return Observable.throw('Permission denied');
-            else
-                return Observable.of(true);
-        });
-        var apiLayer = context.apiService.execute(this.__api__delete(), cloud_acc.id, cloud_acc.api_endpoint).do(() => {
+        return context.apiService.execute(this.__api__delete(), cloud_acc.id, cloud_acc.api_endpoint).do(() => {
             Cache.objectChage(this, 'DELETE');
         });
-        return Observable.concat(dataAccessLayer, apiLayer);
     }
 
     static get(context: APIContext, id: number): Observable<any> {
@@ -182,21 +167,14 @@ export abstract class BaseModel {
             return Observable.of(null);
         var cloud_acc = context.authService.CloudAcc;
         var model = this.Model;
-        var object = null;
-        var dataAccessLayer = context.dataAccessService.filter(object, 'GET').flatMap(success => {
-            if (!success)
-                return Observable.throw('Permission denied');
-            else
-                return Observable.of(object);
-        });
-        var apiLayer = context.apiService.execute( this.__api__get([id]), cloud_acc.id, cloud_acc.api_endpoint).flatMap(items => {
+        return context.apiService.execute( this.__api__get([id]), cloud_acc.id, cloud_acc.api_endpoint).flatMap(items => {
             if (items && items.length) {
+                var object = items[0];
                 object = MapUtils.deserializeModel(model, items[0]);
                 return Observable.of(object);
             } else
                 return Observable.of(null);
         });
-        return Observable.concat(apiLayer, dataAccessLayer);
     }
 
     static count(context: APIContext, domain?: string): Observable<any[]> {
@@ -209,33 +187,18 @@ export abstract class BaseModel {
     static search(context: APIContext, fields: string[], domain: string): Observable<any[]> {
         var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        var records = [];
-        var apiLayer = context.apiService.execute(this.__api__search( fields, domain), cloud_acc.id, cloud_acc.api_endpoint).flatMap(objects => {
-            records = objects;
-            return records;
-        });
-        var dataAccessLayer = Observable.of(records).flatMap(records => {
-            var filterRecords = [];
-            var subscriptions = _.map(records, (item) => {
-                var record = MapUtils.deserializeModel(model, item);
-                return context.dataAccessService.filter(record, 'GET').do(success => {
-                    if (success)
-                        filterRecords.push(record);
-                });
+        return context.apiService.execute(this.__api__search( fields, domain), cloud_acc.id, cloud_acc.api_endpoint).flatMap(objects => {
+            return _.map(objects, object=> {
+                return MapUtils.deserializeModel(model, object);
             });
-            if (subscriptions.length)
-                return Observable.forkJoin(subscriptions).map(() => {
-                    return filterRecords;
-                });
-            else
-                return Observable.of([]);
         });
-        return Observable.concat(apiLayer, dataAccessLayer);
     }
 
     static all(context: APIContext): Observable<any[]> {
+        var model = this.Model;
+        if (Cache.hit(model))
+            return Observable.of(Cache.load(model))
         return this.search(context, [], '[]').do(records=> {
-            var model = this.Model;
             Cache.save(model,records);
         });
     }
@@ -245,31 +208,14 @@ export abstract class BaseModel {
             return Observable.of([]);
         var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        var records = [];
-        var apiLayer = context.apiService.execute(this.__api__get(ids), cloud_acc.id, cloud_acc.api_endpoint).flatMap(objects => {
-            records = objects;
-            return records;
-        });
-        var dataAccessLayer = Observable.of(records).flatMap(records => {
-            var filterRecords = [];
-            var subscriptions = _.map(records, (item) => {
-                var record = MapUtils.deserializeModel(model, item);
-                return context.dataAccessService.filter(record, 'GET').do(success => {
-                    if (success)
-                        filterRecords.push(record);
-                });
+        return context.apiService.execute(this.__api__get(ids), cloud_acc.id, cloud_acc.api_endpoint).flatMap(objects => {
+            return _.map(objects, object=> {
+                return MapUtils.deserializeModel(model, object);
             });
-            if (subscriptions.length)
-                return Observable.forkJoin(subscriptions).map(() => {
-                    return filterRecords;
-                });
-            else
-                return Observable.of([]);
         });
-        return Observable.concat(apiLayer, dataAccessLayer);
     }
 
-    static executeRemote(context: APIContext, method: string, paramsList: string[], paramsDict: any): Observable<any> {
+    static executeRemote(context: APIContext, method: string, paramsList: any[], paramsDict: any): Observable<any> {
         var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
         return context.apiService.execute(this.__api__excute(method, paramsList, paramsDict), cloud_acc.id, cloud_acc.api_endpoint);

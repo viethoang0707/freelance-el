@@ -75,38 +75,16 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	addMembers(role: string) {
 		this.usersDialog.show();
 		this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
-			var subscriptions = [];
-			_.each(users, (user:User)=> {
-				var member = new CourseMember();
-				if (this.courseClass) {
-					member.course_id = this.courseClass.course_id;
-					member.class_id =  this.courseClass.id;
-				}
-				member.role = role;
-				member.course_id = this.course.id;
-				member.user_id = user.id;
-				member.status = 'active';
-				member.enroll_status = 'registered';
-				member.date_register = new Date();
-				subscriptions.push(member.save(this));
-				this.subscription.unsubscribe();
-			});
-			Observable.zip(...subscriptions).subscribe((members) => {
-				CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
-					if (syl && syl.prequisite_course_id) 
-					_.each(members, ((member:any)=> {
-						CourseMember.checkCourseEnrollCondition(this,member.user_id, syl.prequisite_course_id).subscribe(success=> {
-							if (!success) {
-								member.status = 'suspend';
-								member.save(this).subscribe();
-							}
-						});
-					}));
-					else {
-						this.loadMembers();
-					}
-				})
-				
+			var userIds = _.pluck(users, 'id');
+			CourseClass.enroll(this.courseClass.id, userIds).subscribe((result)=> {
+				this.loadMembers();
+				var failList = result['failList'];
+				_.each(failList, userId=> {
+					var user = _.find(users, obj=> {
+						return obj.id == userId;
+					});
+					this.warn(`User ${user.name} does not meet course requirement`);
+				});
 			});
 		});
 	}

@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { SearchCountAPI } from '../../services/api/search-count.api';
 
 @Model('etraining.exam_question')
 export class ExamQuestion extends BaseModel{
@@ -39,21 +40,24 @@ export class ExamQuestion extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
 
+    static __api__listBySheet(sheetId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamQuestion.Model, [],"[('sheet_id','=','"+sheetId+"')]");
+    }
 
     static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
         return ExamQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
+    }
+
+    static __api__countBySheet(sheetId: number): SearchCountAPI {
+        return new SearchCountAPI(ExamQuestion.Model, "[('sheet_id','=','"+sheetId+"')]");
     }
 
     static countBySheet( context:APIContext, sheetId: number): Observable<any> {
         return ExamQuestion.count(context,"[('sheet_id','=',"+sheetId+")]");
     }
 
-    static countByExam( context:APIContext, examId: number): Observable<any[]> {
-        return ExamQuestion.count(context,"[('exam_id','=',"+examId+")]");
-    }
-
-    static listOpenQuestionByExam( context:APIContext, examId: number): Observable<any[]> {
-        return ExamQuestion.search(context,[],"[('exam_id','=',"+examId+"),('type','=','ext')]");
+    static __api__byQuestion(questionId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamQuestion.Model, [],"[('question_id','=','"+questionId+"')]");
     }
 
     static byQuestion( context:APIContext, questionId: number): Observable<any[]> {

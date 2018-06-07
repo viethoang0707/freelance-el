@@ -6,6 +6,7 @@ import { ConferenceMember } from './conference-member.model';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import { SearchCountAPI } from '../../services/api/search-count.api';
 
 @Model('etraining.course_member')
 export class CourseMember extends BaseModel {
@@ -52,38 +53,62 @@ export class CourseMember extends BaseModel {
     group_id: number;
     group_id__DESC__: string;
 
+    static __api__listByUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, [],"[('user_id','=',"+userId+")]");
+    }
+
     static listByUser(context: APIContext, userId: number): Observable<any[]> {
         return CourseMember.search(context, [], "[('user_id','='," + userId + ")]");
+    }
+
+    static __api__listByClass(courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, [],"[('class_id','=',"+courseId+")]");
     }
 
     static listByClass(context: APIContext, classId: number): Observable<any[]> {
         return CourseMember.search(context, [], "[('class_id','='," + classId + ")]");
     }
 
+    static __api__listByCourse(courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, [],"[('course_id','=',"+courseId+")]");
+    }
+
     static listByCourse(context: APIContext, courseId: number): Observable<any[]> {
         return CourseMember.search(context, [], "[('course_id','='," + courseId + ")]");
+    }
+
+    static __api__countTeacher(courseId: number): SearchCountAPI {
+        return new SearchCountAPI(CourseMember.Model, "[('role','=','teacher')]");
     }
 
     static countTeacher(context: APIContext) {
         return CourseMember.count(context, "[('role','=','teacher')]")
     }
 
+    static __api__countStudent(courseId: number): SearchCountAPI {
+        return new SearchCountAPI(CourseMember.Model, [], "[('role','=','student')]");
+    }
+
     static countStudent(context: APIContext) {
         return CourseMember.count(context, "[('role','=','student')]")
+    }
+
+    static __api__byCourseAndUser(userId: number, courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, [],"[('user_id','='," + userId + "),('course_id','='," + courseId + ")]");
     }
 
     static byCourseAndUser(context: APIContext, userId: number, courseId: number): Observable<any> {
         return CourseMember.search(context, [], "[('user_id','='," + userId + "),('course_id','='," + courseId + ")]");
     }
 
-    static checkCourseEnrollCondition(context: APIContext, userId: number, prequisiteCourseId: number): Observable<any> {
-        return CourseMember.byCourseAndUser(context, userId, prequisiteCourseId).map(members => {
-            if (members.length ==0)
-                return false;
-            var member = _.find(members, (obj:CourseMember)=> {
-                return obj.enroll_status == 'completed';
-            });
-            return member != null;
+    completeUnit(context:APIContext, unitId: number):Observable<any> {
+        var domain = "[('member_id','=',"+this.id+"),('res_id','=',"+unitId+"),('res_model','=','"+CourseUnit.Model+"'),('code','=','COMPLETE_COURSE_UNIT')]";
+        return CourseLog.search(context,[], domain ).flatMap(logs=> {
+            if (logs.length ==0)
+                return Observable.of(false);
+            else 
+                return Observable.of(true);
         });
     }
+
 }

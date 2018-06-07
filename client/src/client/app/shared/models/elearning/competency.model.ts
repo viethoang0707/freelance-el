@@ -26,12 +26,6 @@ export class Competency extends BaseModel{
     category: string;
     group_id__DESC__: string;
 
-    static all( context:APIContext): Observable<any[]> {
-        if (Cache.hit(Competency.Model))
-            return Observable.of(Cache.load(Competency.Model));
-        return Competency.search(context,[],"[]");
-    }
-
     static __api__listByGroup(groupId: number): SearchReadAPI {
         return new SearchReadAPI(Competency.Model, [],"[('group_id','=',"+groupId+")]");
     }

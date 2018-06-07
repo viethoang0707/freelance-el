@@ -16,7 +16,6 @@ import { CloudAPIService } from './services/cloud-api.service';
 import { AuthService } from './services/auth.service';
 import { WorkflowService } from './services/workflow.service';
 import { WebSocketService } from './services/socket.service';
-import { DataAccessService } from './services/data-access.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
@@ -345,7 +344,6 @@ export class ErpSharedModule {
                 APIService,
                 AuthService,
                 MessageService,
-                DataAccessService,
                 MeetingService,
                 WindowRef,
                 ExcelService,

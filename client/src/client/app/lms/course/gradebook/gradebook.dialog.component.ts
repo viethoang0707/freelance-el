@@ -112,7 +112,7 @@ export class GradebookDialog extends BaseComponent {
         var record = {};
         CourseSyllabus.byCourse(this, this.member.course_id).subscribe(syllabus => {
             CourseUnit.countBySyllabus(this, syllabus.id).subscribe(totalUnit => {
-                CourseLog.userStudyActivity(this, record["user_id"], this.member.class_id).subscribe(logs => {
+                CourseLog.memberStudyActivity(this, this.member.id, this.member.class_id).subscribe(logs => {
                     record["total_unit"] = totalUnit;
                     var result = this.reportUtils.analyzeCourseMemberActivity(logs);
                     if (result[0] != Infinity)
@@ -158,7 +158,7 @@ export class GradebookDialog extends BaseComponent {
                                 if (submit) {
                                     exam["score"] = submit.score;
                                     exam["submit"] = submit;
-                                    var grade = member.examGrade(grades, submit.score);
+                                    var grade = ExamGrade.gradeScore(grades, submit.score);
                                     if (grade)
                                         exam["grade"] = grade.name;
                                 }

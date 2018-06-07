@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('emeeting.room')
 export class Room extends BaseModel{
@@ -30,6 +31,10 @@ export class Room extends BaseModel{
             else
                 return null;
         });
+    }
+
+    static __api__byRef(ref: string): SearchReadAPI {
+        return new SearchReadAPI(Room.Model, [],"[('ref','!=','"+ref+"')]");
     }
 
     static createWebminarRoom(context:APIContext, name: string):Observable<any> {

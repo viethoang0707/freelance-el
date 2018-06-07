@@ -38,7 +38,10 @@ export class Project extends BaseModel{
     @FieldProperty<Date>()
     end: Date;
 
-
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(Project.Model, [],"[('class_id','=',"+classId+")]");
+    }
+    
     static listByClass(context:APIContext, classId):Observable<any> {
         return Project.search(context,[], "[('class_id','=',"+classId+")]");
     }

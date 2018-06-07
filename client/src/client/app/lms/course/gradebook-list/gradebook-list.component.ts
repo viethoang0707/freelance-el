@@ -64,7 +64,6 @@ export class GradebookListDialog extends BaseComponent {
 	}
 
 	loadMemberStats() {
-		this.startTransaction();
 		CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 			this.records = _.filter(members, (member) => {
 				return member.role == 'student';
@@ -82,7 +81,7 @@ export class GradebookListDialog extends BaseComponent {
 							else
 								record["certificate"] = '';
 						});
-						CourseLog.userStudyActivity(this, record["user_id"], this.courseClass.id).subscribe(logs => {
+						CourseLog.memberStudyActivity(this,record["id"], this.courseClass.id).subscribe(logs => {
 							var result = this.reportUtils.analyzeCourseMemberActivity(logs);
 							if (result[0] != Infinity)
 								record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
@@ -96,7 +95,6 @@ export class GradebookListDialog extends BaseComponent {
 							record["logs"] = logs;
 						});
 					}));
-					this.closeTransaction();
 				});
 			});
 		});

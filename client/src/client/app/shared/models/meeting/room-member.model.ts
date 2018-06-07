@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('emeeting.member')
 export class RoomMember extends BaseModel{
@@ -24,6 +25,10 @@ export class RoomMember extends BaseModel{
     email: string;
     room_id: number;
     is_supervisor: boolean;
+
+    static __api__byRef(ref: string): SearchReadAPI {
+        return new SearchReadAPI(RoomMember.Model, [],"[('ref','!=','"+ref+"')]");
+    }
 
     static byRef(context:APIContext, ref: string):Observable<any> {
         return RoomMember.search(context,[],"[('ref','=','"+ref+"')]")

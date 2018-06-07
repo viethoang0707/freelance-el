@@ -48,7 +48,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-	@ViewChild(CourseSyllabusSettingDialog) settingDialog: CourseSyllabusSettingDialog;
+	@ViewChild(CourseSettingDialog) settingDialog: CourseSettingDialog;
 
     constructor(private socketService:WebSocketService, private workflowService: WorkflowService) {
         super();
@@ -113,7 +113,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	showSetting() {
-		this.settingDialog.show(this.syl);
+		this.settingDialog.show(this.course);
 	}
 
 	addUnit(type:string) {

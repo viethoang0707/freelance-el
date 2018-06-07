@@ -87,7 +87,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
                     this.error(this.translateService.instant('You cannot delete class with member inside'));
                 else
                     this.confirm('Are you sure to delete ?', () => {
-                        this.selectedClass.deleteClass(this).subscribe(() => {
+                        this.selectedClass.delete(this).subscribe(() => {
                             this.loadClasses();
                         })
                     });

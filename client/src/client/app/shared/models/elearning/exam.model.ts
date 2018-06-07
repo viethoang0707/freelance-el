@@ -61,8 +61,4 @@ export class Exam extends BaseModel{
             return false;
         return true;
     }
-
-    static all( context:APIContext): Observable<any[]> {
-        return ExamCache.all(context);
-    }
 }

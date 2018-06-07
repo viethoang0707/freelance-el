@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('eticket.comment')
 export class Comment extends BaseModel{
@@ -23,6 +24,10 @@ export class Comment extends BaseModel{
     submit_user_id__DESC__: string;
     @FieldProperty<Date>()
     date_submit: Date;
+
+    static __api__listByTicket(ticketId: number): SearchReadAPI {
+        return new SearchReadAPI(Comment.Model, [],"[('ticket_id','=',"+ticketId+")]");
+    }
 
     static listByTicket(context:APIContext, ticketId):Observable<any> {
         return Comment.search(context,[], "[('ticket_id','=',"+ticketId+")]");

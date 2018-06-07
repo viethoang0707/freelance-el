@@ -43,16 +43,32 @@ export class ExamMember extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
 
+    static __api__listByExam(examId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, [],"[('exam_id','=','"+examId+"')]");
+    }
+
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
         return ExamMember.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
+
+    static __api__listCandidateByExam(examId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, [],"[('exam_id','=',"+examId+"),('role','=','candidate')]");
     }
 
     static listCandidateByExam( context:APIContext, examId: number): Observable<any[]> {
         return ExamMember.search(context,[],"[('exam_id','=',"+examId+"),('role','=','candidate')]");
     }
 
+    static __api__listByUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, [],"[('user_id','=','"+userId+"')]");
+    }
+
     static listByUser( context:APIContext, userId: number): Observable<any[]> {
         return ExamMember.search(context,[],"[('user_id','=',"+userId+")]");
+    }
+
+    static __api__byExamAndUser(userId: number, examId:number): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, [],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]");
     }
 
     static byExamAndUser( context:APIContext, userId: number, examId: number): Observable<any> {
@@ -65,10 +81,5 @@ export class ExamMember extends BaseModel{
         });
     }
 
-    examGrade(grades:ExamGrade[], score:number) {
-        return _.find(grades, (obj)=> {
-            return obj.min_score <= score && obj.max_score >= score;
-        });
-    }
 
 }

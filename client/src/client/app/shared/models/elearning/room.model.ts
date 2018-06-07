@@ -26,6 +26,10 @@ export class Room extends BaseModel{
     ref: string;
     password: string;
 
+    static __api__byRef(ref: string): SearchReadAPI {
+        return new SearchReadAPI(Room.Model, [],"[('ref','=',"+ref+")]");
+    }
+
     static byRef(context:APIContext, ref: string):Observable<any> {
         return Room.search(context,[],"[('ref','=','"+ref+"')]")
         .map(rooms => {

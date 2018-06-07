@@ -8,7 +8,6 @@ import { ServiceLocator } from "../../../service.locator";
 import { ConfirmationService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '../../services/setting.service';
-import { DataAccessService } from '../../services/data-access.service';
 import { LoadingService } from '../../../shared/services/loading.service';
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 
@@ -21,7 +20,6 @@ export abstract class BaseComponent implements APIContext {
 	translateService: TranslateService;
 	settingService: SettingService;
 	loadingService: LoadingService;
-	dataAccessService: DataAccessService;
 	transactionCount: number;
 
 	constructor() {
@@ -33,7 +31,6 @@ export abstract class BaseComponent implements APIContext {
 		this.confirmationService = ServiceLocator.injector.get(ConfirmationService);
 		this.translateService = ServiceLocator.injector.get(TranslateService);
 		this.settingService = ServiceLocator.injector.get(SettingService);
-		this.dataAccessService = ServiceLocator.injector.get(DataAccessService);
 		this.transactionCount =  0;
 	}
 

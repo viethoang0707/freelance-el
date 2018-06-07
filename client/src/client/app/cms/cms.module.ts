@@ -16,14 +16,14 @@ import { VideoLectureCourseUnitComponent} from './course/course-unit-template/vi
 import { HtmlLectureCourseUnitComponent } from './course/course-unit-template/lecture/html-lecture-unit.component';
 import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from './course/course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { CourseSyllabusSettingDialog } from './course/syllabus-setting/syllabus-setting.dialog.component';
+import { CourseSettingDialog } from './course/course-setting/course-setting.dialog.component';
 import { QuestionSheetEditorDialog } from './exam/question-sheet-editor/question-sheet-editor.dialog.component';
 import { QuestionSheetSaveDialog } from './exam/question-sheet-save/question-sheet-save.dialog.component';
 
 @NgModule({
 	imports: [ErpSharedModule, AuthModule, AssessmentModule],
 	declarations: [CMSComponent, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,ProjectContentDialog,
-		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSyllabusSettingDialog, 
+		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSettingDialog, 
 		SlideLectureCourseUnitComponent,QuestionSheetEditorDialog, QuestionSheetSaveDialog,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent, CourseUnitDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, ProjectContentDialog],

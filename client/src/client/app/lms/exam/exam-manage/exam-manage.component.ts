@@ -116,7 +116,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                         if (submit) {
                             if (submit.score != null) {
                                 member["score"] = submit.score;
-                                member["grade"] = member.examGrade(grades, submit.score);
+                                member["grade"] = ExamGrade.gradeScore(grades, submit.score);
                             }
                             else
                                 member["score"] = '';

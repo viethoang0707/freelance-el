@@ -4,6 +4,8 @@ import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import * as moment from 'moment';
+import {SERVER_DATETIME_FORMAT} from '../models/constants';
 
 @Model('etraining.course')
 export class Course extends BaseModel{
@@ -32,15 +34,20 @@ export class Course extends BaseModel{
         this.competency_group_name =  undefined;
         this.competency_level_id =  undefined;
         this.competency_level_name =  undefined;
-
+        this.prequisite_course_id = undefined;
+        this.prequisite_course_id__DESC__ = undefined;
+        this.complete_unit_by_order = undefined;
 	}
 
+    complete_unit_by_order: boolean;
     competency_id: number;
     competency_name: string;
     competency_group_id: number;
     competency_group_name: string;
     competency_level_id: number;
     competency_level_name: string;
+    prequisite_course_id:number;
+    prequisite_course_id__DESC__:string;
     name:string;
     syllabus_id:number;
     group_id:number;
@@ -55,25 +62,65 @@ export class Course extends BaseModel{
     status: string;
     mode: string;
     logo: string;
-    
-    static all( context:APIContext): Observable<any[]> {
-        return CourseCache.all(context);
+
+     static __api__listByAuthor(authorId: number): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, [],"[('author_id','=','"+authorId+"')]");
     }
 
     static listByAuthor(context:APIContext, authorId):Observable<any> {
-        return CourseCache.listByAuthor(context, authorId);
+        if (Cache.hit(Course.Model))
+            return Observable.of(Cache.load(Course.Model)).map(courses=> {
+                return _.filter(courses, (course:Course)=> {
+                    return course.author_id == authorId;
+                });
+            });
+        return Course.search(context,[],"[('author_id','=','"+authorId+"')]");
+    }
+
+    static __api__listByGroup(groupId: number): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, [],"[('group_id','=','"+groupId+"')]");
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
-        return CourseCache.listByGroup(context,groupId);
+        if (Cache.hit(Course.Model))
+            return Observable.of(Cache.load(Course.Model)).map(courses=> {
+                return _.filter(courses, (course:Course)=> {
+                    return course.group_id == groupId;
+                });
+            });
+        return Course.search(context,[],"[('group_id','=','"+groupId+"')]");
     }
 
-    static listByGroupAndMode(context:APIContext, groupId, mode):Observable<any> {
-        return CourseCache.listByGroupAndMode(context,groupId, mode);
+    static __api__listByGroupAndMode(groupId: number, mode:string): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, [],"[('group_id','=','"+groupId+"'),('mode','=','"+mode+"')]");
+    }
+
+    static listByGroupAndMode(context:APIContext, groupId, mode:string):Observable<any> {
+        if (Cache.hit(Course.Model))
+            return Observable.of(Cache.load(Course.Model)).map(courses=> {
+                return _.filter(courses, (course:Course)=> {
+                    return course.group_id == groupId && course.mode == mode;
+                });
+            });
+        return Course.search(context,[],"[('group_id','=','"+groupId+"'),('mode','=','"+mode+"')]");
+    }
+
+    static __api__searchByDate(groupId: number): SearchReadAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Course.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 
     static searchByDate(context:APIContext, start:Date, end:Date):Observable<any> {
-        return CourseCache.searchByDate(context, start, end);
+        if (Cache.hit(Course.Model))
+            return Observable.of(Cache.load(Course.Model)).map(courses=> {
+                return _.filter(courses, (course:Course)=> {
+                    return course.start.getTime() >=  start.getTime() && course.start.getTime() <= end.getTime();
+                });
+            });
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return Course.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 
 }

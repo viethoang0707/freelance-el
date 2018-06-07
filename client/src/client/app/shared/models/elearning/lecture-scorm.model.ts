@@ -23,6 +23,9 @@ export class SCORMLecture extends BaseModel{
     package_url: string;
     unit_id: number;
 
+    static __api__byCourseUnit(unitId:number): SearchReadAPI {
+        return new SearchReadAPI(SCORMLecture.Model, [],"[('unit_id','=',"+unitId+")]");
+    }
 
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
         return SCORMLecture.search(context,[],"[('unit_id','=',"+unitId+")]")

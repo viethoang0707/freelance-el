@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('eticket.notification')
 export class Notification extends BaseModel{
@@ -24,6 +25,10 @@ export class Notification extends BaseModel{
     @FieldProperty<Date>()
     date_open: Date;
 
+    static __api__listByUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(Notification.Model, [],"[('target_user_id','=',"+userId+")]");
+    }
+    
     static listByUser(context:APIContext, userId):Observable<any> {
         return Notification.search(context,[], "[('target_user_id','=',"+userId+")]");
     }

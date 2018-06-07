@@ -27,27 +27,60 @@ export class Group extends BaseModel{
     order: string;
     parent_id: number;
 
+    static __api__listUserGroup(): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, [],"[('category','=','organization')]");
+    }
+
     static listUserGroup(context:APIContext):Observable<any> {
-        return GroupCache.listUserGroup(context);
+        if (Cache.hit(Group.Model))
+            return Observable.of(Cache.load(Group.Model)).map(groups=> {
+                return _.filter(groups, (group:Group)=> {
+                    return group.category == 'organization';
+                });
+            });
+        return Group.search(context,[],"[('category','=','organization')]");
+    }
+
+    static __api__listQuestionGroup(): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, [],"[('category','=','question')]");
     }
 
     static listQuestionGroup(context:APIContext):Observable<any> {
-        return GroupCache.listQuestionGroup(context);
+        if (Cache.hit(Group.Model))
+            return Observable.of(Cache.load(Group.Model)).map(groups=> {
+                return _.filter(groups, (group:Group)=> {
+                    return group.category == 'question';
+                });
+            });
+        return Group.search(context,[],"[('category','=','question')]");
+    }
+
+    static __api__listCourseGroup(): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, [],"[('category','=','course')]");
     }
 
     static listCourseGroup(context:APIContext):Observable<any> {
-        return GroupCache.listCourseGroup(context);
+        if (Cache.hit(Group.Model))
+            return Observable.of(Cache.load(Group.Model)).map(groups=> {
+                return _.filter(groups, (group:Group)=> {
+                    return group.category == 'organization';
+                });
+            });
+        return Group.search(context,[],"[('category','=','course')]");
+    }
+
+    static __api__listCompetencyGroup(): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, [],"[('category','=','competency')]");
     }
 
     static listCompetencyGroup(context:APIContext):Observable<any> {
-        return GroupCache.listCompetencyGroup(context);
-    }
-
-    static listBySyllabus(context:APIContext, sylId:number):Observable<any> {
-        return CourseUnit.listBySyllabus(context, sylId).flatMap(units => {
-            var groupIds = _.pluck(units, 'group_id');
-            return Group.array(context, groupIds);
-        });
+        if (Cache.hit(Group.Model))
+            return Observable.of(Cache.load(Group.Model)).map(groups=> {
+                return _.filter(groups, (group:Group)=> {
+                    return group.category == 'competency';
+                });
+            });
+        return Group.search(context,[],"[('category','=','competency')]");
     }
 
 }

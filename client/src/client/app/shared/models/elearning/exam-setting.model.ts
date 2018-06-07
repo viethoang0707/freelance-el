@@ -31,8 +31,4 @@ export class ExamSetting extends BaseModel{
                 return Observable.of(null)
         });
     }
-
-    static all( context:APIContext): Observable<any[]> {
-        return ExamSettingCache.all(context);
-    }
 }

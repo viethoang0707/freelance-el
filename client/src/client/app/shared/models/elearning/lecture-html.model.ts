@@ -19,6 +19,9 @@ export class HtmlLecture extends BaseModel{
     content:string;
     unit_id: number;
 
+    static __api__byCourseUnit(unitId:number): SearchReadAPI {
+        return new SearchReadAPI(HtmlLecture.Model, [],"[('unit_id','=',"+unitId+")]");
+    }
 
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
         return HtmlLecture.search(context,[],"[('unit_id','=',"+unitId+")]")

@@ -23,7 +23,10 @@ export class VideoLecture extends BaseModel{
     video_url: string;
     unit_id: number;
 
-
+    static __api__byCourseUnit(unitId:number): SearchReadAPI {
+        return new VideoLecture(SCORMLecture.Model, [],"[('unit_id','=',"+unitId+")]");
+    }
+    
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
         return VideoLecture.search(context,[],"[('unit_id','=',"+unitId+")]")
         .map(lectures => {
