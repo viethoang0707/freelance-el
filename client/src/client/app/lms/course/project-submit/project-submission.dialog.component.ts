@@ -17,7 +17,7 @@ import { IQuestion } from '../../../assessment/question/question-template/questi
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
-import {WebcamImage} from 'ngx-webcam';
+import { WebcamImage } from 'ngx-webcam';
 
 @Component({
     moduleId: module.id,
@@ -26,7 +26,7 @@ import {WebcamImage} from 'ngx-webcam';
     styleUrls: ['project-submission.dialog.component.css'],
 })
 export class ProjectSubmissionDialog extends BaseComponent {
-    
+
     private display: boolean;
     private submit: ProjectSubmission;
     private onConfirmReceiver: Subject<any> = new Subject();
@@ -36,13 +36,13 @@ export class ProjectSubmissionDialog extends BaseComponent {
     constructor(private ngZone: NgZone) {
         super();
         this.display = false;
-        this.submit =  new ProjectSubmission();
+        this.submit = new ProjectSubmission();
     }
 
     show(project: Project, member: CourseMember) {
         this.display = true;
-        this.submit =  new ProjectSubmission();
-        this.submit.member_id =  member.id;
+        this.submit = new ProjectSubmission();
+        this.submit.member_id = member.id;
         this.submit.project_id = project.id;
     }
 
@@ -50,12 +50,12 @@ export class ProjectSubmissionDialog extends BaseComponent {
         this.display = false;
     }
 
-    confirm(){
+    confirm() {
         if (!this.submit.file_url)
             this.error('You have not submiited any attachment');
         else {
-            this.submit.date_submit =  new Date();
-            this.submit.save(this).subscribe(()=> {
+            this.submit.date_submit = new Date();
+            this.submit.save(this).subscribe(() => {
                 this.onConfirmReceiver.next();
                 this.hide();
             });
@@ -66,10 +66,11 @@ export class ProjectSubmissionDialog extends BaseComponent {
         this.startTransaction();
         let file = event.files[0];
         this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
+
             data => {
                 this.closeTransaction();
                 if (data["result"]) {
-                    this.ngZone.run(()=> {
+                    this.ngZone.run(() => {
                         this.submit.file_url = data["url"];
                         this.submit.filename = file.name;
                     });

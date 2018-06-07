@@ -22,18 +22,17 @@ export class SelectCoursesDialog extends BaseComponent {
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	private selectedCourses: Course[];
-	private courses:Course[];
+	private courses: Course[];
 	private display: boolean;
 	private treeUtils: TreeUtils;
 
 	private onSelectCoursesReceiver: Subject<any> = new Subject();
-    onSelectCourses:Observable<any> =  this.onSelectCoursesReceiver.asObservable();
+	onSelectCourses: Observable<any> = this.onSelectCoursesReceiver.asObservable();
 
 	constructor() {
 		super();
 		this.display = false;
 		this.selectedCourses = [];
-		this.courses = [];
 		this.treeUtils = new TreeUtils();
 	}
 
@@ -43,7 +42,7 @@ export class SelectCoursesDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			Course.listByGroup(this,this.selectedNode.data.id).subscribe(courses => {
+			Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
 				this.courses = courses;
 			});
 		}
@@ -60,6 +59,7 @@ export class SelectCoursesDialog extends BaseComponent {
 
 	selectCourse() {
 		this.onSelectCoursesReceiver.next(this.selectedCourses);
+		this.selectedCourses = [];
 		this.hide();
 	}
 

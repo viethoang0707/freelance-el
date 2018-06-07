@@ -120,7 +120,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         if (logs && logs.length) {
             var result = this.reportUtils.analyzeExamMemberActivity(logs);
             if (result[0])
-                record["date_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
+                record["date_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
         }
 
         return record;

@@ -41,7 +41,7 @@
                                 <p-sortIcon [field]="'name'"></p-sortIcon>
                             </th>
                             <th>
-                                {{'Course'|translate}}
+                                {{'Status'|translate}}
                             </th>
                             <th [pSortableColumn]="'start'">
                                 {{'Start'|translate}}
@@ -56,7 +56,7 @@
                     <ng-template pTemplate="body" let-class>
                         <tr [pSelectableRow]="class">
                             <td>{{class.name}}</td>
-                            <td>{{class.course_name}}</td>
+                            <td>{{class.status}}</td>
                             <td>{{class.start | date : "dd/MM/yyyy"}}</td>
                             <td>{{class.end | date : "dd/MM/yyyy"}}</td>
                         </tr>
