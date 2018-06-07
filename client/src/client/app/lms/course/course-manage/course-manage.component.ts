@@ -232,12 +232,12 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
             this.selectedClass.status = 'closed';
             this.startTransaction();
             CourseMember.listByClass(this, this.selectedClass.id).subscribe(members=> {
-            	var subscriptions = _.map(this.members, (member: CourseMember)=> {
+            	var subscriptions = _.map(members, (member: CourseMember)=> {
 	                member.enroll_status = 'completed';
 	                return member.save(this);
 		        });
 	            subscriptions.push(this.selectedClass.save(this));
-	            Observable.forkJoin(subscriptions).subscribe(()=> {
+	            Observable.forkJoin(...subscriptions).subscribe(()=> {
 	                 this.success('Class close');
 	                 this.closeTransaction();
 	            });
