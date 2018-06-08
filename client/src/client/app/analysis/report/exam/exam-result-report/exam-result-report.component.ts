@@ -18,6 +18,7 @@ import { SelectGroupDialog } from '../../../../shared/components/select-group-di
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
+import { BaseModel } from '../../../../shared/models/base.model';
 
 
 @Component({
@@ -72,21 +73,20 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     }
 
     render(exam: Exam) {
-        
-        ExamMember.listByExam(this, exam.id).subscribe(members => {
-            ExamMember.listByExam(this, exam.id).subscribe(members => {
-                var memberStudents = members.filter(member => member.role === 'candidate');
-                ExamGrade.all(this).subscribe(grades => {
-                    Submission.listByExam(this, exam.id).subscribe(submits => {
-                        ExamLog.listByExam(this, exam.id).subscribe(logs => {
-                            this.records = this.generateReport(exam, grades, submits, logs, memberStudents);
-                            
-                        });
-                    });
-                });
-            });
-        });
-
+        this.clear();
+        BaseModel
+        .bulk_search(this,
+            ExamMember.__api__listCandidateByExam(exam.id),
+            ExamGrade.__api__all(),
+            Submission.__api__listByExam(exam.id),
+            ExamLog.__api__listByExam(exam.id))
+        .subscribe(jsonArr=> {
+            var members = ExamMember.toArray(jsonArr[0]);
+            var grades = ExamGrade.toArray(jsonArr[1]);
+            var submits = Submission.toArray(jsonArr[2]);
+            var logs = ExamLog.toArray(jsonArr[3]);
+            this.records = this.generateReport(exam, grades, submits, logs, members);
+        })
     }
 
 

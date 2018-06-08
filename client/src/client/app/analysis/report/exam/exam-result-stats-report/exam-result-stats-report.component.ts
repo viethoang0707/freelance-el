@@ -27,6 +27,7 @@ import { Http, Response } from '@angular/http';
 import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
 import 'rxjs/add/observable/timer';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
+import { BaseModel } from '../../../../shared/models/base.model';
 
 
 @Component({
@@ -46,13 +47,11 @@ export class ExamResultStatsReportComponent extends BaseComponent{
         this.statsUtils =  new StatsUtils();
     }
 
-
     export() {
     	var header = [
             this.translateService.instant('Question'),
             this.translateService.instant('Option'),
             this.translateService.instant('Percentage'),
-            
         ]
         this.excelService.exportAsExcelFile(header.concat(this.records),'answer_statis');
     }
@@ -64,26 +63,31 @@ export class ExamResultStatsReportComponent extends BaseComponent{
 
     render(exam:Exam) {
         this.clear();
-        
-        QuestionSheet.byExam(this, exam.id).subscribe((sheet:QuestionSheet)=> {
-            ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions=> {
-                this.records =  examQuestions;
-                var supscriptions = _.map(examQuestions, question=> {
-                    return QuestionOption.listByQuestion(this, question.question_id).do(options=> {
-                        question["options"] =  options;
-                        console.log(question["options"] );
-                    });
+        BaseModel
+        .bulk_search(this,
+            QuestionSheet.__api__byExam(exam.id),
+            Answer.__api__listByExam(exam.id))
+        .subscribe(jsonArr=> {
+            var sheets = QuestionSheet.toArray(jsonArr[0]);
+            var answers = Answer.toArray(jsonArr[1]);
+            this.optionPercentage = this.statsUtils.examAnswerStatistics(answers);
+            ExamQuestion.listBySheet(this, sheets[0].id).subscribe(examQuestions=> {
+                var apiList = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
+                    return QuestionOption.__api__listByQuestion(examQuestion.question_id)
                 });
-                if (supscriptions.length)
-                    Observable.forkJoin(supscriptions).subscribe(()=> {
-                        Answer.listByExam(this, exam.id).subscribe(answers=> {
-                            this.optionPercentage = this.statsUtils.examAnswerStatistics(answers);
-                        })
+                BaseModel.bulk_search(this, ...apiList)
+                    .map(jsonArr=> _.flatten(jsonArr))
+                    .subscribe(jsonArr => {
+                        var options = QuestionOption.toArray(jsonArr);
+                        _.each(examQuestions, (examQuestion: ExamQuestion)=> {
+                            examQuestion["options"] = _.filter(options, (opt:QuestionOption)=> {
+                                return opt.question_id == examQuestion.question_id;
+                            });
+                        });
+                        this.records =  examQuestions;
                     });
-                
             });
-        });
-    	
+        })
     }
 
 

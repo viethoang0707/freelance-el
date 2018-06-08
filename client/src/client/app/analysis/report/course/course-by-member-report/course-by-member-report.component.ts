@@ -88,11 +88,11 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 
 
 	render(users: User[]) {
+		this.clear();
 		this.generateReport(users);
 	}
 
 	generateReport(users: User[]) {
-		this.records = [];
 		var apiList = [];
 		for (var i=0;i<users.length; i++) {
 			apiList.push(CourseMember.__api__listByUser(users[i].id));
@@ -137,7 +137,6 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 			record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATE_FORMAT);
 		if (!Number.isNaN(result[2]))
 			record["time_spent"] = this.timePipe.transform(+(result[2]), 'min');
-
 		return record;
 	}
 

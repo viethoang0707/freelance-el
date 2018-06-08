@@ -16,6 +16,7 @@ import { SelectGroupDialog } from '../../../../shared/components/select-group-di
 import { SelectCoursesDialog } from '../../../../shared/components/select-course-dialog/select-course-dialog.component';
 import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
+import { BaseModel } from '../../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
@@ -46,30 +47,33 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
 	}
 
-	clear() {
-		this.records = [];
-	}
+
+    clear() {
+        this.records = [];
+        this.summary = {};
+    }
 
     render(courses:Course[]) {
-		this.summary = {};
-		this.generateReport(courses).subscribe(records => {
-			this.records = records;
-			this.summary =  this.generateReportFooter(records);
-		});
-	}
+		this.clear();
+		this.generateReport(courses);
+    }
 
-	generateReport(courses: Course[]): Observable<any> {
-		var subscriptions = [];
-		_.each(courses, (course: Course) => {
-			var subscription = CourseMember.listByCourse(this, course.id).flatMap(members => {
-				return CourseLog.courseActivity(this, course.id).map(logs => {
-					return this.generateReportRow(course, members, logs);
-				});
-			});
-			subscriptions.push(subscription);
-		});
-		return Observable.zip(...subscriptions);
-	}
+    generateReport(courses:Course[]){
+        var apiList = [];
+        for (var i=0;i<courses.length; i++) {
+            apiList.push(CourseMember.__api__listByCourse(courses[i].id));
+            apiList.push(CourseLog.__api__courseActivity(courses[i].id));
+        };
+        BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
+            for (var i=0;i<courses.length; i++) {
+                var members = CourseMember.toArray(jsonArr[2*i])
+                var logs = CourseLog.toArray(jsonArr[2*i+1])
+                var record = this.generateReportRow(courses[i], members, logs);
+                this.records.push(record);
+            }
+            this.summary =  this.generateReportFooter(this.records);
+        });
+    }
 
 	generateReportRow(course: Course, members: CourseMember[], logs: CourseLog[]): any {
 		var record = {};
