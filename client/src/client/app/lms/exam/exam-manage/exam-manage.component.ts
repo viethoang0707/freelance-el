@@ -77,7 +77,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     showQuestionSheet() {
         QuestionSheet.byExam(this, this.exam.id).subscribe((sheet:QuestionSheet)=> {
             if (!sheet || !sheet.finalized)
-                this.error('The exam questions has not been set up');
+                this.error(this.translateService.instant('The exam questions has not been set up'));
             else
                 this.questionSheetDialog.show(this.exam, sheet);
         })
@@ -87,11 +87,11 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         if (this.selectedRecord)
             this.exam.containsOpenEndQuestion(this).subscribe(success => {
                 if (!success) {
-                    this.warn('The exam does not contains any open question');
+                    this.warn(this.translateService.instant('The exam does not contains any open question'));
                     return;
                 }
                 if (this.selectedRecord["submit"] ==  null) {
-                    this.warn('The member has not attempted the exam');
+                    this.warn(this.translateService.instant('The member has not attempted the exam'));
                     return;
                 }
                 this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"] );
@@ -101,7 +101,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     viewAnswerSheet() {
         if (this.selectedRecord) {
             if (this.selectedRecord.enroll_status != 'completed')
-                this.info('Student has not completed the exam');
+                this.info(this.translateService.instant('Student has not completed the exam'));
             else
                 this.answerSheetDialog.show(this.exam, this.selectedRecord);
         }
@@ -146,15 +146,17 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     closeExam() {
         if (this.selectedRecord) {
             this.selectedRecord.status = 'closed';
-            var subscriptions = _.map(this.members, (member: ExamMember)=> {
-                member.enroll_status = 'completed';
-                return member.save(this);
-            });
-            subscriptions.push(this.selectedRecord.save(this));
-            this.startTransaction();
-            Observable.forkJoin(subscriptions).subscribe(()=> {
-                 this.success('Exam close');
-                 this.closeTransaction();
+            // var subscriptions = _.map(this.members, (member: ExamMember)=> {
+            //     member.enroll_status = 'completed';
+            //     return member.save(this);
+            // });
+            // subscriptions.push(this.selectedRecord.save(this));
+            // this.startTransaction();
+            // Observable.forkJoin(subscriptions).subscribe(()=> {
+            //      this.success('Exam close');
+            //      this.closeTransaction();
+            this.selectedRecord.save(this).subscribe(()=> {
+                this.success(this.translateService.instant('Exam close'));
             });
         }
     }

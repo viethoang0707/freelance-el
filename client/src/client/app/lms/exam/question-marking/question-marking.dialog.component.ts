@@ -81,7 +81,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 		subscrptions.push(this.submit.save(this));
 		this.startTransaction();
 		Observable.forkJoin(...subscrptions).subscribe(()=> {
-			this.success('Marking saved sucessfully');
+			this.success(this.translateService.instant('Marking saved sucessfully'));
 			this.onMarkCompleteReceiver.next();
 			this.hide();
 			this.closeTransaction();

@@ -286,7 +286,7 @@ export class ExamStudyDialog extends BaseComponent {
 				.subscribe(() => {
 					this.timeLeft -= 1000;
 					if(this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
-						this.warn('A little minutes remaining!');
+						this.warn(this.translateService.instant('A little minutes remaining!'));
 					if (this.timeLeft <= 0)
 						this.finishExam();
 				});
