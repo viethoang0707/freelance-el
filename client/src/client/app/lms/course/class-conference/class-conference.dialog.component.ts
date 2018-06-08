@@ -38,7 +38,7 @@ export class ClassConferenceDialog extends BaseComponent {
 	show(courseClass: CourseClass) {
 		this.display = true;
 		this.courseClass =  courseClass;
-		this.startTransaction();
+		
 		Conference.byClass(this, courseClass.id).subscribe(conference => {
 			if (conference) {
 				this.conference = conference;
@@ -59,7 +59,7 @@ export class ClassConferenceDialog extends BaseComponent {
 						
 					});
 				} 
-				this.closeTransaction();
+				
 			});
 		});
 	}
@@ -71,14 +71,14 @@ export class ClassConferenceDialog extends BaseComponent {
 	openConference() {
 		if (this.conference.id && this.conference.status !='open' ) {
 			this.conference.status = 'open';
-			this.startTransaction();
+			
 			this.conference.save(this).subscribe(()=> {
 				this.info(this.translateService.instant('Conference open'));
-				this.closeTransaction();
+				
 			});
 		}
 		if (!this.conference.id ) {
-			this.startTransaction();
+			
 			Room.createWebminarRoom(this, this.courseClass.name).subscribe(room => {
 				this.room = room;
 				this.conference.room_ref =  room.ref;
@@ -99,7 +99,7 @@ export class ClassConferenceDialog extends BaseComponent {
 							});
 						});
 					});
-					this.closeTransaction();
+					
 				});
 			})
 			
@@ -110,10 +110,10 @@ export class ClassConferenceDialog extends BaseComponent {
 	closeConference() {
 		if (this.conference.id && this.conference.status !='closed') {
 			this.conference.status = 'closed';
-			this.startTransaction();
+			
 			this.conference.save(this).subscribe(()=> {
 				this.info('Conference closed');
-				this.closeTransaction();
+				
 			});
 		}
 	}
@@ -121,11 +121,11 @@ export class ClassConferenceDialog extends BaseComponent {
 	accessControl(event:any, member: any) {
 		var conferenceMember = member.conferenceMember;
 		if (event.checked) {
-			this.startTransaction();
+			
 			if (conferenceMember) {
 				conferenceMember.is_active = true;
 				conferenceMember.save(this).subscribe(()=> {
-					this.closeTransaction();
+					
 				});
 			} else {
 				RoomMember.createRoomMember(this, member.name, member.image, this.room.id, member.role).subscribe(roomMember => {
@@ -136,16 +136,16 @@ export class ClassConferenceDialog extends BaseComponent {
 					conferenceMember.is_active = true;
 					conferenceMember.save(this).subscribe(()=> {
 						member.conferenceMember = conferenceMember;
-						this.closeTransaction();
+						
 					});
 				})
 			}
 		} else {
-			this.startTransaction();
+			
 			if (conferenceMember) {
 				conferenceMember.is_active = false;
 				conferenceMember.save(this).subscribe(()=> {
-					this.closeTransaction();
+					
 				});
 			}
 		}

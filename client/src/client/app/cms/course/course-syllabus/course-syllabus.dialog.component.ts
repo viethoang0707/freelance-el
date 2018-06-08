@@ -82,14 +82,12 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	checkWorkflow() {
-		this.startTransaction();
+		
 		Course.get(this, this.syl.course_id).subscribe(course => {
 			this.course = course;
-			this.dataAccessService.filter(course, 'SAVE').subscribe(success=> {
 				this.allowToChangeState = !this.course.supervisor_id || 
 				this.user.IsSuperAdmin ;
-			});
-			this.closeTransaction();
+			
 		});
 		Ticket.byWorkflowObject(this, this.syl.id, CourseSyllabus.Model).subscribe((ticket)=> {
 			this.openTicket =  ticket;
@@ -103,11 +101,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	buildCourseTree() {
 		if (this.syl) {
-			this.startTransaction();
+			
 			CourseUnit.listBySyllabus(this,this.syl.id).subscribe(units => {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
-				this.closeTransaction();
+				
 	        });
 		}
 	}
@@ -129,13 +127,13 @@ export class CourseSyllabusDialog extends BaseComponent {
 		unit.name = 'New unit';
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
 		unit.order = maxOrder;
-		this.startTransaction();
+		
 		unit.save(this).subscribe(()=> {
 			if (this.selectedNode)
 				this.sylUtils.addChildNode(this.selectedNode, unit);
 			else
 				this.sylUtils.addRootNode(this.tree, unit);
-			this.closeTransaction();
+			
 		});
 	}
 
@@ -155,11 +153,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 				return;
 			}
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-            	this.startTransaction();
+            	
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
-                    this.closeTransaction();
+                    
                 })
              });
 		}
@@ -178,9 +176,9 @@ export class CourseSyllabusDialog extends BaseComponent {
 			var subscriptions = _.map(this.units, (unit) => {
 				return unit.save(this);
 			});
-			this.startTransaction();
+			
 			Observable.forkJoin(subscriptions).subscribe(() => {
-				this.closeTransaction();
+				
 			});
 		}
 	}
@@ -192,9 +190,9 @@ export class CourseSyllabusDialog extends BaseComponent {
 			var subscriptions = _.map(this.units, (unit) => {
 				return unit.save(this);
 			});
-			this.startTransaction();
+			
 			Observable.forkJoin(subscriptions).subscribe(()=> {
-				this.closeTransaction();
+				
 			});
 		}
 	}
@@ -217,9 +215,9 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	submitForReview() {
-		this.startTransaction();
+		
 		this.workflowService.createCourseSyllabusPublishTicket(this, this.syl).subscribe(ticket=> {
-			this.closeTransaction();
+			
 		});
 	}
 

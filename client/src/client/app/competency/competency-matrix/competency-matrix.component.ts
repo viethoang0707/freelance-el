@@ -33,10 +33,10 @@ export class CompetencyMatrixComponent extends BaseComponent {
     }
 
     buildCompetencyMatrix() {
-        this.startTransaction();
+        
         Course.all(this).subscribe(courses => {
             this.courses = this.courses;
-            this.closeTransaction();
+            
         });
     }
 

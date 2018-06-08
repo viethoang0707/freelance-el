@@ -56,7 +56,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.answers = [];
         this.exam = exam;
         this.member = member;
-        this.startTransaction();
+        
         Submission.byMemberAndExam(this, this.member.id, this.exam.id).subscribe((submit: Submission) => {
             if (submit) {
                 this.submission = submit;
@@ -66,7 +66,7 @@ export class AnswerPrintDialog extends BaseComponent {
                     this.startReview();
                 });
             }
-            this.closeTransaction();
+            
         });
     }
 
@@ -82,7 +82,7 @@ export class AnswerPrintDialog extends BaseComponent {
     }
 
     startReview() {
-        this.startTransaction();
+        
         QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
             ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions => {
                 this.examQuestions = examQuestions;
@@ -97,7 +97,7 @@ export class AnswerPrintDialog extends BaseComponent {
                         }
                     }, 0);
                 });
-                this.closeTransaction();
+                
             });
         });
     }

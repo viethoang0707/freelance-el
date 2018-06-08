@@ -62,13 +62,13 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
             var memberId = +params['memberId'];
             var examId = +params['examId'];
-            this.startTransaction();
+            
             Exam.get(this, examId).subscribe(exam => {
                 ExamMember.get(this, memberId).subscribe(member => {
                     this.member = member;
 					this.exam = exam;
 					this.loadScores();
-                    this.closeTransaction();
+                    
                 });
             });
         });
@@ -102,7 +102,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     loadScores() {
-        this.startTransaction();
+        
         ExamGrade.all(this).subscribe(grades => {
             ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
                 this.members =  members;
@@ -122,7 +122,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                                 member["score"] = '';
                         }
                     });
-                    this.closeTransaction();
+                    
                 });
 
             });

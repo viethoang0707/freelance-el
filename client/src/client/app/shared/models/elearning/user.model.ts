@@ -22,6 +22,7 @@ export class User extends BaseModel{
         this.name = undefined;
 		this.email = undefined;
         this.group_id = undefined;
+        this.group_code =  undefined;
         this.group_id__DESC__ = undefined;
 		this.login = undefined;
         this.phone = undefined;
@@ -36,6 +37,7 @@ export class User extends BaseModel{
 
     image:string;
     name:string;
+    group_code: string;
     email: string;
     group_id: number;
     group_id__DESC__: string;
@@ -64,18 +66,6 @@ export class User extends BaseModel{
             return Permission.get(context, this.permission_id);
         else
             return Observable.of(new Permission());
-    }
-
-    static __api__countAll(): SearchCountAPI {
-        return new SearchCountAPI(User.Model, "[('login','!=','admin')]");
-    }
-
-    static countAll(context:APIContext):Observable<any> {
-        if (Cache.hit(User.Model))
-            return Observable.of(Cache.load(User.Model)).map(users=> {
-                return users.length;
-            });
-        return User.count(context, "[('login','!=','admin')]");
     }
 
     static __api__listAllAdmin(userId: number): SearchReadAPI {
@@ -135,6 +125,21 @@ export class User extends BaseModel{
                 });
             });        
         return User.search(context, [],"[('permission_id','!=','"+permissionId+"')]");
+    }
+
+    static __api__countByPermission(permissionId: number): SearchCountAPI {
+        return new SearchCountAPI(User.Model, "[('permission_id','!=','"+permissionId+"')]");
+    }
+
+    static countByPermission(context:APIContext, permissionId:number):Observable<any> {
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users=> {
+                var records =  _.filter(users, (user:User)=> {
+                    return user.permission_id == permissionId;
+                });
+                return records.length;
+            });        
+        return User.count(context,"[('permission_id','!=','"+permissionId+"')]");
     }
 
 }

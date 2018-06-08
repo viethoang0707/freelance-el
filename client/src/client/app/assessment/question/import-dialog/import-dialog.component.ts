@@ -80,7 +80,7 @@ export class QuestionImportDialog extends BaseComponent {
 				} else
 					i++;
 			}
-			this.startTransaction();
+			
 			Observable.merge(...subscriptions).subscribe(
 				() => {
 					this.completed++;
@@ -92,7 +92,7 @@ export class QuestionImportDialog extends BaseComponent {
 				() => {
 					this.onImportCompleteReceiver.next();
 					this.hide();
-					this.closeTransaction();
+					
 				});
 		});
 	}

@@ -58,7 +58,7 @@ export class QuestionSheetPrintDialog extends BaseComponent {
 
 
     startReview() {
-        this.startTransaction();
+        
         ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
             setTimeout(()=> {
@@ -68,7 +68,7 @@ export class QuestionSheetPrintDialog extends BaseComponent {
                     var componentHost = componentHostArr[i];
                     this.displayQuestion(examQuestion, componentHost);
                 }
-            this.closeTransaction();
+            
             },0)
             
         });

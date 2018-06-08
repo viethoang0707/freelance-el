@@ -24,7 +24,6 @@ export class UserImportDialog extends BaseComponent {
 	private percentage: number ;
 	private completed:number;
 	private total: number;
-
 	private onImportCompleteReceiver: Subject<any> = new Subject();
     onImportComplete:Observable<any> =  this.onImportCompleteReceiver.asObservable();
 
@@ -60,7 +59,6 @@ export class UserImportDialog extends BaseComponent {
 					subscriptions.push(user.save(this));
 				}
 			});
-			this.startTransaction();
 			Observable.merge(...subscriptions).subscribe(
 				()=> {
 					this.completed++;
@@ -72,7 +70,6 @@ export class UserImportDialog extends BaseComponent {
 				()=> {
 					this.onImportCompleteReceiver.next();
 					this.hide();
-					this.closeTransaction();
 				});
 		});
 	}

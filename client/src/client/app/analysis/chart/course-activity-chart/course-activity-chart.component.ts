@@ -24,18 +24,26 @@ export class CourseActivityChartComponent extends BaseComponent  {
 
     private chartData: any;
     private statsUtils: StatsUtils;
+    private cacheData = {};
 
     constructor() {
         super();
         this.statsUtils = new StatsUtils();
     }
 
-    drawChart(duration:number) {
-        this.startTransaction();
+    prepareChartDate(duration:number):Observable<any> {
+        if (this.cacheData[duration])
+            return Observable.of(this.cacheData[duration]);
         var end = new Date();
         var start = new Date(end.getTime() - duration * 24 * 60 * 60 * 1000);
         start.setHours(0, 0, 0, 0);
-        this.statsUtils.courseStatisticByDate(this, start, end).subscribe(slots => {
+        return this.statsUtils.courseStatisticByDate(this, start, end).do(slots=> {
+            this.cacheData[duration] = slots;
+        });
+    }
+
+    drawChart(duration:number) {
+        this.prepareChartDate(duration).subscribe(slots => {
             var labels = [this.translateService.instant('Today')];
             var data = [slots[slots.length-1]];
             for (var i =1; i< slots.length;i++) {
@@ -53,9 +61,7 @@ export class CourseActivityChartComponent extends BaseComponent  {
                     }
                 ]
             };
-            this.closeTransaction();
         });
-
     }
 
 }

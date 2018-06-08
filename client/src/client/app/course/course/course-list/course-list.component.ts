@@ -45,10 +45,10 @@ export class CourseListComponent extends BaseComponent {
     }
 
     buildCoursTree() {
-        this.startTransaction();
+        
         Group.listCourseGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
-            this.closeTransaction();
+            
         });
     }
 
@@ -92,7 +92,7 @@ export class CourseListComponent extends BaseComponent {
     }
 
     loadCourses() {
-        this.startTransaction();
+        
         Course.all(this).subscribe(courses => {
             this.courses = courses;
             this.displayCourses = courses;
@@ -104,7 +104,7 @@ export class CourseListComponent extends BaseComponent {
                 else
                     return 0;
             });
-            this.closeTransaction();
+            
         });
     }
 

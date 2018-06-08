@@ -23,14 +23,15 @@ import { User } from '../../../shared/models/elearning/user.model';
 })
 export class PermissionListComponent extends BaseComponent {
 
+    private selectedPermission: Permission;
+    private permissions: Permission[];
+
     @ViewChild(PermissionDialog) permissionDialog: PermissionDialog;
     @ViewChild(MenuPermissionDialog) menuPermissionDialog: MenuPermissionDialog;
     @ViewChild(MemberPermissionDialog) memberPermissionDialog: MemberPermissionDialog;
     @ViewChild(SelectGroupDialog) userPermissionDialog: SelectGroupDialog;
 
-    private selectedPermission: Permission;
-    private permissions: Permission[];
-
+    
     constructor() {
         super();
     }
@@ -40,10 +41,8 @@ export class PermissionListComponent extends BaseComponent {
     }
 
     loadPermission() {
-        this.startTransaction();
         Permission.all(this).subscribe(permissions => {
             this.permissions = permissions;
-            this.closeTransaction();
         });
     }
 
@@ -61,8 +60,8 @@ export class PermissionListComponent extends BaseComponent {
 
     deletePermission() {
         if (this.selectedPermission) {
-            User.listByPermission(this, this.selectedPermission.id).subscribe(users=> {
-                if (users.length)
+            User.countByPermission(this, this.selectedPermission.id).subscribe(count=> {
+                if (count > 0 )
                     this.error('You cannot delete permission assigned to other uers')
                 else {
                     this.confirm('Are you sure to delete ?', () => {

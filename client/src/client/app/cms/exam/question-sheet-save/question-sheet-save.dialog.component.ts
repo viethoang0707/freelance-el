@@ -42,7 +42,7 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 	save() {
 		var sheet = new QuestionSheet();
 		sheet.name = this.sheet.name;
-		this.startTransaction();
+		
 		sheet.save(this).subscribe(()=> {
 			var examQuestions = _.map(this.examQuestions, question=> {
 				var questionTempl = new ExamQuestion();
@@ -56,7 +56,7 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 			subscriptions.push(this.sheet.save(this));
 			Observable.forkJoin(subscriptions).subscribe(()=> {
 				this.success('Question sheet saved successfully');
-				this.closeTransaction();
+				
 				this.hide();
 			});
 		});

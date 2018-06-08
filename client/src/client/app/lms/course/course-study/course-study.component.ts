@@ -133,7 +133,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	loadCouseSyllabus() {
-		this.startTransaction();
+		
 		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl => {
 			CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
 				this.syl = syl;
@@ -147,7 +147,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 						this.selectedNode = this.sylUtils.findTreeNode(this.tree, attempt.res_id);
 					}
 				});
-				this.closeTransaction();
+				
 			});
 		});
 	}
@@ -283,15 +283,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	loadCertificate() {
-		this.startTransaction();
+		
 		Certificate.byMember(this, this.member.id).subscribe((certificate: any) => {
 			this.certificate = certificate;
-			this.closeTransaction();
+			
 		});
 	}
 
 	loadConference() {
-		this.startTransaction();
+		
 		ConferenceMember.byCourseMember(this, this.member.id)
 			.subscribe(member => {
 				this.conferenceMember = member;
@@ -299,13 +299,13 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					Conference.get(this, member.conference_id).subscribe(conference => {
 						this.conference = conference;
 					});
-				this.closeTransaction();
+				
 			});
 	}
 
 	loadExam() {
 		if (this.member.class_id) {
-			this.startTransaction();
+			
 			ClassExam.listByClass(this, this.member.class_id).subscribe(classExams => {
 				var examIds = _.pluck(classExams, 'exam_id');
 				ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
@@ -367,7 +367,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					});
 
 				});
-				this.closeTransaction();
+				
 			});
 		}
 	}
@@ -375,7 +375,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	loadProject() {
 		if (this.member.class_id) {
-			this.startTransaction();
+			
 			Project.listByClass(this, this.member.class_id).subscribe(projects => {
 				ProjectSubmission.listByMember(this, this.member.id).subscribe(submits => {
 					this.projects =  projects;
@@ -393,26 +393,26 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 				});
 			});
-			this.closeTransaction();
+			
 		}
 	}
 
 
 	loadFaqs() {
-		this.startTransaction();
+		
 		CourseFaq.listByCourse(this, this.course.id)
 			.subscribe(faqs => {
 				this.faqs = faqs;
-				this.closeTransaction();
+				
 			})
 	}
 
 	loadMaterials() {
-		this.startTransaction();
+		
 		CourseMaterial.listByCourse(this, this.course.id)
 			.subscribe(materials => {
 				this.materials = materials;
-				this.closeTransaction();
+				
 			});
 	}
 

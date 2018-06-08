@@ -48,10 +48,10 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     loadClasses() {
-        this.startTransaction();
+        
         CourseClass.listByCourse(this, this.course.id).subscribe(classes => {
             this.classes = classes;
-            this.closeTransaction();
+            
         });
     }
 

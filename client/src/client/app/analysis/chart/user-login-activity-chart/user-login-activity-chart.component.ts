@@ -20,28 +20,37 @@ import { StatsUtils } from '../../../shared/helpers/statistics.utils';
     selector: 'user-login-activity-chart',
     templateUrl: 'user-login-activity-chart.component.html',
 })
-export class UserLoginActivityChartComponent extends BaseComponent  {
+export class UserLoginActivityChartComponent extends BaseComponent {
 
     private chartData: any;
     private statsUtils: StatsUtils;
+    private cacheData: any;
 
     constructor() {
         super();
         this.statsUtils = new StatsUtils();
+        this.cacheData = {};
     }
 
-    drawChart(duration:number) {
-        this.startTransaction();
+    prepareChartDate(duration: number): Observable<any> {
+        if (this.cacheData[duration])
+            return Observable.of(this.cacheData[duration]);
         var end = new Date();
         var start = new Date(end.getTime() - duration * 24 * 60 * 60 * 1000);
         start.setHours(0, 0, 0, 0);
-        this.statsUtils.userLoginStatisticByDate(this, start, end).subscribe(slots => {
+        return this.statsUtils.userLoginStatisticByDate(this, start, end).do(slots => {
+            this.cacheData[duration] = slots;
+        });
+    }
+
+    drawChart(duration: number) {
+        this.prepareChartDate(duration).subscribe(slots => {
             console.log(slots);
             var labels = [this.translateService.instant('Today')];
-            var data = [slots[slots.length-1]];
-            for (var i =1; i< slots.length;i++) {
-                labels.push(this.translateService.instant("Day-"+i));
-                data.push(slots[slots.length-1-i]);
+            var data = [slots[slots.length - 1]];
+            for (var i = 1; i < slots.length; i++) {
+                labels.push(this.translateService.instant("Day-" + i));
+                data.push(slots[slots.length - 1 - i]);
             }
             this.chartData = {
                 labels: labels,
@@ -54,7 +63,7 @@ export class UserLoginActivityChartComponent extends BaseComponent  {
                     }
                 ]
             };
-            this.closeTransaction();
+
         });
 
     }

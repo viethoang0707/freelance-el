@@ -45,10 +45,10 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     selectCourseGroup() {
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
-            this.startTransaction();
+            
     		Course.listByGroup(this, group.id).subscribe((courses:Course[]) => {
     			this.memberReport.render(courses);
-                this.closeTransaction();
+                
     		});
     	});
     }

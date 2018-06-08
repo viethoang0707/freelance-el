@@ -38,11 +38,11 @@ export class QuestionSheetListComponent extends BaseComponent {
     deleteSheet(){
         if(this.selectedSheet)
             this.confirm('Are you sure to delete ?', () => {
-                this.startTransaction();
+                
                 this.selectedSheet.delete(this).subscribe(() => {
                     this.selectedSheet = null;
                     this.loadQuestionSheets();
-                    this.closeTransaction();
+                    
                 });
             });
     }
@@ -53,7 +53,7 @@ export class QuestionSheetListComponent extends BaseComponent {
     }
 
     loadQuestionSheets() {
-        this.startTransaction();
+        
         QuestionSheet.listTemplate(this).subscribe(sheets => {
             this.sheets =  sheets;
         });

@@ -85,7 +85,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		this.startTransaction();
+		
 		this.createSubmission().subscribe((submit: Submission) => {
 			this.submission = submit;
 			QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
@@ -94,7 +94,7 @@ export class ExamStudyDialog extends BaseComponent {
 					this.examQuestions = examQuestions;
 					this.stats.total = examQuestions.length;
 					this.startExam();
-					this.closeTransaction();
+					
 				});
 			});
 		});
@@ -152,14 +152,14 @@ export class ExamStudyDialog extends BaseComponent {
 	startExam() {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
-		this.startTransaction();
+		
 		ExamLog.startExam(this, this.member.id, this.submission.id).subscribe(()=> {
 			this.fetchAnswers().subscribe(answers => {
 				this.answers = answers;
 				this.updateStats();
 				this.startTimer();
 				this.displayQuestion(0);
-				this.closeTransaction();
+				
 			});
 		});
 		
@@ -172,11 +172,11 @@ export class ExamStudyDialog extends BaseComponent {
 		this.submission.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
 		subscriptions.push(this.member.save(this));
 		subscriptions.push(this.submission.save(this));
-		this.startTransaction();
+		
 		Observable.forkJoin(...subscriptions).subscribe(() => {
 			ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe(()=> {
 				this.hide();
-				this.closeTransaction();
+				
 			})
 			
 		});
@@ -191,11 +191,11 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
-			this.startTransaction();
+			
 			return answer.save(this).do(ans => {
 				this.answers.push(answer);
 				this.updateStats();
-				this.closeTransaction();
+				
 			});
 		} else
 			return Observable.of(answer);
@@ -208,7 +208,7 @@ export class ExamStudyDialog extends BaseComponent {
 	displayQuestion(index: number) {
 		this.qIndex = index;
 		this.currentQuestion = this.examQuestions[index];
-		this.startTransaction();
+		
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
 				ExamLog.startAnswer(this, this.member.id, answer.id).subscribe(()=> {
@@ -224,7 +224,7 @@ export class ExamStudyDialog extends BaseComponent {
 						(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
 						this.updateStats();
 					}
-					this.closeTransaction();
+					
 				});
 			});
 		});
@@ -243,33 +243,33 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	next() {
-		this.startTransaction();
+		
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex < this.examQuestions.length - 1) {
 				this.displayQuestion(this.qIndex + 1);
 			}
-			this.closeTransaction();
+			
 		});
 	}
 
 	prev() {
-		this.startTransaction();
+		
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex > 0) {
 				this.displayQuestion(this.qIndex - 1);
 			}
-			this.closeTransaction();
+			
 		});
 	}
 
 	submitExam() {
-		this.startTransaction();
+		
 		this.submitAnswer().subscribe(() => {
 			this.submitDialog.show(this.exam, this.submission);
 			this.submitDialog.onConfirm.subscribe(()=> {
 				this.finishExam();
 			});
-			this.closeTransaction();
+			
 		});
 	}
 

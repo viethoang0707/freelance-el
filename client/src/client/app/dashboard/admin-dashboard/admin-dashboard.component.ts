@@ -12,8 +12,9 @@ import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, CONTENT_STATUS } from '../../shared/models/constants';
+import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, CONTENT_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseModel } from '../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -22,6 +23,9 @@ import { TranslateService } from '@ngx-translate/core';
 
 })
 export class AdminDashboardComponent extends BaseComponent implements OnInit {
+
+    COURSE_MODE =  COURSE_MODE;
+    CONTENT_STATUS = CONTENT_STATUS;
 
     private userCount: any;
     private studentCount: any;
@@ -34,44 +38,40 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     private selectedExam: any;
     private header: any;
     private now: Date;
-    COURSE_MODE =  COURSE_MODE;
-    CONTENT_STATUS = CONTENT_STATUS;
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(CourseDialog) courseDialog: CourseDialog;
     
     constructor(private dateUtils: DateUtils) {
         super();
-        this.header = {
-            left: 'prev, today, next',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        };
+        this.header = SCHEDULER_HEADER;
         this.now = new Date();
         this.course = new Course();
     }
 
     ngOnInit() {
-        User.count(this).subscribe(count => {
-            this.userCount = count;
-        });
-        Course.count(this).subscribe(count => {
-            this.courseCount = count;
-        });
-        CourseMember.countTeacher(this).subscribe(count => {
-            this.teacherCount = count;
-        });
-        CourseMember.countStudent(this).subscribe(count => {
-            this.studentCount = count;
-        });    
+        BaseModel
+        .bulk_count(this,
+            User.__api__countAll(),
+            Course.__api__countAll(),
+            CourseMember.__api__countTeacher(),
+            CourseMember.__api__countStudent())
+        .map(jsonArray => {
+            return _.flatten(jsonArray);
+        })
+        .subscribe((counts)=> {
+            this.userCount = counts[0];
+            this.courseCount = counts[1];
+            this.teacherCount = counts[2];
+            this.studentCount = counts[3];
+        });   
         this.loadExams();
         this.loadCourses();
     }
 
 
     addExam() {
-        var exam = new Exam();
-        this.examDialog.show(exam);
+        this.examDialog.show(new Exam());
         this.examDialog.onCreateComplete.subscribe(() => {
             this.loadExams();
         });
@@ -79,11 +79,16 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
     editExam(exam) {
         this.examDialog.show(exam);
+        this.examDialog.onUpdateComplete.subscribe(() => {
+            this.loadExams();
+        });
     }
 
     editCourse(course) {
-        this.course = course;
-        this.courseDialog.show(this.course);
+        this.courseDialog.show(course);
+        this.courseDialog.onUpdateComplete.subscribe(() => {
+            this.loadCourses();
+        });
     }
 
     onDayClick() {
@@ -99,10 +104,10 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     loadExams() {
-        this.startTransaction();
-        Exam.all(this).subscribe(exams => {
+        
+        Exam.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(exams => {
             this.exams = exams;
-            this.events = _.map(exams, (exam)=> {
+            this.events = _.map(exams, (exam:Exam)=> {
                 return {
                     title: exam.name,
                     start: exam.start,
@@ -111,26 +116,19 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
                     allDay: true
                 }
             });
-            this.closeTransaction();
+            
         });
     }
 
     loadCourses() {
-        this.startTransaction();
+        
         Course.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(courses => {
             this.courses = courses;
             this.courses.sort((course1, course2): any => {
-                if (course1.create_date > course2.create_date)
-                    return -1;
-                else if (course1.create_date < course2.create_date)
-                    return 1;
-                else
-                    return 0;
+                return (course1.create_date < course2.create_date)
             });
-            this.closeTransaction();
+            
         });
     }
-
-
 }
 

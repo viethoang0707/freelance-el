@@ -64,6 +64,10 @@ export class GradebookListDialog extends BaseComponent {
 	}
 
 	loadMemberStats() {
+<<<<<<< HEAD
+=======
+		
+>>>>>>> Refactor loading
 		CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 			this.records = _.filter(members, (member) => {
 				return member.role == 'student';
@@ -95,6 +99,10 @@ export class GradebookListDialog extends BaseComponent {
 							record["logs"] = logs;
 						});
 					}));
+<<<<<<< HEAD
+=======
+					
+>>>>>>> Refactor loading
 				});
 			});
 		});

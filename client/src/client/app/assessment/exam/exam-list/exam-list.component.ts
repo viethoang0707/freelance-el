@@ -84,7 +84,7 @@ export class ExamListComponent extends BaseComponent {
     }
 
     loadExams() {
-        this.startTransaction();
+        
         Exam.all(this).subscribe(exams => {
             this.exams = exams;
             this.events = _.map(exams, (exam) => {
@@ -104,7 +104,7 @@ export class ExamListComponent extends BaseComponent {
                 else
                     return 0;
             });
-            this.closeTransaction();
+            
         });
     }
 }

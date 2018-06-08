@@ -54,4 +54,13 @@ export class Certificate extends BaseModel{
         return Certificate.search(context, [], "[('user_id','='," + userId + ")]");
     }
 
+
+    static __api__listByUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(Certificate.Model, [],"[('user_id','=',"+userId+")]");
+    }
+
+    static __api__byMember(memberId: number): SearchReadAPI {
+        return new SearchReadAPI(Certificate.Model, [],"[('member_id','=',"+memberId+")]");
+    }
+
 }

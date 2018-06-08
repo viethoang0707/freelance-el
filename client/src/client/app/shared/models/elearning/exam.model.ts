@@ -6,6 +6,8 @@ import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import * as moment from 'moment';
+import {SERVER_DATETIME_FORMAT} from '../constants';
 
 @Model('etraining.exam')
 export class Exam extends BaseModel{
@@ -60,5 +62,23 @@ export class Exam extends BaseModel{
         if (this.end.getTime() < now.getTime())
             return false;
         return true;
+    }
+
+    static __api__searchByDate(start:Date, end:Date): SearchReadAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Exam.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
+    }
+
+    static searchByDate(context:APIContext, start:Date, end:Date):Observable<any> {
+        if (Cache.hit(Exam.Model))
+            return Observable.of(Cache.load(Exam.Model)).map(exams=> {
+                return _.filter(exams, (exam:Exam)=> {
+                    return exam.start.getTime() >=  start.getTime() && exam.start.getTime() <= end.getTime();
+                });
+            });
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 }

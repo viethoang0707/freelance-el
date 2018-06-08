@@ -64,7 +64,7 @@ export class ExamResultStatsReportComponent extends BaseComponent{
 
     render(exam:Exam) {
         this.clear();
-        this.startTransaction();
+        
         QuestionSheet.byExam(this, exam.id).subscribe((sheet:QuestionSheet)=> {
             ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions=> {
                 this.records =  examQuestions;
@@ -80,7 +80,7 @@ export class ExamResultStatsReportComponent extends BaseComponent{
                             this.optionPercentage = this.statsUtils.examAnswerStatistics(answers);
                         })
                     });
-                this.closeTransaction();
+                
             });
         });
     	

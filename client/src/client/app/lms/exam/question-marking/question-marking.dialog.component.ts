@@ -45,7 +45,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 		this.questions = {};
 		this.member = member;
 		this.submit =  submit;
-		this.startTransaction();
+		
 		QuestionSheet.byExam(this, this.submit.exam_id).subscribe(sheet => {
 			ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions => {
 				_.each(examQuestions, (question:ExamQuestion)=> {
@@ -59,7 +59,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 						}));
 						return question && question.type =='ext'; 
 					});
-					this.closeTransaction();
+					
 				});
 			});
 		});
@@ -79,12 +79,12 @@ export class QuestionMarkingDialog extends BaseComponent {
 			this.submit.score = 0;
 		this.submit.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
 		subscrptions.push(this.submit.save(this));
-		this.startTransaction();
+		
 		Observable.forkJoin(...subscrptions).subscribe(()=> {
 			this.success('Marking saved sucessfully');
 			this.onMarkCompleteReceiver.next();
 			this.hide();
-			this.closeTransaction();
+			
 		});
 	}
 }

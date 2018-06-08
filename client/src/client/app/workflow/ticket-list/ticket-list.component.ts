@@ -9,6 +9,7 @@ import { Ticket } from '../../shared/models/ticket/ticket.model';
 import { Notification } from '../../shared/models/ticket/notification.model';
 import { TicketDialog } from '../ticket-dialog/ticket-dialog.component';
 import { SelectItem } from 'primeng/api';
+import { BaseModel } from '../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -31,23 +32,13 @@ export class TicketListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.loadSubmitTicket();
-        this.loadApprovalTicket();
-    }
-
-    loadSubmitTicket() {
-        this.startTransaction();
-        Ticket.listBySubmitUser(this, this.authService.UserProfile.id).subscribe(tickets=> {
-            this.submitTickets =  tickets;
-            this.closeTransaction();
-        })
-    }
-
-    loadApprovalTicket() {
-        this.startTransaction();
-        Ticket.listByApproveUser(this, this.authService.UserProfile.id).subscribe(tickets=> {
-            this.approvalTickets =  tickets;
-            this.closeTransaction();
+        BaseModel
+        .bulk_search(this,
+            Ticket.__api__listBySubmitUser(this.authService.UserProfile.id),
+            Ticket.__api__listByApproveUser(this.authService.UserProfile.id))
+        .subscribe(jsonArr=> {
+            this.submitTickets =  Ticket.toArray(jsonArr[0]);
+            this.approvalTickets =  Ticket.toArray(jsonArr[1]);
         })
     }
 
@@ -57,20 +48,16 @@ export class TicketListComponent extends BaseComponent {
 
     approveTicket(ticket: Ticket) {
         if (ticket.status == 'open') {
-            this.startTransaction();
             this.workflowService.approveTicket(this, ticket).subscribe(()=> {
                 this.info('Ticket approved');
-                this.closeTransaction();
             });
         }
     }
 
     rejectTicket(ticket: Ticket) {
         if (ticket.status == 'open') {
-            this.startTransaction();
             this.workflowService.rejectTicket(this, ticket).subscribe(()=> {
                 this.info('Ticket rejected');
-                this.closeTransaction();
             });
         }
     }

@@ -17,6 +17,7 @@ import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { BaseModel } from '../../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
@@ -27,15 +28,16 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 export class CourseByMemberReportComponent extends BaseComponent implements OnInit {
 
-	@ViewChild(SelectGroupDialog) groupDialog: SelectGroupDialog;
-	@ViewChild(SelectUsersDialog) userDialog: SelectUsersDialog;
+	GROUP_CATEGORY = GROUP_CATEGORY;
+    COURSE_MODE = COURSE_MODE;
+    COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
-	private reportUtils: ReportUtils;
 	private records: any;
 	private rowGroupMetadata: any;
-	private GROUP_CATEGORY = GROUP_CATEGORY;
-	private COURSE_MODE = COURSE_MODE;
-	private COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
+    private reportUtils: ReportUtils;
+
+    @ViewChild(SelectGroupDialog) groupDialog: SelectGroupDialog;
+	@ViewChild(SelectUsersDialog) userDialog: SelectUsersDialog;
 
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -81,79 +83,45 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 			var course = { 'User login': record['user_login'], 'User name': record['user_name'], 'Course name': record['course_name'], 'Course mode': record['course_mode'], 'Course code': record['course_code'], 'Enroll status': record['enroll_status'], 'Date register': record['date_register'], 'First attempt': record['first_attempt'], 'Last attempt': record['last_attempt'], 'Time spent': '' };
 			output.push(course);
 		});
-
 		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
 	}
 
-	selectUserGroup() {
-		this.groupDialog.show();
-		this.groupDialog.onSelectGroup.subscribe((group: Group) => {
-			this.startTransaction();
-			User.listByGroup(this, group.id).subscribe(users => {
-				this.generateReport(users).subscribe(records => {
-					records = records.filter(record => record.course_name != false);
-					this.records = records;
-					this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
-					this.closeTransaction();
-				});
-			});
-		});
-	}
-
-	selectIndividualUsers() {
-		this.userDialog.show();
-		this.userDialog.onSelectUsers.subscribe((users: User[]) => {
-			this.generateReport(users).subscribe(records => {
-				records = records.filter(record => record.course_name != false);
-				this.records = records;
-				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
-				console.log(this.rowGroupMetadata);
-			});
-		});
-	}
 
 	render(users: User[]) {
-		this.startTransaction();
-		this.generateReport(users).subscribe(records => {
-			this.records = records;
+		this.generateReport(users);
+	}
+
+	generateReport(users: User[]) {
+		this.records = [];
+		var apiList = [];
+		for (var i=0;i<users.length; i++) {
+			apiList.push(CourseMember.__api__listByUser(users[i].id));
+			apiList.push(CourseLog.__api__userStudyActivity(users[i].id,null));
+		};
+		BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
+			for (var i=0;i<users.length; i++) {
+				var members = CourseMember.toArray(jsonArr[2*i])
+				var logs = CourseLog.toArray(jsonArr[2*i+1])
+				var memberRecords = _.map(members, (member: CourseMember) => {
+					var courseLogs = _.filter(logs, (log: CourseLog) => {
+						return log.course_id == member.course_id;
+					});
+					return this.generateReportRow(member, courseLogs);
+				});
+				memberRecords = memberRecords.filter((memberRecord: any) => {
+					return memberRecord.course_code !== '' && memberRecord.course_mode !== '' && memberRecord.course_name !== '';
+				});
+				this.records = this.records.concat(memberRecords);
+			}
 			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
 			this.records.forEach(record => {
 				record.index = this.rowGroupMetadata[record.user_login].index;
 				record.size = this.rowGroupMetadata[record.user_login].size;
 			});
-			console.log('record: ', this.records);
-			console.log('rowGroup: ', this.rowGroupMetadata);
-			this.closeTransaction();
-		});
-	}
-
-	generateReport(users: User[]): Observable<any> {
-		var records = [];
-		var subscriptions = [];
-		_.each(users, (user: User) => {
-			var subscription = CourseMember.listByUser(this, user.id).flatMap(members => {
-				return CourseLog.userStudyActivity(this, user.id, null).do(logs => {
-					var memberRecords = _.map(members, (member: CourseMember) => {
-						var courseLogs = _.filter(logs, (log: CourseLog) => {
-							return log.course_id == member.course_id;
-						});
-						return this.generateReportRow(member, courseLogs);
-					});
-					memberRecords = memberRecords.filter((memberRecord: any) => {
-						return memberRecord.course_code !== '' && memberRecord.course_mode !== '' && memberRecord.course_name !== '';
-					});
-					records = records.concat(memberRecords);
-				});
-			});
-			subscriptions.push(subscription);
-		});
-		return Observable.forkJoin(...subscriptions).map(() => {
-			return records;
 		});
 	}
 
 	generateReportRow(member: CourseMember, logs: CourseLog[]): any {
-
 		var record = {};
 		record["user_login"] = member.login;
 		record["user_name"] = member.name;

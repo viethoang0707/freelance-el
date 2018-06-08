@@ -108,7 +108,7 @@ export class Course extends BaseModel{
     static __api__searchByDate(start:Date, end:Date): SearchReadAPI {
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
         var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-        return new SearchReadAPI(Course.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
+        return new SearchReadAPI(Course.Model, [],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
     }
 
     static searchByDate(context:APIContext, start:Date, end:Date):Observable<any> {
@@ -120,7 +120,7 @@ export class Course extends BaseModel{
             });
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
         var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-        return Course.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
+        return Course.search(context,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
     }
 
 }

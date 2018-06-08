@@ -55,6 +55,15 @@ export class CourseLog extends BaseModel{
         });
     }
 
+    static __api__userStudyActivity(userId, courseId):SearchReadAPI {
+        var domain = "";
+        if (courseId)
+            domain = "[('user_id','=',"+userId+"),('course_id','=',"+courseId+")]";
+        else
+            domain = "[('user_id','=',"+userId+")]"
+        return new SearchReadAPI(CourseLog.Model, [], domain );
+    }
+
     static userStudyActivity(context:APIContext, userId, courseId):Observable<any> {
         var domain = "";
         if (courseId)
@@ -64,6 +73,15 @@ export class CourseLog extends BaseModel{
         return CourseLog.search(context,[], domain );
     }
 
+    static __api__memberStudyActivity(memberId, courseId):SearchReadAPI {
+        var domain = "";
+        if (courseId)
+            domain = "[('member_id','=',"+memberId+"),('course_id','=',"+courseId+")]";
+        else
+            domain = "[('member_id','=',"+memberId+")]"
+        return new SearchReadAPI(CourseLog.Model, [], domain );
+    }
+
     static memberStudyActivity(context:APIContext, memberId, courseId):Observable<any> {
         var domain = "";
         if (courseId)
@@ -71,6 +89,10 @@ export class CourseLog extends BaseModel{
         else
             domain = "[('member_id','=',"+memberId+")]"
         return CourseLog.search(context,[], domain );
+    }
+
+    static __api__courseActivity(courseId):SearchReadAPI {
+        return new SearchReadAPI(CourseLog.Model, [], "[('course_id','=',"+courseId+")]" );
     }
 
     static courseActivity(context:APIContext, courseId):Observable<any> {

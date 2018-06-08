@@ -105,7 +105,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	
 	loadMembers() {
 		if (this.course && !this.courseClass) {
-			this.startTransaction();
+			
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
@@ -115,11 +115,11 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					return member.role =='teacher';
 				});
 				this.selectedTeachers = [];
-				this.closeTransaction();
+				
 			});
 		}
 		if (this.courseClass && this.courseClass) {
-			this.startTransaction();
+			
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
@@ -129,7 +129,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					return member.role =='teacher';
 				});
 				this.selectedTeachers = [];
-				this.closeTransaction();
+				
 			});
 		}
 	}

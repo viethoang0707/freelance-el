@@ -96,20 +96,20 @@ export class ClassExamListDialog extends BaseComponent {
 
 	manageExam() {
 		if (this.selectedClassExam)  {
-			this.startTransaction();
+			
 			ExamMember.byExamAndUser(this,this.selectedClassExam.id, this.authService.UserProfile.id ).subscribe(member=> {
 				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.id, member.id]);
-				this.closeTransaction();
+				
 			});
 		}
 	}
 
 	editContent() {
 		if (this.selectedClassExam) {
-			this.startTransaction();
+			
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
 				this.examContentDialog.show(exam);
-				this.closeTransaction();
+				
 			});
 		}
 	}

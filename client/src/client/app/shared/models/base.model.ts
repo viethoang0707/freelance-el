@@ -82,7 +82,7 @@ export abstract class BaseModel {
     }
 
     static __api__all():SearchReadAPI {
-        return this.__api__search( [], "[]]");
+        return this.__api__search( [], "[]");
     }
 
     static __api__excute(method: string, paramsList: string[], paramsDict: any):ExecuteAPI {
@@ -166,6 +166,20 @@ export abstract class BaseModel {
     static bulk_search(context:APIContext, ...apiList:SearchReadAPI[]) {
         var cloud_acc = context.authService.CloudAcc;
         return context.apiService.execute(this.__api__bulk_search(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+    }
+
+    static __api__countAll(): SearchCountAPI {
+        var model = this.Model;
+        return new SearchCountAPI(model, "[]");
+    }
+
+    static countAll(context:APIContext):Observable<any> {
+        var model = this.Model;
+        if (Cache.hit(model))
+            return Observable.of(Cache.load(model)).map(records=> {
+                return records.length;
+            });
+        return this.count(context, "[]");
     }
 
     save(context: APIContext): Observable<any> {

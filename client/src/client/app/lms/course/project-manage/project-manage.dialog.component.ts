@@ -49,9 +49,12 @@ export class ProjectManageDialog extends BaseComponent {
 	show(project:Project) {
         this.project =  project;
         this.display =  true;
-        this.loadScores();
-        this.startTransaction();
         
+        ProjectSubmission.listByProject(this, project.id).subscribe(submits => {
+            this.scoreRecords =  submits;
+            this.loadScores();
+                
+        })
 	}
 
 	mark() {
@@ -60,28 +63,26 @@ export class ProjectManageDialog extends BaseComponent {
     }
 
     loadScores() {
-        this.startTransaction();
-        ProjectSubmission.listByProject(this, this.project.id).subscribe(submits => {
-            CourseClass.get(this, this.project.class_id).subscribe(clazz => {
-                CourseMember.listByClass(this, clazz.id).subscribe(members => {
-                    this.scoreRecords = members;
-                    _.each(members, (member: CourseMember) => {
-                        var submit = _.find(submits, (submit: ProjectSubmission) => {
-                            return submit.member_id == member.id;
-                        });
-                        member["submit"] = submit;
-                        if (submit) {
-                            if (submit.score != null) {
-                                member["score"] = submit.score;
-                                member["date_submit"] = submit.date_submit;
-                            }
-                            else {
-                                member["score"] = '';
-                                member["date_submit"] = '';
-                            }
-                        }
+
+        
+        CourseClass.get(this, this.project.class_id).subscribe(clazz => {
+            CourseMember.listByClass(this, clazz.id).subscribe(members => {
+                this.scoreRecords = members;
+                _.each(members, (member: CourseMember) => {
+                    var submit = _.find(this.scoreRecords, (submit: ProjectSubmission) => {
+                        return submit.member_id == member.id;
                     });
-                    this.closeTransaction();
+                    member["submit"] = submit;
+                    if (submit) {
+                        if (submit.score != null) {
+                            member["score"] = submit.score;
+                            member["date_submit"] = submit.date_submit;
+                        }
+                        else {
+                            member["score"] = '';
+                            member["date_submit"] = '';
+                        }
+                    }
                 });
             });
         });

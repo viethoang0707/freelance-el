@@ -3,7 +3,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ConferenceMember } from './conference-member.model';
-import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchCountAPI } from '../../services/api/search-count.api';
@@ -37,6 +36,7 @@ export class CourseMember extends BaseModel {
         this.image = undefined;
         this.group_id = undefined;
         this.group_id__DESC__ = undefined;
+        this.course = new Course();
     }
 
     course_id: number;
@@ -83,7 +83,7 @@ export class CourseMember extends BaseModel {
         return CourseMember.search(context, [], "[('course_id','='," + courseId + ")]");
     }
 
-    static __api__countTeacher(courseId: number): SearchCountAPI {
+    static __api__countTeacher(): SearchCountAPI {
         return new SearchCountAPI(CourseMember.Model, "[('role','=','teacher')]");
     }
 
@@ -91,7 +91,7 @@ export class CourseMember extends BaseModel {
         return CourseMember.count(context, "[('role','=','teacher')]")
     }
 
-    static __api__countStudent(courseId: number): SearchCountAPI {
+    static __api__countStudent(): SearchCountAPI {
         return new SearchCountAPI(CourseMember.Model,  "[('role','=','student')]");
     }
 
@@ -118,11 +118,11 @@ export class CourseMember extends BaseModel {
     }
 
     __api__populateCourse(): ListAPI {
-        return new ListAPI(Course.Model, [this.course.id], []);
+        return new ListAPI(Course.Model, [this.course_id], []);
     }
 
     populateCourse(context: APIContext): Observable<any> {
-        if (this.course_id)
+        if (!this.course_id)
             return Observable.of(null);
         return Course.get(context, this.course_id).do(course => {
             this.course = course;

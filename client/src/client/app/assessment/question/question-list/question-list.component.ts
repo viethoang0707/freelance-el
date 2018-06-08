@@ -52,10 +52,10 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     buildQuestionGroup() {
-        this.startTransaction();
+        
         Group.listQuestionGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
-            this.closeTransaction();
+            
         });
     }
 
@@ -79,22 +79,22 @@ export class QuestionListComponent extends BaseComponent {
                 var subscriptions = _.map(this.selectedQuestions, (question: Question) => {
                         return question.delete(this);
                     });
-                this.startTransaction();
+                
                 Observable.forkJoin(...subscriptions).subscribe(() => {
                     this.selectedQuestions = null;
                     this.loadQuestions();
                     this.selectMode = "single";
-                    this.closeTransaction();
+                    
                 });
             });
     }
 
     loadQuestions() {
-        this.startTransaction();
+        
         Question.all(this).subscribe(questions => {
             this.questions = questions;
             this.displayQuestions = questions;
-            this.closeTransaction();
+            
         });
     }
 

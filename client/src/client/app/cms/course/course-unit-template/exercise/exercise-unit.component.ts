@@ -58,7 +58,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	render(unit:CourseUnit) {
 		this.unit = unit;
 		if (this.unit.id) {
-			 this.startTransaction();
+			 
 			 ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
 			 	this.exerciseQuestions =  exerciseQuestions;
 			 	if (this.mode=='preview')
@@ -69,12 +69,12 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
                             var componentHost = componentHostArr[i];
                             this.previewQuestion(exerciseQuestion,componentHost);
                         }
-                        this.closeTransaction();
+                        
 	               }, 0); 
 				 else if (this.mode=='study') {
 				 	this.qIndex = 0;
 				 	this.displayQuestion(this.qIndex);
-				 	this.closeTransaction();
+				 	
 				 }
 			 });
 			}
@@ -82,7 +82,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	}
 
 	previewQuestion(exerciseQuestion: ExerciseQuestion, componentHost:any) {
-		this.startTransaction();
+		
         Question.get(this, exerciseQuestion.question_id).subscribe((question)=> {
             var detailComponent = QuestionRegister.Instance.lookup(question.type);
             if (detailComponent) {
@@ -91,7 +91,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
                 (<IQuestion>componentRef.instance).mode = 'preview' ;
                 (<IQuestion>componentRef.instance).render(question);
             }
-            this.closeTransaction();            
+                        
         });
     }
 
@@ -117,19 +117,19 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				exerciseQuestion.title =  question.title;
 				subscriptions.push(exerciseQuestion.save(this));
 			});
-			this.startTransaction();
+			
 			Observable.zip(...subscriptions).subscribe(exerciseQuestions => {
 				this.loadExerciseQuestions();
-				this.closeTransaction();
+				
 			});
 		});
 	}
 
 	loadExerciseQuestions() {
-		this.startTransaction();
+		
 		ExerciseQuestion.listByExercise(this, this.unit.id).subscribe(exerciseQuestions => {
 			this.exerciseQuestions =  exerciseQuestions;
-			this.closeTransaction();
+			
 		});
 	}
 
@@ -168,7 +168,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		this.qIndex = index;
 		this.stage = 'question';
 		this.currentQuestion = this.exerciseQuestions[index];
-		this.startTransaction();
+		
 		this.prepareQuestion(this.currentQuestion).subscribe(question => {
 			var detailComponent = QuestionRegister.Instance.lookup(question.type);
 			let viewContainerRef = this.studyQuestionComponent.viewContainerRef;
@@ -179,7 +179,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				(<IQuestion>this.componentRef.instance).mode = 'study';
 				(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
 			}
-			this.closeTransaction();
+			
 		});
 
 	}

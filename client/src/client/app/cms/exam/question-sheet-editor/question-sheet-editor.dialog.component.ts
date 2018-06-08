@@ -115,7 +115,7 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	}
 
 	save() {
-		this.startTransaction();
+		
 		Observable.forkJoin(this.generateQuestion()).subscribe(()=> {
 			var subscriptions = _.map(this.examQuestions, examQuestion=> {
 				return examQuestion.save(this);
@@ -124,7 +124,7 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 				this.hide();
 				this.onSaveReceiver.next();
 				this.success(this.translateService.instant('Content saved successfully.'));
-				this.closeTransaction();
+				
 			});
 		})
 		

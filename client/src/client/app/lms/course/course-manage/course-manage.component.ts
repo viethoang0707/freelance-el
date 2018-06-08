@@ -72,24 +72,23 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			var courseId = +params['courseId'];
-			this.startTransaction();
-			Course.get(this, courseId).subscribe(course => {
-				CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId).subscribe(members => {
-					this.course = course;
-					this.members = _.filter(members, (member: CourseMember) => {
-						return member.role == 'teacher';
-					});
+		this.route.params.subscribe(params => { 
+	        var courseId = +params['courseId']; 
+	        
+	        Course.get(this, courseId).subscribe(course => {
+	        	CourseMember.byCourseAndUser(this, this.authService.UserProfile.id, courseId).subscribe(members=> {
+	        		this.course = course;
+	        		this.members = _.filter(members, (member:CourseMember)=> {
+	        				return member.role =='teacher';
+	        		});
 					this.loadCourseClass();
 					this.loadFaqs();
 					this.loadMaterials();
 					this.loadCourseSyllabus();
-					this.closeTransaction();
-				})
-
-			});
-		});
+	        	})
+				
+	        });
+	    }); 
 	}
 
 	loadCourseClass() {
@@ -108,16 +107,15 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	loadCourseSyllabus() {
-		this.startTransaction();
-		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl => {
-			CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
-				this.units = _.filter(units, (unit: CourseUnit) => {
+    	CourseSyllabus.byCourse(this, this.course.id).subscribe(syl=> {
+        	CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
+				this.units = _.filter(units, (unit:CourseUnit)=> {
 					return unit.status == 'published';
 				});
 				this.tree = this.sylUtils.buildGroupTree(units);
-				this.closeTransaction();
-			});
-		});
+				
+	        });
+        });
 	}
 
 	manageConference() {
@@ -145,11 +143,11 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	loadFaqs() {
-		this.startTransaction();
+		
 		CourseFaq.listByCourse(this, this.course.id)
 			.subscribe(faqs => {
 				this.faqs = faqs;
-				this.closeTransaction();
+				
 			})
 	}
 
@@ -170,21 +168,21 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	deleteFaq() {
 		if (this.selectedFaq)
 			this.confirm('Are you sure to delete ?', () => {
-				this.startTransaction();
+				
 				this.selectedFaq.delete(this).subscribe(() => {
 					this.loadFaqs();
 					this.selectedFaq = null;
-					this.closeTransaction();
+					
 				})
 			});
 	}
 
 	loadMaterials() {
-		this.startTransaction();
+		
 		CourseMaterial.listByCourse(this, this.course.id)
 			.subscribe(materials => {
 				this.materials = materials;
-				this.closeTransaction();
+				
 			});
 	}
 
@@ -207,12 +205,11 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	deleteMaterial() {
 		if (this.selectedMaterial)
-			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-				this.startTransaction();
+			this.confirm(this.translateService.instant('Are you sure to delete?'),() => {		
 				this.selectedMaterial.delete(this).subscribe(() => {
 					this.loadMaterials();
 					this.selectedMaterial = null;
-					this.closeTransaction();
+					
 				})
 			});
 	}
@@ -232,7 +229,6 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	closeClass() {
 		if (this.selectedClass) {
 			this.selectedClass.status = 'closed';
-			this.startTransaction();
 			CourseMember.listByClass(this, this.selectedClass.id).subscribe(members => {
 
 				var subscriptions = _.map(members, (member: CourseMember) => {
@@ -241,11 +237,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 					return member.save(this);
 				});
 				subscriptions.push(this.selectedClass.save(this));
-
 				Observable.forkJoin(...subscriptions).subscribe(() => {
-
 					this.success('Class close');
-					this.closeTransaction();
 				});
 			});
 

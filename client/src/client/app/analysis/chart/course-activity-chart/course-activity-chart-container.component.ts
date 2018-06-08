@@ -17,26 +17,26 @@ import { StatsUtils } from '../../../shared/helpers/statistics.utils';
 import { CourseActivityChartComponent } from './course-activity-chart.component';
 
 @Component({
-    moduleId: module.id,
-    selector: 'course-activity-chart-container',
+  moduleId: module.id,
+  selector: 'course-activity-chart-container',
 	templateUrl: 'course-activity-chart-container.component.html',
 })
 @Chart({
-    title: 'Course activity chart',
+  title: 'Course activity chart',
 })
-export class CourseActivityChartContainerComponent extends BaseComponent implements OnInit {
+export class CourseActivityChartContainerComponent extends BaseComponent implements OnInit{
 
-	@ViewChild(CourseActivityChartComponent) courseChart : CourseActivityChartComponent;
+  @ViewChild(CourseActivityChartComponent) courseChart: CourseActivityChartComponent;
 
     constructor() {
-        super();
+      super();
     }
 
     ngOnInit() {
-    	this.drawChart(7);
+      this.drawChart(7);
     }
 
-   drawChart(day:number) {
-       this.courseChart.drawChart(day);
-   }
+    drawChart(day: number) {
+      this.courseChart.drawChart(day);
+    }
 }

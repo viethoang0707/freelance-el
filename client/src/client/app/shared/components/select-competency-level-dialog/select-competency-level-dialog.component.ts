@@ -59,12 +59,12 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		this.startTransaction();
+		
 		Group.listCompetencyGroup(this).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 			CompetencyLevel.all(this).subscribe(levels => {
 				this.levels = levels;
-				this.closeTransaction();
+				
 			});
 		});
 	}

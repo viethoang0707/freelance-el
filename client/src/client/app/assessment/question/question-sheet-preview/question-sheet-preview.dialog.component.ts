@@ -52,7 +52,7 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
     }
 
     startReview() {
-        this.startTransaction();
+        
         ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
             setTimeout(()=> {
@@ -62,7 +62,7 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
                     var componentHost = componentHostArr[i];
                     this.displayQuestion(examQuestion, componentHost);
                 }
-            this.closeTransaction();
+            
             },0)
             
         });

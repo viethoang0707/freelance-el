@@ -43,10 +43,10 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     buildCompetencyGroup() {
-        this.startTransaction();
+        
         Group.listCompetencyGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
-            this.closeTransaction();
+            
         });
     }
 
@@ -69,17 +69,17 @@ export class CompetencyListComponent extends BaseComponent {
     deleteCompetency(){
         if(this.selectedCompetency)
             this.confirm('Are you sure to delete ?', () => {
-                this.startTransaction();
+                
                 this.selectedCompetency.delete(this).subscribe(() => {
                     this.selectedCompetency = null;
                     this.loadCompetencies();
-                    this.closeTransaction();
+                    
                 });
             });
     }
 
     loadCompetencies() {
-        this.startTransaction();
+        
         Competency.all(this).subscribe(competencies => {
             _.each(competencies , competency=> {
                 competency["levels"] = [];
@@ -92,7 +92,7 @@ export class CompetencyListComponent extends BaseComponent {
                         competency["levels"] = _.reduce(levels, function(memo, level){ return memo + level["name"]+','; }, '');
                     });
                 });
-                this.closeTransaction();
+                
             });
             
         });

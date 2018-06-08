@@ -2,12 +2,14 @@ import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { Submission } from './submission.model';
 import { ExamGrade } from './exam-grade.model';
-import { Answer } from './answer.model';
+import { Exam } from './exam.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { Cache } from '../../helpers/cache.utils';
+import { ListAPI } from '../../services/api/list.api';
+import { BulkListAPI } from '../../services/api/bulk-list.api';
 
 @Model('etraining.exam_member')
 export class ExamMember extends BaseModel{
@@ -27,9 +29,11 @@ export class ExamMember extends BaseModel{
         this.user_id = undefined;
         this.group_id = undefined;
         this.group_id__DESC__ = undefined;
+        this.exam =  new Exam();
     }
 
     exam_id: number;
+    exam: Exam;
     user_id: number;
     status: string;
     enroll_status: string;
@@ -78,6 +82,32 @@ export class ExamMember extends BaseModel{
                 return members[0];
             else
                 return null;
+        });
+    }
+
+    __api__populateExam(): ListAPI {
+        return new ListAPI(Exam.Model, [this.exam_id], []);
+    }
+
+    populateExam(context: APIContext): Observable<any> {
+        if (!this.exam_id)
+            return Observable.of(null);
+        return Exam.get(context, this.exam_id).do(exam => {
+            this.exam = exam;
+        });
+    }
+
+    static populateExamForMembers(context: APIContext, members: ExamMember[]): Observable<any> {
+        var examIds = _.pluck(members,'exam_id');
+        examIds = _.filter(examIds, id=> {
+            return id;
+        });
+        return Exam.array(context, examIds).do(exams=> {
+            _.each(members, (member:ExamMember)=> {
+                member.exam =  _.find(exams, (exam:Exam)=> {
+                    return member.exam_id == exam.id;
+                });
+            });
         });
     }
 

@@ -50,13 +50,11 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		this.records = [];
 	}
 
-	render(courses: Course[]) {
-		this.startTransaction();
+    render(courses:Course[]) {
 		this.summary = {};
 		this.generateReport(courses).subscribe(records => {
 			this.records = records;
-			this.summary = this.generateReportFooter(records);
-			this.closeTransaction();
+			this.summary =  this.generateReportFooter(records);
 		});
 	}
 

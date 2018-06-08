@@ -32,7 +32,7 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		this.startTransaction();
+		
 		HtmlLecture.byCourseUnit(this, unit.id).subscribe((lecture:HtmlLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -41,7 +41,7 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 				lecture.unit_id = this.unit.id;
 				this.lecture =  lecture;
 			}
-			this.closeTransaction();
+			
 		});
 	}
 

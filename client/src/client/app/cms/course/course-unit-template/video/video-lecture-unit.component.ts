@@ -48,7 +48,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		this.startTransaction();
+		
 		VideoLecture.byCourseUnit(this, unit.id).subscribe((lecture: VideoLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -57,7 +57,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
 			}
-			this.closeTransaction();
+			
 		});
 	}
 
@@ -67,10 +67,9 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	uploadFile(file) {
 		this.openFileStatus = true;
-		this.startTransaction();
 		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				this.closeTransaction();
+				
 				if (data["result"]) {
 					this.ngZone.run(() => {
 						this.lecture.video_url = data["url"];
@@ -79,7 +78,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 				}
 			},
 			() => {
-				this.closeTransaction();
+				
 			}
 		);
 	}

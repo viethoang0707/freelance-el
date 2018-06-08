@@ -22,13 +22,4 @@ export class ExamSetting extends BaseModel{
     max_attempt: number;
     allow_navigation: boolean;
     take_picture_on_submit: boolean;
-
-    static appSetting( context:APIContext): Observable<any> {
-        return ExamSetting.all(context).map(settings => {
-            if (settings && settings.length) {
-                return Observable.of(settings[0]);
-            } else 
-                return Observable.of(null)
-        });
-    }
 }

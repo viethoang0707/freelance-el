@@ -20,10 +20,12 @@ import * as _ from 'underscore';
 })
 export class TicketDialog extends BaseDialog<Ticket> {
 
-    private user: User;
     TICKET_STATUS = TICKET_STATUS;
-    @Input() replyText;
+
+    private user: User;
     private comments: Comment[];
+
+    @Input() replyText;
 
     constructor(private workflowService: WorkflowService, private socketService: WebSocketService) {
         super();
@@ -38,29 +40,23 @@ export class TicketDialog extends BaseDialog<Ticket> {
         });
 
         this.onUpdateComplete.subscribe((object)=> {
-            this.startTransaction();
             this.workflowService.updateTicket(this, object).subscribe(()=> {
-                this.closeTransaction();
             });
         });
     }
 
     approveTicket() {
         if (this.object.status == 'open') {
-            this.startTransaction();
             this.workflowService.approveTicket(this, this.object).subscribe(()=> {
                 this.info('Ticket approved');
-                this.closeTransaction();
             });
         }
     }
 
     rejectTicket() {
         if (this.object.status == 'open') {
-            this.startTransaction();
             this.workflowService.rejectTicket(this, this.object).subscribe(()=> {
                 this.info('Ticket rejected');
-                this.closeTransaction();
             });
         }
     }
@@ -71,11 +67,9 @@ export class TicketDialog extends BaseDialog<Ticket> {
         comment.content = this.replyText;
         comment.date_submit =  new Date();
         comment.ticket_id =  this.object.id;
-        this.startTransaction();
         comment.save(this).subscribe(()=> {
             this.workflowService.updateTicket(this, this.object).subscribe(()=> {
                 this.comments.push(comment);
-                this.closeTransaction();
             });
         });
     }

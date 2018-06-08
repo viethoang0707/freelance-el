@@ -35,7 +35,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.display = true;
 		this.courseClass =  clazz;
 		this.exam = exam;
-		this.startTransaction();
+		
 		CourseMember.listByClass(this, clazz.id).subscribe(members => {
 			this.members =  _.filter(members, (member)=> {
 				return member.role =='student';
@@ -49,7 +49,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 						member["allowed"] = false;
 				});
 			});
-			this.closeTransaction();
+			
 		});
 
 	}
@@ -70,10 +70,10 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		var subscriptions = _.map(this.members, (member)=> {
 			return member.save(this);
 		});
-		this.startTransaction();
+		
 		Observable.forkJoin(subscriptions).subscribe(()=> {
 			this.info('Register all successfully');
-			this.closeTransaction();
+			
 		});
 	}
 
@@ -88,10 +88,10 @@ export class ClassExamEnrollDialog extends BaseComponent {
 				return Observable.of(true);
 			}
 		});
-		this.startTransaction();
+		
 		Observable.forkJoin(subscriptions).subscribe(()=> {
 			this.info( 'Unregister all successfully');
-			this.closeTransaction();
+			
 		});
 	}
 

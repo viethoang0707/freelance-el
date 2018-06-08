@@ -126,21 +126,21 @@ export class GradebookDialog extends BaseComponent {
                         record["complete_percent"] = 0;
                     record["complete_unit"] = +result[3];
                 });
-                this.closeTransaction();
+                
             });
         });
     }
 
     loadCertificate() {
-        this.startTransaction();
+        
         Certificate.byMember(this, this.member.id).subscribe((certificate: any) => {
             this.certificate = certificate;
-            this.closeTransaction();
+            
         });
     }
 
     loadExamScore() {
-        this.startTransaction();
+        
         ExamGrade.all(this).subscribe(grades => {
             ExamMember.listByUser(this, this.member.user_id).subscribe(members => {
                 var examIds = _.pluck(members, 'exam_id');
@@ -168,13 +168,13 @@ export class GradebookDialog extends BaseComponent {
                             });
                         }));
                     });
-                this.closeTransaction();
+                
             });
         });
     }
 
     loadProjectScore() {
-        this.startTransaction();
+        
         Project.listByClass(this, this.member.class_id).subscribe(projects => {
             ProjectSubmission.listByMember(this, this.member.id).subscribe(submits => {
                 this.projects = projects;

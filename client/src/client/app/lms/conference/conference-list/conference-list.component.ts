@@ -34,7 +34,7 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     }
 
     loadConference() {
-        this.startTransaction();
+        
         ConferenceMember.listByUser(this, this.authService.UserProfile.id)
             .subscribe(members => {
                 members =  _.filter(members, (member=> {
@@ -49,7 +49,7 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
                     });
                     this.members = members;
                 });
-                this.closeTransaction();
+                
             });
     }
 
