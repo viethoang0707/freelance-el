@@ -13,7 +13,7 @@ export class BulkSearchReadAPI extends BaseAPI{
 
 	add(api: SearchReadAPI) {
 		var stacks = this.params["stacks"];
-		stacks.push(api);
+		stacks.push(api.params);
 	}
 
 }

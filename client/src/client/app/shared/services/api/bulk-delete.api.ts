@@ -13,7 +13,7 @@ export class BulkDeleteAPI extends BaseAPI{
 
 	add(api: DeleteAPI) {
 		var stacks = this.params["stacks"];
-		stacks.push(api);
+		stacks.push(api.params);
 	}
 
 }

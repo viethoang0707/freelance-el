@@ -91,12 +91,16 @@ export abstract class BaseModel {
     }
 
     static __api__bulk_create(apiList:CreateAPI[]):BulkCreateAPI {
-        var model = this.Model;
         var api = new BulkCreateAPI();
         _.each(apiList, subApi=> {
             api.add(subApi);
         });
         return api;
+    }
+
+    static bulk_create(context:APIContext, ...apiList:CreateAPI[]) {
+        var cloud_acc = context.authService.CloudAcc;
+        return context.apiService.execute(this.__api__bulk_create(apiList), cloud_acc.id, cloud_acc.api_endpoint)
     }
 
     static __api__bulk_update(apiList:UpdateAPI[]):BulkUpdateAPI {
@@ -107,13 +111,22 @@ export abstract class BaseModel {
         return api;
     }
 
+    static bulk_update(context:APIContext, ...apiList:UpdateAPI[]) {
+        var cloud_acc = context.authService.CloudAcc;
+        return context.apiService.execute(this.__api__bulk_update(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+    }
+
     static __api__bulk_delete(apiList:DeleteAPI[]):BulkDeleteAPI {
-        var model = this.Model;
         var api = new BulkDeleteAPI();
         _.each(apiList, subApi=> {
             api.add(subApi);
         });
         return api;
+    }
+
+    static bulk_delete(context:APIContext, ...apiList:DeleteAPI[]) {
+        var cloud_acc = context.authService.CloudAcc;
+        return context.apiService.execute(this.__api__bulk_delete(apiList), cloud_acc.id, cloud_acc.api_endpoint)
     }
 
     static __api__bulk_get(apiList:ListAPI[]):BulkListAPI {
@@ -124,6 +137,11 @@ export abstract class BaseModel {
         return api;
     }
 
+    static bulk_list(context:APIContext, ...apiList:ListAPI[]) {
+        var cloud_acc = context.authService.CloudAcc;
+        return context.apiService.execute(this.__api__bulk_get(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+    }
+
     static __api__bulk_count(apiList:SearchCountAPI[]):BulkSearchCountAPI {
         var api = new BulkSearchCountAPI();
         _.each(apiList, subApi => {
@@ -132,12 +150,22 @@ export abstract class BaseModel {
         return api;
     }
 
+    static bulk_count(context:APIContext, ...apiList:SearchCountAPI[]) {
+        var cloud_acc = context.authService.CloudAcc;
+        return context.apiService.execute(this.__api__bulk_count(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+    }
+
     static __api__bulk_search(apiList:SearchReadAPI[]):BulkSearchReadAPI {
         var api = new BulkSearchReadAPI();
         _.each(apiList, subApi=> {
-            api.add(subApi)
+            api.add(subApi);
         })
         return api;
+    }
+
+    static bulk_search(context:APIContext, ...apiList:SearchReadAPI[]) {
+        var cloud_acc = context.authService.CloudAcc;
+        return context.apiService.execute(this.__api__bulk_search(apiList), cloud_acc.id, cloud_acc.api_endpoint)
     }
 
     save(context: APIContext): Observable<any> {
@@ -167,13 +195,19 @@ export abstract class BaseModel {
             return Observable.of(null);
         var cloud_acc = context.authService.CloudAcc;
         var model = this.Model;
-        return context.apiService.execute( this.__api__get([id]), cloud_acc.id, cloud_acc.api_endpoint).flatMap(items => {
+        return context.apiService.execute( this.__api__get([id]), cloud_acc.id, cloud_acc.api_endpoint).map(items => {
+            items = this.toArray(items);
             if (items && items.length) {
-                var object = items[0];
-                object = MapUtils.deserializeModel(model, items[0]);
-                return Observable.of(object);
+                return items[0];
             } else
-                return Observable.of(null);
+                return null;
+        });
+    }
+
+    static toArray(jsonArr:any):any {
+        var model = this.Model;
+         return _.map(jsonArr, object=> {
+            return MapUtils.deserializeModel(model, object);
         });
     }
 
@@ -187,10 +221,8 @@ export abstract class BaseModel {
     static search(context: APIContext, fields: string[], domain: string): Observable<any[]> {
         var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__search( fields, domain), cloud_acc.id, cloud_acc.api_endpoint).flatMap(objects => {
-            return _.map(objects, object=> {
-                return MapUtils.deserializeModel(model, object);
-            });
+        return context.apiService.execute(this.__api__search( fields, domain), cloud_acc.id, cloud_acc.api_endpoint).map(objects => {
+            return this.toArray(objects);
         });
     }
 
@@ -208,10 +240,8 @@ export abstract class BaseModel {
             return Observable.of([]);
         var model = this.Model;
         var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__get(ids), cloud_acc.id, cloud_acc.api_endpoint).flatMap(objects => {
-            return _.map(objects, object=> {
-                return MapUtils.deserializeModel(model, object);
-            });
+        return context.apiService.execute(this.__api__get(ids), cloud_acc.id, cloud_acc.api_endpoint).map(objects => {
+            return this.toArray(objects);
         });
     }
 

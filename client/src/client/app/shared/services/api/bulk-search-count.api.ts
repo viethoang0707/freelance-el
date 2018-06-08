@@ -13,7 +13,7 @@ export class BulkSearchCountAPI extends BaseAPI{
 
 	add(api: SearchCountAPI) {
 		var stacks = this.params["stacks"];
-		stacks.push(api);
+		stacks.push(api.params);
 	}
 
 }

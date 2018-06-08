@@ -55,6 +55,14 @@ export class SurveyQuestion extends BaseModel{
         return new SearchCountAPI(SurveyQuestion.Model, "[('sheet_id','=','"+sheetId+"')]");
     }
 
+    static __api__countBySurvey(surveyId: number): SearchCountAPI {
+        return new SearchCountAPI(SurveyQuestion.Model, "[('survey_id','=','"+surveyId+"')]");
+    }
+
+    static countBySurvey( context:APIContext, surveyId: number): Observable<any> {
+        return SurveyQuestion.count(context,"[('survey_id','=',"+surveyId+")]");
+    }
+
 
     static __api__byQuestion(questionId: number): SearchReadAPI {
         return new SearchReadAPI(SurveyQuestion.Model, [],"[('question_id','=','"+questionId+"')]");

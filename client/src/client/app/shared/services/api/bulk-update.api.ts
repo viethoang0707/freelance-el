@@ -13,7 +13,7 @@ export class BulkUpdateAPI extends BaseAPI{
 
 	add(api: UpdateAPI) {
 		var stacks = this.params["stacks"];
-		stacks.push(api);
+		stacks.push(api.params);
 	}
 
 }

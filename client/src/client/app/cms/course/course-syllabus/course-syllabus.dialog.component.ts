@@ -13,7 +13,7 @@ import { TreeNode, MenuItem, SelectItem } from 'primeng/api';
 import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, CONTENT_STATUS } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-setting.dialog.component';
+import { CourseSettingDialog } from '../course-setting/course-setting.dialog.component';
 import * as _ from 'underscore';
 import { Ticket } from '../../../shared/models/ticket/ticket.model';
 import { WorkflowService } from '../../../shared/services/workflow.service';

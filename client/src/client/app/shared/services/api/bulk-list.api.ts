@@ -13,7 +13,7 @@ export class BulkListAPI extends BaseAPI{
 
 	add(api: ListAPI) {
 		var stacks = this.params["stacks"];
-		stacks.push(api);
+		stacks.push(api.params);
 	}
 
 }

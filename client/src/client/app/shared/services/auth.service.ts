@@ -18,7 +18,7 @@ declare function unescape(s:string): string;
 @Injectable()
 export class AuthService {
 
-    constructor(private apiService: APIService, private cacheService: CacheService) {
+    constructor(private apiService: APIService) {
     }
 
    get StoredCredential(): Credential {

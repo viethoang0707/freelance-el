@@ -7,6 +7,11 @@ import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchCountAPI } from '../../services/api/search-count.api';
+import { Course } from './course.model';
+import { CourseLog } from './log.model';
+import { ListAPI } from '../../services/api/list.api';
+import { BulkListAPI } from '../../services/api/bulk-list.api';
+import * as _ from 'underscore';
 
 @Model('etraining.course_member')
 export class CourseMember extends BaseModel {
@@ -35,6 +40,7 @@ export class CourseMember extends BaseModel {
     }
 
     course_id: number;
+    course; Course;
     user_id: number;
     class_id: number;
     status: string;
@@ -86,7 +92,7 @@ export class CourseMember extends BaseModel {
     }
 
     static __api__countStudent(courseId: number): SearchCountAPI {
-        return new SearchCountAPI(CourseMember.Model, [], "[('role','=','student')]");
+        return new SearchCountAPI(CourseMember.Model,  "[('role','=','student')]");
     }
 
     static countStudent(context: APIContext) {
@@ -108,6 +114,32 @@ export class CourseMember extends BaseModel {
                 return Observable.of(false);
             else 
                 return Observable.of(true);
+        });
+    }
+
+    __api__populateCourse(): ListAPI {
+        return new ListAPI(Course.Model, [this.course.id], []);
+    }
+
+    populateCourse(context: APIContext): Observable<any> {
+        if (this.course_id)
+            return Observable.of(null);
+        return Course.get(context, this.course_id).do(course => {
+            this.course = course;
+        });
+    }
+
+    static populateCourseForMembers(context: APIContext, members: CourseMember[]): Observable<any> {
+        var courseIds = _.pluck(members,'course_id');
+        courseIds = _.filter(courseIds, id=> {
+            return id;
+        });
+        return Course.array(context, courseIds).do(courses=> {
+            _.each(members, (member:CourseMember)=> {
+                member.course =  _.find(courses, (course:Course)=> {
+                    return member.course_id == course.id;
+                });
+            });
         });
     }
 

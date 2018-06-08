@@ -5,7 +5,7 @@ import { APIContext } from '../context';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import * as moment from 'moment';
-import {SERVER_DATETIME_FORMAT} from '../models/constants';
+import {SERVER_DATETIME_FORMAT} from '../constants';
 
 @Model('etraining.course')
 export class Course extends BaseModel{
@@ -63,7 +63,7 @@ export class Course extends BaseModel{
     mode: string;
     logo: string;
 
-     static __api__listByAuthor(authorId: number): SearchReadAPI {
+    static __api__listByAuthor(authorId: number): SearchReadAPI {
         return new SearchReadAPI(Course.Model, [],"[('author_id','=','"+authorId+"')]");
     }
 
@@ -105,7 +105,7 @@ export class Course extends BaseModel{
         return Course.search(context,[],"[('group_id','=','"+groupId+"'),('mode','=','"+mode+"')]");
     }
 
-    static __api__searchByDate(groupId: number): SearchReadAPI {
+    static __api__searchByDate(start:Date, end:Date): SearchReadAPI {
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
         var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
         return new SearchReadAPI(Course.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
@@ -115,7 +115,7 @@ export class Course extends BaseModel{
         if (Cache.hit(Course.Model))
             return Observable.of(Cache.load(Course.Model)).map(courses=> {
                 return _.filter(courses, (course:Course)=> {
-                    return course.start.getTime() >=  start.getTime() && course.start.getTime() <= end.getTime();
+                    return course.create_date.getTime() >=  start.getTime() && course.create_date.getTime() <= end.getTime();
                 });
             });
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);

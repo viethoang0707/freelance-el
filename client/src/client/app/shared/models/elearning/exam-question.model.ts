@@ -56,6 +56,14 @@ export class ExamQuestion extends BaseModel{
         return ExamQuestion.count(context,"[('sheet_id','=',"+sheetId+")]");
     }
 
+    static __api__countByExam(examId: number): SearchCountAPI {
+        return new SearchCountAPI(ExamQuestion.Model, "[('exam_id','=','"+examId+"')]");
+    }
+
+    static countByExam( context:APIContext, examId: number): Observable<any> {
+        return ExamQuestion.count(context,"[('exam_id','=',"+examId+")]");
+    }
+
     static __api__byQuestion(questionId: number): SearchReadAPI {
         return new SearchReadAPI(ExamQuestion.Model, [],"[('question_id','=','"+questionId+"')]");
     }

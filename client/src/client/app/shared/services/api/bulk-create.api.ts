@@ -13,7 +13,7 @@ export class BulkCreateAPI extends BaseAPI{
 
 	add(api: CreateAPI) {
 		var stacks = this.params["stacks"];
-		stacks.push(api);
+		stacks.push(api.params);
 	}
 
 }

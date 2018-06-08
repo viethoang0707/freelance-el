@@ -24,10 +24,9 @@ import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.di
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
 import { Submission } from '../../shared/models/elearning/submission.model';
+import { BaseModel } from '../../shared/models/base.model';
 
-
-declare var $: any;
-declare var _: any;
+import * as _ from 'underscore';
 
 @Component({
     moduleId: module.id,
@@ -38,60 +37,51 @@ declare var _: any;
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
 
-    private confMembers: ConferenceMember[];
-    private courses: Course[];
-    private currentUser: User;
     CONFERENCE_STATUS = CONFERENCE_STATUS;
     COURSE_MODE = COURSE_MODE;
-    @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
-    private exams: Exam[];
     EXAM_STATUS = EXAM_STATUS;
+    
+    private conferenceMembers: ConferenceMember[];
+    private courseMembers: CourseMember[];
+    private currentUser: User;
+    private examMembers: ExamMember[];
+    private courses: Course[];
+
+    @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
 
     constructor(private meetingSerivce: MeetingService, private router: Router) {
         super();
+        this.courseMembers = [];
+        this.conferenceMembers = [];
+        this.examMembers = [];
+        this.currentUser = this.authService.UserProfile;
         this.courses = [];
-        this.exams = [];
     }
 
-    loadCourse() {
+    displayCourses() {
         this.startTransaction();
-        CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
-            members = _.filter(members, (member => {
-                return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status=='active';
-            }));
-            var courseIds = _.pluck(members, 'course_id');
-            Observable.forkJoin(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))
-                .map(courses => {
-                    courses =  _.flatten(courses);
-                    return _.uniq(courses, (course) => {
-                        return course.id;
-                    });
-                })
-                .subscribe(courses => {
-                    this.courses  = courses;
-                    this.courses.sort((course1, course2): any => {
-                        if (course1.create_date > course2.create_date)
-                            return -1;
-                        else if (course1.create_date < course2.create_date)
-                            return 1;
-                        else
-                            return 0;
-                    });
-                    _.each(this.courses , (course) => {
-                        if (course.syllabus_id)
-                            CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                                course.unit_count = count;
-                            });
-                        else
-                            course.unit_count = 0;
-                        course.member = _.find(members, (member: CourseMember) => {
-                            return member.course_id == course.id;
-                        });
-                    });
-                    this.closeTransaction();
+        this.courseMembers = _.filter(this.courseMembers, (member:CourseMember) => {
+            return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status=='active';
+        });
+        CourseMember.populateCourseForMembers(this, this.courseMembers).subscribe((courses)=> {
+            this.courses = this.courses.concat(courses);
+            this.courses = _.uniq(courses, (course) => {
+                  return course.id;
+             });
+            this.courses.sort((course1, course2): any => {
+                return (course1.create_date < course2.create_date);
+            });
+            _.each(this.courses, (course:Course)=> {
+                course["student"] =  _.find(this.courseMembers, (member:CourseMember)=> {
+                    return member.course_id == course.id && member.role == 'student';
                 });
+                course["teacher"] = _.find(this.courseMembers, (member:CourseMember)=> {
+                    return member.course_id == course.id && member.role == 'teacher';
+                });
+                course["isAuthor"] = course.author_id == this.currentUser.id;
+            });
         });
     }
 
@@ -168,10 +158,20 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.currentUser = this.authService.UserProfile;
-        this.loadConference();
-        this.loadCourse();
-        this.loadExam();
+        this.startTransaction();
+        BaseModel.bulk_search(this, 
+            CourseMember.__api__listByUser(this.currentUser.id),
+            ExamMember.__api__listByUser(this.currentUser.id),
+            ConferenceMember.__api__listByUser(this.currentUser.id),
+            Course.__api__listByAuthor(this.currentUser.id))
+        .subscribe(jsonArray=> {
+                this.courseMembers =  CourseMember.toArray(jsonArray[0]);
+                this.examMembers =  ExamMember.toArray(jsonArray[1]);
+                this.conferenceMembers =  ConferenceMember.toArray(jsonArray[2]);
+                this.courses =  Course.toArray(jsonArray[3]);
+                this.displayCourses();
+                this.startTransaction();
+            });
     }
 
     joinConference(member) {
