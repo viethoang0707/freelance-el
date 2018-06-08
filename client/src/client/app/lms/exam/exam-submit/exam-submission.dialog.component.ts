@@ -71,7 +71,7 @@ export class ExamSubmissionDialog extends BaseComponent {
     }
 
    handleImage(webcamImage: WebcamImage): void {
-    console.info('received webcam image', webcamImage);
+    console.info(this.translateService.instant('received webcam image'), webcamImage);
     this.submission.picture = webcamImage.imageAsBase64;
     this.onConfirmReceiver.next();
     this.hide();

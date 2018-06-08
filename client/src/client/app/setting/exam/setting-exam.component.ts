@@ -69,7 +69,7 @@ export class SettingExamComponent extends BaseComponent implements OnInit {
 		})
 		subscriptions.push(this.setting.save(this));
 		Observable.forkJoin(subscriptions).subscribe(()=> {
-			this.success('Setting saved successfully');
+			this.success(this.translateService.instant('Setting saved successfully'));
 		})
 	}
 
