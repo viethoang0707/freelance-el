@@ -58,11 +58,10 @@ export class MemberPermissionDialog extends BaseComponent {
     deleteMember() {
         if (this.selectedUsers && this.selectedUsers.length)
             this.confirm('Are you sure to remove ?', () => {
-                var updateApi = _.map(this.selectedUsers, (user: User) => {
+                _.each(this.selectedUsers, (user: User) => {
                     user.permission_id = null;
-                    return user.__api__update();
                 });
-                BaseModel.bulk_update(this, ...updateApi).subscribe(() => {
+                User.updateArray(this, this.selectedUsers).subscribe(() => {
                     this.loadMembers();
                 });
             });

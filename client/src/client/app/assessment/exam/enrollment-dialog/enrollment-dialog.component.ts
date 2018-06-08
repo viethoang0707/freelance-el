@@ -54,7 +54,6 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 	 addMember(role:string) {
         this.usersDialog.show();
         this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
-            
             var subscriptions = [];
             _.each(users, (user:User)=> {
                 var member = new ExamMember();
@@ -79,19 +78,16 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
                 var subscriptions = _.map(members,(member:ExamMember) => {
                     return member.delete(this);
                 });
-                
                 this.subscription = Observable.forkJoin(...subscriptions).subscribe(()=> {
                     this.selectedCandidates = [];
                     this.selectedSupervisors = [];
                     this.loadMembers();
-                    
                     this.subscription.unsubscribe();
                 });
             });
     }
 
     loadMembers() {
-        
         ExamMember.listByExam(this, this.exam.id).subscribe(members => {
              this.candidates = _.filter(members, (member)=> {
                  return member.role =='candidate';
@@ -99,7 +95,6 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
              this.supervisors = _.filter(members, (member)=> {
                  return member.role =='supervisor';
              });
-             
         });
     }
 }

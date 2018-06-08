@@ -218,6 +218,27 @@ export abstract class BaseModel {
         });
     }
 
+    static createArray(context: APIContext,objects:any): Observable<any> {
+        var apiList = _.map(objects, (object:BaseModel) => {
+            return object.__api__create();
+        });
+        return BaseModel.bulk_create(context, ...apiList);
+    }
+
+    static updateArray(context: APIContext,objects:any): Observable<any> {
+        var apiList = _.map(objects, (object:BaseModel) => {
+            return object.__api__update();
+        });
+        return BaseModel.bulk_update(context, ...apiList);
+    }
+
+    static deleteArray(context: APIContext,objects:any): Observable<any> {
+        var apiList = _.map(objects, (object:BaseModel) => {
+            return object.__api__delete();
+        });
+        return BaseModel.bulk_delete(context, ...apiList);
+    }
+
     static toArray(jsonArr:any):any {
         var model = this.Model;
          return _.map(jsonArr, object=> {
