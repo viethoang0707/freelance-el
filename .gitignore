@@ -1,6 +1,8 @@
 npm-debug.log
 client/node_modules/
 client/dist/
+client/src/*.js
+client/src/*.js.map
 src/client/yarn.lock
 .*
 !/.gitignore
