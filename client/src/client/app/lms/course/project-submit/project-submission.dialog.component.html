@@ -1,4 +1,4 @@
-<p-dialog header="{{'Project submission dialog'|translate}}" [(visible)]="display" modal="true" width="320" height="100%" [responsive]="true" appendTo="body">
+<p-dialog header="{{'Project submission'|translate}}" [(visible)]="display" modal="true" width="320" height="100%" [responsive]="true" appendTo="body">
   	<div class="ui-g-6">
           <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*8" showUploadButton="false">
           </p-fileUpload>

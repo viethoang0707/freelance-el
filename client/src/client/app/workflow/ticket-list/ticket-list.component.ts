@@ -59,7 +59,7 @@ export class TicketListComponent extends BaseComponent {
         if (ticket.status == 'open') {
             this.startTransaction();
             this.workflowService.approveTicket(this, ticket).subscribe(()=> {
-                this.info('Ticket approved');
+                this.info(this.translateService.instant('Ticket approved'));
                 this.closeTransaction();
             });
         }
@@ -69,7 +69,7 @@ export class TicketListComponent extends BaseComponent {
         if (ticket.status == 'open') {
             this.startTransaction();
             this.workflowService.rejectTicket(this, ticket).subscribe(()=> {
-                this.info('Ticket rejected');
+                this.info(this.translateService.instant('Ticket rejected'));
                 this.closeTransaction();
             });
         }
