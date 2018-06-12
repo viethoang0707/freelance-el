@@ -48,6 +48,7 @@ import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
@@ -56,6 +57,10 @@ import { CourseClass } from '../../../shared/models/elearning/course-class.model
 	styleUrls: ['course-study.component.css'],
 })
 export class CourseStudyComponent extends BaseComponent implements OnInit {
+
+	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
+	EXAM_STATUS = EXAM_STATUS;
+	PROJECT_STATUS = PROJECT_STATUS;
 
 	private course: Course;
 	private courseClass: CourseClass;
@@ -76,6 +81,11 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private sylUtils: SyllabusUtils;
 	private reportUtils: ReportUtils;
 	private projects: Project[];
+	private componentRef: any;
+	private studyMode: boolean;
+	private enableLogging: boolean;
+	private currentUser: User;
+	private logs: CourseLog[];
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -84,13 +94,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	@ViewChild(ProjectSubmissionDialog) projectSubmitDialog: ProjectSubmissionDialog;
-	private componentRef: any;
 
-	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
-	EXAM_STATUS = EXAM_STATUS;
-	PROJECT_STATUS = PROJECT_STATUS;
-	private studyMode: boolean;
-	private enableLogging: boolean;
 
 	constructor(private router: Router, private route: ActivatedRoute,
 		private meetingSerivce: MeetingService, private componentFactoryResolver: ComponentFactoryResolver) {
@@ -103,52 +107,80 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.conference = new Conference();
 		this.conferenceMember = new ConferenceMember();
 		this.studyMode = false;
-		this.enableLogging =  false;
+		this.enableLogging = false;
+		this.currentUser = this.authService.UserProfile;
 	}
 
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
-			Course.get(this, courseId).subscribe(course => {
-				CourseMember.get(this, memberId).subscribe((member:CourseMember) => {
-					this.member = member;
-					this.course = course;
-					this.loadFaqs();
-					this.loadMaterials();
-					this.loadExam();
-					this.loadProject();
-					this.loadCertificate();
-					this.loadConference();
-					this.loadCouseSyllabus();
-					if (course.mode=='group')
-						CourseClass.get(this,member.class_id).subscribe(courseClass=> {
-							this.courseClass = courseClass;
-							if (this.courseClass.IsAvailable)
-								this.enableLogging = true;
-						});
+			BaseModel
+				.bulk_list(this, Course.__api__get([courseId]), Course.__api__get([courseId]), CourseMember.__api__get([memberId]))
+				.subscribe(jsonArr => {
+					this.course = Course.toArray(jsonArr[0])[0];
+					this.member = CourseMember.toArray(jsonArr[0])[0];
+					var apiList = [
+						CourseLog.__api__memberStudyActivity(memberId, courseId),
+						CourseFaq.__api__listByCourse(this.course.id),
+						CourseMaterial.__api__listByCourse(this.course.id),
+						CourseSyllabus.__api__byCourse(this.course.id),
+						Certificate.__api__byMember(this.member.id),
+						ConferenceMember.__api__byCourseMember(this.member.id),
+					];
+					if (this.member.class_id) {
+						apiList.push(ClassExam.__api__listByClass(this.member.class_id));
+						apiList.push(ExamMember.__api__listByUser(this.currentUser.id));
+						apiList.push(Submission.__api__listByUser(this.currentUser.id));
+						apiList.push(Project.__api__listByClass(this.member.class_id));
+						apiList.push(ProjectSubmission.__api__listByMember(this.member.id));
+					}
+					BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr1 => {
+						this.logs = CourseLog.toArray(jsonArr1[0]);
+						this.faqs = CourseFaq.toArray(jsonArr1[1]);
+						this.materials = CourseMaterial.toArray(jsonArr1[2]);
+						var sylList = CourseSyllabus.toArray(jsonArr1[3]);
+						if (sylList.length) {
+							this.displayCouseSyllabus(sylList[0]);
+						}
+						var certList = Certificate.toArray(jsonArr1[4]);
+						if (certList.length)
+							this.certificate = certList[0];
+						var conferenceMemberList = ConferenceMember.toArray(jsonArr1[5]);
+						if (conferenceMemberList.length) {
+							this.conferenceMember = conferenceMemberList[0];
+							this.conferenceMember.populateConference(this).subscribe(() => {
+								this.conference = this.conferenceMember.conference;
+							})
+						}
+						if (this.member.class_id) {
+							var classExams = ClassExam.toArray(jsonArr1[6]);
+							var examMembers = ExamMember.toArray(jsonArr1[7]);
+							var submits = Submission.toArray(jsonArr1[8]);
+							this.displayExam(classExams, examMembers, submits);
+							var projects = Project.toArray(jsonArr1[9]);
+							var projectSubmits = ProjectSubmission.toArray(jsonArr1[10]);
+							this.displayProject(projects, projectSubmits);
+						}
+					});
 				});
-			});
 		});
 	}
 
-	loadCouseSyllabus() {
-		
-		CourseSyllabus.byCourse(this, this.course.id).subscribe(syl => {
-			CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
-				this.syl = syl;
-				this.units = _.filter(units, (unit:CourseUnit)=> {
-					return unit.status == 'published';
-				});
-				this.tree = this.sylUtils.buildGroupTree(units);
-				this.treeList = this.sylUtils.flattenTree(this.tree);
-				CourseLog.lastUserAttempt(this, this.authService.UserProfile.id, this.course.id).subscribe((attempt: CourseLog) => {
-					if (attempt) {
-						this.selectedNode = this.sylUtils.findTreeNode(this.tree, attempt.res_id);
-					}
-				});
-				
+	displayCouseSyllabus(syl: CourseSyllabus) {
+		this.syl = syl;
+		CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
+			this.units = _.filter(units, (unit: CourseUnit) => {
+				return unit.status == 'published';
 			});
+			this.tree = this.sylUtils.buildGroupTree(units);
+			this.treeList = this.sylUtils.flattenTree(this.tree);
+			var last_attempt = _.max(this.logs, (log: CourseLog) => {
+				return log.start.getTime();
+			});
+			if (last_attempt) {
+				this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
+			}
 		});
 	}
 
@@ -241,18 +273,20 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	studyUnit() {
 		if (this.selectedUnit) {
-			if (this.syl.complete_unit_by_order) {
+			if (this.course.complete_unit_by_order) {
 				let prevUnit: CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
-				if (prevUnit)
-					this.member.completeUnit(this, this.selectedUnit.id).subscribe(success => {
-						if (success) {
-							this.openUnit(this.selectedUnit);
-							if (this.enableLogging)
-								CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
-						}
-						else
-							this.error(this.translateService.instant('You have not completed previous unit'));
+				if (prevUnit) {
+					var log = _.find(this.logs, (obj: CourseLog) => {
+						return obj.res_id == prevUnit.id && obj.res_model == CourseUnit.Model && obj.code == 'COMPLETE_COURSE_UNIT';
 					});
+					if (log) {
+						this.openUnit(this.selectedUnit);
+						if (this.enableLogging)
+							CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
+					}
+					else
+						this.error(this.translateService.instant('You have not completed previous unit'));
+				}
 				else {
 					this.openUnit(this.selectedUnit);
 					CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
@@ -265,6 +299,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			}
 		}
 	}
+
 
 	openUnit(unit: CourseUnit) {
 		var detailComponent = CourseUnitRegister.Instance.lookup(unit.type);
@@ -282,138 +317,47 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	loadCertificate() {
-		
-		Certificate.byMember(this, this.member.id).subscribe((certificate: any) => {
-			this.certificate = certificate;
-			
+	displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission) {
+		var examIds = _.pluck(classExams, 'exam_id');
+		members = _.filter(members, member => {
+			return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
+		});
+		ExamMember.populateExamForArray(this, members).subscribe(exams => {
+			_.each(exams, (exam: ExamMember) => {
+				exam["member"] = _.find(members, (member: ExamMember) => {
+					return member.exam_id == exam.id;
+				});
+				exam["submit"] = _.find(submits, (submit: Submission) => {
+					return submit.member_id == exam["member"].id && submit.exam_id == exam.id;
+				});
+				if (!exam["submit"])
+					exam["score"] = ''
+				else
+					exam["score"] = exam["submit"].score;
+				ExamQuestion.countByExam(this, exam.id).subscribe(count => {
+					exam["question_count"] = count;
+				});
+			});
+			this.exams.sort((exam1, exam2): any => {
+				return (exam1.create_date < exam2.create_date);
+			});
 		});
 	}
 
-	loadConference() {
-		
-		ConferenceMember.byCourseMember(this, this.member.id)
-			.subscribe(member => {
-				this.conferenceMember = member;
-				if (member)
-					Conference.get(this, member.conference_id).subscribe(conference => {
-						this.conference = conference;
-					});
-				
+
+	displayProject(projects: Project[], submits: ProjectSubmission[]) {
+		this.projects = projects;
+		_.each(projects, (project: Project) => {
+			project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
+				return submit.project_id == projects.id;
 			});
-	}
-
-	loadExam() {
-		if (this.member.class_id) {
-			
-			ClassExam.listByClass(this, this.member.class_id).subscribe(classExams => {
-				var examIds = _.pluck(classExams, 'exam_id');
-				ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
-					members = _.filter(members, member => {
-						return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
-					});
-					Submission.listByUser(this, this.authService.UserProfile.id).subscribe(submits => {
-						var examIds = _.pluck(members, 'exam_id');
-						Exam.array(this, examIds)
-							.subscribe(exams => {
-								_.each(exams, (exam) => {
-									exam.member = _.find(members, (member: ExamMember) => {
-										return member.exam_id == exam.id;
-									});
-									exam.submit = _.find(submits, (submit: Submission) => {
-										return submit.member_id == exam.member.id && submit.exam_id == exam.id;
-									});
-									if (exam.submit) {
-										if (exam.submit.score != null)
-											exam.score = exam.submit.score;
-										else
-											exam.score = '';
-									}
-									ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-										exam.question_count = count;
-									});
-									exam.examMemberData = {};
-									ExamMember.listByExam(this, exam.id).subscribe(members => {
-										exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
-									});
-								});
-								this.exams = _.filter(exams, (exam) => {
-									return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.status == 'published');
-								});
-
-								this.exams.sort((exam1, exam2): any => {
-									if (exam1.create_date > exam2.create_date)
-										return -1;
-									else if (exam1.create_date < exam2.create_date)
-										return 1;
-									else
-										return 0;
-								});
-
-								this.completedExams = _.filter(exams, (exam) => {
-									return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.member.enroll_status == 'completed');
-								});
-
-								this.completedExams.sort((exam1, exam2): any => {
-									if (exam1.create_date > exam2.create_date)
-										return -1;
-									else if (exam1.create_date < exam2.create_date)
-										return 1;
-									else
-										return 0;
-								});
-							});
-
-					});
-
-				});
-				
-			});
-		}
-	}
-
-
-	loadProject() {
-		if (this.member.class_id) {
-			
-			Project.listByClass(this, this.member.class_id).subscribe(projects => {
-				ProjectSubmission.listByMember(this, this.member.id).subscribe(submits => {
-					this.projects =  projects;
-					_.each(projects, (project) => {
-						project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
-							return submit.project_id == projects.id;
-						});
-						if (project["submit"]) {
-							if (project["submit"].score != null)
-								project["score"] = project["submit"].score;
-							else
-								project["score"] = '';
-						}
-					});
-
-				});
-			});
-			
-		}
-	}
-
-
-	loadFaqs() {
-		
-		CourseFaq.listByCourse(this, this.course.id)
-			.subscribe(faqs => {
-				this.faqs = faqs;
-				
-			})
-	}
-
-	loadMaterials() {
-		
-		CourseMaterial.listByCourse(this, this.course.id)
-			.subscribe(materials => {
-				this.materials = materials;
-				
-			});
+			if (project["submit"]) {
+				if (project["submit"].score != null)
+					project["score"] = project["submit"].score;
+				else
+					project["score"] = '';
+			}
+		});
 	}
 
 	startExam(exam: Exam, member: ExamMember) {
@@ -433,8 +377,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	joinConference() {
-		if (this.conference.id && this.conferenceMember.id)
+		if (this.conference.id && this.conferenceMember.id && this.conferenceMember.is_active)
 			this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
+		 else
+            this.error('You are  not allowed to join the conference');
 	}
 
 	submitProject(project: Project) {

@@ -107,15 +107,6 @@ export class CourseMember extends BaseModel {
         return CourseMember.search(context, [], "[('user_id','='," + userId + "),('course_id','='," + courseId + ")]");
     }
 
-    completeUnit(context:APIContext, unitId: number):Observable<any> {
-        var domain = "[('member_id','=',"+this.id+"),('res_id','=',"+unitId+"),('res_model','=','"+CourseUnit.Model+"'),('code','=','COMPLETE_COURSE_UNIT')]";
-        return CourseLog.search(context,[], domain ).flatMap(logs=> {
-            if (logs.length ==0)
-                return Observable.of(false);
-            else 
-                return Observable.of(true);
-        });
-    }
 
     __api__populateCourse(): ListAPI {
         return new ListAPI(Course.Model, [this.course_id], []);
@@ -129,7 +120,7 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static populateCourseForMembers(context: APIContext, members: CourseMember[]): Observable<any> {
+    static populateCourseForArray(context: APIContext, members: CourseMember[]): Observable<any> {
         var courseIds = _.pluck(members,'course_id');
         courseIds = _.filter(courseIds, id=> {
             return id;

@@ -26,9 +26,10 @@ import { BaseModel } from '../../../../shared/models/base.model';
 })
 export class MemberByCourseReportComponent extends BaseComponent {
 
+    GROUP_CATEGORY = GROUP_CATEGORY;
+
 	private records: any;
 	private summary: any;
-	GROUP_CATEGORY = GROUP_CATEGORY;
 	private reportUtils: ReportUtils;
 
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {

@@ -7,11 +7,12 @@ import * as _ from 'underscore';
 import { GROUP_CATEGORY, CONFERENCE_STATUS } from '../../../shared/models/constants'
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Course } from '../../../shared/models/elearning/course.model';
-import { CourseClass } from '../../../shared/models/elearning/course-class.model';
+import { User } from '../../../shared/models/elearning/user.model';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model';
 import { Room } from '../../../shared/models/meeting/room.model';
 import { MeetingService } from '../../../shared/services/meeting.service';
+import { BaseModel } from '../../../shared/models/base.model';
 
 
 @Component({
@@ -22,41 +23,39 @@ import { MeetingService } from '../../../shared/services/meeting.service';
 })
 export class ConferenceListComponent extends BaseComponent implements OnInit {
 
-	private members: ConferenceMember[];
+	private conferenceMembers: ConferenceMember[];
+    private currentUser: User;
+
 	CONFERENCE_STATUS =  CONFERENCE_STATUS;
 
 	constructor(private meetingSerivce:MeetingService) {
         super();
+        this.currentUser =  this.authService.UserProfile;
+    }
+
+    displayConferences() {
+        this.conferenceMembers = _.filter(this.conferenceMembers, (member: ConferenceMember) => {
+            return member.conference_id && member.conference_status == 'open';
+        });
+        this.conferenceMembers.sort((member1, member2): any => {
+            return member1.create_date < member2.create_date;
+        });
+        
     }
 
     ngOnInit() {
-    	this.loadConference();
-    }
-
-    loadConference() {
-        
-        ConferenceMember.listByUser(this, this.authService.UserProfile.id)
-            .subscribe(members => {
-                members =  _.filter(members, (member=> {
-                    return member.conference_id && member.conference_status =='open';
-                }));
-                var confIds = _.pluck(members, 'conference_id');
-                Conference.array(this, confIds).subscribe(conferences=> {
-                    _.each(members, (member) => {
-                        member.conference = _.find(conferences, conference=> {
-                            return conference.id == member.conference_id;
-                        });
-                    });
-                    this.members = members;
-                });
-                
+        ConferenceMember.listByUser(this, this.currentUser.id).subscribe((conferenceMembers)=> {
+            this.conferenceMembers = conferenceMembers;
+            ConferenceMember.populateConferenceForArray(this, this.conferenceMembers).subscribe(() => {
             });
+        });
     }
 
     joinConference(member) {
         if (member.is_active)
-    	    this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref);
+            this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref);
         else
             this.error('You are  not allowed to join the conference');
     }
+
 }

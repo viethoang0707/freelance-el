@@ -54,10 +54,8 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
-		
 		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.lecture.package_url = data["url"];
@@ -69,7 +67,6 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				}
 			},
 			() => {
-				
 			}
 		);
 	}

@@ -4,6 +4,7 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { CreateAPI } from '../../services/api/create.api';
 
 @Model('emeeting.member')
 export class RoomMember extends BaseModel{
@@ -40,15 +41,14 @@ export class RoomMember extends BaseModel{
         });
     }
 
-    static createRoomMember(context:APIContext, name: string, avatar: string, roomId: number, role:string):Observable<any> {
+    static createRoomMember(name: string, avatar: string, roomId: number, role:string): RoomMember {
         var roomMember = new RoomMember();
         roomMember.room_id =  roomId;
         roomMember.name =  name;
         roomMember.avatar = avatar;
         roomMember.is_supervisor =  role =='teacher';
-        return roomMember.save(context).flatMap(()=> {
-            return RoomMember.get(context,roomMember.id);
-        });
+        return roomMember;
     }
+
 
 }

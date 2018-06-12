@@ -5,6 +5,10 @@ import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { SearchCountAPI } from '../../services/api/search-count.api';
+import { Question } from './question.model';
+import { ListAPI } from '../../services/api/list.api';
+import { BulkListAPI } from '../../services/api/bulk-list.api';
+import * as _ from 'underscore';
 
 @Model('etraining.exam_question')
 export class ExamQuestion extends BaseModel{
@@ -24,10 +28,12 @@ export class ExamQuestion extends BaseModel{
         this.sheet_id = undefined;
         this.score = undefined;
         this.order = undefined;
+        this.question =  new Question();
         this.group_id__DESC__ = undefined;
 	}
 
     question_id: number;
+    question: Question;
     exam_id: number;
     sheet_id: number;
     score: number;
@@ -71,6 +77,32 @@ export class ExamQuestion extends BaseModel{
     static byQuestion( context:APIContext, questionId: number): Observable<any[]> {
         return ExamQuestion.search(context,[],"[('question_id','=',"+questionId+")]").map(questions =>{
             return questions.length ? questions[0]: null;
+        });
+    }
+
+    __api__populateQuestion(): ListAPI {
+        return new ListAPI(Question.Model, [this.question_id], []);
+    }
+
+    populateQuestion(context: APIContext): Observable<any> {
+        if (!this.question_id)
+            return Observable.of(null);
+        return Question.get(context, this.question_id).do(question => {
+            this.question = question;
+        });
+    }
+
+    static populateQuestionForArray(context: APIContext, examQuestions: ExamQuestion[]): Observable<any> {
+        var questionIds = _.pluck(examQuestions,'question_id');
+        questionIds = _.filter(questionIds, id=> {
+            return id;
+        });
+        return Question.array(context, questionIds).do(questions=> {
+            _.each(examQuestions, (examQuestion:ExamQuestion)=> {
+                examQuestion.question =  _.find(questions, (question:ExamQuestion)=> {
+                    return examQuestion.question_id == question.id;
+                });
+            });
         });
     }
 

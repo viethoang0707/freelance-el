@@ -26,6 +26,7 @@ export class ExamDialog extends BaseDialog<Exam> {
     private rangeDates: Date[];
     private allowToChangeState: boolean;
     private user: User;
+    
     @ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 
     constructor(private http: Http) {
@@ -50,7 +51,6 @@ export class ExamDialog extends BaseDialog<Exam> {
                 .subscribe((res: Response) => {
                     this.locale = res.json();
                 });
-
             this.allowToChangeState = !object.supervisor_id ||
                 this.user.IsSuperAdmin || this.user.id == object.supervisor_id;
         });

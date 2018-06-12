@@ -61,11 +61,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayCourses() {
-        
         this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
             return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
         });
-        CourseMember.populateCourseForMembers(this, this.courseMembers).subscribe((courses) => {
+        CourseMember.populateCourseForArray(this, this.courseMembers).subscribe((courses) => {
             this.courses = this.courses.concat(courses);
             this.courses = _.uniq(courses, (course) => {
                 return course.id;
@@ -82,12 +81,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 });
                 course["isAuthor"] = course.author_id == this.currentUser.id;
             });
-            this.closeTransaction()
         });
     }
 
     displayExams() {
-        
         this.examMembers = _.filter(this.examMembers, (member => {
             return member.exam_id && member.status == 'active';
         }));
@@ -104,7 +101,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         return member.id == submit.member_id;
                     });
                 });
-                ExamMember.populateExamForMembers(this, this.examMembers).subscribe(() => {
+                ExamMember.populateExamForArray(this, this.examMembers).subscribe(() => {
                     this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
                         return (member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
                     });
@@ -129,20 +126,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayConferences() {
-        
         this.conferenceMembers = _.filter(this.conferenceMembers, (member: ConferenceMember) => {
             return member.conference_id && member.conference_status == 'open';
         });
-        this.courseMembers.sort((member1, member2): any => {
+        this.conferenceMembers.sort((member1, member2): any => {
             return member1.create_date < member2.create_date;
         });
-        ConferenceMember.populateConferenceForMembers(this, this.conferenceMembers).subscribe(() => {
+        ConferenceMember.populateConferenceForArray(this, this.conferenceMembers).subscribe(() => {
             
         });
     }
 
     ngOnInit() {
-        
         BaseModel.bulk_search(this,
             CourseMember.__api__listByUser(this.currentUser.id),
             ExamMember.__api__listByUser(this.currentUser.id),
@@ -156,31 +151,29 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 this.displayCourses();
                 this.displayExams();
                 this.displayConferences();
-                
             });
     }
 
     joinConference(member) {
-        this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref)
+        if (member.is_active)
+            this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref);
+        else
+            this.error('You are  not allowed to join the conference');
     }
 
     editSyllabus(course: Course) {
-        
         CourseSyllabus.byCourse(this, course.id).subscribe(syllabus => {
             this.syllabusDialog.show(syllabus);
-            
         });
     }
 
     studyCourse(course: Course, member: CourseMember) {
         if (course.status == 'published') {
-            
             CourseSyllabus.byCourse(this, course.id).subscribe(syllabus => {
                 if (syllabus && syllabus.status == 'published')
                     this.router.navigate(['/lms/courses/study', course.id, member.id]);
                 else
                     this.error('The course has not been published');
-                
             });
         }
         else {
@@ -190,7 +183,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     manageCourse(course: Course, member: CourseMember) {
         if (course.status == 'published') {
-            
             CourseSyllabus.byCourse(this, course.id).subscribe(syllabus => {
                 if (syllabus && syllabus.status == 'published')
                     this.router.navigate(['/lms/courses/manage', course.id]);
@@ -202,7 +194,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         else {
             this.error('The course has not been published');
         }
-
     }
 
     manageExam(exam: Exam, member: ExamMember) {

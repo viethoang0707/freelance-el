@@ -31,11 +31,12 @@ export class CourseDialog extends BaseDialog<Course> {
 	private selectedNode: TreeNode;
 	private courseStatus: SelectItem[];
 	private treeUtils: TreeUtils;
-	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
-	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 	private allowToChangeState: boolean;
 	private submitForReview: boolean;
 	private openTicket: Ticket;
+
+	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
+	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 
 	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
 		super();
@@ -107,20 +108,16 @@ export class CourseDialog extends BaseDialog<Course> {
 	}
 
 	buildCourseTree(object) {
-		
 		Group.listCourseGroup(this).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 			if (object.group_id) {
 				this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 			}
-			
 		});
 	}
 
 	review() {
-		
 		this.workflowService.createCoursePublishTicket(this, this.object).subscribe(ticket => {
-			
 		});
 	}
 

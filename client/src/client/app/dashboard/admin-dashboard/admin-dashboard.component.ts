@@ -104,7 +104,6 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     loadExams() {
-        
         Exam.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(exams => {
             this.exams = exams;
             this.events = _.map(exams, (exam:Exam)=> {
@@ -121,13 +120,11 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     loadCourses() {
-        
         Course.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(courses => {
             this.courses = courses;
             this.courses.sort((course1, course2): any => {
                 return (course1.create_date < course2.create_date)
             });
-            
         });
     }
 }

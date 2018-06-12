@@ -27,11 +27,12 @@ import { TreeNode } from 'primeng/api';
 })
 export class ExamContentDialog extends BaseComponent {
 
+	QUESTION_LEVEL = QUESTION_LEVEL;
+
 	private display: boolean;
 	private exam: Exam;
 	private sheet: QuestionSheet;
 	private examQuestions: ExamQuestion[];
-	QUESTION_LEVEL = QUESTION_LEVEL;
 	private totalScore: number;
 
 	@ViewChild(QuestionSheetPreviewDialog) previewDialog : QuestionSheetPreviewDialog;

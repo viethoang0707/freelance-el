@@ -48,7 +48,6 @@
         </p-fieldset>
     </div>
     <div class="ui-g-12 dashboard-exam-list">
-<<<<<<< HEAD
         <p-fieldset [toggleable]="true">
             <p-header>
                 <h3 class="dashboard-list-title"><i class="material-icons icon">alarm_add</i>{{'My exams'|translate}}</h3>
@@ -94,8 +93,8 @@
                     </div>
                     <div class="user-card-footer">
                         <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4" (click)="startExam(member.exam, member)" *ngIf="member.role=='candidate'" [disabled]="!member.exam.IsAvailable || member.enroll_status=='completed'"></button>
-                    <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="purple-btn mr4" (click)="editContent(exam)" *ngIf="member.role=='supervisor'"></button>
-                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4" (click)="manageExam(member.exam, member)" *ngIf="member.role=='supervisor'"></button>
+                        <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="purple-btn mr4" (click)="editContent(exam)" *ngIf="member.role=='supervisor'"></button>
+                        <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4" (click)="manageExam(member.exam, member)" *ngIf="member.role=='supervisor'"></button>
                     </div>
                 </div>
             </div>

@@ -48,7 +48,6 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		
 		VideoLecture.byCourseUnit(this, unit.id).subscribe((lecture: VideoLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -69,7 +68,6 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 		this.openFileStatus = true;
 		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				
 				if (data["result"]) {
 					this.ngZone.run(() => {
 						this.lecture.video_url = data["url"];

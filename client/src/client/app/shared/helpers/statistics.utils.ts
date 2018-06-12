@@ -19,8 +19,7 @@ export class StatsUtils {
 		var cloud_acc = context.authService.CloudAcc;
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return context.apiService.search(CourseLog.Model,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','etraining.course')]",
-		 cloud_acc.id, cloud_acc.api_endpoint).map(logs => {
+		return CourseLog.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','etraining.course')]").map(logs => {
 		 	var dayLengthMills = 1000 * 60 * 60 * 24;
 		 	var slots = [];
 		 	var starTimeMillis = startDate.getTime();
@@ -79,8 +78,7 @@ export class StatsUtils {
 		var cloud_acc = context.authService.CloudAcc;
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return context.apiService.search(UserLog.Model,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','res.users'),('code','=','LOGIN')]",
-		 cloud_acc.id, cloud_acc.api_endpoint).map(logs => {
+		return UserLog.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('res_model','=','res.users'),('code','=','LOGIN')]").map(logs => {
 		 	var dayLengthMills = 1000 * 60 * 60 * 24;
 		 	var slots = [];
 		 	var starTimeMillis = startDate.getTime();

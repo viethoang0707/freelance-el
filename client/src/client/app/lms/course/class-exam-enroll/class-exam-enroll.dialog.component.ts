@@ -10,6 +10,8 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SelectItem } from 'primeng/api';
+import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -20,8 +22,8 @@ export class ClassExamEnrollDialog extends BaseComponent {
 
 	private display: boolean;
 	private courseClass: CourseClass;
-	private exam: Exam;
-	private members: ExamMember[];
+	private classExam: ClassExam;
+	private members: CourseMember[];
 	private selectedMember: ExamMember;
 
 	constructor() {
@@ -31,27 +33,29 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.members  = [];
 	}
 
-	show(exam: Exam, clazz: CourseClass) {
+	show(classExam: ClassExam, clazz: CourseClass) {
 		this.display = true;
 		this.courseClass =  clazz;
-		this.exam = exam;
-		
-		CourseMember.listByClass(this, clazz.id).subscribe(members => {
+		this.classExam = classExam;
+		BaseModel
+		.bulk_search(this, CourseMember.__api__listByClass(this.classExam.class_id), ExamMember.__api__listByExam(this.classExam.exam_id))
+		.subscribe(jsonArr=> {
+			var members = CourseMember.toArray(jsonArr[0]);
 			this.members =  _.filter(members, (member)=> {
 				return member.role =='student';
 			});
-			_.each(members, (member)=> {
-				ExamMember.byExamAndUser(this, member.user_id, exam.id).subscribe(examMember => {
-					if (examMember) {
+			var examMembers = ExamMember.toArray(jsonArr[1]);
+			_.each(this.members, (member:CourseMember)=> {
+				var examMember = _.find(examMember, (obj:ExamMember)=> {
+					return obj.user_id == member.user_id;
+				});
+				if (examMember) {
 						member["examMember"] = examMember;
 						member["allowed"] =  examMember.status =='active';
 					} else
 						member["allowed"] = false;
-				});
-			});
-			
+			})
 		});
-
 	}
 
 	hide() {
@@ -59,40 +63,34 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	}
 
 	registerAll() {
+		var newMembers = [];
+		var currentMembers = [];
 		_.each(this.members, (member)=> {
 			if (!member["examMember"]) {
 				member["examMember"] = this.createExamMember(member);
+				newMembers.push(member["examMember"]);
 			} else {
 				var examMember = member["examMember"];
 				examMember.status = "active";
+				currentMembers.push(member["examMember"]);
 			}
 		});
-		var subscriptions = _.map(this.members, (member)=> {
-			return member.save(this);
-		});
-		
-		Observable.forkJoin(subscriptions).subscribe(()=> {
+		Observable.forkJoin(ExamMember.createArray(this,newMembers), ExamMember.updateArray(this, currentMembers)).subscribe(()=> {
 			this.info('Register all successfully');
-			
 		});
 	}
 
 
 	unregisterAll() {
-		var subscriptions = _.map(this.members, (member)=> {
+		var examMembers = [];
+		_.each(this.members, (member)=> {
 			if (member["examMember"]) {
 				var examMember = member["examMember"];
 				examMember.status = "suspend";
-				return examMember.save(this);
-			} else {
-				return Observable.of(true);
+				examMembers.push(member);
 			}
 		});
-		
-		Observable.forkJoin(subscriptions).subscribe(()=> {
-			this.info( 'Unregister all successfully');
-			
-		});
+		return ExamMember.updateArray(this, examMembers);
 	}
 
 	registerUnregister(event:any, member: any) {
@@ -119,7 +117,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	createExamMember(member) {
 		var examMember = new ExamMember();
         examMember.role = "candidate";
-        examMember.exam_id = this.exam.id;
+        examMember.exam_id = this.classExam.exam_id;
         examMember.user_id = member.user_id;
         examMember.date_register =  new Date();
         examMember.status = 'active';

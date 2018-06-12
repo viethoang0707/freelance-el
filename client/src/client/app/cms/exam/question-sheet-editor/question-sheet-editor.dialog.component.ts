@@ -24,6 +24,8 @@ import { TreeNode } from 'primeng/api';
 })
 export class QuestionSheetEditorDialog extends BaseComponent {
 
+	QUESTION_LEVEL = QUESTION_LEVEL;
+
 	private display: boolean;
 	private tree: any;
 	private selectors: any;
@@ -31,7 +33,6 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	private selectedNodes: any;
 	private groups: Group[];
 	private treeUtils: TreeUtils;
-	QUESTION_LEVEL = QUESTION_LEVEL;
 	private examQuestions: ExamQuestion[];
 	private sheet: QuestionSheet;
 	private onSaveReceiver: Subject<any> = new Subject();
@@ -115,17 +116,12 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	}
 
 	save() {
-		
 		Observable.forkJoin(this.generateQuestion()).subscribe(()=> {
-			var subscriptions = _.map(this.examQuestions, examQuestion=> {
-				return examQuestion.save(this);
-			});
-			Observable.forkJoin(...subscriptions).subscribe(()=> {
+			ExamQuestion.createArray(this, this.examQuestions).subscribe(()=> {
 				this.hide();
 				this.onSaveReceiver.next();
 				this.success(this.translateService.instant('Content saved successfully.'));
-				
-			});
+			})
 		})
 		
 	}

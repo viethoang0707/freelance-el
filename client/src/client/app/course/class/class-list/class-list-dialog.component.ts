@@ -20,8 +20,8 @@ import { CourseClassDialog } from '../class-dialog/class-dialog.component';
 })
 export class ClassListDialog extends BaseComponent implements OnInit {
 
-    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
-    @ViewChild(CourseClassDialog) classDialog : CourseClassDialog;
+    COURSE_MODE = COURSE_MODE;
+    CONTENT_STATUS = CONTENT_STATUS;
 
     private classes: CourseClass[];
     private selectedClass: any;
@@ -29,8 +29,8 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     private teachers: any;
     private display: boolean;
 
-    COURSE_MODE = COURSE_MODE;
-    CONTENT_STATUS = CONTENT_STATUS;
+    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
+    @ViewChild(CourseClassDialog) classDialog : CourseClassDialog;
 
     constructor() {
         super();
@@ -48,10 +48,8 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     loadClasses() {
-        
         CourseClass.listByCourse(this, this.course.id).subscribe(classes => {
             this.classes = classes;
-            
         });
     }
 

@@ -22,15 +22,15 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ExamEnrollDialog extends BaseDialog<Course> {
 
+    EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
+    EXAM_STATUS =  EXAM_STATUS;
+    EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
+
 	private exam: Exam;
     private candidates: ExamMember[];
     private selectedCandidates: any;
     private supervisors: ExamMember[];
     private selectedSupervisors: any;
-    EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
-    EXAM_STATUS =  EXAM_STATUS;
-    EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
-    private subscription : Subscription;
 
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	
@@ -50,39 +50,37 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
 		this.display = false;
 	}
 
-
 	 addMember(role:string) {
         this.usersDialog.show();
-        this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
-            var subscriptions = [];
-            _.each(users, (user:User)=> {
-                var member = new ExamMember();
-                member.role = role;
-                member.exam_id = this.exam.id;
-                member.user_id = user.id;
-                member.date_register =  new Date();
-                member.status = 'active';
-                subscriptions.push(member.save(this));
-                this.subscription.unsubscribe();
-            });
-            Observable.forkJoin(...subscriptions).subscribe(()=> {
-                this.loadMembers();
-                
-            });
+        this.usersDialog.onSelectUsers.subscribe(users => {
+            if (role=='candidate') {
+                var userIds = _.pluck(users, 'id');
+                Exam.enroll(this, this.exam.id, userIds).subscribe(()=> {
+                    this.loadMembers();
+                });
+            } else if (role=='supervisor') {
+                var members = _.map(users, (user:User)=> {
+                    var member = new ExamMember();
+                    member.role = role;
+                    member.exam_id = this.exam.id;
+                    member.user_id = user.id;
+                    member.date_register =  new Date();
+                    member.status = 'active';
+                });
+                ExamMember.createArray(this, members).subscribe(()=> {
+                    this.loadMembers();
+                });
+            }
         });
     }
 
     deleteMember(members) {
         if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {
-                var subscriptions = _.map(members,(member:ExamMember) => {
-                    return member.delete(this);
-                });
-                this.subscription = Observable.forkJoin(...subscriptions).subscribe(()=> {
+                ExamMember.deleteArray(this, members).subscribe(()=> {
                     this.selectedCandidates = [];
                     this.selectedSupervisors = [];
                     this.loadMembers();
-                    this.subscription.unsubscribe();
                 });
             });
     }

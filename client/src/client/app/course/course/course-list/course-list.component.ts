@@ -12,6 +12,7 @@ import { ClassListDialog } from '../../class/class-list/class-list-dialog.compon
 import { CourseEnrollDialog } from '../../class/enrollment-dialog/enrollment-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -31,6 +32,7 @@ export class CourseListComponent extends BaseComponent {
     private selectedGroupNodes: TreeNode[];
     private selectedCourse: any;
     private treeUtils: TreeUtils;
+
     COURSE_MODE = COURSE_MODE;
     CONTENT_STATUS = CONTENT_STATUS;
 
@@ -40,16 +42,23 @@ export class CourseListComponent extends BaseComponent {
     }
 
     ngOnInit() {
+
         this.buildCoursTree();
         this.loadCourses();
     }
 
     buildCoursTree() {
-        
-        Group.listCourseGroup(this).subscribe(groups => {
+        BaseModel.bulk_search(this, Group.__api__listCourseGroup(), Course.__api__all())
+        .subscribe(jsonArr=> {
+            var groups = Group.toArray(jsonArr[0]);
             this.tree = this.treeUtils.buildGroupTree(groups);
-            
+            this.courses = Course.toArray(jsonArr[1]);
+            this.displayCourses = this.courses;
+            this.displayCourses.sort((course1, course2): any => {
+                return (course1.id < course2.id)
+            });
         });
+
     }
 
     addCourse() {
@@ -92,7 +101,6 @@ export class CourseListComponent extends BaseComponent {
     }
 
     loadCourses() {
-        
         Course.all(this).subscribe(courses => {
             this.courses = courses;
             this.displayCourses = courses;

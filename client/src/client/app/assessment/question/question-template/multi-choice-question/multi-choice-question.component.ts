@@ -39,7 +39,6 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
 				if (this.answer && this.answer.id) {
-					
 					var selectedOptions = JSON.parse(this.answer.json);
 						_.each(options, (option=> {
 							var selected = _.find(selectedOptions, (obj)=> {
@@ -49,9 +48,7 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 								option["is_selected"] = true;
 							option["is_selected"] = false;
 						}));
-						
 				}
-				
 			});
 		}
 	}
@@ -86,12 +83,10 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 
 	removeOption(option: QuestionOption) {
 		if (option.id) {
-			
 			option.delete(this).subscribe(() => {
 				this.options = _.reject(this.options, (obj)=> {
 					return obj == option;
 				});
-				
 			})
 		} else
 			this.options = _.reject(this.options, (obj)=> {

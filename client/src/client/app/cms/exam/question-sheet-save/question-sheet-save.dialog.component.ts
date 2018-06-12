@@ -16,6 +16,9 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
 import { TreeNode } from 'primeng/api';
+import { BaseModel } from '../../../shared/models/base.model';
+import { CreateAPI } from '../../../shared/services/api/create.api';
+
 
 @Component({
 	moduleId: module.id,
@@ -50,13 +53,8 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 				questionTempl.sheet_id =  sheet.id;
 				return questionTempl;
 			});
-			var subscriptions = _.map(examQuestions, examQuestion=> {
-				return examQuestion.save(this);
-			});
-			subscriptions.push(this.sheet.save(this));
-			Observable.forkJoin(subscriptions).subscribe(()=> {
+			ExamQuestion.createArray(this, examQuestions).subscribe(()=> {
 				this.success('Question sheet saved successfully');
-				
 				this.hide();
 			});
 		});

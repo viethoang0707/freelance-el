@@ -22,6 +22,12 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 })
 export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit {
 
+	COURSE_MODE = COURSE_MODE;
+	CONTENT_STATUS = CONTENT_STATUS;
+	COURSE_MEMBER_ROLE = COURSE_MEMBER_ROLE;
+	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
+	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
+
 	private rangeDates: Date[];
 	private locale:any;
 	private processing: boolean;
@@ -29,14 +35,8 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	private members: CourseMember[];
 	private items: MenuItem[];
 	private treeUtils: TreeUtils;
+	
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
-
-	COURSE_MODE = COURSE_MODE;
-	CONTENT_STATUS = CONTENT_STATUS;
-	COURSE_MEMBER_ROLE = COURSE_MEMBER_ROLE;
-	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
-	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
-
 
 	constructor( private http: Http) {
 		super();

@@ -41,20 +41,6 @@ export class CourseLog extends BaseModel{
     attachment_url: string;
     attachment_id: number;
 
-    static lastUserAttempt(context:APIContext, userId: number, courseId: number):Observable<any> {
-        var domain = "[('user_id','=',"+userId+"),('course_id','=',"+courseId+"),('res_model','=','"+CourseUnit.Model+"')]";
-        return CourseLog.search(context,[], domain ).flatMap(logs=> {
-            if (logs.length ==0)
-                return Observable.of(null);
-            else {
-                var last_attempt = _.max(logs, (log)=> {
-                    return log.start.getTime();
-                });
-                return Observable.of(last_attempt);
-            }
-        });
-    }
-
     static __api__userStudyActivity(userId, courseId):SearchReadAPI {
         var domain = "";
         if (courseId)

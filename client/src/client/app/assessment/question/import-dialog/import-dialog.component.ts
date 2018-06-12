@@ -25,7 +25,6 @@ export class QuestionImportDialog extends BaseComponent {
 	private percentage: number;
 	private completed: number;
 	private total: number;
-
 	private onImportCompleteReceiver: Subject<any> = new Subject();
 	onImportComplete: Observable<any> = this.onImportCompleteReceiver.asObservable();
 
@@ -38,8 +37,6 @@ export class QuestionImportDialog extends BaseComponent {
 	show() {
 		this.display = true;
 		this.percentage = 0;
-		this.completed = 0;
-		this.total = 0;
 	}
 
 	hide() {
@@ -47,8 +44,8 @@ export class QuestionImportDialog extends BaseComponent {
 	}
 
 	import() {
-		var subscriptions = [];
 		Group.listQuestionGroup(this).subscribe(groups => {
+			var questionList = [];
 			for (var i = 0; i < this.records.length;) {
 				var record = this.records[i];
 				var question = new Question();
@@ -72,28 +69,17 @@ export class QuestionImportDialog extends BaseComponent {
 							option.content = optionRecord["option"];
 							options.push(option);
 						}
-						options = _.shuffle(options);
-						var subscription = question.createWithOption(this, options);
-						subscriptions.push(subscription);
+						question["options"] = _.shuffle(options);
 					}
 					i += optionLength;
 				} else
 					i++;
+				questionList.push(question);
 			}
-			
-			Observable.merge(...subscriptions).subscribe(
-				() => {
-					this.completed++;
-					this.percentage = Math.floor(this.completed / this.total * 100);
-				},
-				(error) => {
-					console.log(error);
-				},
-				() => {
-					this.onImportCompleteReceiver.next();
-					this.hide();
-					
-				});
+			Question.createArray(this,questionList).subscribe(()=> {
+				this.onImportCompleteReceiver.next();
+				this.hide();
+			})
 		});
 	}
 
@@ -103,7 +89,6 @@ export class QuestionImportDialog extends BaseComponent {
 		this.excelService.importFromExcelFile(file).subscribe(data => {
 			this.records = data;
 			this.total = this.records.length;
-			console.log(this.records);
 		})
 	}
 

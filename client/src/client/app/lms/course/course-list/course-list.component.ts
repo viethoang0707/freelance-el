@@ -15,6 +15,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
+import { BaseModel } from '../../../shared/models/base.model';
 
 
 @Component({
@@ -26,12 +27,15 @@ import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course
 
 export class CourseListComponent extends BaseComponent implements OnInit {
 
-    private courses: Course[];
-    private currentUser: User;
-    private reportUtils: ReportUtils;
     CONTENT_STATUS = CONTENT_STATUS;
     COURSE_MODE = COURSE_MODE;
-    @ViewChild(CourseSyllabusDialog) syllabusDialog:CourseSyllabusDialog;
+
+    private courses: Course[];
+    private currentUser: User;
+    private courseMembers: CourseMember[];
+    private reportUtils: ReportUtils;
+
+    @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
 
     constructor(private router: Router) {
         super();
@@ -40,83 +44,64 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.currentUser = this.authService.UserProfile;
-        this.loadCourses();
+        BaseModel.bulk_search(this,
+            CourseMember.__api__listByUser(this.currentUser.id),
+            Course.__api__listByAuthor(this.currentUser.id))
+            .subscribe(jsonArray => {
+                this.courseMembers = CourseMember.toArray(jsonArray[0]);
+                this.courses = Course.toArray(jsonArray[3]);
+                this.displayCourses();
+            });
     }
 
-    loadCourses() {
-        
-        CourseMember.listByUser(this, this.currentUser.id).subscribe(members => {
-            members = _.filter(members, (member=> {
-                return member.course_id && (member.course_mode=='self-study' || member.class_id) && member.status=='active'
-            }));
-            var courseIds = _.pluck(members,'course_id');
-            Observable.zip(Course.array(this, courseIds), Course.listByAuthor(this, this.currentUser.id))            
-            .map(courses => {
-                var courstList = _.flatten(courses);
-                return _.uniq(courstList, (course)=> {
-                    return course.id;
+    displayCourses() {
+        this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
+            return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
+        });
+        CourseMember.populateCourseForArray(this, this.courseMembers).subscribe((courses) => {
+            this.courses = this.courses.concat(courses);
+            this.courses = _.uniq(courses, (course) => {
+                return course.id;
+            });
+            this.courses.sort((course1, course2): any => {
+                return (course1.create_date < course2.create_date);
+            });
+            _.each(this.courses, (course: Course) => {
+                course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
+                    return member.course_id == course.id && member.role == 'student';
                 });
-            })
-            .subscribe(courses => {
-                this.courses = courses;
-                _.each(this.courses, (course)=> {
-                    course["courseMemberData"] = {};
-                    CourseMember.listByCourse(this, course.id).subscribe(members => {
-                        course["courseMemberData"] = this.reportUtils.analyseCourseMember(course,members);
+                course["teacher"] = _.find(this.courseMembers, (member: CourseMember) => {
+                    return member.course_id == course.id && member.role == 'teacher';
+                });
+                course["isAuthor"] = course.author_id == this.currentUser.id;
+
+                course["courseMemberData"] = {};
+                CourseMember.listByCourse(this, course.id).subscribe(members => {
+                    course["courseMemberData"] = this.reportUtils.analyseCourseMember(course, members);
+                });
+                if (course.syllabus_id)
+                    CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
+                        course["unit_count"] = count;
                     });
-                    if (course.syllabus_id)
-                        CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                            course["unit_count"] = count;
-                        });
-                    else
-                        course["unit_count"]   = 0;
-                    course["member"] = _.find(members, (member:CourseMember)=> {
-                        return member.course_id == course.id;
-                    });
-                });
-                this.courses.sort((course1, course2): any => {
-                    if (course1.create_date > course2.create_date)
-                        return -1;
-                    else if (course1.create_date < course2.create_date)
-                        return 1;
-                    else
-                        return 0;
-                });
-                
+                else
+                    course["unit_count"] = 0;
             });
         });
     }
 
-    getCourseSyllabus(course:Course):Observable<any> {
-        return CourseSyllabus.byCourse(this, course.id).flatMap((syllabus:CourseSyllabus) => {
-            if (syllabus)
-                return Observable.of(syllabus);
-            else {
-                var syllabus = new CourseSyllabus();
-            syllabus.course_id =  course.id;
-            syllabus.name =  course.name;
-            return syllabus.save(this);
-            }
-        });
-    }
-
-    editSyllabus(course:Course) {
-        
-        this.getCourseSyllabus(course).subscribe(syllabus => {
+    editSyllabus(course: Course) {
+        CourseSyllabus.byCourse(this, course.id).subscribe(syllabus => {
             this.syllabusDialog.show(syllabus);
-            
         });
     }
 
-    studyCourse( course:Course,member: CourseMember) {
-        if ( course.status =='published') {
-            
-            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+    studyCourse(course: Course, member: CourseMember) {
+        if (course.status == 'published') {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
                 if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/study',course.id, member.id]);
+                    this.router.navigate(['/lms/courses/study', course.id, member.id]);
                 else
                     this.error('The course has not been published');
-                
             });
         }
         else {
@@ -124,20 +109,18 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         }
     }
 
-    manageCourse( course: Course,member: CourseMember) {
-        if ( course.status =='published') {
-            
-            CourseSyllabus.byCourse(this, course.id).subscribe(syl=> {
+    manageCourse(course: Course, member: CourseMember) {
+        if (course.status == 'published') {
+            CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
                 if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/manage',course.id]);
+                    this.router.navigate(['/lms/courses/manage', course.id]);
                 else
                     this.error('The course has not been published');
-                
             });
         }
         else {
             this.error('The course has not been published');
         }
-        
+
     }
 }

@@ -59,7 +59,6 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 		this.lecture.filename = file.name;
 		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						if (file.name.endsWith('pdf'))

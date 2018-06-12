@@ -8,6 +8,7 @@ import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
+import { ExecuteAPI } from '../../services/api/execute.api';
 
 @Model('etraining.exam')
 export class Exam extends BaseModel{
@@ -80,5 +81,14 @@ export class Exam extends BaseModel{
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
         var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
         return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
+    }
+
+    static __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
+        return new ExecuteAPI(Exam.Model, 'enroll',userIds, {examId:examId});
+    }
+
+    static enroll(context:APIContext,examId:number, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(classId, userIds), 
+            context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
     }
 }

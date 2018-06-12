@@ -59,7 +59,6 @@ export class ProjectContentDialog extends BaseDialog<Project> {
 		
 		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.object.file_url = data["url"];

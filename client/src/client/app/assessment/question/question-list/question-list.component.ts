@@ -11,6 +11,7 @@ import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { QuestionImportDialog } from '../import-dialog/import-dialog.component';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -20,30 +21,27 @@ import { QuestionImportDialog } from '../import-dialog/import-dialog.component';
 })
 export class QuestionListComponent extends BaseComponent {
 
-    @ViewChild(QuestionDialog) questionDialog: QuestionDialog;
-    @ViewChild(QuestionImportDialog) questionImportDialog: QuestionImportDialog;
+    QUESTION_LEVEL = QUESTION_LEVEL;
+    QUESTION_TYPE = QUESTION_TYPE;
 
     private tree: TreeNode[];
     private items: MenuItem[];
     private questions: Question[];
     private displayQuestions: Question[];
     private selectedGroupNodes: TreeNode[];
-    QUESTION_LEVEL = QUESTION_LEVEL;
-    QUESTION_TYPE = QUESTION_TYPE;
     private treeUtils: TreeUtils;
     private selectedQuestions: any;
     private selectMode: string;
+
+    @ViewChild(QuestionDialog) questionDialog: QuestionDialog;
+    @ViewChild(QuestionImportDialog) questionImportDialog: QuestionImportDialog;
+
 
     constructor() {
         super();
         this.treeUtils = new TreeUtils();
         this.questions = [];
         this.selectMode = "single";
-    }
-
-    ngOnInit() {
-        this.buildQuestionGroup();
-        this.loadQuestions();
         this.items = [
             {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.addQuestion('sc')}},
             {label: this.translateService.instant(QUESTION_TYPE['mc']), command: ()=> { this.addQuestion('mc')}},
@@ -51,11 +49,16 @@ export class QuestionListComponent extends BaseComponent {
         ];
     }
 
-    buildQuestionGroup() {
-        
-        Group.listQuestionGroup(this).subscribe(groups => {
+    ngOnInit() {
+        BaseModel
+        .bulk_search(this,
+            Group.__api__listQuestionGroup(),
+            Question.__api__all())
+        .subscribe(jsonArr=> {
+            var groups = Group.toArray(jsonArr[0]);
             this.tree = this.treeUtils.buildGroupTree(groups);
-            
+            this.questions = Question.toArray(jsonArr[1]);
+            this.displayQuestions = this.questions;
         });
     }
 
@@ -76,25 +79,18 @@ export class QuestionListComponent extends BaseComponent {
     deleteMultipleQuestions(){
         if(this.selectedQuestions && this.selectedQuestions.length)
             this.confirm('Are you sure to delete ?', () => {
-                var subscriptions = _.map(this.selectedQuestions, (question: Question) => {
-                        return question.delete(this);
-                    });
-                
-                Observable.forkJoin(...subscriptions).subscribe(() => {
+                Question.deleteArray(this, this.selectedQuestions).subscribe(() => {
                     this.selectedQuestions = null;
                     this.loadQuestions();
                     this.selectMode = "single";
-                    
                 });
             });
     }
 
     loadQuestions() {
-        
         Question.all(this).subscribe(questions => {
             this.questions = questions;
             this.displayQuestions = questions;
-            
         });
     }
 

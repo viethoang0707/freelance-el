@@ -76,7 +76,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.usersDialog.show();
 		this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
 			var userIds = _.pluck(users, 'id');
-			CourseClass.enroll(this.courseClass.id, userIds).subscribe((result)=> {
+			CourseClass.enroll(this,this.courseClass.id, userIds).subscribe((result)=> {
 				this.loadMembers();
 				var failList = result['failList'];
 				_.each(failList, userId=> {
@@ -92,20 +92,16 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	deleteMembers(members) {
         if (members && members.length)
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                var subscriptions = _.map(members,(member:CourseMember) => {
-                    return member.delete(this);
-                });
-                Observable.forkJoin(...subscriptions).subscribe(()=> {
-                    this.selectedStudents = [];
+                CourseMember.deleteArray(this,members).subscribe(()=> {
+                	this.selectedStudents = [];
 					this.selectedTeachers = [];
 					this.loadMembers();
-                });
+                })
             });
 	}
 	
 	loadMembers() {
 		if (this.course && !this.courseClass) {
-			
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';
@@ -119,7 +115,6 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			});
 		}
 		if (this.courseClass && this.courseClass) {
-			
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
 				this.students = _.filter(members, (member)=> {
 					return member.role =='student';

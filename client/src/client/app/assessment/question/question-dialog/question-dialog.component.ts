@@ -22,9 +22,10 @@ export class QuestionDialog extends BaseDialog<Question>  {
 
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
-	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
+
+	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private changeDetectionRef: ChangeDetectorRef) {
 		super();

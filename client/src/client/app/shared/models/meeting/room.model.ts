@@ -4,6 +4,7 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { CreateAPI } from '../../services/api/create.api';
 
 @Model('emeeting.room')
 export class Room extends BaseModel{
@@ -37,13 +38,11 @@ export class Room extends BaseModel{
         return new SearchReadAPI(Room.Model, [],"[('ref','!=','"+ref+"')]");
     }
 
-    static createWebminarRoom(context:APIContext, name: string):Observable<any> {
+    static createWebminarRoom(name: string): Room {
         var room = new Room();
         room.category = 'one-to-many';
         room.name =  name;
-        return room.save(context).flatMap(()=> {
-            return Room.get(context,room.id);
-        });
+        return room;
     }
 
 

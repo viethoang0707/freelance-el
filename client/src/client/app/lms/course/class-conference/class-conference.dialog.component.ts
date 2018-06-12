@@ -12,6 +12,7 @@ import { ConferenceMember } from '../../../shared/models/elearning/conference-me
 import { Room } from '../../../shared/models/meeting/room.model';
 import { RoomMember } from '../../../shared/models/meeting/room-member.model';
 import { SelectItem } from 'primeng/api';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -38,29 +39,27 @@ export class ClassConferenceDialog extends BaseComponent {
 	show(courseClass: CourseClass) {
 		this.display = true;
 		this.courseClass =  courseClass;
-		
-		Conference.byClass(this, courseClass.id).subscribe(conference => {
-			if (conference) {
-				this.conference = conference;
-				Room.byRef(this, conference.room_ref).subscribe(room => {
-					this.room = room;
-				});
-			}
-			CourseMember.listByClass(this, courseClass.id).subscribe(members => {
-				this.members =  members;
-				if (this.conference) {
-					ConferenceMember.listByConference(this, this.conference.id).subscribe(confMembers=> {
-						_.each(members, (member)=> {
-							member["conferenceMember"] = _.find(confMembers, confMember=> {
+		BaseModel
+		.bulk_search(this, Conference.__api__byClass( courseClass.id), CourseMember.__api__listByClass(courseClass.id))
+		.subscribe(jsonArr=> {
+			var conferences = Conference.toArray(jsonArr[0]);
+			var members = CourseMember.toArray(jsonArr[1]);
+			if (conferences.length) {
+				this.conference = conferences[0];
+				BaseModel
+				.bulk_search(this, Room.__api__byRef( this.conference .room_ref), ConferenceMember.__api__listByConference(this.conference.id))
+				.subscribe(jsonArr=> {
+					var rooms = Room.toArray(jsonArr[0]);
+					var conferenceMembers = ConferenceMember.toArray(jsonArr[1]);
+					_.each(members, (member:CourseMember)=> {
+							member["conferenceMember"] = _.find(conferenceMembers, (confMember:ConferenceMember)=> {
 								return confMember.course_member_id == member.id;
 							});
 							member["is_active"] = member["conferenceMember"] && member["conferenceMember"].is_active;
 						});
-						
-					});
-				} 
-				
-			});
+				});
+			}
+					
 		});
 	}
 
@@ -71,38 +70,43 @@ export class ClassConferenceDialog extends BaseComponent {
 	openConference() {
 		if (this.conference.id && this.conference.status !='open' ) {
 			this.conference.status = 'open';
-			
 			this.conference.save(this).subscribe(()=> {
 				this.info(this.translateService.instant('Conference open'));
-				
 			});
 		}
 		if (!this.conference.id ) {
-			
-			Room.createWebminarRoom(this, this.courseClass.name).subscribe(room => {
-				this.room = room;
-				this.conference.room_ref =  room.ref;
-				this.conference.room_pass =  room.password;
-				this.conference.class_id =  this.courseClass.id;
-				this.conference.status = 'open';
-				this.conference.save(this).subscribe(()=> {
-					this.info(this.translateService.instant('Conference open'));
-					_.each(this.members, (member)=> {
-						RoomMember.createRoomMember(this, member.name, member.image, room.id, member.role).subscribe(roomMember => {
+			this.room = Room.createWebminarRoom(this.courseClass.name);
+			this.room.save(this).subscribe(()=> {
+				this.room.refresh(this).subscribe(()=> {
+					this.conference.room_ref =  this.room.ref;
+					this.conference.room_pass =  this.room.password;
+					this.conference.class_id =  this.courseClass.id;
+					this.conference.status = 'open';
+					this.conference.save(this).subscribe(()=> {
+						this.info(this.translateService.instant('Conference open'));
+						var conferenceMembers = [];
+						var roomMembers = [];
+						for (var i =0;i<this.members.length;i++) {
+							var member =  this.members[i];
 							var conferenceMember = new ConferenceMember();
 							conferenceMember.conference_id =  this.conference.id;
-							conferenceMember.room_member_ref =  roomMember.ref;
 							conferenceMember.course_member_id =  member.id;
-							conferenceMember.save(this).subscribe(()=> {
-								member["conferenceMember"] = conferenceMember;
-								member["is_active"] = true;
+							member["conferenceMember"] = conferenceMember;
+							member["is_active"] = true;
+							conferenceMembers.push(conferenceMember);
+							var roomMember = RoomMember.createRoomMember( member.name, member.image, room.id, member.role);
+							roomMembers.push(roomMember);
+						}
+						ConferenceMember.createArray(this, conferenceMembers).subscribe(()=> {
+							RoomMember.createArray(this, roomMembers).subscribe(()=> {
+								for (var i =0;i<this.members.length;i++) {
+									conferenceMembers[i].room_member_ref = roomMembers[i].ref;
+								}
 							});
 						});
 					});
-					
-				});
-			})
-			
+				})
+			});
 		}
 	}
 
@@ -110,10 +114,8 @@ export class ClassConferenceDialog extends BaseComponent {
 	closeConference() {
 		if (this.conference.id && this.conference.status !='closed') {
 			this.conference.status = 'closed';
-			
 			this.conference.save(this).subscribe(()=> {
 				this.info('Conference closed');
-				
 			});
 		}
 	}
@@ -121,14 +123,14 @@ export class ClassConferenceDialog extends BaseComponent {
 	accessControl(event:any, member: any) {
 		var conferenceMember = member.conferenceMember;
 		if (event.checked) {
-			
 			if (conferenceMember) {
 				conferenceMember.is_active = true;
 				conferenceMember.save(this).subscribe(()=> {
 					
 				});
 			} else {
-				RoomMember.createRoomMember(this, member.name, member.image, this.room.id, member.role).subscribe(roomMember => {
+				var roomMember = RoomMember.createRoomMember(member.name, member.image, this.room.id, member.role);
+				roomMember.save(this).subscribe(()=> {
 					var conferenceMember = new ConferenceMember();
 					conferenceMember.conference_id =  this.conference.id;
 					conferenceMember.room_member_ref =  roomMember.ref;
@@ -138,14 +140,12 @@ export class ClassConferenceDialog extends BaseComponent {
 						member.conferenceMember = conferenceMember;
 						
 					});
-				})
+				});
 			}
 		} else {
-			
 			if (conferenceMember) {
 				conferenceMember.is_active = false;
 				conferenceMember.save(this).subscribe(()=> {
-					
 				});
 			}
 		}

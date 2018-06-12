@@ -26,6 +26,8 @@ import { WorkflowService } from '../../../shared/services/workflow.service';
 })
 export class CourseSyllabusDialog extends BaseComponent {
 
+	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
+
 	private display: boolean;
 	private tree: TreeNode[];
 	private syl: CourseSyllabus;
@@ -37,10 +39,8 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private course: Course;
 	private user: User;
 	private courseStatus: SelectItem[];
-	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	private allowToChangeState : boolean;
 	private openTicket: Ticket;
-
 	private onShowReceiver: Subject<any> = new Subject();
     private onHideReceiver: Subject<any> = new Subject();
     onShow: Observable<any> = this.onShowReceiver.asObservable();
@@ -78,11 +78,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.display = true;
 		this.syl = syl;
 		this.buildCourseTree();		
-		this.checkWorkflow();
+		//this.checkWorkflow();
 	}
 
 	checkWorkflow() {
-		
 		Course.get(this, this.syl.course_id).subscribe(course => {
 			this.course = course;
 				this.allowToChangeState = !this.course.supervisor_id || 
@@ -101,11 +100,9 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	buildCourseTree() {
 		if (this.syl) {
-			
 			CourseUnit.listBySyllabus(this,this.syl.id).subscribe(units => {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
-				
 	        });
 		}
 	}
@@ -127,13 +124,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 		unit.name = 'New unit';
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
 		unit.order = maxOrder;
-		
 		unit.save(this).subscribe(()=> {
 			if (this.selectedNode)
 				this.sylUtils.addChildNode(this.selectedNode, unit);
 			else
 				this.sylUtils.addRootNode(this.tree, unit);
-			
 		});
 	}
 
@@ -153,11 +148,9 @@ export class CourseSyllabusDialog extends BaseComponent {
 				return;
 			}
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-            	
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
-                    
                 })
              });
 		}
@@ -173,12 +166,8 @@ export class CourseSyllabusDialog extends BaseComponent {
 		if (this.selectedNode) {
 			var unit =  this.selectedNode.data;
 			this.sylUtils.moveUp(this.tree,this.selectedNode);
-			var subscriptions = _.map(this.units, (unit) => {
-				return unit.save(this);
-			});
-			
-			Observable.forkJoin(subscriptions).subscribe(() => {
-				
+			CourseUnit.updateArray(this, this.units).subscribe(()=> {
+				this.success('Move sucessfully');
 			});
 		}
 	}
@@ -187,12 +176,8 @@ export class CourseSyllabusDialog extends BaseComponent {
 		if (this.selectedNode) {
 			var unit =  this.selectedNode.data;
 			this.sylUtils.moveDown(this.tree,this.selectedNode);
-			var subscriptions = _.map(this.units, (unit) => {
-				return unit.save(this);
-			});
-			
-			Observable.forkJoin(subscriptions).subscribe(()=> {
-				
+			CourseUnit.updateArray(this, this.units).subscribe(()=> {
+				this.success('Move sucessfully');
 			});
 		}
 	}
@@ -215,9 +200,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	submitForReview() {
-		
 		this.workflowService.createCourseSyllabusPublishTicket(this, this.syl).subscribe(ticket=> {
-			
 		});
 	}
 

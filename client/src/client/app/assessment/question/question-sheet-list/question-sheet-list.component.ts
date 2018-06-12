@@ -21,10 +21,11 @@ import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.m
 })
 export class QuestionSheetListComponent extends BaseComponent {
 
-    @ViewChild(QuestionSheetPreviewDialog) sheetDialog: QuestionSheetPreviewDialog;
-
     private sheets: Question[];
     private selectedSheet: any;
+
+    @ViewChild(QuestionSheetPreviewDialog) sheetDialog: QuestionSheetPreviewDialog;
+
 
     constructor() {
         super();
@@ -38,7 +39,6 @@ export class QuestionSheetListComponent extends BaseComponent {
     deleteSheet(){
         if(this.selectedSheet)
             this.confirm('Are you sure to delete ?', () => {
-                
                 this.selectedSheet.delete(this).subscribe(() => {
                     this.selectedSheet = null;
                     this.loadQuestionSheets();
@@ -53,7 +53,6 @@ export class QuestionSheetListComponent extends BaseComponent {
     }
 
     loadQuestionSheets() {
-        
         QuestionSheet.listTemplate(this).subscribe(sheets => {
             this.sheets =  sheets;
         });

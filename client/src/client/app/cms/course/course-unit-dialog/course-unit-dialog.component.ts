@@ -27,10 +27,11 @@ import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE
 })
 export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 
-	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
 	private contentStatus: SelectItem[];
+
+	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
 	constructor( private componentFactoryResolver: ComponentFactoryResolver) {
 		super();

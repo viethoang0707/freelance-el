@@ -80,7 +80,6 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 
 	removeOption(option: QuestionOption) {
 		if (option.id) {
-			
 			option.delete(this).subscribe(() => {
 				this.options = _.reject(this.options, (obj) => {
 					return obj == option;

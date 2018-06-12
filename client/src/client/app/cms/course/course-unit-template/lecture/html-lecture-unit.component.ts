@@ -10,6 +10,7 @@ import { TreeNode } from 'primeng/api';
 import { CourseUnitTemplate } from '../unit.decorator';
 import { ICourseUnit } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
+import { BaseModel } from '../../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
@@ -32,7 +33,6 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		
 		HtmlLecture.byCourseUnit(this, unit.id).subscribe((lecture:HtmlLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -41,7 +41,6 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 				lecture.unit_id = this.unit.id;
 				this.lecture =  lecture;
 			}
-			
 		});
 	}
 

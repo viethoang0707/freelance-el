@@ -26,7 +26,6 @@ export class CourseSettingDialog extends BaseDialog<Course> {
 
     constructor() {
         super();
-
     }
 
     selectCourse() {

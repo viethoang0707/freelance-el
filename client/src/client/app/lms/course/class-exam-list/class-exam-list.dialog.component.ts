@@ -22,11 +22,12 @@ import { Router } from '@angular/router';
 })
 export class ClassExamListDialog extends BaseComponent {
 
+	EXAM_STATUS = EXAM_STATUS;
+
 	private display: boolean;
 	private courseClass: CourseClass;
 	private classExams: ClassExam[];
 	private selectedClassExam: ClassExam;
-	EXAM_STATUS = EXAM_STATUS;
 
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
@@ -57,9 +58,7 @@ export class ClassExamListDialog extends BaseComponent {
 
 	enroll() {
 		if (this.selectedClassExam) {
-			Exam.get(this,this.selectedClassExam.exam_id ).subscribe(exam=> {
-				this.examEnrollDialog.show(exam,this.courseClass);
-			});
+			this.examEnrollDialog.show(this.selectedClassExam,this.courseClass);
 		}
 	}
 
@@ -96,7 +95,6 @@ export class ClassExamListDialog extends BaseComponent {
 
 	manageExam() {
 		if (this.selectedClassExam)  {
-			
 			ExamMember.byExamAndUser(this,this.selectedClassExam.id, this.authService.UserProfile.id ).subscribe(member=> {
 				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.id, member.id]);
 				
@@ -106,10 +104,8 @@ export class ClassExamListDialog extends BaseComponent {
 
 	editContent() {
 		if (this.selectedClassExam) {
-			
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
 				this.examContentDialog.show(exam);
-				
 			});
 		}
 	}
