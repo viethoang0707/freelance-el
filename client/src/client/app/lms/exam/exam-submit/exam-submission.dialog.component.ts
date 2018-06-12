@@ -18,7 +18,7 @@ import { IQuestion } from '../../../assessment/question/question-template/questi
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
-import {WebcamImage} from 'ngx-webcam';
+import { WebcamImage } from 'ngx-webcam';
 
 @Component({
     moduleId: module.id,
@@ -27,7 +27,7 @@ import {WebcamImage} from 'ngx-webcam';
     styleUrls: ['exam-submission.dialog.component.css'],
 })
 export class ExamSubmissionDialog extends BaseComponent {
-    
+
     private display: boolean;
     private exam: Exam;
     private submission: Submission;
@@ -37,23 +37,23 @@ export class ExamSubmissionDialog extends BaseComponent {
     private onConfirmReceiver: Subject<any> = new Subject();
     onConfirm: Observable<any> = this.onConfirmReceiver.asObservable();
 
-     @ViewChild('printSection') printSection;
+    @ViewChild('printSection') printSection;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
         this.display = false;
         this.exam = new Exam();
-        this.submission =  new Submission();
-        this.setting =  new ExamSetting();
+        this.submission = new Submission();
+        this.setting = new ExamSetting();
     }
 
     show(exam: Exam, submission: Submission) {
         this.display = true;
         this.exam = exam;
         this.submission = submission;
-        ExamSetting.appSetting(this).subscribe(setting=> {
-            if (setting)
-                this.setting =  setting;
+        ExamSetting.all(this).subscribe(settings => {
+            if (settings.length)
+                this.setting = settings[0];
         });
     }
 
@@ -61,7 +61,7 @@ export class ExamSubmissionDialog extends BaseComponent {
         this.display = false;
     }
 
-    confirm(){
+    confirm() {
         if (this.setting.take_picture_on_submit)
             this.trigger.next();
         else {
@@ -70,16 +70,16 @@ export class ExamSubmissionDialog extends BaseComponent {
         }
     }
 
-   handleImage(webcamImage: WebcamImage): void {
-    console.info('received webcam image', webcamImage);
-    this.submission.picture = webcamImage.imageAsBase64;
-    this.onConfirmReceiver.next();
-    this.hide();
-  }
+    handleImage(webcamImage: WebcamImage): void {
+        console.info('received webcam image', webcamImage);
+        this.submission.picture = webcamImage.imageAsBase64;
+        this.onConfirmReceiver.next();
+        this.hide();
+    }
 
-   get triggerObservable(): Observable<void> {
-    return this.trigger.asObservable();
-  }
+    get triggerObservable(): Observable<void> {
+        return this.trigger.asObservable();
+    }
 }
 
 

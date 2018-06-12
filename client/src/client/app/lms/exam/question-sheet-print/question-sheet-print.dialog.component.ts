@@ -55,37 +55,33 @@ export class QuestionSheetPrintDialog extends BaseComponent {
         this.display = false;
     }
 
-
-
     startReview() {
-        
         ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
-            setTimeout(()=> {
+            ExamQuestion.populateQuestionForArray(this, this.examQuestions).subscribe(()=> {
+                setTimeout(()=> {
                 var componentHostArr = this.questionsComponents.toArray();
                 for (var i = 0; i < examQuestions.length; i++) {
                     var examQuestion = examQuestions[i];
                     var componentHost = componentHostArr[i];
                     this.displayQuestion(examQuestion, componentHost);
                 }
-            
-            },0)
+                },0)
+            })
             
         });
     }
 
     displayQuestion(examQuestion: ExamQuestion, componentHost) {
-        Question.get(this, examQuestion.question_id).subscribe((question) => {
-            var detailComponent = QuestionRegister.Instance.lookup(question.type);
-            let viewContainerRef = componentHost.viewContainerRef;
-            if (detailComponent) {
-                let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-                viewContainerRef.clear();
-                var componentRef = viewContainerRef.createComponent(componentFactory);
-                (<IQuestion>componentRef.instance).mode = 'preview';
-                (<IQuestion>componentRef.instance).render(question);
-            }
-        });
+        var detailComponent = QuestionRegister.Instance.lookup(examQuestion.question.type);
+        let viewContainerRef = componentHost.viewContainerRef;
+        if (detailComponent) {
+            let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+            viewContainerRef.clear();
+            var componentRef = viewContainerRef.createComponent(componentFactory);
+            (<IQuestion>componentRef.instance).mode = 'preview';
+            (<IQuestion>componentRef.instance).render(examQuestion.question);
+        }
     }
 
     print() {

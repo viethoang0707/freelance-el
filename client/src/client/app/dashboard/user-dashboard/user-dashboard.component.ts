@@ -89,7 +89,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             return member.exam_id && member.status == 'active';
         }));
         var searchApi = _.map(this.examMembers, (member: ExamMember) => {
-            return Submission.__api__byMember(member.id);
+            return Submission.__api__listByMember(member.id);
         });
         BaseModel.bulk_search(this, ...searchApi)
             .map((jsonArray) => {

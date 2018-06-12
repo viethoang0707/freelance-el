@@ -56,7 +56,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
-	
+
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
@@ -75,48 +75,48 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => { 
-	        var courseId = +params['courseId']; 
-	        Course.get(this, courseId).subscribe(course => {
-	        	this.course = course;
-	        	BaseModel
-	        	.bulk_search(this,
-	        		CourseMember.__api__byCourseAndUser(course.id, this.authService.UserProfile.id),
-	     			CourseClass.__api__listByCourse(course.id),
-	     			CourseFaq.__api__listByCourse(course.id),
-	     			CourseMaterial.__api__listByCourse(course.id),
-	     			CourseSyllabus.__api__byCourse(course.id))
-	        	.subscribe((jsonArr)=> {
-	        		var members = CourseMember.toArray(jsonArr[0]);
-	        		this.members = _.filter(members, (member:CourseMember)=> {
-	        				return member.role =='teacher';
-	        		});
-	        		var classList = CourseClass.toArray(jsonArr[1]);
-	        		this.classes =  _.filter(classList, (obj: CourseClass) => {
-						var member = _.find(this.members, (member: CourseMember) => {
-							return member.class_id == obj.id;
+		this.route.params.subscribe(params => {
+			var courseId = +params['courseId'];
+			Course.get(this, courseId).subscribe(course => {
+				this.course = course;
+				BaseModel
+					.bulk_search(this,
+						CourseMember.__api__byCourseAndUser(course.id, this.authService.UserProfile.id),
+						CourseClass.__api__listByCourse(course.id),
+						CourseFaq.__api__listByCourse(course.id),
+						CourseMaterial.__api__listByCourse(course.id),
+						CourseSyllabus.__api__byCourse(course.id))
+					.subscribe((jsonArr) => {
+						var members = CourseMember.toArray(jsonArr[0]);
+						this.members = _.filter(members, (member: CourseMember) => {
+							return member.role == 'teacher';
+						});
+						var classList = CourseClass.toArray(jsonArr[1]);
+						this.classes = _.filter(classList, (obj: CourseClass) => {
+							var member = _.find(this.members, (member: CourseMember) => {
+								return member.class_id == obj.id;
 							});
 							return member != null;
-					});
-					this.faqs =  CourseFaq.toArray(jsonArr[2]);
-					this.materials =  CourseMaterial.toArray(jsonArr[3]);
-					var sylList = CourseSyllabus.toArray(jsonArr[4]);
-					if (sylList.length) {
-						this.syl = sylList[0];
-						CourseUnit.listBySyllabus(this,syl.id).subscribe(units => {
-							this.units = _.filter(units, (unit:CourseUnit)=> {
-								return unit.status == 'published';
-							});
-							this.tree = this.sylUtils.buildGroupTree(units);
 						});
-					}
-				});
+						this.faqs = CourseFaq.toArray(jsonArr[2]);
+						this.materials = CourseMaterial.toArray(jsonArr[3]);
+						var sylList = CourseSyllabus.toArray(jsonArr[4]);
+						if (sylList.length) {
+							this.displaySyllabus(sylList[0]);
+						}
+					});
 			});
 		});
 	}
 
-	displaySyllabus() {
-		
+	displaySyllabus(syl: CourseSyllabus) {
+		this.syl = syl;
+		CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
+			this.units = _.filter(units, (unit: CourseUnit) => {
+				return unit.status == 'published';
+			});
+			this.tree = this.sylUtils.buildGroupTree(units);
+		});
 	}
 
 	manageConference() {
@@ -198,7 +198,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	deleteMaterial() {
 		if (this.selectedMaterial)
-			this.confirm(this.translateService.instant('Are you sure to delete?'),() => {		
+			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				this.selectedMaterial.delete(this).subscribe(() => {
 					this.loadMaterials();
 					this.selectedMaterial = null;
@@ -226,8 +226,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 					member.enroll_status = 'completed';
 					return member.save(this);
 				});
-				this.selectedClass.save(this).subscribe(()=> {
-					CourseMember.updateArray(this, this.members).subscribe(()=> {
+				this.selectedClass.save(this).subscribe(() => {
+					CourseMember.updateArray(this, this.members).subscribe(() => {
 						this.success('Class close');
 					})
 				});;

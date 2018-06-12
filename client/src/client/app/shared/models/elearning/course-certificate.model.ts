@@ -14,6 +14,7 @@ export class Certificate extends BaseModel{
 		
 		this.name = undefined;
 		this.course_id = undefined;
+        this.class_id = undefined;
         this.member_id = undefined;
         this.date_issue = undefined;
         this.qualification = undefined;
@@ -30,6 +31,7 @@ export class Certificate extends BaseModel{
     
     name:string;
     course_id: number;
+    class_id: number;
     member_id: number;
     user_id:number;
     @FieldProperty<Date>()
@@ -61,6 +63,15 @@ export class Certificate extends BaseModel{
 
     static __api__byMember(memberId: number): SearchReadAPI {
         return new SearchReadAPI(Certificate.Model, [],"[('member_id','=',"+memberId+")]");
+    }
+
+    static listByClass(context: APIContext, classId: number): Observable<any[]> {
+        return Certificate.search(context, [], "[('class_id','='," + classId + ")]");
+    }
+
+
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(Certificate.Model, [],"[('class_id','=',"+classId+")]");
     }
 
 }

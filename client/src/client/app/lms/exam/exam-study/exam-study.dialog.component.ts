@@ -21,9 +21,11 @@ import { IQuestion } from '../../../assessment/question/question-template/questi
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import { ExamSubmissionDialog } from '../exam-submit/exam-submission.dialog.component';
 import 'rxjs/add/observable/timer';
-import {Message} from 'primeng/components/common/api';
-import {MessageService} from 'primeng/components/common/messageservice';
+import { Message } from 'primeng/components/common/api';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
+import { BaseModel } from '../../../shared/models/base.model';
+
 declare var $: any;
 
 @Component({
@@ -33,6 +35,8 @@ declare var $: any;
 	providers: [MessageService]
 })
 export class ExamStudyDialog extends BaseComponent {
+
+	WINDOW_HEIGHT: any;
 
 	private display: boolean;
 	private exam: Exam;
@@ -49,15 +53,15 @@ export class ExamStudyDialog extends BaseComponent {
 	private progress: number;
 	private stats: any;
 	private validAnswer: number;
+	private componentRef: any;
 	private onShowReceiver: Subject<any> = new Subject();
-    private onHideReceiver: Subject<any> = new Subject();
-    onShow: Observable<any> = this.onShowReceiver.asObservable();
-    onHide: Observable<any> = this.onHideReceiver.asObservable();
+	private onHideReceiver: Subject<any> = new Subject();
+	onShow: Observable<any> = this.onShowReceiver.asObservable();
+	onHide: Observable<any> = this.onHideReceiver.asObservable();
 
 	@ViewChild(ExamSubmissionDialog) submitDialog: ExamSubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
-	private componentRef: any;
-	WINDOW_HEIGHT:any;
+
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
@@ -76,7 +80,7 @@ export class ExamStudyDialog extends BaseComponent {
 			unattempt: 0
 		}
 		this.validAnswer = 0;
-		this.WINDOW_HEIGHT =  $(window).height();
+		this.WINDOW_HEIGHT = $(window).height();
 	}
 
 	show(exam: Exam, member: ExamMember) {
@@ -85,17 +89,21 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		
+
 		this.createSubmission().subscribe((submit: Submission) => {
 			this.submission = submit;
 			QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
 				this.sheet = sheet;
-				this.createExamQuestions().subscribe(examQuestions => {
-					this.examQuestions = examQuestions;
-					this.stats.total = examQuestions.length;
-					this.startExam();
-					
-				});
+				BaseModel.bulk_search(this,
+					ExamQuestion.__api__listBySheet(this.sheet.id),
+					Answer.__api__listBySubmit(this.submission.id))
+					.subscribe(jsonArr => {
+						this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
+						this.answers = Answer.toArray(jsonArr[1]);
+						ExamQuestion.populateQuestionForArray(this, this.examQuestions).subscribe(() => {
+							this.startExam();
+						});
+					});
 			});
 		});
 	}
@@ -113,26 +121,17 @@ export class ExamStudyDialog extends BaseComponent {
 		});
 	}
 
-	createExamQuestions(): Observable<any> {
-		return ExamQuestion.listBySheet(this, this.sheet.id).map(examQuestions => {
-			var offset = this.member.id;
-			return _.map(examQuestions, (obj, order) => {
-				var index = (order + offset) % examQuestions.length;
-				return examQuestions[index];
-			});
+	prepareExamQuestions(examQuestions: ExamQuestion[]) {
+		var offset = this.member.id;
+		return _.map(examQuestions, (obj, order) => {
+			var index = (order + offset) % examQuestions.length;
+			return examQuestions[index];
 		});
 	}
 
 	hide() {
 		this.display = false;
 		this.onHideReceiver.next();
-	}
-
-	fetchAnswers(): Observable<any> {
-		if (this.submission.id)
-			return Answer.listBySubmit(this, this.submission.id);
-		else
-			return Observable.of([]);
 	}
 
 	updateStats() {
@@ -152,33 +151,19 @@ export class ExamStudyDialog extends BaseComponent {
 	startExam() {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
-		
-		ExamLog.startExam(this, this.member.id, this.submission.id).subscribe(()=> {
-			this.fetchAnswers().subscribe(answers => {
-				this.answers = answers;
-				this.updateStats();
-				this.startTimer();
-				this.displayQuestion(0);
-				
-			});
-		});
-		
+		ExamLog.startExam(this, this.member.id, this.submission.id).subscribe();
+		this.updateStats();
+		this.startTimer();
+		this.displayQuestion(0);
 	}
 
 	finishExam() {
-		var subscriptions = [];
 		this.member.enroll_status = 'completed';
 		this.submission.end = new Date();
-		this.submission.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
-		subscriptions.push(this.member.save(this));
-		subscriptions.push(this.submission.save(this));
-		
-		Observable.forkJoin(...subscriptions).subscribe(() => {
-			ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe(()=> {
-				this.hide();
-				
-			})
-			
+		this.submission.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
+		BaseModel.bulk_update(this, this.member.__api__update(), this.submission.__api__update()).subscribe(() => {
+			ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe();
+			this.hide();
 		});
 	}
 
@@ -191,44 +176,33 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
-			
 			return answer.save(this).do(ans => {
 				this.answers.push(answer);
 				this.updateStats();
-				
 			});
 		} else
 			return Observable.of(answer);
 	}
 
-	prepareQuestion(question: ExamQuestion): Observable<any> {
-		return Question.get(this, question.question_id);
-	}
-
 	displayQuestion(index: number) {
 		this.qIndex = index;
 		this.currentQuestion = this.examQuestions[index];
-		
-		this.prepareQuestion(this.currentQuestion).subscribe(question => {
-			this.prepareAnswer(this.currentQuestion).subscribe(answer => {
-				ExamLog.startAnswer(this, this.member.id, answer.id).subscribe(()=> {
-					this.currentAnswer = answer;
-					this.checkAnswer();
-					var detailComponent = QuestionRegister.Instance.lookup(question.type);
-					let viewContainerRef = this.questionHost.viewContainerRef;
-					if (detailComponent) {
-						let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-						viewContainerRef.clear();
-						this.componentRef = viewContainerRef.createComponent(componentFactory);
-						(<IQuestion>this.componentRef.instance).mode = 'study';
-						(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
-						this.updateStats();
-					}
-					
-				});
+		this.prepareAnswer(this.currentQuestion).subscribe(answer => {
+			ExamLog.startAnswer(this, this.member.id, answer.id).subscribe(() => {
+				this.currentAnswer = answer;
+				this.checkAnswer();
+				var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
+				let viewContainerRef = this.questionHost.viewContainerRef;
+				if (detailComponent) {
+					let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+					viewContainerRef.clear();
+					this.componentRef = viewContainerRef.createComponent(componentFactory);
+					(<IQuestion>this.componentRef.instance).mode = 'study';
+					(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
+					this.updateStats();
+				}
 			});
 		});
-
 	}
 
 	submitAnswer(): Observable<any> {
@@ -243,33 +217,27 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	next() {
-		
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex < this.examQuestions.length - 1) {
 				this.displayQuestion(this.qIndex + 1);
 			}
-			
 		});
 	}
 
 	prev() {
-		
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex > 0) {
 				this.displayQuestion(this.qIndex - 1);
 			}
-			
 		});
 	}
 
 	submitExam() {
-		
 		this.submitAnswer().subscribe(() => {
 			this.submitDialog.show(this.exam, this.submission);
-			this.submitDialog.onConfirm.subscribe(()=> {
+			this.submitDialog.onConfirm.subscribe(() => {
 				this.finishExam();
 			});
-			
 		});
 	}
 
@@ -285,7 +253,7 @@ export class ExamStudyDialog extends BaseComponent {
 				.takeUntil(new Subject())
 				.subscribe(() => {
 					this.timeLeft -= 1000;
-					if(this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
+					if (this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
 						this.warn('A little minutes remaining!');
 					if (this.timeLeft <= 0)
 						this.finishExam();
@@ -293,9 +261,9 @@ export class ExamStudyDialog extends BaseComponent {
 		}
 	}
 
-    checkAnswer() {
+	checkAnswer() {
 		var validQuestion = _.filter(this.answers, (ans: any) => {
-			return ans.option_id ;
+			return ans.option_id;
 		});
 		this.examQuestions.forEach((ques: any) => {
 			validQuestion.forEach(answer => {

@@ -20,6 +20,7 @@ export class CourseLog extends BaseModel{
         this.user_id = undefined;
         this.member_id = undefined;
         this.course_id = undefined;
+        this.class_id = undefined;
         this.res_id = undefined;
         this.res_model = undefined;
         this.note = undefined;
@@ -33,6 +34,7 @@ export class CourseLog extends BaseModel{
     user_id: number;
     member_id: number;
     course_id: number;
+    class_id: number;
     res_model: string;
     note: string;
     code: string;
@@ -83,6 +85,14 @@ export class CourseLog extends BaseModel{
 
     static courseActivity(context:APIContext, courseId):Observable<any> {
         return CourseLog.search(context,[], "[('course_id','=',"+courseId+")]" );
+    }
+
+    static __api__classActivity(classId):SearchReadAPI {
+        return new SearchReadAPI(CourseLog.Model, [], "[('class_id','=',"+classId+")]" );
+    }
+
+    static classActivity(context:APIContext, classId):Observable<any> {
+        return CourseLog.search(context,[], "[('class_id','=',"+classId+")]" );
     }
 
     static startCourseUnit(context:APIContext, memberId:number,  unitId:number):Observable<any> {

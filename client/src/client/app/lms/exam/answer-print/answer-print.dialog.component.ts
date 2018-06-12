@@ -17,8 +17,10 @@ import { QuestionContainerDirective } from '../../../assessment/question/questio
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
-import {PRINT_DIALOG_STYLE} from  '../../../shared/models/constants';
+import { PRINT_DIALOG_STYLE } from '../../../shared/models/constants';
 import * as _ from 'underscore';
+import { BaseModel } from '../../../shared/models/base.model';
+
 
 @Component({
     moduleId: module.id,
@@ -27,12 +29,13 @@ import * as _ from 'underscore';
     styleUrls: ['answer-print.dialog.component.css'],
 })
 export class AnswerPrintDialog extends BaseComponent {
-    
+
     private display: boolean;
     private examQuestions: ExamQuestion[];
     private answers: Answer[];
     private member: ExamMember;
     private exam: Exam;
+    private sheet: QuestionSheet;
     private submission: Submission;
     private setting: ExamSetting;
 
@@ -45,9 +48,10 @@ export class AnswerPrintDialog extends BaseComponent {
         this.examQuestions = [];
         this.answers = [];
         this.exam = new Exam();
+        this.sheet = new QuestionSheet();
         this.member = new ExamMember();
         this.submission = new Submission();
-        this.setting =  new ExamSetting();
+        this.setting = new ExamSetting();
     }
 
     show(exam: Exam, member: ExamMember) {
@@ -56,18 +60,26 @@ export class AnswerPrintDialog extends BaseComponent {
         this.answers = [];
         this.exam = exam;
         this.member = member;
-        
-        Submission.byMemberAndExam(this, this.member.id, this.exam.id).subscribe((submit: Submission) => {
-            if (submit) {
-                this.submission = submit;
-                ExamSetting.appSetting(this).subscribe(setting=> {
-                    if (setting)
-                        this.setting =  setting;
-                    this.startReview();
-                });
-            }
-            
-        });
+
+        BaseModel
+            .bulk_search(this,
+                Submission.__api__byMemberAndExam(this.member.id, this.exam.id),
+                ExamSetting.__api__all(),
+                QuestionSheet.__api__byExam(this.exam.id))
+            .subscribe(jsonArr => {
+                var submits = Submission.toArray(jsonArr[0]);
+                if (submits.length) {
+                    this.submission = submits[0];
+                    var settings = ExamSetting.toArray(jsonArr[1]);
+                    if (settings.length)
+                        this.setting = settings[0];
+                    var sheets = QuestionSheet.toArray(jsonArr[2]);
+                    if (sheets.length) {
+                        this.sheet = sheets[0];
+                        this.startReview();
+                    }
+                }
+            });
     }
 
     hide() {
@@ -82,50 +94,46 @@ export class AnswerPrintDialog extends BaseComponent {
     }
 
     startReview() {
-        
-        QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
-            ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions => {
-                this.examQuestions = examQuestions;
-                this.fetchAnswers().subscribe(answers => {
-                    this.answers = answers;
+        BaseModel
+            .bulk_search(this,
+                ExamQuestion.__api__listBySheet(this.sheet.id),
+                Answer.__api__listBySubmit(this.submission.id))
+            .subscribe(jsonArr => {
+                this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
+                this.answers = Answer.toArray(jsonArr[1]);
+                ExamQuestion.populateQuestionForArray(this, this.examQuestions).subscribe(() => {
                     setTimeout(() => {
                         var componentHostArr = this.questionsComponents.toArray();
-                        for (var i = 0; i < examQuestions.length; i++) {
-                            var examQuestion = examQuestions[i];
+                        for (var i = 0; i < this.examQuestions.length; i++) {
+                            var examQuestion = this.examQuestions[i];
                             var componentHost = componentHostArr[i];
                             this.displayQuestion(examQuestion, componentHost);
                         }
                     }, 0);
                 });
-                
             });
-        });
     }
 
-    prepareAnswer(question: ExamQuestion): Observable<any> {
+    prepareAnswer(question: ExamQuestion){
         var answer = _.find(this.answers, (ans: Answer) => {
             return ans.question_id == question.question_id;
         });
         if (!answer)
             answer = new Answer();
-        return Observable.of(answer);
+        return answer;
     }
 
     displayQuestion(examQuestion: ExamQuestion, componentHost) {
-        Question.get(this, examQuestion.question_id).subscribe((question) => {
-            this.prepareAnswer(examQuestion).subscribe(answer => {
-                var detailComponent = QuestionRegister.Instance.lookup(question.type);
-                let viewContainerRef = componentHost.viewContainerRef;
-                if (detailComponent) {
-                    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-                    viewContainerRef.clear();
-                    var componentRef = viewContainerRef.createComponent(componentFactory);
-                    (<IQuestion>componentRef.instance).mode = 'review';
-                    (<IQuestion>componentRef.instance).render(question, answer);
-                }
-            });
-
-        });
+        var answer = this.prepareAnswer(examQuestion);
+        var detailComponent = QuestionRegister.Instance.lookup(examQuestion.question.type);
+        let viewContainerRef = componentHost.viewContainerRef;
+        if (detailComponent) {
+            let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+            viewContainerRef.clear();
+            var componentRef = viewContainerRef.createComponent(componentFactory);
+            (<IQuestion>componentRef.instance).mode = 'review';
+            (<IQuestion>componentRef.instance).render(examQuestion.question, answer);
+        }
     }
 
     print() {

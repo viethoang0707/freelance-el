@@ -63,11 +63,8 @@ export class ProjectSubmissionDialog extends BaseComponent {
     }
 
     changeFile(file) {
-        
         this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
-
             data => {
-                
                 if (data["result"]) {
                     this.ngZone.run(() => {
                         this.submit.file_url = data["url"];

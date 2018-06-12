@@ -16,6 +16,7 @@ import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe } from '../../../shared/pipes/time.pipe';
 import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
@@ -63,48 +64,38 @@ export class GradebookListDialog extends BaseComponent {
 			this.gradebookDialog.show(this.selectedRecord);
 	}
 
-	loadMemberStats() {
-<<<<<<< HEAD
-=======
-		
->>>>>>> Refactor loading
-		CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
-			this.records = _.filter(members, (member) => {
-				return member.role == 'student';
+	loadMemberStats(members: CourseMember[], syl: CourseSyllabus, logs: CourseLog[], certificates: Certificate[]) {
+		this.records = _.filter(members, (member) => {
+			return member.role == 'student';
+		});
+		CourseUnit.listBySyllabus(this, syl.id).subscribe(courseUnits => {
+			this.courseUnits = _.filter(courseUnits, unit => {
+				return unit.type != 'folder';
 			});
-			CourseSyllabus.byCourse(this, this.courseClass.course_id).subscribe(syllabus => {
-				CourseUnit.listBySyllabus(this, syllabus.id).subscribe(courseUnits => {
-					this.courseUnits = _.filter(courseUnits, unit => {
-						return unit.type != 'folder';
-					});
-					var totalUnit = this.courseUnits.length;
-					_.each(this.records, (record => {
-						Certificate.byMember(this, record["id"]).subscribe(certificate => {
-							if (certificate)
-								record["certificate"] = certificate["name"];
-							else
-								record["certificate"] = '';
-						});
-						CourseLog.memberStudyActivity(this,record["id"], this.courseClass.id).subscribe(logs => {
-							var result = this.reportUtils.analyzeCourseMemberActivity(logs);
-							if (result[0] != Infinity)
-								record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
-							if (result[1] != Infinity)
-								record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
-							record["time_spent"] = this.timePipe.transform(+result[2], 'min');
-							if (totalUnit)
-								record["completion"] = Math.floor(+result[3] * 100 / +totalUnit);
-							else
-								record["completion"] = 0;
-							record["logs"] = logs;
-						});
-					}));
-<<<<<<< HEAD
-=======
-					
->>>>>>> Refactor loading
+			var totalUnit = this.courseUnits.length;
+			_.each(this.records, (record => {
+				var certificate = _.find(certificates, (cert:Certificate)=> {
+					return cert.member_id == record["id"];
 				});
-			});
+				if (certificate)
+					record["certificate"] = certificate.name;
+				else
+					record["certificate"] = '';
+				var memberLogs = _.filter(logs, (log:CourseLog)=> {
+					return log.member_id == record["id"];
+				})
+				var result = this.reportUtils.analyzeCourseMemberActivity(memberLogs);
+				if (result[0] != Infinity)
+					record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
+				if (result[1] != Infinity)
+					record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
+				record["time_spent"] = this.timePipe.transform(+result[2], 'min');
+				if (totalUnit)
+					record["completion"] = Math.floor(+result[3] * 100 / +totalUnit);
+				else
+					record["completion"] = 0;
+				record["logs"] = memberLogs;
+			}));
 		});
 	}
 
@@ -122,6 +113,17 @@ export class GradebookListDialog extends BaseComponent {
 		this.display = true;
 		this.viewMode = "outline";
 		this.courseClass = courseClass;
-		this.loadMemberStats();
+		BaseModel.bulk_search(this,
+			CourseMember.__api__listByClass(this.courseClass.id),
+			CourseSyllabus.__api__byCourse(this.courseClass.course_id),
+			CourseLog.__api__classActivity(this.courseClass.id),
+			Certificate.__api__listByClass(this.courseClass.id))
+			.subscribe(jsonArr => {
+				var members = CourseMember.toArray(jsonArr[0]);
+				var sylList = CourseSyllabus.toArray(jsonArr[1]);
+				var logs = CourseLog.toArray(jsonArr[2]);
+				var certificates = Certificate.toArray(jsonArr[3]);
+				this.loadMemberStats(members, sylList[0], logs, certificates);
+			})
 	}
 }

@@ -173,6 +173,13 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			this.units = _.filter(units, (unit: CourseUnit) => {
 				return unit.status == 'published';
 			});
+			_.each(this.units, (unit:CourseUnit)=> {
+				var log = _.find(this.logs, (obj: CourseLog) => {
+						return obj.res_id == unit.id && obj.res_model == CourseUnit.Model && obj.code == 'COMPLETE_COURSE_UNIT';
+				});
+				if (log)
+					unit["completed"] = true;
+			});
 			this.tree = this.sylUtils.buildGroupTree(units);
 			this.treeList = this.sylUtils.flattenTree(this.tree);
 			var last_attempt = _.max(this.logs, (log: CourseLog) => {
@@ -187,9 +194,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
-			this.member.completeUnit(this, this.selectedUnit.id).subscribe(success => {
-				this.selectedUnit["completed"] = success;
-			});
 			if (this.studyMode == true) {
 				this.studyMode = false;
 				this.unloadCurrentUnit();
@@ -317,7 +321,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission) {
+	displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission[]) {
 		var examIds = _.pluck(classExams, 'exam_id');
 		members = _.filter(members, member => {
 			return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
