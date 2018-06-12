@@ -155,7 +155,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
             // Observable.forkJoin(subscriptions).subscribe(()=> {
             //      this.success('Exam close');
             //      this.closeTransaction();
-
             this.selectedRecord.save(this).subscribe(()=> {
                 this.success(this.translateService.instant('Exam close'));
             });
