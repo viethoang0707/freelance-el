@@ -116,10 +116,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
 			BaseModel
-				.bulk_list(this, Course.__api__get([courseId]), Course.__api__get([courseId]), CourseMember.__api__get([memberId]))
+				.bulk_list(this, Course.__api__get([courseId]), CourseMember.__api__get([memberId]))
 				.subscribe(jsonArr => {
 					this.course = Course.toArray(jsonArr[0])[0];
-					this.member = CourseMember.toArray(jsonArr[0])[0];
+					this.member = CourseMember.toArray(jsonArr[1])[0];
 					var apiList = [
 						CourseLog.__api__memberStudyActivity(memberId, courseId),
 						CourseFaq.__api__listByCourse(this.course.id),
@@ -173,9 +173,9 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			this.units = _.filter(units, (unit: CourseUnit) => {
 				return unit.status == 'published';
 			});
-			_.each(this.units, (unit:CourseUnit)=> {
+			_.each(this.units, (unit: CourseUnit) => {
 				var log = _.find(this.logs, (obj: CourseLog) => {
-						return obj.res_id == unit.id && obj.res_model == CourseUnit.Model && obj.code == 'COMPLETE_COURSE_UNIT';
+					return obj.res_id == unit.id && obj.res_model == CourseUnit.Model && obj.code == 'COMPLETE_COURSE_UNIT';
 				});
 				if (log)
 					unit["completed"] = true;
@@ -342,7 +342,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					exam["question_count"] = count;
 				});
 			});
-			this.exams.sort((exam1, exam2): any => {
+			exams.sort((exam1, exam2): any => {
 				return (exam1.create_date < exam2.create_date);
 			});
 		});
@@ -383,8 +383,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	joinConference() {
 		if (this.conference.id && this.conferenceMember.id && this.conferenceMember.is_active)
 			this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
-		 else
-            this.error('You are  not allowed to join the conference');
+		else
+			this.error('You are  not allowed to join the conference');
 	}
 
 	submitProject(project: Project) {

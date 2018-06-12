@@ -77,17 +77,16 @@ export class CourseSyllabusDialog extends BaseComponent {
     	this.onShowReceiver.next();
 		this.display = true;
 		this.syl = syl;
-		this.buildCourseTree();		
+		Course.get(this, this.syl.course_id).subscribe(course => {
+			this.course = course;
+			this.buildCourseTree();	
+			this.allowToChangeState = !this.course.supervisor_id || 
+				this.user.IsSuperAdmin ;
+		});
 		//this.checkWorkflow();
 	}
 
 	checkWorkflow() {
-		Course.get(this, this.syl.course_id).subscribe(course => {
-			this.course = course;
-				this.allowToChangeState = !this.course.supervisor_id || 
-				this.user.IsSuperAdmin ;
-			
-		});
 		Ticket.byWorkflowObject(this, this.syl.id, CourseSyllabus.Model).subscribe((ticket)=> {
 			this.openTicket =  ticket;
 		});
