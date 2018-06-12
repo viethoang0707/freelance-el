@@ -22,7 +22,7 @@ export class SlideLecture extends BaseModel{
     unit_id: number;
 
     static __api__byCourseUnit(unitId:number): SearchReadAPI {
-        return new SlideLecture(SCORMLecture.Model, [],"[('unit_id','=',"+unitId+")]");
+        return new SearchReadAPI(SlideLecture.Model, [],"[('unit_id','=',"+unitId+")]");
     }
     
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {

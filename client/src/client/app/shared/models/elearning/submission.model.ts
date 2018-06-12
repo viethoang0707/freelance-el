@@ -51,7 +51,7 @@ export class Submission extends BaseModel{
     }
 
     static __api__listByUser(userId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]");
+        return new SearchReadAPI(Submission.Model, [],"[('user_id','=',"+userId+")]");
     }
 
     static listByUser( context:APIContext, userId: number): Observable<any> {
@@ -67,7 +67,7 @@ export class Submission extends BaseModel{
     }
 
     static __api__listByMember(memberId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
+        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+")]");
     }
 
     static listByMember( context:APIContext, memberId: number): Observable<any> {

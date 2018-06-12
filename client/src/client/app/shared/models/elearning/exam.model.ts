@@ -88,7 +88,7 @@ export class Exam extends BaseModel{
     }
 
     static enroll(context:APIContext,examId:number, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll(classId, userIds), 
+        return context.apiService.execute(this.__api__enroll(examId, userIds), 
             context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
     }
 }

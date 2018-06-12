@@ -4,7 +4,6 @@ import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
 import { Permission } from './permission.model';
-import * as _ from 'underscore';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { SearchCountAPI } from '../../services/api/search-count.api';
@@ -69,7 +68,7 @@ export class User extends BaseModel{
     }
 
     static __api__listAllAdmin(userId: number): SearchReadAPI {
-        return new SearchReadAPI(User.Model, [],"[('login','!=','admin'),('is_admin','!=',True)]");
+        return new SearchReadAPI(User.Model, [],"[('login','!=','admin'),('is_admin','=',True)]");
     }
 
 
@@ -80,11 +79,11 @@ export class User extends BaseModel{
                     return user.IsAdmin;
                 });
             });
-        return User.search(context, [],"[('login','!=','admin'),('is_admin','!=',True)]");
+        return User.search(context, [],"[('login','!=','admin'),('is_admin','=',True)]");
     }
 
     static __api__countAllAdmin(): SearchCountAPI {
-        return new SearchCountAPI(User.Model, "[('login','!=','admin'),('is_admin','!=',True)]");
+        return new SearchCountAPI(User.Model, "[('login','!=','admin'),('is_admin','=',True)]");
     }
 
     static countAllAdmin( context:APIContext): Observable<any> {
@@ -95,7 +94,7 @@ export class User extends BaseModel{
                 });
                 return admins.length;
             });
-        return User.count(context, "[('login','!=','admin'),('is_admin','!=',True)]");
+        return User.count(context, "[('login','!=','admin'),('is_admin','=',True)]");
     }
 
     static __api__listByGroup(groupId: number): SearchReadAPI {

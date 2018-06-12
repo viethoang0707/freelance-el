@@ -30,6 +30,7 @@ import { ProjectSubmission } from '../../../shared/models/elearning/project-subm
 import { ExcelService } from '../../../shared/services/excel.service';
 import { BaseModel } from '../../../shared/models/base.model';
 import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
+import { User } from '../../../shared/models/elearning/user.model';
 
 
 @Component({
@@ -191,7 +192,7 @@ export class GradebookDialog extends BaseComponent {
         this.projects = projects;
         _.each(projects, (project: Project) => {
             project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
-                return submit.project_id == projects.id;
+                return submit.project_id == project.id;
             });
             if (project["submit"]) {
                 if (project["submit"].score != null)

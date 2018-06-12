@@ -168,8 +168,8 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 					var questionIds = _.pluck(exerciseQuestions, 'question_id');
 					this.exerciseQuestions = _.reject(this.exerciseQuestions, (exerciseQuestion:ExerciseQuestion)=> {
 						return _.contains(questionIds, exerciseQuestion.question_id);
-					}
-				})
+					});
+				});
 			});
 	}
 

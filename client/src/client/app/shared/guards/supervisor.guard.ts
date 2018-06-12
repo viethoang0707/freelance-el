@@ -15,7 +15,6 @@ export class SupervisorGuard implements CanActivate, APIContext {
 	constructor(apiService: APIService, authService: AuthService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
-		this.dataAccessService = dataAccessService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

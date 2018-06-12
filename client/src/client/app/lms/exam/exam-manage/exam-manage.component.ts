@@ -102,13 +102,13 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     loadScores() {
-        BaseModel.bulk_seach(this,
+        BaseModel.bulk_search(this,
             ExamGrade.__api__all(),
-            ExamMemer.__api__listCandidateByExam(this.exam.id),
+            ExamMember.__api__listCandidateByExam(this.exam.id),
             Submission.__api__listByExam(this.exam.id))
             .subscribe(jsonArr => {
                 var grades = ExamGrade.toArray(jsonArr[0]);
-                var members = ExamMemer.toArray(jsonArr[0]);
+                var members = ExamMember.toArray(jsonArr[0]);
                 var submits = Submission.toArray(jsonArr[0]);
                 this.scoreRecords = members;
                 _.each(members, (member: ExamMember) => {
@@ -151,4 +151,4 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
             })
         }
     }
-
+}

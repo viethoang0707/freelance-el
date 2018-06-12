@@ -94,7 +94,7 @@ export class ClassConferenceDialog extends BaseComponent {
 							member["conferenceMember"] = conferenceMember;
 							member["is_active"] = true;
 							conferenceMembers.push(conferenceMember);
-							var roomMember = RoomMember.createRoomMember( member.name, member.image, room.id, member.role);
+							var roomMember = RoomMember.createRoomMember( member.name, member.image, this.room.id, member.role);
 							roomMembers.push(roomMember);
 						}
 						ConferenceMember.createArray(this, conferenceMembers).subscribe(()=> {

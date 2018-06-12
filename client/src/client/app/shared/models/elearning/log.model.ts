@@ -98,7 +98,7 @@ export class CourseLog extends BaseModel{
     static startCourseUnit(context:APIContext, memberId:number,  unitId:number):Observable<any> {
         var log = new CourseLog();
         log.member_id = memberId;
-        log.res_id = unit.id;
+        log.res_id = unitId;
         log.res_model = CourseUnit.Model;
         log.note = 'Start course unit';
         log.code = "START_COURSE_UNIT";
@@ -192,7 +192,7 @@ export class ExamLog extends BaseModel{
     static finishExam(context:APIContext, memberId: number, submitId:number):Observable<any> {
         var log = new ExamLog();
         log.member_id =  memberId;
-        log.res_id = submit.id;
+        log.res_id = submitId;
         log.res_model = Submission.Model;
         log.note = 'Finish exam';
         log.code = 'FINISH_EXAM';
@@ -203,7 +203,7 @@ export class ExamLog extends BaseModel{
     static startAnswer(context:APIContext, memberId: number,  answerId:number):Observable<any> {
         var log = new ExamLog();
         log.member_id =  memberId;
-        log.res_id = answer.id;
+        log.res_id = answerId;
         log.res_model = Answer.Model;
         log.note = 'Start answer';
         log.code = "START_ANSWER";
@@ -214,7 +214,7 @@ export class ExamLog extends BaseModel{
     static finishAnswer(context:APIContext, memberId: number, answerId:number):Observable<any> {
         var log = new ExamLog();
         log.member_id =  memberId;
-        log.res_id = answer.id;
+        log.res_id = answerId;
         log.res_model = Answer.Model;
         log.note = 'Close answer';
         log.code = "CLOSE_ANSWER";

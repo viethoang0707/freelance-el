@@ -1,5 +1,4 @@
 import { APIContext } from '../context';
-import { CompetencyCache } from '../../services/cache.service';
 import { Model,FieldProperty } from '../decorator';
 import { Exam } from './exam.model';
 import { Course } from './course.model';

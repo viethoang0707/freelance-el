@@ -89,7 +89,7 @@ export class CompetencyListComponent extends BaseComponent {
             this.competencies = competencies;
             this.displayCompetencies = competencies;
             _.each(this.competencies, competency => {
-                competency["levels"] = _.reduce(levels, function(memo, level) { return memo + level["name"] + ','; }, '');
+                competency["levels"] = _.reduce(this.levels, function(memo, level) { return memo + level["name"] + ','; }, '');
             });
 
         });

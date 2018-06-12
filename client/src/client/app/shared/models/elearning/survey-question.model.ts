@@ -73,10 +73,6 @@ export class SurveyQuestion extends BaseModel{
         return SurveyQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
     }
 
-    static countBySurvey( context:APIContext, surveyId: number): Observable<any[]> {
-        return SurveyQuestion.count(context,"[('survey_id','=',"+surveyId+")]");
-    }
-
 
     static countBySheet( context:APIContext, sheetId: number): Observable<any> {
         return SurveyQuestion.count(context,"[('sheet_id','=',"+sheetId+")]");

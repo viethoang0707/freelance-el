@@ -103,7 +103,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 });
                 ExamMember.populateExamForArray(this, this.examMembers).subscribe(() => {
                     this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
-                        return (member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
+                        return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
                     });
                     this.examMembers.sort((member1, member2): any => {
                         return (member1.exam.create_date < member1.exam.create_date)

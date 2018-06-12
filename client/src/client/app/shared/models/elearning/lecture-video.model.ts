@@ -24,7 +24,7 @@ export class VideoLecture extends BaseModel{
     unit_id: number;
 
     static __api__byCourseUnit(unitId:number): SearchReadAPI {
-        return new VideoLecture(SCORMLecture.Model, [],"[('unit_id','=',"+unitId+")]");
+        return new SearchReadAPI(VideoLecture.Model, [],"[('unit_id','=',"+unitId+")]");
     }
     
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {

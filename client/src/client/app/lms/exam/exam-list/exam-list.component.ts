@@ -15,6 +15,8 @@ import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content
 import { ExamStudyDialog } from '../exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Route, Router } from '@angular/router';
+import { BaseModel } from '../../../shared/models/base.model';
+import { User } from '../../../shared/models/elearning/user.model';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     private examMembers: ExamMember[];
     private submits: Submission[];
     private reportUtils: ReportUtils;
+    private currentUser: User;
 
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -39,47 +42,46 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         super();
         this.exams = [];
         this.reportUtils = new ReportUtils();
+        this.currentUser =  this.authService.UserProfile;
     }
 
     ngOnInit() {
         BaseModel.bulk_search(this,
             ExamMember.__api__listByUser(this.currentUser.id),
-            Submission.__api__listByUser(this.currentUser.id),
+            Submission.__api__listByUser(this.currentUser.id))
             .subscribe(jsonArray => {
                 var members = ExamMember.toArray(jsonArray[0]);
                 var submits = Submission.toArray(jsonArray[1]);
-                this.displayExam(members, submits);
+                this.displayExams(members, submits);
             });
     }
 
     displayExams(members: ExamMember[], submits: Submission[]) {
-        this.members = _.filter(members, (member: ExamMember) => {
+        this.examMembers = _.filter(members, (member: ExamMember) => {
             return (member.exam_id && member.status == 'active');
         });
-        ExamMember.populateExamForArray(this, this.members).subscribe(exams => {
-            _.each(exams, (exam) => {
-                exam.member = _.find(members, (member: ExamMember) => {
+        ExamMember.populateExamForArray(this, this.examMembers).subscribe(exams => {
+            _.each(exams, (exam:Exam) => {
+                exam["member"] = _.find(members, (member: ExamMember) => {
                     return member.exam_id == exam.id;
                 });
-                exam.submit = _.find(submits, (submit: Submission) => {
-                    return submit.member_id == exam.member.id && submit.exam_id == exam.id;
+                exam["submit"] = _.find(submits, (submit: Submission) => {
+                    return submit.member_id == exam["member"].id && submit.exam_id == exam.id;
                 });
-                if (exam.submit) {
-                    if (exam.submit.score != null)
-                        exam.score = exam.submit.score;
+                if (exam["submit"]) 
+                        exam["score"] = exam["submit."].core;
                     else
-                        exam.score = '';
-                }
+                        exam["score"] = '';
                 ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                    exam.question_count = count;
+                    exam["question_count"] = count;
                 });
-                exam.examMemberData = {};
+                exam["examMemberData"] = {};
                 ExamMember.listByExam(this, exam.id).subscribe(members => {
-                    exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
+                    exam["examMemberData"] = this.reportUtils.analyseExamMember(exam, members);
                 });
             });
             this.exams = _.filter(exams, (exam) => {
-                return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.IsAvailable);
+                return exam["member"].role == 'supervisor' || (exam[".member"].role == 'candidate' && exam.IsAvailable);
             });
             this.exams.sort((exam1, exam2): any => {
                 return (exam1.id < exam2.id)

@@ -6,6 +6,7 @@ import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
+import * as _ from 'underscore';
 
 @Model('etraining.course')
 export class Course extends BaseModel{

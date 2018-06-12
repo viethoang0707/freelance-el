@@ -1,4 +1,4 @@
-import from '../helpers/reflect';
+import  '../../helpers/reflect';
 
 import { Observable, Subject } from 'rxjs/Rx';
 import { METHOD_METADATA_KEY, MethodRegister } from './decorator';

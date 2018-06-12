@@ -80,7 +80,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				this.loadMembers();
 				var failList = result['failList'];
 				_.each(failList, userId=> {
-					var user = _.find(users, obj=> {
+					let user:User = _.find(users, (obj:User)=> {
 						return obj.id == userId;
 					});
 					this.warn(`User ${user.name} does not meet course requirement`);

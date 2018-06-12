@@ -58,7 +58,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 						_.each(examQuestions, (question: ExamQuestion) => {
 							this.questions[question.question_id] = question;
 						});
-						this.markAnswers = _.filter(answers, (ans: Answer) => {
+						this.markAnswers = _.filter(this.answers, (ans: Answer) => {
 							var question = _.find(examQuestions, (q:ExamQuestion) => {
 								return ans.question_id == q.question_id;
 							});
@@ -78,10 +78,11 @@ export class QuestionMarkingDialog extends BaseComponent {
 			this.submit.score = 0;
 		this.submit.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
 		this.submit.save(this).subscribe(() => {
-			Answer.updateArray(this, this.answers)..subscribe(() => {
+			Answer.updateArray(this, this.answers).subscribe(() => {
 				this.success('Marking saved sucessfully');
 				this.onMarkCompleteReceiver.next();
 				this.hide();
 			});
-		}
+		});
+	}
 }

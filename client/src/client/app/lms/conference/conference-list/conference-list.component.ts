@@ -26,34 +26,35 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
 	private conferenceMembers: ConferenceMember[];
     private currentUser: User;
 
-	CONFERENCE_STATUS =  CONFERENCE_STATUS;
+	CONFERENCE_STATUS = CONFERENCE_STATUS;
 
-	constructor(private meetingSerivce:MeetingService) {
+	constructor(private meetingSerivce: MeetingService) {
         super();
-        this.currentUser =  this.authService.UserProfile;
+        this.currentUser = this.authService.UserProfile;
     }
 
     displayConferences() {
-        this.conferenceMembers = _.filter(this.conferenceMembers, (member: ConferenceMember) => {
-            return member.conference_id && member.conference_status == 'open';
-        });
-        this.conferenceMembers.sort((member1, member2): any => {
-            return member1.create_date < member2.create_date;
-        });
-        
+
+
     }
 
     ngOnInit() {
-        ConferenceMember.listByUser(this, this.currentUser.id).subscribe((conferenceMembers)=> {
-            this.conferenceMembers = conferenceMembers;
-            ConferenceMember.populateConferenceForArray(this, this.conferenceMembers).subscribe(() => {
+        ConferenceMember.listByUser(this, this.currentUser.id).subscribe((conferenceMembers) => {
+            conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
+                return member.conference_id && member.conference_status == 'open';
+            });
+            ConferenceMember.populateConferenceForArray(this, conferenceMembers).subscribe(() => {
+                this.conferenceMembers =  conferenceMembers;
+                this.conferenceMembers.sort((member1, member2): any => {
+                    return member1.create_date < member2.create_date;
+                });
             });
         });
     }
 
     joinConference(member) {
         if (member.is_active)
-            this.meetingSerivce.join( member.conference.room_ref,member.room_member_ref);
+            this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref);
         else
             this.error('You are  not allowed to join the conference');
     }

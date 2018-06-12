@@ -57,21 +57,6 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         this.excelService.exportAsExcelFile(output, 'course_by_member_report');
     }
 
-    selectExam() {
-        if (this.selectedExam) {
-            this.startTransaction();
-            ExamMember.listByExam(this, this.selectedExam.id).subscribe(members => {
-                ExamGrade.listByExam(this, this.selectedExam.id).subscribe(grades => {
-                    Submission.listByExam(this, this.selectedExam.id).subscribe(submits => {
-                        ExamLog.listByExam(this, this.selectedExam.id).subscribe(logs => {
-                            this.records = this.generateReport(this.selectedExam, grades, submits, logs, members);
-                        });
-                    });
-                });
-            });
-        }
-    }
-
     render(exam: Exam) {
         this.clear();
         BaseModel

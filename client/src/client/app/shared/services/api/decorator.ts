@@ -1,4 +1,4 @@
-import from '../../helpers/reflect';
+import '../../helpers/reflect';
 
 export class MethodRegister
 {
