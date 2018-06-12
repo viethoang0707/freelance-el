@@ -3,7 +3,7 @@
   <div class="ui-g">
     <div class="ui-g-12">
       <label>{{'Course group'|translate}}</label>
-      <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterCourse()" (onNodeUnselect)="filterCourse()"></p-tree>
+      <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterCourse()" (onNodeUnselect)="filterCourse()" styleClass="width-tree"></p-tree>
     </div>
     <div class="ui-g-12">
       <p-toolbar>
