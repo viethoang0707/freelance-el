@@ -85,10 +85,23 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
 	mark() {
         if (this.selectedRecord)
-            if (this.selectedRecord["submit"] == null) {
-                this.warn(this.translateService.instant('The member has not attempted the exam'));
+
+            // if (this.selectedRecord["submit"] == null) {
+            //     this.warn(this.translateService.instant('The member has not attempted the exam'));
+            //         return;
+            // }
+
+            this.exam.containsOpenEndQuestion(this).subscribe(success => {
+                if (!success) {
+                    this.warn(this.translateService.instant('The exam does not contains any open question'));
                     return;
-            }
+                }
+                if (this.selectedRecord["submit"] ==  null) {
+                    this.warn(this.translateService.instant('The member has not attempted the exam'));
+                    return;
+                }
+                this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"] );
+            });
     }
 
     viewAnswerSheet() {
@@ -139,15 +152,29 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     closeExam() {
         if (this.selectedRecord) {
             this.selectedRecord.status = 'closed';
-            this.selectedRecord.save(this).subscribe(() => {
-                _.each(this.members, (member: ExamMember) => {
-                    member.enroll_status = 'completed';
-                    return member.save(this);
-                });
-                ExamMember.updateArray(this, this.members).subscribe(() => {
-                    this.success(this.translateService.instant('Exam close'));
-                });
-            })
+
+            // this.selectedRecord.save(this).subscribe(() => {
+            //     _.each(this.members, (member: ExamMember) => {
+            //         member.enroll_status = 'completed';
+            //         return member.save(this);
+            //     });
+            //     ExamMember.updateArray(this, this.members).subscribe(() => {
+            //         this.success(this.translateService.instant('Exam close'));
+            //     });
+            // })
+
+            // var subscriptions = _.map(this.members, (member: ExamMember)=> {
+            //     member.enroll_status = 'completed';
+            //     return member.save(this);
+            // });
+            // subscriptions.push(this.selectedRecord.save(this));
+            // this.startTransaction();
+            // Observable.forkJoin(subscriptions).subscribe(()=> {
+            //      this.success('Exam close');
+            //      this.closeTransaction();
+            this.selectedRecord.save(this).subscribe(()=> {
+                this.success(this.translateService.instant('Exam close'));
+            });
         }
     }
 }

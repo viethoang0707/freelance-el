@@ -53,8 +53,15 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 				questionTempl.sheet_id =  sheet.id;
 				return questionTempl;
 			});
-			ExamQuestion.createArray(this, examQuestions).subscribe(()=> {
+			// ExamQuestion.createArray(this, examQuestions).subscribe(()=> {
+			// 	this.success(this.translateService.instant('Question sheet saved successfully'));
+			var subscriptions = _.map(examQuestions, examQuestion=> {
+				return examQuestion.save(this);
+			});
+			subscriptions.push(this.sheet.save(this));
+			Observable.forkJoin(subscriptions).subscribe(()=> {
 				this.success(this.translateService.instant('Question sheet saved successfully'));
+				this.closeTransaction();
 				this.hide();
 			});
 		});

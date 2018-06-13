@@ -39,6 +39,7 @@ export class QuestionSheetListComponent extends BaseComponent {
     deleteSheet(){
         if(this.selectedSheet)
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+                this.startTransaction();
                 this.selectedSheet.delete(this).subscribe(() => {
                     this.selectedSheet = null;
                     this.loadQuestionSheets();

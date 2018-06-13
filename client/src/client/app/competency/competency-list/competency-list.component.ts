@@ -72,6 +72,7 @@ export class CompetencyListComponent extends BaseComponent {
     deleteCompetency(){
         if(this.selectedCompetency)
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+                this.startTransaction();
                 this.selectedCompetency.delete(this).subscribe(() => {
                     this.selectedCompetency = null;
                     this.loadCompetencies();
