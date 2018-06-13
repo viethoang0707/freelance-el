@@ -275,6 +275,7 @@
 	"Chart": "Biểu đồ",
 	"Permission": "Phân quyền",
 	"Permission management": "Quản lý phân quyền",
+	"Permission member": "Người cấp phép",
 	"Role is required": "Vai trò là bắt buộc nhập",
 	"Easy": "Dễ",
 	"Medium": "Trung bình",
@@ -382,5 +383,10 @@
 	"Exam has not been started": "Kỳ thi chưa bắt đầu",
 	"Exam has ended": "Kỳ thi đã kết thúc",
 	"Time spent (mintes)": "Thời gian dành cho từng bài giảng (phút)",
-	"Conference open": "Lớp học trực tuyến được mở"
+	"Conference open": "Lớp học trực tuyến được mở",
+	"You cannot delete permission assigned to other uers": "Bạn không thể xóa quyền được gán cho người dùng khác",
+	"Question sheet bank": "Ngân hàng đề thi",
+	"Question sheets": "Đề thi",
+	"Question sheet template": "Mẫu đề thi",
+	""
 }
