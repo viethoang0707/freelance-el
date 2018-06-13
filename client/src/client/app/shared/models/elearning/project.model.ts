@@ -5,6 +5,8 @@ import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import { Exam } from './exam.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.project')
 export class Project extends BaseModel{
@@ -36,7 +38,10 @@ export class Project extends BaseModel{
     @FieldProperty<Date>()
     end: Date;
 
-
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(Project.Model, [],"[('class_id','=',"+classId+")]");
+    }
+    
     static listByClass(context:APIContext, classId):Observable<any> {
         return Project.search(context,[], "[('class_id','=',"+classId+")]");
     }

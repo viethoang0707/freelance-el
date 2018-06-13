@@ -39,9 +39,9 @@ export class ProjectMarkingDialog extends BaseDialog<ProjectSubmission>  impleme
 			console.log(object);
 			CourseMember.get(this, object.member_id).subscribe(member=> {
 				this.member = member;
-				ExamSetting.appSetting(this).subscribe(setting=> {
-					if (setting)
-						this.setting =  setting;
+				ExamSetting.all(this).subscribe(settings=> {
+					if (settings.length)
+						this.setting =  settings[0];
 				});
 			});
 		});

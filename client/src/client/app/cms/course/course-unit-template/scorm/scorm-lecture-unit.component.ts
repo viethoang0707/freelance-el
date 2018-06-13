@@ -36,7 +36,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		this.startTransaction();
+		
 		SCORMLecture.byCourseUnit(this, unit.id).subscribe((lecture: SCORMLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -45,7 +45,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
 			}
-			this.closeTransaction();
+			
 		});
 	}
 
@@ -54,10 +54,8 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
-		this.startTransaction();
 		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
 			data => {
-				this.closeTransaction();
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.lecture.package_url = data["url"];
@@ -69,7 +67,6 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				}
 			},
 			() => {
-				this.closeTransaction();
 			}
 		);
 	}

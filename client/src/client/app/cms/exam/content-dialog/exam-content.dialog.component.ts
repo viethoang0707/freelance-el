@@ -27,11 +27,12 @@ import { TreeNode } from 'primeng/api';
 })
 export class ExamContentDialog extends BaseComponent {
 
+	QUESTION_LEVEL = QUESTION_LEVEL;
+
 	private display: boolean;
 	private exam: Exam;
 	private sheet: QuestionSheet;
 	private examQuestions: ExamQuestion[];
-	QUESTION_LEVEL = QUESTION_LEVEL;
 	private totalScore: number;
 
 	@ViewChild(QuestionSheetPreviewDialog) previewDialog : QuestionSheetPreviewDialog;
@@ -53,31 +54,31 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	loadQuestionSheet() {
-		this.startTransaction();
+		
 		QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
-				this.startTransaction();
+				
 				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
-					this.closeTransaction();
+					
 				});
 			}
 			else {
 				this.sheet = new QuestionSheet();
 				this.sheet.exam_id = this.exam.id;
-				this.startTransaction();
+				
 				this.sheet.save(this).subscribe(sheet => {
 					this.sheet = sheet;
-					this.closeTransaction();
+					
 				});
 			}
 		});
 	}
 
 	save() {
-		this.startTransaction();
+		
 		var subscriptions = _.map(this.examQuestions, examQuestion=> {
 			return examQuestion.save(this);
 		});
@@ -85,7 +86,7 @@ export class ExamContentDialog extends BaseComponent {
 		Observable.forkJoin(...subscriptions).subscribe(()=> {
 			this.hide();
 			this.success(this.translateService.instant('Content saved successfully.'));
-			this.closeTransaction();
+			
 		});
 	}
 
@@ -103,10 +104,10 @@ export class ExamContentDialog extends BaseComponent {
 			return examQuestion.delete(this);
 		});
 		subscriptions.push(this.sheet.save(this));
-		this.startTransaction();
+		
 		Observable.forkJoin(subscriptions).subscribe(()=> {
 			this.examQuestions = [];
-			this.closeTransaction();
+			
 		});
 	}
 
@@ -114,7 +115,7 @@ export class ExamContentDialog extends BaseComponent {
 		if (!this.sheet.finalized  && this.examQuestions.length ==0)
 			this.selectSheetDialog.show();
 			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:QuestionSheet) => {
-				this.startTransaction();
+				
 				ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
 					examQuestions = _.map(examQuestions, examQuestion=> {
 						var newExamQuestion = new ExamQuestion();
@@ -130,7 +131,7 @@ export class ExamContentDialog extends BaseComponent {
 					subscriptions.push(this.sheet.save(this));
 					Observable.forkJoin(subscriptions).subscribe(()=> {
 						this.loadQuestionSheet();
-						this.closeTransaction();
+						
 					});
 				});
 			});

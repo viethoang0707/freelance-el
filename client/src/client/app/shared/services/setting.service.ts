@@ -8,38 +8,38 @@ import { DEFAULT_LANG } from '../models/constants';
 
 @Injectable()
 export class SettingService {
-  
+
   private viewMode: string;
 
   constructor(private authService: AuthService) {
   }
 
   private viewModeEventReceiver: Subject<string> = new Subject();
-  viewModeEvents:Observable<string> =  this.viewModeEventReceiver.asObservable();
+  viewModeEvents: Observable<string> = this.viewModeEventReceiver.asObservable();
 
 
   get ViewMode() {
-  	if (this.viewMode)
-  		return this.viewMode;
-  	if (this.authService.UserProfile) 
-  		return this.authService.UserProfile.IsAdmin ? 'admin' :'lms';
-  	return null;
+    if (this.viewMode)
+      return this.viewMode;
+    if (this.authService.UserProfile)
+      return this.authService.UserProfile.IsAdmin ? 'admin' : 'lms';
+    return null;
   }
 
-  set ViewMode(data:string) {
-  	this.viewMode = data;
+  set ViewMode(data: string) {
+    this.viewMode = data;
     this.viewModeEventReceiver.next(data);
   }
 
   set Lang(lang: string) {
-        localStorage.setItem('language', lang);
-    }
+    localStorage.setItem('language', lang);
+  }
 
-   get Lang():string {
-       if  (localStorage.getItem('language'))
-         return localStorage.getItem('language');
-       else
-         return DEFAULT_LANG;
-   }
-  	
+  get Lang(): string {
+    if (localStorage.getItem('language'))
+      return localStorage.getItem('language');
+    else
+      return DEFAULT_LANG;
+  }
+
 }

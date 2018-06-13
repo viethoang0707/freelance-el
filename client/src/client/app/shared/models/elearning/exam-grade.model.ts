@@ -2,7 +2,10 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
-import { ExamGradeCache } from '../../services/cache.service';
+import { Cache } from '../../helpers/cache.utils';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import * as _ from 'underscore';
+
 
 @Model('etraining.exam_grade')
 export class ExamGrade extends BaseModel {
@@ -17,15 +20,14 @@ export class ExamGrade extends BaseModel {
     }
 
     name: string;
-    exam_id: number;
     min_score: number;
     max_score: number;
 
-    static all(context: APIContext): Observable<any[]> {
-        return ExamGradeCache.all(context);
+
+    static gradeScore(grades:ExamGrade[], score:number) {
+        return _.find(grades, (obj)=> {
+            return obj.min_score <= score && obj.max_score >= score;
+        });
     }
 
-    static listByExam(context: APIContext, examId: number): Observable<any[]> {
-        return ExamGrade.search(context, [], "[('exam_id','='," + examId + ")]");
-    }
 }

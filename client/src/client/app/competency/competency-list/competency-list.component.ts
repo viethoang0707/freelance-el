@@ -11,6 +11,7 @@ import { CompetencyDialog } from '../competency-dialog/competency-dialog.compone
 import { TreeUtils } from '../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { CompetencyLevel } from '../../shared/models/elearning/competency-level.model';
+import { BaseModel } from '../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -38,17 +39,19 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.buildCompetencyGroup();
-        this.loadCompetencies();
+        BaseModel.bulk_search(this, Group.__api__listCompetencyGroup(), CompetencyLevel.__api__all(), Competency.__api__all())
+            .subscribe(jsonArr => {
+                var groups = Group.toArray(jsonArr[0]);
+                this.tree = this.treeUtils.buildGroupTree(groups);
+                this.levels = CompetencyLevel.toArray(jsonArr[1]);
+                this.competencies = Competency.toArray(jsonArr[2]);
+                this.displayCompetencies = this.competencies;
+                _.each(this.competencies, competency => {
+                    competency["levels"] = _.reduce(this.levels, function(memo, level) { return memo + level["name"] + ','; }, '');
+                });
+            });
     }
 
-    buildCompetencyGroup() {
-        this.startTransaction();
-        Group.listCompetencyGroup(this).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
-            this.closeTransaction();
-        });
-    }
 
     addCompetency() {
         var competency = new Competency();
@@ -59,55 +62,49 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     editCompetency() {
-        if (this.selectedCompetency )
+        if (this.selectedCompetency)
             this.competencyDialog.show(this.selectedCompetency);
         this.competencyDialog.onUpdateComplete.subscribe(() => {
             this.loadCompetencies();
         });
     }
 
-    deleteCompetency(){
-        if(this.selectedCompetency)
+    deleteCompetency() {
+        if (this.selectedCompetency)
             this.confirm('Are you sure to delete ?', () => {
-                this.startTransaction();
                 this.selectedCompetency.delete(this).subscribe(() => {
                     this.selectedCompetency = null;
                     this.loadCompetencies();
-                    this.closeTransaction();
+
                 });
             });
     }
 
     loadCompetencies() {
-        this.startTransaction();
+
         Competency.all(this).subscribe(competencies => {
-            _.each(competencies , competency=> {
+            _.each(competencies, competency => {
                 competency["levels"] = [];
             });
             this.competencies = competencies;
             this.displayCompetencies = competencies;
-            CompetencyLevel.all(this).subscribe(levels => {
-                _.each(this.competencies , competency=> {
-                    CompetencyLevel.listByCompetency(this, competency["id"]).subscribe(levels=> {
-                        competency["levels"] = _.reduce(levels, function(memo, level){ return memo + level["name"]+','; }, '');
-                    });
-                });
-                this.closeTransaction();
+            _.each(this.competencies, competency => {
+                competency["levels"] = _.reduce(this.levels, function(memo, level) { return memo + level["name"] + ','; }, '');
             });
-            
+
         });
     }
 
     filterCompetency() {
         if (this.selectedGroupNodes.length != 0) {
             this.displayCompetencies = _.filter(this.competencies, competency => {
-                var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
+                var parentGroupNode = _.find(this.selectedGroupNodes, node => {
                     return node.data.id == competency.group_id;
                 });
                 return parentGroupNode != null;
             });
         } else {
-            this.displayCompetencies =  this.competencies;
+            this.displayCompetencies = this.competencies;
         }
     }
 

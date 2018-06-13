@@ -30,6 +30,7 @@ import { QuestionSheetPrintDialog } from '../question-sheet-print/question-sheet
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { ExamReportDialog } from '../exam-report/exam-report.dialog.component';
 import { ExamStatsDialog } from '../exam-stats/exam-stats.dialog.component';
+import { BaseModel } from '../../../shared/models/base.model';
 
 
 @Component({
@@ -46,6 +47,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     private scoreRecords: any;
     private selectedRecord: any;
     private questions: ExamQuestion[];
+
     @ViewChild(QuestionMarkingDialog) questionMarkDialog: QuestionMarkingDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
     @ViewChild(QuestionSheetPrintDialog) questionSheetDialog: QuestionSheetPrintDialog;
@@ -62,40 +64,32 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
             var memberId = +params['memberId'];
             var examId = +params['examId'];
-            this.startTransaction();
             Exam.get(this, examId).subscribe(exam => {
                 ExamMember.get(this, memberId).subscribe(member => {
                     this.member = member;
 					this.exam = exam;
 					this.loadScores();
-                    this.closeTransaction();
                 });
             });
         });
 	}
 
     showQuestionSheet() {
-        QuestionSheet.byExam(this, this.exam.id).subscribe((sheet:QuestionSheet)=> {
+        QuestionSheet.byExam(this, this.exam.id).subscribe((sheet: QuestionSheet) => {
             if (!sheet || !sheet.finalized)
                 this.error('The exam questions has not been set up');
             else
                 this.questionSheetDialog.show(this.exam, sheet);
-        })
+        });
     }
 
 	mark() {
         if (this.selectedRecord)
-            this.exam.containsOpenEndQuestion(this).subscribe(success => {
-                if (!success) {
-                    this.warn('The exam does not contains any open question');
-                    return;
-                }
-                if (this.selectedRecord["submit"] ==  null) {
-                    this.warn('The member has not attempted the exam');
-                    return;
-                }
-                this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"] );
-            });
+            if (this.selectedRecord["submit"] == null) {
+                this.warn('The member has not attempted the exam');
+                return;
+            }
+        this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"]);
     }
 
     viewAnswerSheet() {
@@ -108,31 +102,31 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     loadScores() {
-        this.startTransaction();
-        ExamGrade.all(this).subscribe(grades => {
-            ExamMember.listCandidateByExam(this, this.exam.id).subscribe(members => {
-                this.members =  members;
-                Submission.listByExam(this, this.exam.id).subscribe(submits => {
-                    this.scoreRecords = members;
-                    _.each(members, (member: ExamMember) => {
-                        var submit = _.find(submits, (submit: Submission) => {
-                            return submit.member_id == member.id && submit.exam_id == this.exam.id;
-                        });
-                        member["submit"] = submit;
-                        if (submit) {
-                            if (submit.score != null) {
-                                member["score"] = submit.score;
-                                member["grade"] = member.examGrade(grades, submit.score);
-                            }
-                            else
-                                member["score"] = '';
-                        }
+        BaseModel.bulk_search(this,
+            ExamGrade.__api__all(),
+            ExamMember.__api__listCandidateByExam(this.exam.id),
+            Submission.__api__listByExam(this.exam.id))
+            .subscribe(jsonArr => {
+                var grades = ExamGrade.toArray(jsonArr[0]);
+                var members = ExamMember.toArray(jsonArr[0]);
+                var submits = Submission.toArray(jsonArr[0]);
+                this.scoreRecords = members;
+                _.each(members, (member: ExamMember) => {
+                    var submit = _.find(submits, (submit: Submission) => {
+                        return submit.member_id == member.id && submit.exam_id == this.exam.id;
                     });
-                    this.closeTransaction();
+                    member["submit"] = submit;
+                    if (submit) {
+                        if (submit.score != null) {
+                            member["score"] = submit.score;
+                            member["grade"] = ExamGrade.gradeScore(grades, submit.score);
+                        }
+                        else
+                            member["score"] = '';
+                    }
                 });
-
             });
-        });
+
     }
 
     showExamReport() {
@@ -142,22 +136,19 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     showExamStats() {
         this.statsDialog.show(this.exam);
     }
-
+    
     closeExam() {
         if (this.selectedRecord) {
             this.selectedRecord.status = 'closed';
-            var subscriptions = _.map(this.members, (member: ExamMember)=> {
-                member.enroll_status = 'completed';
-                return member.save(this);
-            });
-            subscriptions.push(this.selectedRecord.save(this));
-            this.startTransaction();
-            Observable.forkJoin(subscriptions).subscribe(()=> {
-                 this.success('Exam close');
-                 this.closeTransaction();
-            });
+            this.selectedRecord.save(this).subscribe(() => {
+                _.each(this.members, (member: ExamMember) => {
+                    member.enroll_status = 'completed';
+                    return member.save(this);
+                });
+                ExamMember.updateArray(this, this.members).subscribe(() => {
+                    this.success('Exam close');
+                });
+            })
         }
     }
-
 }
-

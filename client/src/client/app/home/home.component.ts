@@ -8,6 +8,8 @@ import { HomeEventManager } from './home-manager.service';
 import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog.component';
 import { LoadingService } from '../shared/services/loading.service';
 import { UserLog } from '../shared/models/elearning/log.model';
+import { Group } from '../shared/models/elearning/group.model';
+import { BaseModel } from '../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -45,6 +47,8 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     }
 
     ngOnInit() {
+        // Pre-loading cache
+        BaseModel.bulk_search(this,Group.__api__all()).subscribe();
     }
 
     onWrapperClick() {

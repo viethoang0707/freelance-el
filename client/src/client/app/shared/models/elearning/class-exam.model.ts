@@ -5,6 +5,7 @@ import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import { Exam } from './exam.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.class_exam')
 export class ClassExam extends BaseModel{
@@ -42,10 +43,9 @@ export class ClassExam extends BaseModel{
         return ClassExam.search(context,[], "[('class_id','=',"+classId+")]");
     }
 
-    containsOpenEndQuestion(context:APIContext):Observable<any> {
-        return ExamQuestion.listOpenQuestionByExam(context, this.exam_id).flatMap(questions => {
-            return Observable.of(questions.length > 0);
-        });        
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(ClassExam.Model, [],"[('class_id','=',"+classId+")]");
     }
+
 
 }

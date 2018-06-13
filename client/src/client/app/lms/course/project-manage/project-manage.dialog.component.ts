@@ -24,6 +24,7 @@ import { ProjectMarkingDialog } from '../project-marking/project-marking.dialog.
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Http, Response } from '@angular/http';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 
 @Component({
@@ -34,11 +35,13 @@ import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.m
 })
 export class ProjectManageDialog extends BaseComponent {
 
+    PROJECT_STATUS = PROJECT_STATUS;
+    
     private display: boolean;
 	private project: Project;
     private scoreRecords: any;
     private selectedRecord: any;
-    PROJECT_STATUS = PROJECT_STATUS;
+    
     @ViewChild(ProjectMarkingDialog) projectMarkDialog: ProjectMarkingDialog;
 
 	constructor() {
@@ -46,44 +49,41 @@ export class ProjectManageDialog extends BaseComponent {
 		this.project = new Project();
 	}
 
-	show(project:Project) {
-        this.project =  project;
-        this.display =  true;
-        this.loadScores();
-        this.startTransaction();
-        
+	show(project: Project) {
+        this.project = project;
+        this.display = true;
+        BaseModel.bulk_search(this,
+            ProjectSubmission.__api__listByProject(this.project.id),
+            CourseMember.__api__listByClass(this.project.class_id))
+            .subscribe(jsonArr => {
+                var submits = ProjectSubmission.toArray(jsonArr[0]);
+                var members = CourseMember.toArray(jsonArr[1]);
+                this.loadScores(submits, members);
+            })
 	}
 
 	mark() {
         if (this.selectedRecord && this.selectedRecord['submit'])
-               this.projectMarkDialog.show(this.selectedRecord['submit']);
+            this.projectMarkDialog.show(this.selectedRecord['submit']);
     }
 
-    loadScores() {
-        this.startTransaction();
-        ProjectSubmission.listByProject(this, this.project.id).subscribe(submits => {
-            CourseClass.get(this, this.project.class_id).subscribe(clazz => {
-                CourseMember.listByClass(this, clazz.id).subscribe(members => {
-                    this.scoreRecords = members;
-                    _.each(members, (member: CourseMember) => {
-                        var submit = _.find(submits, (submit: ProjectSubmission) => {
-                            return submit.member_id == member.id;
-                        });
-                        member["submit"] = submit;
-                        if (submit) {
-                            if (submit.score != null) {
-                                member["score"] = submit.score;
-                                member["date_submit"] = submit.date_submit;
-                            }
-                            else {
-                                member["score"] = '';
-                                member["date_submit"] = '';
-                            }
-                        }
-                    });
-                    this.closeTransaction();
-                });
+    loadScores(submits: ProjectSubmission[], members: CourseMember[]) {
+        this.scoreRecords = members;
+        _.each(members, (member: CourseMember) => {
+            var submit = _.find(submits, (obj: ProjectSubmission) => {
+                return obj.member_id == member.id;
             });
+            member["submit"] = submit;
+            if (submit) {
+                if (submit.score != null) {
+                    member["score"] = submit.score;
+                    member["date_submit"] = submit.date_submit;
+                }
+                else {
+                    member["score"] = '';
+                    member["date_submit"] = '';
+                }
+            }
         });
     }
 

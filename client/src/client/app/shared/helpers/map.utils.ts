@@ -91,7 +91,7 @@ export class MapUtils {
     }
 
     static deserializeModel(model:string, jsonObject:any) {
-        if (jsonObject === undefined) return undefined;
+        if (!jsonObject) return undefined;
         let obj:any = ModelRegister.Instance.instantiateObject(model);
         Object.keys(obj).forEach((key) => {
             let propertyMetadataFn:(IFieldMetaData) => any = (propertyMetadata)=> {

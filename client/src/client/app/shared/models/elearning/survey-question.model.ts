@@ -1,8 +1,9 @@
-
+import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
+import { SearchCountAPI } from '../../services/api/search-count.api';
 
 @Model('etraining.survey_question')
 export class SurveyQuestion extends BaseModel{
@@ -45,13 +46,33 @@ export class SurveyQuestion extends BaseModel{
     }
 
 
+    static __api__listBySheet(sheetId: number): SearchReadAPI {
+        return new SearchReadAPI(SurveyQuestion.Model, [],"[('sheet_id','=','"+sheetId+"')]");
+    }
+
+
+    static __api__countBySheet(sheetId: number): SearchCountAPI {
+        return new SearchCountAPI(SurveyQuestion.Model, "[('sheet_id','=','"+sheetId+"')]");
+    }
+
+    static __api__countBySurvey(surveyId: number): SearchCountAPI {
+        return new SearchCountAPI(SurveyQuestion.Model, "[('survey_id','=','"+surveyId+"')]");
+    }
+
+    static countBySurvey( context:APIContext, surveyId: number): Observable<any> {
+        return SurveyQuestion.count(context,"[('survey_id','=',"+surveyId+")]");
+    }
+
+
+    static __api__byQuestion(questionId: number): SearchReadAPI {
+        return new SearchReadAPI(SurveyQuestion.Model, [],"[('question_id','=','"+questionId+"')]");
+    }
+
+
     static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
         return SurveyQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
     }
 
-    static countBySurvey( context:APIContext, surveyId: number): Observable<any[]> {
-        return SurveyQuestion.count(context,"[('survey_id','=',"+surveyId+")]");
-    }
 
     static countBySheet( context:APIContext, sheetId: number): Observable<any> {
         return SurveyQuestion.count(context,"[('sheet_id','=',"+sheetId+")]");

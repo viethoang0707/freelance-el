@@ -9,15 +9,15 @@ import { Observable, Subject } from 'rxjs/Rx';
 @Injectable()
 export class MeetingService {
 
-    private nativeWindow: any;
+	private nativeWindow: any;
 
-    constructor(private winRef: WindowRef, private authService: AuthService) {
-         this.nativeWindow = winRef.getNativeWindow();
-    }
+	constructor(private winRef: WindowRef, private authService: AuthService) {
+		this.nativeWindow = winRef.getNativeWindow();
+	}
 
-    join(room_ref:string, member_ref: string) {
-        this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&cloudid=${this.authService.CloudAcc.id}`);
-    }
+	join(room_ref: string, member_ref: string) {
+		this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&cloudid=${this.authService.CloudAcc.id}`);
+	}
 
-   
+
 }

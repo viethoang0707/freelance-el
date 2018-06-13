@@ -4,7 +4,11 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
-import { ExamCache } from '../../services/cache.service';
+import { Cache } from '../../helpers/cache.utils';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import * as moment from 'moment';
+import {SERVER_DATETIME_FORMAT} from '../constants';
+import { ExecuteAPI } from '../../services/api/execute.api';
 
 @Model('etraining.exam')
 export class Exam extends BaseModel{
@@ -61,14 +65,30 @@ export class Exam extends BaseModel{
         return true;
     }
 
-    static all( context:APIContext): Observable<any[]> {
-        return ExamCache.all(context);
+    static __api__searchByDate(start:Date, end:Date): SearchReadAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Exam.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 
-    containsOpenEndQuestion(context:APIContext):Observable<any> {
-        return ExamQuestion.listOpenQuestionByExam(context, this.id).flatMap(questions => {
-            return Observable.of(questions.length > 0);
-        });
+    static searchByDate(context:APIContext, start:Date, end:Date):Observable<any> {
+        if (Cache.hit(Exam.Model))
+            return Observable.of(Cache.load(Exam.Model)).map(exams=> {
+                return _.filter(exams, (exam:Exam)=> {
+                    return exam.start.getTime() >=  start.getTime() && exam.start.getTime() <= end.getTime();
+                });
+            });
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 
+    static __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
+        return new ExecuteAPI(Exam.Model, 'enroll',userIds, {examId:examId});
+    }
+
+    static enroll(context:APIContext,examId:number, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(examId, userIds), 
+            context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
+    }
 }

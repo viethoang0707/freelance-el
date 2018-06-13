@@ -1,6 +1,6 @@
 <div class="card card-w-title lms-conference-list-item">
   <h1>{{'My conferences'|translate}}</h1>
-  <p-dataGrid [value]="members" [paginator]="true" [rows]="12">
+  <p-dataGrid [value]="conferenceMembers" [paginator]="true" [rows]="12">
       <ng-template let-member pTemplate="item">
         <div class="ui-g-4 lms-conference-item">
           <p-panel>

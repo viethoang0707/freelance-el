@@ -18,7 +18,7 @@ import { IQuestion } from '../../../assessment/question/question-template/questi
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
-import {PRINT_DIALOG_STYLE} from  '../../../shared/models/constants';
+import { PRINT_DIALOG_STYLE } from '../../../shared/models/constants';
 
 @Component({
     moduleId: module.id,
@@ -27,9 +27,10 @@ import {PRINT_DIALOG_STYLE} from  '../../../shared/models/constants';
     styleUrls: ['question-sheet-preview.dialog.component.css'],
 })
 export class QuestionSheetPreviewDialog extends BaseComponent {
-    
+
     private display: boolean;
     private examQuestions: ExamQuestion[];
+    private questions: Question[];
     private sheet: QuestionSheet;
 
     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
@@ -38,11 +39,13 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
         super();
         this.display = false;
         this.examQuestions = [];
+        this.questions = [];
     }
 
     show(sheet: QuestionSheet) {
         this.display = true;
         this.examQuestions = [];
+        this.questions = [];
         this.sheet = sheet;
         this.startReview();
     }
@@ -52,34 +55,30 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
     }
 
     startReview() {
-        this.startTransaction();
         ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
-            setTimeout(()=> {
+            ExamQuestion.populateQuestionForArray(this, examQuestions).subscribe(() => {
                 var componentHostArr = this.questionsComponents.toArray();
                 for (var i = 0; i < examQuestions.length; i++) {
                     var examQuestion = examQuestions[i];
                     var componentHost = componentHostArr[i];
                     this.displayQuestion(examQuestion, componentHost);
                 }
-            this.closeTransaction();
-            },0)
-            
+            })
         });
     }
 
     displayQuestion(examQuestion: ExamQuestion, componentHost) {
-        Question.get(this, examQuestion.question_id).subscribe((question) => {
-            var detailComponent = QuestionRegister.Instance.lookup(question.type);
-            let viewContainerRef = componentHost.viewContainerRef;
-            if (detailComponent) {
-                let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-                viewContainerRef.clear();
-                var componentRef = viewContainerRef.createComponent(componentFactory);
-                (<IQuestion>componentRef.instance).mode = 'preview';
-                (<IQuestion>componentRef.instance).render(question);
-            }
-        });
+        var question = examQuestion.question;
+        var detailComponent = QuestionRegister.Instance.lookup(question.type);
+        let viewContainerRef = componentHost.viewContainerRef;
+        if (detailComponent) {
+            let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+            viewContainerRef.clear();
+            var componentRef = viewContainerRef.createComponent(componentFactory);
+            (<IQuestion>componentRef.instance).mode = 'preview';
+            (<IQuestion>componentRef.instance).render(question);
+        }
     }
 }
 

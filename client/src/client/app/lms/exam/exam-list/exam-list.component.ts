@@ -15,6 +15,8 @@ import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content
 import { ExamStudyDialog } from '../exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Route, Router } from '@angular/router';
+import { BaseModel } from '../../../shared/models/base.model';
+import { User } from '../../../shared/models/elearning/user.model';
 
 
 @Component({
@@ -25,9 +27,14 @@ import { Route, Router } from '@angular/router';
 })
 export class ExamListComponent extends BaseComponent implements OnInit {
 
-    private exams: Exam[];
-    private reportUtils: ReportUtils;
     EXAM_STATUS = EXAM_STATUS;
+
+    private exams: Exam[];
+    private examMembers: ExamMember[];
+    private submits: Submission[];
+    private reportUtils: ReportUtils;
+    private currentUser: User;
+
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
 
@@ -35,57 +42,65 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         super();
         this.exams = [];
         this.reportUtils = new ReportUtils();
+        this.currentUser = this.authService.UserProfile;
     }
 
     ngOnInit() {
-        this.loadExam();
+        BaseModel.bulk_search(this,
+            ExamMember.__api__listByUser(this.currentUser.id),
+            Submission.__api__listByUser(this.currentUser.id))
+            .subscribe(jsonArray => {
+                var members = ExamMember.toArray(jsonArray[0]);
+                var submits = Submission.toArray(jsonArray[1]);
+                this.displayExams(members, submits);
+            });
     }
 
-    loadExam() {
-        this.startTransaction();
-        ExamMember.listByUser(this, this.authService.UserProfile.id).subscribe(members => {
-            members = _.filter(members, (member => {
-                return (member.exam_id && member.status=='active');
-            }));
-            Submission.listByUser(this, this.authService.UserProfile.id).subscribe(submits => {
-                var examIds = _.pluck(members, 'exam_id');
-                Exam.array(this, examIds)
-                    .subscribe(exams => {
-                        _.each(exams, (exam) => {
-                            exam.member = _.find(members, (member: ExamMember) => {
-                                return member.exam_id == exam.id;
-                            });
-                            exam.submit = _.find(submits, (submit: Submission) => {
-                                return submit.member_id == exam.member.id && submit.exam_id == exam.id;
-                            });
-                            if (exam.submit) {
-                                if (exam.submit.score != null)
-                                    exam.score = exam.submit.score;
-                                else
-                                    exam.score = '';
-                            }
-                            ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                                exam.question_count = count;
-                            });
-                            exam.examMemberData = {};
-                            ExamMember.listByExam(this, exam.id).subscribe(members => {
-                                exam.examMemberData = this.reportUtils.analyseExamMember(exam, members);
-                            });
-                        });
-                        this.exams = _.filter(exams, (exam) => {
-                            return exam.member.role == 'supervisor' || (exam.member.role == 'candidate' && exam.IsAvailable);
-                        });
-                        this.exams.sort((exam1, exam2): any => {
-                            if (exam1.id > exam2.id)
-                                return -1;
-                            else if (exam1.id < exam2.id)
-                                return 1;
-                            else
-                                return 0;
-                        });
-                        this.closeTransaction();
-                    });
+    displayExams(members: ExamMember[], submits: Submission[]) {
+        this.examMembers = _.filter(members, (member: ExamMember) => {
+            return (member.exam_id && member.status == 'active');
+        });
+        ExamMember.populateExamForArray(this, this.examMembers).subscribe(() => {
+            _.each(this.examMembers, (member: ExamMember) => {
+                member["submit"] = _.find(submits, (submit: Submission) => {
+                    return submit.member_id == member.id && submit.exam_id == member.exam_id;
+                });
+                if (member["submit"])
+                    member["score"] = member["submit."].core;
+                else
+                    member["score"] = '';
+                member["examMemberData"] = {};
             });
+
+            var countApi = _.map(this.examMembers, (member: ExamMember) => {
+                return ExamQuestion.__api__countByExam(member.exam_id);
+            });
+            BaseModel.bulk_count(this, ...countApi)
+                .map((jsonArray) => {
+                    return _.flatten(jsonArray);
+                })
+                .subscribe(counts => {
+                    for (var i = 0; i < this.examMembers.length; i++) {
+                        this.examMembers[i]["question_count"] = counts[i];
+                    }
+                });
+            var listApi = _.map(this.examMembers, (member: ExamMember) => {
+                return ExamMember.__api__listByExam(member.exam_id);
+            });
+            BaseModel.bulk_search(this, ...listApi)
+                .subscribe(jsonArr => {
+                    for (var i = 0; i < this.examMembers.length; i++) {
+                        var members = ExamMember.toArray(jsonArr[i]);
+                        this.examMembers[i]["examMemberData"] = this.reportUtils.analyseExamMember(this.examMembers[i].exam, members);
+                    }
+                });
+
+        });
+        this.examMembers.sort((member1, member2): any => {
+            return (member1.exam.create_date < member1.exam.create_date)
+        });
+        this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
+            return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
         });
     }
 

@@ -6,6 +6,7 @@ import { BaseComponent } from '../../shared/components/base/base.component';
 import { ExamSetting } from '../../shared/models/elearning/exam-setting.model';
 import { ExamGrade } from '../../shared/models/elearning/exam-grade.model';
 import * as _ from 'underscore';
+import { BaseModel } from '../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -25,23 +26,17 @@ export class SettingExamComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-    	this.loadExamGrade();
+    	BaseModel
+    	.bulk_search(this,
+    		ExamGrade.__api__all(),
+    		ExamSetting.__api__all())
+    	.subscribe(jsonArr=> {
+    		this.grades =  ExamGrade.toArray(jsonArr[0]);
+    		var settings = ExamSetting.toArray(jsonArr[1]);
+    		if (settings.length)
+    			this.setting = settings[0];
+    	})
     }
-
-    loadExamGrade() {
-		this.startTransaction();
-		ExamGrade.all(this).subscribe(grades => {
-			this.grades = grades;
-			this.closeTransaction();
-		});
-	}
-
-	loadSetting() {
-		ExamSetting.appSetting(this).subscribe(setting=> {
-			if (setting)
-				this.setting =  setting;
-		});
-	}
 
 	addGrade() {
 		var grade = new ExamGrade();
@@ -50,12 +45,10 @@ export class SettingExamComponent extends BaseComponent implements OnInit {
 
 	removeGrade(grade: ExamGrade) {
 		if (grade.id) {
-			this.startTransaction();
 			grade.delete(this).subscribe(() => {
 				this.grades = _.reject(this.grades, (obj) => {
 					return obj == grade;
 				});
-				this.closeTransaction();
 			})
 		} else
 			this.grades = _.reject(this.grades, (obj) => {

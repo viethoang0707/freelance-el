@@ -38,17 +38,6 @@ export class UserExportDialog extends BaseComponent {
 		this.selectedFields = [];
         this.users = users;
         this.display = true;
-        Group.listUserGroup(this).subscribe(groups => {
-			_.each(this.users, (user)=> {
-				if (user.group_id) {
-					var group = _.find(groups, (obj:Group) => {
-						return obj.id == user.group_id;
-					});
-					if (group)
-						user['group_code'] = group.code;
-				}
-			});
-		});
     }
 
     hide() {
@@ -63,7 +52,7 @@ export class UserExportDialog extends BaseComponent {
 			});
 			return userData;
 		});
-		this.excelService.exportAsExcelFile(data, 'users');
+		this.excelService.exportAsExcelFile(data, 'user_export');
 		this.hide();
 	}
 

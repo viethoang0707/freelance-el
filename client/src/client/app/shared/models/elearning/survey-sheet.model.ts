@@ -2,6 +2,7 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.survey_sheet')
 export class SurveySheet extends BaseModel{
@@ -26,6 +27,14 @@ export class SurveySheet extends BaseModel{
         sheet.seed =  this.seed;
         sheet.finalized =  this.finalized;
         return sheet;
+    }
+
+    static __api__bySurvey(surveyId: number): SearchReadAPI {
+        return new SearchReadAPI(SurveySheet.Model, [],"[('survey_id','=',"+surveyId+")]");
+    }
+
+    static __api__listTemplate(): SearchReadAPI {
+        return new SearchReadAPI(SurveySheet.Model, [],"[('survey_id','=',False)]");
     }
 
     static bySurvey( context:APIContext, surveyId: number): Observable<any> {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild,ComponentFactoryResolver } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
@@ -13,6 +13,7 @@ import { ExamQuestion } from '../../../shared/models/elearning/exam-question.mod
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 	private questions: any;
 	private member: ExamMember;
 	private onMarkCompleteReceiver: Subject<any> = new Subject();
-    onMarkComplete:Observable<any> =  this.onMarkCompleteReceiver.asObservable();
+	onMarkComplete: Observable<any> = this.onMarkCompleteReceiver.asObservable();
 
 
 	constructor() {
@@ -37,34 +38,35 @@ export class QuestionMarkingDialog extends BaseComponent {
 		this.display = false;
 		this.answers = [];
 		this.questions = {};
-		this.member =  new ExamMember();
+		this.member = new ExamMember();
 	}
 
-	show(member: ExamMember, submit:Submission) {
+	show(member: ExamMember, submit: Submission) {
 		this.display = true;
 		this.questions = {};
 		this.member = member;
-		this.submit =  submit;
-		this.startTransaction();
-		QuestionSheet.byExam(this, this.submit.exam_id).subscribe(sheet => {
-			ExamQuestion.listBySheet(this, sheet.id).subscribe(examQuestions => {
-				_.each(examQuestions, (question:ExamQuestion)=> {
-					this.questions[question.question_id] =  question;
-				});
-				Answer.listBySubmit(this, this.submit.id).subscribe(answers=> {
-					this.answers = answers;
-					this.markAnswers =  _.filter(answers,(ans:Answer)=> {
-						var question = _.find(examQuestions, (q=> {
-							return ans.question_id == q.question_id;
-						}));
-						return question && question.type =='ext'; 
+		this.submit = submit;
+
+		BaseModel.bulk_search(this,
+			QuestionSheet.__api__byExam(this.submit.exam_id),
+			Answer.__api__listBySubmit(this.submit.id))
+			.subscribe(jsonArr => {
+				var sheetList = QuestionSheet.toArray(jsonArr[0]);
+				this.answers = Answer.toArray(jsonArr[1]);
+				if (sheetList.length) {
+					ExamQuestion.listBySheet(this, sheetList[0].id).subscribe(examQuestions => {
+						_.each(examQuestions, (question: ExamQuestion) => {
+							this.questions[question.question_id] = question;
+						});
+						this.markAnswers = _.filter(this.answers, (ans: Answer) => {
+							var question = _.find(examQuestions, (q:ExamQuestion) => {
+								return ans.question_id == q.question_id;
+							});
+							return question && question.type == 'ext';
+						});
 					});
-					this.closeTransaction();
-				});
+				}
 			});
-		});
-		
-		
 	}
 
 	hide() {
@@ -72,19 +74,15 @@ export class QuestionMarkingDialog extends BaseComponent {
 	}
 
 	save() {
-		var subscrptions = _.map(this.answers, (answer)=> {
-			return answer.save(this);
-		});
-		if (!this.submit.score )
+		if (!this.submit.score)
 			this.submit.score = 0;
-		this.submit.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
-		subscrptions.push(this.submit.save(this));
-		this.startTransaction();
-		Observable.forkJoin(...subscrptions).subscribe(()=> {
-			this.success('Marking saved sucessfully');
-			this.onMarkCompleteReceiver.next();
-			this.hide();
-			this.closeTransaction();
+		this.submit.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
+		this.submit.save(this).subscribe(() => {
+			Answer.updateArray(this, this.answers).subscribe(() => {
+				this.success('Marking saved sucessfully');
+				this.onMarkCompleteReceiver.next();
+				this.hide();
+			});
 		});
 	}
 }

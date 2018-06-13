@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, QueryList, ViewChildren, ComponentFactoryResolver,ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, QueryList, ViewChildren, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Answer } from '../../../../shared/models/elearning/answer.model';
 import { Question } from '../../../../shared/models/elearning/question.model';
@@ -23,136 +23,103 @@ import { QuestionRegister } from '../../../../assessment/question/question-templ
 	templateUrl: 'exercise-unit.component.html',
 })
 @CourseUnitTemplate({
-	type:'exercise'
+	type: 'exercise'
 })
-export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit,OnInit{
+export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit, OnInit {
 
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	private selectedQuestions: Question[];
-	private questions:Question[];
-	@Input() mode;
+	private questions: Question[];
 	private unit: CourseUnit;
 	private exerciseQuestions: ExerciseQuestion[];
-	@ViewChild(SelectQuestionsDialog) questionDialog : SelectQuestionsDialog;
-	@ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
-	@ViewChild(QuestionContainerDirective) studyQuestionComponent : QuestionContainerDirective;
-	private stage:string;
-	private qIndex:number;
+	private stage: string;
+	private qIndex: number;
 	private currentQuestion: ExerciseQuestion;
 	private treeUtils: TreeUtils;
 	private currentAnswer: Answer;
 	private componentRef: any;
 
-	constructor(private componentFactoryResolver:ComponentFactoryResolver) {
+	@Input() mode;
+	@ViewChild(SelectQuestionsDialog) questionDialog: SelectQuestionsDialog;
+	@ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
+	@ViewChild(QuestionContainerDirective) studyQuestionComponent: QuestionContainerDirective;
+
+	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.exerciseQuestions = [];
 		this.currentAnswer = new Answer();
-		this.currentQuestion =  new ExerciseQuestion();
+		this.currentQuestion = new ExerciseQuestion();
 		this.treeUtils = new TreeUtils();
 	}
 
 	ngOnInit() {
 	}
 
-	render(unit:CourseUnit) {
+	render(unit: CourseUnit) {
 		this.unit = unit;
 		if (this.unit.id) {
-			 this.startTransaction();
-			 ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
-			 	this.exerciseQuestions =  exerciseQuestions;
-			 	if (this.mode=='preview')
-				 	setTimeout(()=>{
-	                    var componentHostArr =  this.questionsComponents.toArray();
-                        for (var i =0;i<exerciseQuestions.length;i++) {
-                            var exerciseQuestion =  exerciseQuestions[i];
-                            var componentHost = componentHostArr[i];
-                            this.previewQuestion(exerciseQuestion,componentHost);
-                        }
-                        this.closeTransaction();
-	               }, 0); 
-				 else if (this.mode=='study') {
-				 	this.qIndex = 0;
-				 	this.displayQuestion(this.qIndex);
-				 	this.closeTransaction();
-				 }
-			 });
-			}
+			ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
+				this.exerciseQuestions = exerciseQuestions;
+				ExerciseQuestion.populateQuestionForArray(this, this.exerciseQuestions).subscribe(() => {
+					if (this.mode == 'preview')
+						setTimeout(() => {
+							var componentHostArr = this.questionsComponents.toArray();
+							for (var i = 0; i < exerciseQuestions.length; i++) {
+								var exerciseQuestion = exerciseQuestions[i];
+								var componentHost = componentHostArr[i];
+								this.previewQuestion(exerciseQuestion, componentHost);
+							}
 
+						}, 0);
+					else if (this.mode == 'study') {
+						this.qIndex = 0;
+						this.displayQuestion(this.qIndex);
+					}
+				});
+			})
+		}
 	}
 
-	previewQuestion(exerciseQuestion: ExerciseQuestion, componentHost:any) {
-		this.startTransaction();
-        Question.get(this, exerciseQuestion.question_id).subscribe((question)=> {
-            var detailComponent = QuestionRegister.Instance.lookup(question.type);
-            if (detailComponent) {
-                let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-                var componentRef = componentHost.viewContainerRef.createComponent(componentFactory);
-                (<IQuestion>componentRef.instance).mode = 'preview' ;
-                (<IQuestion>componentRef.instance).render(question);
-            }
-            this.closeTransaction();            
-        });
-    }
+	previewQuestion(exerciseQuestion: ExerciseQuestion, componentHost: any) {
+		var detailComponent = QuestionRegister.Instance.lookup(exerciseQuestion.question.type);
+		if (detailComponent) {
+			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+			var componentRef = componentHost.viewContainerRef.createComponent(componentFactory);
+			(<IQuestion>componentRef.instance).mode = 'preview';
+			(<IQuestion>componentRef.instance).render(exerciseQuestion.question);
+		}
+	}
 
-	saveEditor():Observable<any> {
-		return this.unit.save(this).flatMap(()=> {
-			var updateSubscriptions = _.map(this.exerciseQuestions, (exerciseQuestion:ExerciseQuestion)=> {
+	saveEditor(): Observable<any> {
+		var createList = [];
+		return this.unit.save(this).flatMap(() => {
+			_.each(this.exerciseQuestions, (exerciseQuestion: ExerciseQuestion) => {
 				exerciseQuestion.unit_id = this.unit.id;
-				return exerciseQuestion.save(this);
+				if (!exerciseQuestion.id)
+					createList.push(exerciseQuestion);
 			});
-			return Observable.forkJoin(...updateSubscriptions);
+			return ExerciseQuestion.createArray(this, createList);
+				
 		});
 	}
 
 	selectQuestion() {
 		this.questionDialog.show();
 		this.questionDialog.onSelectQuestions.subscribe(questions => {
-			var subscriptions = [];
-			_.each(questions, (question:Question)=> {
-				var exerciseQuestion = new ExerciseQuestion();
-				exerciseQuestion.unit_id = this.unit.id;
-				exerciseQuestion.question_id = question.id;
-				exerciseQuestion.type =  question.type;
-				exerciseQuestion.title =  question.title;
-				subscriptions.push(exerciseQuestion.save(this));
-			});
-			this.startTransaction();
-			Observable.zip(...subscriptions).subscribe(exerciseQuestions => {
-				this.loadExerciseQuestions();
-				this.closeTransaction();
-			});
-		});
-	}
-
-	loadExerciseQuestions() {
-		this.startTransaction();
-		ExerciseQuestion.listByExercise(this, this.unit.id).subscribe(exerciseQuestions => {
-			this.exerciseQuestions =  exerciseQuestions;
-			this.closeTransaction();
-		});
-	}
-
-
-	createExerciseQuestionFromQuestionBank(questions: Question[]):Observable<any> {
-		if (this.unit.id) {
-			var createSubscriptions = _.map(questions, (question)=> {
-				var exerciseQuestion = new ExerciseQuestion();
-				exerciseQuestion.unit_id = this.unit.id;
-				exerciseQuestion.question_id = question.id;
-				exerciseQuestion.type =  question.type;
-				exerciseQuestion.title =  question.title;
-				return exerciseQuestion.save(this);
-			});
-			return Observable.forkJoin(...createSubscriptions);
-		} else {
-			return Observable.of(_.map(questions, (question)=> {
+			var exerciseQuestions = _.map(questions, (question: Question) => {
 				var exerciseQuestion = new ExerciseQuestion();
 				exerciseQuestion.question_id = question.id;
+				exerciseQuestion.type = question.type;
+				exerciseQuestion.title = question.title;
 				return exerciseQuestion;
-			}));
-		}
+			});
+			ExerciseQuestion.populateQuestionForArray(this, exerciseQuestions).subscribe(()=> {
+				this.exerciseQuestions = this.exerciseQuestions.concat(exerciseQuestions);
+			})
+		});
 	}
+
 
 	answerQuestion() {
 		this.stage = 'answer';
@@ -160,28 +127,20 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			(<IQuestion>this.componentRef.instance).mode = 'review';
 	}
 
-	prepareQuestion(question: ExerciseQuestion): Observable<any> {
-		return Question.get(this, question.question_id);
-	}
 
 	displayQuestion(index: number) {
 		this.qIndex = index;
 		this.stage = 'question';
 		this.currentQuestion = this.exerciseQuestions[index];
-		this.startTransaction();
-		this.prepareQuestion(this.currentQuestion).subscribe(question => {
-			var detailComponent = QuestionRegister.Instance.lookup(question.type);
+			var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
 			let viewContainerRef = this.studyQuestionComponent.viewContainerRef;
 			if (detailComponent) {
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 				viewContainerRef.clear();
 				this.componentRef = viewContainerRef.createComponent(componentFactory);
 				(<IQuestion>this.componentRef.instance).mode = 'study';
-				(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
+				(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
 			}
-			this.closeTransaction();
-		});
-
 	}
 
 	next() {
@@ -202,21 +161,16 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		}
 	}
 
-	delete(questions) {
-        if (questions && questions.length)
-            this.confirm('Are you sure to delete ?', () => {
-                var subscriptions = _.map(questions,(question:Question) => {
-                    return question.delete(this);
-                });
-                Observable.forkJoin(...subscriptions).subscribe(()=> {
-					if(this.exerciseQuestions.length > 1){
-						this.render(this.unit);
-					}
-					else{
-						this.exerciseQuestions = [];
-					}
-                });
-            });
+	delete(exerciseQuestions) {
+		if (exerciseQuestions && exerciseQuestions.length)
+			this.confirm('Are you sure to delete ?', () => {
+				ExerciseQuestion.deleteArray(this, exerciseQuestions).subscribe(()=> {
+					var questionIds = _.pluck(exerciseQuestions, 'question_id');
+					this.exerciseQuestions = _.reject(this.exerciseQuestions, (exerciseQuestion:ExerciseQuestion)=> {
+						return _.contains(questionIds, exerciseQuestion.question_id);
+					});
+				});
+			});
 	}
 
 }

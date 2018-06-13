@@ -1,112 +1,110 @@
 <style>
-  ul {
+ul {
     list-style-type: none;
     padding-left: 0px;
-  }
+}
 
-  .vertical {
+.vertical {
     vertical-align: middle;
-  }
+}
 </style>
 <div class="card card-w-title">
-  <h1>{{'My courses'|translate}}</h1>
-  <p-dataList [value]="courses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
-    <ng-template let-course pTemplate="item">
-      <p-card styleClass="lms-course-list-item">
-        <div class="ui-g">
-          <div class="ui-g-8">
-            <div class="ui-g-12 border">
-              <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn" style="margin-right:4px;" (click)="studyCourse(course, course.member)" *ngIf="course.member!=null && course.member.role =='student' && course.status =='published'"></button>
-              <button pButton type="button" icon="ui-icon-edit" title="{{'Edit syllabus'| translate}}" label="{{'Edit course'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editSyllabus(course)" *ngIf="course.author_id==+currentUser.id"></button>
-              <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage course'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageCourse(course,course.member)" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group' && course.status =='published'"></button>
-            </div>
-            <div class="ui-g-3">
-              <span class="profile-image-wrapper">
+    <h1>{{'My courses'|translate}}</h1>
+    <p-dataList [value]="courses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
+        <ng-template let-course pTemplate="item">
+            <p-card styleClass="lms-course-list-item">
+                <div class="ui-g">
+                    <div class="ui-g-8">
+                        <div class="ui-g-12 border">
+                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null && course.status =='published'"></button>
+                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 purple-btn" (click)="editSyllabus(course)" *ngIf="course.isAuthor"></button>
+                            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null && course.mode=='group' && course.status =='published'"></button>
+                        </div>
+                        <div class="ui-g-3">
+                            <span class="profile-image-wrapper">
                 <img [src]='course.logo | imageBase64' [ngClass]="{'display-none' : !course.logo}"  />
                 <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg">
               </span>
-            </div>
-            <div class="ui-g-9">
-              <h4 class="heading-course">
+                        </div>
+                        <div class="ui-g-9">
+                            <h4 class="heading-course">
                 <span>{{course.name}}</span>
               </h4>
-              <span class="c-status">
+                            <span class="c-status">
                 {{CONTENT_STATUS[course.status]|translate}}
               </span>
-              <div class="clearfix"></div>
-              <p-accordion styleClass="cont">
-                <p-accordionTab header="{{'Summary' | translate}}">
-                  {{course.summary}}
-                </p-accordionTab>
-                <p-accordionTab header="{{'Description' | translate}}">
-                  <p [innerHTML]="course.description"></p>
-                </p-accordionTab>
-              </p-accordion>
-              
-              <div class="status-bars" *ngIf="course.member && course.member.role=='teacher' && course.mode=='group'">
-              <!-- <div class="card"> -->
-                <ul>
-                  <li>
-                    <div class="status-bar status-bar-2">
-                      <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_registered}}%">{{course.courseMemberData.percentage_member_registered}}%</div>
+                            <div class="clearfix"></div>
+                            <p-accordion styleClass="cont">
+                                <p-accordionTab header="{{'Summary' | translate}}">
+                                    {{course.summary}}
+                                </p-accordionTab>
+                                <p-accordionTab header="{{'Description' | translate}}">
+                                    <p [innerHTML]="course.description"></p>
+                                </p-accordionTab>
+                            </p-accordion>
+                            <div class="status-bars" *ngIf="course.teacher !=null && course.mode=='group' && course.status =='published'">
+                                <!-- <div class="card"> -->
+                                <ul>
+                                    <li>
+                                        <div class="status-bar status-bar-2">
+                                            <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_registered}}%">{{course.courseMemberData.percentage_member_registered}}%</div>
+                                        </div>
+                                        <i class="material-icons">&#xE86C;</i>
+                                        <span>{{'Registered'|translate}}</span>
+                                    </li>
+                                    <li>
+                                        <div class="status-bar status-bar-3">
+                                            <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_inprogress}}%">{{course.courseMemberData.percentage_member_inprogress}}%</div>
+                                        </div>
+                                        <i class="material-icons">&#xE868;</i>
+                                        <span>{{'In-progress'|translate}}</span>
+                                    </li>
+                                    <li>
+                                        <div class="status-bar status-bar-4">
+                                            <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_completed}}%">{{course.courseMemberData.percentage_member_completed}}</div>
+                                        </div>
+                                        <i class="material-icons">&#xE8B2;</i>
+                                        <span>{{'Completed'|translate}}</span>
+                                    </li>
+                                </ul>
+                                <!-- </div> -->
+                            </div>
+                        </div>
                     </div>
-                    <i class="material-icons">&#xE86C;</i>
-                    <span>{{'Registered'|translate}}</span>
-                  </li>
-                  <li>
-                    <div class="status-bar status-bar-3">
-                      <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_inprogress}}%">{{course.courseMemberData.percentage_member_inprogress}}%</div>
+                    <div class="ui-g-4">
+                        <p-card styleClass="lms-course-detail">
+                            <ul class="list-cmt">
+                                <li class="clearfix">
+                                    <i class="material-icons">toys</i>
+                                    <span class="cmt-title">{{'Code'|translate}}</span>
+                                    <span class="cmt-detail">{{course.code}}</span>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="material-icons">copyright</i>
+                                    <span class="cmt-title">{{'Author'|translate}}</span>
+                                    <span class="cmt-detail">{{course.author_name}}</span>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="material-icons">invert_colors</i>
+                                    <span class="cmt-title">{{'Mode'|translate}}</span>
+                                    <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="material-icons">layers</i>
+                                    <span class="cmt-title">{{'Number of unit'|translate}}</span>
+                                    <span class="cmt-detail">{{course.unit_count}}</span>
+                                </li>
+                                <li class="clearfix" style="border-bottom: none;">
+                                    <i class="material-icons">toc</i>
+                                    <span class="cmt-title">{{'Group'|translate}}</span>
+                                    <span class="cmt-detail">{{course.group_id__DESC__}}</span>
+                                </li>
+                            </ul>
+                        </p-card>
                     </div>
-                    <i class="material-icons">&#xE868;</i>
-                    <span>{{'In-progress'|translate}}</span>
-                  </li>
-                  <li>
-                    <div class="status-bar status-bar-4">
-                      <div class="status-bar-value" style="width:{{course.courseMemberData.percentage_member_completed}}%">{{course.courseMemberData.percentage_member_completed}}</div>
-                    </div>
-                    <i class="material-icons">&#xE8B2;</i>
-                    <span>{{'Completed'|translate}}</span>
-                  </li>
-                </ul>
-              <!-- </div> -->
-              </div>
-            </div>
-          </div>
-          
-          <div class="ui-g-4">
-            <p-card styleClass="lms-course-detail">
-              <ul class="list-cmt">
-                <li class="clearfix">
-                  <i class="material-icons">toys</i>
-                  <span class="cmt-title">{{'Code'|translate}}</span>
-                  <span class="cmt-detail">{{course.code}}</span>
-                </li>
-                <li class="clearfix">
-                  <i class="material-icons">copyright</i>
-                  <span class="cmt-title">{{'Author'|translate}}</span>
-                  <span class="cmt-detail">{{course.author_name}}</span>
-                </li>
-                <li class="clearfix">
-                  <i class="material-icons">invert_colors</i>
-                  <span class="cmt-title">{{'Mode'|translate}}</span>
-                  <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
-                </li>
-                <li class="clearfix">
-                  <i class="material-icons">layers</i>
-                  <span class="cmt-title">{{'Number of unit'|translate}}</span>
-                  <span class="cmt-detail">{{course.unit_count}}</span>
-                </li>
-                <li class="clearfix" style="border-bottom: none;">
-                  <i class="material-icons">toc</i>
-                  <span class="cmt-title">{{'Group'|translate}}</span>
-                  <span class="cmt-detail">{{course.group_id__DESC__}}</span>
-                </li>
-              </ul>
+                </div>
             </p-card>
-          </div>
-        </div>
-      </p-card>
-    </ng-template>
-  </p-dataList>
-  <course-syllabus-dialog></course-syllabus-dialog>
+        </ng-template>
+    </p-dataList>
+    <course-syllabus-dialog></course-syllabus-dialog>
 </div>

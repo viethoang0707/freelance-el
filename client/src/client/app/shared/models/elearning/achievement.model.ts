@@ -1,5 +1,4 @@
 import { APIContext } from '../context';
-import { CompetencyCache } from '../../services/cache.service';
 import { Model,FieldProperty } from '../decorator';
 import { Exam } from './exam.model';
 import { Course } from './course.model';
@@ -8,7 +7,9 @@ import { Competency } from './competency.model';
 import { CompetencyLevel } from './competency-level.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseModel } from '../base.model';
-
+import { CloudAccount } from '../cloud/cloud-account.model';
+import { MapUtils } from '../../helpers/map.utils';
+import * as _ from 'underscore';
 
 @Model('etraining.achivement')
 export class Achivement extends BaseModel{
@@ -40,20 +41,6 @@ export class Achivement extends BaseModel{
 	competency_group_name: string;
 	competency_level_id: number;
 	competency_level_name: string;
-
-	populate(context:APIContext):Observable<any> {
-		var subscriptions = [];
-		subscriptions.push(Course.get(context, this.course_id));
-		subscriptions.push(Exam.get(context, this.exam_id));
-		subscriptions.push(Competency.get(context, this.competency_id));
-		subscriptions.push(CompetencyLevel.get(context, this.competency_level_id));
-		return Observable.forkJoin(subscriptions);
-	}
-
-	static populateArray() {
-
-	}
-
 
 
 }

@@ -2,6 +2,8 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.course_faq')
 export class CourseFaq extends BaseModel{
@@ -18,6 +20,10 @@ export class CourseFaq extends BaseModel{
     question:string;
     course_id: number;
     answer:string;
+
+    static __api__listByCourse(courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseFaq.Model, [],"[('course_id','=',"+courseId+")]");
+    }
 
     static listByCourse(context:APIContext, courseId):Observable<any> {
         return CourseFaq.search(context,[], "[('course_id','=',"+courseId+")]");

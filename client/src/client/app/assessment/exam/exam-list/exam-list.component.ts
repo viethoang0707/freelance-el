@@ -4,7 +4,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, EXAM_STATUS, SCHEDULER_HEADER } from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { ExamDialog } from '../exam-dialog/exam-dialog.component';
@@ -19,22 +19,19 @@ import { SelectItem } from 'primeng/api';
 })
 export class ExamListComponent extends BaseComponent {
 
-    @ViewChild(ExamDialog) examDialog: ExamDialog;
-    @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
+    EXAM_STATUS = EXAM_STATUS;
 
     private selectedExam: Exam;
     private exams: Exam[];
     private events: any[];
     private header: any;
-    EXAM_STATUS = EXAM_STATUS;
+    
+    @ViewChild(ExamDialog) examDialog: ExamDialog;
+    @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
 
     constructor() {
         super();
-        this.header = {
-            left: 'prev, today, next',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        };
+        this.header = SCHEDULER_HEADER;
     }
 
     enrollExam() {
@@ -84,7 +81,6 @@ export class ExamListComponent extends BaseComponent {
     }
 
     loadExams() {
-        this.startTransaction();
         Exam.all(this).subscribe(exams => {
             this.exams = exams;
             this.events = _.map(exams, (exam) => {
@@ -97,14 +93,8 @@ export class ExamListComponent extends BaseComponent {
                 }
             });
             this.exams.sort((exam1, exam2): any => {
-                if (exam1.id > exam2.id)
-                    return -1;
-                else if (exam1.id < exam2.id)
-                    return 1;
-                else
-                    return 0;
+                return exam1.id < exam2.id;
             });
-            this.closeTransaction();
         });
     }
 }

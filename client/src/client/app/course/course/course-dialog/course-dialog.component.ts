@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { WebSocketService } from '../../../shared/services/socket.service';
-import { DataAccessService } from '../../../shared/services/data-access.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
@@ -32,11 +31,12 @@ export class CourseDialog extends BaseDialog<Course> {
 	private selectedNode: TreeNode;
 	private courseStatus: SelectItem[];
 	private treeUtils: TreeUtils;
-	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
-	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 	private allowToChangeState: boolean;
 	private submitForReview: boolean;
 	private openTicket: Ticket;
+
+	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
+	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 
 	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
 		super();
@@ -102,28 +102,22 @@ export class CourseDialog extends BaseDialog<Course> {
 	}
 
 	checkWorkflow(object) {
-		this.dataAccessService.filter(object, 'SAVE').subscribe(success => {
 			this.allowToChangeState = !object.supervisor_id ||
 				this.user.IsSuperAdmin ||
-				(success && this.user.id != object.supervisor_id);
-		});
+				( this.user.id != object.supervisor_id);
 	}
 
 	buildCourseTree(object) {
-		this.startTransaction();
 		Group.listCourseGroup(this).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 			if (object.group_id) {
 				this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 			}
-			this.closeTransaction();
 		});
 	}
 
 	review() {
-		this.startTransaction();
 		this.workflowService.createCoursePublishTicket(this, this.object).subscribe(ticket => {
-			this.closeTransaction();
 		});
 	}
 

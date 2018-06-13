@@ -14,6 +14,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -42,24 +43,28 @@ export class UserListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.buildGroupTree();
-        this.loadUsers();
+        BaseModel
+        .bulk_search(this,
+            Group.__api__listUserGroup(),
+            User.__api__all())
+        .subscribe(jsonArr=> {
+            var groups = Group.toArray(jsonArr[0]);
+            this.tree = this.treeUtils.buildGroupTree(groups);
+            this.users = User.toArray(jsonArr[1]);
+            this.displayUsers = this.users;
+        });
     }
 
     loadUsers() {
-        this.startTransaction();
         User.all(this).subscribe(users => {
             this.users = users;
             this.displayUsers = users;
-            this.closeTransaction();
         });
     }
 
     buildGroupTree() {
-        this.startTransaction();
         Group.listUserGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
-            this.closeTransaction();
         });
     }
 

@@ -62,13 +62,9 @@ export class ProjectSubmissionDialog extends BaseComponent {
         }
     }
 
-    changeFile(event) {
-        this.startTransaction();
-        let file = event.files[0];
+    changeFile(file) {
         this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
-
             data => {
-                this.closeTransaction();
                 if (data["result"]) {
                     this.ngZone.run(() => {
                         this.submit.file_url = data["url"];
@@ -77,7 +73,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
                 }
             },
             () => {
-                this.closeTransaction();
+                
             }
         );
     }

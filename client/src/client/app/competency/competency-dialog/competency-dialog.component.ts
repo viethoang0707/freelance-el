@@ -9,6 +9,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { CompetencyLevel } from '../../shared/models/elearning/competency-level.model';
+import { BaseModel } from '../../shared/models/base.model';
 
 
 @Component({
@@ -37,14 +38,14 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			Group.listCompetencyGroup(this).subscribe(groups => {
-				this.tree = this.treeUtils.buildGroupTree(groups);
-				if (object.group_id) {
-					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
-				}
-			});
-			CompetencyLevel.listByCompetency(this, object.id).subscribe(levels=> {
-				this.levels = levels;
+            BaseModel.bulk_search(this,Group.__api__listCompetencyGroup(), CompetencyLevel.__api__listByCompetency(this.object.id))
+            .subscribe(jsonArr => {
+                var groups = Group.toArray(jsonArr[0]);
+                this.tree = this.treeUtils.buildGroupTree(groups);
+                if (object.group_id) {
+                    this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
+                }
+                this.levels = CompetencyLevel.toArray(jsonArr[1]);
             });
 		});
 	}
@@ -74,18 +75,15 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
     }
 
     saveWithLevel() {
-        this.startTransaction();
         if (!this.object.id) {
             this.object.save(this).subscribe(() => {
             	this.updateCompetencyLevel().subscribe(()=> {
             		this.onCreateCompleteReceiver.next(this.object);
 	                this.success('Object created successfully.');
-	                this.closeTransaction();
 	                this.hide();
             	});
             },()=> {
                 this.error('Permission denied');
-                this.closeTransaction();
             });
         }
         else {
@@ -93,12 +91,11 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
             	this.updateCompetencyLevel().subscribe(()=> {
             		this.onUpdateCompleteReceiver.next(this.object);
                 	this.success('Object saved successfully.') ;
-                	this.closeTransaction();
                 	this.hide();
             	});
             },()=> {
                 this.error('Permission denied');
-                this.closeTransaction();
+                
             });
         }
     }

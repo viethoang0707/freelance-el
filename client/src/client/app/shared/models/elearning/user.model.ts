@@ -4,8 +4,10 @@ import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
 import { Permission } from './permission.model';
+import { Cache } from '../../helpers/cache.utils';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { SearchCountAPI } from '../../services/api/search-count.api';
 import * as _ from 'underscore';
-import { UserCache } from '../../services/cache.service';
 
 @Model('res.users')
 export class User extends BaseModel{
@@ -19,6 +21,7 @@ export class User extends BaseModel{
         this.name = undefined;
 		this.email = undefined;
         this.group_id = undefined;
+        this.group_code =  undefined;
         this.group_id__DESC__ = undefined;
 		this.login = undefined;
         this.phone = undefined;
@@ -33,6 +36,7 @@ export class User extends BaseModel{
 
     image:string;
     name:string;
+    group_code: string;
     email: string;
     group_id: number;
     group_id__DESC__: string;
@@ -55,9 +59,6 @@ export class User extends BaseModel{
         return this.login =='admin' || ( this.is_admin  && !this.supervisor_id) ;
     }
 
-    getCompany(context:APIContext):Observable<any> {
-        return Company.get(context, this.company_id);
-    }
 
     getPermission(context:APIContext):Observable<any> {
         if (this.permission_id)
@@ -66,28 +67,78 @@ export class User extends BaseModel{
             return Observable.of(new Permission());
     }
 
-    static all( context:APIContext): Observable<any[]> {
-        return UserCache.all(context);
+    static __api__listAllAdmin(userId: number): SearchReadAPI {
+        return new SearchReadAPI(User.Model, [],"[('login','!=','admin'),('is_admin','=',True)]");
     }
 
-    static countAll( context:APIContext): Observable<any> {
-        return UserCache.countAll(context);
+
+    static listAllAdmin( context:APIContext): Observable<any[]> {
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users=> {
+                return _.filter(users, (user:User)=> {
+                    return user.IsAdmin;
+                });
+            });
+        return User.search(context, [],"[('login','!=','admin'),('is_admin','=',True)]");
     }
 
-    static allAdmin( context:APIContext): Observable<any[]> {
-        return UserCache.allAdmin(context);
+    static __api__countAllAdmin(): SearchCountAPI {
+        return new SearchCountAPI(User.Model, "[('login','!=','admin'),('is_admin','=',True)]");
     }
 
     static countAllAdmin( context:APIContext): Observable<any> {
-        return UserCache.countAllAdmin(context);
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users=> {
+                var admins = _.filter(users, (user:User)=> {
+                    return user.IsAdmin;
+                });
+                return admins.length;
+            });
+        return User.count(context, "[('login','!=','admin'),('is_admin','=',True)]");
     }
 
-    static listByGroup(context:APIContext, groupId):Observable<any> {
-        return UserCache.listByGroup(context, groupId);
+    static __api__listByGroup(groupId: number): SearchReadAPI {
+        return new SearchReadAPI(User.Model, [],"[('group_id','!=','"+groupId+"')]");
     }
 
-    static listByPermission(context:APIContext, permissionId):Observable<any> {
-        return UserCache.listByPermission(context, permissionId);
+    static listByGroup( context:APIContext, groupId: number): Observable<any[]> {
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users=> {
+                return _.filter(users, (user:User)=> {
+                    return user.group_id == groupId;
+                });
+            });        
+        return User.search(context, [],"[('group_id','!=','"+groupId+"')]");
+
+    }
+
+    static __api__listByPermission(permissionId: number): SearchReadAPI {
+        return new SearchReadAPI(User.Model, [],"[('permission_id','!=','"+permissionId+"')]");
+    }
+
+    static listByPermission(context:APIContext, permissionId:number):Observable<any> {
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users=> {
+                return _.filter(users, (user:User)=> {
+                    return user.permission_id == permissionId;
+                });
+            });        
+        return User.search(context, [],"[('permission_id','!=','"+permissionId+"')]");
+    }
+
+    static __api__countByPermission(permissionId: number): SearchCountAPI {
+        return new SearchCountAPI(User.Model, "[('permission_id','!=','"+permissionId+"')]");
+    }
+
+    static countByPermission(context:APIContext, permissionId:number):Observable<any> {
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users=> {
+                var records =  _.filter(users, (user:User)=> {
+                    return user.permission_id == permissionId;
+                });
+                return records.length;
+            });        
+        return User.count(context,"[('permission_id','!=','"+permissionId+"')]");
     }
 
 }

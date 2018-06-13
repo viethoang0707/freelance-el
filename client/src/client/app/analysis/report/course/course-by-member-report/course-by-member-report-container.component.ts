@@ -44,11 +44,11 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
     selectUserGroup() {
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
-            this.startTransaction();
+            
     		User.listByGroup(this, group.id).subscribe(users => {
                 this.courseReport.clear();
     			this.courseReport.render(users);
-                this.closeTransaction();
+                
 			});	
     	});
     }

@@ -20,20 +20,20 @@ import { User } from '../../shared/models/elearning/user.model';
 })
 export class ApprovalTreeComponent extends BaseComponent {
 
-    @ViewChild(SelectAdminDialog) adminDialog: SelectAdminDialog;
-
     private tree: TreeNode[];    
     private selectedNode: TreeNode;
     private selectedUser:User;
     private treeUtils: TreeUtils;
 
+    @ViewChild(SelectAdminDialog) adminDialog: SelectAdminDialog;
+    
     constructor() {
         super();
         this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
-       this.buildTree();
+       this.buildEscalationTree();
     }
 
     onNodeSelect(event) {
@@ -47,8 +47,8 @@ export class ApprovalTreeComponent extends BaseComponent {
         this.selectedUser =  null;
     }
 
-    buildTree() {
-        User.allAdmin(this).subscribe(users => {
+    buildEscalationTree() {
+        User.listAllAdmin(this).subscribe(users => {
            this.tree = this.treeUtils.buildApprovalTree(users);
            this.selectedUser =  null;
        });
@@ -58,7 +58,7 @@ export class ApprovalTreeComponent extends BaseComponent {
         if (this.selectedUser) {
             this.selectedUser.supervisor_id = null;
             this.selectedUser.save(this).subscribe(()=> {
-                this.buildTree();
+                this.buildEscalationTree();
             });
         }
     }
@@ -69,7 +69,7 @@ export class ApprovalTreeComponent extends BaseComponent {
         this.adminDialog.onSelectUsers.subscribe((admin:User) => {
             this.selectedUser.supervisor_id = admin.id;
             this.selectedUser.save(this).subscribe(()=> {
-                this.buildTree();
+                this.buildEscalationTree();
             });
         });
     }

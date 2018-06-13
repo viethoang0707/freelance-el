@@ -1,4 +1,4 @@
-
+import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { MODEL_METADATA_KEY, Model } from '../decorator';
 import { APIContext } from '../context';

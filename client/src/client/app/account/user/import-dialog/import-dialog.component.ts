@@ -21,24 +21,19 @@ export class UserImportDialog extends BaseComponent {
 	private display: boolean;
 	private fileName: string;
 	private records: any[];
-	private percentage: number ;
-	private completed:number;
 	private total: number;
-
 	private onImportCompleteReceiver: Subject<any> = new Subject();
-    onImportComplete:Observable<any> =  this.onImportCompleteReceiver.asObservable();
+	onImportComplete: Observable<any> = this.onImportCompleteReceiver.asObservable();
 
 	constructor(private excelService: ExcelService) {
 		super();
 		this.display = false;
 		this.records = [];
+		this.total = 0;
 	}
 
 	show() {
 		this.display = true;
-		this.percentage = 0;
-		this.completed = 0;
-		this.total = 0;
 	}
 
 	hide() {
@@ -46,34 +41,23 @@ export class UserImportDialog extends BaseComponent {
 	}
 
 	import() {
-		var subscriptions = [];
 		Group.listUserGroup(this).subscribe(groups => {
-			_.each(this.records, (record)=> {
+			var users = _.each(this.records, (record) => {
 				var user = new User();
 				Object.assign(user, record);
 				user["password"] = DEFAULT_PASSWORD;
-				var group = _.find(groups, (obj:Group)=> {
+				var group = _.find(groups, (obj: Group) => {
 					return obj.code == record["group_code"];
 				});
 				if (group) {
 					user.group_id = group.id;
-					subscriptions.push(user.save(this));
 				}
+				return user;
 			});
-			this.startTransaction();
-			Observable.merge(...subscriptions).subscribe(
-				()=> {
-					this.completed++;
-					this.percentage = Math.floor(this.completed /  this.total *100);
-				},
-				(error)=> {
-					console.log(error);
-				},
-				()=> {
-					this.onImportCompleteReceiver.next();
-					this.hide();
-					this.closeTransaction();
-				});
+			User.createArray(this, users).subscribe(() => {
+				this.onImportCompleteReceiver.next();
+				this.hide();
+			});
 		});
 	}
 

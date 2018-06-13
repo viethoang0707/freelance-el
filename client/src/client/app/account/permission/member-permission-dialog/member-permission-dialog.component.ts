@@ -11,6 +11,7 @@ import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
@@ -44,12 +45,11 @@ export class MemberPermissionDialog extends BaseComponent {
     addMember() {
         this.usersDialog.show();
         this.usersDialog.onSelectUsers.subscribe(users => {
-            var subscriptions = [];
-            _.each(users, (user: User) => {
+            var updateApi = _.map(users, (user: User) => {
                 user.permission_id = this.permission.id;
-                subscriptions.push(user.save(this));
+                return user.__api__update();
             });
-            Observable.forkJoin(...subscriptions).subscribe(() => {
+            BaseModel.bulk_update(this, ...updateApi).subscribe(() => {
                 this.loadMembers();
             });
         });
@@ -58,22 +58,18 @@ export class MemberPermissionDialog extends BaseComponent {
     deleteMember() {
         if (this.selectedUsers && this.selectedUsers.length)
             this.confirm('Are you sure to remove ?', () => {
-                var subscriptions = _.map(this.selectedUsers, (user: User) => {
+                _.each(this.selectedUsers, (user: User) => {
                     user.permission_id = null;
-                    return user.save(this);
                 });
-                Observable.forkJoin(...subscriptions).subscribe(() => {
-                    this.selectedUsers = [];
+                User.updateArray(this, this.selectedUsers).subscribe(() => {
                     this.loadMembers();
                 });
             });
     }
 
     loadMembers() {
-        this.startTransaction();
         User.listByPermission(this, this.permission.id).subscribe(users => {
             this.users = users;
-            this.closeTransaction();
         });
     }
 }

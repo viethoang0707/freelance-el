@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('eticket.ticket')
 export class Ticket extends BaseModel{
@@ -39,11 +40,23 @@ export class Ticket extends BaseModel{
     @FieldProperty<Date>()
     date_close: Date;
 
-    static listByApproveUser(context:APIContext, userId):Observable<any> {
+    static __api__byWorkflowObject(id: number, model: string): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('res_id','=',"+id+"),('res_model','=','"+model+"'),('status','=','open')]");
+    }
+
+    static __api__listByApproveUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('approve_user_id','=',"+userId+")]");
+    }
+
+    static __api__listBySubmitUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('submit_user_id','=',"+userId+")]");
+    }
+
+    static listByApproveUser(context:APIContext, userId:number):Observable<any> {
         return Ticket.search(context,[], "[('approve_user_id','=',"+userId+")]");
     }
 
-    static listBySubmitUser(context:APIContext, userId):Observable<any> {
+    static listBySubmitUser(context:APIContext, userId:number):Observable<any> {
         return Ticket.search(context,[], "[('submit_user_id','=',"+userId+")]");
     }
 

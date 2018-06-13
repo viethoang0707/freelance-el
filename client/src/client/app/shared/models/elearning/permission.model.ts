@@ -1,10 +1,11 @@
-
+import { Cache } from '../../helpers/cache.utils';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.permission')
 export class Permission extends BaseModel{

@@ -40,7 +40,7 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 			if (object.category == "question")
 				subscription = Group.listQuestionGroup(this);
 			if (subscription) {
-				this.startTransaction();
+				
 				subscription.subscribe(groups => {
 					this.tree = this.treeUtils.buildGroupTree(groups);
 					if (object.id) {
@@ -50,7 +50,7 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 					if (object.parent_id) {
 						this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.parent_id);
 					}
-					this.closeTransaction();
+					
 				});
 			}
 

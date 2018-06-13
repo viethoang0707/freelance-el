@@ -3,6 +3,10 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { Conference } from './conference.model';
+import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Cache } from '../../helpers/cache.utils';
+import { ExecuteAPI } from '../../services/api/execute.api';
+import * as _ from 'underscore';
 
 @Model('etraining.course_class')
 export class CourseClass extends BaseModel{
@@ -42,17 +46,22 @@ export class CourseClass extends BaseModel{
         return true;
     }
 
-    static listByCourse(context:APIContext, courseId):Observable<any> {
+    static __api__listByCourse(courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseClass.Model, [],"[('course_id','=',"+courseId+")]");
+    }
+
+    static listByCourse(context:APIContext, courseId:number):Observable<any> {
         return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
     }
 
-    deleteClass(context:APIContext):Observable<any> {
-        return Conference.byClass(context,this.id).flatMap(conference => {
-            if (!conference)
-                return this.delete(context);
-            else {
-                return Observable.zip(this.delete(context), conference.deleteConference(context))
-            }
-        });
+    static __api__enroll(classId: number, userIds: number[]): SearchReadAPI {
+        return new ExecuteAPI(CourseClass.Model, 'enroll',userIds, {class_id:classId});
     }
+
+    static enroll(context:APIContext,classId:number, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(classId, userIds), 
+            context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
+    }
+
+
 }

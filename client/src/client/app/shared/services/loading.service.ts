@@ -21,11 +21,11 @@ export class LoadingService {
     }
 
     start() {
-      this.onStartReceiver.next();
+        this.onStartReceiver.next();
     }
 
     finish() {
-      this.onFinishReceiver.next();
+        this.onFinishReceiver.next();
     }
 
 }
