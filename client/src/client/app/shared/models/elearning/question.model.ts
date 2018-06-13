@@ -53,7 +53,7 @@ export class Question extends BaseModel{
                     return q.group_id == groupId;
                 });
             });
-        return Question.search(context,[],"[('group_id','=','"+groupId+"')]");
+        return Question.search(context,[],"[('group_id','=',"+groupId+")]");
     }
 
 

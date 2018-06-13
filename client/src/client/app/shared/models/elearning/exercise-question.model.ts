@@ -47,7 +47,7 @@ export class ExerciseQuestion extends BaseModel{
     sheet_id: number;
 
     static __api__listByExercise(exerciseId: number): SearchReadAPI {
-        return new SearchReadAPI(ExerciseQuestion.Model, [],"[('unit_id','=','"+exerciseId+"')]");
+        return new SearchReadAPI(ExerciseQuestion.Model, [],"[('unit_id','=',"+exerciseId+")]");
     }
 
     static listByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
@@ -55,7 +55,7 @@ export class ExerciseQuestion extends BaseModel{
     }
 
     static __api__countByExercise(exerciseId: number): SearchCountAPI {
-        return new SearchCountAPI(ExerciseQuestion.Model,"[('unit_id','=','"+exerciseId+"')]");
+        return new SearchCountAPI(ExerciseQuestion.Model,"[('unit_id','=',"+exerciseId+")]");
     }
 
     static countByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
@@ -64,7 +64,7 @@ export class ExerciseQuestion extends BaseModel{
 
 
     static __api__byQuestion(questionId: number): SearchReadAPI {
-        return new SearchReadAPI(ExerciseQuestion.Model, [],"[('question_id','=','"+questionId+"')]");
+        return new SearchReadAPI(ExerciseQuestion.Model, [],"[('question_id','=',"+questionId+")]");
     }
 
     static byQuestion( context:APIContext, questionId: number): Observable<any[]> {

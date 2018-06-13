@@ -66,7 +66,7 @@ export class Course extends BaseModel{
     logo: string;
 
     static __api__listByAuthor(authorId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('author_id','=','"+authorId+"')]");
+        return new SearchReadAPI(Course.Model, [],"[('author_id','=',"+authorId+")]");
     }
 
     static listByAuthor(context:APIContext, authorId):Observable<any> {
@@ -76,11 +76,11 @@ export class Course extends BaseModel{
                     return course.author_id == authorId;
                 });
             });
-        return Course.search(context,[],"[('author_id','=','"+authorId+"')]");
+        return Course.search(context,[],"[('author_id','=',"+authorId+")]");
     }
 
     static __api__listByGroup(groupId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('group_id','=','"+groupId+"')]");
+        return new SearchReadAPI(Course.Model, [],"[('group_id','=',"+groupId+")]");
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
@@ -90,11 +90,11 @@ export class Course extends BaseModel{
                     return course.group_id == groupId;
                 });
             });
-        return Course.search(context,[],"[('group_id','=','"+groupId+"')]");
+        return Course.search(context,[],"[('group_id','=',"+groupId+")]");
     }
 
     static __api__listByGroupAndMode(groupId: number, mode:string): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('group_id','=','"+groupId+"'),('mode','=','"+mode+"')]");
+        return new SearchReadAPI(Course.Model, [],"[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
 
     static listByGroupAndMode(context:APIContext, groupId, mode:string):Observable<any> {
@@ -104,7 +104,7 @@ export class Course extends BaseModel{
                     return course.group_id == groupId && course.mode == mode;
                 });
             });
-        return Course.search(context,[],"[('group_id','=','"+groupId+"'),('mode','=','"+mode+"')]");
+        return Course.search(context,[],"[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
 
     static __api__searchByDate(start:Date, end:Date): SearchReadAPI {

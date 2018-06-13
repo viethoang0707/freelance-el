@@ -47,7 +47,7 @@ export class ExamQuestion extends BaseModel{
     group_id__DESC__: string;
 
     static __api__listBySheet(sheetId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamQuestion.Model, [],"[('sheet_id','=','"+sheetId+"')]");
+        return new SearchReadAPI(ExamQuestion.Model, [],"[('sheet_id','=',"+sheetId+")]");
     }
 
     static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
@@ -55,7 +55,7 @@ export class ExamQuestion extends BaseModel{
     }
 
     static __api__countBySheet(sheetId: number): SearchCountAPI {
-        return new SearchCountAPI(ExamQuestion.Model, "[('sheet_id','=','"+sheetId+"')]");
+        return new SearchCountAPI(ExamQuestion.Model, "[('sheet_id','=',"+sheetId+")]");
     }
 
     static countBySheet( context:APIContext, sheetId: number): Observable<any> {
@@ -63,7 +63,7 @@ export class ExamQuestion extends BaseModel{
     }
 
     static __api__countByExam(examId: number): SearchCountAPI {
-        return new SearchCountAPI(ExamQuestion.Model, "[('exam_id','=','"+examId+"')]");
+        return new SearchCountAPI(ExamQuestion.Model, "[('exam_id','=',"+examId+")]");
     }
 
     static countByExam( context:APIContext, examId: number): Observable<any> {
@@ -71,7 +71,7 @@ export class ExamQuestion extends BaseModel{
     }
 
     static __api__byQuestion(questionId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamQuestion.Model, [],"[('question_id','=','"+questionId+"')]");
+        return new SearchReadAPI(ExamQuestion.Model, [],"[('question_id','=',"+questionId+")]");
     }
 
     static byQuestion( context:APIContext, questionId: number): Observable<any[]> {

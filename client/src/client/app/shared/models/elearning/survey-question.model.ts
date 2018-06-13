@@ -47,16 +47,16 @@ export class SurveyQuestion extends BaseModel{
 
 
     static __api__listBySheet(sheetId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyQuestion.Model, [],"[('sheet_id','=','"+sheetId+"')]");
+        return new SearchReadAPI(SurveyQuestion.Model, [],"[('sheet_id','=',"+sheetId+")]");
     }
 
 
     static __api__countBySheet(sheetId: number): SearchCountAPI {
-        return new SearchCountAPI(SurveyQuestion.Model, "[('sheet_id','=','"+sheetId+"')]");
+        return new SearchCountAPI(SurveyQuestion.Model, "[('sheet_id','=',"+sheetId+")]");
     }
 
     static __api__countBySurvey(surveyId: number): SearchCountAPI {
-        return new SearchCountAPI(SurveyQuestion.Model, "[('survey_id','=','"+surveyId+"')]");
+        return new SearchCountAPI(SurveyQuestion.Model, "[('survey_id','=',"+surveyId+")]");
     }
 
     static countBySurvey( context:APIContext, surveyId: number): Observable<any> {
@@ -65,7 +65,7 @@ export class SurveyQuestion extends BaseModel{
 
 
     static __api__byQuestion(questionId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyQuestion.Model, [],"[('question_id','=','"+questionId+"')]");
+        return new SearchReadAPI(SurveyQuestion.Model, [],"[('question_id','=',"+questionId+")]");
     }
 
 

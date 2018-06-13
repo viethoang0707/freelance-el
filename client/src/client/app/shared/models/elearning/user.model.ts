@@ -98,7 +98,7 @@ export class User extends BaseModel{
     }
 
     static __api__listByGroup(groupId: number): SearchReadAPI {
-        return new SearchReadAPI(User.Model, [],"[('group_id','!=','"+groupId+"')]");
+        return new SearchReadAPI(User.Model, [],"[('group_id','=',"+groupId+")]");
     }
 
     static listByGroup( context:APIContext, groupId: number): Observable<any[]> {
@@ -108,12 +108,12 @@ export class User extends BaseModel{
                     return user.group_id == groupId;
                 });
             });        
-        return User.search(context, [],"[('group_id','!=','"+groupId+"')]");
+        return User.search(context, [],"[('group_id','=',"+groupId+")]");
 
     }
 
     static __api__listByPermission(permissionId: number): SearchReadAPI {
-        return new SearchReadAPI(User.Model, [],"[('permission_id','!=','"+permissionId+"')]");
+        return new SearchReadAPI(User.Model, [],"[('permission_id','=',"+permissionId+")]");
     }
 
     static listByPermission(context:APIContext, permissionId:number):Observable<any> {
@@ -123,11 +123,11 @@ export class User extends BaseModel{
                     return user.permission_id == permissionId;
                 });
             });        
-        return User.search(context, [],"[('permission_id','!=','"+permissionId+"')]");
+        return User.search(context, [],"[('permission_id','=',"+permissionId+")]");
     }
 
     static __api__countByPermission(permissionId: number): SearchCountAPI {
-        return new SearchCountAPI(User.Model, "[('permission_id','!=','"+permissionId+"')]");
+        return new SearchCountAPI(User.Model, "[('permission_id','=',"+permissionId+")]");
     }
 
     static countByPermission(context:APIContext, permissionId:number):Observable<any> {
@@ -138,7 +138,7 @@ export class User extends BaseModel{
                 });
                 return records.length;
             });        
-        return User.count(context,"[('permission_id','!=','"+permissionId+"')]");
+        return User.count(context,"[('permission_id','=',"+permissionId+")]");
     }
 
 }
