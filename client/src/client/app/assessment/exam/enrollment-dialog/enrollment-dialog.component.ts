@@ -77,7 +77,6 @@ export class ExamEnrollDialog extends BaseDialog<Course> {
     deleteMember(members) {
         if (members && members.length)
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                // ExamMember.deleteArray(this, members).subscribe(()=> {
                 var subscriptions = _.map(members,(member:ExamMember) => {
                     return member.delete(this);
                 });
