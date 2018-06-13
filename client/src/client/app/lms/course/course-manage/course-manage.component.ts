@@ -19,7 +19,7 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
 import { ClassExamListDialog } from '../class-exam-list/class-exam-list.dialog.component';
-import { GradebookListDialog } from '../gradebook-list/gradebook-list.component';
+import { ClassManageDialog } from '../class-manage/class-manage.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
@@ -61,7 +61,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
 	@ViewChild(ClassExamListDialog) examListDialog: ClassExamListDialog;
-	@ViewChild(GradebookListDialog) gradebookListDialog: GradebookListDialog;
+	@ViewChild(ClassManageDialog) classManageDialog: ClassManageDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
 
@@ -125,9 +125,9 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	manageStudent() {
+	manageClass() {
 		if (this.selectedClass) {
-			this.gradebookListDialog.show(this.selectedClass);
+			this.classManageDialog.show(this.selectedClass);
 		}
 	}
 

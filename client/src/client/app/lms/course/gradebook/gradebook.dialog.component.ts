@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, NgZone, ViewChild } from '@angular/core';
-import { DatePipe} from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -54,13 +54,13 @@ export class GradebookDialog extends BaseComponent {
     @ViewChild(CourseCertificateDialog) certDialog: CourseCertificateDialog;
     @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
-    constructor(private excelService:ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+    constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.exams = [];
         this.projects = [];
         this.stats = [];
         this.reportUtils = new ReportUtils();
-        this.currentUser =  this.authService.UserProfile;
+        this.currentUser = this.authService.UserProfile;
     }
 
     ngOnInit() {
@@ -72,10 +72,10 @@ export class GradebookDialog extends BaseComponent {
             this.translateService.instant('Score'),
         ]
         var records = [];
-        records = records.concat(_.map(this.exams, exam=> {
+        records = records.concat(_.map(this.exams, exam => {
             return [exam["name"], exam["score"]];
         }));
-        records = records.concat(_.map(this.projects, project=> {
+        records = records.concat(_.map(this.projects, project => {
             return [project["name"], project["score"]];
         }));
         this.excelService.exportAsExcelFile(header.concat(records), 'gradebook_report');
@@ -108,37 +108,37 @@ export class GradebookDialog extends BaseComponent {
         this.display = true;
         this.member = member;
         BaseModel
-        .bulk_search(this,
-            CourseSyllabus.__api__byCourse(this.member.course_id),
-            CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
-            Certificate.__api__byMember(this.member.id),
-            ClassExam.__api__listByClass(this.member.class_id),
-            ExamMember.__api__listByUser(this.currentUser.id),
-            Submission.__api__listByUser(this.currentUser.id),
-            ExamGrade.__api__all(),
-            Project.__api__listByClass(this.member.class_id),
-            ProjectSubmission.__api__listByMember(this.member.id))
-        .subscribe(jsonArr=> {
-            var sylList = CourseSyllabus.toArray(jsonArr[0]);
-            var logs = CourseLog.toArray(jsonArr[1]);
-            if (sylList.length) {
-                this.computeCourseStats(sylList[0], logs);
-            }
-            var certList = Certificate.toArray(jsonArr[2]);
-            if (certList.length)
-                this.certificate = certList[0];
-            var classExams = ClassExam.toArray(jsonArr[3]);
-            var examMembers = ExamMember.toArray(jsonArr[4]);
-            var submits = Submission.toArray(jsonArr[5]);
-            var grades = ExamGrade.toArray(jsonArr[6]);
-            this.displayExam(classExams, examMembers, submits,grades);
-            var projects = Project.toArray(jsonArr[7]);
-            var projectSubmits = ProjectSubmission.toArray(jsonArr[8]);
-            this.displayProject(projects, projectSubmits);
-        });
+            .bulk_search(this,
+                CourseSyllabus.__api__byCourse(this.member.course_id),
+                CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
+                Certificate.__api__byMember(this.member.id),
+                ClassExam.__api__listByClass(this.member.class_id),
+                ExamMember.__api__listByUser(this.currentUser.id),
+                Submission.__api__listByUser(this.currentUser.id),
+                ExamGrade.__api__all(),
+                Project.__api__listByClass(this.member.class_id),
+                ProjectSubmission.__api__listByMember(this.member.id))
+            .subscribe(jsonArr => {
+                var sylList = CourseSyllabus.toArray(jsonArr[0]);
+                var logs = CourseLog.toArray(jsonArr[1]);
+                if (sylList.length) {
+                    this.computeCourseStats(sylList[0], logs);
+                }
+                var certList = Certificate.toArray(jsonArr[2]);
+                if (certList.length)
+                    this.certificate = certList[0];
+                var classExams = ClassExam.toArray(jsonArr[3]);
+                var examMembers = ExamMember.toArray(jsonArr[4]);
+                var submits = Submission.toArray(jsonArr[5]);
+                var grades = ExamGrade.toArray(jsonArr[6]);
+                this.displayExam(classExams, examMembers, submits, grades);
+                var projects = Project.toArray(jsonArr[7]);
+                var projectSubmits = ProjectSubmission.toArray(jsonArr[8]);
+                this.displayProject(projects, projectSubmits);
+            });
     }
 
-    computeCourseStats(syl:CourseSyllabus, logs: CourseLog[]) {
+    computeCourseStats(syl: CourseSyllabus, logs: CourseLog[]) {
         var record = {};
         CourseUnit.countBySyllabus(this, syl.id).subscribe(totalUnit => {
             record["total_unit"] = totalUnit;
@@ -154,8 +154,9 @@ export class GradebookDialog extends BaseComponent {
                 record["complete_percent"] = 0;
             record["complete_unit"] = +result[3];
         });
+        this.stats.push(record);
     }
-    
+
     displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission[], grades: ExamGrade[]) {
         var examIds = _.pluck(classExams, 'exam_id');
         members = _.filter(members, member => {

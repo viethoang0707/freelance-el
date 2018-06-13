@@ -4,6 +4,7 @@ import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { ExecuteAPI } from '../../services/api/execute.api';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
 import * as _ from 'underscore';
@@ -65,7 +66,7 @@ export class Course extends BaseModel{
     logo: string;
 
     static __api__listByAuthor(authorId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('author_id','=','"+authorId+"')]");
+        return new SearchReadAPI(Course.Model, [],"[('author_id','=',"+authorId+")]");
     }
 
     static listByAuthor(context:APIContext, authorId):Observable<any> {
@@ -75,11 +76,11 @@ export class Course extends BaseModel{
                     return course.author_id == authorId;
                 });
             });
-        return Course.search(context,[],"[('author_id','=','"+authorId+"')]");
+        return Course.search(context,[],"[('author_id','=',"+authorId+")]");
     }
 
     static __api__listByGroup(groupId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('group_id','=','"+groupId+"')]");
+        return new SearchReadAPI(Course.Model, [],"[('group_id','=',"+groupId+")]");
     }
 
     static listByGroup(context:APIContext, groupId):Observable<any> {
@@ -89,11 +90,11 @@ export class Course extends BaseModel{
                     return course.group_id == groupId;
                 });
             });
-        return Course.search(context,[],"[('group_id','=','"+groupId+"')]");
+        return Course.search(context,[],"[('group_id','=',"+groupId+")]");
     }
 
     static __api__listByGroupAndMode(groupId: number, mode:string): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('group_id','=','"+groupId+"'),('mode','=','"+mode+"')]");
+        return new SearchReadAPI(Course.Model, [],"[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
 
     static listByGroupAndMode(context:APIContext, groupId, mode:string):Observable<any> {
@@ -103,7 +104,7 @@ export class Course extends BaseModel{
                     return course.group_id == groupId && course.mode == mode;
                 });
             });
-        return Course.search(context,[],"[('group_id','=','"+groupId+"'),('mode','=','"+mode+"')]");
+        return Course.search(context,[],"[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }
 
     static __api__searchByDate(start:Date, end:Date): SearchReadAPI {
@@ -122,6 +123,15 @@ export class Course extends BaseModel{
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
         var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
         return Course.search(context,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
+    }
+
+    static __api__enroll(courseId: number, userIds: number[]): ExecuteAPI {
+        return new ExecuteAPI(Course.Model, 'enroll',{courseId:courseId,userIds:userIds}, null);
+    }
+
+    static enroll(context:APIContext,courseId:number, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(courseId, userIds), 
+            context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
     }
 
 }

@@ -84,7 +84,7 @@ export class Exam extends BaseModel{
     }
 
     static __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
-        return new ExecuteAPI(Exam.Model, 'enroll',userIds, {examId:examId});
+        return new ExecuteAPI(Exam.Model, 'enroll',{userIds:userIds, examId:examId}, null);
     }
 
     static enroll(context:APIContext,examId:number, userIds: number[]):Observable<any> {

@@ -5,7 +5,7 @@
         <div class="ui-g-12 ">
           <p-toolbar>
             <div class="ui-toolbar-group-left ">
-              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMembers('student') "></button>
+              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addStudent() "></button>
               <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedStudents) " *ngIf="selectedStudents && selectedStudents.length "></button>
             </div>
           </p-toolbar>
@@ -57,11 +57,11 @@
           </p-table>
         </div>
       </p-tabPanel>
-      <p-tabPanel *ngIf="course.mode=='group'" header="{{'Teachers'|translate}}" leftIcon="ui-icon-people">
+      <p-tabPanel header="{{'Teachers'|translate}}" leftIcon="ui-icon-people">
         <div class="ui-g-12 ">
           <p-toolbar>
             <div class="ui-toolbar-group-left ">
-              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMembers('teacher') "></button>
+              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addTeacher() "></button>
               <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedTeachers) " *ngIf="selectedTeachers && selectedTeachers.length "></button>
             </div>
           </p-toolbar>

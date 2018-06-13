@@ -17,6 +17,7 @@ import { QuestionContainerDirective } from '../../../assessment/question/questio
 import { IQuestion } from '../../../assessment/question/question-template/question.interface';
 import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import { GROUP_CATEGORY, PRINT_DIALOG_STYLE } from '../../../shared/models/constants'
+import { BaseDialog } from '../../../shared/components/base/base.dialog';
 
 @Component({
     moduleId: module.id,
@@ -24,27 +25,15 @@ import { GROUP_CATEGORY, PRINT_DIALOG_STYLE } from '../../../shared/models/const
     templateUrl: 'certificate-print.dialog.component.html',
     styleUrls: ['certificate-print.dialog.component.css'],
 })
-export class CertificatePrintDialog extends BaseComponent {
+export class CertificatePrintDialog extends BaseDialog<Certificate> {
     
-
-    private display:boolean;
-    private certificate: Certificate;
 
     @ViewChild('printSection') printSection;
 
     constructor() {
         super();
-        this.display = false;
     }
 
-    show(certificate: Certificate) {
-        this.certificate = certificate;
-        this.display = true;
-    }
-
-    hide() {
-        this.display = false;
-    }
 
     print() {
         let printContents, popupWin;

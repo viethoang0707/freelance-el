@@ -54,8 +54,8 @@ export class CourseClass extends BaseModel{
         return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
     }
 
-    static __api__enroll(classId: number, userIds: number[]): SearchReadAPI {
-        return new ExecuteAPI(CourseClass.Model, 'enroll',userIds, {class_id:classId});
+    static __api__enroll(classId: number, userIds: number[]): ExecuteAPI {
+        return new ExecuteAPI(CourseClass.Model, 'enroll',{classId:classId,userIds:userIds}, null);
     }
 
     static enroll(context:APIContext,classId:number, userIds: number[]):Observable<any> {
