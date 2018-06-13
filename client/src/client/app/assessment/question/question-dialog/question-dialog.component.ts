@@ -74,6 +74,9 @@ export class QuestionDialog extends BaseDialog<Question>  {
 		})
 	}
 
+	saveQuestion() {
+		this.save();
+	}
 }
 
 
