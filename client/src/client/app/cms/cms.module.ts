@@ -26,7 +26,7 @@ import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-s
 @NgModule({
 	imports: [ErpSharedModule, AuthModule, AssessmentModule],
 	declarations: [CMSComponent, SumPipe, ExamContentDialog, CourseUnitPreviewDialog,ProjectContentDialog,
-		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSyllabusSettingDialog, 
+		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSettingDialog, 
 		SlideLectureCourseUnitComponent,QuestionSheetEditorDialog, QuestionSheetSaveDialog,SurveySheetSaveDialog,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,
 		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog],
