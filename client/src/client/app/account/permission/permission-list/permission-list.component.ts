@@ -63,9 +63,6 @@ export class PermissionListComponent extends BaseComponent {
             User.countByPermission(this, this.selectedPermission.id).subscribe(count=> {
                 if (count > 0 )
                     this.error(this.translateService.instant('You cannot delete permission assigned to other uers'))
-            // User.listByPermission(this, this.selectedPermission.id).subscribe(users=> {
-            //     if (users.length)
-            //         this.error(this.translateService.instant('You cannot delete permission assigned to other uers'))
                 else {
                     this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
                         this.selectedPermission.delete(this).subscribe(() => {
