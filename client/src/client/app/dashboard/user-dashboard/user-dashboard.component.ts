@@ -85,9 +85,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayExams() {
-        this.examMembers = _.filter(this.examMembers, (member => {
+        this.examMembers = _.filter(this.examMembers, (member:ExamMember) => {
             return member.exam_id && member.status == 'active';
-        }));
+        });
         var searchApi = _.map(this.examMembers, (member: ExamMember) => {
             return Submission.__api__listByMember(member.id);
         });

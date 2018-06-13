@@ -95,9 +95,8 @@ export class ClassExamListDialog extends BaseComponent {
 
 	manageExam() {
 		if (this.selectedClassExam)  {
-			ExamMember.byExamAndUser(this,this.selectedClassExam.id, this.authService.UserProfile.id ).subscribe(member=> {
-				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.id, member.id]);
-				
+			ExamMember.byExamAndUser(this, this.authService.UserProfile.id ,this.selectedClassExam.exam_id).subscribe(member=> {
+				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.exam_id, member.id]);
 			});
 		}
 	}

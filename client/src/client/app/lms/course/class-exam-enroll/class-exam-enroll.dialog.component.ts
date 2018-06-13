@@ -14,9 +14,9 @@ import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
-    moduleId: module.id,
-    selector: 'class-exam-enroll-dialog',
-    templateUrl: 'class-exam-enroll.dialog.component.html',
+	moduleId: module.id,
+	selector: 'class-exam-enroll-dialog',
+	templateUrl: 'class-exam-enroll.dialog.component.html',
 })
 export class ClassExamEnrollDialog extends BaseComponent {
 
@@ -30,32 +30,29 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		super();
 		this.display = false;
 		this.courseClass = new CourseClass();
-		this.members  = [];
+		this.members = [];
 	}
 
 	show(classExam: ClassExam, clazz: CourseClass) {
 		this.display = true;
-		this.courseClass =  clazz;
+		this.courseClass = clazz;
 		this.classExam = classExam;
 		BaseModel
-		.bulk_search(this, CourseMember.__api__listByClass(this.classExam.class_id), ExamMember.__api__listByExam(this.classExam.exam_id))
-		.subscribe(jsonArr=> {
-			var members = CourseMember.toArray(jsonArr[0]);
-			this.members =  _.filter(members, (member)=> {
-				return member.role =='student';
-			});
-			var examMembers = ExamMember.toArray(jsonArr[1]);
-			_.each(this.members, (member:CourseMember)=> {
-				var examMember = _.find(examMember, (obj:ExamMember)=> {
-					return obj.user_id == member.user_id;
-				});
-				if (examMember) {
+			.bulk_search(this, CourseMember.__api__listByClass(this.classExam.class_id), ExamMember.__api__listByExam(this.classExam.exam_id))
+			.subscribe(jsonArr => {
+				this.members = CourseMember.toArray(jsonArr[0]);
+				var examMembers = ExamMember.toArray(jsonArr[1]);
+				_.each(this.members, (member: CourseMember) => {
+					var examMember = _.find(examMembers, (obj: ExamMember) => {
+						return obj.user_id == member.user_id;
+					});
+					if (examMember) {
 						member["examMember"] = examMember;
-						member["allowed"] =  examMember.status =='active';
+						member["allowed"] = examMember.status == 'active';
 					} else
 						member["allowed"] = false;
-			})
-		});
+				})
+			});
 	}
 
 	hide() {
@@ -65,7 +62,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	registerAll() {
 		var newMembers = [];
 		var currentMembers = [];
-		_.each(this.members, (member)=> {
+		_.each(this.members, (member) => {
 			if (!member["examMember"]) {
 				member["examMember"] = this.createExamMember(member);
 				newMembers.push(member["examMember"]);
@@ -75,7 +72,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 				currentMembers.push(member["examMember"]);
 			}
 		});
-		Observable.forkJoin(ExamMember.createArray(this,newMembers), ExamMember.updateArray(this, currentMembers)).subscribe(()=> {
+		Observable.forkJoin(ExamMember.createArray(this, newMembers), ExamMember.updateArray(this, currentMembers)).subscribe(() => {
 			this.info('Register all successfully');
 		});
 	}
@@ -83,7 +80,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 
 	unregisterAll() {
 		var examMembers = [];
-		_.each(this.members, (member)=> {
+		_.each(this.members, (member) => {
 			if (member["examMember"]) {
 				var examMember = member["examMember"];
 				examMember.status = "suspend";
@@ -93,7 +90,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		return ExamMember.updateArray(this, examMembers);
 	}
 
-	registerUnregister(event:any, member: any) {
+	registerUnregister(event: any, member: any) {
 		var examMember = member["examMember"];
 		if (event.checked) {
 			if (examMember) {
@@ -102,7 +99,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 				member["allowed"] = true;
 			} else {
 				examMember = this.createExamMember(member);
-				examMember.save(this).subscribe(()=> {
+				examMember.save(this).subscribe(() => {
 					member["examMember"] = examMember;
 					member["allowed"] = true;
 				});
@@ -116,11 +113,11 @@ export class ClassExamEnrollDialog extends BaseComponent {
 
 	createExamMember(member) {
 		var examMember = new ExamMember();
-        examMember.role = "candidate";
-        examMember.exam_id = this.classExam.exam_id;
-        examMember.user_id = member.user_id;
-        examMember.date_register =  new Date();
-        examMember.status = 'active';
-        return examMember;
+		examMember.role = "candidate";
+		examMember.exam_id = this.classExam.exam_id;
+		examMember.user_id = member.user_id;
+		examMember.date_register = new Date();
+		examMember.status = 'active';
+		return examMember;
 	}
 }

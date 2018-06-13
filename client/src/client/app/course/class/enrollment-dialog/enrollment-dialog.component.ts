@@ -11,8 +11,10 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
- COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+import {
+	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS
+} from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -30,8 +32,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	private course: Course;
 	private courseClass: CourseClass;
 	private items: any[];
-	public subscription : Subscription;
-	private processing : boolean;
+	public subscription: Subscription;
+	private processing: boolean;
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
@@ -39,18 +41,17 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	COURSE_MEMBER_ROLE = COURSE_MEMBER_ROLE;
 	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
-	
+
 	constructor() {
 		super();
 		this.items = [
-			{ label: this.translateService.instant('Student'),value:'student',command:()=> {this.addMembers('student')}},
-			{ label: this.translateService.instant('Teacher'),value:'teacher',command:()=> {this.addMembers('teacher')}},
-		
+			{ label: this.translateService.instant('Student'), value: 'student', command: () => { this.addMembers('student') } },
+			{ label: this.translateService.instant('Teacher'), value: 'teacher', command: () => { this.addMembers('teacher') } },
 		]
 		this.course = new Course();
 	}
 
-	enrollCourse(course:Course) {
+	enrollCourse(course: Course) {
 		this.course = course;
 		this.display = true;
 		this.selectedStudents = [];
@@ -58,7 +59,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.loadMembers();
 	}
 
-	enrollClass(course:Course,courseClass:CourseClass) {
+	enrollClass(course: Course, courseClass: CourseClass) {
 		this.course = course;
 		this.courseClass = courseClass;
 		this.display = true;
@@ -74,57 +75,75 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	addMembers(role: string) {
 		this.usersDialog.show();
-		this.subscription = this.usersDialog.onSelectUsers.subscribe(users => {
+		this.usersDialog.onSelectUsers.subscribe(users => {
 			var userIds = _.pluck(users, 'id');
-			CourseClass.enroll(this,this.courseClass.id, userIds).subscribe((result)=> {
-				this.loadMembers();
-				var failList = result['failList'];
-				_.each(failList, userId=> {
-					let user:User = _.find(users, (obj:User)=> {
-						return obj.id == userId;
+			if (role =='student')
+				CourseClass.enroll(this, this.courseClass.id, userIds).subscribe((result) => {
+					this.loadMembers();
+					var failList = result['failList'];
+					_.each(failList, userId => {
+						let user: User = _.find(users, (obj: User) => {
+							return obj.id == userId;
+						});
+						this.warn(`User ${user.name} does not meet course requirement`);
 					});
-					this.warn(`User ${user.name} does not meet course requirement`);
 				});
-			});
+			else if (role =='teacher') {
+				var members = _.map(users, (user:User)=> {
+					var member = new CourseMember();
+					if (this.courseClass) {
+						member.course_id = this.courseClass.course_id;
+						member.class_id =  this.courseClass.id;
+					}
+					member.role = 'teacher';
+					member.course_id = this.course.id;
+					member.user_id = user.id;
+					member.status = 'active';
+					member.enroll_status = 'registered';
+					member.date_register = new Date();
+					return member;
+				});
+				CourseMember.createArray(this, members).subscribe(()=> {
+					this.success('Teacher registered successfully')
+				});
+			}
 		});
 	}
 
 	deleteMembers(members) {
-        if (members && members.length)
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                CourseMember.deleteArray(this,members).subscribe(()=> {
-                	this.selectedStudents = [];
+		if (members && members.length)
+			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+				CourseMember.deleteArray(this, members).subscribe(() => {
+					this.selectedStudents = [];
 					this.selectedTeachers = [];
 					this.loadMembers();
-                })
-            });
+				})
+			});
 	}
-	
+
 	loadMembers() {
 		if (this.course && !this.courseClass) {
 			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
-				this.students = _.filter(members, (member)=> {
-					return member.role =='student';
+				this.students = _.filter(members, (member) => {
+					return member.role == 'student';
 				});
 				this.selectedStudents = [];
-				this.teachers = _.filter(members, (member)=> {
-					return member.role =='teacher';
+				this.teachers = _.filter(members, (member) => {
+					return member.role == 'teacher';
 				});
 				this.selectedTeachers = [];
-				
 			});
 		}
 		if (this.courseClass && this.courseClass) {
 			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
-				this.students = _.filter(members, (member)=> {
-					return member.role =='student';
+				this.students = _.filter(members, (member) => {
+					return member.role == 'student';
 				});
 				this.selectedStudents = [];
-				this.teachers = _.filter(members, (member)=> {
-					return member.role =='teacher';
+				this.teachers = _.filter(members, (member) => {
+					return member.role == 'teacher';
 				});
 				this.selectedTeachers = [];
-				
 			});
 		}
 	}

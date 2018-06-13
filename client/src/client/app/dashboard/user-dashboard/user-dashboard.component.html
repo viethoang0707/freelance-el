@@ -52,7 +52,7 @@
             <p-header>
                 <h3 class="dashboard-list-title"><i class="material-icons icon">alarm_add</i>{{'My exams'|translate}}</h3>
             </p-header>
-            <div class="ui-g-3" *ngFor="let member of examMebers | slice:0:4">
+            <div class="ui-g-3" *ngFor="let member of examMembers | slice:0:4">
                 <div class="card card-exam">
                     <div class="exam-card-header">
                         <img src="assets/layout/images/dashboard/usercard.png" library="serenity-layout" width="100" height="60" />
@@ -83,7 +83,7 @@
                                     <span class="cmt-title">{{'Number of question'|translate}}</span>
                                     <span class="cmt-detail">{{member.question_count}}</span>
                                 </li>
-                                <li class="clearfix" *ngIf="exam.member.role=='candidate'">
+                                <li class="clearfix" *ngIf="member.role=='candidate'">
                                     <i class="material-icons">star</i>
                                     <span class="cmt-title">{{'Score'|translate}}</span>
                                     <span class="cmt-detail">{{member.submit.score}}</span>

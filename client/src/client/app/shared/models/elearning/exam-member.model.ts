@@ -48,7 +48,7 @@ export class ExamMember extends BaseModel{
     group_id__DESC__: string;
 
     static __api__listByExam(examId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamMember.Model, [],"[('exam_id','=','"+examId+"')]");
+        return new SearchReadAPI(ExamMember.Model, [],"[('exam_id','=',"+examId+")]");
     }
 
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
@@ -64,7 +64,7 @@ export class ExamMember extends BaseModel{
     }
 
     static __api__listByUser(userId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamMember.Model, [],"[('user_id','=','"+userId+"')]");
+        return new SearchReadAPI(ExamMember.Model, [],"[('user_id','=',"+userId+")]");
     }
 
     static listByUser( context:APIContext, userId: number): Observable<any[]> {
