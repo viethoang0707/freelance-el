@@ -73,11 +73,11 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	}
 
 
-	addMembers(role: string) {
+	addStudent() {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.subscribe(users => {
 			var userIds = _.pluck(users, 'id');
-			if (role =='student')
+			if (this.course.mode =='group')
 				CourseClass.enroll(this, this.courseClass.id, userIds).subscribe((result) => {
 					this.loadMembers();
 					var failList = result['failList'];
@@ -88,25 +88,41 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 						this.warn(`User ${user.name} does not meet course requirement`);
 					});
 				});
-			else if (role =='teacher') {
-				var members = _.map(users, (user:User)=> {
-					var member = new CourseMember();
-					if (this.courseClass) {
-						member.course_id = this.courseClass.course_id;
-						member.class_id =  this.courseClass.id;
-					}
-					member.role = 'teacher';
-					member.course_id = this.course.id;
-					member.user_id = user.id;
-					member.status = 'active';
-					member.enroll_status = 'registered';
-					member.date_register = new Date();
-					return member;
+			if (this.course.mode =='self-study')
+				Course.enroll(this, this.courseClass.id, userIds).subscribe((result) => {
+					this.loadMembers();
+					var failList = result['failList'];
+					_.each(failList, userId => {
+						let user: User = _.find(users, (obj: User) => {
+							return obj.id == userId;
+						});
+						this.warn(`User ${user.name} does not meet course requirement`);
+					});
 				});
-				CourseMember.createArray(this, members).subscribe(()=> {
-					this.success('Teacher registered successfully')
-				});
-			}
+		});
+	}
+
+	addTeacher() {
+		this.usersDialog.show();
+		this.usersDialog.onSelectUsers.subscribe(users => {
+			var userIds = _.pluck(users, 'id');
+			var members = _.map(users, (user:User)=> {
+				var member = new CourseMember();
+				if (this.courseClass) {
+					member.course_id = this.courseClass.course_id;
+					member.class_id =  this.courseClass.id;
+				}
+				member.role = 'teacher';
+				member.course_id = this.course.id;
+				member.user_id = user.id;
+				member.status = 'active';
+				member.enroll_status = 'registered';
+				member.date_register = new Date();
+				return member;
+			});
+			CourseMember.createArray(this, members).subscribe(()=> {
+				this.success('Teacher registered successfully')
+			});
 		});
 	}
 
