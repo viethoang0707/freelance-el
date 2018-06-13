@@ -50,6 +50,7 @@ export class TicketListComponent extends BaseComponent {
         if (ticket.status == 'open') {
             this.workflowService.approveTicket(this, ticket).subscribe(()=> {
                 this.info(this.translateService.instant('Ticket approved'));
+                this.closeTransaction();
             });
         }
     }
@@ -58,6 +59,7 @@ export class TicketListComponent extends BaseComponent {
         if (ticket.status == 'open') {
             this.workflowService.rejectTicket(this, ticket).subscribe(()=> {
                 this.info(this.translateService.instant('Ticket rejected'));
+                this.closeTransaction();
             });
         }
     }
