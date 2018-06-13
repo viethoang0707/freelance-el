@@ -46,6 +46,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.object.group_id = this.selectedNode.data.id;
+			this.object.group_id__DESC__ = this.selectedNode.data.name;
 		}
 	}
 

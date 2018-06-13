@@ -89,7 +89,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					});
 				});
 			if (this.course.mode =='self-study')
-				Course.enroll(this, this.courseClass.id, userIds).subscribe((result) => {
+				Course.enroll(this, this.course.id, userIds).subscribe((result) => {
 					this.loadMembers();
 					var failList = result['failList'];
 					_.each(failList, userId => {
