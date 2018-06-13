@@ -50,43 +50,35 @@ export class ExamContentDialog extends BaseComponent {
 	show(exam: Exam) {
 		this.display = true;
 		this.exam = exam;
+		this.examQuestions = [];
 		this.loadQuestionSheet();
 	}
 
 	loadQuestionSheet() {
-		
 		QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
-				
 				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
-					
 				});
 			}
 			else {
 				this.sheet = new QuestionSheet();
 				this.sheet.exam_id = this.exam.id;
-				
 				this.sheet.save(this).subscribe(sheet => {
 					this.sheet = sheet;
-					
 				});
 			}
 		});
 	}
 
 	save() {
-		
-		var subscriptions = _.map(this.examQuestions, examQuestion=> {
-			return examQuestion.save(this);
-		});
-		subscriptions.push(this.sheet.save(this));
-		Observable.forkJoin(...subscriptions).subscribe(()=> {
-			this.hide();
-			this.success(this.translateService.instant('Content saved successfully.'));
-			
+		this.sheet.save(this).subscribe(()=> {
+			ExamQuestion.updateArray(this,this.examQuestions ).subscribe(()=> {
+				this.hide();
+				this.success(this.translateService.instant('Content saved successfully.'));
+			});
 		});
 	}
 
@@ -95,44 +87,32 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	previewSheet() {
-		this.previewDialog.show(this.sheet);
+		this.previewDialog.show(this.sheet, this.examQuestions);
 	}
 
 	clearSheet() {
 		this.sheet.finalized =  false;
-		var subscriptions = _.map(this.examQuestions, examQuestion=> {
-			return examQuestion.delete(this);
-		});
-		subscriptions.push(this.sheet.save(this));
-		
-		Observable.forkJoin(subscriptions).subscribe(()=> {
-			this.examQuestions = [];
-			
+		this.sheet.save(this).subscribe(()=> {
+			ExamQuestion.deleteArray(this,this.examQuestions ).subscribe(()=> {
+				this.examQuestions = [];
+			});
 		});
 	}
 
 	loadSheetTemplate() {
-		if (!this.sheet.finalized  && this.examQuestions.length ==0)
+		if (this.sheet && !this.sheet.finalized )
 			this.selectSheetDialog.show();
 			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:QuestionSheet) => {
-				
 				ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
-					examQuestions = _.map(examQuestions, examQuestion=> {
-						var newExamQuestion = new ExamQuestion();
-						newExamQuestion.exam_id =  this.exam.id;
-						newExamQuestion.score = examQuestion.score;
-						newExamQuestion.sheet_id =  this.sheet.id;
-						return newExamQuestion; 
+					this.examQuestions = _.map(examQuestions, examQuestion=> {
+						return examQuestion.clone();
+					});
+					_.each(this.examQuestions, (examQuestion:ExamQuestion)=> {
+						examQuestion.sheet_id =  this.sheet.id;
 					});
 					this.sheet.finalized =  true;
-					var subscriptions = _.map(examQuestions, examQuestion=> {
-						return examQuestion.save(this);
-					});
-					subscriptions.push(this.sheet.save(this));
-					Observable.forkJoin(subscriptions).subscribe(()=> {
-						this.loadQuestionSheet();
-						
-					});
+					this.examQuestions = examQuestions;
+					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
 				});
 			});
 	}
@@ -144,11 +124,15 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	designSheet() {
-		if (this.sheet && this.sheet.finalized) {
-			this.editorDialog.show(this.sheet);
-			this.editorDialog.onSave.subscribe(()=> {
-				this.loadQuestionSheet();
-			})
+		if (this.sheet && !this.sheet.finalized) {
+			this.editorDialog.show();
+			this.editorDialog.onSave.subscribe(examQuestions=> {
+				_.each(examQuestions, (examQuestion:ExamQuestion)=> {
+					examQuestion.sheet_id =  this.sheet.id;
+				});
+				this.sheet.finalized =  true;
+				this.examQuestions = examQuestions;
+			});
 		}
 	}
 }

@@ -22,32 +22,29 @@ import { TreeNode } from 'primeng/api';
 	selector: 'question-sheet-editor-dialog',
 	templateUrl: 'question-sheet-editor.dialog.component.html',
 })
-export class QuestionSheetEditorDialog extends BaseComponent {
+export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 
 	QUESTION_LEVEL = QUESTION_LEVEL;
 
 	private display: boolean;
 	private tree: any;
-	private selectors: any;
 	private selectorGroups: any;
 	private selectedNodes: any;
 	private groups: Group[];
 	private treeUtils: TreeUtils;
 	private examQuestions: ExamQuestion[];
-	private sheet: QuestionSheet;
 	private onSaveReceiver: Subject<any> = new Subject();
     onSave: Observable<any> = this.onSaveReceiver.asObservable();
 
 	constructor() {
 		super();
-		this.initControl();
+		this.treeUtils = new TreeUtils();
+		
 	}
 
-	initControl() {
-		this.treeUtils = new TreeUtils();
+	ngOnInit() {
 		this.examQuestions = [];
 		this.tree = {};
-		this.selectors = [];
 		this.selectorGroups = {};
 		this.selectedNodes = {};
 		_.each(QUESTION_LEVEL, (val, key) => {
@@ -57,6 +54,16 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 			this.selectorGroups[key]["include_sub_group"] = true;
 			this.selectorGroups[key]["group_ids"] = [];
 			this.selectedNodes[key] = [];
+		});
+		this.startTransaction();
+		Group.listQuestionGroup(this).subscribe(groups => {
+			_.each(QUESTION_LEVEL, (val, key) => {
+				this.tree[key] = this.treeUtils.buildGroupTree(groups);
+				this.selectedNodes[key] = _.map(this.selectorGroups[key]["group_ids"], (group_id => {
+					return this.treeUtils.findTreeNode(this.tree[key], group_id);
+				}));
+			});
+			this.closeTransaction();
 		});
 	}
 
@@ -69,9 +76,11 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	createExamQuestionFromQuestionBank(questions: Question[], score)  {
 		return  _.map(questions, (question:Question) => {
 			var examQuestion = new ExamQuestion();
-			examQuestion.sheet_id = this.sheet.id;
 			examQuestion.question_id = question.id;
 			examQuestion.score = score;
+			examQuestion.title = question.title;
+			examQuestion.group_id = question.group_id;
+			examQuestion.group_id__DESC__ = question.group_id__DESC__;
 			return examQuestion;
 		});
 	}
@@ -79,35 +88,23 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	generateQuestion() {
 		var subscriptions = [];
 		_.each(QUESTION_LEVEL, (val, key)=> {
-			var selectors = _.filter(this.selectors, sel=> {
-				return sel["level"] == key;
-			});
-			var groupIds  = [];
-			_.each(selectors, sel=> {
-				if (sel["group_id"]) {
-					var selectedGroups = this.treeUtils.getSubGroup(this.groups, sel["group_id"]);
-					groupIds = groupIds.concat(_.pluck(selectedGroups, 'id'));
-				}
-			});
-			groupIds = _.uniq(groupIds);
-			if (groupIds.length > 0 && selectors[0]["number"])
+			var groupIds = this.selectorGroups[key]["group_ids"]
+			if (groupIds.length > 0 && this.selectorGroups[key]["number"])
 				subscriptions.push(Question.listByGroups(this, groupIds).do(questions => {
 					questions = _.shuffle(questions);
 					questions = _.filter(questions, (obj:Question)=> {
-						return obj.level == selectors[0]["level"];
+						return obj.level == key;
 					});
-					var score = selectors[0]["score"];
-					questions = questions.slice(0, selectors[0]["number"]);
+					var score = this.selectorGroups[key]["score"];
+					questions = questions.slice(0, this.selectorGroups[key]["number"]);
 					this.examQuestions = this.examQuestions.concat(this.createExamQuestionFromQuestionBank(questions, score));
 				}));
 		});
 		return subscriptions;
 	}
 
-	show(sheet: QuestionSheet) {
-		this.initControl();
+	show() {
 		this.display = true;
-		this.sheet = sheet;
 	}
 
 
@@ -123,7 +120,6 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 				this.success(this.translateService.instant('Content saved successfully.'));
 			})
 		})
-		
 	}
 
 	

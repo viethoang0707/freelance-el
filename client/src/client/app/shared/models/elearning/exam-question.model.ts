@@ -49,6 +49,24 @@ export class ExamQuestion extends BaseModel{
     static __api__listBySheet(sheetId: number): SearchReadAPI {
         return new SearchReadAPI(ExamQuestion.Model, [],"[('sheet_id','=','"+sheetId+"')]");
     }
+    
+    clone():ExamQuestion {
+        var q = new ExamQuestion();
+        q.question_id = this.question_id;
+        q.exam_id = this.exam_id;
+        q.sheet_id = this.sheet_id;
+        q.score = this.score;
+        q.order = this.order;
+        q.level = this.level;
+        q.title = this.title;
+        q.content = this.content;
+        q.explanation = this.explanation;
+        q.type = this.type;
+        q.group_id = this.group_id;
+        q.group_id__DESC__ = this.group_id__DESC__;
+        return q;
+    }
+
 
     static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
         return ExamQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
