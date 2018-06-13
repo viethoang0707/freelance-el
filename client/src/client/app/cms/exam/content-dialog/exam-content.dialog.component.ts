@@ -55,11 +55,9 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	loadQuestionSheet() {
-		
 		QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
-				
 				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
@@ -68,25 +66,19 @@ export class ExamContentDialog extends BaseComponent {
 			else {
 				this.sheet = new QuestionSheet();
 				this.sheet.exam_id = this.exam.id;
-				
 				this.sheet.save(this).subscribe(sheet => {
 					this.sheet = sheet;
-					
 				});
 			}
 		});
 	}
 
 	save() {
-		
-		var subscriptions = _.map(this.examQuestions, examQuestion=> {
-			return examQuestion.save(this);
-		});
-		subscriptions.push(this.sheet.save(this));
-		Observable.forkJoin(...subscriptions).subscribe(()=> {
-			this.hide();
-			this.success(this.translateService.instant('Content saved successfully.'));
-			
+		this.sheet.save(this).subscribe(()=> {
+			ExamQuestion.updateArray(this,this.examQuestions ).subscribe(()=> {
+				this.hide();
+				this.success(this.translateService.instant('Content saved successfully.'));
+			});
 		});
 	}
 
@@ -100,15 +92,10 @@ export class ExamContentDialog extends BaseComponent {
 
 	clearSheet() {
 		this.sheet.finalized =  false;
-		var subscriptions = _.map(this.examQuestions, examQuestion=> {
-			if (examQuestion["id"])
-				return examQuestion.delete(this);
-			return Observable.of(true);
-		});
-		subscriptions.push(this.sheet.save(this));
-		
-		Observable.forkJoin(subscriptions).subscribe(()=> {
-			this.examQuestions = [];
+		this.sheet.save(this).subscribe(()=> {
+			ExamQuestion.deleteArray(this,this.examQuestions ).subscribe(()=> {
+				this.examQuestions = [];
+			});
 		});
 	}
 
@@ -116,7 +103,6 @@ export class ExamContentDialog extends BaseComponent {
 		if (this.sheet && !this.sheet.finalized )
 			this.selectSheetDialog.show();
 			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:QuestionSheet) => {
-				
 				ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions=> {
 					this.examQuestions = _.map(examQuestions, examQuestion=> {
 						return examQuestion.clone();
