@@ -117,7 +117,7 @@ export class ExamQuestion extends BaseModel{
         });
         return Question.array(context, questionIds).do(questions=> {
             _.each(examQuestions, (examQuestion:ExamQuestion)=> {
-                examQuestion.question =  _.find(questions, (question:ExamQuestion)=> {
+                examQuestion.question =  _.find(questions, (question:Question)=> {
                     return examQuestion.question_id == question.id;
                 });
             });

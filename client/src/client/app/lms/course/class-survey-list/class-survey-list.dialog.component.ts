@@ -23,11 +23,13 @@ import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog
 })
 export class ClassSurveyListDialog extends BaseComponent {
 
+	SURVEY_STATUS =  SURVEY_STATUS;
+
 	private display: boolean;
 	private courseClass: CourseClass;
 	private classSurveys: ClassSurvey[];
 	private selectedClassSurvey: ClassSurvey;
-	SURVEY_STATUS =  SURVEY_STATUS;
+	
 	@ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
 	@ViewChild(ClassSurveyEnrollDialog) enrollDialog: ClassSurveyEnrollDialog;
 	@ViewChild(SurveyContentDialog) surveyContentDialog:SurveyContentDialog;
@@ -47,10 +49,8 @@ export class ClassSurveyListDialog extends BaseComponent {
 	}
 
 	loadSurveys() {
-		this.startTransaction();
 		ClassSurvey.listByClass(this, this.courseClass.id).subscribe(classSurveys => {
 			this.classSurveys = classSurveys;
-			this.closeTransaction();
 		});
 	}
 
@@ -60,10 +60,8 @@ export class ClassSurveyListDialog extends BaseComponent {
 
 	enrollSurvey() {
 		if (this.selectedClassSurvey) {
-			this.startTransaction();
 			Survey.get(this, this.selectedClassSurvey.survey_id).subscribe(survey => {
 				this.enrollDialog.show(survey, this.courseClass);
-				this.closeTransaction();
 			});
 		}
 	}
@@ -72,7 +70,6 @@ export class ClassSurveyListDialog extends BaseComponent {
 		var survey = new Survey();
 		survey.supervisor_id =  this.authService.UserProfile.id;
 		this.surveyDialog.show(survey);
-		this.startTransaction();
 		this.surveyDialog.onCreateComplete.subscribe(() => {
 			var classSurvey = new ClassSurvey();
 			classSurvey.survey_id = survey.id;
@@ -80,34 +77,28 @@ export class ClassSurveyListDialog extends BaseComponent {
 			classSurvey.class_id = this.courseClass.id;
 			classSurvey.save(this).subscribe(() => {
 				this.loadSurveys();
-				this.closeTransaction();
 			});
 		});
 	}
 
 	editSurvey() {
 		if (this.selectedClassSurvey) {
-			this.startTransaction();
 			Survey.get(this, this.selectedClassSurvey.survey_id).subscribe(survey => {
 				this.surveyDialog.show(survey);
-				this.closeTransaction();
 			});
 		}
 	}
 
 	viewReportSurvey() {
 		if (this.selectedClassSurvey) {
-			this.startTransaction();
 			Survey.get(this, this.selectedClassSurvey.survey_id).subscribe(survey => {
 				this.statsDialog.show(survey);
-				this.closeTransaction();
 			});
 		}
 	}
 
 	editContent() {
 		if (this.selectedClassSurvey) {
-			this.startTransaction();
 			Survey.get(this, this.selectedClassSurvey.survey_id).subscribe(survey => {
 				this.surveyContentDialog.show(survey);
 			});

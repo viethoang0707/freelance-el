@@ -41,20 +41,14 @@ export class SurveySheetSaveDialog extends BaseComponent {
 
 	save() {
 		var sheet = this.sheet.clone()
-		this.startTransaction();
 		sheet.save(this).subscribe(()=> {
 			var surveyQuestions = _.map(this.surveyQuestions, question=> {
 				var surveyQuestion = question.clone();
 				surveyQuestion.sheet_id = sheet.id;
 				return surveyQuestion;
 			});
-			var subscriptions = _.map(surveyQuestions, surveyQuestion=> {
-				return surveyQuestion.save(this);
-			});
-			subscriptions.push(this.sheet.save(this));
-			Observable.forkJoin(subscriptions).subscribe(()=> {
+			SurveyQuestion.createArray(this, surveyQuestions).subscribe(()=> {
 				this.success('Question sheet saved successfully');
-				this.closeTransaction();
 				this.hide();
 			});
 		});

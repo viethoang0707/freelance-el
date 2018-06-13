@@ -69,6 +69,10 @@ export class Submission extends BaseModel{
         return Submission.search(context,[],"[('exam_id','=',"+examId+")]");
     }
 
+     static __api__listByMember(memberId: number): SearchReadAPI {
+        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+")]");
+    }
+
     static listByMember( context:APIContext, memberId: number): Observable<any> {
         return Submission.search(context,[],"[('member_id','=',"+memberId+")]");
     }

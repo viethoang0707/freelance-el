@@ -10,6 +10,7 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { SelectItem } from 'primeng/api';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -18,12 +19,13 @@ import { SelectItem } from 'primeng/api';
 })
 export class ClassSurveyEnrollDialog extends BaseComponent {
 
+	SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
+
 	private display: boolean;
 	private courseClass: CourseClass;
 	private survey: Survey;
-	private members: SurveyMember[];
-	private selectedMember: SurveyMember;
-	SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
+	private members: CourseMember[];
+	private selectedMember: CourseMember;
 
 	constructor() {
 		super();
@@ -36,20 +38,20 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.display = true;
 		this.courseClass =  clazz;
 		this.survey = survey;
-		this.startTransaction();
-		CourseMember.listByClass(this, clazz.id).subscribe(members => {
-			this.members = members;
-			SurveyMember.listBySurvey(this, this.survey.id).subscribe(surveyMembers=> {
-				_.each(surveyMembers, (member)=> {
-					var surveyMember = _.find(surveyMembers, surveyMember=> {
-						return member.user_id == surveyMember.user_id;
+
+		BaseModel
+			.bulk_search(this, CourseMember.__api__listByClass(this.courseClass.id), SurveyMember.__api__listBySurvey(this.survey.id))
+			.subscribe(jsonArr => {
+				this.members = CourseMember.toArray(jsonArr[0]);
+				var surveyMembers = SurveyMember.toArray(jsonArr[1]);
+				_.each(this.members, (member: CourseMember) => {
+					var surveyMember = _.find(surveyMembers, (obj: SurveyMember) => {
+						return obj.user_id == member.user_id;
 					});
 					if (surveyMember) 
 						member["surveyMember"] = surveyMember;
-				});
+				})
 			});
-			this.closeTransaction();
-		});
 	}
 
 	hide() {
@@ -57,31 +59,24 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 	}
 
 	registerAll() {
-		var subscriptions = _.map(this.members, member=> {
-			var member = this.createSurveyMember(member);
-			return member.save(this);
+		var surveyMembers = _.map(this.members, member=> {
+			var surveyMember = this.createSurveyMember(member);
+			return surveyMember;
 		})
-		this.startTransaction();
-		Observable.forkJoin(subscriptions).subscribe(()=> {
+		SurveyMember.createArray(this, surveyMembers).subscribe(()=> {
 			this.info('Register all successfully');
-			this.closeTransaction();
 		});
 	}
 
 
 	unregisterAll() {
-		var subscriptions = _.map(this.members, (member)=> {
-			if (member["surveyMember"]) {
-				var examMember = member["surveyMember"];
-				return examMember.delete(this);
-			} else {
-				return Observable.of(true);
-			}
+		var surveyMembers = [];
+		_.each(this.members, (member)=> {
+			if (member["surveyMember"]) 
+				surveyMembers.push(member["surveyMember"])
 		});
-		this.startTransaction();
-		Observable.forkJoin(subscriptions).subscribe(()=> {
-			this.info( 'Unregister all successfully');
-			this.closeTransaction();
+		SurveyMember.deleteArray(this, surveyMembers).subscribe(()=> {
+			this.info('Unregister all successfully');
 		});
 	}
 

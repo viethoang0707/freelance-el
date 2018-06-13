@@ -28,6 +28,7 @@ import { QuestionContainerDirective } from '../../../../assessment/question/ques
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
+import { BaseModel } from '../../../../shared/models/base.model';
 
 
 @Component({
@@ -67,28 +68,34 @@ export class SurveyResultStatsReportComponent extends BaseComponent{
 
     render(survey:Survey) {
         this.clear();
-        this.startTransaction();
-        SurveySheet.bySurvey(this, survey.id).subscribe((sheet:SurveySheet)=> {
-            SurveyQuestion.listBySheet(this, sheet.id).subscribe(surveyQuestions=> {
-                this.records =  surveyQuestions;
-                var supscriptions = _.map(surveyQuestions, question=> {
-                    return QuestionOption.listByQuestion(this, question.question_id).do(options=> {
-                        question["options"] =  options;
-                        console.log(question["options"] );
-                    });
+        BaseModel
+        .bulk_search(this,
+            SurveySheet.__api__bySurvey(survey.id),
+            SurveyAnswer.__api__listBySurvey(survey.id))
+        .subscribe(jsonArr=> {
+            var sheets = SurveySheet.toArray(jsonArr[0]);
+            var answers = SurveyAnswer.toArray(jsonArr[1]);
+            var statistics = this.statsUtils.examAnswerStatistics(answers);
+            this.optionPercentage = statistics['multichoice'];
+            this.ratingPercentage = statistics['rating'];
+            this.openAnswers = statistics['open'];
+            SurveyQuestion.listBySheet(this, sheets[0].id).subscribe(surveyQuestions=> {
+                var apiList = _.map(surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
+                    return QuestionOption.__api__listByQuestion(surveyQuestion.question_id)
                 });
-                if (supscriptions.length)
-                    Observable.forkJoin(supscriptions).subscribe(()=> {
-                        SurveyAnswer.listBySurvey(this, survey.id).subscribe(answers=> {
-                            var statistics = this.statsUtils.examAnswerStatistics(answers);
-                            this.optionPercentage = statistics['multichoice'];
-                            this.ratingPercentage = statistics['rating'];
-                            this.openAnswers = statistics['open'];
+                BaseModel.bulk_search(this, ...apiList)
+                    .map(jsonArr=> _.flatten(jsonArr))
+                    .subscribe(jsonArr => {
+                        var options = QuestionOption.toArray(jsonArr);
+                        _.each(surveyQuestions, (surveyQuestion: SurveyQuestion)=> {
+                            surveyQuestion["options"] = _.filter(options, (opt:QuestionOption)=> {
+                                return opt.question_id == surveyQuestion.question_id;
+                            });
                         });
+                        this.records =  surveyQuestions;
                     });
-                this.closeTransaction();
             });
-        });
+        })
     	
     }
 

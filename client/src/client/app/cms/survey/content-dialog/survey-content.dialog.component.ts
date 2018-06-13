@@ -31,8 +31,7 @@ export class SurveyContentDialog extends BaseComponent {
 	private sheet: SurveySheet;
 	private surveyQuestions: SurveyQuestion[];
 
-
-	@ViewChild(SurveySheetPreviewDialog) previewDialog : SurveySheetPreviewDialog;
+	@ViewChild(SurveySheetPreviewDialog) previewDialog: SurveySheetPreviewDialog;
 	@ViewChild(SelectSurveySheetDialog) selectSheetDialog: SelectSurveySheetDialog;
 	@ViewChild(SelectQuestionsDialog) selectQuestionDialog: SelectQuestionsDialog;
 	@ViewChild(SurveySheetSaveDialog) saveDialog: SurveySheetSaveDialog;
@@ -51,38 +50,29 @@ export class SurveyContentDialog extends BaseComponent {
 	}
 
 	loadSurveynSheet() {
-		this.startTransaction();
 		SurveySheet.bySurvey(this, this.survey.id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
-				this.startTransaction();
 				SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions => {
 					this.surveyQuestions = surveyQuestions;
-					this.closeTransaction();
 				});
 			}
 			else {
 				this.sheet = new SurveySheet();
 				this.sheet.survey_id = this.survey.id;
-				this.startTransaction();
 				this.sheet.save(this).subscribe(sheet => {
 					this.sheet = sheet;
-					this.closeTransaction();
 				});
 			}
 		});
 	}
 
 	save() {
-		this.startTransaction();
-		var subscriptions = _.map(this.surveyQuestions, surveyQuestion=> {
-			return surveyQuestion.save(this);
-		});
-		subscriptions.push(this.sheet.save(this));
-		Observable.forkJoin(...subscriptions).subscribe(()=> {
-			this.hide();
-			this.success(this.translateService.instant('Content saved successfully.'));
-			this.closeTransaction();
+		this.sheet.save(this).subscribe(() => {
+			SurveyQuestion.updateArray(this, this.surveyQuestions).subscribe(() => {
+				this.hide();
+				this.success(this.translateService.instant('Content saved successfully.'));
+			});
 		});
 	}
 
@@ -95,40 +85,32 @@ export class SurveyContentDialog extends BaseComponent {
 	}
 
 	clearSheet() {
-		this.sheet.finalized =  false;
-		var subscriptions = _.map(this.surveyQuestions, surveyQuestion=> {
-			return surveyQuestion.delete(this);
-		});
-		subscriptions.push(this.sheet.save(this));
-		this.startTransaction();
-		Observable.forkJoin(subscriptions).subscribe(()=> {
-			this.surveyQuestions = [];
-			this.closeTransaction();
-		});
+		this.sheet.finalized = false;
+		this.sheet.save(this).subscribe(() => {
+			SurveyQuestion.deleteArray(this, this.surveyQuestions).subscribe(() => {
+				this.surveyQuestions = [];
+			});
+		})
 	}
 
 	loadSheetTemplate() {
-		if (!this.sheet.finalized  && this.surveyQuestions.length ==0)
+		if (!this.sheet.finalized && this.surveyQuestions.length == 0)
 			this.selectSheetDialog.show();
-			this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl:SurveySheet) => {
-				this.startTransaction();
-				SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(surveyQuestions=> {
-					this.surveyQuestions = _.map(surveyQuestions, surveyQuestion=> {
-						var newSurveyQuestion = surveyQuestion.clone();
-						newSurveyQuestion.sheet_id =  this.sheet.id;
-						return newSurveyQuestion; 
-					});
-					this.sheet.finalized =  true;
-					var subscriptions = _.map(surveyQuestions, surveyQuestion=> {
-						return surveyQuestion.save(this);
-					});
-					subscriptions.push(this.sheet.save(this));
-					Observable.forkJoin(subscriptions).subscribe(()=> {
-						this.loadSurveynSheet();
-						this.closeTransaction();
-					});
+		this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl: SurveySheet) => {
+			SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(surveyQuestions => {
+				this.surveyQuestions = _.map(surveyQuestions, surveyQuestion => {
+					var newSurveyQuestion = surveyQuestion.clone();
+					newSurveyQuestion.sheet_id = this.sheet.id;
+					return newSurveyQuestion;
 				});
+				this.sheet.finalized = true;
+				this.sheet.save(this).subscribe(() => {
+					SurveyQuestion.createArray(this, this.surveyQuestions).subscribe(() => {
+						this.loadSurveynSheet();
+					});
+				})
 			});
+		});
 	}
 
 	saveToTemplate() {
@@ -140,14 +122,13 @@ export class SurveyContentDialog extends BaseComponent {
 	designSheet() {
 		if (this.sheet && this.sheet.finalized) {
 			this.selectQuestionDialog.show();
-			this.selectQuestionDialog.onSelectQuestions.subscribe(surveyQuestions=> {
-				this.surveyQuestions =  surveyQuestions;
-				var subscriptions = _.map(surveyQuestions, (surverQyestion:SurveyQuestion)=> {
+			this.selectQuestionDialog.onSelectQuestions.subscribe(surveyQuestions => {
+				this.surveyQuestions = surveyQuestions;
+				_.each(surveyQuestions, (surverQyestion: SurveyQuestion) => {
 					surverQyestion.sheet_id = this.sheet.id;
-					return surverQyestion.save(this);
 				});
-				Observable.forkJoin(subscriptions).subscribe(()=> {
-					this.loadSurveynSheet();
+				SurveyQuestion.createArray(this, this.surveyQuestions).subscribe(() => {
+						this.loadSurveynSheet();
 				});
 			});
 		}

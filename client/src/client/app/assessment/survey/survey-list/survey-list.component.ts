@@ -19,14 +19,15 @@ import { SelectItem } from 'primeng/api';
 })
 export class SurveyListComponent extends BaseComponent {
 
-    @ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
-    @ViewChild(SurveyEnrollDialog) surveyEnrollDialog: SurveyEnrollDialog;
+    SURVEY_STATUS = SURVEY_STATUS;
 
     private selectedSurvey: Survey;
     private surveys: Survey[];
     private events: any[];
     private header: any;
-    SURVEY_STATUS = SURVEY_STATUS;
+
+    @ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
+    @ViewChild(SurveyEnrollDialog) surveyEnrollDialog: SurveyEnrollDialog;
 
     constructor() {
         super();
@@ -49,7 +50,7 @@ export class SurveyListComponent extends BaseComponent {
 
     addSurvey() {
         var survey = new Survey();
-        survey.supervisor_id =  this.authService.UserProfile.id;
+        survey.supervisor_id = this.authService.UserProfile.id;
         this.surveyDialog.show(survey);
         this.surveyDialog.onCreateComplete.subscribe(() => {
             this.loadSurveys();
@@ -84,7 +85,6 @@ export class SurveyListComponent extends BaseComponent {
     }
 
     loadSurveys() {
-        this.startTransaction();
         Survey.all(this).subscribe(surveys => {
             this.surveys = surveys;
             this.events = _.map(surveys, (survey) => {
@@ -97,21 +97,15 @@ export class SurveyListComponent extends BaseComponent {
                 }
             });
             this.surveys.sort((s1, s2): any => {
-                if (s1.id > s2.id)
-                    return -1;
-                else if (s1.id < s2.id)
-                    return 1;
-                else
-                    return 0;
+                return (s1.id < s2.id);
             });
-            this.closeTransaction();
         });
     }
 
     closeSurvey() {
         if (this.selectedSurvey) {
             this.selectedSurvey.status = 'closed';
-            this.selectedSurvey.save(this).subscribe(()=> {
+            this.selectedSurvey.save(this).subscribe(() => {
                 this.success('Survey close');
             });
         }
@@ -120,7 +114,7 @@ export class SurveyListComponent extends BaseComponent {
     openSurvey() {
         if (this.selectedSurvey) {
             this.selectedSurvey.status = 'open';
-            this.selectedSurvey.save(this).subscribe(()=> {
+            this.selectedSurvey.save(this).subscribe(() => {
                 this.success('Survey open');
             });
         }

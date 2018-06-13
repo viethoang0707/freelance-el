@@ -150,15 +150,21 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             CourseMember.__api__listByUser(this.currentUser.id),
             ExamMember.__api__listByUser(this.currentUser.id),
             ConferenceMember.__api__listByUser(this.currentUser.id),
-            Course.__api__listByAuthor(this.currentUser.id))
+            Course.__api__listByAuthor(this.currentUser.id),
+            Survey.__api__listAvailableSurvey(),
+            SurveyMember.__api__listByUser(this.currentUser.id)
+            )
             .subscribe(jsonArray => {
                 this.courseMembers = CourseMember.toArray(jsonArray[0]);
                 this.examMembers = ExamMember.toArray(jsonArray[1]);
                 this.conferenceMembers = ConferenceMember.toArray(jsonArray[2]);
                 this.courses = Course.toArray(jsonArray[3]);
+                var surveys = Survey.toArray(jsonArray[4]);
+                var surveyMembers = SurveyMember.toArray(jsonArray[5]);
                 this.displayCourses();
                 this.displayExams();
                 this.displayConferences();
+                this.popupSurvey(surveys, surveyMembers);
             });
     }
 
@@ -218,24 +224,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    loadSurvey() {
-        Survey.listAvailableSurvey(this).subscribe(surveys=> {
-            console.log(surveys);
-            SurveyMember.listByUser(this, this.authService.UserProfile.id).subscribe(members=> {
-                console.log(members);
-                surveys =  _.filter(surveys, (survey:Survey)=> {
-                    survey["member"] = _.find(members, (m:SurveyMember)=> {
-                        return m.survey_id == survey.id && m.enroll_status !='completed';
-                    });
-                    return survey["member"] != null  && survey.IsAvailable;
-                });
-                if (surveys && surveys.length) {
-                    var survey = surveys[0];
-                    this.confirm(`You are invited to survey ${survey.name}. Do you want to join ?`, ()=> {
-                         this.surveyStudyDialog.show(survey, survey["member"]);
-                    });
-                }
-            });           
+    popupSurvey(surveys:Survey[], surveyMembers: SurveyMember[]) {
+        surveys =  _.filter(surveys, (survey:Survey)=> {
+            survey["member"] = _.find(surveyMembers, (m:SurveyMember)=> {
+                return m.survey_id == survey.id && m.enroll_status !='completed';
+            });
+            return survey["member"] != null  && survey.IsAvailable;
         });
+        if (surveys && surveys.length) {
+            var survey = surveys[0];
+            this.confirm(`You are invited to survey ${survey.name}. Do you want to join ?`, ()=> {
+                 this.surveyStudyDialog.show(survey, survey["member"]);
+            });
+        }
     }
 }

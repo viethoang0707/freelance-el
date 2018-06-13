@@ -5,6 +5,7 @@ import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import { Exam } from './exam.model';
 import * as _ from 'underscore';
+import { SearchReadAPI } from '../../services/api/search-read.api';
 
 @Model('etraining.class_survey')
 export class ClassSurvey extends BaseModel{
@@ -40,6 +41,10 @@ export class ClassSurvey extends BaseModel{
 
     static listByClass(context:APIContext, classId):Observable<any> {
         return ClassSurvey.search(context,[], "[('class_id','=',"+classId+")]");
+    }
+
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(ClassSurvey.Model, [],"[('class_id','=',"+classId+")]");
     }
 
 }

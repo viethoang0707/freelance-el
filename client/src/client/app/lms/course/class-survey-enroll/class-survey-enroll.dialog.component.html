@@ -7,7 +7,7 @@
           <button pButton type="button " label="{{ 'Unregister all'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="unregisterAll() "></button>
         </div>
       </p-toolbar>
-      <p-table #candidateTable [value]="members" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedMember " [responsive]="true " sortField="name">
+      <p-table #candidateTable [value]="surveyMembers" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedMember " [responsive]="true " sortField="name">
             <ng-template pTemplate="header">
               <tr>
                 <th [pSortableColumn]="'name'">
@@ -35,7 +35,7 @@
                 <td>{{member.email}}</td>
                 <td>{{member.phone}}</td>
                 <td>{{member.group_id__DESC__}}</td>
-                <td>{{member.surveyMember?SURVEY_MEMBER_ENROLL_STATUS[member.surveyMember.enroll_status]:''}}</td>
+                <td>{{member.surveyMember?member.surveyMember.enroll_status:''}}</td>
               </tr>
             </ng-template>
             <ng-template pTemplate="summary">

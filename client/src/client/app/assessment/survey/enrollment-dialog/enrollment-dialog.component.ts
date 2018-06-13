@@ -22,12 +22,14 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class SurveyEnrollDialog extends BaseComponent {
 
+    SURVEY_STATUS =  SURVEY_STATUS;
+    SURVEY_MEMBER_ENROLL_STATUS =  SURVEY_MEMBER_ENROLL_STATUS;
+
     private display: boolean;
 	private survey: Survey;
     private members: SurveyMember[];
     private selectedMembers: any;
-    SURVEY_STATUS =  SURVEY_STATUS;
-    SURVEY_MEMBER_ENROLL_STATUS =  SURVEY_MEMBER_ENROLL_STATUS;
+    
     
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	
@@ -50,18 +52,15 @@ export class SurveyEnrollDialog extends BaseComponent {
 	 addMember() {
         this.usersDialog.show();
         this.usersDialog.onSelectUsers.subscribe(users => {
-            this.startTransaction();
-            var subscriptions = [];
-            _.each(users, (user:User)=> {
+            var members = _.map(users, (user:User)=> {
                 var member = new SurveyMember();
                 member.survey_id = this.survey.id;
                 member.user_id = user.id;
                 member.date_register =  new Date();
-                subscriptions.push(member.save(this));
+                return member;
             });
-            Observable.forkJoin(...subscriptions).subscribe(()=> {
+            SurveyMember.createArray(this, members).subscribe(()=> {
                 this.loadMembers();
-                this.closeTransaction();
             });
         });
     }
@@ -69,23 +68,16 @@ export class SurveyEnrollDialog extends BaseComponent {
     deleteMember(members) {
         if (members && members.length)
             this.confirm('Are you sure to delete ?', () => {
-                var subscriptions = _.map(members,(member:SurveyMember) => {
-                    return member.delete(this);
-                });
-                this.startTransaction();
-                Observable.forkJoin(...subscriptions).subscribe(()=> {
+                SurveyMember.deleteArray(this, members).subscribe(()=> {
                     this.selectedMembers = [];
                     this.loadMembers();
-                    this.closeTransaction();
                 });
             });
     }
 
     loadMembers() {
-        this.startTransaction();
         SurveyMember.listBySurvey(this, this.survey.id).subscribe(members => {
              this.members = members;
-             this.closeTransaction();
         });
     }
 }

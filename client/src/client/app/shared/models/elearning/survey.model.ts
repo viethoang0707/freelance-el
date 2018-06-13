@@ -48,6 +48,12 @@ export class Survey extends BaseModel{
         return true;
     }
 
+    static __api__listAvailableSurvey(): SearchReadAPI {
+        var now = new Date();
+        var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Survey.Model, [],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]");
+    }
+
     static listAvailableSurvey(context:APIContext):Observable<any> {
         var now = new Date();
         var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);

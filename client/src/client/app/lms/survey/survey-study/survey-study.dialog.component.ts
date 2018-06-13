@@ -23,6 +23,9 @@ import 'rxjs/add/observable/timer';
 import {Message} from 'primeng/components/common/api';
 import {MessageService} from 'primeng/components/common/messageservice';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
+import { BaseModel } from '../../../shared/models/base.model';
+
+
 declare var $: any;
 
 @Component({
@@ -32,6 +35,8 @@ declare var $: any;
 	providers: [MessageService]
 })
 export class SurveyStudyDialog extends BaseComponent {
+
+	WINDOW_HEIGHT:any;
 
 	private display: boolean;
 	private survey: Survey;
@@ -49,13 +54,12 @@ export class SurveyStudyDialog extends BaseComponent {
 	private validAnswer: number;
 	private onShowReceiver: Subject<any> = new Subject();
     private onHideReceiver: Subject<any> = new Subject();
+    private componentRef: any;
     onShow: Observable<any> = this.onShowReceiver.asObservable();
     onHide: Observable<any> = this.onHideReceiver.asObservable();
 
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
-	private componentRef: any;
-	WINDOW_HEIGHT:any;
-
+	
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.display = false;
@@ -94,21 +98,21 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.survey = survey;
 		this.member = member;
 		this.qIndex = 0;
-		this.startTransaction();
-		this.createSubmission().subscribe(submit=> {
-			this.submission =  submit;
+		this.createSubmission().subscribe((submit: SurveySubmission) => {
+			this.submission = submit;
 			SurveySheet.bySurvey(this, this.survey.id).subscribe(sheet => {
-			this.sheet = sheet;
-			SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions=> {
-				this.surveyQuestions = surveyQuestions;
-				this.stats.total = surveyQuestions.length;
-				var questionIds = _.pluck(surveyQuestions,'question_id');
-				Question.array(this, questionIds).subscribe(questions=> {
-					this.questions = questions;
-					this.startSurvey();
-					this.closeTransaction();
+				this.sheet = sheet;
+				BaseModel.bulk_search(this,
+					SurveyQuestion.__api__listBySheet(this.sheet.id),
+					SurveyAnswer.__api__listBySubmit(this.submission.id))
+					.subscribe(jsonArr => {
+						this.surveyQuestions = SurveyQuestion.toArray(jsonArr[0]);
+						this.answers = SurveyAnswer.toArray(jsonArr[1]);
+						this.stats.total = this.surveyQuestions.length;
+						SurveyQuestion.populateQuestionForArray(this, this.surveyQuestions).subscribe(() => {
+							this.startSurvey();
+						});
 					});
-				});
 			});
 		});
 	}
@@ -133,65 +137,44 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	startSurvey() {
-		this.startTransaction();
-		this.fetchAnswers().subscribe(answers => {
-			this.answers =  answers;
-			this.updateStats();
-			this.displayQuestion(0);
-			this.closeTransaction();
-		});
+		this.updateStats();
+		this.displayQuestion(0);
 	}
 
-	fetchAnswers(): Observable<any> {
-		if (this.submission.id)
-			return SurveyAnswer.listBySubmit(this, this.submission.id);
-		else
-			return Observable.of([]);
-	}
 
 	prepareAnswer(question: SurveyQuestion): Observable<any> {
 		var answer = _.find(this.answers, (ans: SurveyAnswer) => {
 			return ans.question_id == question.question_id;
 		});
 		if (!answer) {
-			var answer = new Answer();
+			var answer = new SurveyAnswer();
 			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
-			this.startTransaction();
 			return answer.save(this).do(ans => {
 				this.answers.push(answer);
 				this.updateStats();
-				this.closeTransaction();
 			});
 		} else
 			return Observable.of(answer);
 	}
 
-	prepareQuestion(surveyQuestion: SurveyQuestion) {
-		return _.find(this.questions, question=> {
-			return question.id == surveyQuestion.question_id;
-		});
-	}
 
 	displayQuestion(index: number) {
 		this.qIndex = index;
 		this.currentQuestion = this.surveyQuestions[index];
-		this.startTransaction();
-		var question = this.prepareQuestion(this.currentQuestion);
 		this.prepareAnswer(this.currentQuestion).subscribe(answer => {
 			this.currentAnswer = answer;
-			var detailComponent = QuestionRegister.Instance.lookup(question.type);
+			var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
 			let viewContainerRef = this.questionHost.viewContainerRef;
 			if (detailComponent) {
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 				viewContainerRef.clear();
 				this.componentRef = viewContainerRef.createComponent(componentFactory);
 				(<IQuestion>this.componentRef.instance).mode = 'survey';
-				(<IQuestion>this.componentRef.instance).render(question, this.currentAnswer);
+				(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
 				this.updateStats();
 			}
-			this.closeTransaction();
 		});
 	}
 
@@ -200,32 +183,26 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	next() {
-		this.startTransaction();
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex < this.surveyQuestions.length - 1) {
 				this.displayQuestion(this.qIndex + 1);
 			}
-			this.closeTransaction();
 		});
 	}
 
 	prev() {
-		this.startTransaction();
 		this.submitAnswer().subscribe(() => {
 			if (this.qIndex > 0) {
 				this.displayQuestion(this.qIndex - 1);
 			}
-			this.closeTransaction();
 		});
 	}
 
 	submitSurvey() {
 		this.member.enroll_status = 'completed';
 		this.submission.end = new Date();
-		this.startTransaction();
 		this.submission.save(this).subscribe(() => {
 			this.hide();
-			this.closeTransaction();			
 		});
 	}
 
