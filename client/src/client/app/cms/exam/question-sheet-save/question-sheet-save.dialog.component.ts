@@ -54,7 +54,7 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 				return questionTempl;
 			});
 			ExamQuestion.createArray(this, examQuestions).subscribe(()=> {
-				this.success('Question sheet saved successfully');
+				this.success(this.translateService.instant('Question sheet saved successfully'));
 				this.hide();
 			});
 		});

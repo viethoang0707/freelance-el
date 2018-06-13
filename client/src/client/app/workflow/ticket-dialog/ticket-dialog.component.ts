@@ -48,7 +48,7 @@ export class TicketDialog extends BaseDialog<Ticket> {
     approveTicket() {
         if (this.object.status == 'open') {
             this.workflowService.approveTicket(this, this.object).subscribe(()=> {
-                this.info('Ticket approved');
+                this.info(this.translateService.instant('Ticket approved'));
             });
         }
     }
@@ -56,7 +56,7 @@ export class TicketDialog extends BaseDialog<Ticket> {
     rejectTicket() {
         if (this.object.status == 'open') {
             this.workflowService.rejectTicket(this, this.object).subscribe(()=> {
-                this.info('Ticket rejected');
+                this.info(this.translateService.instant('Ticket rejected'));
             });
         }
     }
