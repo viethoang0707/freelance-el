@@ -20,10 +20,10 @@ import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
-	selector: 'gradebook-list-dialog',
-	templateUrl: 'gradebook-list.component.html',
+	selector: 'class-manage-dialog',
+	templateUrl: 'class-manage.component.html',
 })
-export class GradebookListDialog extends BaseComponent {
+export class ClassManageDialog extends BaseComponent {
 
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 	private records: any;
@@ -85,9 +85,9 @@ export class GradebookListDialog extends BaseComponent {
 					return log.member_id == record["id"];
 				})
 				var result = this.reportUtils.analyzeCourseMemberActivity(memberLogs);
-				if (result[0] != Infinity)
+				if (result[0])
 					record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
-				if (result[1] != Infinity)
+				if (result[1])
 					record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
 				record["time_spent"] = this.timePipe.transform(+result[2], 'min');
 				if (totalUnit)
@@ -104,9 +104,9 @@ export class GradebookListDialog extends BaseComponent {
 			return log.res_model == CourseUnit.Model && log.res_id == unit.id && log.code == 'COMPLETE_COURSE_UNIT';
 		});
 		if (log)
-			return 1;
+			return 'Finished';
 		else
-			return 0;
+			return 'Unfinished';
 	}
 
 	show(courseClass: CourseClass) {

@@ -1,6 +1,11 @@
 <p-dialog header="{{'Certificate'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true" appendTo="body">
   <p-scrollPanel [style]="{width: '100%', height: '520px'}">
-
+  	<span>{{object.name}}</span>
+  	<span>{{'Course code: '|translate}} {{object.course_code}}</span>
+  	<span>{{'Issued on: '|translate}} {{object.date_issue | date : "dd/MM/yyyy"}}</span>
+  	<span>{{'Member: '|translate}} {{object.member_name}}</span>
+  	<span>{{'Qualificatin: '|translate}} {{object.qualification}}</span>
+  	<span>{{'Summary: '|translate}} {{object.summary}}</span>
   </p-scrollPanel>
   <p-footer>
     <button type="button" pButton icon="ui-icon-print" (click)="print()" label="{{'Print'|translate}}"></button>

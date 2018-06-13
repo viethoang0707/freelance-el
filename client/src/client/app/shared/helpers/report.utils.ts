@@ -49,10 +49,9 @@ export class ReportUtils {
 		var last_attempt = _.max(endCourseUnitLogs, (log) => {
 			return log.start.getTime();
 		});
-
-		var last_attempt_millis = new Date(last_attempt.start).getTime();
-		var first_attempt_millis = new Date(first_attempt.start).getTime();
-		var timeforunit = last_attempt_millis - first_attempt_millis;
+		var timeforunit = 0;
+		if (first_attempt && last_attempt)
+			 timeforunit = first_attempt.start.getTime() - last_attempt.start.getTime();
 
 		var unitCount = 0;
 		var unitLogs = {}

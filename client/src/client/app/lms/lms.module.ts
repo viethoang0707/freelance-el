@@ -15,7 +15,7 @@ import { QuestionSheetPrintDialog } from './exam/question-sheet-print/question-s
 import { ConferenceListComponent } from './conference/conference-list/conference-list.component';
 import { CourseMaterialDialog } from './course/course-material/course-material.dialog.component';
 import { CourseFaqDialog } from './course/course-faq/course-faq.dialog.component';
-import { GradebookListDialog } from './course/gradebook-list/gradebook-list.component';
+import { ClassManageDialog } from './course/class-manage/class-manage.component';
 import { GradebookDialog } from './course/gradebook/gradebook.dialog.component';
 import { ClassExamEnrollDialog } from './course/class-exam-enroll/class-exam-enroll.dialog.component';
 import { ClassExamListDialog } from './course/class-exam-list/class-exam-list.dialog.component';
@@ -42,7 +42,7 @@ import { WebcamModule } from 'ngx-webcam';
     				 ExamSubmissionDialog,ClassExamListDialog,ExamManageComponent,QuestionSheetPrintDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,ProjectSubmissionDialog,
-    				GradebookDialog, GradebookListDialog, ClassExamEnrollDialog, CourseCertificateDialog,
+    				GradebookDialog, ClassManageDialog, ClassExamEnrollDialog, CourseCertificateDialog,
     				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog],
     exports: [CertificatePrintDialog, ExamStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []
