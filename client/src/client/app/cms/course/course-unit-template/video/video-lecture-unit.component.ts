@@ -17,6 +17,7 @@ import * as RecordRTC from 'recordrtc';
 	moduleId: module.id,
 	selector: 'video-lecture-course-unit',
 	templateUrl: 'video-lecture-unit.component.html',
+	styleUrls: ['video-lecture-unit.component.css'],
 })
 @CourseUnitTemplate({
 	type: 'video'

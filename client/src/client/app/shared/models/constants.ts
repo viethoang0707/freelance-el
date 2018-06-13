@@ -13,8 +13,8 @@ export const DEFAULT_DATE_LOCALE = {
 	today: 'Today',
 	clear: 'Clear'
 };
-export const EXAM_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
-export const CLASS_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const EXAM_STATUS = { 'open': 'Open', 'closed': 'Closed'};
+export const CLASS_STATUS = { 'open': 'Open', 'closed': 'Closed'};
 export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM' };
 export const EXPORT_DATETIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
 export const EXPORT_DATE_FORMAT = "dd-MM-yyyy";

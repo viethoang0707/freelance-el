@@ -423,5 +423,7 @@
 	"Select question sheet": "Lựa chọn đề thi",
 	"Ticket approved": "Yêu cầu đã được phê duyệt",
 	"Ticket rejected": "Yêu cầu đã bị từ chối",
-	"Category": "Danh mục"
+	"Category": "Danh mục",
+	"Previous Question": "Câu hỏi trước",
+	"Next Question": "Câu hỏi tiếp theo"
 }
