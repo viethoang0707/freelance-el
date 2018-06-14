@@ -60,7 +60,13 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         this.examMembers = _.filter(members, (member: ExamMember) => {
             return (member.exam_id && member.status == 'active');
         });
+        this.examMembers.sort((member1, member2): any => {
+            return (member1.exam.create_date < member1.exam.create_date)
+        });
         ExamMember.populateExamForArray(this, this.examMembers).subscribe(() => {
+            this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
+                return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
+            });
             _.each(this.examMembers, (member: ExamMember) => {
                 member["submit"] = _.find(submits, (submit: Submission) => {
                     return submit.member_id == member.id && submit.exam_id == member.exam_id;
@@ -96,12 +102,8 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 });
 
         });
-        this.examMembers.sort((member1, member2): any => {
-            return (member1.exam.create_date < member1.exam.create_date)
-        });
-        this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
-            return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
-        });
+        
+        
     }
 
     manageExam(exam: Exam, member: ExamMember) {

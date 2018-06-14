@@ -100,6 +100,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     member["submit"] = _.find(submits, (submit: Submission) => {
                         return member.id == submit.member_id;
                     });
+                    if (member["submit"])
+                        member["score"] =  member["submit"].score;
+
                 });
                 ExamMember.populateExamForArray(this, this.examMembers).subscribe(() => {
                     this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
