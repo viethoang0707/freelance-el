@@ -12,7 +12,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { QuestionSheetPreviewDialog } from '../question-sheet-preview/question-sheet-preview.dialog.component';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
-import { ExamQuestion } from '../../../shared/models/elearning/exam-question-sheet.model';
+import { Question } from '../../../shared/models/elearning/question.model';
 
 @Component({
     moduleId: module.id,

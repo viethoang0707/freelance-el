@@ -23,6 +23,7 @@ export class Question extends BaseModel{
 		this.type = undefined;
         this.level = undefined;
         this.group_id = undefined;
+        this.group_id__DESC__ = undefined;
 	}
 
     title:string;
@@ -31,6 +32,7 @@ export class Question extends BaseModel{
     type: string;
     level: string;
     group_id: number;
+    group_id__DESC__: string;
 
     static __api__createWithOption(question:Question, options:QuestionOption[]): CreateAPI {
         question["options"] =  options;

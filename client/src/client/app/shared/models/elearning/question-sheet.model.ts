@@ -27,6 +27,7 @@ export class QuestionSheet extends BaseModel{
 
     static __api__byExam(examId: number): SearchReadAPI {
         return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',"+examId+")]");
+    }
     
     clone():QuestionSheet {
         var sheet = new QuestionSheet();

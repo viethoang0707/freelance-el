@@ -45,8 +45,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	constructor() {
 		super();
 		this.items = [
-			{ label: this.translateService.instant('Student'), value: 'student', command: () => { this.addMembers('student') } },
-			{ label: this.translateService.instant('Teacher'), value: 'teacher', command: () => { this.addMembers('teacher') } },
+			{ label: this.translateService.instant('Student'), value: 'student', command: () => { this.addStudent() } },
+			{ label: this.translateService.instant('Teacher'), value: 'teacher', command: () => { this.addTeacher()} },
 		]
 		this.course = new Course();
 	}
@@ -121,7 +121,8 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				return member;
 			});
 			CourseMember.createArray(this, members).subscribe(()=> {
-				this.success('Teacher registered successfully')
+				this.success('Teacher registered successfully');
+				this.loadMembers();
 			});
 		});
 	}

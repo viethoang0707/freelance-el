@@ -55,7 +55,6 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 			this.selectorGroups[key]["group_ids"] = [];
 			this.selectedNodes[key] = [];
 		});
-		this.startTransaction();
 		Group.listQuestionGroup(this).subscribe(groups => {
 			_.each(QUESTION_LEVEL, (val, key) => {
 				this.tree[key] = this.treeUtils.buildGroupTree(groups);
@@ -63,7 +62,6 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 					return this.treeUtils.findTreeNode(this.tree[key], group_id);
 				}));
 			});
-			this.closeTransaction();
 		});
 	}
 
