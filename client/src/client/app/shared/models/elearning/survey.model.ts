@@ -23,6 +23,7 @@ export class Survey extends BaseModel{
         this.status = undefined;
         this.supervisor_id =  undefined;
         this.supervisor_name = undefined;
+        this.is_public =  undefined;
 	}
 
 
@@ -34,6 +35,7 @@ export class Survey extends BaseModel{
     @FieldProperty<Date>()
     end: Date;
     status: string;
+    is_public: boolean;
     supervisor_id: number;
     supervisor_name: string;
 
@@ -57,7 +59,15 @@ export class Survey extends BaseModel{
     static listAvailableSurvey(context:APIContext):Observable<any> {
         var now = new Date();
         var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
-        return Survey.search(context,[],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]",
+        return Survey.search(context,[],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]");
+    }
+
+    static __api__listPublicSurvey(): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model, [],"[('is_public','=',True)");
+    }
+
+    static listPublicSurvey(context:APIContext):Observable<any> {
+        return Survey.search(context,[],"[('is_public','=',True)]");
     }
 
 }

@@ -42,16 +42,40 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		BaseModel
 			.bulk_search(this, CourseMember.__api__listByClass(this.courseClass.id), SurveyMember.__api__listBySurvey(this.survey.id))
 			.subscribe(jsonArr => {
-				this.members = CourseMember.toArray(jsonArr[0]);
+				var members = CourseMember.toArray(jsonArr[0]);
+				this.members = _.filter(members, (member:CourseMember)=> {
+					return member.role =='student';
+				})
 				var surveyMembers = SurveyMember.toArray(jsonArr[1]);
 				_.each(this.members, (member: CourseMember) => {
 					var surveyMember = _.find(surveyMembers, (obj: SurveyMember) => {
 						return obj.user_id == member.user_id;
 					});
-					if (surveyMember) 
+					if (surveyMember) {
 						member["surveyMember"] = surveyMember;
+						member["allowed"] = true;
+					} else
+						member["allowed"] = false;
 				})
 			});
+	}
+
+	registerUnregister(event: any, member: any) {
+		var surveyMember = member["surveyMember"];
+		if (event.checked) {
+			if (!surveyMember) {
+				surveyMember = this.createSurveyMember(member);
+				surveyMember.save(this).subscribe(() => {
+					member["allowed"] = true;
+					member["surveyMember"] = surveyMember;
+				});
+			}
+		} else {
+			surveyMember.delete(this).subscribe(()=> {
+				member["allowed"] = false;
+				member["surveyMember"] = null;
+			});
+		}
 	}
 
 	hide() {

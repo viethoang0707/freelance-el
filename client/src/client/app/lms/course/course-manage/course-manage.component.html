@@ -27,6 +27,7 @@
                         <button pButton type="button " label="{{ 'Students'|translate}} " class="purple-btn " icon="ui-icon-people " (click)="manageClass(selectedClass) " [disabled]="!selectedClass"></button>
                         <button pButton type="button " label="{{ 'Projects'|translate}} " class="purple-btn " icon="ui-icon-assignment " (click)="manageProject(selectedClass) " [disabled]="!selectedClass"></button>
                         <button pButton type="button " label="{{ 'Exams'|translate}} " class="purple-btn " icon="ui-icon-grade " (click)="manageExam(selectedClass) " [disabled]="!selectedClass"></button>
+                        <button pButton type="button " label="{{ 'Surveys'|translate}} " class="purple-btn " icon="ui-icon-question-answer" (click)="manageSurvey(selectedClass) " [disabled]="!selectedClass"></button>
                         <button pButton type="button " label="{{ 'Conferences'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="manageConference(selectedClass) " [disabled]="!selectedClass"></button>
                     </div>
                     <div class="ui-toolbar-group-right ">
@@ -68,6 +69,7 @@
             </div>
             <class-conference-dialog></class-conference-dialog>
             <class-exam-list-dialog></class-exam-list-dialog>
+            <class-survey-list-dialog></class-survey-list-dialog>
             <project-list-dialog></project-list-dialog>
             <class-manage-dialog></class-manage-dialog>
         </p-tabPanel>

@@ -201,9 +201,12 @@ export class SurveyStudyDialog extends BaseComponent {
 	submitSurvey() {
 		this.member.enroll_status = 'completed';
 		this.submission.end = new Date();
-		this.submission.save(this).subscribe(() => {
-			this.hide();
-		});
+		this.member.save(this).subscribe(()=> {
+			this.submission.save(this).subscribe(() => {
+				this.hide();
+			});
+		})
+		
 	}
 
 }

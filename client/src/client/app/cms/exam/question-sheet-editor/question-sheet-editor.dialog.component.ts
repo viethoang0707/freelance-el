@@ -112,11 +112,9 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 
 	save() {
 		Observable.forkJoin(this.generateQuestion()).subscribe(()=> {
-			ExamQuestion.createArray(this, this.examQuestions).subscribe(()=> {
-				this.hide();
-				this.onSaveReceiver.next();
-				this.success(this.translateService.instant('Content saved successfully.'));
-			})
+			this.hide();
+			this.onSaveReceiver.next(this.examQuestions);
+			this.success(this.translateService.instant('Content saved successfully.'));
 		})
 	}
 

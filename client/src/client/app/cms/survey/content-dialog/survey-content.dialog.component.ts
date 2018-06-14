@@ -68,8 +68,15 @@ export class SurveyContentDialog extends BaseComponent {
 	}
 
 	save() {
+		this.sheet.finalized = true;
 		this.sheet.save(this).subscribe(() => {
-			SurveyQuestion.updateArray(this, this.surveyQuestions).subscribe(() => {
+			_.each(this.surveyQuestions, (surveyQyestion: SurveyQuestion) => {
+					surveyQyestion.sheet_id = this.sheet.id;
+			});
+			var newSurveyQuestions = _.filter(this.surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
+				return surveyQuestion.id == null;
+			});
+			SurveyQuestion.createArray(this, newSurveyQuestions).subscribe(() => {
 				this.hide();
 				this.success(this.translateService.instant('Content saved successfully.'));
 			});
@@ -87,14 +94,17 @@ export class SurveyContentDialog extends BaseComponent {
 	clearSheet() {
 		this.sheet.finalized = false;
 		this.sheet.save(this).subscribe(() => {
-			SurveyQuestion.deleteArray(this, this.surveyQuestions).subscribe(() => {
+			var existSurveyQuestions = _.filter(this.surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
+				return surveyQuestion.id != null;
+			});
+			SurveyQuestion.deleteArray(this, existSurveyQuestions).subscribe(() => {
 				this.surveyQuestions = [];
 			});
 		})
 	}
 
 	loadSheetTemplate() {
-		if (!this.sheet.finalized && this.surveyQuestions.length == 0)
+		if (this.surveyQuestions.length == 0)
 			this.selectSheetDialog.show();
 		this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl: SurveySheet) => {
 			SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(surveyQuestions => {
@@ -103,12 +113,6 @@ export class SurveyContentDialog extends BaseComponent {
 					newSurveyQuestion.sheet_id = this.sheet.id;
 					return newSurveyQuestion;
 				});
-				this.sheet.finalized = true;
-				this.sheet.save(this).subscribe(() => {
-					SurveyQuestion.createArray(this, this.surveyQuestions).subscribe(() => {
-						this.loadSurveynSheet();
-					});
-				})
 			});
 		});
 	}
@@ -120,15 +124,19 @@ export class SurveyContentDialog extends BaseComponent {
 	}
 
 	designSheet() {
-		if (this.sheet && this.sheet.finalized) {
+		if (this.surveyQuestions.length == 0){
 			this.selectQuestionDialog.show();
-			this.selectQuestionDialog.onSelectQuestions.subscribe(surveyQuestions => {
-				this.surveyQuestions = surveyQuestions;
-				_.each(surveyQuestions, (surverQyestion: SurveyQuestion) => {
-					surverQyestion.sheet_id = this.sheet.id;
-				});
-				SurveyQuestion.createArray(this, this.surveyQuestions).subscribe(() => {
-						this.loadSurveynSheet();
+			this.selectQuestionDialog.onSelectQuestions.subscribe(questions => {
+				this.surveyQuestions = _.map(questions, (question:Question) => {
+					var newSurveyQuestion = new SurveyQuestion();
+					newSurveyQuestion.question_id = question.id;
+					newSurveyQuestion.title =  question.title;
+					newSurveyQuestion.type =  question.type;
+					newSurveyQuestion.survey_id	 = this.survey.id;
+					newSurveyQuestion.group_id =  question.group_id;
+					newSurveyQuestion.group_id__DESC__ =  question.group_id__DESC__;
+					newSurveyQuestion.content =  question.content;
+					return newSurveyQuestion;
 				});
 			});
 		}

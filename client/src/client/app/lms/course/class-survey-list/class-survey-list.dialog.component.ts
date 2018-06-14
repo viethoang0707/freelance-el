@@ -68,6 +68,7 @@ export class ClassSurveyListDialog extends BaseComponent {
 
 	addSurvey() {
 		var survey = new Survey();
+		survey.is_public =  false;
 		survey.supervisor_id =  this.authService.UserProfile.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.subscribe(() => {

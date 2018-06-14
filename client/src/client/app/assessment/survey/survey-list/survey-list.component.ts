@@ -50,6 +50,7 @@ export class SurveyListComponent extends BaseComponent {
 
     addSurvey() {
         var survey = new Survey();
+        survey.is_public =  true;
         survey.supervisor_id = this.authService.UserProfile.id;
         this.surveyDialog.show(survey);
         this.surveyDialog.onCreateComplete.subscribe(() => {
@@ -62,7 +63,7 @@ export class SurveyListComponent extends BaseComponent {
             this.surveyDialog.show(this.selectedSurvey);
     }
 
-    deleteExam() {
+    deleteSurvey() {
         if (this.selectedSurvey)
             this.confirm('Are you sure to delete ?', () => {
                 this.selectedSurvey.delete(this).subscribe(() => {
@@ -85,9 +86,9 @@ export class SurveyListComponent extends BaseComponent {
     }
 
     loadSurveys() {
-        Survey.all(this).subscribe(surveys => {
+        Survey.listPublicSurvey(this).subscribe(surveys => {
             this.surveys = surveys;
-            this.events = _.map(surveys, (survey) => {
+            this.events = _.map(surveys, (survey:Survey) => {
                 return {
                     title: survey.name,
                     start: survey.start,
