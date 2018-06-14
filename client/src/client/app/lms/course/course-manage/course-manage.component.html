@@ -20,7 +20,7 @@
             </div>
             <course-unit-preview-dialog></course-unit-preview-dialog>
         </p-tabPanel>
-        <p-tabPanel header="{{'Class list'|translate}}" leftIcon="ui-icon-supervisor-account">
+        <p-tabPanel header="{{'Class list'|translate}}" leftIcon="ui-icon-supervisor-account" *ngIf="course.mode=='group'">
             <div class="ui-g-12 ">
                 <p-toolbar>
                     <div class="ui-toolbar-group-left ">
