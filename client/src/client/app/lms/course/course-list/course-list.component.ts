@@ -66,26 +66,48 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             this.courses.sort((course1, course2): any => {
                 return (course1.create_date < course2.create_date);
             });
-            _.each(this.courses, (course: Course) => {
-                course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'student';
-                });
-                course["teacher"] = _.find(this.courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'teacher';
-                });
-                course["isAuthor"] = course.author_id == this.currentUser.id;
-
-                course["courseMemberData"] = {};
-                CourseMember.listByCourse(this, course.id).subscribe(members => {
-                    course["courseMemberData"] = this.reportUtils.analyseCourseMember(course, members);
-                });
-                if (course.syllabus_id)
-                    CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                        course["unit_count"] = count;
-                    });
-                else
-                    course["unit_count"] = 0;
+            var searchApiList = _.map(this.courses, (course: Course) => {
+                return CourseSyllabus.__api__byCourse(course.id);
             });
+            BaseModel.bulk_search(this, ...searchApiList)
+                .map(jsonArr => {
+                    return _.flatten(jsonArr);
+                })
+                .subscribe(jsonArr => {
+                    var syllabus = CourseSyllabus.toArray(jsonArr);
+                    _.each(this.courses, (course: Course) => {
+                        course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
+                            return member.course_id == course.id && member.role == 'student';
+                        });
+                        course["teacher"] = _.find(this.courseMembers, (member: CourseMember) => {
+                            return member.course_id == course.id && member.role == 'teacher';
+                        });
+                        course["isAuthor"] = course.author_id == this.currentUser.id;
+                        course["syllabus"] = _.find(syllabus, (syl: CourseSyllabus) => {
+                            return syl.course_id == course.id;
+                        });
+                        course["courseMemberData"] = {};
+                    });
+                    var searchApiList = [];
+                     for (var i = 0; i< this.courses.length; i++) {
+                         searchApiList.push(CourseMember.__api__listByCourse(this.courses[i].id));
+                     }
+                     BaseModel.bulk_search()
+
+                    CourseMember.listByCourse(this, course.id).subscribe(members => {
+                            course["courseMemberData"] = this.reportUtils.analyseCourseMember(course, members);
+                        });
+                        if (course.syllabus_id)
+                            CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
+                                course["unit_count"] = count;
+                            });
+                        else
+                            course["unit_count"] = 0;
+
+
+                        
+                });
+
         });
     }
 
