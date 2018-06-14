@@ -70,12 +70,12 @@ export class ExamSubmissionDialog extends BaseComponent {
         }
     }
 
-    handleImage(webcamImage: WebcamImage): void {
-        console.info('received webcam image', webcamImage);
-        this.submission.picture = webcamImage.imageAsBase64;
-        this.onConfirmReceiver.next();
-        this.hide();
-    }
+   handleImage(webcamImage: WebcamImage): void {
+    console.info(this.translateService.instant('received webcam image'), webcamImage);
+    this.submission.picture = webcamImage.imageAsBase64;
+    this.onConfirmReceiver.next();
+    this.hide();
+  }
 
     get triggerObservable(): Observable<void> {
         return this.trigger.asObservable();
