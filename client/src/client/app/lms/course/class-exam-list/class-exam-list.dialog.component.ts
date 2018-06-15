@@ -64,6 +64,7 @@ export class ClassExamListDialog extends BaseComponent {
 
 	addExam() {
 		var exam = new Exam();
+		exam.is_public =  false;
 		exam.supervisor_id =  this.authService.UserProfile.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.subscribe(() => {
@@ -87,7 +88,9 @@ export class ClassExamListDialog extends BaseComponent {
 
 	editExam() {
 		if (this.selectedClassExam) {
+			this.startTransaction();
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
+				this.closeTransaction();
 				this.examDialog.show(exam);;
 			});
 		}

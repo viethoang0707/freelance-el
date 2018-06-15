@@ -34,6 +34,7 @@ export class Exam extends BaseModel{
         this.competency_group_name =  undefined;
         this.competency_level_id =  undefined;
         this.competency_level_name =  undefined;
+        this.is_public =  undefined;
 	}
 
     competency_id: number;
@@ -43,6 +44,7 @@ export class Exam extends BaseModel{
     competency_level_id: number;
     competency_level_name: string;
     name:string;
+    is_public:boolean;
     summary: string;
     instruction: string;
     @FieldProperty<Date>()
@@ -60,6 +62,8 @@ export class Exam extends BaseModel{
         if (this.status !='open')
             return false;
         var now = new Date();
+        if (this.start.getTime() > now.getTime())
+            return false;
         if (this.end.getTime() < now.getTime())
             return false;
         return true;
@@ -90,5 +94,13 @@ export class Exam extends BaseModel{
     static enroll(context:APIContext,examId:number, userIds: number[]):Observable<any> {
         return context.apiService.execute(this.__api__enroll(examId, userIds), 
             context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
+    }
+
+    static __api__listPublicExam(): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model, [],"[('is_public','=',True)");
+    }
+
+    static listPublicExam(context:APIContext):Observable<any> {
+        return Exam.search(context,[],"[('is_public','=',True)]");
     }
 }

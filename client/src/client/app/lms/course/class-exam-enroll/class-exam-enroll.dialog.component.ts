@@ -40,7 +40,10 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		BaseModel
 			.bulk_search(this, CourseMember.__api__listByClass(this.classExam.class_id), ExamMember.__api__listByExam(this.classExam.exam_id))
 			.subscribe(jsonArr => {
-				this.members = CourseMember.toArray(jsonArr[0]);
+				var members = CourseMember.toArray(jsonArr[0]);
+				this.members = _.filter(members, (member:CourseMember)=> {
+					return member.role =='student';
+				})
 				var examMembers = ExamMember.toArray(jsonArr[1]);
 				_.each(this.members, (member: CourseMember) => {
 					var examMember = _.find(examMembers, (obj: ExamMember) => {

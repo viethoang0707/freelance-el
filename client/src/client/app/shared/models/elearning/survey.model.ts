@@ -5,6 +5,8 @@ import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import * as moment from 'moment';
+import { SERVER_DATETIME_FORMAT} from '../constants';
 
 @Model('etraining.survey')
 export class Survey extends BaseModel{
@@ -19,13 +21,13 @@ export class Survey extends BaseModel{
         this.start = undefined;
         this.end = undefined;
         this.status = undefined;
-        this.course_id = undefined;
-        this.class_id = undefined;
+        this.supervisor_id =  undefined;
+        this.supervisor_name = undefined;
+        this.is_public =  undefined;
 	}
 
+
     name:string;
-    course_id: number;
-    class_id: number;
     summary: string;
     instruction: string;
     @FieldProperty<Date>()
@@ -33,17 +35,39 @@ export class Survey extends BaseModel{
     @FieldProperty<Date>()
     end: Date;
     status: string;
-
+    is_public: boolean;
+    supervisor_id: number;
+    supervisor_name: string;
 
     get IsAvailable():boolean {
-        if (this.status !='published')
+        if (this.status !='open')
             return false;
         var now = new Date();
+        if (this.start.getTime() > now.getTime())
+            return false;
         if (this.end.getTime() < now.getTime())
             return false;
         return true;
     }
 
+    static __api__listAvailableSurvey(): SearchReadAPI {
+        var now = new Date();
+        var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Survey.Model, [],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]");
+    }
 
+    static listAvailableSurvey(context:APIContext):Observable<any> {
+        var now = new Date();
+        var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
+        return Survey.search(context,[],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]");
+    }
+
+    static __api__listPublicSurvey(): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model, [],"[('is_public','=',True)");
+    }
+
+    static listPublicSurvey(context:APIContext):Observable<any> {
+        return Survey.search(context,[],"[('is_public','=',True)]");
+    }
 
 }

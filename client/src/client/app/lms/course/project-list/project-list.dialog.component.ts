@@ -22,11 +22,13 @@ import { Router } from '@angular/router';
 })
 export class ProjectListDialog extends BaseComponent {
 
+	PROJECT_STATUS = PROJECT_STATUS;
+	
 	private display: boolean;
 	private courseClass: CourseClass;
 	private projects: Project[];
 	private selectedProject: Project;
-	PROJECT_STATUS = PROJECT_STATUS;
+	
 
 	@ViewChild(ProjectContentDialog) projectContentDialog:ProjectContentDialog;
 	@ViewChild(ProjectManageDialog) projectManageDialog: ProjectManageDialog;

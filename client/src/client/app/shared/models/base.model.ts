@@ -187,6 +187,7 @@ export abstract class BaseModel {
         if (this.id) {
             return BaseModel.get(context, this.id).do(object=> {
                 Object.assign(this, object);
+                Cache.objectChage(this, 'UPDATE');
             });
         } else
             return Observable.of(this)
@@ -281,13 +282,19 @@ export abstract class BaseModel {
         if (!id)
             return Observable.of(null);
         var model = this.Model;
-        if (Cache.hit(model+':'+id))
-            return Observable.of(Cache.load(model+':'+id))
+        if (Cache.hit(model)) {
+            var records = Cache.load(model);
+            var record = _.find(records, obj=> {
+                return obj["id"]==id;
+            });
+            if (record)
+                return Observable.of(record);
+        }
         return this.array(context,[id]).map(items => {
             items = this.toArray(items);
             if (items && items.length) {
                 var record = items[0];
-                Cache.save(model+':'+id,record);
+                Cache.objectChage(items, 'UPDATE');
                 return record;
             } else
                 return null;

@@ -48,6 +48,10 @@ import { ProjectSubmission } from '../../../shared/models/elearning/project-subm
 import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { BaseModel } from '../../../shared/models/base.model';
+import { Survey } from '../../../shared/models/elearning/survey.model';
+import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
+import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
+import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -85,7 +89,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private enableLogging: boolean;
 	private currentUser: User;
 	private logs: CourseLog[];
-
+	
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -93,6 +97,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	@ViewChild(ProjectSubmissionDialog) projectSubmitDialog: ProjectSubmissionDialog;
+	@ViewChild(SurveyStudyDialog) surveyDialog: SurveyStudyDialog;
+	
 
 
 	constructor(private router: Router, private route: ActivatedRoute,
@@ -133,6 +139,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 						apiList.push(Submission.__api__listByUser(this.currentUser.id));
 						apiList.push(Project.__api__listByClass(this.member.class_id));
 						apiList.push(ProjectSubmission.__api__listByMember(this.member.id));
+						apiList.push(ClassSurvey.__api__listByClass(this.member.class_id));
+						apiList.push(SurveyMember.__api__listByUser(this.currentUser.id));
 					}
 					BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr1 => {
 						this.logs = CourseLog.toArray(jsonArr1[0]);
@@ -160,6 +168,9 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 							var projects = Project.toArray(jsonArr1[9]);
 							var projectSubmits = ProjectSubmission.toArray(jsonArr1[10]);
 							this.displayProject(projects, projectSubmits);
+							var classSurveys = ClassSurvey.toArray(jsonArr1[11]);
+							var surveyMembers = SurveyMember.toArray(jsonArr1[12]);
+							this.displaySurvey(classSurveys, surveyMembers);
 						}
 					});
 				});
@@ -387,15 +398,25 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	submitProject(project: Project) {
-		var now = new Date();
-		if (project.start && project.start.getTime() > now.getTime()) {
-			this.warn(this.translateService.instant('Project has not been started'));
-			return;
+		if (!project.IsAvailable)
+			this.error('Project is not active');
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
+			this.projectSubmitDialog.show(project, this.member);
 		}
-		if (project.end && project.end.getTime() < now.getTime()) {
-			this.warn(this.translateService.instant('Project has ended'));
-			return;
-		}
-		this.projectSubmitDialog.show(project, this.member);
+		);
 	}
+
+	displaySurveys(surveys: ClassSurvey[],members: SurveyMember[] ) {
+        _.each(surveys, (survey:ClassSurvey)=> {
+            survey["member"] = _.find(members, (m:SurveyMember)=> {
+                return m.id == survey.survey_id && m.enroll_status !='completed';
+            });
+        });
+    }
+
+    startSurvey(survey: Survey, member: SurveyMember) {
+    	if (this.member.enroll_status!='completed' && survey.IsAvailable) {
+    		this.surveyDialog.show(survey, member);
+    	}
+    }
 }

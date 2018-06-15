@@ -25,6 +25,9 @@ import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.com
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
 import { Submission } from '../../shared/models/elearning/submission.model';
 import { BaseModel } from '../../shared/models/base.model';
+import { Survey } from '../../shared/models/elearning/survey.model';
+import { SurveyStudyDialog} from '../../lms/survey/survey-study/survey-study.dialog.component';
+import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
 
 import * as _ from 'underscore';
 
@@ -50,6 +53,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
+    @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
 
     constructor(private meetingSerivce: MeetingService, private router: Router) {
         super();
@@ -138,6 +142,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         ConferenceMember.populateConferenceForArray(this, this.conferenceMembers).subscribe(() => {
             
         });
+
     }
 
     ngOnInit() {
@@ -145,15 +150,21 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             CourseMember.__api__listByUser(this.currentUser.id),
             ExamMember.__api__listByUser(this.currentUser.id),
             ConferenceMember.__api__listByUser(this.currentUser.id),
-            Course.__api__listByAuthor(this.currentUser.id))
+            Course.__api__listByAuthor(this.currentUser.id),
+            Survey.__api__listAvailableSurvey(),
+            SurveyMember.__api__listByUser(this.currentUser.id)
+            )
             .subscribe(jsonArray => {
                 this.courseMembers = CourseMember.toArray(jsonArray[0]);
                 this.examMembers = ExamMember.toArray(jsonArray[1]);
                 this.conferenceMembers = ConferenceMember.toArray(jsonArray[2]);
                 this.courses = Course.toArray(jsonArray[3]);
+                var surveys = Survey.toArray(jsonArray[4]);
+                var surveyMembers = SurveyMember.toArray(jsonArray[5]);
                 this.displayCourses();
                 this.displayExams();
                 this.displayConferences();
+                this.popupSurvey(surveys, surveyMembers);
             });
     }
 
@@ -211,5 +222,20 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.confirm('Are you sure to start ?', () => {
             this.examStudyDialog.show(exam, member);
         });
+    }
+
+    popupSurvey(surveys:Survey[], surveyMembers: SurveyMember[]) {
+        surveys =  _.filter(surveys, (survey:Survey)=> {
+            survey["member"] = _.find(surveyMembers, (m:SurveyMember)=> {
+                return m.survey_id == survey.id && m.enroll_status !='completed';
+            });
+            return survey["member"] != null  && survey.IsAvailable;
+        });
+        if (surveys && surveys.length) {
+            var survey = surveys[0];
+            this.confirm(`You are invited to survey ${survey.name}. Do you want to join ?`, ()=> {
+                 this.surveyStudyDialog.show(survey, survey["member"]);
+            });
+        }
     }
 }

@@ -30,6 +30,7 @@ import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { ProjectListDialog } from '../project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
+import { ClassSurveyListDialog } from '../class-survey-list/class-survey-list.dialog.component';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(ClassManageDialog) classManageDialog: ClassManageDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
+	@ViewChild(ClassSurveyListDialog) surveyListDialog : ClassSurveyListDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -134,6 +136,12 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	manageExam() {
 		if (this.selectedClass) {
 			this.examListDialog.show(this.selectedClass);
+		}
+	}
+
+	manageSurvey() {
+		if (this.selectedClass) {
+			this.surveyListDialog.show(this.selectedClass);
 		}
 	}
 

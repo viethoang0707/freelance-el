@@ -1,0 +1,81 @@
+<p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true"
+  [closeOnEscape]="false" [closable]="false">
+  <div class="ui-g-12 removePd">
+    <div class="ui-g-6 removePd">
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{'Survey Name'|translate}}:</h4>
+      </div>
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{survey.name}}</h4>
+      </div>
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{'Name Member'|translate}}:</h4>
+      </div>
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{member.name}}</h4>
+      </div>
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{'Username'|translate}}:</h4>
+      </div>
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{member.login}}</h4>
+      </div>
+    </div>
+    <div class="ui-g-6 removePd">
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{'Survey Date'|translate}}:</h4>
+      </div>
+      <div class="ui-g-6 removePd">
+        <h4 class="mt10 mb10">{{survey.start | date : "dd/MM/yyyy"}}</h4>
+      </div>
+    </div>
+  </div>
+  <div class="clear mb20"></div>
+  <p-card>
+    <p-header>
+      <span class="exam-question-title fLeft mt5 ml5 txtBold">
+        {{'Question'|translate}} {{(qIndex+1) +'/' + surveyQuestions.length}} {{'-' + currentQuestion.title}}
+      </span>
+      <div class="clear"></div>
+      <p-progressBar [value]="progress"></p-progressBar>
+    </p-header>
+    <div class="ui-g">
+      <div class="ui-g-8">
+        <ng-template question-container></ng-template>
+      </div>
+      <div class="ui-g-4">
+        <ul class="list-cmt">
+          <li class="clearfix ui-messages-info remove-background remove-border">
+            <span class="cmt-title">{{'Total question'|translate}}:</span>
+            <span class="cmt-detail">{{stats.total}}</span>
+          </li>
+          <li class="clearfix ui-messages-success remove-background remove-border">
+            <span class="cmt-title">{{'Total attempt'|translate}}:</span>
+            <span class="cmt-detail">{{stats.attempt}}</span>
+          </li>
+          <li class="clearfix ui-messages-error remove-background remove-border">
+            <span class="cmt-title">{{'Total unattempt'|translate}}:</span>
+            <span class="cmt-detail">{{stats.unattempt}}</span>
+          </li>
+        </ul>
+        <div>
+          <div class="dpInB fLeft" *ngFor="let question of surveyQuestions; let i = index">
+            <button type="button" pButton [ngClass]="{'mt10': true, 'lineHeight2-25': true, 'ui-button-success':question.checkAnswer}"
+              (click)="displayQuestion(i)">{{ i + 1 }}</button>
+          </div>
+          <div class="clear"></div>
+          <div>
+            <p-messages [(value)]="msgs"></p-messages>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}"
+        class=" purple-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
+      <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn"
+        style="margin-right:4px;" (click)="next()" *ngIf="qIndex < surveyQuestions.length-1"></button>
+      <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" style="margin-left: 550px;" (click)="submitSurvey()" ></button>
+    </p-footer>
+  </p-card>
+</p-dialog>

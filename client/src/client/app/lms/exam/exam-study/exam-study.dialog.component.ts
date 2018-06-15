@@ -44,6 +44,7 @@ export class ExamStudyDialog extends BaseComponent {
 	private sheet: QuestionSheet;
 	private qIndex: number;
 	private examQuestions: ExamQuestion[];
+	private questions: Question[];
 	private answers: Answer[];
 	private submission: Submission;
 	private timer: any;
@@ -68,6 +69,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.display = false;
 		this.examQuestions = [];
 		this.answers = [];
+		this.questions = [];
 		this.exam = new Exam();
 		this.sheet = new QuestionSheet();
 		this.currentQuestion = new ExamQuestion();

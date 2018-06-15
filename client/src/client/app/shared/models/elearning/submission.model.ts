@@ -18,7 +18,10 @@ export class Submission extends BaseModel{
         this.end = undefined;
         this.start = undefined;
         this.score = undefined;
-	}
+	    this.survey_id =  undefined;
+    }
+    
+    survey_id: number;
     exam_id: number;
     user_id: number;
     member_id: number;
@@ -66,7 +69,7 @@ export class Submission extends BaseModel{
         return Submission.search(context,[],"[('exam_id','=',"+examId+")]");
     }
 
-    static __api__listByMember(memberId: number): SearchReadAPI {
+     static __api__listByMember(memberId: number): SearchReadAPI {
         return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+")]");
     }
 

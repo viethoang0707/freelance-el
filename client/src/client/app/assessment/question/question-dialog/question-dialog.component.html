@@ -1,4 +1,4 @@
-<form novalidate (ngSubmit)="f.form.valid && saveQuestion()" #f="ngForm" autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
   <p-dialog header="{{'Question'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true">
     <p-scrollPanel [style]="{width: '100%', height: '460px'}">
       <p-tabView [style]="{width: '100%', height: '460px'}">

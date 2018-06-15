@@ -4,7 +4,7 @@ import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
@@ -20,17 +20,20 @@ import { Subscription } from 'rxjs/Subscription';
 	selector: 'exam-enrollment-dialog',
 	templateUrl: 'enrollment-dialog.component.html',
 })
-export class ExamEnrollDialog extends BaseDialog<Course> {
+export class ExamEnrollDialog extends BaseComponent {
 
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
     EXAM_STATUS =  EXAM_STATUS;
     EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
 
+
+    private display: boolean;
 	private exam: Exam;
     private candidates: ExamMember[];
     private selectedCandidates: any;
     private supervisors: ExamMember[];
     private selectedSupervisors: any;
+
 
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	

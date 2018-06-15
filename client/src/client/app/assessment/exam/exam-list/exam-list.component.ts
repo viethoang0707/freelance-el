@@ -46,6 +46,7 @@ export class ExamListComponent extends BaseComponent {
 
     addExam() {
         var exam = new Exam();
+        exam.is_public =  true;
         exam.supervisor_id =  this.authService.UserProfile.id;
         this.examDialog.show(exam);
         this.examDialog.onCreateComplete.subscribe(() => {
@@ -81,9 +82,9 @@ export class ExamListComponent extends BaseComponent {
     }
 
     loadExams() {
-        Exam.all(this).subscribe(exams => {
+        Exam.listPublicExam(this).subscribe(exams => {
             this.exams = exams;
-            this.events = _.map(exams, (exam) => {
+            this.events = _.map(exams, (exam:Exam) => {
                 return {
                     title: exam.name,
                     start: exam.start,

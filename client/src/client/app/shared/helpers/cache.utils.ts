@@ -20,7 +20,7 @@ export abstract class Cache {
             records = _.reject(records, obj=> {
                 return obj["id"] == record["id"];
             });
-            this.save('USER_GROUP',records);
+            this.save(model,records);
         }
     }
 

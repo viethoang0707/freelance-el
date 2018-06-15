@@ -36,7 +36,6 @@ export class ProjectMarkingDialog extends BaseDialog<ProjectSubmission>  impleme
 
 	ngOnInit() {
 		this.onShow.subscribe(object=> {
-			console.log(object);
 			CourseMember.get(this, object.member_id).subscribe(member=> {
 				this.member = member;
 				ExamSetting.all(this).subscribe(settings=> {

@@ -13,9 +13,10 @@ export const DEFAULT_DATE_LOCALE = {
 	today: 'Today',
 	clear: 'Clear'
 };
-export const EXAM_STATUS = { 'open': 'Open', 'closed': 'Closed'};
-export const CLASS_STATUS = { 'open': 'Open', 'closed': 'Closed'};
-export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM' };
+
+export const EXAM_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const CLASS_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM' , SURVEY: 'SURVEY'};
 export const EXPORT_DATETIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
 export const EXPORT_DATE_FORMAT = "dd-MM-yyyy";
 export const EXAM_MEMBER_ROLE = { 'candidate': 'Candidate', 'supervisor': 'Supervisor' };
@@ -29,20 +30,21 @@ export const CONTENT_STATUS = { 'draft': 'Draft', 'published': 'Published', 'unp
 export const COURSE_MODE = { 'self-study': 'Self-study', 'group': 'Group-study' };
 export const COURSE_MEMBER_ROLE = { 'student': 'Student', 'teacher': 'Teacher' };
 export const COURSE_MEMBER_STATUS = { 'active': 'Active', 'withdraw': 'Withdraw', 'suspend': 'Suspended' };
-export const COURSE_MEMBER_ENROLL_STATUS = { 'in-study': 'In-study', 'completed': 'Complete', 'registered': 'Registered' };
-export const QUESTION_TYPE = { 'sc': 'Single-choice', 'mc': 'Multiple-choice', 'fb': 'Fill-the-blank', 'ext': 'Open-ended' };
+export const COURSE_MEMBER_ENROLL_STATUS = { 'in-study': 'In-study', 'complete': 'Complete', 'registered': 'Registered' };
+export const QUESTION_TYPE = { 'sc': 'Single-choice', 'mc': 'Multiple-choice', 'fb': 'Fill-the-blank', 'rate': 'Rating', 'ext': 'Open-ended' };
 export const QUESTION_LEVEL = {'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard'};
 export const LANGS = { 'vn': 'Vietnamese', 'gb': 'English' };
 export const TICKET_STATUS = { 'open': 'Open', 'approved': 'Approved', 'rejected': 'Rejected' };
 export const EXAM_TIME_WARNING = 60000;
 export const DEFAULT_LANG = 'gb';
-export const PROJECT_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
-export const SURVEY_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const SCHEDULER_HEADER = {
             left: 'prev, today, next',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         }
+export const PROJECT_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const SURVEY_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };
 export const PRINT_DIALOG_STYLE = `<style>
                   //........Customized style.......
                     .header{

@@ -43,7 +43,21 @@
           <p-checkbox  binary="true" name="option_answer" [(ngModel)]="option.is_selected"></p-checkbox>
         </li>
       </ul>
-      <i class="material-icons" *ngIf="answer.is_correct">done</i>
+    </p-fieldset>
+  </div>
+</div>
+<div *ngIf="mode=='survey'">
+    <div class="ui-g-12 ">
+    <label>{{'Content'|translate}}</label>
+    <p [innerHTML]="question.content"></p>
+  </div>
+  <div class="ui-g-12">
+    <p-fieldset legend="{{'Options'|translate}}">
+      <ul class="options-question">
+        <li *ngFor="let option of options">
+          <p-checkbox  binary="true" name="option_answer" [(ngModel)]="option.is_selected"></p-checkbox>
+        </li>
+      </ul>
     </p-fieldset>
   </div>
 </div>

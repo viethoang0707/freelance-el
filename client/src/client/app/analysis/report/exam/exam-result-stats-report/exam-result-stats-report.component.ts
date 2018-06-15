@@ -70,7 +70,8 @@ export class ExamResultStatsReportComponent extends BaseComponent{
         .subscribe(jsonArr=> {
             var sheets = QuestionSheet.toArray(jsonArr[0]);
             var answers = Answer.toArray(jsonArr[1]);
-            this.optionPercentage = this.statsUtils.examAnswerStatistics(answers);
+            var statistics = this.statsUtils.examAnswerStatistics(answers);
+            this.optionPercentage = statistics['multichoice'];
             ExamQuestion.listBySheet(this, sheets[0].id).subscribe(examQuestions=> {
                 var apiList = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
                     return QuestionOption.__api__listByQuestion(examQuestion.question_id)
@@ -87,7 +88,7 @@ export class ExamResultStatsReportComponent extends BaseComponent{
                         this.records =  examQuestions;
                     });
             });
-        })
+        });
     }
 
 
