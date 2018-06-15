@@ -19,3 +19,25 @@
 .ans-print{
 	margin-bottom: 20px;
 }
+
+.date{
+	position: absolute; 
+	top: 390px; 
+	left: 90px;
+}
+
+.member-name{
+	position: absolute; 
+	top: 185px; 
+	left: 140px; 
+	font-size: 32px; 
+	font-family: 'Mr De Haviland';
+	margin: 0;
+}
+
+.summary{
+	position: absolute;
+    top: 225px;
+    left: 20px;
+    text-align: center;
+}
