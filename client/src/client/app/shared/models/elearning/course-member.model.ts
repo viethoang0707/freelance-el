@@ -11,6 +11,7 @@ import { CourseLog } from './log.model';
 import { ListAPI } from '../../services/api/list.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
 import * as _ from 'underscore';
+import { ExecuteAPI } from '../../services/api/execute.api';
 
 @Model('etraining.course_member')
 export class CourseMember extends BaseModel {
@@ -132,6 +133,15 @@ export class CourseMember extends BaseModel {
                 });
             });
         });
+    }
+
+    __api__complete_course(memberId: number): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'complete_course',{memberId:memberId}, null);
+    }
+
+    completeCourse(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__complete_course(this.id), 
+            context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
     }
 
 }

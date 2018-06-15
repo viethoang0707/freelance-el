@@ -13,20 +13,20 @@ import { SelectItem } from 'primeng/api';
 
 @Component({
 	moduleId: module.id,
-	selector: 'select-group-dialog',
-	templateUrl: 'select-group-dialog.component.html',
-	styleUrls: ['select-group-dialog.component.css'],
+	selector: 'select-multi-group-dialog',
+	templateUrl: 'select-multi-group-dialog.component.html',
+	styleUrls: ['select-multi-group-dialog.component.css'],
 })
-export class SelectGroupDialog extends BaseComponent {
+export class SelectMultiGroupDialog extends BaseComponent {
 
 	@Input() category: string;
 	private tree: TreeNode[];
-	private selectedNode: TreeNode;
+	private selectedNodes: any;
 	private display: boolean;
 	private treeUtils: TreeUtils;
 
-	private onSelectGroupReceiver: Subject<any> = new Subject();
-    onSelectGroup:Observable<any> =  this.onSelectGroupReceiver.asObservable();
+	private onSelectGroupsReceiver: Subject<any> = new Subject();
+    onSelectGroups:Observable<any> =  this.onSelectGroupsReceiver.asObservable();
 
 	constructor() {
 		super();
@@ -40,7 +40,7 @@ export class SelectGroupDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		this.selectedNode = null;
+		this.selectedNodes = [];
 		var subscription = null;
         if(this.category == "course")
             subscription =  Group.listCourseGroup(this);
@@ -52,10 +52,14 @@ export class SelectGroupDialog extends BaseComponent {
             subscription.subscribe(groups => {
                 this.tree = this.treeUtils.buildGroupTree(groups);
             });
+        //}
 	}
 
 	select() {
-		this.onSelectGroupReceiver.next(this.selectedNode.data);
+		var groups = _.map(this.selectedNodes, selectedNode=> {
+			return selectedNode["data"];
+		})
+		this.onSelectGroupsReceiver.next(groups);
 		this.hide();
 	}
 

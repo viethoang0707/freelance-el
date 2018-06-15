@@ -94,7 +94,7 @@ export class ExamListComponent extends BaseComponent {
                 }
             });
             this.exams.sort((exam1, exam2): any => {
-                return exam1.id < exam2.id;
+                return exam1.id - exam2.id;
             });
         });
     }

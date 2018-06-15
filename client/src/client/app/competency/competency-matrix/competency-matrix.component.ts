@@ -29,14 +29,8 @@ export class CompetencyMatrixComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        this.buildCompetencyMatrix();
-    }
-
-    buildCompetencyMatrix() {
-        
         Course.all(this).subscribe(courses => {
-            this.courses = this.courses;
-            
+            this.courses = courses;
         });
     }
 

@@ -55,7 +55,7 @@ export class CourseListComponent extends BaseComponent {
             this.courses = Course.toArray(jsonArr[1]);
             this.displayCourses = this.courses;
             this.displayCourses.sort((course1, course2): any => {
-                return (course1.id < course2.id)
+                return (course1.id - course2.id)
             });
         });
 
@@ -115,12 +115,7 @@ export class CourseListComponent extends BaseComponent {
             this.courses = courses;
             this.displayCourses = courses;
             this.displayCourses.sort((course1, course2): any => {
-                if (course1.id > course2.id)
-                    return -1;
-                else if (course1.id < course2.id)
-                    return 1;
-                else
-                    return 0;
+                return (course2.id - course1.id)
             });
             
         });

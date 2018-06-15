@@ -36,9 +36,6 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 	private rowGroupMetadata: any;
     private reportUtils: ReportUtils;
 
-    @ViewChild(SelectGroupDialog) groupDialog: SelectGroupDialog;
-	@ViewChild(SelectUsersDialog) userDialog: SelectUsersDialog;
-
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
 		this.reportUtils = new ReportUtils();
@@ -78,11 +75,9 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 	}
 
 	export() {
-		var output = [];
-		this.records.forEach(record => {
-			var course = { 'User login': record['user_login'], 'User name': record['user_name'], 'Course name': record['course_name'], 'Course mode': record['course_mode'], 'Course code': record['course_code'], 'Enroll status': record['enroll_status'], 'Date register': record['date_register'], 'First attempt': record['first_attempt'], 'Last attempt': record['last_attempt'], 'Time spent': '' };
-			output.push(course);
-		});
+		var output = _.map(this.records, record=> {
+			return { 'User login': record['user_login'], 'User name': record['user_name'], 'Course name': record['course_name'], 'Course mode': record['course_mode'], 'Course code': record['course_code'], 'Enroll status': record['enroll_status'], 'Date register': record['date_register'], 'First attempt': record['first_attempt'], 'Last attempt': record['last_attempt'], 'Time spent': '' };
+		})
 		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
 	}
 

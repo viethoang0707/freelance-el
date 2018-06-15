@@ -52,6 +52,7 @@ import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
 import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog.component';
+import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 
 @Component({
 	moduleId: module.id,
@@ -75,8 +76,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private selectedNode: TreeNode;
 	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
-	private exams: Exam[];
-	private completedExams: Exam[];
+	private examMembers: ExamMember[];
+	private completedMembers: ExamMember[];
 	private certificate: Certificate;
 	private conference: Conference;
 	private conferenceMember: ConferenceMember;
@@ -89,7 +90,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private enableLogging: boolean;
 	private currentUser: User;
 	private logs: CourseLog[];
-	
+	private grades: ExamGrade[];
+
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -141,6 +143,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 						apiList.push(ProjectSubmission.__api__listByMember(this.member.id));
 						apiList.push(ClassSurvey.__api__listByClass(this.member.class_id));
 						apiList.push(SurveyMember.__api__listByUser(this.currentUser.id));
+						apiList.push(ExamGrade.__api__all());
 					}
 					BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr1 => {
 						this.logs = CourseLog.toArray(jsonArr1[0]);
@@ -171,6 +174,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 							var classSurveys = ClassSurvey.toArray(jsonArr1[11]);
 							var surveyMembers = SurveyMember.toArray(jsonArr1[12]);
 							this.displaySurveys(classSurveys, surveyMembers);
+							this.grades =  ExamGrade.toArray(jsonArr[13]);
 						}
 					});
 				});
@@ -336,24 +340,27 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		members = _.filter(members, member => {
 			return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
 		});
-		ExamMember.populateExamForArray(this, members).subscribe(exams => {
-			_.each(exams, (exam: ExamMember) => {
-				exam["member"] = _.find(members, (member: ExamMember) => {
-					return member.exam_id == exam.id;
+		ExamMember.populateExamForArray(this, members).subscribe(() => {
+			_.each(members, (member: ExamMember) => {
+				member["submit"] = _.find(submits, (submit: Submission) => {
+					return submit.member_id == member.id && submit.exam_id == member.exam.id;
 				});
-				exam["submit"] = _.find(submits, (submit: Submission) => {
-					return submit.member_id == exam["member"].id && submit.exam_id == exam.id;
-				});
-				if (!exam["submit"])
-					exam["score"] = ''
-				else
-					exam["score"] = exam["submit"].score;
-				ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-					exam["question_count"] = count;
+				if (!member["submit"])
+					member["score"] = ''
+				else {
+					member["score"] = member["submit"].score;
+					member["grade"] =  ExamGrade.gradeScore(this.grades, member["score"] );
+				}
+				ExamQuestion.countByExam(this, member.exam.id).subscribe(count => {
+					member["question_count"] = count;
 				});
 			});
-			exams.sort((exam1, exam2): any => {
-				return (exam1.create_date < exam2.create_date);
+			members.sort((m1:ExamMember, m2:ExamMember): any => {
+				return (m1.exam.create_date.getTime() - m2.exam.create_date.getTime());
+			});
+			this.examMembers = members;
+			this.completedMembers =  _.filter(members, (member:ExamMember)=> {
+				return member.enroll_status =='completed';
 			});
 		});
 	}

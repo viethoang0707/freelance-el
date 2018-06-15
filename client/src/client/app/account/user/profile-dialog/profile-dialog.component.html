@@ -75,6 +75,24 @@
           </ng-template>
         </p-table>
       </p-tabPanel>
+      <p-tabPanel header="{{'Skill'|translate}}" leftIcon="ui-icon-linear-scale" [style]="{width: '100%', height: '430px'}">
+        <p-table [value]="skills">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{'Competency'|translate}}</th>
+              <th>{{'Level'|translate}}</th>
+              <th>{{'Date acquired'|translate}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-skill>
+            <tr>
+              <td>{{skill.competency_name}}</td>
+              <td>{{skill.competency_level_name}}</td>
+              <td>{{skill.date_acquire}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabPanel>
     </p-tabView>
     <certificate-print-dialog></certificate-print-dialog>
     <p-footer>

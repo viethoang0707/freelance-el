@@ -63,8 +63,8 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             this.courses = _.uniq(courses, (course) => {
                 return course.id;
             });
-            this.courses.sort((course1, course2): any => {
-                return (course1.create_date < course2.create_date);
+            this.courses.sort((course1:Course, course2:Course): any => {
+                return (course1.create_date.getTime() - course2.create_date.getTime());
             });
             var apiList = _.map(this.courses, (course: Course) => {
                 return CourseSyllabus.__api__byCourse(course.id);

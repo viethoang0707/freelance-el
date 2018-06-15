@@ -101,6 +101,9 @@ export class GradebookDialog extends BaseComponent {
         this.certDialog.show(certificate);
         this.certDialog.onCreateComplete.subscribe((obj: Certificate) => {
             this.certificate = obj;
+            this.member.completeCourse(this).subscribe(()=> {
+                this.success('Congratulations! You have completed the course.');
+            })
         });
     }
 
