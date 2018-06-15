@@ -8,7 +8,6 @@ import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { GROUP_CATEGORY, COURSE_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
 @Component({

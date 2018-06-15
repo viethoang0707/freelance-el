@@ -50,12 +50,16 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 
 	saveEditor(): Observable<any> {
 		return this.question.save(this).flatMap(() => {
-			var subscriptions = [];
 			_.each(this.options, (option: QuestionOption) => {
 				option.question_id = this.question.id;
-				subscriptions.push(option.save(this));
 			});
-			return Observable.forkJoin(...subscriptions);
+			var existOptions = _.filter(this.options, (option:QuestionOption)=> {
+				return option.id != null;
+			});
+			var newOptions = _.filter(this.options, (option:QuestionOption)=> {
+				return option.id == null;
+			});
+			return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.updateArray(this, newOptions));
 		});
 	}
 

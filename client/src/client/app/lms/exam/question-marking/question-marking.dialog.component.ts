@@ -59,7 +59,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 							this.questions[question.question_id] = question;
 						});
 						this.markAnswers = _.filter(this.answers, (ans: Answer) => {
-							var question = _.find(examQuestions, (q:ExamQuestion) => {
+							var question = _.find(examQuestions, (q: ExamQuestion) => {
 								return ans.question_id == q.question_id;
 							});
 							return question && question.type == 'ext';
@@ -76,23 +76,13 @@ export class QuestionMarkingDialog extends BaseComponent {
 	save() {
 		if (!this.submit.score)
 			this.submit.score = 0;
-
-		// this.submit.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
-		// this.submit.save(this).subscribe(() => {
-		// 	Answer.updateArray(this, this.answers).subscribe(() => {
-		// 		this.success(this.translateService.instant('Marking saved sucessfully'));
-		// 		this.onMarkCompleteReceiver.next();
-		// 		this.hide();
-		// 	});
-
-		this.submit.score = _.reduce(this.answers,  (sum, ans)=> {return sum + (+ans.score);},0);
-		subscrptions.push(this.submit.save(this));
-		this.startTransaction();
-		Observable.forkJoin(...subscrptions).subscribe(()=> {
-			this.success(this.translateService.instant('Marking saved sucessfully'));
-			this.onMarkCompleteReceiver.next();
-			this.hide();
-			this.closeTransaction();
+		this.submit.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
+		this.submit.save(this).subscribe(() => {
+			Answer.updateArray(this, this.answers).subscribe(() => {
+				this.success(this.translateService.instant('Marking saved sucessfully'));
+				this.onMarkCompleteReceiver.next();
+				this.hide();
+			});
 		});
 	}
 }

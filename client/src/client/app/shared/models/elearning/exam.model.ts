@@ -87,12 +87,12 @@ export class Exam extends BaseModel{
         return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 
-    static __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
+    __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
         return new ExecuteAPI(Exam.Model, 'enroll',{userIds:userIds, examId:examId}, null);
     }
 
-    static enroll(context:APIContext,examId:number, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll(examId, userIds), 
+    enroll(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(this.id, userIds), 
             context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
     }
 

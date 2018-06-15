@@ -11,7 +11,6 @@ import { ExamGrade } from '../../../../shared/models/elearning/exam-grade.model'
 import { Submission } from '../../../../shared/models/elearning/submission.model';
 import { SurveyAnswer } from '../../../../shared/models/elearning/survey-answer.model';
 import { SurveyMember } from '../../../../shared/models/elearning/survey-member.model';
-import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../../shared/models/constants'
 import { Report } from '../../report.decorator';
 import { SelectGroupDialog } from '../../../../shared/components/select-group-dialog/select-group-dialog.component';

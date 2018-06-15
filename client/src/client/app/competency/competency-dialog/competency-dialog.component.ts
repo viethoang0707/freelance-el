@@ -80,12 +80,10 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
             	this.updateCompetencyLevel().subscribe(()=> {
             		this.onCreateCompleteReceiver.next(this.object);
 	                this.success(this.translateService.instant('Object created successfully.'));
-	                this.closeTransaction();
 	                this.hide();
             	});
             },()=> {
                 this.error(this.translateService.instant('Permission denied'));
-                this.closeTransaction();
             });
         }
         else {
@@ -93,12 +91,10 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
             	this.updateCompetencyLevel().subscribe(()=> {
             		this.onUpdateCompleteReceiver.next(this.object);
                 	this.success(this.translateService.instant('Object saved successfully.')) ;
-                	this.closeTransaction();
                 	this.hide();
             	});
             },()=> {
                 this.error(this.translateService.instant('Permission denied'));
-                this.closeTransaction();
             });
         }
     }

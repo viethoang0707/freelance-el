@@ -33,21 +33,21 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 
 	render(question, answer?) {
 		this.question = question;
-		this.answer =  answer;
+		this.answer = answer;
 		if (this.question.id) {
-			
+
 			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
 				this.options = options;
 				if (this.answer && this.answer.id) {
 					var selectedOptions = JSON.parse(this.answer.json);
-						_.each(options, (option=> {
-							var selected = _.find(selectedOptions, (obj)=> {
-								return obj == option.id;
-							});
-							if (selected) 
-								option["is_selected"] = true;
-							option["is_selected"] = false;
-						}));
+					_.each(options, (option => {
+						var selected = _.find(selectedOptions, (obj) => {
+							return obj == option.id;
+						});
+						if (selected)
+							option["is_selected"] = true;
+						option["is_selected"] = false;
+					}));
 				}
 			});
 		}
@@ -55,22 +55,26 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 
 	saveEditor(): Observable<any> {
 		return this.question.save(this).flatMap(() => {
-			var subscriptions = [];
-			_.each(this.options, (option: QuestionOption)=> {
+			_.each(this.options, (option: QuestionOption) => {
 				option.question_id = this.question.id;
-				subscriptions.push(option.save(this));
 			});
-			return Observable.forkJoin(...subscriptions);
+			var existOptions = _.filter(this.options, (option:QuestionOption)=> {
+				return option.id != null;
+			});
+			var newOptions = _.filter(this.options, (option:QuestionOption)=> {
+				return option.id == null;
+			});
+			return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.updateArray(this, newOptions));
 		});
 	}
 
 	concludeAnswer() {
-		this.answer.is_correct  = true;
-		var selectedOptions = _.filter(this.options, option=> {
+		this.answer.is_correct = true;
+		var selectedOptions = _.filter(this.options, option => {
 			return option["is_selected"];
 		});
-		this.answer.json = JSON.stringify(_.pluck(selectedOptions,"id"));
-		_.each(this.options, (option=> {
+		this.answer.json = JSON.stringify(_.pluck(selectedOptions, "id"));
+		_.each(this.options, (option => {
 			if ((option.is_correct && !option["]is_selected"]) || (!option.is_correct && option["is_selected"]))
 				this.answer.is_correct = false;
 		}));
@@ -84,12 +88,12 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 	removeOption(option: QuestionOption) {
 		if (option.id) {
 			option.delete(this).subscribe(() => {
-				this.options = _.reject(this.options, (obj)=> {
+				this.options = _.reject(this.options, (obj) => {
 					return obj == option;
 				});
 			})
 		} else
-			this.options = _.reject(this.options, (obj)=> {
+			this.options = _.reject(this.options, (obj) => {
 				return obj == option;
 			});
 	}

@@ -80,7 +80,7 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	createSubmission(): Observable<any> {
-		return SurveySubmission.byMemberAndSurvey(this, this.member.id, this.survey.id).flatMap((submit: Submission) => {
+		return SurveySubmission.byMemberAndSurvey(this, this.member.id, this.survey.id).flatMap((submit: SurveySubmission) => {
 			if (!submit) {
 				submit = new SurveySubmission();
 				submit.member_id = this.member.id;

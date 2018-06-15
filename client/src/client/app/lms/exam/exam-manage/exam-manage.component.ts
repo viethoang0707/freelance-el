@@ -85,23 +85,11 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
 	mark() {
         if (this.selectedRecord)
-
-            // if (this.selectedRecord["submit"] == null) {
-            //     this.warn(this.translateService.instant('The member has not attempted the exam'));
-            //         return;
-            // }
-
-            this.exam.containsOpenEndQuestion(this).subscribe(success => {
-                if (!success) {
-                    this.warn(this.translateService.instant('The exam does not contains any open question'));
-                    return;
-                }
-                if (this.selectedRecord["submit"] ==  null) {
-                    this.warn(this.translateService.instant('The member has not attempted the exam'));
-                    return;
-                }
-                this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"] );
-            });
+            if (this.selectedRecord["submit"] == null) {
+                this.warn(this.translateService.instant('The member has not attempted the exam'));
+                return;
+            }
+        this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"]);
     }
 
     viewAnswerSheet() {
@@ -148,11 +136,11 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     showExamStats() {
         this.statsDialog.show(this.exam);
     }
-    
+
     closeExam() {
         if (this.selectedRecord) {
             this.selectedRecord.status = 'closed';
-            this.selectedRecord.save(this).subscribe(()=> {
+            this.selectedRecord.save(this).subscribe(() => {
                 this.success(this.translateService.instant('Exam close'));
             });
         }

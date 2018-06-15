@@ -39,11 +39,9 @@ export class SurveySheetListComponent extends BaseComponent {
     deleteSheet(){
         if(this.selectedSheet)
             this.confirm('Are you sure to delete ?', () => {
-                this.startTransaction();
                 this.selectedSheet.delete(this).subscribe(() => {
                     this.selectedSheet = null;
                     this.loadSurveySheets();
-                    this.closeTransaction();
                 });
             });
     }
@@ -54,7 +52,6 @@ export class SurveySheetListComponent extends BaseComponent {
     }
 
     loadSurveySheets() {
-        this.startTransaction();
         SurveySheet.listTemplate(this).subscribe(sheets => {
             this.sheets =  sheets;
             _.each(sheets, sheet=> {
@@ -62,7 +59,6 @@ export class SurveySheetListComponent extends BaseComponent {
                     sheet["question_count"] = count;
                 });
             });
-            this.closeTransaction();
         });
     }
 

@@ -170,7 +170,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 							this.displayProject(projects, projectSubmits);
 							var classSurveys = ClassSurvey.toArray(jsonArr1[11]);
 							var surveyMembers = SurveyMember.toArray(jsonArr1[12]);
-							this.displaySurvey(classSurveys, surveyMembers);
+							this.displaySurveys(classSurveys, surveyMembers);
 						}
 					});
 				});

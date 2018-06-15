@@ -88,9 +88,7 @@ export class ClassExamListDialog extends BaseComponent {
 
 	editExam() {
 		if (this.selectedClassExam) {
-			this.startTransaction();
 			Exam.get(this, this.selectedClassExam.exam_id).subscribe(exam => {
-				this.closeTransaction();
 				this.examDialog.show(exam);;
 			});
 		}

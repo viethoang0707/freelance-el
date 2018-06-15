@@ -61,7 +61,6 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 			subscriptions.push(this.sheet.save(this));
 			Observable.forkJoin(subscriptions).subscribe(()=> {
 				this.success(this.translateService.instant('Question sheet saved successfully'));
-				this.closeTransaction();
 				this.hide();
 			});
 		});

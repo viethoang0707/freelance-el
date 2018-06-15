@@ -51,34 +51,33 @@ export class SurveySheetPreviewDialog extends BaseComponent {
     }
 
     startReview() {
-        this.startTransaction();
-        SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
-            this.surveyQuestions = examQuestions;
-            setTimeout(()=> {
-                var componentHostArr = this.questionsComponents.toArray();
-                for (var i = 0; i < examQuestions.length; i++) {
-                    var examQuestion = examQuestions[i];
-                    var componentHost = componentHostArr[i];
-                    this.displayQuestion(examQuestion, componentHost);
-                }
-            this.closeTransaction();
-            },0)
+        SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions => {
+            SurveyQuestion.populateQuestionForArray(this, surveyQuestions).subscribe(()=> {
+                this.surveyQuestions = surveyQuestions;
+                setTimeout(()=> {
+                    var componentHostArr = this.questionsComponents.toArray();
+                    for (var i = 0; i < surveyQuestions.length; i++) {
+                        var surveyQuestion = surveyQuestions[i];
+                        var componentHost = componentHostArr[i];
+                        this.displayQuestion(surveyQuestion, componentHost);
+                    }
+                },0)
+            })
+            
             
         });
     }
 
-    displayQuestion(surveyQuestions: SurveyQuestion, componentHost) {
-        Question.get(this, surveyQuestions.question_id).subscribe((question) => {
-            var detailComponent = QuestionRegister.Instance.lookup(question.type);
+    displayQuestion(surveyQuestion: SurveyQuestion, componentHost) {
+            var detailComponent = QuestionRegister.Instance.lookup(surveyQuestion.question.type);
             let viewContainerRef = componentHost.viewContainerRef;
             if (detailComponent) {
                 let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
                 viewContainerRef.clear();
                 var componentRef = viewContainerRef.createComponent(componentFactory);
                 (<IQuestion>componentRef.instance).mode = 'preview';
-                (<IQuestion>componentRef.instance).render(question);
+                (<IQuestion>componentRef.instance).render(surveyQuestion.question);
             }
-        });
     }
 }
 
