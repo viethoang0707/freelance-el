@@ -42,6 +42,7 @@ export const SCHEDULER_HEADER = {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         }
+export const COLOR_BAND = ["#FF6384", "#36A2EB", "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099"];
 export const PROJECT_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const SURVEY_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };
