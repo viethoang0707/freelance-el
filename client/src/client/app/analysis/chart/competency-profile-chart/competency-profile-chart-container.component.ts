@@ -5,7 +5,7 @@ import { APIService } from '../../../shared/services/api.service';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { User } from '../../../shared/models/elearning/user.model';
+import { Competency } from '../../../shared/models/elearning/competency.model';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
@@ -15,7 +15,7 @@ import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, C
 import { Chart } from '../chart.decorator';
 import { StatsUtils } from '../../../shared/helpers/statistics.utils';
 import { CompetencyProfileChartComponent } from './competency-profile-chart.component';
-import { SelectCompetencyDialog } from '../../../../shared/components/select-competency-dialog/select-competency-dialog.component';
+import { SelectCompetencyDialog } from '../../../shared/components/select-competency-dialog/select-competency-dialog.component';
 
 @Component({
     moduleId: module.id,

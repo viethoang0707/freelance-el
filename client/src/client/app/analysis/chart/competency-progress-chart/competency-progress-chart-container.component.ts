@@ -14,8 +14,9 @@ import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../shared/models/constants'
 import { Chart } from '../chart.decorator';
 import { StatsUtils } from '../../../shared/helpers/statistics.utils';
-import { UserChartComponent } from './user-chart.component';
-import { SelectCompetencyDialog } from '../../../../shared/components/select-competency-dialog/select-competency-dialog.component';
+import { SelectCompetencyDialog } from '../../../shared/components/select-competency-dialog/select-competency-dialog.component';
+import { CompetencyProgressChartComponent } from './competency-progress-chart.component';
+import { Competency } from '../../../shared/models/elearning/competency.model';
 
 @Component({
     moduleId: module.id,
@@ -27,14 +28,24 @@ import { SelectCompetencyDialog } from '../../../../shared/components/select-com
 })
 export class CompetencyProgressChartContainerComponent extends BaseComponent implements OnInit {
 
-	@ViewChild(UserChartComponent) userChart : UserChartComponent;
+    @Input() duration:number;
+	@ViewChild(CompetencyProgressChartComponent) competencyChart : CompetencyProgressChartComponent;
+    @ViewChild(SelectCompetencyDialog) selectCompetencyDilog: SelectCompetencyDialog
 
     constructor() {
         super();
+        this.duration = 0;
     }
 
     ngOnInit() {
-    	this.userChart.drawChart();
+    }
+
+    selectCompetency() {
+        this.selectCompetencyDilog.show();
+        this.selectCompetencyDilog.onSelectCompetency.subscribe((competency:Competency) => {
+            if (this.duration)
+                this.competencyChart.drawChart(competency, this.duration);
+        });
     }
 
    

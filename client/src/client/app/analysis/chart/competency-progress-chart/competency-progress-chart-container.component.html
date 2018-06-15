@@ -1,9 +1,12 @@
 <div class="card">
-  <div style="overflow:auto">
-  	<p-radioButton name="monitor_window" label="{{'Last 7 days'|translate}}" value="7" inputId="opt1" (onClick)="drawChart(7)"></p-radioButton>
-    <p-radioButton name="monitor_window" label="{{'Last 14 days'|translate}}" value="14" inputId="opt2" (onClick)="drawChart(14)"></p-radioButton>
-    <p-radioButton name="monitor_window" label="{{'Last 30 days'|translate}}" value="30" inputId="opt3" (onClick)="drawChart(30)"></p-radioButton>
+  <div class="card-header">
+  	<p-radioButton name="monitor_window" label="{{'Last 3 months'|translate}}" value="90" inputId="opt1" [(ngModel)]="duration"></p-radioButton>
+    <p-radioButton name="monitor_window" label="{{'Last 6 months'|translate}}" value="180" inputId="opt2" [(ngModel)]="duration"></p-radioButton>
+    <p-radioButton name="monitor_window" label="{{'Last 12 months'|translate}}" value="360" inputId="opt3" [(ngModel)]="duration"></p-radioButton>
+            <div>
+                <button pButton type="button" label="{{'Select competency'|translate}}" icon="ui-icon-open-in-browser" class="green-btn" (click)="selectCompetency()" [disabled]="duration==0"></button>
+            </div>
+      </div>
     <select-competency-dialog></select-competency-dialog>
     <competency-progress-chart></competency-progress-chart>
-  </div>
 </div>

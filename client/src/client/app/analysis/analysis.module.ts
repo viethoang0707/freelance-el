@@ -28,6 +28,11 @@ import { SurveyResultStatsReportContainerComponent } from './report/survey/surve
 import { StatsUtils } from '../shared/helpers/statistics.utils';
 import { CompetencyByGroupReportComponent } from './report/competency/competency-by-group-report/competency-by-group-report.component';
 import { CompetencyByGroupReportContainerComponent } from './report/competency/competency-by-group-report/competency-by-group-report-container.component';
+import { CompetencyProfileChartComponent } from './chart/competency-profile-chart/competency-profile-chart.component';
+import { CompetencyProfileChartContainerComponent } from './chart/competency-profile-chart/competency-profile-chart-container.component';
+import { CompetencyProgressChartComponent } from './chart/competency-progress-chart/competency-progress-chart.component';
+import { CompetencyProgressChartContainerComponent } from './chart/competency-progress-chart/competency-progress-chart-container.component';
+
 
 @NgModule({
 	imports: [ErpSharedModule, AuthModule],
@@ -54,6 +59,10 @@ import { CompetencyByGroupReportContainerComponent } from './report/competency/c
 	UserChartContainerComponent,
 	CompetencyByGroupReportComponent,
 	CompetencyByGroupReportContainerComponent,
+	CompetencyProfileChartComponent,
+	CompetencyProfileChartContainerComponent,
+	CompetencyProgressChartComponent,
+	CompetencyProgressChartContainerComponent,
 	ReportContainerDirective],
 	entryComponents: [
 		ExamResultReportContainerComponent,
@@ -64,7 +73,9 @@ import { CompetencyByGroupReportContainerComponent } from './report/competency/c
         UserChartContainerComponent,
         UserLoginActivityChartContainerComponent,
         CourseActivityChartContainerComponent,
-        SurveyResultStatsReportContainerComponent
+        SurveyResultStatsReportContainerComponent,
+        CompetencyProfileChartContainerComponent,
+        CompetencyProgressChartContainerComponent
     ],
 	exports: [ExamResultReportComponent,SurveyResultStatsReportComponent,ExamResultStatsReportComponent],
 	providers: [DatePipe, TimeConvertPipe]
