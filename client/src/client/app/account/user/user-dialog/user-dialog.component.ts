@@ -19,7 +19,7 @@ import { GROUP_CATEGORY } from '../../../shared/models/constants';
 export class UserDialog extends BaseDialog<User> {
 
     private tree: TreeNode[];
-    private selectedNode: TreeNode;
+    private selectedNode: any;
     private treeUtils: TreeUtils;
 
 	constructor() {
