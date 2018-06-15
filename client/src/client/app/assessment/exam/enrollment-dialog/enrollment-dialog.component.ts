@@ -58,7 +58,7 @@ export class ExamEnrollDialog extends BaseComponent {
         this.usersDialog.onSelectUsers.subscribe(users => {
             if (role=='candidate') {
                 var userIds = _.pluck(users, 'id');
-                Exam.enroll(this, this.exam.id, userIds).subscribe(()=> {
+                this.exam.enroll(this,userIds).subscribe(()=> {
                     this.loadMembers();
                 });
             } else if (role=='supervisor') {
@@ -80,11 +80,7 @@ export class ExamEnrollDialog extends BaseComponent {
     deleteMember(members) {
         if (members && members.length)
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                var subscriptions = _.map(members,(member:ExamMember) => {
-                    return member.delete(this);
-                });
-                this.startTransaction();
-                this.subscription = Observable.forkJoin(...subscriptions).subscribe(()=> {
+                ExamMember.deleteArray(this,members).subscribe(()=> {
                     this.selectedCandidates = [];
                     this.selectedSupervisors = [];
                     this.loadMembers();
