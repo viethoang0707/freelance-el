@@ -46,11 +46,16 @@ export class Submission extends BaseModel{
     }
 
     static __api__byMemberAndExam(memberId: number,examId:number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")");
+        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")")
     }
 
     static byMemberAndExam( context:APIContext, memberId: number, examId: number): Observable<any> {
-        return Submission.search(context,[],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
+        return Submission.search(context,[],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]").map(submits=> {
+            if (submits.length)
+                return submits[0];
+            else
+                return null;
+        });
     }
 
     static __api__listByUser(userId: number): SearchReadAPI {
