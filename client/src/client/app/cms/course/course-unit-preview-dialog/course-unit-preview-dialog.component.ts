@@ -77,17 +77,18 @@ export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 		let viewContainerRef = this.unitHost.viewContainerRef;
 		if (viewContainerRef)
 			viewContainerRef.clear();
-		var id = this.selectedUnit.id;
-		var object = this.computedNextUnit(this.selectedUnit.id);
-		this.selectedUnit = this.computedNextUnit(this.selectedUnit.id);
-		var detailComponent = CourseUnitRegister.Instance.lookup(object.type);
-		this.nameUnit = object.name;
+		this.selectedUnit = this.computedNextUnit(this.selectedUnit);
+		if (!this.selectedUnit)
+			return;
+		this.selectedUnit = this.selectedUnit;
+		var detailComponent = CourseUnitRegister.Instance.lookup(this.selectedUnit.type);
+		this.nameUnit = this.selectedUnit.name;
 		if (detailComponent) {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
 			(<ICourseUnit>this.componentRef.instance).mode = 'preview';
-			(<ICourseUnit>this.componentRef.instance).render(object);
+			(<ICourseUnit>this.componentRef.instance).render(this.selectedUnit);
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;
@@ -98,30 +99,31 @@ export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 		let viewContainerRef = this.unitHost.viewContainerRef;
 		if (viewContainerRef)
 			viewContainerRef.clear();
-		var id = this.selectedUnit.id;
-		var object = this.computedPrevUnit(this.selectedUnit.id);
-		this.selectedUnit = this.computedPrevUnit(this.selectedUnit.id);
-		var detailComponent = CourseUnitRegister.Instance.lookup(object.type);
-		this.nameUnit = object.name;
+		this.selectedUnit = this.computedPrevUnit(this.selectedUnit);
+		if (!this.selectedUnit)
+			return;
+		var detailComponent = CourseUnitRegister.Instance.lookup(this.selectedUnit.type);
+		this.nameUnit = this.selectedUnit.name;
 		if (detailComponent) {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
 			(<ICourseUnit>this.componentRef.instance).mode = 'preview';
-			(<ICourseUnit>this.componentRef.instance).render(object);
+			(<ICourseUnit>this.componentRef.instance).render(this.selectedUnit);
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;
 		}
 	}
 
-	computedNextUnit(currentUnitId: number): CourseUnit {
+	computedNextUnit(unit: CourseUnit): CourseUnit {
 		var currentNodeIndex = 0;
-		for (; currentNodeIndex < this.treeList.length; currentNodeIndex++) {
-			var node = this.treeList[currentNodeIndex];
-			if (node.data.id == currentUnitId)
-				break;
-		}
+		if (unit)
+			for (; currentNodeIndex < this.treeList.length; currentNodeIndex++) {
+				var node = this.treeList[currentNodeIndex];
+				if (node.data.id == unit.id)
+					break;
+			}
 		currentNodeIndex++;
 		while (currentNodeIndex < this.treeList.length) {
 			var node = this.treeList[currentNodeIndex];
@@ -132,13 +134,14 @@ export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 		return (currentNodeIndex < this.treeList.length ? this.treeList[currentNodeIndex].data : null);
 	}
 
-	computedPrevUnit(currentUnitId: number): CourseUnit {
+	computedPrevUnit(unit: CourseUnit): CourseUnit {
 		var currentNodeIndex = 0;
-		for (; currentNodeIndex < this.treeList.length; currentNodeIndex++) {
-			var node = this.treeList[currentNodeIndex];
-			if (node.data.id == currentUnitId)
-				break;
-		}
+		if (unit)
+			for (; currentNodeIndex < this.treeList.length; currentNodeIndex++) {
+				var node = this.treeList[currentNodeIndex];
+				if (node.data.id == unit.id)
+					break;
+			}
 		currentNodeIndex--;
 		while (currentNodeIndex >= 0) {
 			var node = this.treeList[currentNodeIndex];
