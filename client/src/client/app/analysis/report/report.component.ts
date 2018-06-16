@@ -25,6 +25,13 @@ export class ReportComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.buildReportDropdownList();
+		this.translateService.onLangChange.subscribe(()=> {
+			this.buildReportDropdownList();
+		})
+	}
+
+	buildReportDropdownList() {
 		this.items = [];
 		_.each(REPORT_CATEGORY, (val, key)=> {
 			this.items.push({
