@@ -3,7 +3,7 @@ import { APIService } from '../../shared/services/api.service';
 import { WebSocketService } from '../../shared/services/socket.service';
 import { Router } from '@angular/router';
 import { User } from '../../shared/models/elearning/user.model';
-import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../shared/models/cloud/token.model';
 import { LANGS } from '../../shared/models/constants';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';

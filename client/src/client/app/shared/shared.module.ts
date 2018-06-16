@@ -20,6 +20,7 @@ import { WebSocketService } from './services/socket.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
+import { AppEventManager } from './services/app-event-manager.service';
 import { MeetingService } from './services/meeting.service';
 import { LoadingService } from './services/loading.service';
 import { WindowRef } from './helpers/windonw.ref';
@@ -356,6 +357,7 @@ export class ErpSharedModule {
                 MeetingService,
                 WindowRef,
                 ExcelService,
+                AppEventManager,
                 WorkflowService,
                 MenuService,
                 SettingService,

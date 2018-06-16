@@ -19,7 +19,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { Survey } from '../../../../shared/models/elearning/survey.model';
 import { SurveyQuestion } from '../../../../shared/models/elearning/survey-question.model';
-import { CloudAccount } from '../../../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../../../shared/models/cloud/token.model';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { SurveySheet } from '../../../../shared/models/elearning/survey-sheet.model';
 import { Http, Response } from '@angular/http';

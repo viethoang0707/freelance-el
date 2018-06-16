@@ -20,7 +20,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { Group } from '../../../../shared/models/elearning/group.model';
 import { ExamQuestion } from '../../../../shared/models/elearning/exam-question.model';
-import { CloudAccount } from '../../../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../../../shared/models/cloud/token.model';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../../shared/models/elearning/question-sheet.model';
 import { Http, Response } from '@angular/http';

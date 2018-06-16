@@ -7,7 +7,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
-import { CloudAccount } from '../../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../../shared/models/cloud/token.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';

@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/mergeMap';
 import { Credential } from '../models/credential.model';
 import { User } from '../models/elearning/user.model';
-import { CloudAccount } from '../models/cloud/cloud-account.model';
+import { Token } from '../models/cloud/token.model';
 import { MapUtils } from '../helpers/map.utils';
 import { AuthService } from './auth.service'
 import { TranslateService } from '@ngx-translate/core';

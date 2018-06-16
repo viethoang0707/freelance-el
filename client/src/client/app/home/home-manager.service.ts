@@ -8,7 +8,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 export class HomeEventManager {
     private showProfileEventReceiver: Subject<any> = new Subject();
     private changePasswordEventReceiver: Subject<any> = new Subject();
-    private logoutEventReceiver: Subject<any> = new Subject();
     private menuEventReceiver: Subject<any> = new Subject();
     private topbarMenuEventReceiver: Subject<any> = new Subject();
     private topbarMobileMenuEventReceiver: Subject<any> = new Subject();
@@ -19,7 +18,6 @@ export class HomeEventManager {
 
     showProfileEvents:Observable<any> =  this.showProfileEventReceiver.asObservable();
     changePasswordEvents:Observable<any> =  this.changePasswordEventReceiver.asObservable();
-    logoutEvents:Observable<any> =  this.logoutEventReceiver.asObservable();
     topbarMenuEvents:Observable<any> =  this.topbarMenuEventReceiver.asObservable();
     topbarMobileMenuEvents:Observable<any> =  this.topbarMobileMenuEventReceiver.asObservable();
     menuEvents:Observable<any> =  this.menuEventReceiver.asObservable();
@@ -35,10 +33,6 @@ export class HomeEventManager {
 
     changePassword() {
         this.changePasswordEventReceiver.next();
-    }
-
-    logout() {
-        this.logoutEventReceiver.next();
     }
 
     topbarMenuClick() {

@@ -9,7 +9,7 @@ import { Ticket } from '../models/ticket/ticket.model';
 import { Notification } from '../models/ticket/notification.model';
 import { Course } from '../models/elearning/course.model';
 import { CourseSyllabus } from '../models/elearning/course-syllabus.model';
-import { CloudAccount } from '../models/cloud/cloud-account.model';
+import { Token } from '../models/cloud/token.model';
 import { APIContext } from '../models/context';
 import { WebSocketService } from '../../shared/services/socket.service';
 

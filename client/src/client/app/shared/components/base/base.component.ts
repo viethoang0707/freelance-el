@@ -1,7 +1,8 @@
 import { Component, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-import { APIService } from '../../services/api.service';
-import { CloudAPIService } from '../../services/cloud-api.service';
+import { ModelAPIService } from '../../services/api/model-api.service';
+import { AccountAPIService } from '../../services/api/account-api.service';
 import { AuthService } from '../../services/auth.service';
+import { AppEventManager } from '../../services/app-event-manager.service';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { APIContext } from '../../models/context';
 import { ServiceLocator } from "../../../service.locator";
@@ -11,17 +12,19 @@ import { SettingService } from '../../services/setting.service';
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 
 export abstract class BaseComponent implements APIContext {
-	apiService: APIService;
-	cloudApiService: CloudAPIService;
+	apiService: ModelAPIService;
+	accApiService: AccountAPIService;
 	authService: AuthService;
 	messageService: MessageService;
 	confirmationService: ConfirmationService;
 	translateService: TranslateService;
 	settingService: SettingService;
+	appEvent: AppEventManager;
 
 	constructor() {
-		this.apiService = ServiceLocator.injector.get(APIService);
-		this.cloudApiService = ServiceLocator.injector.get(CloudAPIService);
+		this.apiService = ServiceLocator.injector.get(ModelAPIService);
+		this.appEvent = ServiceLocator.injector.get(AppEventManager);
+		this.accApiService = ServiceLocator.injector.get(AccountAPIService);
 		this.authService = ServiceLocator.injector.get(AuthService);
 		this.messageService = ServiceLocator.injector.get(MessageService);
 		this.confirmationService = ServiceLocator.injector.get(ConfirmationService);
