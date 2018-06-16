@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../services/api.service';
+import { ModelAPIService } from '../../services/api/model-api.service';
 import { AuthService } from '../../services/auth.service';
 import { SurveyQuestion } from '../../models/elearning/survey-question.model';
 import { BaseComponent } from '../base/base.component';

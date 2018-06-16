@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { APIService	 } from '../services/api.service';
+import { ModelAPIService } from '../services/api/model-api.service';
 import { APIContext } from '../models/context';
 import { ExamMember } from '../models/elearning/exam-member.model';
 
 @Injectable()
 export class ExamSupervisorGuard implements CanActivate, APIContext {
 
-	apiService: APIService;
+	apiService: ModelAPIService;
 	authService: AuthService;
 
-	constructor(apiService: APIService, authService: AuthService, private router: Router) {
+	constructor(apiService: ModelAPIService, authService: AuthService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
 	}

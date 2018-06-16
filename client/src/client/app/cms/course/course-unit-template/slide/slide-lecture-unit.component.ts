@@ -57,7 +57,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	uploadFile(file) {
 		
 		this.lecture.filename = file.name;
-		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.accApiService.upload(file,  this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(()=> {
@@ -65,7 +65,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 							this.lecture.slide_url = data["url"];
 						else {
 							var serverFile = data["filename"]
-							this.cloudApiService.convert2Pdf(serverFile, this.authService.CloudAcc.id).subscribe((data)=> {
+							this.accApiService.convert2Pdf(serverFile, this.authService.LoginToken.cloud_id).subscribe((data)=> {
 								this.lecture.slide_url = data["url"];
 							});
 						}

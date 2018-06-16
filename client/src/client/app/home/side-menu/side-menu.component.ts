@@ -22,7 +22,6 @@ declare var jQuery: any;
 export class SideMenuComponent extends BaseComponent implements OnInit {
 
     @Input() reset: boolean;
-    private account: Token;
     private menu: any[];
     private layoutMenuScroller: HTMLDivElement;
     @ViewChild('layoutMenuScroller') layoutMenuScrollerViewChild: ElementRef;
@@ -39,7 +38,6 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.account =  this.authService.CloudAcc;
         if (this.settingService.ViewMode =='admin')
                 this.setAdminMenu();
             else

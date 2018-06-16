@@ -67,7 +67,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	uploadFile(file) {
 		this.openFileStatus = true;
-		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.accApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, NgZone} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
-import { APIService } from '../../../shared/services/api.service';
+import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
@@ -29,7 +29,7 @@ export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 
 	uploadFile(file) {
 		this.uploadInprogress = true;
-		this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
+		this.accApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				this.uploadInprogress = false;
 				if (data["result"]) {

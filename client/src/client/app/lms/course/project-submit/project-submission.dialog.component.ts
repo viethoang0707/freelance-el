@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, NgZone, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../../shared/services/api.service';
+import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -63,7 +63,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
     }
 
     changeFile(file) {
-        this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
+        this.accApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {
