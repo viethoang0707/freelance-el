@@ -106,6 +106,9 @@ export class GradebookDialog extends BaseComponent {
 
     show(member: CourseMember) {
         this.display = true;
+        this.exams = [];
+        this.projects = [];
+        this.stats = [];
         this.member = member;
         BaseModel
             .bulk_search(this,
