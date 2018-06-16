@@ -69,6 +69,7 @@ export class ExamEnrollDialog extends BaseComponent {
                     member.user_id = user.id;
                     member.date_register =  new Date();
                     member.status = 'active';
+                    return member;
                 });
                 ExamMember.createArray(this, members).subscribe(()=> {
                     this.loadMembers();

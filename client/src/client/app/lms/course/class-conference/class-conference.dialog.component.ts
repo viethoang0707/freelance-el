@@ -56,7 +56,8 @@ export class ClassConferenceDialog extends BaseComponent {
 								return confMember.course_member_id == member.id;
 							});
 							member["is_active"] = member["conferenceMember"] && member["conferenceMember"].is_active;
-						});
+					});
+					this.members = members;
 				});
 			}
 					

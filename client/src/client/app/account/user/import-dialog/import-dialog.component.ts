@@ -42,7 +42,7 @@ export class UserImportDialog extends BaseComponent {
 
 	import() {
 		Group.listUserGroup(this).subscribe(groups => {
-			var users = _.each(this.records, (record) => {
+			var users = _.map(this.records, (record) => {
 				var user = new User();
 				Object.assign(user, record);
 				user["password"] = DEFAULT_PASSWORD;

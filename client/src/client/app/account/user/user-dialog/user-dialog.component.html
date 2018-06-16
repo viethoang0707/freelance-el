@@ -4,7 +4,7 @@
       <div class="ui-g-12">
         <label>{{'Parent group'|translate}}</label>
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
-        <div [hidden]="selectedNode!=null" class="ui-message ui-messages-error ui-corner-all">
+        <div *ngIf="selectedNode==null" class="ui-message ui-messages-error ui-corner-all">
           {{'Selected group is required' | translate}}
         </div>
       </div>
