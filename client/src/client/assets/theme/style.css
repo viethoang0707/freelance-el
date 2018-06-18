@@ -549,7 +549,8 @@ body .settings-exam .ui-fluid .ui-spinner .ui-spinner-button {
   overflow: auto;
 }
 
-body .course-syllabus-dialog .ui-dialog-content.ui-widget-content {
+body .course-syllabus-dialog .ui-dialog-content.ui-widget-content,
+body .class-manage .ui-dialog-content.ui-widget-content {
   height: 100% !important;
 }
 
@@ -569,4 +570,12 @@ body .ui-progressbar .ui-progressbar-value {
   overflow: hidden;
   white-space: normal;
   text-overflow: ellipsis;
+}
+
+.ui-scrollpanel-content{
+  width: 100%;
+}
+
+.button-add-ques.ui-splitbutton {
+    display: inline;
 }
