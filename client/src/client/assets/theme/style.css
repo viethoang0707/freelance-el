@@ -575,3 +575,7 @@ body .ui-progressbar .ui-progressbar-value {
 .ui-scrollpanel-content{
   width: 100%;
 }
+
+.button-add-ques.ui-splitbutton {
+    display: inline;
+}
