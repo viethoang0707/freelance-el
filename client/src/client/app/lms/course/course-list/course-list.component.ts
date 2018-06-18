@@ -76,15 +76,27 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                 course["isAuthor"] = course.author_id == this.currentUser.id;
 
                 course["courseMemberData"] = {};
-                CourseMember.listByCourse(this, course.id).subscribe(members => {
-                    course["courseMemberData"] = this.reportUtils.analyseCourseMember(course, members);
-                });
-                if (course.syllabus_id)
-                    CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                        course["unit_count"] = count;
+                if (course["teacher"] != null)
+                    CourseMember.listByCourse(this, course.id).subscribe(members => {
+                        course["courseMemberData"] = this.reportUtils.analyseCourseMember(course, members);
                     });
-                else
-                    course["unit_count"] = 0;
+            });
+            var courseIds = _.pluck(this.courses, 'id');
+            CourseSyllabus.byCourseArray(this, courseIds).subscribe(sylList => {
+                _.each(this.courses, (course: Course) => {
+                    course["syllabus"] = _.find(sylList, (syl: CourseSyllabus) => {
+                        return syl.course_id == course.id;
+                    });
+                });
+                var sylIds = _.pluck(sylList, 'id');
+                CourseUnit.countBySyllabusArray(this, sylIds).subscribe(unitCounts => {
+                    for (var i = 0; i < sylIds.length; i++) {
+                        let course: Course = _.find(this.courses, (obj: Course) => {
+                            return obj["syllabus"].id == sylIds[i];
+                        });
+                        course["unit_count"] = unitCounts[i];
+                    }
+                });
             });
         });
     }

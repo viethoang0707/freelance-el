@@ -6,6 +6,7 @@ import { CourseLog } from './log.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchCountAPI } from '../../services/api/search-count.api';
+import * as _ from 'underscore';
 
 @Model('etraining.course_unit')
 export class CourseUnit extends BaseModel{
@@ -47,5 +48,14 @@ export class CourseUnit extends BaseModel{
 
     static countBySyllabus(context:APIContext, sylId:number):Observable<any> {
         return CourseUnit.count(context, "[('syllabus_id','=',"+sylId+"),('type','!=','folder')]");
+    }
+
+    static countBySyllabusArray(context:APIContext, sylIds: number[]):Observable<any> {
+        var apiList = _.map(sylIds, sylId=> {
+            return this.__api__countBySyllabus(sylId);
+        })
+        return BaseModel.bulk_count(context, ...apiList).map(jsonArr=> {
+            return  _.flatten(jsonArr);
+        });
     }
 }

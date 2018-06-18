@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import * as _ from 'underscore';
 
 @Model('etraining.syllabus')
 export class CourseSyllabus extends BaseModel{
@@ -36,6 +37,16 @@ export class CourseSyllabus extends BaseModel{
                 return syllabi[0];
             else
                 return null;
+        });
+    }
+
+    static byCourseArray(context:APIContext, courseIds: number[]):Observable<any> {
+        var apiList = _.map(courseIds, courseId=> {
+            return this.__api__byCourse(courseId);
+        })
+        return BaseModel.bulk_search(context, ...apiList).map(jsonArr=> {
+            jsonArr =  _.flatten(jsonArr);
+            return CourseSyllabus.toArray(jsonArr);
         });
     }
 }
