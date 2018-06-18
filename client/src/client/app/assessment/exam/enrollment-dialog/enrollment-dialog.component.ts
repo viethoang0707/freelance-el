@@ -60,7 +60,7 @@ export class ExamEnrollDialog extends BaseComponent {
                 var userIds = _.pluck(users, 'id');
                 this.exam.enroll(this,userIds).subscribe(()=> {
                     this.loadMembers();
-                });
+                })
             } else if (role=='supervisor') {
                 var members = _.map(users, (user:User)=> {
                     var member = new ExamMember();

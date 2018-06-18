@@ -78,6 +78,8 @@ export class MenuService {
                 { label: 'My course', icon: 'school', routerLink: ['/lms/courses'] },
                 { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exams'] },
                 { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/lms/meetings'] },
+                 { label: '', separator: true, styleClass: 'menu-separator' },
+                 { label: 'Course search', icon: 'search', routerLink: ['/lms/courses/search'] },
             ];
 
 

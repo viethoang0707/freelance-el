@@ -125,12 +125,12 @@ export class Course extends BaseModel{
         return Course.search(context,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
     }
 
-    static __api__enroll(courseId: number, userIds: number[]): ExecuteAPI {
+    __api__enroll(courseId: number, userIds: number[]): ExecuteAPI {
         return new ExecuteAPI(Course.Model, 'enroll',{courseId:courseId,userIds:userIds}, null);
     }
 
-    static enroll(context:APIContext,courseId:number, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll(courseId, userIds), 
+    enroll(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(this.id, userIds), 
             context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
     }
 

@@ -49,10 +49,8 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     }
 
     export() {
-        var output = [];
-        this.records.forEach(record => {
-            var course = { 'Name': record['user_name'], 'Login': record['user_login'], 'User group': record['user_group'], 'Attempt date': record['date_attempt'], 'Score': record['score'], 'Result': record['result'] };
-            output.push(course);
+        var output = _.map(this.records, record=> {
+            return{ 'Name': record['user_name'], 'Login': record['user_login'], 'User group': record['user_group'], 'Attempt date': record['date_attempt'], 'Score': record['score'], 'Result': record['result'] };
         });
         this.excelService.exportAsExcelFile(output, 'course_by_member_report');
     }

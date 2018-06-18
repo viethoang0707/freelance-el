@@ -16,7 +16,7 @@ export const DEFAULT_DATE_LOCALE = {
 
 export const EXAM_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const CLASS_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
-export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM' , SURVEY: 'SURVEY'};
+export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM' , SURVEY: 'SURVEY',COMPETENCY: 'COMPETENCY' };
 export const EXPORT_DATETIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
 export const EXPORT_DATE_FORMAT = "dd-MM-yyyy";
 export const EXAM_MEMBER_ROLE = { 'candidate': 'Candidate', 'supervisor': 'Supervisor' };
@@ -42,6 +42,7 @@ export const SCHEDULER_HEADER = {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         }
+export const COLOR_BAND = ["#FF6384", "#36A2EB", "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099"];
 export const PROJECT_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const SURVEY_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
 export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };

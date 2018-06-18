@@ -35,6 +35,8 @@ import { SurveyStatsDialog } from './survey/survey-stats/survey-stats.dialog.com
 import { ClassSurveyEnrollDialog } from './course/class-survey-enroll/class-survey-enroll.dialog.component';
 import { ClassSurveyListDialog } from './course/class-survey-list/class-survey-list.dialog.component';
 import { SurveyStudyDialog} from './survey/survey-study/survey-study.dialog.component';
+import { CourseSearchComponent } from './course/course-search/course-search.component';
+import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 
 import { WebcamModule } from 'ngx-webcam';
 
@@ -47,7 +49,8 @@ import { WebcamModule } from 'ngx-webcam';
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,ProjectSubmissionDialog,
     				GradebookDialog, ClassManageDialog, ClassExamEnrollDialog, CourseCertificateDialog,
     				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog,
-                    ClassSurveyEnrollDialog, SurveyStatsDialog, ClassSurveyListDialog, SurveyStudyDialog],
+                    ClassSurveyEnrollDialog, SurveyStatsDialog, ClassSurveyListDialog, SurveyStudyDialog,
+                    CourseSearchComponent, CourseRecommendComponent],
     exports: [CertificatePrintDialog, ExamStudyDialog, SurveyStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []
 })

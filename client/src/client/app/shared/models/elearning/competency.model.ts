@@ -31,7 +31,7 @@ export class Competency extends BaseModel{
     }
 
     static listByGroup(context:APIContext, groupId:number):Observable<any> {
-        return Competency.listByGroup(context, groupId);
+        return Competency.search(context, [],"[('group_id','=',"+groupId+")]");
     }
 
     static __api__listByGroups(groupIds: number[]): SearchReadAPI[] {

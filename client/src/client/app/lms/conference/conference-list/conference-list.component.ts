@@ -45,8 +45,8 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
             });
             ConferenceMember.populateConferenceForArray(this, conferenceMembers).subscribe(() => {
                 this.conferenceMembers =  conferenceMembers;
-                this.conferenceMembers.sort((member1, member2): any => {
-                    return member1.create_date < member2.create_date;
+                this.conferenceMembers.sort((member1:ConferenceMember, member2:ConferenceMember): any => {
+                    return member1.create_date.getTime() - member2.create_date.getTime();
                 });
             });
         });

@@ -10,14 +10,64 @@ import { APIContext } from '../models/context';
 import { QuestionOption } from '../models/elearning/option.model';
 import { Answer } from '../models/elearning/answer.model';
 import { SurveyAnswer } from '../models/elearning/survey-answer.model';
+import { Competency } from '../models/elearning/competency.model';
+import { Achivement } from '../models/elearning/achievement.model';
+import { CompetencyLevel } from '../models/elearning/competency-level.model';
 
 export class StatsUtils {
 
 	constructor() {
 	}
 
+	competencyStatistic(context: APIContext, competency: Competency, levels: CompetencyLevel[]): Observable<any> {
+		return Achivement.listByCompetency(context, competency.id).map(skills => {
+			var skillsByGroup = _.groupBy(skills, 'user_id');
+			var profile = {};
+			_.each(levels, (level: CompetencyLevel) => {
+				profile[level.id] = 0;
+			});
+			_.each(skillsByGroup, skillList => {
+				let skill: Achivement = _.max(skillList, (obj: Achivement) => {
+					return obj.date_acquire.getTime();
+				});
+				profile[skill.competency_level_id] += 1;
+			})
+			return profile;
+		});
+	}
+
+	competencyStatisticByDate(context: APIContext, competency: Competency, levels: CompetencyLevel[], startDate: Date, endDate: Date): Observable<any> {
+		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
+		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
+		return Achivement.searchByDateAndCompetency(context, competency.id, startDate, endDate).map(skills => {
+			var monthLengthMills = 1000 * 60 * 60 * 24 * 30;
+			var slots = [];
+			var starTimeMillis = startDate.getTime();
+			var endTimeMills = endDate.getTime();
+			for (var i = 0; starTimeMillis + i * monthLengthMills < endTimeMills; i++)
+				slots.push(0);
+			var skillsByGroup = _.groupBy(skills, 'user_id');
+			_.each(skillsByGroup, (skillList: Achivement[]) => {
+				let skill: Achivement = _.max(skillList, (obj: Achivement) => {
+					return obj.date_acquire.getTime();
+				});
+				var dateAcquire = new Date(skill.date_acquire);
+				var index = Math.floor((dateAcquire.getTime() - starTimeMillis) / monthLengthMills);
+				var profile = slots[index];
+				if (!profile) {
+					profile = {};
+					_.each(levels, (level: CompetencyLevel) => {
+						profile[level.id] = 0;
+					})
+				}
+				profile[skill.competency_level_id] +=1;
+				slots[index] = profile;
+			});
+			return slots;
+		});
+	}
+
 	courseStatisticByDate(context: APIContext, startDate: Date, endDate: Date): Observable<any> {
-		var cloud_acc = context.authService.CloudAcc;
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
 		return CourseLog.search(context, [], "[('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "'),('res_model','=','etraining.course')]").map(logs => {
@@ -43,7 +93,7 @@ export class StatsUtils {
 		var ratingAnswer = _.filter(answers, ans => {
 			return ans["question_type"] == 'rate';
 		});
-		var openAnswer = _.filter(answers, ans=> {
+		var openAnswer = _.filter(answers, ans => {
 			return ans["question_type"] == 'ext';
 		});
 		return {
@@ -137,7 +187,6 @@ export class StatsUtils {
 	}
 
 	userLoginStatisticByDate(context: APIContext, startDate: Date, endDate: Date): Observable<any> {
-		var cloud_acc = context.authService.CloudAcc;
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
 		return UserLog.search(context, [], "[('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "'),('res_model','=','res.users'),('code','=','LOGIN')]").map(logs => {

@@ -2,9 +2,6 @@
         <h1>{{'Competency list'|translate}}</h1>
         <div class="ui-g">
             <div class="ui-g-12">
-
-            </div>
-            <div class="ui-g-12">
                 <p-table  #skillTable [value]="courses" [paginator]="true" [rows]="10" [responsive]="true" selectionMode="single">
                     <ng-template pTemplate="header">
                         <tr>
@@ -33,9 +30,6 @@
                             <td style="text-align: left;">{{course.competency_name}}</td>
                             <td style="text-align: left;">{{course.competency_level_name}}</td>
                         </tr>
-                    </ng-template>
-                    <ng-template pTemplate="summary">
-                        {{'Total records'|translate}} : {{records?.length}}
                     </ng-template>
                 </p-table>
             </div>

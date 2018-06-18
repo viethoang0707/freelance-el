@@ -63,29 +63,55 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             this.courses = _.uniq(courses, (course) => {
                 return course.id;
             });
-            this.courses.sort((course1, course2): any => {
-                return (course1.create_date < course2.create_date);
+            this.courses.sort((course1:Course, course2:Course): any => {
+                return (course1.create_date.getTime() - course2.create_date.getTime());
             });
-            _.each(this.courses, (course: Course) => {
-                course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'student';
-                });
-                course["teacher"] = _.find(this.courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'teacher';
-                });
-                course["isAuthor"] = course.author_id == this.currentUser.id;
-
-                course["courseMemberData"] = {};
-                CourseMember.listByCourse(this, course.id).subscribe(members => {
-                    course["courseMemberData"] = this.reportUtils.analyseCourseMember(course, members);
-                });
-                if (course.syllabus_id)
-                    CourseUnit.countBySyllabus(this, course.syllabus_id).subscribe(count => {
-                        course["unit_count"] = count;
+            var apiList = _.map(this.courses, (course: Course) => {
+                return CourseSyllabus.__api__byCourse(course.id);
+            });
+            BaseModel.bulk_search(this, ...apiList)
+                .map(jsonArr => {
+                    return _.flatten(jsonArr);
+                })
+                .subscribe(jsonArr => {
+                    var syllabi = CourseSyllabus.toArray(jsonArr);
+                    _.each(this.courses, (course: Course) => {
+                        course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
+                            return member.course_id == course.id && member.role == 'student';
+                        });
+                        course["teacher"] = _.find(this.courseMembers, (member: CourseMember) => {
+                            return member.course_id == course.id && member.role == 'teacher';
+                        });
+                        course["isAuthor"] = course.author_id == this.currentUser.id;
+                        course["courseMemberData"] = {};
+                        course["syllabus"] = _.find(syllabi, (syl: CourseSyllabus) => {
+                            return syl.course_id == course.id;
+                        });
                     });
-                else
-                    course["unit_count"] = 0;
-            });
+                    var searchApiList = [];
+                    for (var i = 0; i < this.courses.length; i++) {
+                        searchApiList.push(CourseMember.__api__listByCourse(this.courses[i].id))
+                    }
+                    BaseModel.bulk_search(this, ...searchApiList).subscribe(jsonArr => {
+                        for (var i = 0; i < this.courses.length; i++) {
+                            var members = CourseMember.toArray(jsonArr[i]);
+                            this.courses[i]["courseMemberData"] = this.reportUtils.analyseCourseMember(this.courses[i], members);
+                        };
+                    });
+                    var countApiList = [];
+                    for (var i = 0; i < this.courses.length; i++) {
+                        countApiList.push(CourseUnit.__api__countBySyllabus(this.courses[i]["syllabus"].id))
+                    }
+                    BaseModel.bulk_count(this, ...countApiList)
+                        .map(countArr => {
+                            return _.flatten(countArr);
+                        })
+                        .subscribe(counts => {
+                            for (var i = 0; i < this.courses.length; i++) {
+                                this.courses[i]["unit_count"] = counts[i];
+                            };
+                        });
+                })
         });
     }
 

@@ -63,7 +63,7 @@
                 (click)="selectAuthor()"></button>
             </div>
             <div>
-              <button type="button" pButton icon="ui-icon-change-history" label="{{object.competency_level_id?translateService.instant('Competency level') +':'+ object.competency_name+'-'+ object.competency_level_name:translateService.instant('Select competency level')}}"
+              <button type="button" pButton icon="ui-icon-change-history" label="{{object.competency_level_id? object.competency_name+'-'+ object.competency_level_name:translateService.instant('Select competency level')}}"
                 (click)="selectCompetencyLevel()"></button>
             </div>
           </div>

@@ -73,8 +73,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             this.courses = _.uniq(courses, (course) => {
                 return course.id;
             });
-            this.courses.sort((course1, course2): any => {
-                return (course1.create_date < course2.create_date);
+            this.courses.sort((course1:Course, course2:Course): any => {
+                return (course1.create_date.getTime() - course2.create_date.getTime());
             });
             _.each(this.courses, (course: Course) => {
                 course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
@@ -112,8 +112,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
                         return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
                     });
-                    this.examMembers.sort((member1, member2): any => {
-                        return (member1.exam.create_date < member1.exam.create_date)
+                    this.examMembers.sort((member1:ExamMember, member2:ExamMember): any => {
+                        return (member1.exam.create_date.getTime() - member1.exam.create_date.getTime())
                     });
                     var countApi = _.map(this.examMembers, (member: ExamMember) => {
                         return ExamQuestion.__api__countByExam(member.exam_id);
@@ -136,8 +136,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.conferenceMembers = _.filter(this.conferenceMembers, (member: ConferenceMember) => {
             return member.conference_id && member.conference_status == 'open';
         });
-        this.conferenceMembers.sort((member1, member2): any => {
-            return member1.create_date < member2.create_date;
+        this.conferenceMembers.sort((member1:ConferenceMember, member2:ConferenceMember): any => {
+            return member1.create_date.getTime() - member2.create_date.getTime();
         });
         ConferenceMember.populateConferenceForArray(this, this.conferenceMembers).subscribe(() => {
             

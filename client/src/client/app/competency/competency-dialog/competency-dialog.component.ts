@@ -27,6 +27,7 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private changeDetectionRef: ChangeDetectorRef) {
 		super();
 		this.treeUtils = new TreeUtils();
+        this.levels = [];
 	}
 
 	nodeSelect(event: any) {
@@ -38,15 +39,17 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-            BaseModel.bulk_search(this,Group.__api__listCompetencyGroup(), CompetencyLevel.__api__listByCompetency(this.object.id))
-            .subscribe(jsonArr => {
-                var groups = Group.toArray(jsonArr[0]);
+            this.levels = [];
+            Group.listCompetencyGroup(this).subscribe(groups=> {
                 this.tree = this.treeUtils.buildGroupTree(groups);
                 if (object.group_id) {
                     this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
                 }
-                this.levels = CompetencyLevel.toArray(jsonArr[1]);
             });
+            if (this.object.id)
+                CompetencyLevel.listByCompetency(this, this.object.id).subscribe(levels=> {
+                    this.levels = levels;
+                });
 		});
 	}
 

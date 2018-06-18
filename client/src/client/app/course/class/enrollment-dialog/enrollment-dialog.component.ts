@@ -78,7 +78,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.usersDialog.onSelectUsers.subscribe(users => {
 			var userIds = _.pluck(users, 'id');
 			if (this.course.mode =='group')
-				CourseClass.enroll(this, this.courseClass.id, userIds).subscribe((result) => {
+				this.courseClass.enroll(this, userIds).subscribe((result) => {
 					this.loadMembers();
 					var failList = result['failList'];
 					_.each(failList, userId => {
@@ -89,7 +89,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 					});
 				});
 			if (this.course.mode =='self-study')
-				Course.enroll(this, this.course.id, userIds).subscribe((result) => {
+				this.course.enroll(this, userIds).subscribe((result) => {
 					this.loadMembers();
 					var failList = result['failList'];
 					_.each(failList, userId => {

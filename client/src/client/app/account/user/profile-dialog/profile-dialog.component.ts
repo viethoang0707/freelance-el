@@ -14,6 +14,7 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, COURSE_MEMBER_ROLE, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants';
 import { CertificatePrintDialog } from '../../../lms/course/certificate-print/certificate-print.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
+import { Achivement } from '../../../shared/models/elearning/achievement.model';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 	private selectedNode: TreeNode;
 	private members: CourseMember[];
 	private certificates: Certificate[];
+	private skills: Achivement[];
 	private treeUtils: TreeUtils;
 	private groups: Group[];
 	private currentUser: User;
@@ -56,13 +58,16 @@ export class UserProfileDialog extends BaseDialog<User> {
 			.bulk_search(this,
 				Group.__api__listUserGroup(),
 				CourseMember.__api__listByUser(object.id),
-				Certificate.__api__listByUser(object.id))
+				Certificate.__api__listByUser(object.id),
+				Achivement.__api__listByUser(object.id))
 			.subscribe((jsonArr)=> {
 				this.groups = Group.toArray(jsonArr[0]);
 				this.members =  CourseMember.toArray(jsonArr[1]);
 				this.certificates =  Certificate.toArray(jsonArr[2]);
+				this.skills =  Achivement.toArray(jsonArr[3]);
 				this.displayGroupTree();
 				this.displayCourseHistory();
+				this.displaySkills();
 			});
 		});
 	}
@@ -82,6 +87,12 @@ export class UserProfileDialog extends BaseDialog<User> {
 			member["certificate"] = _.find(this.certificates, (cert:Certificate) => {
 				return cert.member_id == member.id;
 			});
+		});
+	}
+
+	displaySkills() {
+		this.skills.sort((s1:Achivement,s2:Achivement)=> {
+			return s1.date_acquire.getTime() - s2.date_acquire.getTime();
 		});
 	}
 

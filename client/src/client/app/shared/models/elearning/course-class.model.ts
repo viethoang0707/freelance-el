@@ -54,12 +54,12 @@ export class CourseClass extends BaseModel{
         return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
     }
 
-    static __api__enroll(classId: number, userIds: number[]): ExecuteAPI {
+    __api__enroll(classId: number, userIds: number[]): ExecuteAPI {
         return new ExecuteAPI(CourseClass.Model, 'enroll',{classId:classId,userIds:userIds}, null);
     }
 
-    static enroll(context:APIContext,classId:number, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll(classId, userIds), 
+    enroll(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(this.id, userIds), 
             context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
     }
 

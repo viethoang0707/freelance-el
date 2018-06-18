@@ -9,7 +9,8 @@ import { CourseStudyComponent } from './course/course-study/course-study.compone
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { StudentGuard } from '../shared/guards/student.guard';
 import { TeacherGuard } from '../shared/guards/teacher.guard';
-import { SupervisorGuard } from '../shared/guards/supervisor.guard';
+import { ExamSupervisorGuard } from '../shared/guards/supervisor.guard';
+import { CourseSearchComponent } from './course/course-search/course-search.component';
 
 export const LMSRoutes: Routes = [
     {
@@ -33,13 +34,20 @@ export const LMSRoutes: Routes = [
                data: {
                  breadcrumb:'Manage exam'
                },
-               canActivate:[SupervisorGuard]
+               canActivate:[ExamSupervisorGuard]
             },
             {
                path: "courses",
                component: CourseListComponent,
                data: {
                  breadcrumb:'My courses'
+               }
+            },
+            {
+               path: "courses/search",
+               component: CourseSearchComponent,
+               data: {
+                 breadcrumb:'Search courses'
                }
             },
             {
