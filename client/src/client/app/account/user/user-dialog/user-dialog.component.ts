@@ -1,5 +1,5 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { Observable}     from 'rxjs/Observable';
+import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -12,22 +12,26 @@ import { GROUP_CATEGORY } from '../../../shared/models/constants';
 
 
 @Component({
-    moduleId: module.id,
-    selector: 'user-dialog',
-    templateUrl: 'user-dialog.component.html',
+	moduleId: module.id,
+	selector: 'user-dialog',
+	templateUrl: 'user-dialog.component.html',
 })
 export class UserDialog extends BaseDialog<User> {
 
-    private tree: TreeNode[];
-    private selectedNode: any;
-    private treeUtils: TreeUtils;
+	private tree: TreeNode[];
+	private selectedNode: any;
+	private treeUtils: TreeUtils;
+	startDate: Date;
+	endDate: Date;
 
 	constructor() {
 		super();
 		this.treeUtils = new TreeUtils();
+		this.startDate = new Date('1900-01-01');
+		this.endDate = new Date('2018-01-01');
 	}
 
-	nodeSelect(event:any) {
+	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.object.group_id = this.selectedNode.data.id;
 			this.object.group_id__DESC__ = this.selectedNode.data.group_id__DESC__;

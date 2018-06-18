@@ -1,5 +1,5 @@
 <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-  <p-dialog header="{{'User account'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
+  <p-dialog header="{{'User account'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true">
     <div class="ui-g ui-fluid form-group">
       <div class="ui-g-12">
         <label>{{'Parent group'|translate}}</label>
@@ -10,64 +10,97 @@
       </div>
       <div class="ui-g-12 ">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
-            <label>{{'Name'|translate}}</label>
-            <div *ngIf="name.invalid && (name.dirty || name.touched)"
-              class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="name.errors.required">
-                    {{'Name is required' | translate}}
-                </div>
+          <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
+          <label>{{'Name'|translate}}</label>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="name.errors.required">
+              {{'Name is required' | translate}}
             </div>
+          </div>
         </span>
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.login" #login="ngModel" name="login" required>
-            <label>{{'Login'|translate}}</label>
-            <div *ngIf="login.invalid && (login.dirty || login.touched)"
-              class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="login.errors.required">
-                    {{'Login is required' | translate}}
-                </div>
+          <input type="text" pInputText [(ngModel)]="object.login" #login="ngModel" name="login" required>
+          <label>{{'Login'|translate}}</label>
+          <div *ngIf="login.invalid && (login.dirty || login.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="login.errors.required">
+              {{'Login is required' | translate}}
             </div>
+          </div>
         </span>
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-              <input type="password" pPassword [(ngModel)]="object.password" #password="ngModel" name="password" required>
-              <label>{{'Password'|translate}}</label>
-              <div *ngIf="password.invalid && (password.dirty || password.touched)"
-              class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="password.errors.required">
-                    {{'Password is required' | translate}}
-                </div>
-              </div>
-          </span>
-      </div>
-      <div class="ui-g-6">
-        <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.email" #email="ngModel" name="email" required>
-            <label>{{'Email'|translate}}</label>
-            <div *ngIf="email.invalid && (email.dirty || email.touched)"
-              class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="email.errors.required">
-                    {{'Email is required' | translate}}
-                </div>
+          <input type="password" pPassword [(ngModel)]="object.password" #password="ngModel" name="password" required>
+          <label>{{'Password'|translate}}</label>
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="password.errors.required">
+              {{'Password is required' | translate}}
             </div>
+          </div>
         </span>
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.phone" #phone="ngModel" name="phone" required>
-            <label>{{'Phone'|translate}}</label>
-             <div *ngIf="phone.invalid && (phone.dirty || phone.touched)"
-              class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="phone.errors.required">
-                    {{'Phone is required' | translate}}
-                </div>
+          <input type="text" pInputText [(ngModel)]="object.email" #email="ngModel" name="email" required>
+          <label>{{'Email'|translate}}</label>
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="email.errors.required">
+              {{'Email is required' | translate}}
             </div>
+          </div>
         </span>
       </div>
+      <div class="ui-g-6">
+        <span class="md-inputfield">
+          <input type="text" pInputText [(ngModel)]="object.phone" #phone="ngModel" name="phone" required>
+          <label>{{'Phone'|translate}}</label>
+          <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="phone.errors.required">
+              {{'Phone is required' | translate}}
+            </div>
+          </div>
+        </span>
+      </div>
+
+      <div class="ui-g-6">
+        <span class="md-inputfield">
+          <input type="text" pInputText [(ngModel)]="object.department" #department="ngModel" name="department" required>
+          <label>{{'Department'|translate}}</label>
+          <div *ngIf="department.invalid && (department.dirty || department.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="department.errors.required">
+              {{'Department is required' | translate}}
+            </div>
+          </div>
+        </span>
+      </div>
+
+      <div class="ui-g-6">
+        <div class="ui-g-4">
+          <label>{{'Gender'|translate}}</label>
+        </div>
+        <div class="ui-g-4">
+          <p-radioButton name="group1" value="Option 1" label="Male" [(ngModel)]="val1" inputId="opt1"></p-radioButton>
+        </div>
+        <div class="ui-g-4">
+          <p-radioButton name="group1" value="Option 2" label="female" [(ngModel)]="val1" inputId="opt2"></p-radioButton>
+        </div>
+      </div>
+
+      <div class="ui-g-6">
+        <span class="md-inputfield">
+          <p-calendar [(ngModel)]="object.dob" #dob="ngModel" name="dob" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+            yearRange="1918:2001" required="true" dateFormat="dd/mm/yy"></p-calendar>
+          <label>{{'Birthday'|translate}}</label>
+          <div *ngIf="dob.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+            <div *ngIf="dob.errors.required">
+              {{'Birthday is required' | translate}}
+            </div>
+          </div>
+        </span>
+      </div>
+
       <div class="ui-g-12">
         <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
       </div>
