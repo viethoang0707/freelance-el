@@ -1,61 +1,61 @@
 <div class="card card-w-title">
-        <h1>{{'Question bank'|translate}}</h1>
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <label>{{'Question group'|translate}}</label>
-                <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterQuestion()" (onNodeUnselect)="filterQuestion()" styleClass="width-tree"></p-tree>
-            </div>
-            <div class="ui-g-12">
-                <p-toolbar>
-                    <div class="ui-toolbar-group-left">
-                        <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
-                        <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editQuestion()" *ngIf="selectedQuestions && selectMode=='single'"></button>
-                        <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="selectMode='multiple';selectedQuestions=[]" *ngIf="selectMode=='single'"></button>
-                        <button pButton type="button"  class="red-btn" icon="ui-icon-check" (click)="deleteMultipleQuestions()" *ngIf="selectMode=='multiple'"></button>
-                        <button pButton type="button"  class="red-btn" icon="ui-icon-block" (click)="selectMode='single';selectedQuestion=null" *ngIf="selectMode=='multiple'"></button>
-                    </div>
-                    <div class="ui-toolbar-group-right">
-                        <button pButton type="button" label="{{'Import'|translate}}" class="purple-btn" icon="ui-icon-file-upload" (click)="importQuestion()"></button>
-                    </div>
-                </p-toolbar>
-                <p-table  #questionTable [value]="displayQuestions" [paginator]="true" [rows]="10"  [(selection)]="selectedQuestions" [responsive]="true" selectionMode="{{selectMode}}">
-                    <ng-template pTemplate="header">
-                        <tr>
-                            <th style="width: 2.25em" *ngIf="selectMode=='multiple'">
-                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                            </th>
-                            <th [pSortableColumn]="'title'">
-                                {{'Title'|translate}}
-                                <p-sortIcon [field]="'title'"></p-sortIcon>
-                            </th>
-                            <th width="40%">{{'Content'|translate}}</th>
-                            <th width="15%" [pSortableColumn]="'level'">
-                                {{'Level'|translate}}
-                                <p-sortIcon [field]="'level'"></p-sortIcon>
-                            </th>
-                            <th width="20%" [pSortableColumn]="'type'">
-                                {{'Type'|translate}}
-                                <p-sortIcon [field]="'type'"></p-sortIcon>
-                            </th>    
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-question let-i="rowIndex">
-                        <tr [pSelectableRow]="question">
-                            <td *ngIf="selectMode=='multiple'">
-                                <p-tableCheckbox [value]="question"></p-tableCheckbox>
-                            </td>
-                            <td style="text-align: left;">{{question.title}}</td>
-                            <td class="q-content" [innerHTML]="question.content">{{question.content}}</td>
-                            <td class="showformb">{{QUESTION_LEVEL[question.level] | translate}}</td>
-                            <td class="showformb">{{QUESTION_TYPE[question.type] | translate}}</td>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="summary">
-                        {{'Total records'|translate}} : {{displayQuestions?.length}}
-                    </ng-template>
-                </p-table>
-                <question-dialog></question-dialog>
-                <question-import-dialog></question-import-dialog>
-            </div>
+    <h1>{{'Question bank'|translate}}</h1>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <label>{{'Question group'|translate}}</label>
+            <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterQuestion()" (onNodeUnselect)="filterQuestion()" styleClass="width-tree"></p-tree>
+        </div>
+        <div class="ui-g-12">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                    <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success button-add-ques"></p-splitButton>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editQuestion()" *ngIf="selectedQuestions && selectMode=='single'"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="selectMode='multiple';selectedQuestions=[]" *ngIf="selectMode=='single'"></button>
+                    <button pButton type="button"  class="red-btn" icon="ui-icon-check" (click)="deleteMultipleQuestions()" *ngIf="selectMode=='multiple'"></button>
+                    <button pButton type="button"  class="red-btn" icon="ui-icon-block" (click)="selectMode='single';selectedQuestion=null" *ngIf="selectMode=='multiple'"></button>
+                </div>
+                <div class="ui-toolbar-group-right">
+                    <button pButton type="button" label="{{'Import'|translate}}" class="purple-btn" icon="ui-icon-file-upload" (click)="importQuestion()"></button>
+                </div>
+            </p-toolbar>
+            <p-table  #questionTable [value]="displayQuestions" [paginator]="true" [rows]="10"  [(selection)]="selectedQuestions" [responsive]="true" selectionMode="{{selectMode}}">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 2.25em" *ngIf="selectMode=='multiple'">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th [pSortableColumn]="'title'">
+                            {{'Title'|translate}}
+                            <p-sortIcon [field]="'title'"></p-sortIcon>
+                        </th>
+                        <th width="40%">{{'Content'|translate}}</th>
+                        <th width="15%" [pSortableColumn]="'level'">
+                            {{'Level'|translate}}
+                            <p-sortIcon [field]="'level'"></p-sortIcon>
+                        </th>
+                        <th width="20%" [pSortableColumn]="'type'">
+                            {{'Type'|translate}}
+                            <p-sortIcon [field]="'type'"></p-sortIcon>
+                        </th>    
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-question let-i="rowIndex">
+                    <tr [pSelectableRow]="question">
+                        <td *ngIf="selectMode=='multiple'">
+                            <p-tableCheckbox [value]="question"></p-tableCheckbox>
+                        </td>
+                        <td style="text-align: left;">{{question.title}}</td>
+                        <td class="q-content" [innerHTML]="question.content">{{question.content}}</td>
+                        <td class="showformb">{{QUESTION_LEVEL[question.level] | translate}}</td>
+                        <td class="showformb">{{QUESTION_TYPE[question.type] | translate}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    {{'Total records'|translate}} : {{displayQuestions?.length}}
+                </ng-template>
+            </p-table>
+            <question-dialog></question-dialog>
+            <question-import-dialog></question-import-dialog>
         </div>
     </div>
+</div>
