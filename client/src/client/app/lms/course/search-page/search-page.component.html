@@ -1,0 +1,54 @@
+<div class="card card-w-title">
+    <h1>{{'Search Courses'|translate}}</h1>
+    <div class="search">
+        <div class="ui-inputgroup">
+            <input type="text" pInputText placeholder="Keyword">
+            <button pButton type="button" icon="ui-icon-search"></button>         
+        </div>
+    </div>
+    <div class="ui-g mt20" style="height: 350px;">
+        <div class="col-lg-3 filter">
+            <h4 class="title-filter">Status: </h4>
+            <div class="ui-g checkbox-filter">
+                <div class="ui-g-6"><p-checkbox name="group1" value="" label="Đóng" inputId="c"></p-checkbox></div>
+                <div class="ui-g-6"><p-checkbox name="group1" value="" label="Mở" inputId="o"></p-checkbox></div>
+            </div>
+            <h4 class="title-filter">Mode: </h4>
+            <div class="ui-g checkbox-filter">
+                <div class="ui-g-6"><p-checkbox name="group1" value="" label="Tự học" inputId="c"></p-checkbox></div>
+                <div class="ui-g-6"><p-checkbox name="group1" value="" label="Học nhóm" inputId="o"></p-checkbox></div>
+            </div>
+        </div>
+        <div class="col-lg-9 ml20" style="width: 75%;">
+            <div class="mb10 course-search-item">
+                <h4 class="heading-course"><span>Khóa học lập trình web PHP từ cơ bản đến nâng cao</span></h4>
+                <button pButton type="button" icon="ui-icon-edit" class="mr4 purple-btn edit-btn"></button>
+                <button pButton type="button" icon="ui-icon-supervisor-account" class="mr4 orange-btn manager-btn"></button>
+                <div class="clearfix"></div>
+                <p-accordion styleClass="cont">
+                    <p-accordionTab header="{{'Summary' | translate}}">
+                        abc
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+            <div class="mb10 course-search-item">
+                <h4 class="heading-course"><span>Khóa học lập trình web AngularJS</span></h4>
+                <div class="clearfix"></div>
+                <p-accordion styleClass="cont">
+                    <p-accordionTab header="{{'Summary' | translate}}">
+                        abc
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+            <div class="mb10 course-search-item">
+                <h4 class="heading-course"><span>Khóa học lập trình web Java từ cơ bản đến nâng cao</span></h4>
+                <div class="clearfix"></div>
+                <p-accordion styleClass="cont">
+                    <p-accordionTab header="{{'Summary' | translate}}">
+                        abc
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+        </div>
+    </div>
+</div>
