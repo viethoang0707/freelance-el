@@ -4,10 +4,11 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { AuthService } from '../services/auth.service';
 import { APIService } from '../services/api.service';
 import { APIContext } from '../models/context';
-import { ExamMember } from '../models/elearning/exam-member.model';
+import { SurveyMember } from '../models/elearning/survey-member.model';
+import { Survey } from '../models/elearning/survey.model';
 
 @Injectable()
-export class SupervisorGuard implements CanActivate, APIContext {
+export class SurveySupervisorGuard implements CanActivate, APIContext {
 
 	apiService: APIService;
 	authService: AuthService;
@@ -18,12 +19,12 @@ export class SupervisorGuard implements CanActivate, APIContext {
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		var examId = route.params.examId;
-		if (!examId)
+		var surveyId = route.params.surveyId;
+		if (!surveyId)
 			return Observable.of(false);
-		return ExamMember.byExamAndUser(this, this.authService.UserProfile.id, examId)
-		.map((member:ExamMember) => {
-            if (member && member.role=='supervisor') {
+		return Survey.get(this, surveyId)
+		.map((s:Survey) => {
+            if (s && s.supervisor_id==this.authService.UserProfile.id) {
                 return true;
             } else
             	return false;

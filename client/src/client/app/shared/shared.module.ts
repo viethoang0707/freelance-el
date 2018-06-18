@@ -10,7 +10,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { TeacherGuard } from './guards/teacher.guard';
 import { StudentGuard } from './guards/student.guard';
-import { SupervisorGuard } from './guards/supervisor.guard';
+import { ExamSupervisorGuard } from './guards/exam-supervisor.guard';
+import { SurveySupervisorGuard } from './guards/survey-supervisor.guard';
 import { APIService } from './services/api.service';
 import { CloudAPIService } from './services/cloud-api.service';
 import { AuthService } from './services/auth.service';
@@ -19,8 +20,8 @@ import { WebSocketService } from './services/socket.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
-import { LoadingService } from './services/loading.service';
 import { MeetingService } from './services/meeting.service';
+import { LoadingService } from './services/loading.service';
 import { WindowRef } from './helpers/windonw.ref';
 import { TreeUtils } from './helpers/tree.utils';
 import { SyllabusUtils } from './helpers/syllabus.utils';
@@ -345,15 +346,16 @@ export class ErpSharedModule {
                 AdminGuard,
                 TeacherGuard,
                 StudentGuard,
-                SupervisorGuard,
+                ExamSupervisorGuard,
+                SurveySupervisorGuard,
                 CloudAPIService,
+                LoadingService,
                 APIService,
                 AuthService,
                 MessageService,
                 MeetingService,
                 WindowRef,
                 ExcelService,
-                LoadingService,
                 WorkflowService,
                 MenuService,
                 SettingService,
