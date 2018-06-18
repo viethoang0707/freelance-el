@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -34,6 +34,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     private submits: Submission[];
     private reportUtils: ReportUtils;
     private currentUser: User;
+    
 
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -57,17 +58,17 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     displayExams(members: ExamMember[], submits: Submission[]) {
-        this.examMembers = _.filter(members, (member: ExamMember) => {
+        members = _.filter(members, (member: ExamMember) => {
             return (member.exam_id && member.status == 'active');
         });
-        this.examMembers.sort((member1, member2): any => {
+        members.sort((member1, member2): any => {
             return (member1.exam.create_date < member1.exam.create_date)
         });
-        ExamMember.populateExamForArray(this, this.examMembers).subscribe(() => {
-            this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
+        ExamMember.populateExamForArray(this, members).subscribe(() => {
+            members = _.filter(members, (member: ExamMember) => {
                 return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
             });
-            _.each(this.examMembers, (member: ExamMember) => {
+            _.each(members, (member: ExamMember) => {
                 member["submit"] = _.find(submits, (submit: Submission) => {
                     return submit.member_id == member.id && submit.exam_id == member.exam_id;
                 });
@@ -77,7 +78,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                     member["score"] = '';
                 member["examMemberData"] = {};
             });
-
+            this.examMembers =  members;
             var countApi = _.map(this.examMembers, (member: ExamMember) => {
                 return ExamQuestion.__api__countByExam(member.exam_id);
             });
@@ -100,10 +101,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                         this.examMembers[i]["examMemberData"] = this.reportUtils.analyseExamMember(this.examMembers[i].exam, members);
                     }
                 });
-
         });
-        
-        
     }
 
     manageExam(exam: Exam, member: ExamMember) {

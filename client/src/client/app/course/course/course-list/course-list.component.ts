@@ -87,6 +87,16 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
+    deleteCourse() {
+        if (this.selectedCourse)
+            this.confirm('Are you sure to delete ?', () => {
+                this.selectedCourse.delete(this).subscribe(() => {
+                    this.loadCourses();
+                    this.selectedCourse = null;
+                })
+            });
+    }
+
     enrollCourse() {
         if (this.selectedCourse) {
             if (this.selectedCourse.status!='published') {

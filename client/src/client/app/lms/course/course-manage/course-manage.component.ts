@@ -136,6 +136,9 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	manageExam() {
 		if (this.selectedClass) {
 			this.examListDialog.show(this.selectedClass);
+			this.examListDialog.onManage.subscribe(data=> {
+				this.router.navigate(['/lms/exams/manage',data[0], data[1]]);
+			})
 		}
 	}
 

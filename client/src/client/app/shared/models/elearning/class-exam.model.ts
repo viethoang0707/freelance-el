@@ -33,6 +33,10 @@ export class ClassExam extends BaseModel{
     course_id: number;
     exam_id: number;
 
+    get IsValid() {
+        return !isNaN(parseFloat(this.class_id+''))  && !isNaN(parseFloat(this.exam_id+''));
+    }
+
 
     @FieldProperty<Date>()
     start: Date;

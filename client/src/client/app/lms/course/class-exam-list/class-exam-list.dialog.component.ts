@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { APIService } from '../../../shared/services/api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -28,6 +28,8 @@ export class ClassExamListDialog extends BaseComponent {
 	private courseClass: CourseClass;
 	private classExams: ClassExam[];
 	private selectedClassExam: ClassExam;
+	private onManageReceiver: Subject<any> = new Subject();
+    onManage: Observable<any> = this.onManageReceiver.asObservable();
 
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
@@ -42,13 +44,17 @@ export class ClassExamListDialog extends BaseComponent {
 
 	show(courseClass: CourseClass) {
 		this.display = true;
+		this.classExams = [];
 		this.courseClass = courseClass;
+		this.selectedClassExam =  null;
 		this.loadExams();
 	}
 
 	loadExams() {
 		ClassExam.listByClass(this, this.courseClass.id).subscribe(classExams => {
-			this.classExams = classExams;
+			this.classExams = _.filter(classExams, (exam: ClassExam)=> {
+				return exam.IsValid;
+			});
 		});
 	}
 
@@ -97,7 +103,8 @@ export class ClassExamListDialog extends BaseComponent {
 	manageExam() {
 		if (this.selectedClassExam)  {
 			ExamMember.byExamAndUser(this, this.authService.UserProfile.id ,this.selectedClassExam.exam_id).subscribe(member=> {
-				this.router.navigate(['/lms/exams/manage',this.selectedClassExam.exam_id, member.id]);
+				this.onManageReceiver.next([this.selectedClassExam.id, member.id]);
+				this.hide();
 			});
 		}
 	}
