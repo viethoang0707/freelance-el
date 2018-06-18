@@ -22,6 +22,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 	moduleId: module.id,
 	selector: 'class-manage-dialog',
 	templateUrl: 'class-manage.component.html',
+	styleUrls: ['class-manage.component.css'],
 })
 export class ClassManageDialog extends BaseComponent {
 
