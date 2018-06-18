@@ -1,0 +1,83 @@
+<div class="card card-w-title">
+  <h1>{{'My surveys'|translate}}</h1>
+  <p-dataList [value]="surveyMembers" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
+    <ng-template let-member pTemplate="item">
+      <p-card styleClass="lms-exam-list-item">
+        <div class="ui-g">
+          <div class="ui-g-8">
+            <div class="mt5">
+              <h4 class="title">{{member.survey.name}}</h4>
+              <span class="e-status">
+                {{member.survey.status}}
+              </span>
+            </div>
+            <div class="clearfix"></div>
+            <p-accordion styleClass="cont">
+              <p-accordionTab header="{{'Summary' | translate}}">
+                {{member.survey.summary}}
+              </p-accordionTab>
+              <p-accordionTab header="{{'Instruction' | translate}}">
+                <p [innerHTML]="member.survey.instruction"></p>
+              </p-accordionTab>
+            </p-accordion>
+            
+            <div class="status-bars" *ngIf="member.survey.supervisor_id==currentUser.id" >
+            <!-- <div class="card"> -->
+              <ul>
+                <li>
+                  <div class="status-bar status-bar-2">
+                    <div class="status-bar-value" style="width:{{member.surveyMemberData.percentage_member_registered}}%">{{member.surveyMemberData.percentage_member_registered}}%</div>
+                  </div>
+                  <span>{{'Registered'|translate}}</span>
+                  <i class="material-icons">&#xE86C;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-3">
+                    <div class="status-bar-value" style="width:{{member.surveyMemberData.percentage_member_inprogress}}%">{{member.surveyMemberData.percentage_member_inprogress}}%</div>
+                  </div>
+                  <span>{{'In-progress'|translate}}</span>
+                  <i class="material-icons">&#xE868;</i>
+                </li>
+                <li>
+                  <div class="status-bar status-bar-4">
+                    <div class="status-bar-value" style="width:{{member.surveyMemberData.percentage_member_completed}}%">{{member.surveyMemberData.percentage_member_completed}}</div>
+                  </div>
+                  <span>{{'Completed'|translate}}</span>
+                  <i class="material-icons">&#xE8B2;</i>
+                </li>
+              </ul>
+            </div>
+          <!-- </div> -->
+          </div>
+          <div class="ui-g-4">
+            <p-card styleClass="lms-exam-detail">
+              <ul class="list-cmt">
+                <li class="clearfix">
+                  <i class="material-icons">date_range</i>
+                  <span class="cmt-title">{{'Start date'|translate}}</span>
+                  <span class="cmt-detail">{{member.survey.start | date : "dd/MM/yyyy"}}</span>
+                </li>
+                <li class="clearfix">
+                  <i class="material-icons">date_range</i>
+                  <span class="cmt-title">{{'End date'|translate}}</span>
+                  <span class="cmt-detail">{{member.survey.end | date : "dd/MM/yyyy"}}</span>
+                </li>
+                <li class="clearfix">
+                  <i class="material-icons">done</i>
+                  <span class="cmt-title">{{'Number of question'|translate}}</span>
+                  <span class="cmt-detail">{{member.question_count}}</span>
+                </li>
+              </ul>
+              <p-footer>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(member.survey, member)"  [disabled]="!member.survey.IsAvailable || member.enroll_status=='completed'"></button>
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(member.survey)" *ngIf="member.survey.supervisor_id==currentUser.id"></button>
+              </p-footer>
+            </p-card>
+          </div>
+        </div>
+      </p-card>
+    </ng-template>
+  </p-dataList>
+  <survey-content-dialog></survey-content-dialog>
+  <survey-study-dialog></survey-study-dialog>
+</div>

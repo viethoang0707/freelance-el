@@ -9,8 +9,14 @@ import { CourseStudyComponent } from './course/course-study/course-study.compone
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { StudentGuard } from '../shared/guards/student.guard';
 import { TeacherGuard } from '../shared/guards/teacher.guard';
+<<<<<<< HEAD
 import { ExamSupervisorGuard } from '../shared/guards/supervisor.guard';
 import { CourseSearchComponent } from './course/course-search/course-search.component';
+=======
+import { ExamSupervisorGuard } from '../shared/guards/exam-supervisor.guard';
+import { SurveySupervisorGuard } from '../shared/guards/survey-supervisor.guard';
+import { SurveyListComponent} from './survey/survey-list/survey-list.component';
+>>>>>>> Add survey edit content
 
 export const LMSRoutes: Routes = [
     {
@@ -73,6 +79,13 @@ export const LMSRoutes: Routes = [
                  breadcrumb:'My conferences'
                }
             },
+            {
+               path: "surveys",
+               component: SurveyListComponent,
+               data: {
+                 breadcrumb:'My surveys'
+               }
+            }
        ]
     }
 
