@@ -9,14 +9,11 @@ import { CourseStudyComponent } from './course/course-study/course-study.compone
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { StudentGuard } from '../shared/guards/student.guard';
 import { TeacherGuard } from '../shared/guards/teacher.guard';
-<<<<<<< HEAD
-import { ExamSupervisorGuard } from '../shared/guards/supervisor.guard';
-import { CourseSearchComponent } from './course/course-search/course-search.component';
-=======
 import { ExamSupervisorGuard } from '../shared/guards/exam-supervisor.guard';
+import { CourseSearchComponent } from './course/course-search/course-search.component';
 import { SurveySupervisorGuard } from '../shared/guards/survey-supervisor.guard';
 import { SurveyListComponent} from './survey/survey-list/survey-list.component';
->>>>>>> Add survey edit content
+import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 
 export const LMSRoutes: Routes = [
     {
@@ -52,6 +49,13 @@ export const LMSRoutes: Routes = [
             {
                path: "courses/search",
                component: CourseSearchComponent,
+               data: {
+                 breadcrumb:'Search courses'
+               }
+            },
+            {
+               path: "courses/recommend",
+               component: CourseRecommendComponent,
                data: {
                  breadcrumb:'Search courses'
                }

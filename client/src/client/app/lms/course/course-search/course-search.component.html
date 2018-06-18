@@ -6,7 +6,7 @@
             <button pButton type="button" icon="ui-icon-search" (click)="searchCourse()"></button>
         </div>
     </div>
-    <div class="ui-g mt20" style="height: 350px;">
+     <div class="ui-g mt20" >
         <div class="col-lg-3 ">
             <p-panel header="Filter by mode" [toggleable]="true">
                 <div class="ui-g checkbox-filter">
@@ -20,12 +20,12 @@
             </p-panel>
             <p-panel header="Filter by competency" [toggleable]="true">
                 <div class="ui-g checkbox-filter">
-                    <p-dropdown [options]="competencies" optionLabel="name" dataKey="id" [(ngModel)]="selectedCompetency" placeholder="{{'Select a competency'| translate}}" ></p-dropdown>
+                    <p-dropdown [options]="competencies" optionLabel="name" dataKey="id" [(ngModel)]="selectedCompetency" placeholder="{{'Select a competency'| translate}}"></p-dropdown>
                 </div>
             </p-panel>
         </div>
         <div class="col-lg-9 ml20" style="width: 75%;" *ngIf="courses && courses.length">
-            <p-dataList [value]="courses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
+            <p-dataScroller [value]="courses" [rows]="10" styleClass="lms-course-list">
                 <ng-template let-course pTemplate="item">
                     <p-card styleClass="lms-course-list-item">
                         <div class="ui-g">
@@ -91,7 +91,7 @@
                         </div>
                     </p-card>
                 </ng-template>
-            </p-dataList>
+            </p-dataScroller>
         </div>
     </div>
 </div>

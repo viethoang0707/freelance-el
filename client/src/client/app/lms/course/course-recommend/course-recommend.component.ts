@@ -42,30 +42,23 @@ export class CourseRecommendComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.courses = [];
+        this.searchRecommendCourse();
     }
 
     searchRecommendCourse() {
         this.courses = [];
         var domain = "('status','=','published')";
-        Course.search(this, [],domain).subscribe(courses=> {
-            this.courses =  courses;
-            var courseIds = _.pluck(this.courses, 'id');
-            CourseSyllabus.byCourseArray(this, courseIds).subscribe(sylList => {
-                _.each(this.courses, (course: Course) => {
-                    course["syllabus"] = _.find(sylList, (syl: CourseSyllabus) => {
-                        return syl.course_id == course.id;
-                    });
-                });
-                var sylIds = _.pluck(sylList, 'id');
-                CourseUnit.countBySyllabusArray(this, sylIds).subscribe(unitCounts => {
-                    for (var i = 0; i < sylIds.length; i++) {
-                        let course: Course = _.find(this.courses, (obj: Course) => {
-                            return obj["syllabus"].id == sylIds[i];
-                        });
-                        course["unit_count"] = unitCounts[i];
-                    }
-                });
+        Achivement.listByUser(this, this.currentUser.id).subscribe(skills=> {
+            var apiList = _.map(skills, (skill:Achivement)=> {
+                return Course.__api__listByCompetency(skill.competency_id);
             });
+            BaseModel.bulk_search(this, ...apiList)
+            .map(jsonArr=> {
+                return _.flatten(jsonArr);
+            })
+            .subscribe(jsonArr=> {
+                this.courses = Course.toArray(jsonArr);
+            })
         });
     }
 

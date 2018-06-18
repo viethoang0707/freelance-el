@@ -93,6 +93,20 @@ export class Course extends BaseModel{
         return Course.search(context,[],"[('group_id','=',"+groupId+")]");
     }
 
+    static __api__listByCompetency(competencyId: number): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, [],"[('competency_id','=',"+competencyId+")]");
+    }
+
+    static listByCompetency(context:APIContext, competencyId):Observable<any> {
+        if (Cache.hit(Course.Model))
+            return Observable.of(Cache.load(Course.Model)).map(courses=> {
+                return _.filter(courses, (course:Course)=> {
+                    return course.competency_id == competencyId;
+                });
+            });
+        return Course.search(context,[],"[('competency_id','=',"+competencyId+")]");
+    }
+
     static __api__listByGroupAndMode(groupId: number, mode:string): SearchReadAPI {
         return new SearchReadAPI(Course.Model, [],"[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
     }

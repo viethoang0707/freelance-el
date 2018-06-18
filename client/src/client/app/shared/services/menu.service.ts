@@ -81,6 +81,7 @@ export class MenuService {
                 { label: 'Conference', icon: 'perm_phone_msg', routerLink: ['/lms/meetings'] },
                  { label: '', separator: true, styleClass: 'menu-separator' },
                  { label: 'Course search', icon: 'search', routerLink: ['/lms/courses/search'] },
+                 { label: 'Course recommend', icon: 'stars', routerLink: ['/lms/courses/recommend'] },
             ];
 
 

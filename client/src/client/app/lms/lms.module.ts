@@ -51,7 +51,7 @@ import { WebcamModule } from 'ngx-webcam';
     				GradebookDialog, ClassManageDialog, ClassExamEnrollDialog, CourseCertificateDialog,
     				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog,
                     ClassSurveyEnrollDialog, SurveyStatsDialog, ClassSurveyListDialog, SurveyStudyDialog,
-                    CourseSearchComponent, CourseRecommendComponent],
+                    CourseSearchComponent, CourseRecommendComponent,SurveyListComponent],
 
     exports: [CertificatePrintDialog, ExamStudyDialog, SurveyStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []

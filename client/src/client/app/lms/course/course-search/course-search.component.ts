@@ -66,6 +66,14 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
             domain += ",'|',('mode','=','self-study'),('mode','=','group')";
         domain = "[" + domain +"]";
         Course.search(this, [],domain).subscribe(courses=> {
+            if (this.keyword!= null && this.keyword!="")
+                courses = _.filter(courses, (course:Course)=> {
+                    return course.name.includes(this.keyword) 
+                    || course.author_name.includes(this.keyword)
+                    || course.summary.includes(this.keyword)
+                    || course.code.includes(this.keyword)
+                    || course.description.includes(this.keyword);
+                });
             this.courses =  courses;
             var courseIds = _.pluck(this.courses, 'id');
             CourseSyllabus.byCourseArray(this, courseIds).subscribe(sylList => {
