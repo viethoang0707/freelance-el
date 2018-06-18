@@ -108,8 +108,8 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
             Submission.__api__listByExam(this.exam.id))
             .subscribe(jsonArr => {
                 var grades = ExamGrade.toArray(jsonArr[0]);
-                var members = ExamMember.toArray(jsonArr[0]);
-                var submits = Submission.toArray(jsonArr[0]);
+                var members = ExamMember.toArray(jsonArr[1]);
+                var submits = Submission.toArray(jsonArr[2]);
                 this.scoreRecords = members;
                 _.each(members, (member: ExamMember) => {
                     var submit = _.find(submits, (submit: Submission) => {

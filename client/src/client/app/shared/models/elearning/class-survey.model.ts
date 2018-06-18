@@ -25,6 +25,10 @@ export class ClassSurvey extends BaseModel{
         this.instruction = undefined;
 	}
 
+    get IsValid() {
+        return !isNaN(parseFloat(this.class_id+''))  && !isNaN(parseFloat(this.survey_id+''));
+    }
+
     name:string;
     status:string;
     summary:string;
