@@ -21,7 +21,7 @@ export class User extends BaseModel {
         this.name = undefined;
         this.gender = undefined;
         this.dob = undefined;
-        this.department = undefined;
+        this.position = undefined;
         this.email = undefined;
         this.group_id = undefined;
         this.group_code = undefined;
@@ -42,7 +42,7 @@ export class User extends BaseModel {
     group_code: string;
     gender: boolean;
     dob: Date;
-    department: string;
+    position: string;
     email: string;
     group_id: number;
     group_id__DESC__: string;

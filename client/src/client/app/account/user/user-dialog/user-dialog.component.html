@@ -66,11 +66,11 @@
 
       <div class="ui-g-6">
         <span class="md-inputfield">
-          <input type="text" pInputText [(ngModel)]="object.department" #department="ngModel" name="department" required>
-          <label>{{'Department'|translate}}</label>
-          <div *ngIf="department.invalid && (department.dirty || department.touched)" class="ui-message ui-messages-error ui-corner-all">
-            <div *ngIf="department.errors.required">
-              {{'Department is required' | translate}}
+          <input type="text" pInputText [(ngModel)]="object.position" #position="ngModel" name="department" required>
+          <label>{{'Position'|translate}}</label>
+          <div *ngIf="position.invalid && (position.dirty || position.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="position.errors.required">
+              {{'Position is required' | translate}}
             </div>
           </div>
         </span>
@@ -81,10 +81,15 @@
           <label>{{'Gender'|translate}}</label>
         </div>
         <div class="ui-g-4">
-          <p-radioButton name="group1" value="Option 1" label="Male" [(ngModel)]="val1" inputId="opt1"></p-radioButton>
+          <p-radioButton name="gender" value="male" label="Male" [(ngModel)]="object.gender" inputId="opt1" #gender="ngModel"></p-radioButton>
         </div>
         <div class="ui-g-4">
-          <p-radioButton name="group1" value="Option 2" label="female" [(ngModel)]="val1" inputId="opt2"></p-radioButton>
+          <p-radioButton name="gender" value="female" label="Female" [(ngModel)]="object.gender" inputId="opt2"></p-radioButton>
+        </div>
+        <div *ngIf="gender.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin-top: 10px;">
+          <div *ngIf="gender.errors.required">
+            {{'Gender is required' | translate}}
+          </div>
         </div>
       </div>
 
