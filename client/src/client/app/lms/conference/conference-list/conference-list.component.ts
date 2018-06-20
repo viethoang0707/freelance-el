@@ -43,7 +43,7 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
             conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
                 return member.conference_id && member.conference_status == 'open';
             });
-            ConferenceMember.populateConferenceForArray(this, conferenceMembers).subscribe(() => {
+            ConferenceMember.populateConferences(this, conferenceMembers).subscribe(() => {
                 this.conferenceMembers =  conferenceMembers;
                 this.conferenceMembers.sort((member1:ConferenceMember, member2:ConferenceMember): any => {
                     return member1.create_date.getTime() - member2.create_date.getTime();

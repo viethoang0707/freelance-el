@@ -52,7 +52,7 @@ export class ReportUtils {
 			return log.start.getTime();
 		});
 		var timeforunit = 0;
-		if (first_attempt && last_attempt)
+		if (first_attempt && last_attempt && startCourseUnitLogs.length && endCourseUnitLogs.length )
 			 timeforunit = first_attempt.start.getTime() - last_attempt.start.getTime();
 
 		var unitCount = 0;

@@ -47,19 +47,15 @@ export class QuestionDialog extends BaseDialog<Question>  {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 				}
 			});
-			var detailComponent = QuestionRegister.Instance.lookup(object.type);
-			let viewContainerRef = this.questionHost.viewContainerRef;
-			if (detailComponent) {
+			object.populateOption(this).subscribe(()=> {
+				var detailComponent = QuestionRegister.Instance.lookup(object.type);
+				let viewContainerRef = this.questionHost.viewContainerRef;
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 				viewContainerRef.clear();
 				this.componentRef = viewContainerRef.createComponent(componentFactory);
 				(<IQuestion>this.componentRef.instance).mode = 'edit';
 				(<IQuestion>this.componentRef.instance).render(object);
-			} else {
-				viewContainerRef.clear();
-				this.componentRef = null;
-			}
-
+			});
 		});
 		this.onUpdateComplete.subscribe(object => {
 			if (this.componentRef)

@@ -47,10 +47,9 @@ export class CompetencyListComponent extends BaseComponent {
                 this.competencies = Competency.toArray(jsonArr[2]);
                 this.displayCompetencies = this.competencies;
                 _.each(this.competencies, (competency:Competency) => {
-                    var levels =  _.filter(this.levels, (level:CompetencyLevel)=> {
+                    competency.levels =  _.filter(this.levels, (level:CompetencyLevel)=> {
                         return level.competency_id == competency.id;
                     });
-                    competency["levels"] = _.reduce(levels, function(memo, level) { return memo + level["name"] + ','; }, '');
                 });
             });
     }
@@ -84,17 +83,14 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     loadCompetencies() {
-
         Competency.all(this).subscribe(competencies => {
             _.each(competencies, competency => {
-                competency["levels"] = [];
+                competency.levels =  _.filter(this.levels, (level:CompetencyLevel)=> {
+                        return level.competency_id == competency.id;
+                    });
             });
             this.competencies = competencies;
             this.displayCompetencies = competencies;
-            _.each(this.competencies, competency => {
-                competency["levels"] = _.reduce(this.levels, function(memo, level) { return memo + level["name"] + ','; }, '');
-            });
-
         });
     }
 

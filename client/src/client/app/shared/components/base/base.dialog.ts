@@ -11,6 +11,7 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
     originalObject: any;
     object: any;
     display: boolean;
+    isNew: boolean;
     protected onCreateCompleteReceiver: Subject<any> = new Subject();
     protected onUpdateCompleteReceiver: Subject<any> = new Subject();
     protected onShowReceiver: Subject<any> = new Subject();
@@ -32,6 +33,7 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
         this.originalObject = {};
         Object.assign(this.originalObject, this.object);
         this.display = true;
+        this.isNew = object.id == null;
         this.onShowReceiver.next(object);
     }
 

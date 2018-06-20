@@ -110,7 +110,7 @@ export class ExamQuestion extends BaseModel{
         });
     }
 
-    static populateQuestionForArray(context: APIContext, examQuestions: ExamQuestion[]): Observable<any> {
+    static populateQuestions(context: APIContext, examQuestions: ExamQuestion[]): Observable<any> {
         var questionIds = _.pluck(examQuestions,'question_id');
         questionIds = _.filter(questionIds, id=> {
             return id;

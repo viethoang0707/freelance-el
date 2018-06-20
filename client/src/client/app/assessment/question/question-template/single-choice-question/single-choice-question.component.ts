@@ -37,14 +37,12 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 		this.answer = answer;
 		this.checkTrueOption = '';
 		if (this.question.id) {
-			QuestionOption.listByQuestion(this, question.id).subscribe((options: QuestionOption[]) => {
-				this.options = options;
-				options.forEach(opt => {
+				this.options = question.options;
+				this.options.forEach(opt => {
 					if (!opt.is_correct && opt.is_correct == true) {
 						this.checkTrueOption = 'true';
 					}
 				});
-			});
 		}
 	}
 
@@ -59,7 +57,7 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 			var newOptions = _.filter(this.options, (option:QuestionOption)=> {
 				return option.id == null;
 			});
-			return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.updateArray(this, newOptions));
+			return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.createArray(this, newOptions));
 		});
 	}
 
@@ -85,13 +83,13 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 	removeOption(option: QuestionOption) {
 		if (option.id) {
 			option.delete(this).subscribe(() => {
-				this.options = _.reject(this.options, (obj) => {
+				this.question.options = this.options = _.reject(this.options, (obj) => {
 					return obj == option;
 				});
 				
 			})
 		} else
-			this.options = _.reject(this.options, (obj) => {
+			this.question.options = this.options = _.reject(this.options, (obj) => {
 				return obj == option;
 			});
 	}

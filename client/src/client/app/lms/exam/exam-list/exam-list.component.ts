@@ -64,7 +64,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         members.sort((member1, member2): any => {
             return (member1.exam.create_date < member1.exam.create_date)
         });
-        ExamMember.populateExamForArray(this, members).subscribe(() => {
+        ExamMember.populateExams(this, members).subscribe(() => {
             members = _.filter(members, (member: ExamMember) => {
                 return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
             });
@@ -73,7 +73,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                     return submit.member_id == member.id && submit.exam_id == member.exam_id;
                 });
                 if (member["submit"])
-                    member["score"] = member["submit."].core;
+                    member["score"] = member["submit"].score;
                 else
                     member["score"] = '';
                 member["examMemberData"] = {};

@@ -85,7 +85,6 @@
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
           <p-radioButton [disabled]="true" value="{{option.id}}" name="option_answer" label="{{option.content}}"></p-radioButton>
-          <i class="material-icons" *ngIf="option.is_correct">done</i>
         </li>
       </ul>
     </p-fieldset>

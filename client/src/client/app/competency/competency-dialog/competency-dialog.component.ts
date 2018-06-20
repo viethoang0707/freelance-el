@@ -59,49 +59,36 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
         this.levels.push(level);
     }
 
-    updateCompetencyLevel():Observable<any> {
-    	var subscriptions =  _.map(this.levels, (level:CompetencyLevel)=> {
-    		if (!level.name || level.name =='') {
-    			if (level.id)
-    				return level.delete(this);
-    			else
-    				return Observable.of(true);
-    		} else {
-    			level.competency_id = this.object.id;
-    			return level.save(this);
-    		}
-    	});
-    	if (subscriptions.length)
-    		return Observable.forkJoin(...subscriptions);
-    	else
-    		return Observable.of(true);
-    }
-
     saveWithLevel() {
-        if (!this.object.id) {
-            this.object.save(this).subscribe(() => {
-            	this.updateCompetencyLevel().subscribe(()=> {
-            		this.onCreateCompleteReceiver.next(this.object);
-	                this.success(this.translateService.instant('Object created successfully.'));
-	                this.hide();
-            	});
-            },()=> {
-                this.error(this.translateService.instant('Permission denied'));
+        this.object.save(this).subscribe(() => {
+            _.each(this.levels, (level: CompetencyLevel) => {
+                level.competency_id = this.object.id;
             });
-        }
-        else {
-            this.object.save(this).subscribe(() => {
-            	this.updateCompetencyLevel().subscribe(()=> {
-            		this.onUpdateCompleteReceiver.next(this.object);
-                	this.success(this.translateService.instant('Object saved successfully.')) ;
-                	this.hide();
-            	});
-            },()=> {
-                this.error(this.translateService.instant('Permission denied'));
+            var existLevels = _.filter(this.levels, (level:CompetencyLevel)=> {
+                return level.id != null && (level.name && level.name !='');
             });
-        }
+            var newLevels = _.filter(this.levels, (level:CompetencyLevel)=> {
+                return level.id == null && (level.name && level.name !='');
+            });
+            var deleteLevels = _.filter(this.levels, (level:CompetencyLevel)=> {
+                return level.id == null && (!level.name || level.name ==='');
+            });
+            Observable.forkJoin(CompetencyLevel.updateArray(this, existLevels),
+                CompetencyLevel.createArray(this, newLevels), 
+                CompetencyLevel.deleteArray(this, deleteLevels))
+            .subscribe(()=> {
+                if (this.isNew) {
+                    this.onCreateCompleteReceiver.next(this.object);
+                    this.success(this.translateService.instant('Object created successfully.'));
+                    this.hide();
+                } else {
+                    this.onUpdateCompleteReceiver.next(this.object);
+                    this.success(this.translateService.instant('Object created successfully.'));
+                    this.hide();
+                }
+            });
+        });
     }
-
 }
 
 

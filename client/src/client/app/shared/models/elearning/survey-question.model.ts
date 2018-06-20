@@ -100,7 +100,7 @@ export class SurveyQuestion extends BaseModel {
         });
     }
 
-    static populateQuestionForArray(context: APIContext, surveyQuestions: SurveyQuestion[]): Observable<any> {
+    static populateQuestions(context: APIContext, surveyQuestions: SurveyQuestion[]): Observable<any> {
         var questionIds = _.pluck(surveyQuestions, 'question_id');
         questionIds = _.filter(questionIds, id => {
             return id;

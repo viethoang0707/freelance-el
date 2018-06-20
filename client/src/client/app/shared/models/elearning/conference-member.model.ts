@@ -98,7 +98,7 @@ export class ConferenceMember extends BaseModel{
         });
     }
 
-    static populateConferenceForArray(context: APIContext, members: ConferenceMember[]): Observable<any> {
+    static populateConferences(context: APIContext, members: ConferenceMember[]): Observable<any> {
         var conferenceIds = _.pluck(members,'conference_id');
         conferenceIds = _.filter(conferenceIds, id=> {
             return id;

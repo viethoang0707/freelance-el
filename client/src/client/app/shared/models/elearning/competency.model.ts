@@ -5,6 +5,7 @@ import { APIContext } from '../context';
 import { Cache } from '../../helpers/cache.utils';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { CompetencyLevel } from './competency-level.model';
 
 @Model('etraining.competency')
 export class Competency extends BaseModel{
@@ -18,6 +19,7 @@ export class Competency extends BaseModel{
 		this.category = undefined;
         this.group_id__DESC__ = undefined;
         this.group_name =  undefined;
+        this.levels = [];
 	}
 
     name:string;
@@ -25,6 +27,11 @@ export class Competency extends BaseModel{
     group_id: number;
     category: string;
     group_id__DESC__: string;
+    levels: CompetencyLevel[];
+
+    levelSummary():string {
+        return  _.reduce(this.levels, function(memo, level) { return memo + level["name"] + ','; }, '');
+    }
 
     static __api__listByGroup(groupId: number): SearchReadAPI {
         return new SearchReadAPI(Competency.Model, [],"[('group_id','=',"+groupId+")]");
@@ -50,6 +57,36 @@ export class Competency extends BaseModel{
         return context.apiService.execute(Competency.__api__bulk_search(apiList), context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint).map(questionArrs => {
             return _.flatten(questionArrs);
         });
+    }
+
+
+    __api__populateLevel(): SearchReadAPI {
+        return CompetencyLevel.__api__listByCompetency(this.id);
+    }
+
+    populateLevel(context:APIContext):Observable<any> {
+        return CompetencyLevel.listByCompetency(context,this.id).map(levels=> {
+            this.levels =  levels;
+            return this;
+        })
+    }
+
+    static populateLevels(context:APIContext, competencies: Competency[]):Observable<any> {
+        var apiList = _.map(competencies,(question:Competency)=> {
+            return question.__api__populateLevel();
+        });
+        return BaseModel.bulk_search(context, ...apiList)
+        .map(jsonArr => {
+            return _.flatten(jsonArr);
+        })
+        .do(jsonArr=> {
+            var levels = CompetencyLevel.toArray(jsonArr);
+            _.each(competencies, (competency:Competency)=> {
+                competency.levels =  _.filter(levels, (level:CompetencyLevel)=> {
+                    return level.competency_id == competency.id;
+                });
+            });
+        })
     }
 
 }

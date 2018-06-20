@@ -39,6 +39,8 @@ export class Course extends BaseModel{
         this.prequisite_course_id = undefined;
         this.prequisite_course_id__DESC__ = undefined;
         this.complete_unit_by_order = undefined;
+        this.competency_group_id = undefined;
+        this.competency_group_name = undefined;
 	}
 
     complete_unit_by_order: boolean;
@@ -64,6 +66,7 @@ export class Course extends BaseModel{
     status: string;
     mode: string;
     logo: string;
+
 
     static __api__listByAuthor(authorId: number): SearchReadAPI {
         return new SearchReadAPI(Course.Model, [],"[('author_id','=',"+authorId+")]");

@@ -121,7 +121,7 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static populateCourseForArray(context: APIContext, members: CourseMember[]): Observable<any> {
+    static populateCourses(context: APIContext, members: CourseMember[]): Observable<any> {
         var courseIds = _.pluck(members,'course_id');
         courseIds = _.filter(courseIds, id=> {
             return id;

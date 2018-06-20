@@ -61,6 +61,7 @@ export class GradebookDialog extends BaseComponent {
         this.stats = [];
         this.reportUtils = new ReportUtils();
         this.currentUser = this.authService.UserProfile;
+        this.member =  new CourseMember();
     }
 
     ngOnInit() {
@@ -168,7 +169,7 @@ export class GradebookDialog extends BaseComponent {
         members = _.filter(members, member => {
             return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
         });
-        ExamMember.populateExamForArray(this, members).subscribe(exams => {
+        ExamMember.populateExams(this, members).subscribe(exams => {
             _.each(exams, (exam: ExamMember) => {
                 exam["member"] = _.find(members, (member: ExamMember) => {
                     return member.exam_id == exam.id;

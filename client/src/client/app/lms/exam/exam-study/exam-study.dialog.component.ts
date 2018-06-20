@@ -102,8 +102,13 @@ export class ExamStudyDialog extends BaseComponent {
 					.subscribe(jsonArr => {
 						this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
 						this.answers = Answer.toArray(jsonArr[1]);
-						ExamQuestion.populateQuestionForArray(this, this.examQuestions).subscribe(() => {
-							this.startExam();
+						ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
+							var questions = _.map(this.examQuestions, (examQuestion:ExamQuestion)=> {
+		                        return examQuestion.question;
+		                    });
+		                    Question.populateOptions(this, questions).subscribe(()=> {
+		                    	this.startExam();
+		                    });
 						});
 					});
 			});

@@ -10,7 +10,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model'; import {
-	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
+	SURVEY_STATUS, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -65,6 +65,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	EXAM_STATUS = EXAM_STATUS;
 	PROJECT_STATUS = PROJECT_STATUS;
+	SURVEY_STATUS= SURVEY_STATUS;
 
 	private course: Course;
 	private courseClass: CourseClass;
@@ -91,6 +92,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private currentUser: User;
 	private logs: CourseLog[];
 	private grades: ExamGrade[];
+	private surveys: ClassSurvey[];
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -340,7 +342,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		members = _.filter(members, member => {
 			return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
 		});
-		ExamMember.populateExamForArray(this, members).subscribe(() => {
+		ExamMember.populateExams(this, members).subscribe(() => {
 			_.each(members, (member: ExamMember) => {
 				member["submit"] = _.find(submits, (submit: Submission) => {
 					return submit.member_id == member.id && submit.exam_id == member.exam.id;
@@ -416,12 +418,21 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	displaySurveys(surveys: ClassSurvey[],members: SurveyMember[] ) {
         _.each(surveys, (survey:ClassSurvey)=> {
             survey["member"] = _.find(members, (m:SurveyMember)=> {
-                return m.id == survey.survey_id && m.enroll_status !='completed';
+                return m.survey_id == survey.survey_id;
             });
         });
+        this.surveys =  surveys;
     }
 
     startSurvey(survey: Survey, member: SurveyMember) {
+    	if (!survey.IsAvailable) {
+    		this.warn('Survey is not available');
+    		return;
+    	}
+    	if (this.member.enroll_status=='completed') {
+    		this.warn('You have completed the survey');
+    		return;
+    	}
     	if (this.member.enroll_status!='completed' && survey.IsAvailable) {
     		this.surveyDialog.show(survey, member);
     	}

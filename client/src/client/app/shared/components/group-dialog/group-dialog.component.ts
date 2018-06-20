@@ -39,6 +39,8 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 				subscription = Group.listUserGroup(this);
 			if (object.category == "question")
 				subscription = Group.listQuestionGroup(this);
+			if (object.category == "competency")
+				subscription = Group.listCompetencyGroup(this);
 			if (subscription) {
 				
 				subscription.subscribe(groups => {

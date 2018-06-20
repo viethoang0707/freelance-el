@@ -61,7 +61,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		if (this.unit.id) {
 			ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
 				this.exerciseQuestions = exerciseQuestions;
-				ExerciseQuestion.populateQuestionForArray(this, this.exerciseQuestions).subscribe(() => {
+				ExerciseQuestion.populateQuestions(this, this.exerciseQuestions).subscribe(() => {
 					if (this.mode == 'preview')
 						setTimeout(() => {
 							var componentHostArr = this.questionsComponents.toArray();
@@ -114,7 +114,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				exerciseQuestion.title = question.title;
 				return exerciseQuestion;
 			});
-			ExerciseQuestion.populateQuestionForArray(this, exerciseQuestions).subscribe(()=> {
+			ExerciseQuestion.populateQuestions(this, exerciseQuestions).subscribe(()=> {
 				this.exerciseQuestions = this.exerciseQuestions.concat(exerciseQuestions);
 			})
 		});

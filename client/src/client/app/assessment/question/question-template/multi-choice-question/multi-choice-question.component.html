@@ -85,7 +85,6 @@
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
           <p-checkbox  binary="true" [disabled]="true" name="option_answer" [(ngModel)]="option.subAns.is_selected"></p-checkbox>
-          <i class="material-icons" *ngIf="option.is_correct">done</i>
         </li>
       </ul>
     </p-fieldset>
