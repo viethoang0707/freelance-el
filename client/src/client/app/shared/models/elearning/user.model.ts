@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
@@ -41,6 +41,7 @@ export class User extends BaseModel {
     name: string;
     group_code: string;
     gender: boolean;
+    @FieldProperty<Date>()
     dob: Date;
     position: string;
     email: string;
@@ -75,6 +76,10 @@ export class User extends BaseModel {
 
     static __api__listAllAdmin(userId: number): SearchReadAPI {
         return new SearchReadAPI(User.Model, [], "[('login','!=','admin'),('is_admin','=',True)]");
+    }
+
+    static __api__all(userId: number): SearchReadAPI {
+        return new SearchReadAPI(User.Model, [], "[('login','!=','admin')]");
     }
 
 
