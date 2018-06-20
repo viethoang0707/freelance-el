@@ -13,6 +13,7 @@ import { StudentGuard } from './guards/student.guard';
 import { ExamSupervisorGuard } from './guards/exam-supervisor.guard';
 import { SurveySupervisorGuard } from './guards/survey-supervisor.guard';
 import { ModelAPIService } from './services/api/model-api.service';
+import { FileAPIService } from './services/api/file-api.service';
 import { AccountAPIService } from './services/api/account-api.service';
 import { AuthService } from './services/auth.service';
 import { WorkflowService } from './services/workflow.service';
@@ -350,6 +351,7 @@ export class ErpSharedModule {
                 SurveySupervisorGuard,
                 AccountAPIService,
                 ModelAPIService,
+                FileAPIService,
                 AuthService,
                 MessageService,
                 MeetingService,

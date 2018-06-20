@@ -36,7 +36,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
 
     login() {
-        this.authService.login(this.credential).subscribe(
+        this.authService.login(this.credential, this.cloudid).subscribe(
             (resp) => {
                 let user:User = resp["user"];
                 this.appEvent.userLogin();

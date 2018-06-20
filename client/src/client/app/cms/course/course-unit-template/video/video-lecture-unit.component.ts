@@ -67,7 +67,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	uploadFile(file) {
 		this.openFileStatus = true;
-		this.accApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
+		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {
@@ -75,9 +75,6 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 						this.openFileStatus = false;
 					})
 				}
-			},
-			() => {
-				
 			}
 		);
 	}

@@ -57,7 +57,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
 
     uploadFile(file) {
 		
-		this.accApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
+		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(()=> {
@@ -65,9 +65,6 @@ export class ProjectContentDialog extends BaseDialog<Project> {
 						this.object.filename = file.filename;
 					});
 				}
-			},
-			() => {
-				
 			}
 		);
 	}

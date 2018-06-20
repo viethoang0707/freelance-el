@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { APIService } from '../services/api.service';
 import { APIContext } from '../models/context';
 import { SurveyMember } from '../models/elearning/survey-member.model';
 import { Survey } from '../models/elearning/survey.model';
+import { ModelAPIService } from '../services/api/model-api.service';
 
 @Injectable()
 export class SurveySupervisorGuard implements CanActivate, APIContext {
 
-	apiService: APIService;
+	apiService: ModelAPIService;
 	authService: AuthService;
 
-	constructor(apiService: APIService, authService: AuthService, private router: Router) {
+	constructor(apiService: ModelAPIService, authService: AuthService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
 	}

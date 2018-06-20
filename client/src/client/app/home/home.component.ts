@@ -42,7 +42,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.loading = false;
         });
         this.appEvent.onTokenExpired.subscribe(()=> {
-            UserLog.logout(this, this.authService.UserProfile.id).subscribe();
+            this.warn('Your token has been expired');
             this.authService.logout();
             this.router.navigate(['/auth']);
         });

@@ -89,8 +89,8 @@ export class AuthService {
         localStorage.setItem('remember', val.toString());
     }
 
-    login(info: Credential): Observable<any> {
-        return this.accountService.login(info.username, info.password, info.cloud_code).map(resp => {
+    login(info: Credential, cloudid?:string): Observable<any> {
+        return this.accountService.login(info.username, info.password,cloudid).map(resp => {
             this.UserProfile = MapUtils.deserialize(User, resp["user"]);
             this.LoginToken = MapUtils.deserialize(Token, resp["token"]);
             return {user: this.UserProfile, token: this.LoginToken};

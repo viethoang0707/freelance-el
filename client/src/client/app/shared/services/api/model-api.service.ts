@@ -25,7 +25,11 @@ export class ModelAPIService {
         return this.http.post(endpoint, JSON.stringify(params), options)
             .map((response: Response) => response.json()).do(()=> {
                 this.appEvent.finishHttpTransaction();
-            });
+            })
+            .catch( (e) => {
+                console.log(e);
+                return Observable.throw(e);
+            } );
     }
 
 

@@ -20,12 +20,12 @@ export class Token extends BaseModel{
     login:string;
     email:string;
     cloud_id:number;
-    @FieldProperty<Date>()
-    date_expire: Date;
+    date_expire: number;
 
     get IsValid():boolean {
         var now = new Date();
-        if (this.date_expire.getTime() > now.getTime())
+        var expireDate = new Date(this.date_expire);
+        if (expireDate.getTime() > now.getTime())
             return true;
         return false;
     }

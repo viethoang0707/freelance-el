@@ -63,7 +63,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
     }
 
     changeFile(file) {
-        this.accApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
+        this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {
@@ -71,9 +71,6 @@ export class ProjectSubmissionDialog extends BaseComponent {
                         this.submit.filename = file.name;
                     });
                 }
-            },
-            () => {
-                
             }
         );
     }
