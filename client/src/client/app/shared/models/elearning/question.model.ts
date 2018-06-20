@@ -88,7 +88,7 @@ export class Question extends BaseModel{
         })
     }
 
-    static populateOptionForArray(context:APIContext, questions: Question[]):Observable<any> {
+    static populateOptions(context:APIContext, questions: Question[]):Observable<any> {
         var apiList = _.map(questions,(question:Question)=> {
             return question.__api__populateOption();
         });

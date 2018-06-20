@@ -58,11 +58,11 @@ export class QuestionSheetPrintDialog extends BaseComponent {
     startReview() {
         ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
-            ExamQuestion.populateQuestionForArray(this, this.examQuestions).subscribe(()=> {
+            ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(()=> {
                 var questions = _.map(this.examQuestions, (examQuestion:ExamQuestion)=> {
                     return examQuestion.question
                 });
-                Question.populateOptionForArray(this,questions).subscribe(()=> {
+                Question.populateOptions(this,questions).subscribe(()=> {
                     var componentHostArr = this.questionsComponents.toArray();
                     for (var i = 0; i < examQuestions.length; i++) {
                         var examQuestion = examQuestions[i];

@@ -63,7 +63,7 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
         this.surveyMembers.sort((member1, member2): any => {
             return (member1.survey.create_date < member1.survey.create_date)
         });
-        SurveyMember.populateSurveyForArray(this, this.surveyMembers).subscribe(() => {
+        SurveyMember.populateSurveys(this, this.surveyMembers).subscribe(() => {
             _.each(this.surveyMembers, (member: SurveyMember) => {
                 member["submit"] = _.find(submits, (submit: SurveySubmission) => {
                     return submit.member_id == member.id && submit.survey_id == member.survey_id;

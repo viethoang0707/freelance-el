@@ -85,7 +85,7 @@ export class ExerciseQuestion extends BaseModel{
         });
     }
 
-    static populateQuestionForArray(context: APIContext, exerciseQuestions: ExerciseQuestion[]): Observable<any> {
+    static populateQuestions(context: APIContext, exerciseQuestions: ExerciseQuestion[]): Observable<any> {
         var questionIds = _.pluck(exerciseQuestions,'question_id');
         questionIds = _.filter(questionIds, id=> {
             return id;

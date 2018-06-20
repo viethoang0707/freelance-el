@@ -109,11 +109,11 @@ export class SurveyStudyDialog extends BaseComponent {
 						this.surveyQuestions = SurveyQuestion.toArray(jsonArr[0]);
 						this.answers = SurveyAnswer.toArray(jsonArr[1]);
 						this.stats.total = this.surveyQuestions.length;
-						SurveyQuestion.populateQuestionForArray(this, this.surveyQuestions).subscribe(() => {
+						SurveyQuestion.populateQuestions(this, this.surveyQuestions).subscribe(() => {
 							var questions = _.map(this.surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
 			                    return surveyQuestion.question
 			                });
-			                Question.populateOptionForArray(this, questions).subscribe(()=> {
+			                Question.populateOptions(this, questions).subscribe(()=> {
 			                	this.startSurvey();
 			                });
 						});

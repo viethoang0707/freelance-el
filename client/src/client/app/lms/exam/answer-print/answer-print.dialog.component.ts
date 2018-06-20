@@ -101,11 +101,11 @@ export class AnswerPrintDialog extends BaseComponent {
             .subscribe(jsonArr => {
                 this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
                 this.answers = Answer.toArray(jsonArr[1]);
-                ExamQuestion.populateQuestionForArray(this, this.examQuestions).subscribe(() => {
+                ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
                     var questions = _.map(this.examQuestions, (examQuestion:ExamQuestion)=> {
                         return examQuestion.question;
                     });
-                    Question.populateOptionForArray(this,questions).subscribe(() => {
+                    Question.populateOptions(this,questions).subscribe(() => {
                         var componentHostArr = this.questionsComponents.toArray();
                         for (var i = 0; i < this.examQuestions.length; i++) {
                             var examQuestion = this.examQuestions[i];

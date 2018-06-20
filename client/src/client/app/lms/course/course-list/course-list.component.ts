@@ -58,7 +58,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
             return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
         });
-        CourseMember.populateCourseForArray(this, this.courseMembers).subscribe((courses) => {
+        CourseMember.populateCourses(this, this.courseMembers).subscribe((courses) => {
             this.courses = this.courses.concat(courses);
             this.courses = _.uniq(courses, (course) => {
                 return course.id;

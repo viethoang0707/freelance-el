@@ -342,7 +342,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		members = _.filter(members, member => {
 			return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
 		});
-		ExamMember.populateExamForArray(this, members).subscribe(() => {
+		ExamMember.populateExams(this, members).subscribe(() => {
 			_.each(members, (member: ExamMember) => {
 				member["submit"] = _.find(submits, (submit: Submission) => {
 					return submit.member_id == member.id && submit.exam_id == member.exam.id;

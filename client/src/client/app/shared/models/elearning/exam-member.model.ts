@@ -97,7 +97,7 @@ export class ExamMember extends BaseModel{
         });
     }
 
-    static populateExamForArray(context: APIContext, members: ExamMember[]): Observable<any> {
+    static populateExams(context: APIContext, members: ExamMember[]): Observable<any> {
         var examIds = _.pluck(members,'exam_id');
         examIds = _.filter(examIds, id=> {
             return id;

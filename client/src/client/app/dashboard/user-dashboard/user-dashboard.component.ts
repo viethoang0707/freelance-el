@@ -68,7 +68,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
             return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
         });
-        CourseMember.populateCourseForArray(this, this.courseMembers).subscribe((courses) => {
+        CourseMember.populateCourses(this, this.courseMembers).subscribe((courses) => {
             this.courses = this.courses.concat(courses);
             this.courses = _.uniq(courses, (course) => {
                 return course.id;
@@ -108,7 +108,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         member["score"] =  member["submit"].score;
 
                 });
-                ExamMember.populateExamForArray(this, this.examMembers).subscribe(() => {
+                ExamMember.populateExams(this, this.examMembers).subscribe(() => {
                     this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
                         return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
                     });
@@ -139,7 +139,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.conferenceMembers.sort((member1:ConferenceMember, member2:ConferenceMember): any => {
             return member1.create_date.getTime() - member2.create_date.getTime();
         });
-        ConferenceMember.populateConferenceForArray(this, this.conferenceMembers).subscribe(() => {
+        ConferenceMember.populateConferences(this, this.conferenceMembers).subscribe(() => {
             
         });
 

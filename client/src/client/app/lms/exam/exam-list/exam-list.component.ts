@@ -64,7 +64,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         members.sort((member1, member2): any => {
             return (member1.exam.create_date < member1.exam.create_date)
         });
-        ExamMember.populateExamForArray(this, members).subscribe(() => {
+        ExamMember.populateExams(this, members).subscribe(() => {
             members = _.filter(members, (member: ExamMember) => {
                 return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
             });
