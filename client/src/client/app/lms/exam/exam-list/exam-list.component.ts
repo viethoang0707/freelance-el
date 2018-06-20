@@ -73,7 +73,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                     return submit.member_id == member.id && submit.exam_id == member.exam_id;
                 });
                 if (member["submit"])
-                    member["score"] = member["submit."].core;
+                    member["score"] = member["submit"].score;
                 else
                     member["score"] = '';
                 member["examMemberData"] = {};

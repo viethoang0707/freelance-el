@@ -61,6 +61,7 @@ export class GradebookDialog extends BaseComponent {
         this.stats = [];
         this.reportUtils = new ReportUtils();
         this.currentUser = this.authService.UserProfile;
+        this.member =  new CourseMember();
     }
 
     ngOnInit() {
