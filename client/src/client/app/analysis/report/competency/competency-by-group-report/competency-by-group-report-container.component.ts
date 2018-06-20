@@ -61,7 +61,7 @@ export class CompetencyByGroupReportContainerComponent extends BaseComponent{
     	this.competencyDialog.show();
     	this.competencyDialog.onSelectCompetency.subscribe((competency: Competency) => {
 			this.competency = competency;
-            if (this.competency && this,groups.length) {
+            if (this.competency && this.groups.length) {
                 this.competencyReport.clear();
                 this.competencyReport.render(this.competency, this.groups);
             }
