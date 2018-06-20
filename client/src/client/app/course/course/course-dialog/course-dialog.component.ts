@@ -79,6 +79,8 @@ export class CourseDialog extends BaseDialog<Course> {
 				this.object.competency_level_name = level.name;
 				this.object.competency_id = level.competency_id;
 				this.object.competency_name = level.competency_name;
+				this.object.competency_group_id = level.competency_group_id;
+				this.object.competency_group_name = level.competency_group_name;
 		});
 	}
 
