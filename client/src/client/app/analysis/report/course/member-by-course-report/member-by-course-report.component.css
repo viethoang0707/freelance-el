@@ -1,9 +1,3 @@
 .content{
     position: relative;
 }
-.spinner{
-    position: absolute;
-    left: calc(50% - 50px);
-    z-index: 1;
-    top: -100px;
-}

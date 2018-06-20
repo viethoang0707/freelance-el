@@ -25,6 +25,7 @@ export class Question extends BaseModel{
         this.group_id = undefined;
         this.group_id__DESC__ = undefined;
         this.max_rating =  undefined;
+        this.options = [];
 	}
 
     title:string;
@@ -35,14 +36,15 @@ export class Question extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
     max_rating: number;
+    options: QuestionOption[];
 
     static __api__createWithOption(question:Question, options:QuestionOption[]): CreateAPI {
-        question["options"] =  options;
+        question.options =  options;
         return new CreateAPI(Question.Model, question);
     }
 
     static createWithOption(context: APIContext, question:Question, options:QuestionOption[]):Observable<any> {
-        question["options"] =  options;
+        question.options =  options;
         return question.save(context);
     }
 
@@ -73,6 +75,35 @@ export class Question extends BaseModel{
                 return MapUtils.deserializeModel(Question.Model, question);
             });
         });
+    }
+
+    __api__populateOption(): SearchReadAPI {
+        return QuestionOption.__api__listByQuestion(this.id);
+    }
+
+    populateOption(context:APIContext):Observable<any> {
+        return QuestionOption.listByQuestion(context,this.id).map(options=> {
+            this.options =  options;
+            return this;
+        })
+    }
+
+    static populateOptionForArray(context:APIContext, questions: Question[]):Observable<any> {
+        var apiList = _.map(questions,(question:Question)=> {
+            return question.__api__populateOption();
+        });
+        return BaseModel.bulk_search(context, ...apiList)
+        .map(jsonArr => {
+            return _.flatten(jsonArr);
+        })
+        .do(jsonArr=> {
+            var options = QuestionOption.toArray(jsonArr);
+            _.each(questions, (question:Question)=> {
+                question.options =  _.filter(options, (option:QuestionOption)=> {
+                    return option.question_id == question.id;
+                });
+            });
+        })
     }
 
 }
