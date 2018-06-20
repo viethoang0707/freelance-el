@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild,ComponentFactoryResolver } from '@a
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
-import { APIService } from '../../../shared/services/api.service';
+import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../../../shared/services/api.service';
+import { ModelAPIService } from '../../../../shared/services/api/model-api.service';
 import { ReportUtils } from '../../../../shared/helpers/report.utils';
 import { Survey } from '../../../../shared/models/elearning/survey.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';

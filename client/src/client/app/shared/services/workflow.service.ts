@@ -9,7 +9,7 @@ import { Ticket } from '../models/ticket/ticket.model';
 import { Notification } from '../models/ticket/notification.model';
 import { Course } from '../models/elearning/course.model';
 import { CourseSyllabus } from '../models/elearning/course-syllabus.model';
-import { CloudAccount } from '../models/cloud/cloud-account.model';
+import { Token } from '../models/cloud/token.model';
 import { APIContext } from '../models/context';
 import { WebSocketService } from '../../shared/services/socket.service';
 
@@ -37,7 +37,7 @@ export class WorkflowService {
       notification.date_open = new Date();
       notification.ticket_id = ticket.id;
       notification.target_user_id = ticket.approve_user_id;
-      this.socketService.notify(notification.title, course.supervisor_id, this.authService.CloudAcc.id);
+      this.socketService.notify(notification.title, course.supervisor_id, this.authService.LoginToken.cloud_id);
       return notification.save(context);
     });
   }
@@ -59,7 +59,7 @@ export class WorkflowService {
       notification.date_open = new Date();
       notification.ticket_id = ticket.id;
       notification.target_user_id = ticket.approve_user_id;
-      this.socketService.notify(notification.title, syl.supervisor_id, this.authService.CloudAcc.id);
+      this.socketService.notify(notification.title, syl.supervisor_id, this.authService.LoginToken.cloud_id);
       return notification.save(context);
     });
   }
@@ -75,7 +75,7 @@ export class WorkflowService {
         notification.ticket_id = ticket.id;
         notification.target_user_id = ticket.submit_user_id;
         return Observable.forkJoin(course.save(context), ticket.save(context), notification.save(context)).do(() => {
-          this.socketService.notify(notification.title, ticket.submit_user_id, this.authService.CloudAcc.id);
+          this.socketService.notify(notification.title, ticket.submit_user_id, this.authService.LoginToken.cloud_id);
         });
       })
     }
@@ -89,7 +89,7 @@ export class WorkflowService {
         notification.ticket_id = ticket.id;
         notification.target_user_id = ticket.submit_user_id;
         return Observable.forkJoin(syl.save(context), ticket.save(context), notification.save(context)).do(() => {
-          this.socketService.notify(notification.title, ticket.submit_user_id, this.authService.CloudAcc.id);
+          this.socketService.notify(notification.title, ticket.submit_user_id, this.authService.LoginToken.cloud_id);
         });
       })
     }
@@ -104,7 +104,7 @@ export class WorkflowService {
     notification.ticket_id = ticket.id;
     notification.target_user_id = ticket.submit_user_id;
     return Observable.forkJoin(ticket.save(context), notification.save(context)).do(() => {
-      this.socketService.notify(notification.title, ticket.submit_user_id, this.authService.CloudAcc.id);
+      this.socketService.notify(notification.title, ticket.submit_user_id, this.authService.LoginToken.cloud_id);
     });
   }
 
@@ -117,7 +117,7 @@ export class WorkflowService {
     notification.ticket_id = ticket.id;
     notification.target_user_id = target_user_id;
     return notification.save(context).do(() => {
-      this.socketService.notify(notification.title, target_user_id, this.authService.CloudAcc.id);
+      this.socketService.notify(notification.title, target_user_id, this.authService.LoginToken.cloud_id);
     });
   }
 }

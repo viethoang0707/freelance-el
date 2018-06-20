@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../shared/models/cloud/token.model';
 
 
 @Component({

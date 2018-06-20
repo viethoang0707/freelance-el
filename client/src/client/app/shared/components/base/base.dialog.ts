@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../base/base.component';
 import { Component, OnInit, Input } from '@angular/core';
 import { BaseModel } from '../../models/base.model';
-import { APIService } from '../../services/api.service';
+import { ModelAPIService } from '../../services/api/model-api.service';
 import { AuthService } from '../../services/auth.service';
 
 export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {

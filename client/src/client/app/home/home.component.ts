@@ -1,12 +1,11 @@
 import { Component, ElementRef, Renderer, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChangePasswordDialog } from './change-password-dialog/change-password-dialog.component';
 import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
 import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog.component';
-import { LoadingService } from '../shared/services/loading.service';
+import { AppEventManager } from '../shared/services/app-event-manager.service';
 import { UserLog } from '../shared/models/elearning/log.model';
 import { Group } from '../shared/models/elearning/group.model';
 import { BaseModel } from '../shared/models/base.model';
@@ -19,7 +18,6 @@ import { BaseModel } from '../shared/models/base.model';
 })
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
-    @ViewChild(ChangePasswordDialog) passwordDialog: ChangePasswordDialog;
     @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
 
     menuClick: boolean;
@@ -34,21 +32,35 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     darkMenu: boolean;
     loading: boolean;
 
-    constructor( private router: Router, private eventManager :HomeEventManager,loadingService: LoadingService) {
+    constructor( private router: Router, private eventManager :HomeEventManager) {
         super();
         this.loading =  false;
-        loadingService.onStart.subscribe(()=> {
+        this.appEvent.onStartHTTP.subscribe(()=> {
             this.loading = true;
         });
-        loadingService.onFinish.subscribe(()=> {
+        this.appEvent.onFinishHTTP.subscribe(()=> {
             this.loading = false;
+        });
+        this.appEvent.onTokenExpired.subscribe(()=> {
+            this.warn('Your token has been expired');
+            this.authService.logout();
+            this.router.navigate(['/auth']);
+        });
+        this.appEvent.onLogout.subscribe(()=> {
+            UserLog.logout(this, this.authService.UserProfile.id).subscribe();
+            this.authService.logout();
+            this.router.navigate(['/auth']);
+        });
+        this.appEvent.onLogin.subscribe(()=> {
+            // Pre-loading cache
+            UserLog.login(this, this.authService.UserProfile.id).subscribe();
+            BaseModel.bulk_search(this,Group.__api__all()).subscribe();
         });
         router.navigate(['/dashboard']);
     }
 
     ngOnInit() {
-        // Pre-loading cache
-        BaseModel.bulk_search(this,Group.__api__all()).subscribe();
+        
     }
 
     onWrapperClick() {
@@ -67,18 +79,11 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     }
 
     ngAfterViewInit() {
-        this.eventManager.changePasswordEvents.subscribe(() => {
-            this.passwordDialog.show();
-        });
         this.eventManager.showProfileEvents.subscribe(() => {
             var user = this.authService.UserProfile;
             this.userProfileDialog.show(user);
         });
-        this.eventManager.logoutEvents.subscribe(() => {
-            UserLog.logout(this, this.authService.UserProfile.id).subscribe();
-            this.authService.logout();
-            this.router.navigate(['/auth']);
-        });
+        
         this.eventManager.topbarMenuEvents.subscribe(() => {
             this.topbarMenuClick = true;
         });

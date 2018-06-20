@@ -100,8 +100,8 @@ export abstract class BaseModel {
     }
 
     static bulk_create(context:APIContext, ...apiList:CreateAPI[]) {
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__bulk_create(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_create(apiList), token);
     }
 
     static __api__bulk_update(apiList:UpdateAPI[]):BulkUpdateAPI {
@@ -113,8 +113,8 @@ export abstract class BaseModel {
     }
 
     static bulk_update(context:APIContext, ...apiList:UpdateAPI[]) {
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__bulk_update(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_update(apiList), token);
     }
 
     static __api__bulk_delete(apiList:DeleteAPI[]):BulkDeleteAPI {
@@ -126,8 +126,8 @@ export abstract class BaseModel {
     }
 
     static bulk_delete(context:APIContext, ...apiList:DeleteAPI[]) {
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__bulk_delete(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_delete(apiList), token)
     }
 
     static __api__bulk_list(apiList:ListAPI[]):BulkListAPI {
@@ -139,8 +139,8 @@ export abstract class BaseModel {
     }
 
     static bulk_list(context:APIContext, ...apiList:ListAPI[]) {
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__bulk_list(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_list(apiList), token);
     }
 
     static __api__bulk_count(apiList:SearchCountAPI[]):BulkSearchCountAPI {
@@ -152,8 +152,8 @@ export abstract class BaseModel {
     }
 
     static bulk_count(context:APIContext, ...apiList:SearchCountAPI[]) {
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__bulk_count(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_count(apiList), token)
     }
 
     static __api__bulk_search(apiList:SearchReadAPI[]):BulkSearchReadAPI {
@@ -165,8 +165,8 @@ export abstract class BaseModel {
     }
 
     static bulk_search(context:APIContext, ...apiList:SearchReadAPI[]) {
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__bulk_search(apiList), cloud_acc.id, cloud_acc.api_endpoint)
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_search(apiList), token)
     }
 
     static __api__countAll(): SearchCountAPI {
@@ -195,23 +195,23 @@ export abstract class BaseModel {
     }
 
     save(context: APIContext): Observable<any> {
-        var cloud_acc = context.authService.CloudAcc;
+        var token = context.authService.LoginToken;
         if (!this.id) {
-            return context.apiService.execute(this.__api__create(), cloud_acc.id, cloud_acc.api_endpoint).map(data => {
+            return context.apiService.execute(this.__api__create(), token).map(data => {
                 this.id = data.id;
                 Cache.objectChage(this, 'CREATE');
                 return this;
             });
         } else {
-            return context.apiService.execute(this.__api__update(), cloud_acc.id, cloud_acc.api_endpoint).do(() => {
+            return context.apiService.execute(this.__api__update(),token).do(() => {
                 Cache.objectChage(this, 'UPDATE');
             });
         }
     }  
 
     delete(context: APIContext): Observable<any> {
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__delete(), cloud_acc.id, cloud_acc.api_endpoint).do(() => {
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__delete(), token).do(() => {
             Cache.objectChage(this, 'DELETE');
         });
     }
@@ -257,14 +257,14 @@ export abstract class BaseModel {
     static count(context: APIContext, domain?: string): Observable<any[]> {
         if (!domain)
             domain = "[]";        
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__count(domain), cloud_acc.id, cloud_acc.api_endpoint);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__count(domain), token);
     }
 
     static search(context: APIContext, fields: string[], domain: string): Observable<any[]> {
         var model = this.Model;
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__search( fields, domain), cloud_acc.id, cloud_acc.api_endpoint).map(objects => {
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__search( fields, domain), token).map(objects => {
             return this.toArray(objects);
         });
     }
@@ -305,16 +305,16 @@ export abstract class BaseModel {
         if (ids.length == 0)
             return Observable.of([]);
         var model = this.Model;
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__get(ids), cloud_acc.id, cloud_acc.api_endpoint).map(objects => {
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__get(ids), token).map(objects => {
             return this.toArray(objects);
         });
     }
 
     static executeRemote(context: APIContext, method: string, paramsList: any[], paramsDict: any): Observable<any> {
         var model = this.Model;
-        var cloud_acc = context.authService.CloudAcc;
-        return context.apiService.execute(this.__api__excute(method, paramsList, paramsDict), cloud_acc.id, cloud_acc.api_endpoint);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__excute(method, paramsList, paramsDict), token);
     }
 
 }

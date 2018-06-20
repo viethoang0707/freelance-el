@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../../shared/services/api.service';
+import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { ExcelService } from '../../../shared/services/excel.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
-import { CloudAccount } from '../../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../../shared/models/cloud/token.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';

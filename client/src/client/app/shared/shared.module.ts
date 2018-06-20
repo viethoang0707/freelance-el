@@ -12,16 +12,17 @@ import { TeacherGuard } from './guards/teacher.guard';
 import { StudentGuard } from './guards/student.guard';
 import { ExamSupervisorGuard } from './guards/exam-supervisor.guard';
 import { SurveySupervisorGuard } from './guards/survey-supervisor.guard';
-import { APIService } from './services/api.service';
-import { CloudAPIService } from './services/cloud-api.service';
+import { ModelAPIService } from './services/api/model-api.service';
+import { FileAPIService } from './services/api/file-api.service';
+import { AccountAPIService } from './services/api/account-api.service';
 import { AuthService } from './services/auth.service';
 import { WorkflowService } from './services/workflow.service';
 import { WebSocketService } from './services/socket.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { SettingService } from './services/setting.service';
+import { AppEventManager } from './services/app-event-manager.service';
 import { MeetingService } from './services/meeting.service';
-import { LoadingService } from './services/loading.service';
 import { WindowRef } from './helpers/windonw.ref';
 import { TreeUtils } from './helpers/tree.utils';
 import { SyllabusUtils } from './helpers/syllabus.utils';
@@ -348,14 +349,15 @@ export class ErpSharedModule {
                 StudentGuard,
                 ExamSupervisorGuard,
                 SurveySupervisorGuard,
-                CloudAPIService,
-                LoadingService,
-                APIService,
+                AccountAPIService,
+                ModelAPIService,
+                FileAPIService,
                 AuthService,
                 MessageService,
                 MeetingService,
                 WindowRef,
                 ExcelService,
+                AppEventManager,
                 WorkflowService,
                 MenuService,
                 SettingService,

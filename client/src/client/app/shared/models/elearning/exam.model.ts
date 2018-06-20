@@ -93,7 +93,7 @@ export class Exam extends BaseModel{
 
     enroll(context:APIContext, userIds: number[]):Observable<any> {
         return context.apiService.execute(this.__api__enroll(this.id, userIds), 
-            context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
+            context.authService.LoginToken);
     }
 
     static __api__listPublicExam(): SearchReadAPI {

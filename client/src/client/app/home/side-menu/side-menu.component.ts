@@ -6,7 +6,7 @@ import { MenuItem } from 'primeng/primeng';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../shared/models/cloud/token.model';
 import { SettingService } from '../../shared/services/setting.service';
 import { MenuService } from '../../shared/services/menu.service';
 declare var jQuery: any;
@@ -22,7 +22,6 @@ declare var jQuery: any;
 export class SideMenuComponent extends BaseComponent implements OnInit {
 
     @Input() reset: boolean;
-    private account: CloudAccount;
     private menu: any[];
     private layoutMenuScroller: HTMLDivElement;
     @ViewChild('layoutMenuScroller') layoutMenuScrollerViewChild: ElementRef;
@@ -39,7 +38,6 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.account =  this.authService.CloudAcc;
         if (this.settingService.ViewMode =='admin')
                 this.setAdminMenu();
             else

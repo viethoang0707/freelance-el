@@ -69,7 +69,7 @@ export class Question extends BaseModel{
             var subApi = new SearchReadAPI(Question.Model,[],"[('group_id','=',"+groupId+")]");
             api.add(subApi);
         });
-        return context.apiService.execute(api, context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint).map(questionArrs => {
+        return context.apiService.execute(api, context.authService.LoginToken).map(questionArrs => {
             questionArrs = _.flatten(questionArrs);
             return _.map(questionArrs, question=> {
                 return MapUtils.deserializeModel(Question.Model, question);

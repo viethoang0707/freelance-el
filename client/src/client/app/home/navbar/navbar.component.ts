@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { APIService } from '../../shared/services/api.service';
+import { ModelAPIService } from '../../shared/services/api/model-api.service';
 import { WebSocketService } from '../../shared/services/socket.service';
 import { Router } from '@angular/router';
 import { User } from '../../shared/models/elearning/user.model';
-import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../shared/models/cloud/token.model';
 import { LANGS } from '../../shared/models/constants';
 import { HomeEventManager } from '../home-manager.service';
 import { HomeComponent } from '../home.component';
@@ -44,7 +44,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		this.user = this.authService.UserProfile;
 		this.viewMode = this.settingService.ViewMode;
 		this.loadNotification();
-		this.socketService.join(this.user.id, this.authService.CloudAcc.id);
+		this.socketService.join(this.user.id, this.authService.LoginToken.cloud_id);
 		this.socketService.onNotify.subscribe(data=> {
 			this.loadNotification();
 		});

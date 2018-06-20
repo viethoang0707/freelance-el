@@ -1,4 +1,3 @@
-import { CloudAccount } from './cloud/cloud-account.model';
 
 export class Credential {
 
@@ -6,10 +5,10 @@ export class Credential {
     constructor(){
 		this.username = undefined;
         this.password = undefined;
-        this.cloud_account = new CloudAccount();
+        this.cloud_code = undefined;
 	}
 
     username: string;
     password: string;
-    cloud_account: CloudAccount;
+    cloud_code: string;
 }

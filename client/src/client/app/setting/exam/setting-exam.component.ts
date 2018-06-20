@@ -1,6 +1,6 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
-import { APIService } from '../../shared/services/api.service';
+import { ModelAPIService } from '../../shared/services/api/model-api.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { ExamSetting } from '../../shared/models/elearning/exam-setting.model';

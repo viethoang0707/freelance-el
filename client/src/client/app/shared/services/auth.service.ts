@@ -4,13 +4,12 @@ import 'rxjs/add/operator/mergeMap';
 import { Credential } from '../models/credential.model';
 import { User } from '../models/elearning/user.model';
 import { Permission } from '../models/elearning/permission.model';
-import { CloudAccount } from '../models/cloud/cloud-account.model';
+import { Token } from '../models/cloud/token.model';
 import { MapUtils } from '../helpers/map.utils';
-import { APIService } from './api.service';
+import { ModelAPIService } from './api/model-api.service';
+import { AccountAPIService } from './api/account-api.service';
 import { Cache } from '../helpers/cache.utils';
-import { LoginAPI } from './api/login.api';
-import { ChangePassAPI } from './api/change-pass.api';
-import { ResetPassAPI } from './api/reset-pass.api';
+
 
 declare function escape(s:string): string;
 declare function unescape(s:string): string;
@@ -18,7 +17,7 @@ declare function unescape(s:string): string;
 @Injectable()
 export class AuthService {
 
-    constructor(private apiService: APIService) {
+    constructor(private accountService: AccountAPIService) {
     }
 
    get StoredCredential(): Credential {
@@ -63,19 +62,19 @@ export class AuthService {
         localStorage.removeItem('userPerm');
     }
 
-    set CloudAcc(acc: CloudAccount) {
-        localStorage.setItem('cloudAccount', btoa(unescape(encodeURIComponent(JSON.stringify(acc)))));
+    set LoginToken(token: Token) {
+        localStorage.setItem('token', btoa(unescape(encodeURIComponent(JSON.stringify(token)))));
     }
 
-    get CloudAcc():CloudAccount {
-         if (localStorage.getItem('cloudAccount'))
-            return MapUtils.deserialize(CloudAccount, 
-                JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('cloudAccount'))))));
+    get LoginToken():Token {
+         if (localStorage.getItem('token'))
+            return MapUtils.deserialize(Token, 
+                JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('token'))))));
         return null;
     }
 
-    clearCloudAccount() {
-        localStorage.removeItem('cloudAccount');
+    clearToken() {
+        localStorage.removeItem('token');
     }
 
 
@@ -90,31 +89,23 @@ export class AuthService {
         localStorage.setItem('remember', val.toString());
     }
 
-    login(info: Credential): Observable<User> {
-        var cloud_acc = this.CloudAcc;
-        var api = new LoginAPI(info.username, info.password);
-        return this.apiService.execute(api,  cloud_acc.id, cloud_acc.api_endpoint).map(user => {
-           this.UserProfile = MapUtils.deserialize(User, user);
-            return this.UserProfile;
+    login(info: Credential, cloudid?:string): Observable<any> {
+        return this.accountService.login(info.username, info.password,cloudid).map(resp => {
+            this.UserProfile = MapUtils.deserialize(User, resp["user"]);
+            this.LoginToken = MapUtils.deserialize(Token, resp["token"]);
+            return {user: this.UserProfile, token: this.LoginToken};
         });
     }
 
-    resetPass(email: string): Observable<any> {
-        var cloud_acc = this.CloudAcc;
-        var api = new ResetPassAPI(email);
-        return this.apiService.execute(api, cloud_acc.id,cloud_acc.api_endpoint);
+    resetPass(email: string): Observable<any> {;
+        return this.accountService.resetPass(email);
     }
 
-    changePass(old_pass: string, new_pass: string): Observable<any> {
-        var cloud_acc = this.CloudAcc;
-        var api = new ChangePassAPI(this.UserProfile.id, old_pass, new_pass);
-        return this.apiService.execute(api, cloud_acc.id, cloud_acc.api_endpoint);
-    }
 
     logout() {
         Cache.invalidateAll();
         this.clearUserProfile();
-        this.clearCloudAccount();
+        this.clearToken();
         this.clearUserPermission();
         if (!this.Remember)
             this.clearStoredCredential();

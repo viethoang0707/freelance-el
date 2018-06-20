@@ -54,7 +54,7 @@ export class Competency extends BaseModel{
         _.each(groupIds, (groupId)=> {
             apiList.push(Competency.__api__listByGroup(groupId));
         });
-        return context.apiService.execute(Competency.__api__bulk_search(apiList), context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint).map(questionArrs => {
+        return context.apiService.execute(Competency.__api__bulk_search(apiList), context.authService.LoginToken).map(questionArrs => {
             return _.flatten(questionArrs);
         });
     }

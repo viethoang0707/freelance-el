@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, NgZone, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../../shared/services/api.service';
+import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
-import { CloudAccount } from '../../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../../shared/models/cloud/token.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { Project } from '../../../shared/models/elearning/project.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
@@ -63,7 +63,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
     }
 
     changeFile(file) {
-        this.cloudApiService.upload(file, this.authService.CloudAcc.id).subscribe(
+        this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {
@@ -71,9 +71,6 @@ export class ProjectSubmissionDialog extends BaseComponent {
                         this.submit.filename = file.name;
                     });
                 }
-            },
-            () => {
-                
             }
         );
     }

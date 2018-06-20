@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
-import { Config } from '../../env.config';
+import { Config } from '../../../env.config';
 import 'rxjs/add/operator/map';
 import { Observable, Subject } from 'rxjs/Rx';
+import { AppEventManager } from '../app-event-manager.service';
 
 @Injectable()
-export class CloudAPIService {
-    constructor(private http: Http) { }
+export class FileAPIService {
+    constructor(private http: Http, private appEvent: AppEventManager) { }
 
-    cloudInfo(code?:string):Observable<any> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(Config.CLOUD_ENDPOINT + '/cloud/account', JSON.stringify({code: code }), options)
-            .map((response: Response) => response.json());
-    }
-
+    
     upload(file: any, cloudid: number):Observable<any>{
         let formData:FormData = new FormData();
         formData.append('file', file, file.name);
@@ -22,7 +17,7 @@ export class CloudAPIService {
         let headers = new Headers();
         headers.append('Accept', 'application/json');
         let options = new RequestOptions({ headers: headers });
-        return this.http.post(Config.CLOUD_ENDPOINT +'/cloud/file', formData, options)
+        return this.http.post(Config.CLOUD_ENDPOINT +'/file/upload', formData, options)
             .map(res => res.json())
             .catch(error => Observable.throw(error));
     }
@@ -30,14 +25,16 @@ export class CloudAPIService {
     unzip(filename: any, cloudid: number):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post(Config.CLOUD_ENDPOINT + '/cloud/unzip', JSON.stringify({cloudid: cloudid, filename:filename }), options)
-            .map((response: Response) => response.json());
+        return this.http.post(Config.CLOUD_ENDPOINT + '/file/unzip', JSON.stringify({cloudid: cloudid, filename:filename }), options)
+            .map((response: Response) => response.json())
+            .catch(error => Observable.throw(error));
     }
 
     convert2Pdf(filename: any, cloudid: number):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post(Config.CLOUD_ENDPOINT + '/cloud/convert2pdf', JSON.stringify({cloudid: cloudid, filename:filename }), options)
-            .map((response: Response) => response.json());
+        return this.http.post(Config.CLOUD_ENDPOINT + '/file/convert2pdf', JSON.stringify({cloudid: cloudid, filename:filename }), options)
+            .map((response: Response) => response.json())
+            .catch(error => Observable.throw(error));
     }
 }

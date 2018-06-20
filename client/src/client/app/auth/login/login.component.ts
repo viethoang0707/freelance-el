@@ -3,10 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { Credential } from '../../shared/models/credential.model';
 import { SettingService } from '../../shared/services/setting.service';
-import { CloudAccount } from '../../shared/models/cloud/cloud-account.model';
+import { Token } from '../../shared/models/cloud/token.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Permission } from '../../shared/models/elearning/permission.model';
-import { UserLog } from '../../shared/models/elearning/log.model';
+import { User } from '../../shared/models/elearning/user.model';
 
 @Component({
     moduleId: module.id,
@@ -15,9 +15,9 @@ import { UserLog } from '../../shared/models/elearning/log.model';
 })
 
 export class LoginComponent extends BaseComponent implements OnInit {
-    
+
     private credential: Credential;
-    private account: CloudAccount;
+    private account: Token;
     private returnUrl: string;
     private buildMode: string = "<%= BUILD_TYPE %>";
 
@@ -26,8 +26,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     constructor(private route: ActivatedRoute, private router: Router) {
         super();
-        this.account = new CloudAccount();
-        this.credential =  new Credential();
+        this.credential = new Credential();
     }
 
     ngOnInit() {
@@ -36,32 +35,22 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.remember = this.authService.Remember;
     }
 
-    getCloudInfo():Observable<any> {
-        if (this.buildMode=='prod')
-            return this.cloudApiService.cloudInfo();
-        else
-            return this.cloudApiService.cloudInfo(this.cloudid);
-    }
-
     login() {
-        this.getCloudInfo().subscribe((acc)=> {
-            this.authService.CloudAcc = acc;
-            this.authService.login(this.credential).subscribe(
-                user => {
-                    UserLog.login(this, user.id).subscribe();
-                    this.authService.Remember = this.remember;
-                    this.authService.UserProfile = user;
-                    if (this.remember)
-                        this.authService.StoredCredential = this.credential;
-                    user.getPermission(this).subscribe(permission=> {
-                        this.authService.UserPermission =  permission;
-                        this.router.navigate([this.returnUrl]);
-                    });
-                },
-                error => {
-                    this.error('Login failed.');
+        this.authService.login(this.credential, this.cloudid).subscribe(
+            (resp) => {
+                let user:User = resp["user"];
+                this.appEvent.userLogin();
+                this.authService.Remember = this.remember;
+                if (this.remember)
+                    this.authService.StoredCredential = this.credential;
+                user.getPermission(this).subscribe(permission => {
+                    this.authService.UserPermission = permission;
+                    this.router.navigate([this.returnUrl]);
                 });
-        });
+            },
+            error => {
+                this.error('Login failed.');
+            });
     }
 }
 
