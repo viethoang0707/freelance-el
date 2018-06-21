@@ -5,7 +5,7 @@ import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
-import { Token } from '../cloud/cloud-account.model';
+import { Token } from '../cloud/token.model';
 import { MapUtils } from '../../helpers/map.utils';
 import * as _ from 'underscore';
 import { Cache } from '../../helpers/cache.utils';

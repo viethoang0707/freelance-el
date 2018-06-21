@@ -39,19 +39,10 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        BaseModel.bulk_search(this, Group.__api__listCompetencyGroup(), CompetencyLevel.__api__all(), Competency.__api__all())
-            .subscribe(jsonArr => {
-                var groups = Group.toArray(jsonArr[0]);
-                this.tree = this.treeUtils.buildGroupTree(groups);
-                this.levels = CompetencyLevel.toArray(jsonArr[1]);
-                this.competencies = Competency.toArray(jsonArr[2]);
-                this.displayCompetencies = this.competencies;
-                _.each(this.competencies, (competency:Competency) => {
-                    competency.levels =  _.filter(this.levels, (level:CompetencyLevel)=> {
-                        return level.competency_id == competency.id;
-                    });
-                });
-            });
+        Group.listCompetencyGroup(this).subscribe(groups=> {
+            this.tree = this.treeUtils.buildGroupTree(groups);
+        })
+        this.loadCompetencies();
     }
 
 
@@ -84,13 +75,16 @@ export class CompetencyListComponent extends BaseComponent {
 
     loadCompetencies() {
         Competency.all(this).subscribe(competencies => {
-            _.each(competencies, competency => {
-                competency.levels =  _.filter(this.levels, (level:CompetencyLevel)=> {
-                        return level.competency_id == competency.id;
-                    });
+            CompetencyLevel.all(this).subscribe(levels=> {
+                this.levels =  levels;
+                _.each(competencies, competency => {
+                    competency.levels =  _.filter(this.levels, (level:CompetencyLevel)=> {
+                            return level.competency_id == competency.id;
+                        });
+                });
+                this.competencies = competencies;
+                this.displayCompetencies = competencies;
             });
-            this.competencies = competencies;
-            this.displayCompetencies = competencies;
         });
     }
 

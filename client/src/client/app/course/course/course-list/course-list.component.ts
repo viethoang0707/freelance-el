@@ -42,23 +42,10 @@ export class CourseListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-
-        this.buildCoursTree();
-        this.loadCourses();
-    }
-
-    buildCoursTree() {
-        BaseModel.bulk_search(this, Group.__api__listCourseGroup(), Course.__api__all())
-        .subscribe(jsonArr=> {
-            var groups = Group.toArray(jsonArr[0]);
+        Group.listCourseGroup(this).subscribe(groups=> {
             this.tree = this.treeUtils.buildGroupTree(groups);
-            this.courses = Course.toArray(jsonArr[1]);
-            this.displayCourses = this.courses;
-            this.displayCourses.sort((course1, course2): any => {
-                return (course1.id - course2.id)
-            });
-        });
-
+        })
+        this.loadCourses();
     }
 
     addCourse() {

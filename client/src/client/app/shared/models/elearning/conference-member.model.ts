@@ -53,13 +53,7 @@ export class ConferenceMember extends BaseModel{
     }
 
     static byCourseMember(context:APIContext, memberId: number):Observable<any> {
-        return ConferenceMember.search(context,[],"[('course_member_id','=',"+memberId+")]")
-        .map(members => {
-            if (members.length)
-                return members[0];
-            else
-                return null;
-        });
+        return ConferenceMember.single(context,[],"[('course_member_id','=',"+memberId+")]");
     }
 
     static __api__listByUser(userId: number): SearchReadAPI {

@@ -38,9 +38,7 @@ export class SurveySheet extends BaseModel{
     }
 
     static bySurvey( context:APIContext, surveyId: number): Observable<any> {
-        return SurveySheet.search(context,[],"[('survey_id','=',"+surveyId+")]").map(sheets =>{
-            return sheets.length ? sheets[0]: null;
-        });
+        return SurveySheet.single(context,[],"[('survey_id','=',"+surveyId+")]");
     }
 
     static listTemplate( context:APIContext): Observable<any> {

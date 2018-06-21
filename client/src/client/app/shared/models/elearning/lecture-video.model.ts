@@ -28,12 +28,6 @@ export class VideoLecture extends BaseModel{
     }
     
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
-        return VideoLecture.search(context,[],"[('unit_id','=',"+unitId+")]")
-        .map(lectures => {
-            if (lectures.length)
-                return lectures[0];
-            else
-                return null;
-        });
+        return VideoLecture.single(context,[],"[('unit_id','=',"+unitId+")]");
     }
 }

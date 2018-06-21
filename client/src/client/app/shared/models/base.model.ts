@@ -14,7 +14,7 @@ import { ListAPI } from '../services/api/list.api';
 import { BulkListAPI } from '../services/api/bulk-list.api';
 import { SearchCountAPI } from '../services/api/search-count.api';
 import { BulkSearchCountAPI } from '../services/api/bulk-search-count.api';
-import { SearchReadAPI } from '../services/api/search-read.api';
+import { SearchReadAPI, SearchAllAPI } from '../services/api/search-read.api';
 import { BulkSearchReadAPI } from '../services/api/bulk-search-read.api';
 import { ExecuteAPI } from '../services/api/execute.api';
 import { Cache } from '../helpers/cache.utils';
@@ -83,7 +83,8 @@ export abstract class BaseModel {
     }
 
     static __api__all():SearchReadAPI {
-        return this.__api__search( [], "[]");
+        var model = this.Model;
+        return new SearchAllAPI(model);
     }
 
     static __api__excute(method: string, paramsList: string[], paramsDict: any):ExecuteAPI {
@@ -99,22 +100,12 @@ export abstract class BaseModel {
         return api;
     }
 
-    static bulk_create(context:APIContext, ...apiList:CreateAPI[]) {
-        var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__bulk_create(apiList), token);
-    }
-
     static __api__bulk_update(apiList:UpdateAPI[]):BulkUpdateAPI {
         var api = new BulkUpdateAPI();
         _.each(apiList, subApi=> {
             api.add(subApi);
         });
         return api;
-    }
-
-    static bulk_update(context:APIContext, ...apiList:UpdateAPI[]) {
-        var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__bulk_update(apiList), token);
     }
 
     static __api__bulk_delete(apiList:DeleteAPI[]):BulkDeleteAPI {
@@ -125,22 +116,12 @@ export abstract class BaseModel {
         return api;
     }
 
-    static bulk_delete(context:APIContext, ...apiList:DeleteAPI[]) {
-        var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__bulk_delete(apiList), token)
-    }
-
     static __api__bulk_list(apiList:ListAPI[]):BulkListAPI {
         var api = new BulkListAPI();
         _.each(apiList, subApi=> {
             api.add(subApi)
         })
         return api;
-    }
-
-    static bulk_list(context:APIContext, ...apiList:ListAPI[]) {
-        var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__bulk_list(apiList), token);
     }
 
     static __api__bulk_count(apiList:SearchCountAPI[]):BulkSearchCountAPI {
@@ -151,11 +132,6 @@ export abstract class BaseModel {
         return api;
     }
 
-    static bulk_count(context:APIContext, ...apiList:SearchCountAPI[]) {
-        var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__bulk_count(apiList), token)
-    }
-
     static __api__bulk_search(apiList:SearchReadAPI[]):BulkSearchReadAPI {
         var api = new BulkSearchReadAPI();
         _.each(apiList, subApi=> {
@@ -164,14 +140,94 @@ export abstract class BaseModel {
         return api;
     }
 
-    static bulk_search(context:APIContext, ...apiList:SearchReadAPI[]) {
-        var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__bulk_search(apiList), token)
-    }
-
     static __api__countAll(): SearchCountAPI {
         var model = this.Model;
         return new SearchCountAPI(model, "[]");
+    }
+
+    static bulk_create(context:APIContext, ...apiList:CreateAPI[]):Observable<any> {
+        if (apiList.length==0)
+            return Observable.of([]);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_create(apiList), token).do(jsonArr=> {
+            var resp = _.flatten(jsonArr);
+            for(var i=0;i<resp.length;i++) {
+                var api = apiList[i];
+                var object = api.params["values"];
+                object["id"] == +resp[i]["id"];
+                Cache.objectChage(object, 'CREATE');
+            }
+        });
+    }
+
+    static bulk_update(context:APIContext, ...apiList:UpdateAPI[]):Observable<any> {
+        if (apiList.length==0)
+            return Observable.of([]);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_update(apiList), token).do(()=> {
+            for(var i=0;i<apiList.length;i++) {
+                var api = apiList[i];
+                var object = api.params["values"];
+                Cache.objectChage(object, 'UPDATE');
+            }
+        });
+    }
+
+    static bulk_delete(context:APIContext, ...apiList:DeleteAPI[]):Observable<any> {
+        if (apiList.length==0)
+            return Observable.of([]);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_delete(apiList), token).do(()=> {
+            for(var i=0;i<apiList.length;i++) {
+                var api = apiList[i];
+                var object = api.params["values"];
+                Cache.objectChage(object, 'DELETE');
+            }
+        });
+    }
+
+    static bulk_list(context:APIContext, ...apiList:ListAPI[]):Observable<any> {
+        if (apiList.length==0)
+            return Observable.of([]);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_list(apiList), token).do(jsonArr=> {
+            for(var i=0;i<apiList.length;i++) {
+                var objArr = jsonArr[i];
+                var api = apiList[i];
+                var model = api.params["model"];
+                _.each(objArr, jsonObj=> {
+                    var object =  MapUtils.deserializeModel(model, jsonObj);
+                    Cache.objectChage(object, 'UPDATE');
+                });
+            }
+        });
+    }
+
+    static bulk_count(context:APIContext, ...apiList:SearchCountAPI[]):Observable<any> {
+        if (apiList.length==0)
+            return Observable.of([]);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_count(apiList), token)
+    }
+
+    static bulk_search(context:APIContext, ...apiList:SearchReadAPI[]):Observable<any> {
+        if (apiList.length==0)
+            return Observable.of([]);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_search(apiList), token).do(jsonArr=> {
+            for(var i=0;i<apiList.length;i++) {
+                var api = apiList[i];
+                if (api instanceof SearchAllAPI) {
+                    var objArr = jsonArr[i];
+                    var model = api.params["model"];
+                    var objects = _.map(objArr, jsonObj=> {
+                        return MapUtils.deserializeModel(model, jsonObj);
+                    });
+                    Cache.save(model,objects);
+                }
+                
+            }
+        });
     }
 
     static countAll(context:APIContext):Observable<any> {

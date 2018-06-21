@@ -11,3 +11,14 @@ export class SearchReadAPI extends BaseAPI{
 	}
 
 }
+
+@Method('/api/search_read')
+export class SearchAllAPI extends SearchReadAPI{
+
+    constructor( model:string){
+        super(model, [],"[]");
+        this.params = { model: model,fields:[], domain: "[]"};
+	}
+
+}
+

@@ -24,13 +24,7 @@ export class HtmlLecture extends BaseModel{
     }
 
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
-        return HtmlLecture.search(context,[],"[('unit_id','=',"+unitId+")]")
-        .map(lectures => {
-            if (lectures.length)
-                return lectures[0];
-            else
-                return null;
-        });
+        return HtmlLecture.single(context,[],"[('unit_id','=',"+unitId+")]");
     }
 
 

@@ -60,7 +60,8 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     }
 
     ngOnInit() {
-        
+        // Fill the cache
+        BaseModel.bulk_search(this,Group.__api__all()).subscribe();
     }
 
     onWrapperClick() {

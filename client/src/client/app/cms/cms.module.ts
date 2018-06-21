@@ -21,6 +21,8 @@ import { QuestionSheetEditorDialog } from './exam/question-sheet-editor/question
 import { QuestionSheetSaveDialog } from './exam/question-sheet-save/question-sheet-save.dialog.component';
 import { SurveyContentDialog } from './survey/content-dialog/survey-content.dialog.component';
 import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-save.dialog.component';
+import { ValidateGradePipe } from './exam/exam-setting/grade.pipe';
+import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.component';
 
 
 @NgModule({
@@ -29,7 +31,7 @@ import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-s
 		CourseSyllabusDialog, CourseUnitContainerDirective, FolderCourseUnitComponent, CourseSettingDialog, 
 		SlideLectureCourseUnitComponent,QuestionSheetEditorDialog, QuestionSheetSaveDialog,SurveySheetSaveDialog,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,
-		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog],
+		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog,ValidateGradePipe, ExamSettingDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, 
 	ProjectContentDialog, SurveyContentDialog],
 	providers: [],

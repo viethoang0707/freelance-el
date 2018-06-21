@@ -46,10 +46,7 @@ export class Certificate extends BaseModel{
     course_code: string;
 
     static byMember( context:APIContext, memberId: number): Observable<any[]> {
-        return Certificate.search(context,[],"[('member_id','!=',"+memberId+")]")
-        .map(certificates => {
-            return certificates[0]}
-         );
+        return Certificate.single(context,[],"[('member_id','!=',"+memberId+")]")
     }
 
     static listByUser(context: APIContext, userId: number): Observable<any[]> {

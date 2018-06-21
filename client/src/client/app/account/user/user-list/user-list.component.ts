@@ -43,16 +43,10 @@ export class UserListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        BaseModel
-        .bulk_search(this,
-            Group.__api__listUserGroup(),
-            User.__api__all())
-        .subscribe(jsonArr=> {
-            var groups = Group.toArray(jsonArr[0]);
+        Group.listUserGroup(this).subscribe(groups=> {
             this.tree = this.treeUtils.buildGroupTree(groups);
-            this.users = User.toArray(jsonArr[1]);
-            this.displayUsers = this.users;
         });
+        this.loadUsers();
     }
 
     loadUsers() {

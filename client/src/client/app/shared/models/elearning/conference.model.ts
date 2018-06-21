@@ -32,13 +32,7 @@ export class Conference extends BaseModel{
     }
 
     static byClass(context:APIContext, classId: number):Observable<any> {
-        return Conference.search(context,[],"[('class_id','=',"+classId+")]")
-        .map(conferences => {
-            if (conferences.length)
-                return conferences[0];
-            else
-                return null;
-        });
+        return Conference.single(context,[],"[('class_id','=',"+classId+")]");
     }
 
     static __api__listOpenConference(classId: number): SearchReadAPI {

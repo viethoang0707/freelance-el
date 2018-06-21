@@ -64,15 +64,9 @@ export class SurveyMember extends BaseModel{
     }
 
     static bySurveyAndUser( context:APIContext, userId: number, surveyId: number): Observable<any> {
-        return SurveyMember.search(context,[],"[('user_id','=',"+userId+"),('survey_id','=',"+surveyId+")]")
-        .map(members => {
-            if (members.length)
-                return members[0];
-            else
-                return null;
-        });
+        return SurveyMember.single(context,[],"[('user_id','=',"+userId+"),('survey_id','=',"+surveyId+")]");
     }
-
+    
     __api__populateSurvey(): ListAPI {
         return new ListAPI(Survey.Model, [this.survey_id], []);
     }

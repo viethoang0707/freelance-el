@@ -45,7 +45,7 @@ export class ProjectSubmission extends BaseModel{
     }
 
     static byMemberAndProject( context:APIContext, member_id: number, projectId: number): Observable<any> {
-        return ProjectSubmission.search(context,[],"[('member_id','=',"+member_id+"),('project_id','=',"+projectId+")]");
+        return ProjectSubmission.single(context,[],"[('member_id','=',"+member_id+"),('project_id','=',"+projectId+")]");
     }
 
     static __api__listByUser(userId: number): SearchReadAPI {

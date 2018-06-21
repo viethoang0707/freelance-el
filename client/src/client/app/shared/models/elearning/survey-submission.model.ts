@@ -31,14 +31,9 @@ export class SurveySubmission extends BaseModel{
     }
 
     static byMemberAndSurvey( context:APIContext, member_id: number, surveyId: number): Observable<any> {
-        return SurveySubmission.search(context,[],"[('member_id','=',"+member_id+"),('survey_id','=',"+surveyId+")]").map(submits =>{
-            if (submits.length)
-                return submits[0];
-            else
-                return null;
-        });
+        return SurveySubmission.single(context,[],"[('member_id','=',"+member_id+"),('survey_id','=',"+surveyId+")]");
     }
-
+    
     static __api__listByUser(userId: number): SearchReadAPI {
         return new SearchReadAPI(SurveySubmission.Model, [], "[('user_id','='," + userId + ")]");
     }

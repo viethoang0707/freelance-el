@@ -76,13 +76,7 @@ export class ExamMember extends BaseModel{
     }
 
     static byExamAndUser( context:APIContext, userId: number, examId: number): Observable<any> {
-        return ExamMember.search(context,[],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]")
-        .map(members => {
-            if (members.length)
-                return members[0];
-            else
-                return null;
-        });
+        return ExamMember.single(context,[],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]")
     }
 
     __api__populateExam(): ListAPI {

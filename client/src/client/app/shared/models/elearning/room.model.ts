@@ -31,12 +31,6 @@ export class Room extends BaseModel{
     }
 
     static byRef(context:APIContext, ref: string):Observable<any> {
-        return Room.search(context,[],"[('ref','=','"+ref+"')]")
-        .map(rooms => {
-            if (rooms.length)
-                return rooms[0];
-            else
-                return null;
-        });
+        return Room.single(context,[],"[('ref','=','"+ref+"')]");
     }
 }

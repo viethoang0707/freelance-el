@@ -25,13 +25,7 @@ export class Room extends BaseModel{
     password: string;
 
     static byRef(context:APIContext, ref: string):Observable<any> {
-        return Room.search(context,[],"[('ref','=','"+ref+"')]")
-        .map(rooms => {
-            if (rooms.length)
-                return rooms[0];
-            else
-                return null;
-        });
+        return Room.single(context,[],"[('ref','=','"+ref+"')]");
     }
 
     static __api__byRef(ref: string): SearchReadAPI {

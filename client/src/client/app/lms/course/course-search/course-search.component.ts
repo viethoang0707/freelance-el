@@ -75,7 +75,7 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
                 });
             this.courses =  courses;
             var courseIds = _.pluck(this.courses, 'id');
-            CourseSyllabus.byCourseArray(this, courseIds).subscribe(sylList => {
+            CourseSyllabus.fromCourseArray(this, courseIds).subscribe(sylList => {
                 _.each(this.courses, (course: Course) => {
                     course["syllabus"] = _.find(sylList, (syl: CourseSyllabus) => {
                         return syl.course_id == course.id;

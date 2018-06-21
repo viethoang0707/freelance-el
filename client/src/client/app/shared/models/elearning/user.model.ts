@@ -78,7 +78,7 @@ export class User extends BaseModel {
         return new SearchReadAPI(User.Model, [], "[('login','!=','admin'),('is_admin','=',True)]");
     }
 
-    static __api__all(userId: number): SearchReadAPI {
+    static __api__all(): SearchReadAPI {
         return new SearchReadAPI(User.Model, [], "[('login','!=','admin')]");
     }
 

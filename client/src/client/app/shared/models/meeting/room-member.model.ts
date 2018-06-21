@@ -32,13 +32,7 @@ export class RoomMember extends BaseModel{
     }
 
     static byRef(context:APIContext, ref: string):Observable<any> {
-        return RoomMember.search(context,[],"[('ref','=','"+ref+"')]")
-        .map(members => {
-            if (members.length)
-                return members[0];
-            else
-                return null;
-        });
+        return RoomMember.single(context,[],"[('ref','=','"+ref+"')]");
     }
 
     static createRoomMember(name: string, avatar: string, roomId: number, role:string): RoomMember {

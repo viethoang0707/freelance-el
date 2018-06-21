@@ -37,12 +37,7 @@ export class Submission extends BaseModel{
     }
 
     static byUserAndExam( context:APIContext, userId: number, examId: number): Observable<any> {
-        return Submission.search(context,[],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]").map(submits =>{
-            if (submits.length)
-                return submits[0];
-            else
-                return null;
-        });
+        return Submission.single(context,[],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]");
     }
 
     static __api__byMemberAndExam(memberId: number,examId:number): SearchReadAPI {
@@ -50,14 +45,9 @@ export class Submission extends BaseModel{
     }
 
     static byMemberAndExam( context:APIContext, memberId: number, examId: number): Observable<any> {
-        return Submission.search(context,[],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]").map(submits=> {
-            if (submits.length)
-                return submits[0];
-            else
-                return null;
-        });
+        return Submission.single(context,[],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
     }
-
+    
     static __api__listByUser(userId: number): SearchReadAPI {
         return new SearchReadAPI(Submission.Model, [],"[('user_id','=',"+userId+")]");
     }

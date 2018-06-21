@@ -31,16 +31,10 @@ export class CourseSyllabus extends BaseModel{
     }
 
     static byCourse(context:APIContext, courseId: number):Observable<any> {
-        return CourseSyllabus.search(context,[],"[('course_id','=',"+courseId+")]")
-        .map(syllabi => {
-            if (syllabi.length)
-                return syllabi[0];
-            else
-                return null;
-        });
+        return CourseSyllabus.single(context,[],"[('course_id','=',"+courseId+")]")
     }
 
-    static byCourseArray(context:APIContext, courseIds: number[]):Observable<any> {
+    static fromCourseArray(context:APIContext, courseIds: number[]):Observable<any> {
         var apiList = _.map(courseIds, courseId=> {
             return this.__api__byCourse(courseId);
         })

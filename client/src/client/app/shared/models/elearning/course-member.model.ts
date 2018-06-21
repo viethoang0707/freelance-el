@@ -141,7 +141,7 @@ export class CourseMember extends BaseModel {
 
     completeCourse(context:APIContext):Observable<any> {
         return context.apiService.execute(this.__api__complete_course(this.id), 
-            context.authService.CloudAcc.id, context.authService.CloudAcc.api_endpoint);
+            context.authService.LoginToken);
     }
 
 }

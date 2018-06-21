@@ -50,16 +50,10 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        BaseModel
-        .bulk_search(this,
-            Group.__api__listQuestionGroup(),
-            Question.__api__all())
-        .subscribe(jsonArr=> {
-            var groups = Group.toArray(jsonArr[0]);
+        Group.listQuestionGroup(this).subscribe(groups=> {
             this.tree = this.treeUtils.buildGroupTree(groups);
-            this.questions = Question.toArray(jsonArr[1]);
-            this.displayQuestions = this.questions;
         });
+        this.loadQuestions();
     }
 
     addQuestion(type: string) {

@@ -28,12 +28,6 @@ export class SCORMLecture extends BaseModel{
     }
 
     static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
-        return SCORMLecture.search(context,[],"[('unit_id','=',"+unitId+")]")
-        .map(lectures => {
-            if (lectures.length)
-                return lectures[0];
-            else
-                return null;
-        });
+        return SCORMLecture.single(context,[],"[('unit_id','=',"+unitId+")]");
     }
 }

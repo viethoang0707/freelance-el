@@ -40,9 +40,7 @@ export class QuestionSheet extends BaseModel{
     }
 
     static byExam( context:APIContext, examId: number): Observable<any> {
-        return QuestionSheet.search(context,[],"[('exam_id','=',"+examId+")]").map(sheets =>{
-            return sheets.length ? sheets[0]: null;
-        });
+        return QuestionSheet.single(context,[],"[('exam_id','=',"+examId+")]");
     }
 
     static __api__listTemplate(): SearchReadAPI {
