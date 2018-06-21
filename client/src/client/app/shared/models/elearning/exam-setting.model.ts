@@ -16,10 +16,23 @@ export class ExamSetting extends BaseModel{
 		this.allow_navigation = undefined;
 		this.take_picture_on_submit = undefined;
         this.scale =  undefined;
+        this.exam_id = undefined;
 	}
 
     scale: number;
+    exam_id: number;
     max_attempt: number;
     allow_navigation: boolean;
     take_picture_on_submit: boolean;
+
+    static __api__byExam(examId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamSetting.Model, [],"[('exam_id','=',"+examId+")]");
+    }
+    
+
+    static byExam( context:APIContext, examId: number): Observable<any> {
+        return ExamSetting.search(context,[],"[('exam_id','=',"+examId+")]").map(settings =>{
+            return settings.length ? settings[0]: null;
+        });
+    }
 }

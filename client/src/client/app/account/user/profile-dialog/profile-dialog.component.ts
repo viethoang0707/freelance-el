@@ -29,7 +29,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
-	private members: CourseMember[];
+	private courseMembers: CourseMember[];
 	private certificates: Certificate[];
 	private skills: Achivement[];
 	private treeUtils: TreeUtils;
@@ -41,7 +41,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 	constructor() {
 		super();
 		this.treeUtils = new TreeUtils();
-		this.members = [];
+		this.courseMembers = [];
 		this.currentUser =  this.authService.UserProfile;
 	}
 
@@ -62,7 +62,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 				Achivement.__api__listByUser(object.id))
 			.subscribe((jsonArr)=> {
 				this.groups = Group.toArray(jsonArr[0]);
-				this.members =  CourseMember.toArray(jsonArr[1]);
+				this.courseMembers =  CourseMember.toArray(jsonArr[1]);
 				this.certificates =  Certificate.toArray(jsonArr[2]);
 				this.skills =  Achivement.toArray(jsonArr[3]);
 				this.displayGroupTree();
@@ -80,10 +80,10 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	displayCourseHistory() {
-		this.members =  _.filter(this.members, (member: CourseMember) => {
+		this.courseMembers =  _.filter(this.courseMembers, (member: CourseMember) => {
 			return member.role == 'student';
 		});
-		_.each(this.members, (member: CourseMember) => {
+		_.each(this.courseMembers, (member: CourseMember) => {
 			member["certificate"] = _.find(this.certificates, (cert:Certificate) => {
 				return cert.member_id == member.id;
 			});
