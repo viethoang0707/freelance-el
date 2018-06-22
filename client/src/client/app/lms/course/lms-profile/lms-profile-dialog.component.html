@@ -10,6 +10,9 @@
               <th>{{'Register date'|translate}}</th>
               <th>{{'Enrollment status'|translate}}</th>
               <th>{{'Certificate'|translate}}</th>
+              <th>
+                <button pButton type="button" label="{{'Export course'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="exportCourse()"></button>
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-member>
@@ -33,6 +36,9 @@
               <th>{{'Register date'|translate}}</th>
               <th>{{'Enrollment status'|translate}}</th>
               <th>{{'Grade'|translate}}</th>
+              <th>
+                <button pButton type="button" label="{{'Export exam'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="exportExam()"></button>
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-member>
@@ -54,6 +60,9 @@
               <th>{{'Competency'|translate}}</th>
               <th>{{'Level'|translate}}</th>
               <th>{{'Date acquired'|translate}}</th>
+              <th>
+                <button pButton type="button" label="{{'Export skill'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="exportSkill()"></button>
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-skill>
