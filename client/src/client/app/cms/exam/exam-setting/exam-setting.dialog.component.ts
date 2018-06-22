@@ -60,42 +60,32 @@ export class ExamSettingDialog extends BaseComponent {
 
     addGrade() {
         var grade = new ExamGrade();
+        grade.name = 'New grade';
         grade.exam_id = this.exam.id;
         this.grades.push(grade);
     }
 
-    removeGrade(grade: ExamGrade) {
-        if (grade.id)
-            this.deletedGrades.push(grade);
-        this.grades = _.reject(this.grades, (obj) => {
-            return obj == grade;
-        });
-    }
 
     saveExamSetting() {
-        var deleteApiList = _.map(this.deletedGrades, (grade: ExamGrade) => {
-            return grade.__api__delete();
+        this.setting.save(this).subscribe(() => {
+            var existGrades = _.filter(this.grades, (grade:ExamGrade)=> {
+                return !grade.IsNew && (grade.name && grade.name !='');
+            });
+            var newGrades = _.filter(this.grades, (grade:ExamGrade)=> {
+                return grade.IsNew && (grade.name && grade.name !='');
+            });
+            var deleteGrades = _.filter(this.grades, (grade:ExamGrade)=> {
+                return !grade.IsNew && (!grade.name || grade.name ==='');
+            });
+            Observable.forkJoin(ExamGrade.updateArray(this, existGrades),
+                ExamGrade.createArray(this, newGrades), 
+                ExamGrade.deleteArray(this, deleteGrades))
+            .subscribe(()=> {
+                    this.success(this.translateService.instant('Setting saved successfully.'));
+                    this.hide();
+
+            });
         });
-        var createApiList = [];
-        if (this.setting.IsNew)
-            createApiList.push(this.setting.__api__create());
-        _.each(this.grades, (grade: ExamGrade) => {
-            if (grade.IsNew)
-                createApiList.push(grade.__api__create());
-        });
-        var updateApiList = [];
-        if (!this.setting.IsNew)
-            updateApiList.push(this.setting.__api__update());
-        _.each(this.grades, (grade: ExamGrade) => {
-            if (!grade.IsNew)
-                updateApiList.push(grade.__api__update());
-        });
-        Observable.forkJoin(BaseModel.bulk_create(this, ...createApiList),
-            BaseModel.bulk_update(this, ...updateApiList), BaseModel.bulk_delete(this, ...deleteApiList))
-            .subscribe(() => {
-                this.hide();
-                this.success(this.translateService.instant('Setting saved successfully'));
-            })
     }
 }
 
