@@ -103,7 +103,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
     loadScores() {
         BaseModel.bulk_search(this,
-            ExamGrade.__api__all(),
+            ExamGrade.__api__listByExam(this.exam.id),
             ExamMember.__api__listCandidateByExam(this.exam.id),
             Submission.__api__listByExam(this.exam.id))
             .subscribe(jsonArr => {

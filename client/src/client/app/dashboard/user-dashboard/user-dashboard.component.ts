@@ -64,11 +64,11 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.courses = [];
     }
 
-    displayCourses() {
-        this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
+    displayCourses(courseMembers: CourseMember[]) {
+        courseMembers = _.filter(courseMembers, (member: CourseMember) => {
             return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
         });
-        CourseMember.populateCourses(this, this.courseMembers).subscribe((courses) => {
+        CourseMember.populateCourses(this, courseMembers).subscribe((courses) => {
             this.courses = this.courses.concat(courses);
             this.courses = _.uniq(courses, (course) => {
                 return course.id;
@@ -85,14 +85,15 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 });
                 course["isAuthor"] = course.author_id == this.currentUser.id;
             });
+            this.courseMembers =  courseMembers;
         });
     }
 
-    displayExams() {
-        this.examMembers = _.filter(this.examMembers, (member:ExamMember) => {
+    displayExams(examMembers: ExamMember[]) {
+        examMembers = _.filter(examMembers, (member:ExamMember) => {
             return member.exam_id && member.status == 'active';
         });
-        var searchApi = _.map(this.examMembers, (member: ExamMember) => {
+        var searchApi = _.map(examMembers, (member: ExamMember) => {
             return Submission.__api__listByMember(member.id);
         });
         BaseModel.bulk_search(this, ...searchApi)
@@ -100,7 +101,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 return _.flatten(jsonArray);
             })
             .subscribe(submits => {
-                _.each(this.examMembers, (member: ExamMember) => {
+                _.each(examMembers, (member: ExamMember) => {
                     member["submit"] = _.find(submits, (submit: Submission) => {
                         return member.id == submit.member_id;
                     });
@@ -108,14 +109,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         member["score"] =  member["submit"].score;
 
                 });
-                ExamMember.populateExams(this, this.examMembers).subscribe(() => {
-                    this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
+                ExamMember.populateExams(this, examMembers).subscribe(() => {
+                    examMembers = _.filter(examMembers, (member: ExamMember) => {
                         return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
                     });
-                    this.examMembers.sort((member1:ExamMember, member2:ExamMember): any => {
+                    examMembers.sort((member1:ExamMember, member2:ExamMember): any => {
                         return (member1.exam.create_date.getTime() - member1.exam.create_date.getTime())
                     });
-                    var countApi = _.map(this.examMembers, (member: ExamMember) => {
+                    var countApi = _.map(examMembers, (member: ExamMember) => {
                         return ExamQuestion.__api__countByExam(member.exam_id);
                     });
                     BaseModel.bulk_count(this, ...countApi)
@@ -123,24 +124,24 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                             return _.flatten(jsonArray);
                         })
                         .subscribe(counts => {
-                            for (var i = 0; i < this.examMembers.length; i++) {
-                                this.examMembers[i]["question_count"] = counts[i];
+                            for (var i = 0; i < examMembers.length; i++) {
+                                examMembers[i]["question_count"] = counts[i];
                             }
-                            
+                            this.examMembers =  examMembers;
                         });
                 });
             });
     }
 
-    displayConferences() {
-        this.conferenceMembers = _.filter(this.conferenceMembers, (member: ConferenceMember) => {
+    displayConferences(conferenceMembers: ConferenceMember[]) {
+        conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
             return member.conference_id && member.conference_status == 'open';
         });
-        this.conferenceMembers.sort((member1:ConferenceMember, member2:ConferenceMember): any => {
+        conferenceMembers.sort((member1:ConferenceMember, member2:ConferenceMember): any => {
             return member1.create_date.getTime() - member2.create_date.getTime();
         });
-        ConferenceMember.populateConferences(this, this.conferenceMembers).subscribe(() => {
-            
+        ConferenceMember.populateConferences(this, conferenceMembers).subscribe(() => {
+            this.conferenceMembers = conferenceMembers;
         });
 
     }
@@ -155,15 +156,15 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             SurveyMember.__api__listByUser(this.currentUser.id)
             )
             .subscribe(jsonArray => {
-                this.courseMembers = CourseMember.toArray(jsonArray[0]);
-                this.examMembers = ExamMember.toArray(jsonArray[1]);
-                this.conferenceMembers = ConferenceMember.toArray(jsonArray[2]);
+                var courseMembers = CourseMember.toArray(jsonArray[0]);
+                var examMembers = ExamMember.toArray(jsonArray[1]);
+                var conferenceMembers = ConferenceMember.toArray(jsonArray[2]);
                 this.courses = Course.toArray(jsonArray[3]);
                 var surveys = Survey.toArray(jsonArray[4]);
                 var surveyMembers = SurveyMember.toArray(jsonArray[5]);
-                this.displayCourses();
-                this.displayExams();
-                this.displayConferences();
+                this.displayCourses(courseMembers);
+                this.displayExams(examMembers);
+                this.displayConferences(conferenceMembers);
                 this.popupSurvey(surveys, surveyMembers);
             });
     }
@@ -214,7 +215,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
     }
 
-    editContent(exam: Exam) {
+    editExamContent(exam: Exam) {
         this.examContentDialog.show(exam);
     }
 

@@ -64,7 +64,7 @@ export class AnswerPrintDialog extends BaseComponent {
         BaseModel
             .bulk_search(this,
                 Submission.__api__byMemberAndExam(this.member.id, this.exam.id),
-                ExamSetting.__api__all(),
+                ExamSetting.__api__byExam(this.exam.id),
                 QuestionSheet.__api__byExam(this.exam.id))
             .subscribe(jsonArr => {
                 var submits = Submission.toArray(jsonArr[0]);

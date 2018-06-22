@@ -11,9 +11,10 @@ import { TreeNode, MenuItem } from 'primeng/api';
 import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON } from '../../../shared/models/constants';
 import * as _ from 'underscore';
 import { SelectCoursesDialog } from '../../../shared/components/select-course-dialog/select-course-dialog.component';
-import { Course } from '../../../shared/models/elearning/course.model';
+import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -22,31 +23,40 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 })
 export class ExamSettingDialog extends BaseComponent {
 
-
     private setting: ExamSetting;
     private grades: ExamGrade[];
+    private display: boolean;
+    private exam: Exam;
 
     constructor() {
         super();
         this.setting =  new ExamSetting();
         this.grades = [];
+        this.display =  false;
     }
 
-    ngOnInit() {
-        BaseModel
-        .bulk_search(this,
-            ExamGrade.__api__all(),
-            ExamSetting.__api__all())
-        .subscribe(jsonArr=> {
-            this.grades =  ExamGrade.toArray(jsonArr[0]);
-            var settings = ExamSetting.toArray(jsonArr[1]);
-            if (settings.length)
-                this.setting = settings[0];
+    show(exam:Exam) {
+        this.display =  true;
+        this.exam = exam;
+        ExamGrade.listByExam(this, exam.id).subscribe(grades=> {
+            this.grades =  grades;
         })
+        ExamSetting.byExam(this, exam.id).subscribe((setting:ExamSetting)=> {
+            if (!setting) {
+                setting =  new ExamSetting();
+                setting.exam_id =  exam.id;
+            }
+            this.setting =  setting;
+        })
+    }
+
+    hide() {
+        this.display =  false;
     }
 
     addGrade() {
         var grade = new ExamGrade();
+        grade.exam_id =  this.exam.id;
         this.grades.push(grade);
     }
 

@@ -19,6 +19,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionSheetDialog } from '../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
 import { TreeNode } from 'primeng/api';
+import { ExamSettingDialog } from '../exam-setting/exam-setting.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -39,7 +40,7 @@ export class ExamContentDialog extends BaseComponent {
 	@ViewChild(SelectQuestionSheetDialog) selectSheetDialog: SelectQuestionSheetDialog;
 	@ViewChild(QuestionSheetEditorDialog) editorDialog: QuestionSheetEditorDialog;
 	@ViewChild(QuestionSheetSaveDialog) saveDialog: QuestionSheetSaveDialog;
-
+	@ViewChild(ExamSettingDialog) settingDialog: ExamSettingDialog;
 	constructor() {
 		super();
 		this.sheet = new QuestionSheet();
@@ -97,6 +98,10 @@ export class ExamContentDialog extends BaseComponent {
 
 	hide() {
 		this.display = false;
+	}
+
+	showSetting() {
+		this.settingDialog.show(this.exam);
 	}
 
 	previewSheet() {

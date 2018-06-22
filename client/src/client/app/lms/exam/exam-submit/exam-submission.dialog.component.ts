@@ -51,9 +51,9 @@ export class ExamSubmissionDialog extends BaseComponent {
         this.display = true;
         this.exam = exam;
         this.submission = submission;
-        ExamSetting.all(this).subscribe(settings => {
-            if (settings.length)
-                this.setting = settings[0];
+        ExamSetting.byExam(this,exam.id).subscribe(setting => {
+            if (setting)
+                this.setting = setting;
         });
     }
 

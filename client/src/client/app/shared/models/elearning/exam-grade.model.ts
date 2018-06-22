@@ -31,13 +31,23 @@ export class ExamGrade extends BaseModel {
         });
     }
 
-    static __api__byExam(examId: number): SearchReadAPI {
+    static __api__listByExam(examId: number): SearchReadAPI {
         return new SearchReadAPI(ExamGrade.Model, [],"[('exam_id','=',"+examId+")]");
     }
     
 
-    static byExam( context:APIContext, examId: number): Observable<any> {
+    static listByExam( context:APIContext, examId: number): Observable<any> {
         return ExamGrade.search(context,[],"[('exam_id','=',"+examId+")]");
+    }
+
+    static listByExams( context:APIContext, examIds: number[]): Observable<any> {
+        var apiList = _.map(examIds, id=> {
+            return ExamGrade.__api__listByExam(id);
+        });
+        return BaseModel.bulk_search(context, ...apiList).map(jsonArr=> {
+            jsonArr =  _.flatten(jsonArr);
+            return ExamGrade.toArray(jsonArr);
+        });
     }
 
 }

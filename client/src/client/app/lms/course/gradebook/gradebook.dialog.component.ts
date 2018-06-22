@@ -61,7 +61,7 @@ export class GradebookDialog extends BaseComponent {
         this.stats = [];
         this.reportUtils = new ReportUtils();
         this.currentUser = this.authService.UserProfile;
-        this.member =  new CourseMember();
+        this.member = new CourseMember();
     }
 
     ngOnInit() {
@@ -102,7 +102,7 @@ export class GradebookDialog extends BaseComponent {
         this.certDialog.show(certificate);
         this.certDialog.onCreateComplete.subscribe((obj: Certificate) => {
             this.certificate = obj;
-            this.member.completeCourse(this).subscribe(()=> {
+            this.member.completeCourse(this).subscribe(() => {
                 this.success('Congratulations! You have completed the course.');
             })
         });
@@ -122,7 +122,6 @@ export class GradebookDialog extends BaseComponent {
                 ClassExam.__api__listByClass(this.member.class_id),
                 ExamMember.__api__listByUser(this.currentUser.id),
                 Submission.__api__listByUser(this.currentUser.id),
-                ExamGrade.__api__all(),
                 Project.__api__listByClass(this.member.class_id),
                 ProjectSubmission.__api__listByMember(this.member.id))
             .subscribe(jsonArr => {
@@ -137,10 +136,9 @@ export class GradebookDialog extends BaseComponent {
                 var classExams = ClassExam.toArray(jsonArr[3]);
                 var examMembers = ExamMember.toArray(jsonArr[4]);
                 var submits = Submission.toArray(jsonArr[5]);
-                var grades = ExamGrade.toArray(jsonArr[6]);
-                this.displayExam(classExams, examMembers, submits, grades);
-                var projects = Project.toArray(jsonArr[7]);
-                var projectSubmits = ProjectSubmission.toArray(jsonArr[8]);
+                this.displayExam(classExams, examMembers, submits);
+                var projects = Project.toArray(jsonArr[6]);
+                var projectSubmits = ProjectSubmission.toArray(jsonArr[7]);
                 this.displayProject(projects, projectSubmits);
             });
     }
@@ -164,33 +162,38 @@ export class GradebookDialog extends BaseComponent {
         this.stats.push(record);
     }
 
-    displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission[], grades: ExamGrade[]) {
+    displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission[]) {
         var examIds = _.pluck(classExams, 'exam_id');
         members = _.filter(members, member => {
             return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
         });
-        ExamMember.populateExams(this, members).subscribe(exams => {
-            _.each(exams, (exam: ExamMember) => {
-                exam["member"] = _.find(members, (member: ExamMember) => {
-                    return member.exam_id == exam.id;
+        ExamGrade.listByExams(this, examIds).subscribe(grades => {
+            ExamMember.populateExams(this, members).subscribe(exams => {
+                _.each(exams, (exam: Exam) => {
+                    var examGrades = _.filter(grades, (grade: ExamGrade) => {
+                        return grade.exam_id == exam.id;
+                    });
+                    exam["member"] = _.find(members, (member: ExamMember) => {
+                        return member.exam_id == exam.id;
+                    });
+                    exam["submit"] = _.find(submits, (submit: Submission) => {
+                        return submit.member_id == exam["member"].id && submit.exam_id == exam.id;
+                    });
+                    if (!exam["submit"])
+                        exam["score"] = ''
+                    else {
+                        var grade = ExamGrade.gradeScore(examGrades, exam["submit"].score);
+                        if (grade)
+                            exam["grade"] = grade.name;
+                        exam["score"] = exam["submit"].score;
+                    }
+                    ExamQuestion.countByExam(this, exam.id).subscribe(count => {
+                        exam["question_count"] = count;
+                    });
                 });
-                exam["submit"] = _.find(submits, (submit: Submission) => {
-                    return submit.member_id == exam["member"].id && submit.exam_id == exam.id;
+                this.exams.sort((exam1, exam2): any => {
+                    return (exam1.create_date < exam2.create_date);
                 });
-                if (!exam["submit"])
-                    exam["score"] = ''
-                else {
-                    var grade = ExamGrade.gradeScore(grades, exam["submit"].score);
-                    if (grade)
-                        exam["grade"] = grade.name;
-                    exam["score"] = exam["submit"].score;
-                }
-                ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                    exam["question_count"] = count;
-                });
-            });
-            this.exams.sort((exam1, exam2): any => {
-                return (exam1.create_date < exam2.create_date);
             });
         });
     }

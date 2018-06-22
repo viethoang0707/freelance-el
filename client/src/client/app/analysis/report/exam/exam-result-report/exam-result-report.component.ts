@@ -60,7 +60,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         BaseModel
         .bulk_search(this,
             ExamMember.__api__listCandidateByExam(exam.id),
-            ExamGrade.__api__all(),
+            ExamGrade.__api__listByExam(exam.id),
             Submission.__api__listByExam(exam.id),
             ExamLog.__api__listByExam(exam.id))
         .subscribe(jsonArr=> {
