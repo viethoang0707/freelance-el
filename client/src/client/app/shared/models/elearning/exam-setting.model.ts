@@ -32,6 +32,5 @@ export class ExamSetting extends BaseModel{
 
     static byExam( context:APIContext, examId: number): Observable<any> {
         return ExamSetting.single(context,[],"[('exam_id','=',"+examId+")]");
-        });
     }
 }
