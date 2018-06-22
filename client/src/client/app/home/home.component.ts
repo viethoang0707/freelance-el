@@ -54,7 +54,13 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
         });
         this.appEvent.onLogin.subscribe((user:User)=> {
             UserLog.login(this, user.id).subscribe();
+            this.success(`Hello ${user.name}`)
             this.settingService.ViewMode =  user.IsAdmin?'admin':'lms'
+        });
+        this.appEvent.onUnauthorizedAccess.subscribe(()=> {
+            this.error('Access denied. You must login again!')
+            this.authService.logout();
+            this.router.navigate(['/auth']);
         });
         router.navigate(['/dashboard']);
     }

@@ -30,7 +30,6 @@ import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';import { ProjectListDialog } from '../project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { ClassSurveyListDialog } from '../class-survey-list/class-survey-list.dialog.component';
-import { MessageDialog } from '../course-message/course-message.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -65,7 +64,6 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
 	@ViewChild(ClassSurveyListDialog) surveyListDialog : ClassSurveyListDialog;
-	@ViewChild(MessageDialog) messageDialog: MessageDialog;
 
 
 	constructor(private router: Router, private route: ActivatedRoute) {
@@ -247,10 +245,5 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-
-	sendMessage() {
-		if (this.selectedClass) 
-			this.messageDialog.show(this.selectedClass);
-	}
 }
 

@@ -17,11 +17,13 @@ export class AppEventManager {
     private onLoginReceiver: Subject<any> = new Subject();
     private onLogoutReceiver: Subject<any> = new Subject();
     private onTokenExpiredReceiver: Subject<any> = new Subject();
+    private onUnauthorizedAccessReceiver:Subject<any> = new Subject();
     onStartHTTP: Observable<any> = this.onStartHTTPReceiver.asObservable();
     onFinishHTTP: Observable<any> = this.onFinishHTTPReceiver.asObservable();
     onLogin: Observable<any> = this.onLoginReceiver.asObservable();
     onLogout: Observable<any> = this.onLogoutReceiver.asObservable();
     onTokenExpired: Observable<any> = this.onTokenExpiredReceiver.asObservable();
+    onUnauthorizedAccess: Observable<any> = this.onUnauthorizedAccessReceiver.asObservable();
 
     constructor() {
     }
@@ -44,6 +46,10 @@ export class AppEventManager {
 
     tokenExpired() {
         this.onTokenExpiredReceiver.next();
+    }
+
+    accessDenied() {
+        this.onUnauthorizedAccessReceiver.next();
     }
 
 }

@@ -28,6 +28,8 @@ export class ModelAPIService {
             })
             .catch( (e) => {
                 console.log(e);
+                if (e["status"]==401)
+                    this.appEvent.accessDenied();
                 return Observable.throw(e);
             } );
     }
