@@ -17,6 +17,7 @@ import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe } from '../../../shared/pipes/time.pipe';
 import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
+import { LMSProfileDialog } from '../../../account/user/lms-profile/lms-profile-dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -36,6 +37,7 @@ export class ClassManageDialog extends BaseComponent {
 	private viewMode: any;
 	private courseUnits: CourseUnit[];
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
+	@ViewChild(LMSProfileDialog) lmsProfileDialog : LMSProfileDialog;
 
 	constructor(private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -63,6 +65,11 @@ export class ClassManageDialog extends BaseComponent {
 	viewGradebook() {
 		if (this.selectedRecord)
 			this.gradebookDialog.show(this.selectedRecord);
+	}
+
+	viewLMSProfile() {
+		if (this.selectedRecord)
+			this.lmsProfileDialog.show(this.selectedRecord);
 	}
 
 	loadMemberStats(members: CourseMember[], syl: CourseSyllabus, logs: CourseLog[], certificates: Certificate[]) {

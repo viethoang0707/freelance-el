@@ -77,10 +77,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 return (course1.create_date.getTime() - course2.create_date.getTime());
             });
             _.each(this.courses, (course: Course) => {
-                course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
+                course["student"] = _.find(courseMembers, (member: CourseMember) => {
                     return member.course_id == course.id && member.role == 'student';
                 });
-                course["teacher"] = _.find(this.courseMembers, (member: CourseMember) => {
+                course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
                     return member.course_id == course.id && member.role == 'teacher';
                 });
                 course["isAuthor"] = course.author_id == this.currentUser.id;
@@ -203,7 +203,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     this.router.navigate(['/lms/courses/manage', course.id]);
                 else
                     this.error('The course has not been published');
-                
             });
         }
         else {

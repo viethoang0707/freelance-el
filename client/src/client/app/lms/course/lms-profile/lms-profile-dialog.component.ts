@@ -22,42 +22,29 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 
 @Component({
 	moduleId: module.id,
-	selector: 'user-profile-dialog',
-	templateUrl: 'profile-dialog.component.html',
-	styleUrls: ['profile-dialog.component.css'],
+	selector: 'lms-profile-dialog',
+	templateUrl: 'lms-profile-dialog.component.html',
+	styleUrls: ['lms-profile-dialog.component.css'],
 })
-export class UserProfileDialog extends BaseDialog<User> {
+export class LMSProfileDialog extends BaseDialog<User> {
 
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 	EXAM_MEMBER_ENROLL_STATUS = EXAM_MEMBER_ENROLL_STATUS;
-
-	private tree: TreeNode[];
-	private selectedNode: TreeNode;
+	
 	private courseMembers: CourseMember[];
 	private examMembers: ExamMember[];
 	private certificates: Certificate[];
 	private skills: Achivement[];
-	private treeUtils: TreeUtils;
-	private groups: Group[];
-	private currentUser: User;
 
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
 	constructor() {
 		super();
-		this.treeUtils = new TreeUtils();
 		this.courseMembers = [];
 		this.skills = [];
 		this.examMembers = [];
-		this.currentUser =  this.authService.UserProfile;
 	}
 
-	nodeSelect(event: any) {
-		if (this.selectedNode) {
-			this.object.group_id = this.selectedNode.data.id;
-			this.object.group_id__DESC__ = this.selectedNode.data.name;
-		}
-	}
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
@@ -66,32 +53,22 @@ export class UserProfileDialog extends BaseDialog<User> {
 			this.examMembers = [];
 			BaseModel
 			.bulk_search(this,
-				Group.__api__listUserGroup(),
 				CourseMember.__api__listByUser(object.id),
 				Certificate.__api__listByUser(object.id),
 				Achivement.__api__listByUser(object.id),
-				ExamMember.__api__listByUser(this.currentUser.id),
-	            Submission.__api__listByUser(this.currentUser.id))
+				ExamMember.__api__listByUser(object.id),
+	            Submission.__api__listByUser(object.id))
 			.subscribe((jsonArr)=> {
-				this.groups = Group.toArray(jsonArr[0]);
-				this.courseMembers =  CourseMember.toArray(jsonArr[1]);
-				this.certificates =  Certificate.toArray(jsonArr[2]);
-				this.skills =  Achivement.toArray(jsonArr[3]);
-				this.examMembers = ExamMember.toArray(jsonArr[4]);
-                var submits = Submission.toArray(jsonArr[5]);
+				this.courseMembers =  CourseMember.toArray(jsonArr[0]);
+				this.certificates =  Certificate.toArray(jsonArr[1]);
+				this.skills =  Achivement.toArray(jsonArr[2]);
+				this.examMembers = ExamMember.toArray(jsonArr[3]);
+                var submits = Submission.toArray(jsonArr[4]);
                 this.displayExams(submits);
-				this.displayGroupTree();
 				this.displayCourseHistory();
 				this.displaySkills();
 			});
 		});
-	}
-
-	displayGroupTree() {
-		this.tree = this.treeUtils.buildGroupTree(this.groups);
-		if (this.object.group_id) {
-			this.selectedNode = this.treeUtils.findTreeNode(this.tree, this.object.group_id);
-		}
 	}
 
 	displayCourseHistory() {

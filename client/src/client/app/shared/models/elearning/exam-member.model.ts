@@ -18,6 +18,7 @@ export class ExamMember extends BaseModel{
         super();
         
         this.exam_id = undefined;
+        this.exam_name = undefined;
         this.date_register = undefined;
         this.status = undefined;
         this.enroll_status = undefined;
@@ -33,6 +34,7 @@ export class ExamMember extends BaseModel{
     }
 
     exam_id: number;
+    exam_name: string;
     exam: Exam;
     user_id: number;
     status: string;

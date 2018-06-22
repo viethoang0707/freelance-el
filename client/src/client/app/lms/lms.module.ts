@@ -38,13 +38,14 @@ import { SurveyStudyDialog} from './survey/survey-study/survey-study.dialog.comp
 import { CourseSearchComponent } from './course/course-search/course-search.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { SurveyListComponent} from './survey/survey-list/survey-list.component';
+import { LMSProfileDialog } from './course/lms-profile/lms-profile-dialog.component';
 
 import { WebcamModule } from 'ngx-webcam';
 
 @NgModule({
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,AnalysisModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,AnswerPrintDialog,
-    				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,
+    				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,LMSProfileDialog,
     				 ExamSubmissionDialog,ClassExamListDialog,ExamManageComponent,QuestionSheetPrintDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,ProjectSubmissionDialog,

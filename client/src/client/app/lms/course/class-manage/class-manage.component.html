@@ -4,6 +4,7 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{ 'View'|translate}}" class="purple-btn " icon="ui-icon-visibility" (click)="viewGradebook()" *ngIf="selectedRecord"></button>
+                    <button pButton type="button" label="{{ 'History'|translate}}" class="purple-btn " icon="ui-icon-visibility" (click)="viewLMSProfile()" *ngIf="selectedRecord"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <p-selectButton [options]="viewModes" [(ngModel)]="viewMode"></p-selectButton>
@@ -99,6 +100,7 @@
             </div>
         </div>
     </p-scrollPanel>
+    <lms-profile-dialog></lms-profile-dialog>
     <gradebook-dialog></gradebook-dialog>
     <p-footer>
         <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
