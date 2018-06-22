@@ -35,6 +35,10 @@ export class LMSProfileDialog extends BaseDialog<User> {
 	private examMembers: ExamMember[];
 	private certificates: Certificate[];
 	private skills: Achivement[];
+	private _courseMembers: CourseMember[];
+	private _examMembers: ExamMember[];
+	private _certificates: Certificate[];
+	private _skills: Achivement[];
 
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
@@ -43,6 +47,10 @@ export class LMSProfileDialog extends BaseDialog<User> {
 		this.courseMembers = [];
 		this.skills = [];
 		this.examMembers = [];
+
+		this._courseMembers = [];
+		this._skills = [];
+		this._examMembers = [];
 	}
 
 
@@ -50,6 +58,29 @@ export class LMSProfileDialog extends BaseDialog<User> {
 		this.onShow.subscribe(object => {
 			this.courseMembers = [];
 			this.skills = [];
+			this.examMembers = [];
+
+
+			CourseMember.listByUser(this, object.user_id).subscribe(courseMembers => {
+				this._courseMembers = courseMembers;
+			});
+
+			this._courseMembers = _.filter(this._courseMembers, (member: CourseMember) => {
+				return member.role == 'student';
+			});
+			_.each(this._courseMembers, (member: CourseMember) => {
+				member["certificate"] = _.find(this.certificates, (cert: Certificate) => {
+					return cert.member_id == member.id;
+				});
+			});
+
+
+			ExamMember.listByUser(this, object.user_id).subscribe(examMembers => {
+				this._examMembers = examMembers;
+			});
+
+
+			this._skills = [];
 			this.examMembers = [];
 			BaseModel
 				.bulk_search(this,
@@ -120,30 +151,24 @@ export class LMSProfileDialog extends BaseDialog<User> {
 	}
 
 	exportCourse() {
-		let output = _.map(this.courseMembers, courseMember => {
+		let output = _.map(this._courseMembers, courseMember => {
 			return { 'Course': courseMember['course_name'], 'Register date': courseMember['date_register'], 'Enrollment status': courseMember['enroll_status'], 'Certificate': courseMember['certificate'] };
 		})
-
-		let header = []
-		this.excelService.exportAsExcelFile(header.concat(output), 'course_history_report');
+		this.excelService.exportAsExcelFile(output, 'course_history_report');
 	}
 
 	exportExam() {
-		let output = _.map(this.courseMembers, courseMember => {
+		let output = _.map(this._examMembers, courseMember => {
 			return { 'Exam': courseMember['exam_name'], 'Register date': courseMember['date_register'], 'Enrollment status': courseMember['enroll_status'], 'Grade': courseMember['grade'] };
 		})
-
-		let header = []
-		this.excelService.exportAsExcelFile(header.concat(output), 'exam_history_report');
+		this.excelService.exportAsExcelFile(output, 'exam_history_report');
 	}
 
 	exportSkill() {
 		let output = _.map(this.courseMembers, courseMember => {
 			return { 'Competency': courseMember['competency_name'], 'Level': courseMember['competency_level_name'], 'Date acquired': courseMember['date_acquire'] };
 		})
-
-		let header = []
-		this.excelService.exportAsExcelFile(header.concat(output), 'skill_report');
+		this.excelService.exportAsExcelFile(output, 'skill_report');
 	}
 
 }
