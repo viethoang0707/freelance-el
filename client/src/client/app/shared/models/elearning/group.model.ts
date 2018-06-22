@@ -63,7 +63,7 @@ export class Group extends BaseModel{
         if (Cache.hit(Group.Model))
             return Observable.of(Cache.load(Group.Model)).map(groups=> {
                 return _.filter(groups, (group:Group)=> {
-                    return group.category == 'organization';
+                    return group.category == 'course';
                 });
             });
         return Group.search(context,[],"[('category','=','course')]");
