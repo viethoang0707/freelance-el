@@ -4,19 +4,19 @@ export const GENDER = { 'male': 'Male', 'female': 'Female', 'other': 'Other' };
 export const GROUP_CATEGORY = { USER: 'organization', QUESTION: 'question', COURSE: 'course', COMPETENCY: 'competency' };
 export const SERVER_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const DEFAULT_DATE_LOCALE = {
-	firstDayOfWeek: 0,
-	dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-	dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-	dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-	monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-	monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-	today: 'Today',
-	clear: 'Clear'
+    firstDayOfWeek: 0,
+    dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    today: 'Today',
+    clear: 'Clear'
 };
 
-export const EXAM_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
-export const CLASS_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
-export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM' , SURVEY: 'SURVEY',COMPETENCY: 'COMPETENCY' };
+export const EXAM_STATUS = { 'open': 'Open', 'closed': 'Closed' };
+export const CLASS_STATUS = { 'open': 'Open', 'closed': 'Closed' };
+export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM', SURVEY: 'SURVEY', COMPETENCY: 'COMPETENCY' };
 export const EXPORT_DATETIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
 export const EXPORT_DATE_FORMAT = "dd-MM-yyyy";
 export const EXAM_MEMBER_ROLE = { 'candidate': 'Candidate', 'supervisor': 'Supervisor' };
@@ -32,19 +32,19 @@ export const COURSE_MEMBER_ROLE = { 'student': 'Student', 'teacher': 'Teacher' }
 export const COURSE_MEMBER_STATUS = { 'active': 'Active', 'withdraw': 'Withdraw', 'suspend': 'Suspended' };
 export const COURSE_MEMBER_ENROLL_STATUS = { 'in-study': 'In-study', 'complete': 'Complete', 'registered': 'Registered' };
 export const QUESTION_TYPE = { 'sc': 'Single-choice', 'mc': 'Multiple-choice', 'fb': 'Fill-the-blank', 'rate': 'Rating', 'ext': 'Open-ended' };
-export const QUESTION_LEVEL = {'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard'};
+export const QUESTION_LEVEL = { 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' };
 export const LANGS = { 'vn': 'Vietnamese', 'gb': 'English' };
 export const TICKET_STATUS = { 'open': 'Open', 'approved': 'Approved', 'rejected': 'Rejected' };
 export const EXAM_TIME_WARNING = 60000;
 export const DEFAULT_LANG = 'gb';
 export const SCHEDULER_HEADER = {
-            left: 'prev, today, next',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        }
+    left: 'prev, today, next',
+    center: 'title',
+    right: 'month,agendaWeek,agendaDay'
+}
 export const COLOR_BAND = ["#FF6384", "#36A2EB", "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099"];
-export const PROJECT_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
-export const SURVEY_STATUS = { 'open': 'Opem', 'closed': 'Closed'};
+export const PROJECT_STATUS = { 'open': 'Open', 'closed': 'Closed' };
+export const SURVEY_STATUS = { 'open': 'Open', 'closed': 'Closed' };
 export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };
 export const PRINT_DIALOG_STYLE = `<style>
                   //........Customized style.......
