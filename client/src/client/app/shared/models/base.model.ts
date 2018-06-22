@@ -43,6 +43,11 @@ export abstract class BaseModel {
         this.write_uid__DESC__ = undefined;
     }
 
+
+    get IsNew() {
+        return this.id != null;
+    }
+
     static get Model(): string {
         return Reflect.getMetadata(MODEL_METADATA_KEY, this);
     }
@@ -155,7 +160,7 @@ export abstract class BaseModel {
                 var api = apiList[i];
                 var object =  MapUtils.deserializeModel(api.params["model"], api.params["values"]);
                 object["id"] == +resp[i]["id"];
-                Cache.objectChage(object, 'CREATE');
+                Cache.objectCreate(object);
             }
         });
     }
@@ -168,7 +173,7 @@ export abstract class BaseModel {
             for(var i=0;i<apiList.length;i++) {
                 var api = apiList[i];
                 var object =  MapUtils.deserializeModel(api.params["model"], api.params["values"]);
-                Cache.objectChage(object, 'UPDATE');
+                Cache.objectUpdate(object;
             }
         });
     }
@@ -180,8 +185,7 @@ export abstract class BaseModel {
         return context.apiService.execute(this.__api__bulk_delete(apiList), token).do(()=> {
             for(var i=0;i<apiList.length;i++) {
                 var api = apiList[i];
-                var object = api.params["values"];
-                Cache.objectChage(object, 'DELETE');
+                Cache.objectDelete(api.params["model"], api.params["id"]);
             }
         });
     }
@@ -197,7 +201,7 @@ export abstract class BaseModel {
                 var model = api.params["model"];
                 _.each(objArr, jsonObj=> {
                     var object =  MapUtils.deserializeModel(model, jsonObj);
-                    Cache.objectChage(object, 'UPDATE');
+                    Cache.objectUpdate(object);
                 });
             }
         });
@@ -243,7 +247,7 @@ export abstract class BaseModel {
         if (this.id) {
             return BaseModel.get(context, this.id).do(object=> {
                 Object.assign(this, object);
-                Cache.objectChage(this, 'UPDATE');
+                Cache.objectUpdate(this);
             });
         } else
             return Observable.of(this)
@@ -255,12 +259,12 @@ export abstract class BaseModel {
         if (!this.id) {
             return context.apiService.execute(this.__api__create(), token).map(data => {
                 this.id = data.id;
-                Cache.objectChage(this, 'CREATE');
+                Cache.objectCreate(this);
                 return this;
             });
         } else {
             return context.apiService.execute(this.__api__update(),token).do(() => {
-                Cache.objectChage(this, 'UPDATE');
+                Cache.objectUpdate(this);
             });
         }
     }  
@@ -268,7 +272,7 @@ export abstract class BaseModel {
     delete(context: APIContext): Observable<any> {
         var token = context.authService.LoginToken;
         return context.apiService.execute(this.__api__delete(), token).do(() => {
-            Cache.objectChage(this, 'DELETE');
+            Cache.objectDelete(this.Model, this.id);
         });
     }
 
@@ -350,7 +354,7 @@ export abstract class BaseModel {
             items = this.toArray(items);
             if (items && items.length) {
                 var record = items[0];
-                Cache.objectChage(items, 'UPDATE');
+                Cache.objectUpdate(items);
                 return record;
             } else
                 return null;

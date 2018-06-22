@@ -60,24 +60,25 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
     }
 
     saveWithLevel() {
+        var isNew =  this.object.IsNew;
         this.object.save(this).subscribe(() => {
             _.each(this.levels, (level: CompetencyLevel) => {
                 level.competency_id = this.object.id;
             });
             var existLevels = _.filter(this.levels, (level:CompetencyLevel)=> {
-                return level.id != null && (level.name && level.name !='');
+                return !level.IsNew && (level.name && level.name !='');
             });
             var newLevels = _.filter(this.levels, (level:CompetencyLevel)=> {
-                return level.id == null && (level.name && level.name !='');
+                return level.IsNew && (level.name && level.name !='');
             });
             var deleteLevels = _.filter(this.levels, (level:CompetencyLevel)=> {
-                return level.id == null && (!level.name || level.name ==='');
+                return !level.IsNew && (!level.name || level.name ==='');
             });
             Observable.forkJoin(CompetencyLevel.updateArray(this, existLevels),
                 CompetencyLevel.createArray(this, newLevels), 
                 CompetencyLevel.deleteArray(this, deleteLevels))
             .subscribe(()=> {
-                if (this.isNew) {
+                if (isNew) {
                     this.onCreateCompleteReceiver.next(this.object);
                     this.success(this.translateService.instant('Object created successfully.'));
                     this.hide();

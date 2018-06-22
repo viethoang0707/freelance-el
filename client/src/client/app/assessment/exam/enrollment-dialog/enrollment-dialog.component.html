@@ -5,7 +5,7 @@
         <div class="ui-g-12 ">
           <p-toolbar>
             <div class="ui-toolbar-group-left ">
-              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMember('candidate') "></button>
+              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addCandidate() " name="addCandidate"></button>
               <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedCandidates) "
                 *ngIf="selectedCandidates && selectedCandidates.length "></button>
             </div>
@@ -58,7 +58,7 @@
         <div class="ui-g-12 ">
           <p-toolbar>
             <div class="ui-toolbar-group-left ">
-              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMember('supervisor') "></button>
+              <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addSupervisor() " name="addSupervisor"></button>
               <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedSupervisors) "
                 *ngIf="selectedSupervisors && selectedSupervisors.length"></button>
             </div>

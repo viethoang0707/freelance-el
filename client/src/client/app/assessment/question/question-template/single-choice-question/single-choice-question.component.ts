@@ -52,10 +52,10 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 				option.question_id = this.question.id;
 			});
 			var existOptions = _.filter(this.options, (option:QuestionOption)=> {
-				return option.id != null;
+				return !option.IsNew;
 			});
 			var newOptions = _.filter(this.options, (option:QuestionOption)=> {
-				return option.id == null;
+				return option.IsNew;
 			});
 			return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.createArray(this, newOptions));
 		});

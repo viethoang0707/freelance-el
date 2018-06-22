@@ -56,10 +56,10 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 				option.question_id = this.question.id;
 			});
 			var existOptions = _.filter(this.options, (option:QuestionOption)=> {
-				return option.id != null;
+				return !option.IsNew;
 			});
 			var newOptions = _.filter(this.options, (option:QuestionOption)=> {
-				return option.id == null;
+				return option.IsNew;
 			});
 			return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.createArray(this, newOptions));
 		});

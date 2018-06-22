@@ -6,23 +6,31 @@ export abstract class Cache {
 
     private static inlineStorage = {};
 
-    static objectChage(record, method) {
-        var model = record.Model;
-        if (this.hit(model))
-            this.updateCache(model, record, method);
+    static objectCreate(record:any) {
+         var model = record.Model;
+        if (this.hit(model)) {
+          var records = this.load(model);
+        records.push(record);
+        }
+        
     }
 
-    static updateCache(model:string, record, method:string) {
-        var records = this.load(model);
-         if (method == 'CREATE')
-              records.push(record);
-         if (method == 'DELETE') {
-            records = _.reject(records, obj=> {
-                return obj["id"] == record["id"];
+    static objectDelete(model:string, id:number) {
+        if (this.hit(model)) {
+          var records = this.load(model);
+        records = _.reject(records, obj=> {
+                return obj["id"] == id;
             });
-            this.save(model,records);
+         this.save(model,records);
         }
+        
     }
+
+    static objectUpdate(record:any) {
+      
+    }
+
+
 
 
     static save(key:string, val:any) {

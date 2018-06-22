@@ -66,9 +66,6 @@ export class MenuService {
                 },
                 {
                     label: 'Settings', icon: 'settings',code:'SETTING',
-                    items: [
-                        { label: 'Exam', routerLink: ['/setting/exam'],code:'SETTING-EXAM' },
-                    ]
                 }
             ];
 

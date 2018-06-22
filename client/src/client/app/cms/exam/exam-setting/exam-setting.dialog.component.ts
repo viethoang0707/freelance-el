@@ -27,17 +27,21 @@ export class ExamSettingDialog extends BaseComponent {
     private grades: ExamGrade[];
     private display: boolean;
     private exam: Exam;
+    private deletedGrades: ExamGrade[];
 
     constructor() {
         super();
         this.setting =  new ExamSetting();
         this.grades = [];
+        this.deletedGrades = [];
         this.display =  false;
     }
 
     show(exam:Exam) {
         this.display =  true;
         this.exam = exam;
+        this.grades = [];
+        this.deletedGrades = [];
         ExamGrade.listByExam(this, exam.id).subscribe(grades=> {
             this.grades =  grades;
         })
@@ -62,11 +66,7 @@ export class ExamSettingDialog extends BaseComponent {
 
     removeGrade(grade: ExamGrade) {
         if (grade.id) {
-            grade.delete(this).subscribe(() => {
-                this.grades = _.reject(this.grades, (obj) => {
-                    return obj == grade;
-                });
-            })
+            this.deletedGrades.push(grade);
         } else
             this.grades = _.reject(this.grades, (obj) => {
                 return obj == grade;
@@ -74,11 +74,27 @@ export class ExamSettingDialog extends BaseComponent {
     }
 
     saveExamSetting() {
-        var subscriptions = _.map(this.grades, grade=> {
-            return grade.save(this);
-        })
-        subscriptions.push(this.setting.save(this));
-        Observable.forkJoin(subscriptions).subscribe(()=> {
+        var deleteApiList = _.map(this.deletedGrades, (grade:ExamGrade)=> {
+            return grade.__api__delete();
+        });
+        var createApiList = [];
+        if (this.setting.IsNew)
+            createApiList.push(this.setting.__api__create());
+        _.each(this.grades,(grade:ExamGrade)=> {
+            if (grade.IsNew)
+                createApiList.push(grade.__api__create());
+        });
+        var updateApiList = [];
+        if (!this.setting.IsNew)
+            updateApiList.push(this.setting.__api__update());
+        _.each(this.grades,(grade:ExamGrade)=> {
+            if (!grade.IsNew)
+                updateApiList.push(grade.__api__update());
+        });
+        Observable.forkJoin(BaseModel.bulk_create(this,...createApiList),
+            BaseModel.bulk_update(this,...updateApiList), BaseModel.bulk_delete(this, ...deleteApiList))
+        .subscribe(()=> {
+            this.hide();
             this.success(this.translateService.instant('Setting saved successfully'));
         })
     }
