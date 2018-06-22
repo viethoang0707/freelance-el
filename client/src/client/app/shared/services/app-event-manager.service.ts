@@ -34,8 +34,8 @@ export class AppEventManager {
         this.onFinishHTTPReceiver.next();
     }
 
-    userLogin() {
-        this.onLoginReceiver.next();
+    userLogin(user:User) {
+        this.onLoginReceiver.next(user);
     }
 
     userLogout() {

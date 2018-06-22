@@ -10,15 +10,11 @@ export class Token extends BaseModel{
         super();
 		
 		this.code = undefined;
-		this.login = undefined;
-		this.email = undefined;
 		this.date_expire = undefined;
         this.cloud_id = undefined;
 	}
 
     code:string;
-    login:string;
-    email:string;
     cloud_id:number;
     date_expire: number;
 

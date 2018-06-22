@@ -9,6 +9,7 @@ import { AppEventManager } from '../shared/services/app-event-manager.service';
 import { UserLog } from '../shared/models/elearning/log.model';
 import { Group } from '../shared/models/elearning/group.model';
 import { BaseModel } from '../shared/models/base.model';
+import { User } from '../shared/models/elearning/user.model';
 
 @Component({
     moduleId: module.id,
@@ -51,10 +52,9 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.authService.logout();
             this.router.navigate(['/auth']);
         });
-        this.appEvent.onLogin.subscribe(()=> {
-            // Pre-loading cache
-            UserLog.login(this, this.authService.UserProfile.id).subscribe();
-            BaseModel.bulk_search(this,Group.__api__all()).subscribe();
+        this.appEvent.onLogin.subscribe((user:User)=> {
+            UserLog.login(this, user.id).subscribe();
+            this.settingService.ViewMode =  user.IsAdmin?'admin':'lms'
         });
         router.navigate(['/dashboard']);
     }
