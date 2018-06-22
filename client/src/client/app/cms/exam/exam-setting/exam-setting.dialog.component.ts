@@ -31,72 +31,71 @@ export class ExamSettingDialog extends BaseComponent {
 
     constructor() {
         super();
-        this.setting =  new ExamSetting();
+        this.setting = new ExamSetting();
         this.grades = [];
         this.deletedGrades = [];
-        this.display =  false;
+        this.display = false;
     }
 
-    show(exam:Exam) {
-        this.display =  true;
+    show(exam: Exam) {
+        this.display = true;
         this.exam = exam;
         this.grades = [];
         this.deletedGrades = [];
-        ExamGrade.listByExam(this, exam.id).subscribe(grades=> {
-            this.grades =  grades;
+        ExamGrade.listByExam(this, exam.id).subscribe(grades => {
+            this.grades = grades;
         })
-        ExamSetting.byExam(this, exam.id).subscribe((setting:ExamSetting)=> {
+        ExamSetting.byExam(this, exam.id).subscribe((setting: ExamSetting) => {
             if (!setting) {
-                setting =  new ExamSetting();
-                setting.exam_id =  exam.id;
+                setting = new ExamSetting();
+                setting.exam_id = exam.id;
             }
-            this.setting =  setting;
+            this.setting = setting;
         })
     }
 
     hide() {
-        this.display =  false;
+        this.display = false;
     }
 
     addGrade() {
         var grade = new ExamGrade();
-        grade.exam_id =  this.exam.id;
+        grade.exam_id = this.exam.id;
         this.grades.push(grade);
     }
 
     removeGrade(grade: ExamGrade) {
-        if (grade.id) {
+        if (grade.id)
             this.deletedGrades.push(grade);
-        } else
-            this.grades = _.reject(this.grades, (obj) => {
-                return obj == grade;
-            });
+        this.grades = _.reject(this.grades, (obj) => {
+            return obj == grade;
+        });
     }
 
     saveExamSetting() {
-        var deleteApiList = _.map(this.deletedGrades, (grade:ExamGrade)=> {
+        var deleteApiList = _.map(this.deletedGrades, (grade: ExamGrade) => {
             return grade.__api__delete();
         });
         var createApiList = [];
         if (this.setting.IsNew)
             createApiList.push(this.setting.__api__create());
-        _.each(this.grades,(grade:ExamGrade)=> {
+        _.each(this.grades, (grade: ExamGrade) => {
             if (grade.IsNew)
                 createApiList.push(grade.__api__create());
         });
         var updateApiList = [];
         if (!this.setting.IsNew)
             updateApiList.push(this.setting.__api__update());
-        _.each(this.grades,(grade:ExamGrade)=> {
+        _.each(this.grades, (grade: ExamGrade) => {
             if (!grade.IsNew)
                 updateApiList.push(grade.__api__update());
         });
-        Observable.forkJoin(BaseModel.bulk_create(this,...createApiList),
-            BaseModel.bulk_update(this,...updateApiList), BaseModel.bulk_delete(this, ...deleteApiList))
-        .subscribe(()=> {
-            this.hide();
-            this.success(this.translateService.instant('Setting saved successfully'));
-        })
+        Observable.forkJoin(BaseModel.bulk_create(this, ...createApiList),
+            BaseModel.bulk_update(this, ...updateApiList), BaseModel.bulk_delete(this, ...deleteApiList))
+            .subscribe(() => {
+                this.hide();
+                this.success(this.translateService.instant('Setting saved successfully'));
+            })
     }
 }
 

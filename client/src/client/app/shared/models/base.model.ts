@@ -45,7 +45,7 @@ export abstract class BaseModel {
 
 
     get IsNew() {
-        return this.id != null;
+        return this.id == null;
     }
 
     static get Model(): string {
