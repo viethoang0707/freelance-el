@@ -56,21 +56,21 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     }
 
     displaySurveys(members: SurveyMember[], submits: SurveySubmission[]) {
-        this.surveyMembers = _.filter(members, (member: SurveyMember) => {
+        members = _.filter(members, (member: SurveyMember) => {
             return (member.survey_id!=null)
         });
-        this.surveyMembers.sort((member1, member2): any => {
+        members.sort((member1, member2): any => {
             return (member1.survey.create_date < member1.survey.create_date)
         });
-        SurveyMember.populateSurveys(this, this.surveyMembers).subscribe(() => {
-            _.each(this.surveyMembers, (member: SurveyMember) => {
+        SurveyMember.populateSurveys(this, members).subscribe(() => {
+            _.each(members, (member: SurveyMember) => {
                 member["submit"] = _.find(submits, (submit: SurveySubmission) => {
                     return submit.member_id == member.id && submit.survey_id == member.survey_id;
                 });
                 member["surveyMemberData"] = {};
             });
-
-            var countApi = _.map(this.surveyMembers, (member: SurveyMember) => {
+            this.surveyMembers =  members;
+            var countApi = _.map(members, (member: SurveyMember) => {
                 return SurveyQuestion.__api__countBySurvey(member.survey_id);
             });
             BaseModel.bulk_count(this, ...countApi)
@@ -78,21 +78,10 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
                     return _.flatten(jsonArray);
                 })
                 .subscribe(counts => {
-                    for (var i = 0; i < this.surveyMembers.length; i++) {
-                        this.surveyMembers[i]["question_count"] = counts[i];
+                    for (var i = 0; i < members.length; i++) {
+                        members[i]["question_count"] = counts[i];
                     }
                 });
-            var listApi = _.map(this.surveyMembers, (member: SurveyMember) => {
-                return SurveyMember.__api__listBySurvey(member.survey_id);
-            });
-            BaseModel.bulk_search(this, ...listApi)
-                .subscribe(jsonArr => {
-                    for (var i = 0; i < this.surveyMembers.length; i++) {
-                        var members = SurveyMember.toArray(jsonArr[i]);
-                        this.surveyMembers[i]["examMemberData"] = this.reportUtils.analyseSurveyMember(this.surveyMembers[i].survey, members);
-                    }
-                });
-
         });   
     }
 

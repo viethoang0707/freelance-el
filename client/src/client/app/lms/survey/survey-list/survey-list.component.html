@@ -21,32 +21,6 @@
               </p-accordionTab>
             </p-accordion>
             
-            <div class="status-bars" *ngIf="member.survey.supervisor_id==currentUser.id" >
-            <!-- <div class="card"> -->
-              <ul>
-                <li>
-                  <div class="status-bar status-bar-2">
-                    <div class="status-bar-value" style="width:{{member.surveyMemberData.percentage_member_registered}}%">{{member.surveyMemberData.percentage_member_registered}}%</div>
-                  </div>
-                  <span>{{'Registered'|translate}}</span>
-                  <i class="material-icons">&#xE86C;</i>
-                </li>
-                <li>
-                  <div class="status-bar status-bar-3">
-                    <div class="status-bar-value" style="width:{{member.surveyMemberData.percentage_member_inprogress}}%">{{member.surveyMemberData.percentage_member_inprogress}}%</div>
-                  </div>
-                  <span>{{'In-progress'|translate}}</span>
-                  <i class="material-icons">&#xE868;</i>
-                </li>
-                <li>
-                  <div class="status-bar status-bar-4">
-                    <div class="status-bar-value" style="width:{{member.surveyMemberData.percentage_member_completed}}%">{{member.surveyMemberData.percentage_member_completed}}</div>
-                  </div>
-                  <span>{{'Completed'|translate}}</span>
-                  <i class="material-icons">&#xE8B2;</i>
-                </li>
-              </ul>
-            </div>
           <!-- </div> -->
           </div>
           <div class="ui-g-4">
