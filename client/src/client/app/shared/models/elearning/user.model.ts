@@ -82,6 +82,10 @@ export class User extends BaseModel {
         return new SearchReadAPI(User.Model, [], "[('login','!=','admin')]");
     }
 
+    static all(context:APIContext):Observable<any[]> {
+        return User.search(context, [], "[('login','!=','admin')]");
+    }
+
 
     static listAllAdmin(context: APIContext): Observable<any[]> {
         if (Cache.hit(User.Model))

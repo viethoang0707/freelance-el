@@ -53,6 +53,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	enrollCourse(course: Course) {
 		this.course = course;
+		this.courseClass = null;
 		this.display = true;
 		this.selectedStudents = [];
 		this.selectedTeachers = [];

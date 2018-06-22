@@ -153,7 +153,7 @@ export abstract class BaseModel {
             var resp = _.flatten(jsonArr);
             for(var i=0;i<resp.length;i++) {
                 var api = apiList[i];
-                var object = api.params["values"];
+                var object =  MapUtils.deserializeModel(api.params["model"], api.params["values"]);
                 object["id"] == +resp[i]["id"];
                 Cache.objectChage(object, 'CREATE');
             }
@@ -167,7 +167,7 @@ export abstract class BaseModel {
         return context.apiService.execute(this.__api__bulk_update(apiList), token).do(()=> {
             for(var i=0;i<apiList.length;i++) {
                 var api = apiList[i];
-                var object = api.params["values"];
+                var object =  MapUtils.deserializeModel(api.params["model"], api.params["values"]);
                 Cache.objectChage(object, 'UPDATE');
             }
         });
