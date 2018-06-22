@@ -37,4 +37,18 @@ export class FileAPIService {
             .map((response: Response) => response.json())
             .catch(error => Observable.throw(error));
     }
+
+    sendMail(subject: string, body:string, recipient:string, cloudid: number) : Observable<any> {
+        let formData:FormData = new FormData();
+        formData.append('subject', subject);
+        formData.append('body', body);
+        formData.append('recipient', recipient);
+        formData.append('cloudid', cloudid.toString());
+        let headers = new Headers();
+        headers.append('Accept', 'application/json');
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(Config.CLOUD_ENDPOINT +'/cloud/send_mmail', formData, options)
+            .map(res => res.json())
+            .catch(error => Observable.throw(error)); 
+    }
 }

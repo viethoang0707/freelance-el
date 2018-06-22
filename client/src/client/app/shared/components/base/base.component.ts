@@ -11,6 +11,7 @@ import { ConfirmationService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '../../services/setting.service';
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 export abstract class BaseComponent implements APIContext {
 	apiService: ModelAPIService;
