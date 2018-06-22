@@ -82,10 +82,13 @@ export class Question extends BaseModel{
     }
 
     populateOption(context:APIContext):Observable<any> {
-        return QuestionOption.listByQuestion(context,this.id).map(options=> {
-            this.options =  options;
-            return this;
-        })
+        if (this.id)
+            return QuestionOption.listByQuestion(context,this.id).map(options=> {
+                this.options =  options;
+                return this;
+            });
+        else
+            return Observable.of(this);
     }
 
     static populateOptions(context:APIContext, questions: Question[]):Observable<any> {

@@ -65,10 +65,13 @@ export class Competency extends BaseModel{
     }
 
     populateLevel(context:APIContext):Observable<any> {
-        return CompetencyLevel.listByCompetency(context,this.id).map(levels=> {
-            this.levels =  levels;
-            return this;
-        })
+        if (this.id)
+            return CompetencyLevel.listByCompetency(context,this.id).map(levels=> {
+                this.levels =  levels;
+                return this;
+            });
+        else
+            return Observable.of(this);
     }
 
     static populateLevels(context:APIContext, competencies: Competency[]):Observable<any> {
