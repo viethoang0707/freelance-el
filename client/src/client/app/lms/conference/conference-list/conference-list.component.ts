@@ -24,22 +24,15 @@ import { BaseModel } from '../../../shared/models/base.model';
 export class ConferenceListComponent extends BaseComponent implements OnInit {
 
 	private conferenceMembers: ConferenceMember[];
-    private currentUser: User;
 
 	CONFERENCE_STATUS = CONFERENCE_STATUS;
 
 	constructor(private meetingSerivce: MeetingService) {
         super();
-        this.currentUser = this.authService.UserProfile;
-    }
-
-    displayConferences() {
-
-
     }
 
     ngOnInit() {
-        ConferenceMember.listByUser(this, this.currentUser.id).subscribe((conferenceMembers) => {
+        ConferenceMember.listByUser(this, this.ContextUser.id).subscribe((conferenceMembers) => {
             conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
                 return member.conference_id && member.conference_status == 'open';
             });

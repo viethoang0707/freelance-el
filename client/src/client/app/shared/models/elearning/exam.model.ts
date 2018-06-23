@@ -35,8 +35,10 @@ export class Exam extends BaseModel{
         this.competency_level_id =  undefined;
         this.competency_level_name =  undefined;
         this.is_public =  undefined;
+        this.review_state = undefined;
 	}
 
+    review_state:string;
     competency_id: number;
     competency_name: string;
     competency_group_id: number;
@@ -59,6 +61,8 @@ export class Exam extends BaseModel{
     supervisor_name: string;
 
     get IsAvailable():boolean {
+        if (this.review_state != 'approved')
+            return false;
         if (this.status !='open')
             return false;
         var now = new Date();

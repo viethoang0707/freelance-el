@@ -1,70 +1,86 @@
 <div class="layout-topbar">
-  <img alt="logo" src="assets/layout/images/logo-slim.png" class="mobile-logo" />
-  <a class="menu-btn" (click)="eventManager.menuClick()">
+    <img alt="logo" src="assets/layout/images/logo-slim.png" class="mobile-logo" />
+    <a class="menu-btn" (click)="eventManager.menuClick()">
         <i class="material-icons">&#xE5D2;</i>
     </a>
-  <a class="topbar-menu-btn" (click)="eventManager.topbarMobileMenuClick()">
+    <a class="topbar-menu-btn" (click)="eventManager.topbarMobileMenuClick()">
         <i class="material-icons">&#xE853;</i>
     </a>
-  <div class="layout-topbar-menu-wrapper">
-    <ul class="topbar-menu fadeInDown" [ngClass]="{'topbar-menu-active': parent.topbarMenuActive}" (click)="eventManager.topbarMenuClick()">
-      <li #profile class="profile-item" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
-        <a>
+    <div class="layout-topbar-menu-wrapper">
+        <ul class="topbar-menu fadeInDown" [ngClass]="{'topbar-menu-active': parent.topbarMenuActive}" (click)="eventManager.topbarMenuClick()">
+            <li #profile class="profile-item" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
+                <a>
             <span class="profile-image-wrapper">
-                <img [src]='user.image | imageBase64'/>
+                <img [src]='ContextUser.image | imageBase64'/>
             </span>
-            <span class="topbar-item-name profile-name">{{user.display_name}}</span>
+            <span class="topbar-item-name profile-name">{{ContextUser.display_name}}</span>
         </a>
-        <ul class="fadeInDown">
-          <li role="menuitem">
-            <a (click)="eventManager.showProfile()">
+                <ul class="fadeInDown">
+                    <li role="menuitem">
+                        <a (click)="eventManager.showProfile()">
                 <i class="material-icons">account_circle</i>
                 <span>{{'User Profile'|translate}}</span>
             </a>
-          </li>
-          <li role="menuitem">
-            <a (click)="appEvent.userLogout()">
+                    </li>
+                    <li role="menuitem">
+                        <a (click)="appEvent.userLogout()">
                 <i class="material-icons" >exit_to_app</i>
                 <span>{{'Log out'|translate}}</span>
             </a>
-          </li>
-        </ul>
-      </li>
-      <li #language [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === language}" (click)="eventManager.topbarRootItemClick( language)" class="language">
-        <p-dropdown [options]="langs" (onChange)="selectLang($event)" [(ngModel)]="selectedLang">
-          <ng-template let-item pTemplate="selectedItem">
-            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-              <span class="flag-icon" style="margin-top:4px;vertical-align:middle;float: left" [ngClass]="'flag-icon-'+item.value"></span>
-              <div style="font-size:14px;float:left; margin-left: 5px; margin-top:4px;vertical-align:middle">{{item.label}}</div>
-            </div>
-          </ng-template>
-          <ng-template let-item pTemplate="item">
-            <div class="ui-helper-clearfix" style="position: relative;height: 25px;">
-              <span class="flag-icon" style="vertical-align:middle" [ngClass]="'flag-icon-'+item.value"></span>
-              <div style="font-size:14px;float:right;margin-top:4px;vertical-align:middle">{{item.label}}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </li>
-      <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)" *ngIf="user.IsAdmin">
-        <button pButton type="button" label="{{'Administration'|translate}}" class="pink-btn" (click)="setViewMode('lms')" icon="ui-icon-swap-horiz" *ngIf="viewMode=='admin'"></button>
-        <button pButton type="button" label="{{'LMS'|translate}}" class="blue-btn" (click)="setViewMode('admin')" icon="ui-icon-swap-horiz" *ngIf="viewMode=='lms'"></button>
-      </li>
-      <li #notifications [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === notifications}" (click)="eventManager.topbarRootItemClick( notifications)">
-        <a>
+                    </li>
+                </ul>
+            </li>
+            <li #languages [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === languages}" (click)="eventManager.topbarRootItemClick( languages)">
+                <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='gb'" (click)="setLang('vn')">
+            <i class="topbar-icon material-icons">language</i>
+            <span class="flag-icon" [ngClass]="'flag-icon-gb'"></span>
+        </a>
+                <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='vn'" (click)="setLang('gb')">
+            <i class="topbar-icon material-icons">language</i>
+            <span class="flag-icon" [ngClass]="'flag-icon-vn'"></span>
+        </a>
+            </li>
+            <li #notifications [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === notifications}" (click)="eventManager.topbarRootItemClick( notifications)">
+                <a pTooltip="{{'Notification'|translate}}">
                     <i class="topbar-icon material-icons">notifications</i>
                     <span class="topbar-badge animated rubberBand" *ngIf="notifs.length">{{notifs.length}}</span>
                     <span class="topbar-item-name">{{'Notifications'|translate}}</span>
                 </a>
-        <ul class="fadeInDown">
-          <li role="menuitem" *ngFor="let notif of notifs" (click)="showTicket(notif)">
-            <a>
+                <ul class="fadeInDown">
+                    <li role="menuitem" *ngFor="let notif of notifs" (click)="showTicket(notif)">
+                        <a>
                   <span>{{notif.title}} </span>
               </a>
-          </li>
+                    </li>
+                </ul>
+            </li>
+            <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)" *ngIf="ContextUser.IsAdmin">
+                <a pTooltip="{{'Switch to LMS'|translate}}" *ngIf="viewMode=='admin'" (click)="setViewMode('lms')">
+                    <i class="topbar-icon material-icons">swap_horiz</i>
+                </a>
+                <a pTooltip="{{'Switch to adminnistrator'|translate}}" *ngIf="viewMode=='lms'" (click)="setViewMode('admin')">
+                    <i class="topbar-icon material-icons">swap_horiz</i>
+                </a>
+            </li>
+            <li class="stats-items" #stats [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === stats}" (click)="eventManager.topbarRootItemClick( stats)" *ngIf="ContextUser.IsAdmin">
+                <a> 
+            <i class="topbar-icon material-icons">person_pin_circle</i>
+            <div> {{userCount}} {{'users'|translate}}</div>
+        </a>
+                <a>
+            <i class="topbar-icon material-icons">school</i>
+            <div> {{courseCount}} {{'courses'|translate}}</div>
+        </a>
+                <a>
+            <i class="topbar-icon material-icons">people</i>
+            <div> {{studentCount}} {{'students'|translate}}</div>
+        </a>
+                <a>
+            <i class="topbar-icon material-icons">people</i>
+            <div> {{teacherCount}} {{'teachers'|translate}}</div>
+        </a>
+            </li>
         </ul>
-      </li>
-    </ul>
-  </div>
-  <ticket-dialog></ticket-dialog>
+    </div>
+    <ticket-dialog></ticket-dialog>
 </div>

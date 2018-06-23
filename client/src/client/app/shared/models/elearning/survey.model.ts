@@ -24,9 +24,10 @@ export class Survey extends BaseModel{
         this.supervisor_id =  undefined;
         this.supervisor_name = undefined;
         this.is_public =  undefined;
+        this.review_state = undefined;
 	}
 
-
+    review_state:string;
     name:string;
     summary: string;
     instruction: string;
@@ -40,6 +41,8 @@ export class Survey extends BaseModel{
     supervisor_name: string;
 
     get IsAvailable():boolean {
+        if (this.review_state != 'approved')
+            return false;
         if (this.status !='open')
             return false;
         var now = new Date();

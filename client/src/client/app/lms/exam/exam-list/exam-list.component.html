@@ -1,46 +1,46 @@
 <div class="card card-w-title">
   <h1>{{'My exams'|translate}}</h1>
-  <p-dataList [value]="examMembers" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
-    <ng-template let-member pTemplate="item">
+  <p-dataList [value]="exams" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
+    <ng-template let-exam pTemplate="item">
       <p-card styleClass="lms-exam-list-item">
         <div class="ui-g">
           <div class="ui-g-8">
             <div class="mt5">
-              <h4 class="title">{{member.exam.name}}</h4>
+              <h4 class="title">{{exam.name}}</h4>
               <span class="e-status">
-                {{member.exam.status}}
+                {{exam.status}}
               </span>
             </div>
             <div class="clearfix"></div>
             <p-accordion styleClass="cont">
               <p-accordionTab header="{{'Summary' | translate}}">
-                {{member.exam.summary}}
+                {{exam.summary}}
               </p-accordionTab>
               <p-accordionTab header="{{'Instruction' | translate}}">
-                <p [innerHTML]="member.exam.instruction"></p>
+                <p [innerHTML]="exam.instruction"></p>
               </p-accordionTab>
             </p-accordion>
             
-            <div class="status-bars" *ngIf="member.role=='supervisor'" >
+            <div class="status-bars" *ngIf="exam.supervisor!=null" >
             <!-- <div class="card"> -->
               <ul>
                 <li>
                   <div class="status-bar status-bar-2">
-                    <div class="status-bar-value" style="width:{{member.examMemberData.percentage_member_registered}}%">{{member.examMemberData.percentage_member_registered}}%</div>
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_registered}}%">{{exam.examMemberData.percentage_member_registered}}%</div>
                   </div>
                   <span>{{'Registered'|translate}}</span>
                   <i class="material-icons">&#xE86C;</i>
                 </li>
                 <li>
                   <div class="status-bar status-bar-3">
-                    <div class="status-bar-value" style="width:{{member.examMemberData.percentage_member_inprogress}}%">{{member.examMemberData.percentage_member_inprogress}}%</div>
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_inprogress}}%">{{exam.examMemberData.percentage_member_inprogress}}%</div>
                   </div>
                   <span>{{'In-progress'|translate}}</span>
                   <i class="material-icons">&#xE868;</i>
                 </li>
                 <li>
                   <div class="status-bar status-bar-4">
-                    <div class="status-bar-value" style="width:{{member.examMemberData.percentage_member_completed}}%">{{member.examMemberData.percentage_member_completed}}</div>
+                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_completed}}%">{{exam.examMemberData.percentage_member_completed}}</div>
                   </div>
                   <span>{{'Completed'|translate}}</span>
                   <i class="material-icons">&#xE8B2;</i>
@@ -52,36 +52,41 @@
           <div class="ui-g-4">
             <p-card styleClass="lms-exam-detail">
               <ul class="list-cmt">
+                <li class="clearfix" *ngIf="!exam.IsAvailable">
+                                        <i class="material-icons">error-outline</i>
+                                        <span class="cmt-title">{{'Exam not available'|translate}}</span>
+                                    </li>
                 <li class="clearfix">
                   <i class="material-icons">date_range</i>
                   <span class="cmt-title">{{'Start date'|translate}}</span>
-                  <span class="cmt-detail">{{member.exam.start | date : "dd/MM/yyyy"}}</span>
+                  <span class="cmt-detail">{{exam.start | date : "dd/MM/yyyy"}}</span>
                 </li>
                 <li class="clearfix">
                   <i class="material-icons">date_range</i>
                   <span class="cmt-title">{{'End date'|translate}}</span>
-                  <span class="cmt-detail">{{member.exam.end | date : "dd/MM/yyyy"}}</span>
+                  <span class="cmt-detail">{{exam.end | date : "dd/MM/yyyy"}}</span>
                 </li>
                 <li class="clearfix">
                   <i class="material-icons">alarm</i>
                   <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
-                  <span class="cmt-detail">{{member.exam.duration}}</span>
+                  <span class="cmt-detail">{{exam.duration}}</span>
                 </li>
-                <li class="clearfix">
-                  <i class="material-icons">done</i>
-                  <span class="cmt-title">{{'Number of question'|translate}}</span>
-                  <span class="cmt-detail">{{member.question_count}}</span>
-                </li>
-                <li class="clearfix" *ngIf="member.role=='candidate'">
+                <li class="clearfix" *ngIf="exam.candidate != null">
                   <i class="material-icons">star</i>
                   <span class="cmt-title">{{'Score'|translate}}</span>
-                  <span class="cmt-detail">{{member.score}}</span>
+                  <span class="cmt-detail">{{exam.score}}</span>
                 </li>
+                <li class="clearfix" style="border-bottom: none;">
+                  <i class="material-icons">done</i>
+                  <span class="cmt-title">{{'Number of question'|translate}}</span>
+                  <span class="cmt-detail">{{question_count}}</span>
+                </li>
+                
               </ul>
               <p-footer>
-                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(member.exam, member)" *ngIf="member.role=='candidate'" [disabled]="!member.exam.IsAvailable || member.enroll_status=='completed'"></button>
-                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(member.exam)" *ngIf="member.role=='supervisor'"></button>
-                <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage exam'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageExam(member.exam, member)" *ngIf="member.role=='supervisor'"></button>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate!=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(exam)" *ngIf="exam.editor != null"></button>
+                <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage exam'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor != null"></button>
               </p-footer>
             </p-card>
           </div>

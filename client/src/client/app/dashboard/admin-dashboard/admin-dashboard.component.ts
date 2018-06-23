@@ -27,10 +27,6 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     COURSE_MODE =  COURSE_MODE;
     CONTENT_STATUS = CONTENT_STATUS;
 
-    private userCount: any;
-    private studentCount: any;
-    private teacherCount: any;
-    private courseCount: any;
     private events: any[];
     private exams: Exam[];
     private courses: Course[];
@@ -49,22 +45,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         this.course = new Course();
     }
 
-    ngOnInit() {
-        BaseModel
-        .bulk_count(this,
-            User.__api__countAll(),
-            Course.__api__countAll(),
-            CourseMember.__api__countTeacher(),
-            CourseMember.__api__countStudent())
-        .map(jsonArray => {
-            return _.flatten(jsonArray);
-        })
-        .subscribe((counts)=> {
-            this.userCount = counts[0];
-            this.courseCount = counts[1];
-            this.teacherCount = counts[2];
-            this.studentCount = counts[3];
-        });   
+    ngOnInit() {  
         this.loadExams();
         this.loadCourses();
     }
@@ -78,6 +59,10 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editExam(exam) {
+        if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
+                this.error('You do not have edit permission for this exam');
+                return;
+            }
         this.examDialog.show(exam);
         this.examDialog.onUpdateComplete.subscribe(() => {
             this.loadExams();
@@ -85,6 +70,10 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editCourse(course) {
+        if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
+                this.error('You do not have edit permission for this course');
+                return;
+            }
         this.courseDialog.show(course);
         this.courseDialog.onUpdateComplete.subscribe(() => {
             this.loadCourses();

@@ -20,6 +20,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionSheetDialog } from '../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
 import { TreeNode } from 'primeng/api';
 import { ExamSettingDialog } from '../exam-setting/exam-setting.dialog.component';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 
 @Component({
 	moduleId: module.id,

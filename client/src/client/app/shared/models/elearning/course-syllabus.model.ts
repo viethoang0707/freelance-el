@@ -18,8 +18,10 @@ export class CourseSyllabus extends BaseModel{
         this.status = undefined;
         this.supervisor_id =  undefined;
         this.supervisor_name = undefined;
+        this.review_state =  undefined;
 	}    
 
+    review_state: string;
     name:string;
     status:string;
     course_id: number;

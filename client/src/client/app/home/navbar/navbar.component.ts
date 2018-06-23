@@ -14,44 +14,67 @@ import { Notification } from '../../shared/models/ticket/notification.model';
 import { Ticket } from '../../shared/models/ticket/ticket.model';
 import { TicketDialog } from '../../workflow/ticket-dialog/ticket-dialog.component';
 import * as _ from 'underscore'
+import { Course } from '../../shared/models/elearning/course.model';
+import { CourseDialog } from '../../course/course/course-dialog/course-dialog.component';
+import { CourseMember } from '../../shared/models/elearning/course-member.model';
+import { BaseModel } from '../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
 	selector: 'app-navbar',
 	templateUrl: 'navbar.component.html',
+	styleUrls: ['navbar.component.css'],
 })
 export class NavbarComponent extends BaseComponent implements OnInit {
 
-	private user: User;
 	private notifs: Notification[];
-	private langs: SelectItem[];
-	private viewMode: string;
-	@Input() selectedLang: string;
-	@Input() adminMode: boolean;
+	private userCount: any;
+    private studentCount: any;
+    private teacherCount: any;
+    private courseCount: any;
+	@Input() lang: string;
+	@Input() viewMode: string;
 	@ViewChild(TicketDialog) ticketDialog: TicketDialog;
 
 	constructor(private router:Router, private parent:HomeComponent, 
 		private eventManager: HomeEventManager, private socketService:WebSocketService) {
 		super();
-		this.langs = _.map(LANGS, (val, key)=> {
-			return { label: val, value: key};
-		});
-		this.selectedLang = this.translateService.currentLang;
+		this.lang = this.translateService.currentLang;
 		this.notifs = [];
+		this.viewMode = this.ContextUser.IsAdmin ? 'admin': 'lms';
 	}
 
 	ngOnInit() {
-		this.user = this.authService.UserProfile;
 		this.viewMode = this.settingService.ViewMode;
 		this.loadNotification();
-		this.socketService.join(this.user.id, this.authService.LoginToken.cloud_id);
+		this.socketService.join(this.ContextUser.id, this.authService.LoginToken.cloud_id);
 		this.socketService.onNotify.subscribe(data=> {
 			this.loadNotification();
 		});
+		if (this.viewMode =='admin')
+			this.loadStats();
+	}
+
+	loadStats() {
+		BaseModel
+	        .bulk_count(this,
+	            User.__api__countAll(),
+	            Course.__api__countAll(),
+	            CourseMember.__api__countTeacher(),
+	            CourseMember.__api__countStudent())
+	        .map(jsonArray => {
+	            return _.flatten(jsonArray);
+	        })
+	        .subscribe((counts)=> {
+	            this.userCount = counts[0];
+	            this.courseCount = counts[1];
+	            this.teacherCount = counts[2];
+	            this.studentCount = counts[3];
+	        });
 	}
 
 	loadNotification() {
-		Notification.listByUser(this, this.user.id).subscribe(notifs=> {
+		Notification.listByUser(this, this.ContextUser.id).subscribe(notifs=> {
 			this.notifs =  notifs;
 		});
 	}
@@ -65,9 +88,10 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		});
 	}
 
-	selectLang($event: any) {
-		this.settingService.Lang = $event.value;
-		this.translateService.use($event.value);
+	setLang(lang: string) {
+		this.lang = lang;
+		this.settingService.Lang = lang;
+		this.translateService.use(lang);
 	}
 
 	setViewMode(mode) {

@@ -24,8 +24,6 @@ export class Course extends BaseModel{
         this.mode = undefined;
         this.logo = undefined;
         this.group_id = undefined;
-        this.author_id = undefined;
-        this.author_name = undefined;
         this.syllabus_id = undefined;
         this.group_id__DESC__ = undefined;
         this.supervisor_id =  undefined;
@@ -41,11 +39,13 @@ export class Course extends BaseModel{
         this.complete_unit_by_order = undefined;
         this.competency_group_id = undefined;
         this.competency_group_name = undefined;
+        this.review_state = undefined;
 	}
 
     complete_unit_by_order: boolean;
     competency_id: number;
     competency_name: string;
+    review_state: string;
     competency_group_id: number;
     competency_group_name: string;
     competency_level_id: number;
@@ -58,8 +58,6 @@ export class Course extends BaseModel{
     supervisor_id: number;
     supervisor_name: string;
     group_id__DESC__: string;
-    author_name:string;
-    author_id:number;
     summary: string;
     code: string;
     description: string;
@@ -67,19 +65,12 @@ export class Course extends BaseModel{
     mode: string;
     logo: string;
 
-
-    static __api__listByAuthor(authorId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('author_id','=',"+authorId+")]");
-    }
-
-    static listByAuthor(context:APIContext, authorId):Observable<any> {
-        if (Cache.hit(Course.Model))
-            return Observable.of(Cache.load(Course.Model)).map(courses=> {
-                return _.filter(courses, (course:Course)=> {
-                    return course.author_id == authorId;
-                });
-            });
-        return Course.search(context,[],"[('author_id','=',"+authorId+")]");
+    get IsAvailable():boolean {
+        if (this.review_state != 'approved')
+            return false;
+        if (this.status !='published')
+            return false;
+        return true;
     }
 
     static __api__listByGroup(groupId: number): SearchReadAPI {

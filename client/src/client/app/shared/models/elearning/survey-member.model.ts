@@ -25,9 +25,11 @@ export class SurveyMember extends BaseModel{
         this.group_id = undefined;
         this.group_id__DESC__ = undefined;
         this.enroll_status = undefined;
+        this.role = undefined;
         this.survey =  new Survey();
     }
 
+    role: string;
     survey_id: number;
     survey: Survey;
     user_id: number;
@@ -93,7 +95,21 @@ export class SurveyMember extends BaseModel{
         });
     }
 
+    static __api__surveyEditor(surveyId: number): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model, [],"[('role','=','editor'),('survey_id','='," + surveyId + ")]");
+    }
 
+    static surveyEditor(context: APIContext, surveyId: number): Observable<any> {
+        return SurveyMember.single(context, [], "[('role','=','editor'),('survey_id','='," + surveyId + ")]");
+    }
+
+    static __api__surveySupervisor(surveyId: number): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model, [],"[('role','=','supervisor'),('survey_id','='," + surveyId + ")]");
+    }
+
+    static surveySupervisor(context: APIContext, surveyId: number): Observable<any> {
+        return SurveyMember.single(context, [], "[('role','=','supervisor'),('survey_id','='," + surveyId + ")]");
+    }
 
 
 }

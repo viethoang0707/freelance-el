@@ -31,7 +31,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     COURSE_MODE = COURSE_MODE;
 
     private courses: Course[];
-    private currentUser: User;
     private courseMembers: CourseMember[];
     private reportUtils: ReportUtils;
 
@@ -43,29 +42,39 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.currentUser = this.authService.UserProfile;
-        BaseModel.bulk_search(this,
-            CourseMember.__api__listByUser(this.currentUser.id),
-            Course.__api__listByAuthor(this.currentUser.id))
-            .subscribe(jsonArray => {
-                this.courseMembers = CourseMember.toArray(jsonArray[0]);
-                this.courses = Course.toArray(jsonArray[3]);
-                this.displayCourses();
+            CourseMember.listByUser(this, this.ContextUser.id)
+            .subscribe(courseMembers => {
+                this.displayCourses(courseMembers);
             });
     }
 
-    displayCourses() {
-        this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
+    displayCourses(courseMembers: CourseMember[]) {
+        courseMembers = _.filter(courseMembers, (member: CourseMember) => {
             return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
         });
-        CourseMember.populateCourses(this, this.courseMembers).subscribe((courses) => {
-            this.courses = this.courses.concat(courses);
-            this.courses = _.uniq(courses, (course) => {
+        CourseMember.populateCourses(this, courseMembers).subscribe((courses) => {
+            courses = _.filter(courses, (course: Course) => {
+                return course.review_state == 'approved';
+            });
+            courses = _.uniq(courses, (course: Course) => {
                 return course.id;
             });
-            this.courses.sort((course1:Course, course2:Course): any => {
+            courses.sort((course1: Course, course2: Course): any => {
                 return (course1.create_date.getTime() - course2.create_date.getTime());
             });
+            _.each(courses, (course: Course) => {
+                course["student"] = _.find(courseMembers, (member: CourseMember) => {
+                    return member.course_id == course.id && member.role == 'student';
+                });
+                course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
+                    return member.course_id == course.id && (member.role == 'teacher' || member.role == 'supervisor');
+                });
+                course["editor"] = _.find(courseMembers, (member: CourseMember) => {
+                    return member.course_id == course.id && (member.role == 'editor'|| member.role == 'supervisor');
+                });
+                course["courseMemberData"] = {};
+            });
+            this.courses = courses;
             var apiList = _.map(this.courses, (course: Course) => {
                 return CourseSyllabus.__api__byCourse(course.id);
             });
@@ -76,14 +85,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                 .subscribe(jsonArr => {
                     var syllabi = CourseSyllabus.toArray(jsonArr);
                     _.each(this.courses, (course: Course) => {
-                        course["student"] = _.find(this.courseMembers, (member: CourseMember) => {
-                            return member.course_id == course.id && member.role == 'student';
-                        });
-                        course["teacher"] = _.find(this.courseMembers, (member: CourseMember) => {
-                            return member.course_id == course.id && member.role == 'teacher';
-                        });
-                        course["isAuthor"] = course.author_id == this.currentUser.id;
-                        course["courseMemberData"] = {};
                         course["syllabus"] = _.find(syllabi, (syl: CourseSyllabus) => {
                             return syl.course_id == course.id;
                         });
@@ -111,42 +112,22 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                                 this.courses[i]["unit_count"] = counts[i];
                             };
                         });
-                })
+                });
         });
-    }
+   }
 
-    editSyllabus(course: Course) {
+    editSyllabus(course: Course, member: CourseMember) {
         CourseSyllabus.byCourse(this, course.id).subscribe(syllabus => {
-            this.syllabusDialog.show(syllabus);
+            this.syllabusDialog.show(syllabus, course, member);
         });
     }
 
     studyCourse(course: Course, member: CourseMember) {
-        if (course.status == 'published') {
-            CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
-                if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/study', course.id, member.id]);
-                else
-                    this.error('The course has not been published');
-            });
-        }
-        else {
-            this.error('The course has not been published');
-        }
+        this.router.navigate(['/lms/courses/study', course.id, member.id]);
     }
 
     manageCourse(course: Course, member: CourseMember) {
-        if (course.status == 'published') {
-            CourseSyllabus.byCourse(this, course.id).subscribe(syl => {
-                if (syl && syl.status == 'published')
-                    this.router.navigate(['/lms/courses/manage', course.id]);
-                else
-                    this.error('The course has not been published');
-            });
-        }
-        else {
-            this.error('The course has not been published');
-        }
-
+        this.router.navigate(['/lms/courses/manage', course.id]);
     }
+
 }

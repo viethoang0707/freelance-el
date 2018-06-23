@@ -24,10 +24,10 @@ export class ExamDialog extends BaseDialog<Exam> {
     private locale: any;
     private examStatus: SelectItem[];
     private rangeDates: Date[];
-    private allowToChangeState: boolean;
-    private user: User;
+    private editor: ExamMember;
     
     @ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
+    @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
     constructor(private http: Http) {
         super();
@@ -38,11 +38,24 @@ export class ExamDialog extends BaseDialog<Exam> {
                 value: key
             }
         });
+        this.editor =  new ExamMember();
     }
 
     ngOnInit() {
-        this.user = this.authService.UserProfile;
         this.onShow.subscribe(object => {
+            if (object.IsNew)  {
+                object.supervisor_id = this.ContextUser.id;
+                object.review_state = this.ContextUser.IsSuperAdmin ?'approved':'initial';
+            } else {
+                ExamMember.examEditor(this, object.id).subscribe(member=> {
+                    if (!member) {
+                        this.editor =  new ExamMember();
+                        this.editor.role = 'editor';
+                        this.editor.exam_id = object.id;
+                    } else
+                        this.editor =  member;
+                });
+            }
             if (object.start && object.end) {
                 this.rangeDates = [object.start, object.end];
             }
@@ -50,9 +63,15 @@ export class ExamDialog extends BaseDialog<Exam> {
             this.http.get(`/assets/i18n/calendar.${lang}.json`)
                 .subscribe((res: Response) => {
                     this.locale = res.json();
-                });
-            this.allowToChangeState = !object.supervisor_id ||
-                this.user.IsSuperAdmin || this.user.id == object.supervisor_id;
+                });;
+        });
+        this.onCreateComplete.subscribe(object=> {
+            this.editor.role ='editor';
+            this.editor.exam_id =  object.id;
+            this.editor.save(this).subscribe();
+        });
+        this.onUpdateComplete.subscribe(object => {
+            this.editor.save(this).subscribe();
         });
     }
 
@@ -70,6 +89,20 @@ export class ExamDialog extends BaseDialog<Exam> {
                 this.object.competency_level_name = level.name;
                 this.object.competency_id = level.competency_id;
                 this.object.competency_name = level.competency_name;
+        });
+    }
+
+    selectEditor() {
+        this.usersDialog.show();
+        this.usersDialog.onSelectUsers.subscribe(users => {
+            if (users.length > 1) {
+                this.error('You can select only one editor.');
+                return;
+            } else if (users.length == 1) {
+                var user = users[0];
+                this.editor.id = user.id;
+                this.editor.name = user.name;
+            }
         });
     }
 

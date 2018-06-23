@@ -65,8 +65,11 @@ export class MemberByCourseReportComponent extends BaseComponent {
         };
         BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
             for (var i=0;i<courses.length; i++) {
-                var members = CourseMember.toArray(jsonArr[2*i])
-                var logs = CourseLog.toArray(jsonArr[2*i+1])
+                var members = CourseMember.toArray(jsonArr[2*i]);
+                members = _.filter(members, (member:CourseMember)=> {
+					return member.role =='student';
+				});
+                var logs = CourseLog.toArray(jsonArr[2*i+1]);
                 var record = this.generateReportRow(courses[i], members, logs);
                 this.records.push(record);
             }

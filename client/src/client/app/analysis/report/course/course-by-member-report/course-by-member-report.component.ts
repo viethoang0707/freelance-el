@@ -95,8 +95,11 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 		};
 		BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
 			for (var i=0;i<users.length; i++) {
-				var members = CourseMember.toArray(jsonArr[2*i])
-				var logs = CourseLog.toArray(jsonArr[2*i+1])
+				var members = CourseMember.toArray(jsonArr[2*i]);
+				members = _.filter(members, (member:CourseMember)=> {
+					return member.role =='student';
+				});
+				var logs = CourseLog.toArray(jsonArr[2*i+1]);
 				var memberRecords = _.map(members, (member: CourseMember) => {
 					var courseLogs = _.filter(logs, (log: CourseLog) => {
 						return log.course_id == member.course_id;

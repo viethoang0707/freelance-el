@@ -82,7 +82,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 				this.course = course;
 				BaseModel
 					.bulk_search(this,
-						CourseMember.__api__byCourseAndUser(this.authService.UserProfile.id, course.id),
+						CourseMember.__api__byCourseAndUser(this.ContextUser.id, course.id),
 						CourseClass.__api__listByCourse(course.id),
 						CourseFaq.__api__listByCourse(course.id),
 						CourseMaterial.__api__listByCourse(course.id),

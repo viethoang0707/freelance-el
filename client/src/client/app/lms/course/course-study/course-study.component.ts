@@ -89,7 +89,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private componentRef: any;
 	private studyMode: boolean;
 	private enableLogging: boolean;
-	private currentUser: User;
 	private logs: CourseLog[];
 	private surveys: ClassSurvey[];
 
@@ -116,7 +115,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.conferenceMember = new ConferenceMember();
 		this.studyMode = false;
 		this.enableLogging = false;
-		this.currentUser = this.authService.UserProfile;
 	}
 
 	ngOnInit() {
@@ -138,12 +136,12 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 					];
 					if (this.member.class_id) {
 						apiList.push(ClassExam.__api__listByClass(this.member.class_id));
-						apiList.push(ExamMember.__api__listByUser(this.currentUser.id));
-						apiList.push(Submission.__api__listByUser(this.currentUser.id));
+						apiList.push(ExamMember.__api__listByUser(this.ContextUser.id));
+						apiList.push(Submission.__api__listByUser(this.ContextUser.id));
 						apiList.push(Project.__api__listByClass(this.member.class_id));
 						apiList.push(ProjectSubmission.__api__listByMember(this.member.id));
 						apiList.push(ClassSurvey.__api__listByClass(this.member.class_id));
-						apiList.push(SurveyMember.__api__listByUser(this.currentUser.id));
+						apiList.push(SurveyMember.__api__listByUser(this.ContextUser.id));
 					}
 					BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr1 => {
 						this.logs = CourseLog.toArray(jsonArr1[0]);

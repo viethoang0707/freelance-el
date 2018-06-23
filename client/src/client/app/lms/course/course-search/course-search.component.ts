@@ -30,7 +30,6 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
     CONTENT_STATUS = CONTENT_STATUS;
 
     private courses: Course[];
-    private currentUser: User;
     private competencies: Competency[];
     private selectedCompetency: any;
 
@@ -40,7 +39,6 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
 
     constructor(private router: Router) {
         super();
-        this.currentUser = this.authService.UserProfile;
         this.competencies = [];
         this.courses = [];
     }
@@ -68,7 +66,6 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
             if (this.keyword!= null && this.keyword!="")
                 courses = _.filter(courses, (course:Course)=> {
                     return course.name.includes(this.keyword) 
-                    || course.author_name.includes(this.keyword)
                     || course.summary.includes(this.keyword)
                     || course.code.includes(this.keyword)
                     || course.description.includes(this.keyword);

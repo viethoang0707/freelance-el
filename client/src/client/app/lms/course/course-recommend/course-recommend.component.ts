@@ -30,12 +30,10 @@ export class CourseRecommendComponent extends BaseComponent implements OnInit {
     CONTENT_STATUS = CONTENT_STATUS;
 
     private courses: Course[];
-    private currentUser: User;
 
 
     constructor(private router: Router) {
         super();
-        this.currentUser = this.authService.UserProfile;
         this.courses = [];
     }
 
@@ -47,7 +45,7 @@ export class CourseRecommendComponent extends BaseComponent implements OnInit {
     searchRecommendCourse() {
         this.courses = [];
         var domain = "('status','=','published')";
-        Achivement.listByUser(this, this.currentUser.id).subscribe(skills=> {
+        Achivement.listByUser(this, this.ContextUser.id).subscribe(skills=> {
             var apiList = _.map(skills, (skill:Achivement)=> {
                 return Course.__api__listByCompetency(skill.competency_id);
             });

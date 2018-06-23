@@ -22,10 +22,10 @@
                 </span>
               </div>
               <div class="ui-g-6">
-                <div class="mb10" *ngIf="currentUser.IsAdmin">
+                <div class="mb10" *ngIf="ContextUser.IsAdmin">
                   <p-checkbox name="admin" binary="true" label="{{'Admin user'|translate}}" [(ngModel)]="object.is_admin"></p-checkbox>
                 </div>
-                <div *ngIf="currentUser.IsAdmin">
+                <div *ngIf="ContextUser.IsAdmin">
                   <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="object.banned"></p-checkbox>
                 </div>
               </div>

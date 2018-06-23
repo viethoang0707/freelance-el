@@ -39,7 +39,6 @@ export class UserProfileDialog extends BaseDialog<User> {
 	private skills: Achivement[];
 	private treeUtils: TreeUtils;
 	private groups: Group[];
-	private currentUser: User;
 
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
@@ -49,7 +48,6 @@ export class UserProfileDialog extends BaseDialog<User> {
 		this.courseMembers = [];
 		this.skills = [];
 		this.examMembers = [];
-		this.currentUser =  this.authService.UserProfile;
 	}
 
 	nodeSelect(event: any) {
@@ -70,8 +68,8 @@ export class UserProfileDialog extends BaseDialog<User> {
 				CourseMember.__api__listByUser(object.id),
 				Certificate.__api__listByUser(object.id),
 				Achivement.__api__listByUser(object.id),
-				ExamMember.__api__listByUser(this.currentUser.id),
-	            Submission.__api__listByUser(this.currentUser.id))
+				ExamMember.__api__listByUser(this.ContextUser.id),
+	            Submission.__api__listByUser(this.ContextUser.id))
 			.subscribe((jsonArr)=> {
 				this.groups = Group.toArray(jsonArr[0]);
 				this.courseMembers =  CourseMember.toArray(jsonArr[1]);

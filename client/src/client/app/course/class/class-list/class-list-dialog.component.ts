@@ -43,8 +43,9 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     enroll() {
-        if (this.selectedClass)
+        if (this.selectedClass) {
           this.courseEnrollDialog.enrollClass(this.course, this.selectedClass);
+        }
     }
 
     loadClasses() {

@@ -12,6 +12,7 @@ import { ListAPI } from '../../services/api/list.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
 import * as _ from 'underscore';
 import { ExecuteAPI } from '../../services/api/execute.api';
+import { CourseClass } from './course-class.model';
 
 @Model('etraining.course_member')
 export class CourseMember extends BaseModel {
@@ -38,10 +39,12 @@ export class CourseMember extends BaseModel {
         this.group_id = undefined;
         this.group_id__DESC__ = undefined;
         this.course = new Course();
+        this.clazz =  new CourseClass();
     }
 
     course_id: number;
     course; Course;
+    clazz: CourseClass;
     user_id: number;
     class_id: number;
     status: string;
@@ -108,6 +111,22 @@ export class CourseMember extends BaseModel {
         return CourseMember.search(context, [], "[('user_id','='," + userId + "),('course_id','='," + courseId + ")]");
     }
 
+    static __api__courseEditor(courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, [],"[('role','=','editor'),('course_id','='," + courseId + ")]");
+    }
+
+    static courseEditor(context: APIContext, courseId: number): Observable<any> {
+        return CourseMember.single(context, [], "[('role','=','editor'),('course_id','='," + courseId + ")]");
+    }
+
+    static __api__courseSupervisor(courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, [],"[('role','=','supervisor'),('course_id','='," + courseId + ")]");
+    }
+
+    static courseSupervisor(context: APIContext, courseId: number): Observable<any> {
+        return CourseMember.single(context, [], "[('role','=','supervisor'),('course_id','='," + courseId + ")]");
+    }
+
 
     __api__populateCourse(): ListAPI {
         return new ListAPI(Course.Model, [this.course_id], []);
@@ -142,6 +161,33 @@ export class CourseMember extends BaseModel {
     completeCourse(context:APIContext):Observable<any> {
         return context.apiService.execute(this.__api__complete_course(this.id), 
             context.authService.LoginToken);
+    }
+
+
+    __api__populateClass(): ListAPI {
+        return new ListAPI(CourseClass.Model, [this.class_id], []);
+    }
+
+    populateClass(context: APIContext): Observable<any> {
+        if (!this.course_id)
+            return Observable.of(null);
+        return CourseClass.get(context, this.class_id).do(clazz => {
+            this.clazz = clazz;
+        });
+    }
+
+    static populateClasses(context: APIContext, members: CourseMember[]): Observable<any> {
+        var classIds = _.pluck(members,'class_id');
+        classIds = _.filter(classIds, id=> {
+            return id;
+        });
+        return CourseClass.array(context, classIds).do(classList=> {
+            _.each(members, (member:CourseMember)=> {
+                member.clazz =  _.find(classList, (clazz:CourseClass)=> {
+                    return member.class_id == clazz.id;
+                });
+            });
+        });
     }
 
 }

@@ -34,8 +34,8 @@ export class TicketListComponent extends BaseComponent {
     ngOnInit() {
         BaseModel
         .bulk_search(this,
-            Ticket.__api__listBySubmitUser(this.authService.UserProfile.id),
-            Ticket.__api__listByApproveUser(this.authService.UserProfile.id))
+            Ticket.__api__listBySubmitUser(this.ContextUser.id),
+            Ticket.__api__listByApproveUser(this.ContextUser.id))
         .subscribe(jsonArr=> {
             this.submitTickets =  Ticket.toArray(jsonArr[0]);
             this.approvalTickets =  Ticket.toArray(jsonArr[1]);

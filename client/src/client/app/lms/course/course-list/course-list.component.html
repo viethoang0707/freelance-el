@@ -14,11 +14,11 @@ ul {
         <ng-template let-course pTemplate="item">
             <p-card styleClass="lms-course-list-item">
                 <div class="ui-g">
-                    <div class="ui-g-8">
+                    <div class="ui-g-9">
                         <div class="ui-g-12 border">
-                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null && course.status =='published'"></button>
-                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 purple-btn" (click)="editSyllabus(course)" *ngIf="course.isAuthor"></button>
-                            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null  && course.status =='published'"></button>
+                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null" [disabled]="!course.IsAvailable"></button>
+                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 purple-btn" (click)="editSyllabus(course, course.editor)" *ngIf="course.editor!=null"></button>
+                            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null" [disabled]="!course.IsAvailable"></button>
                         </div>
                         <div class="ui-g-3">
                             <span class="profile-image-wrapper">
@@ -26,7 +26,7 @@ ul {
                 <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg">
               </span>
                         </div>
-                        <div class="ui-g-9">
+                        <div class="ui-g-5">
                             <h4 class="heading-course">
                 <span>{{course.name}}</span>
               </h4>
@@ -42,7 +42,9 @@ ul {
                                     <p [innerHTML]="course.description"></p>
                                 </p-accordionTab>
                             </p-accordion>
-                            <div class="status-bars" *ngIf="course.teacher !=null && course.mode=='group' && course.status =='published'">
+                        </div>
+                        <div class="ui-g-4">
+                            <div class="status-bars" *ngIf="course.teacher !=null && course.mode=='group'">
                                 <!-- <div class="card"> -->
                                 <ul>
                                     <li>
@@ -71,18 +73,17 @@ ul {
                             </div>
                         </div>
                     </div>
-                    <div class="ui-g-4">
+                    <div class="ui-g-3">
                         <p-card styleClass="lms-course-detail">
                             <ul class="list-cmt">
+                                <li class="clearfix" *ngIf="!course.IsAvailable">
+                                        <i class="material-icons">error-outline</i>
+                                        <span class="cmt-title">{{'Course not available'|translate}}</span>
+                                    </li>
                                 <li class="clearfix">
                                     <i class="material-icons">toys</i>
                                     <span class="cmt-title">{{'Code'|translate}}</span>
                                     <span class="cmt-detail">{{course.code}}</span>
-                                </li>
-                                <li class="clearfix">
-                                    <i class="material-icons">copyright</i>
-                                    <span class="cmt-title">{{'Author'|translate}}</span>
-                                    <span class="cmt-detail">{{course.author_name}}</span>
                                 </li>
                                 <li class="clearfix">
                                     <i class="material-icons">invert_colors</i>
@@ -99,6 +100,7 @@ ul {
                                     <span class="cmt-title">{{'Group'|translate}}</span>
                                     <span class="cmt-detail">{{course.group_id__DESC__}}</span>
                                 </li>
+                                
                             </ul>
                         </p-card>
                     </div>

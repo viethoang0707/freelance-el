@@ -4,8 +4,8 @@
       <div class="ui-g ui-fluid form-group">
         <div class="ui-g-12">
           <span>{{'Status'|translate}}:{{TICKET_STATUS[object.status]}}</span>
-          <button pButton type="button" icon="ui-icon-check" title="{{'Approve'| translate}}" label="{{'Approve'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="approveTicket()" [disabled]="object.status!='open' && user.id != object.approve_user_id"></button>
-          <button pButton type="button" icon="ui-icon-block" title="{{'Reject'| translate}}" label="{{'Reject'|translate}}" class=" red-btn" style="margin-right:4px;" (click)="rejectTicket()" [disabled]="object.status!='open'  && user.id != object.approve_user_id"></button>
+          <button pButton type="button" icon="ui-icon-check" title="{{'Approve'| translate}}" label="{{'Approve'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="approveTicket()" [disabled]="object.status!='open' && ContextUser.id != object.approve_user_id"></button>
+          <button pButton type="button" icon="ui-icon-block" title="{{'Reject'| translate}}" label="{{'Reject'|translate}}" class=" red-btn" style="margin-right:4px;" (click)="rejectTicket()" [disabled]="object.status!='open'  && ContextUser.id != object.approve_user_id"></button>
         </div>
         <div class="ui-g-12">
           <ul class="list-cmt">
@@ -23,7 +23,7 @@
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.title" #title="ngModel" name="title" required [disabled]="user.id==object.approve_user_id">
+              <input type="text" pInputText [(ngModel)]="object.title" #title="ngModel" name="title" required [disabled]="ContextUser.id==object.approve_user_id">
               <label>{{'Title'|translate}}</label>
               <div *ngIf="title.invalid && (title.dirty || title.touched)" 
                 class="ui-message ui-messages-error ui-corner-all">
@@ -35,14 +35,14 @@
         </div>
         <div class="ui-g-6">
           <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.content" name="summary"  [disabled]="user.id==object.approve_user_id">
+              <input type="text" pInputText [(ngModel)]="object.content" name="summary"  [disabled]="ContextUser.id==object.approve_user_id">
               <label>{{'Content'|translate}}</label>
           </span>
         </div>
         <div class="ui-g-12 chat">
           <p-panel header="Comment">
             <ul class="chat-messages">
-              <li *ngFor="let comment of comments" [ngClass]="{'message-from': user.id != comment.submit_user_id, 'message-own': user.id == comment.submit_user_id}"> 
+              <li *ngFor="let comment of comments" [ngClass]="{'message-from': ContextUser.id != comment.submit_user_id, 'message-own': ContextUser.id == comment.submit_user_id}"> 
                 <span>{{comment.title}}</span>
               </li>
             </ul>
@@ -60,7 +60,7 @@
     </p-scrollPanel>
   </form>
   <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" *ngIf="user.id == object.submit_user_id"></button>
+    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" *ngIf="ContextUser.id == object.submit_user_id"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
   <select-user-dialog></select-user-dialog>

@@ -12,6 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '../../services/setting.service';
 import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { User } from '../../models/elearning/user.model';
+import { Permission } from '../../models/elearning/permission.model';
 
 export abstract class BaseComponent implements APIContext {
 	apiService: ModelAPIService;
@@ -34,6 +36,14 @@ export abstract class BaseComponent implements APIContext {
 		this.confirmationService = ServiceLocator.injector.get(ConfirmationService);
 		this.translateService = ServiceLocator.injector.get(TranslateService);
 		this.settingService = ServiceLocator.injector.get(SettingService);
+	}
+
+	get ContextUser():User {
+		return this.authService.UserProfile;
+	}
+
+	get ContextPermission(): Permission {
+		return this.authService.UserPermission;
 	}
 
 	error(msg:string) {

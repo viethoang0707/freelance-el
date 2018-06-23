@@ -24,7 +24,9 @@ export class SurveyDialog extends BaseDialog<Survey> {
     private surveyStatus: SelectItem[];
     private rangeDates: Date[]; 
     private allowToChangeState: boolean;
-    private user: User;
+    private editor: SurveyMember;
+
+    @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
     constructor(private http: Http) {
         super();
@@ -35,11 +37,25 @@ export class SurveyDialog extends BaseDialog<Survey> {
                 value: key
             }
         });
+        this.editor =  new SurveyMember();
     }
 
     ngOnInit() {
-        this.user = this.authService.UserProfile;
         this.onShow.subscribe(object => {
+            if (object.IsNew)  {
+                object.supervisor_id = this.ContextUser.id;
+                object.review_state = this.ContextUser.IsSuperAdmin ?'approved':'initial';
+            } else {
+                SurveyMember.surveyEditor(this, object.id).subscribe(member=> {
+                    if (!member) {
+                        this.editor =  new SurveyMember();
+                        this.editor.role = 'editor';
+                        this.editor.survey_id = object.id;
+                    } else
+                        this.editor =  member;
+                });
+            }
+
             if (object.start && object.end) {
                 this.rangeDates = [object.start,object.end];
             }
@@ -49,9 +65,16 @@ export class SurveyDialog extends BaseDialog<Survey> {
                 this.locale = res.json();
             });
 
-            this.allowToChangeState = !object.supervisor_id || 
-            this.user.IsSuperAdmin ||  this.user.id == object.supervisor_id ;
         });  
+
+        this.onCreateComplete.subscribe(object=> {
+            this.editor.role ='editor';
+            this.editor.survey_id =  object.id;
+            this.editor.save(this).subscribe();
+        });
+        this.onUpdateComplete.subscribe(object => {
+            this.editor.save(this).subscribe();
+        });
     }
 
     onDateSelect($event) {
@@ -59,6 +82,20 @@ export class SurveyDialog extends BaseDialog<Survey> {
             this.object.start = this.rangeDates[0];
             this.object.end = this.rangeDates[1];
         }
+    }
+
+    selectEditor() {
+        this.usersDialog.show();
+        this.usersDialog.onSelectUsers.subscribe(users => {
+            if (users.length > 1) {
+                this.error('You can select only one editor.');
+                return;
+            } else if (users.length == 1) {
+                var user = users[0];
+                this.editor.id = user.id;
+                this.editor.name = user.name;
+            }
+        });
     }
 
 }

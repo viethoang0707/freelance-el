@@ -1,107 +1,125 @@
-<div class="ui-g user-dashboard">
-    <div class="ui-g-12 dashboard-live-conference">
-        <p-fieldset [toggleable]="true">
-            <p-header>
-                <h3 class="dashboard-list-title"><i class="material-icons icon">perm_phone_msg</i>{{'Live conference'|translate}}</h3>
-            </p-header>
-            <div class="ui-g-3" *ngFor="let member of conferenceMembers | slice:0:4; let i = index ">
-                <div class="task-box task-box-{{i%4 +1}}">
-                    <div class="task-box-header">
-                        <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
-                    </div>
-                    <div class="task-box-content">
-                        <h4>{{member.conference.name}}</h4>
-                        <p class="mb10">{{'Room password'|translate}} {{':'+member.conference.room_pass}}
-                        </p>
-                    </div>
-                    <div class="task-box-footer">
-                        <button pButton type="button " label="{{ 'Join'|translate}} " class="btn-footer" icon="ui-icon-call " (click)="joinConference(member) " [disabled]="member.conference.status!='open'"></button>
-                    </div>
-                </div>
-            </div>
-        </p-fieldset>
-    </div>
-    <div class="ui-g-12 dashboard-courses-list">
-        <p-fieldset [toggleable]="true">
-            <p-header>
-                <h3 class="dashboard-list-title"><i class="material-icons icon">school</i>{{'My courses'|translate}}</h3>
-            </p-header>
-            <div class="ui-g-3 image-box card-course" *ngFor="let course of courses | slice:0:4">
-                <div class="card">
-                    <div class="course-card-header">
-                        <img [ngClass]="{'display-none' : !course.logo}" [src]='course.logo | imageBase64' height="180" width="100%" />
-                        <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg" height="180" width="100%">
-                    </div>
-                    <div class="image-box-content">
-                        <h4 class="title">{{course.name}}</h4>
-                        <span class="image-box-tag">{{COURSE_MODE[course.mode]}}</span>
-                        <p class="summary">{{course.summary}}</p>
-                        <div class="image-box-footer">
-                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null && course.status =='published'"></button>
-                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 purple-btn" (click)="editSyllabus(course)" *ngIf="course.isAuthor"></button>
-                            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null  && course.status =='published'"></button>
+<p-tabView [style]="{width: '100%', height: '720px'}">
+    <p-tabPanel header="{{'Calendar'|translate}}" leftIcon="ui-icon-calendar">
+        <div  style="text-align:center">
+            <p-schedule #lmsSchedule [events]="events" [editable]="true" (onEventClick)="onEventClick($event)" styleClass="schedule-dashboard" [header]="header" [height]="640"></p-schedule>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="{{'Course'|translate}}" leftIcon="ui-icon-school">
+        <div class="ui-g user-dashboard">
+            <div class="ui-g-12 dashboard-courses-list">
+                <div class="ui-g-3 image-box card-course" *ngFor="let course of courses | slice:0:4">
+                    <div class="card">
+                        <div class="course-card-header">
+                            <img [ngClass]="{'display-none' : !course.logo}" [src]='course.logo | imageBase64' height="180" width="100%" />
+                            <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg" height="180" width="100%">
                         </div>
-                    </div>
-                </div>
-            </div>
-            <course-syllabus-dialog></course-syllabus-dialog>
-        </p-fieldset>
-    </div>
-    <div class="ui-g-12 dashboard-exam-list">
-        <p-fieldset [toggleable]="true">
-            <p-header>
-                <h3 class="dashboard-list-title"><i class="material-icons icon">alarm_add</i>{{'My exams'|translate}}</h3>
-            </p-header>
-            <div class="ui-g-3" *ngFor="let member of examMembers | slice:0:4">
-                <div class="card card-exam">
-                    <div class="exam-card-header">
-                        <img src="assets/layout/images/dashboard/usercard.png" library="serenity-layout" width="100" height="60" />
-                    </div>
-                    <div class="exam-card-content">
-                        <div class="exam-card-name">
-                            <span>{{member.exam.name}}</span>
-                        </div>
-                        <div class="exam-detail">
+                        <div class="image-box-content">
+                            <h4 class="title">{{course.name}}</h4>
+                            <span class="image-box-tag">{{COURSE_MODE[course.mode]}}</span>
+                            <p class="summary">{{course.summary}}</p>
                             <ul class="list-cmt">
-                                <li class="clearfix">
-                                    <i class="material-icons">date_range</i>
-                                    <span class="cmt-title">{{'Start date'|translate}}</span>
-                                    <span class="cmt-detail">{{member.exam.start | date : "dd/MM/yyyy"}}</span>
-                                </li>
-                                <li class="clearfix">
-                                    <i class="material-icons">date_range</i>
-                                    <span class="cmt-title">{{'End date'|translate}}</span>
-                                    <span class="cmt-detail">{{member.exam.end | date : "dd/MM/yyyy"}}</span>
-                                </li>
-                                <li class="clearfix">
-                                    <i class="material-icons">alarm</i>
-                                    <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
-                                    <span class="cmt-detail">{{member.exam.duration}}</span>
-                                </li>
-                                <li class="clearfix">
-                                    <i class="material-icons">done</i>
-                                    <span class="cmt-title">{{'Number of question'|translate}}</span>
-                                    <span class="cmt-detail">{{member.question_count}}</span>
-                                </li>
-                                <li class="clearfix" *ngIf="member.role=='candidate'">
-                                    <i class="material-icons">star</i>
-                                    <span class="cmt-title">{{'Score'|translate}}</span>
-                                    <span class="cmt-detail">{{member.score}}</span>
-                                </li>
-                            </ul>
+                                <li class="clearfix" *ngIf="!course.IsAvailable">
+                                        <i class="material-icons">error-outline</i>
+                                        <span class="cmt-title">{{'Course not available'|translate}}</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <i class="material-icons">toys</i>
+                                        <span class="cmt-title">{{'Code'|translate}}</span>
+                                        <span class="cmt-detail">{{course.code}}</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <i class="material-icons">invert_colors</i>
+                                        <span class="cmt-title">{{'Mode'|translate}}</span>
+                                        <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
+                                    </li>
+                                    <li class="clearfix" style="border-bottom: none;">
+                                        <i class="material-icons">toc</i>
+                                        <span class="cmt-title">{{'Group'|translate}}</span>
+                                        <span class="cmt-detail">{{course.group_id__DESC__}}</span>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                            <div class="image-box-footer">
+                                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null" [disabled]="! course.IsAvailable"></button>
+                                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 purple-btn" (click)="editSyllabus(course)" *ngIf="course.editor!=null"></button>
+                                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null "[disabled]="!course.IsAvailable"></button>
+                                
                         </div>
-                    </div>
-                    <div class="user-card-footer">
-                        <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4" (click)="startExam(member.exam, member)" *ngIf="member.role=='candidate'" [disabled]="!member.exam.IsAvailable || member.enroll_status=='completed'"></button>
-                        <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="purple-btn mr4" (click)="editExamContent(member.exam)" *ngIf="member.role=='supervisor'"></button>
-                        <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4" (click)="manageExam(member.exam, member)" *ngIf="member.role=='supervisor'"></button>
                     </div>
                 </div>
             </div>
-            <exam-content-dialog></exam-content-dialog>
-            <exam-study-dialog></exam-study-dialog>
-            <survey-study-dialog></survey-study-dialog>
-            <course-syllabus-dialog></course-syllabus-dialog>
-        </p-fieldset>
-    </div>
-</div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="{{'Exam'|translate}}" leftIcon="ui-icon-grade">
+        <div class="ui-g user-dashboard">
+            <div class="ui-g-12 dashboard-exam-list">
+                <div class="ui-g-3" *ngFor="let exam of exams | slice:0:4">
+                    <div class="card card-exam">
+                        <div class="exam-card-header">
+                            <img src="assets/layout/images/dashboard/usercard.png" library="serenity-layout" width="100" height="60" />
+                        </div>
+                        <div class="exam-card-content">
+                            <div class="exam-card-name">
+                                <span>{{exam.name}}</span>
+                            </div>
+                            <div class="exam-detail">
+                                <ul class="list-cmt">
+                                    <li class="clearfix">
+                                        <i class="material-icons">date_range</i>
+                                        <span class="cmt-title">{{'Start date'|translate}}</span>
+                                        <span class="cmt-detail">{{exam.start | date : "dd/MM/yyyy"}}</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <i class="material-icons">date_range</i>
+                                        <span class="cmt-title">{{'End date'|translate}}</span>
+                                        <span class="cmt-detail">{{exam.end | date : "dd/MM/yyyy"}}</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <i class="material-icons">alarm</i>
+                                        <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
+                                        <span class="cmt-detail">{{exam.duration}}</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <i class="material-icons">done</i>
+                                        <span class="cmt-title">{{'Number of question'|translate}}</span>
+                                        <span class="cmt-detail">{{exam.question_count}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="user-card-footer">
+                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate !=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
+                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="purple-btn mr4" (click)="editExamContent(exam)" *ngIf="exam.editor != null"></button>
+                            <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor !=null"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="{{'Conference'|translate}}" leftIcon="ui-icon-call">
+        <div class="ui-g user-dashboard">
+            <div class="ui-g-12 dashboard-live-conference">
+                <div class="ui-g-3" *ngFor="let conference of conferences | slice:0:4; let i = index ">
+                    <div class="task-box task-box-{{i%4 +1}}">
+                        <div class="task-box-header">
+                            <span class="task-status">{{CONFERENCE_STATUS[conference.status] | translate}}</span>
+                        </div>
+                        <div class="task-box-content">
+                            <h4>{{conference.name}}</h4>
+                            <p class="mb10">{{'Room password'|translate}} {{':'+conference.room_pass}}
+                            </p>
+                        </div>
+                        <div class="task-box-footer">
+                            <button pButton type="button " label="{{ 'Join'|translate}} " class="btn-footer" icon="ui-icon-call " (click)="joinConference(conference, conference.member) " [disabled]="conference.status!='open'"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+</p-tabView>
+<course-syllabus-dialog></course-syllabus-dialog>
+<exam-content-dialog></exam-content-dialog>
+<exam-study-dialog></exam-study-dialog>

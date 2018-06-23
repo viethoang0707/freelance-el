@@ -27,18 +27,16 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	private tree: TreeNode[];
 	private items: MenuItem[];
-	private user: User;
 	private selectedNode: TreeNode;
 	private courseStatus: SelectItem[];
 	private treeUtils: TreeUtils;
-	private allowToChangeState: boolean;
-	private submitForReview: boolean;
-	private openTicket: Ticket;
+	private editor: CourseMember;
+
 
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 
-	constructor(private socketService: WebSocketService, private workflowService: WorkflowService) {
+	constructor( private workflowService: WorkflowService) {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.courseStatus = _.map(CONTENT_STATUS, (val, key) => {
@@ -47,8 +45,7 @@ export class CourseDialog extends BaseDialog<Course> {
 				value: key
 			}
 		});
-		this.allowToChangeState = false;
-		this.user = this.authService.UserProfile;
+		this.editor = new CourseMember();
 	}
 
 	nodeSelect(event: any) {
@@ -58,16 +55,16 @@ export class CourseDialog extends BaseDialog<Course> {
 		}
 	}
 
-	selectAuthor() {
+	selectEditor() {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.subscribe(users => {
 			if (users.length > 1) {
-				this.error('You can select only one author.');
+				this.error('You can select only one editor.');
 				return;
 			} else if (users.length == 1) {
-				var author = users[0];
-				this.object.author_id = author.id;
-				this.object.author_name = author.name;
+				var user = users[0];
+				this.editor.id = user.id;
+				this.editor.name = user.name;
 			}
 		});
 	}
@@ -86,28 +83,29 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {
-			if (object.id)
-				Ticket.byWorkflowObject(this, object.id, Course.Model).subscribe((ticket) => {
-					this.openTicket = ticket;
+			if (object.IsNew)  {
+				object.supervisor_id = this.ContextUser.id;
+				object.review_state = this.ContextUser.IsSuperAdmin ?'approved':'initial';
+			} else {
+				CourseMember.courseEditor(this, object.id).subscribe(member=> {
+					if (!member) {
+						this.editor =  new CourseMember();
+						this.editor.role = 'editor';
+						this.editor.course_id = object.id;
+					} else
+						this.editor =  member;
 				});
-			object.supervisor_id = this.authService.UserProfile.id;
-			this.checkWorkflow(object);
+			}
 			this.buildCourseTree(object);
 		});
 		this.onCreateComplete.subscribe(object => {
-			if (this.submitForReview)
-				this.review();
+			this.editor.role = 'editor';
+			this.editor.course_id = object.id;
+			this.editor.save(this).subscribe();
 		});
 		this.onUpdateComplete.subscribe(object => {
-			if (this.submitForReview)
-				this.review();
+			this.editor.save(this).subscribe();
 		});
-	}
-
-	checkWorkflow(object) {
-			this.allowToChangeState = !object.supervisor_id ||
-				this.user.IsSuperAdmin ||
-				( this.user.id != object.supervisor_id);
 	}
 
 	buildCourseTree(object) {
@@ -120,8 +118,6 @@ export class CourseDialog extends BaseDialog<Course> {
 	}
 
 	review() {
-		this.workflowService.createCoursePublishTicket(this, this.object).subscribe(ticket => {
-		});
 	}
 
 }

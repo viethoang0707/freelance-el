@@ -48,7 +48,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.router.navigate(['/auth']);
         });
         this.appEvent.onLogout.subscribe(()=> {
-            UserLog.logout(this, this.authService.UserProfile.id).subscribe();
+            UserLog.logout(this, this.ContextUser.id).subscribe();
             this.authService.logout();
             this.router.navigate(['/auth']);
         });
@@ -87,8 +87,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
 
     ngAfterViewInit() {
         this.eventManager.showProfileEvents.subscribe(() => {
-            var user = this.authService.UserProfile;
-            this.userProfileDialog.show(user);
+            this.userProfileDialog.show(this.ContextUser);
         });
         
         this.eventManager.topbarMenuEvents.subscribe(() => {

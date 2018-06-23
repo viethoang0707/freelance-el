@@ -54,6 +54,7 @@ export class SurveyEnrollDialog extends BaseComponent {
         this.usersDialog.onSelectUsers.subscribe(users => {
             var members = _.map(users, (user:User)=> {
                 var member = new SurveyMember();
+                member.role = 'candidate';
                 member.survey_id = this.survey.id;
                 member.user_id = user.id;
                 member.date_register =  new Date();

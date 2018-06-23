@@ -4,7 +4,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, CONTENT_STATUS } from '../../../shared/models/constants'
+import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, CONTENT_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { CourseDialog } from '../course-dialog/course-dialog.component';
@@ -13,6 +13,7 @@ import { CourseEnrollDialog } from '../../class/enrollment-dialog/enrollment-dia
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
+import { User } from '../../../shared/models/elearning/user.model';
 
 @Component({
     moduleId: module.id,
@@ -22,9 +23,9 @@ import { BaseModel } from '../../../shared/models/base.model';
 })
 export class CourseListComponent extends BaseComponent {
 
-    @ViewChild(CourseDialog) courseDialog: CourseDialog;
-    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
-    @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
+    COURSE_MODE = COURSE_MODE;
+    CONTENT_STATUS = CONTENT_STATUS;
+    REVIEW_STATE = REVIEW_STATE;
 
     private tree: TreeNode[];
     private courses: Course[];
@@ -33,8 +34,9 @@ export class CourseListComponent extends BaseComponent {
     private selectedCourse: any;
     private treeUtils: TreeUtils;
 
-    COURSE_MODE = COURSE_MODE;
-    CONTENT_STATUS = CONTENT_STATUS;
+    @ViewChild(CourseDialog) courseDialog: CourseDialog;
+    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
+    @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
 
     constructor() {
         super();
@@ -63,8 +65,13 @@ export class CourseListComponent extends BaseComponent {
 
 
     editCourse() {
-        if (this.selectedCourse)
+        if (this.selectedCourse) {
+            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+                this.error('You do not have edit permission for this course');
+                return;
+            }
             this.courseDialog.show(this.selectedCourse);
+        }
         this.courseDialog.onUpdateComplete.subscribe(() => {
             var duplicateCates = _.filter(this.courses, obj=> {
                 return this.selectedCourse.code == obj.code;
@@ -75,19 +82,29 @@ export class CourseListComponent extends BaseComponent {
     }
 
     deleteCourse() {
-        if (this.selectedCourse)
+        if (this.selectedCourse) {
+            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+                this.error('You do not have delete permission for this course');
+                return;
+            }
             this.confirm('Are you sure to delete ?', () => {
                 this.selectedCourse.delete(this).subscribe(() => {
                     this.loadCourses();
                     this.selectedCourse = null;
                 })
             });
+        }
+            
     }
 
     enrollCourse() {
         if (this.selectedCourse) {
-            if (this.selectedCourse.status!='published') {
-                this.error(this.translateService.instant('You have to publish the course first'));
+            if (this.selectedCourse.review_state != 'approved') {
+                this.warn('Course not reviewed yet');
+                return;
+            }
+            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+                this.error('You do not have enroll permission for this course');
                 return;
             }
             if (this.selectedCourse.mode=='self-study')

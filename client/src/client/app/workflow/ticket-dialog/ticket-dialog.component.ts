@@ -22,14 +22,12 @@ export class TicketDialog extends BaseDialog<Ticket> {
 
     TICKET_STATUS = TICKET_STATUS;
 
-    private user: User;
     private comments: Comment[];
 
     @Input() replyText;
 
     constructor(private workflowService: WorkflowService, private socketService: WebSocketService) {
         super();
-        this.user = this.authService.UserProfile;
     }
 
     ngOnInit() {

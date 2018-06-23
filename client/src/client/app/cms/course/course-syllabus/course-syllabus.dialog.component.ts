@@ -15,8 +15,7 @@ import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.compo
 import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { CourseSettingDialog } from '../course-setting/course-setting.dialog.component';
 import * as _ from 'underscore';
-import { Ticket } from '../../../shared/models/ticket/ticket.model';
-import { WorkflowService } from '../../../shared/services/workflow.service';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 
 @Component({
     moduleId: module.id,
@@ -37,10 +36,8 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private selectedUnit:CourseUnit;
 	private sylUtils : SyllabusUtils;
 	private course: Course;
-	private user: User;
+	private courseMember: CourseMember;
 	private courseStatus: SelectItem[];
-	private allowToChangeState : boolean;
-	private openTicket: Ticket;
 	private onShowReceiver: Subject<any> = new Subject();
     private onHideReceiver: Subject<any> = new Subject();
     onShow: Observable<any> = this.onShowReceiver.asObservable();
@@ -50,7 +47,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(CourseSettingDialog) settingDialog: CourseSettingDialog;
 
-    constructor(private socketService:WebSocketService, private workflowService: WorkflowService) {
+    constructor() {
         super();
         this.sylUtils = new SyllabusUtils();
         this.items = [
@@ -63,6 +60,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
         ];
         this.syl = new CourseSyllabus();
+        this.courseMember =  new CourseMember();
         this.course = new Course();
         this.courseStatus = _.map(CONTENT_STATUS, (val, key)=> {
 			return {
@@ -70,26 +68,14 @@ export class CourseSyllabusDialog extends BaseComponent {
 				value: key
 			}
 		});
-		this.user = this.authService.UserProfile;
     }
 
-    show(syl: CourseSyllabus) {
+    show(syl: CourseSyllabus, course: Course, member: CourseMember) {
     	this.onShowReceiver.next();
 		this.display = true;
 		this.syl = syl;
-		Course.get(this, this.syl.course_id).subscribe(course => {
-			this.course = course;
-			this.buildCourseTree();	
-			this.allowToChangeState = !this.course.supervisor_id || 
-				this.user.IsSuperAdmin ;
-		});
-		//this.checkWorkflow();
-	}
-
-	checkWorkflow() {
-		Ticket.byWorkflowObject(this, this.syl.id, CourseSyllabus.Model).subscribe((ticket)=> {
-			this.openTicket =  ticket;
-		});
+		this.courseMember =  member;
+		this.course = course;
 	}
 
 	clearSelection() {
@@ -199,8 +185,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	submitForReview() {
-		this.workflowService.createCourseSyllabusPublishTicket(this, this.syl).subscribe(ticket=> {
-		});
+
 	}
 
 	updateStatus() {

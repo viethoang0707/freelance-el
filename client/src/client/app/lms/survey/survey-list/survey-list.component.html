@@ -1,23 +1,23 @@
 <div class="card card-w-title">
   <h1>{{'My surveys'|translate}}</h1>
-  <p-dataList [value]="surveyMembers" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
-    <ng-template let-member pTemplate="item">
+  <p-dataList [value]="surveys" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
+    <ng-template let-survey pTemplate="item">
       <p-card styleClass="lms-exam-list-item">
         <div class="ui-g">
           <div class="ui-g-8">
             <div class="mt5">
-              <h4 class="title">{{member.survey.name}}</h4>
+              <h4 class="title">{{survey.name}}</h4>
               <span class="e-status">
-                {{member.survey.status}}
+                {{survey.status}}
               </span>
             </div>
             <div class="clearfix"></div>
             <p-accordion styleClass="cont">
               <p-accordionTab header="{{'Summary' | translate}}">
-                {{member.survey.summary}}
+                {{survey.summary}}
               </p-accordionTab>
               <p-accordionTab header="{{'Instruction' | translate}}">
-                <p [innerHTML]="member.survey.instruction"></p>
+                <p [innerHTML]="survey.instruction"></p>
               </p-accordionTab>
             </p-accordion>
             
@@ -26,25 +26,29 @@
           <div class="ui-g-4">
             <p-card styleClass="lms-exam-detail">
               <ul class="list-cmt">
+                <li class="clearfix" *ngIf="!survey.IsAvailable">
+                                        <i class="material-icons">error-outline</i>
+                                        <span class="cmt-title">{{'Survey not available'|translate}}</span>
+                                    </li>
                 <li class="clearfix">
                   <i class="material-icons">date_range</i>
                   <span class="cmt-title">{{'Start date'|translate}}</span>
-                  <span class="cmt-detail">{{member.survey.start | date : "dd/MM/yyyy"}}</span>
+                  <span class="cmt-detail">{{survey.start | date : "dd/MM/yyyy"}}</span>
                 </li>
                 <li class="clearfix">
                   <i class="material-icons">date_range</i>
                   <span class="cmt-title">{{'End date'|translate}}</span>
-                  <span class="cmt-detail">{{member.survey.end | date : "dd/MM/yyyy"}}</span>
+                  <span class="cmt-detail">{{survey.end | date : "dd/MM/yyyy"}}</span>
                 </li>
-                <li class="clearfix">
+                <li class="clearfix" style="border-bottom: none;">
                   <i class="material-icons">done</i>
                   <span class="cmt-title">{{'Number of question'|translate}}</span>
-                  <span class="cmt-detail">{{member.question_count}}</span>
+                  <span class="cmt-detail">{{survey.question_count}}</span>
                 </li>
               </ul>
               <p-footer>
-                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(member.survey, member)"  [disabled]="!member.survey.IsAvailable || member.enroll_status=='completed'"></button>
-                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(member.survey)" *ngIf="member.survey.supervisor_id==currentUser.id"></button>
+                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(survey, survey.candidate)"  [disabled]="!survey.IsAvailable || survey.candidate.enroll_status=='completed'" *ngIf="survey.candidate!=null"></button>
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(survey)" *ngIf="survey.editor!=null"></button>
               </p-footer>
             </p-card>
           </div>

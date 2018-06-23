@@ -30,10 +30,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     EXAM_STATUS = EXAM_STATUS;
 
     private exams: Exam[];
-    private examMembers: ExamMember[];
-    private submits: Submission[];
     private reportUtils: ReportUtils;
-    private currentUser: User;
     
 
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
@@ -43,13 +40,12 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         super();
         this.exams = [];
         this.reportUtils = new ReportUtils();
-        this.currentUser = this.authService.UserProfile;
     }
 
     ngOnInit() {
         BaseModel.bulk_search(this,
-            ExamMember.__api__listByUser(this.currentUser.id),
-            Submission.__api__listByUser(this.currentUser.id))
+            ExamMember.__api__listByUser(this.ContextUser.id),
+            Submission.__api__listByUser(this.ContextUser.id))
             .subscribe(jsonArray => {
                 var members = ExamMember.toArray(jsonArray[0]);
                 var submits = Submission.toArray(jsonArray[1]);
@@ -57,61 +53,70 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             });
     }
 
-    displayExams(members: ExamMember[], submits: Submission[]) {
-        members = _.filter(members, (member: ExamMember) => {
-            return (member.exam_id && member.status == 'active');
+    displayExams(examMembers: ExamMember[], submits: Submission[]) {
+        examMembers = _.filter(examMembers, (member: ExamMember) => {
+            return member.exam_id && member.status == 'active';
         });
-        members.sort((member1, member2): any => {
-            return (member1.exam.create_date < member1.exam.create_date)
-        });
-        ExamMember.populateExams(this, members).subscribe(() => {
-            members = _.filter(members, (member: ExamMember) => {
-                return member.role == 'supervisor' || (member.role == 'candidate' && member.exam.IsAvailable);
+        ExamMember.populateExams(this, examMembers).subscribe(exams => {
+            exams = _.filter(exams, (exam: Exam) => {
+                return exam.review_state == 'approved';
             });
-            _.each(members, (member: ExamMember) => {
-                member["submit"] = _.find(submits, (submit: Submission) => {
-                    return submit.member_id == member.id && submit.exam_id == member.exam_id;
+            exams = _.uniq(exams, (exam: Exam) => {
+                return exam.id;
+            });
+            exams.sort((exam1: Exam, exam2: Exam): any => {
+                return (exam2.create_date.getTime() - exam1.create_date.getTime());
+            });
+            _.each(exams, (exam: Exam) => {
+                exam["candidate"] = _.find(examMembers, (member: ExamMember) => {
+                    return member.exam_id == exam.id && member.role == 'candidate';
                 });
-                if (member["submit"])
-                    member["score"] = member["submit"].score;
-                else
-                    member["score"] = '';
-                member["examMemberData"] = {};
+                exam["supervisor"] = _.find(examMembers, (member: ExamMember) => {
+                    return member.exam_id == exam.id && member.role == 'supervisor';
+                });
+                exam["editor"] = _.find(examMembers, (member: ExamMember) => {
+                    return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
+                });
+                if (exam["candidate"]) {
+                    exam["submit"] = _.find(submits, (submit: Submission) => {
+                        return submit.member_id == exam["candidate"].id && submit.exam_id == exam.id;
+                    });
+                    if (exam["submit"])
+                        exam["score"] = exam["submit"].score;
+                    else
+                        exam["score"] = '';
+                }
+                 exam["examMemberData"] = {};
             });
-            this.examMembers =  members;
-            var countApi = _.map(this.examMembers, (member: ExamMember) => {
-                return ExamQuestion.__api__countByExam(member.exam_id);
+            var countApi = _.map(exams, (exam: Exam) => {
+                return ExamQuestion.__api__countByExam(exam.id);
             });
             BaseModel.bulk_count(this, ...countApi)
                 .map((jsonArray) => {
                     return _.flatten(jsonArray);
                 })
                 .subscribe(counts => {
-                    for (var i = 0; i < this.examMembers.length; i++) {
-                        this.examMembers[i]["question_count"] = counts[i];
+                    for (var i = 0; i < exams.length; i++) {
+                        exams[i]["question_count"] = counts[i];
                     }
                 });
-            var listApi = _.map(this.examMembers, (member: ExamMember) => {
-                return ExamMember.__api__listByExam(member.exam_id);
+            var listApi = _.map(exams, (exam: Exam) => {
+                return ExamMember.__api__listByExam(exam.id);
             });
             BaseModel.bulk_search(this, ...listApi)
                 .subscribe(jsonArr => {
-                    for (var i = 0; i < this.examMembers.length; i++) {
+                    for (var i = 0; i < exams.length; i++) {
                         var members = ExamMember.toArray(jsonArr[i]);
-                        this.examMembers[i]["examMemberData"] = this.reportUtils.analyseExamMember(this.examMembers[i].exam, members);
+                        exams[i]["examMemberData"] = this.reportUtils.analyseExamMember(this.exams[i], members);
                     }
                 });
+            this.exams = exams;
         });
     }
 
     manageExam(exam: Exam, member: ExamMember) {
-        var now = new Date();
-        if (exam.start && exam.start.getTime() > now.getTime()) {
-            this.warn(this.translateService.instant('Exam has not been started'));
-            return;
-        }
-        if (exam.end && exam.end.getTime() < now.getTime()) {
-            this.warn(this.translateService.instant('Exam has ended'));
+        if (!exam.IsAvailable) {
+            this.warn(this.translateService.instant('Exam is not available.'));
             return;
         }
         this.router.navigate(['/lms/exams/manage', exam.id, member.id]);

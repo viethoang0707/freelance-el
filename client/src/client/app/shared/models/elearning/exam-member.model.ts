@@ -107,5 +107,21 @@ export class ExamMember extends BaseModel{
         });
     }
 
+    static __api__examEditor(examId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, [],"[('role','=','editor'),('exam_id','='," + examId + ")]");
+    }
+
+    static examEditor(context: APIContext, examId: number): Observable<any> {
+        return ExamMember.single(context, [], "[('role','=','editor'),('exam_id','='," + examId + ")]");
+    }
+
+    static __api__examSupervisor(examId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, [],"[('role','=','supervisor'),('exam_id','='," + examId + ")]");
+    }
+
+    static examSupervisor(context: APIContext, examId: number): Observable<any> {
+        return ExamMember.single(context, [], "[('role','=','supervisor'),('exam_id','='," + examId + ")]");
+    }
+
 
 }

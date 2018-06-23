@@ -48,7 +48,6 @@ export class GradebookDialog extends BaseComponent {
     private certificate: Certificate;
     private stats: any;
     private reportUtils: ReportUtils;
-    private currentUser: User;
 
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
     @ViewChild(CourseCertificateDialog) certDialog: CourseCertificateDialog;
@@ -60,7 +59,6 @@ export class GradebookDialog extends BaseComponent {
         this.projects = [];
         this.stats = [];
         this.reportUtils = new ReportUtils();
-        this.currentUser = this.authService.UserProfile;
         this.member = new CourseMember();
     }
 
@@ -120,8 +118,8 @@ export class GradebookDialog extends BaseComponent {
                 CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
                 Certificate.__api__byMember(this.member.id),
                 ClassExam.__api__listByClass(this.member.class_id),
-                ExamMember.__api__listByUser(this.currentUser.id),
-                Submission.__api__listByUser(this.currentUser.id),
+                ExamMember.__api__listByUser(this.ContextUser.id),
+                Submission.__api__listByUser(this.ContextUser.id),
                 Project.__api__listByClass(this.member.class_id),
                 ProjectSubmission.__api__listByMember(this.member.id))
             .subscribe(jsonArr => {
