@@ -1,5 +1,6 @@
 <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
     <p-dialog header="{{'Permission'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
+        <div class="spinner" [hidden]="!loading"></div>
         <div class="ui-g ui-fluid form-group">
             <div class="ui-g-12 ">
                 <span class="md-inputfield">

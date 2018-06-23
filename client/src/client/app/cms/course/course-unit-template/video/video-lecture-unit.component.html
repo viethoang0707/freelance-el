@@ -5,6 +5,7 @@
 </style>
 
 <div *ngIf="mode=='design'">
+  <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
   <div class="ui-g">
     <div class="ui-g-6" align='center'>
       <p-progressBar [hidden]="!openFileStatus" mode="indeterminate" [style]="{'height': '15px'}"></p-progressBar>

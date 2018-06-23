@@ -31,17 +31,9 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     sidebarActive: boolean;
     mobileMenuActive: boolean;
     darkMenu: boolean;
-    loading: boolean;
 
     constructor( private router: Router, private eventManager :HomeEventManager) {
         super();
-        this.loading =  false;
-        this.appEvent.onStartHTTP.subscribe(()=> {
-            this.loading = true;
-        });
-        this.appEvent.onFinishHTTP.subscribe(()=> {
-            this.loading = false;
-        });
         this.appEvent.onTokenExpired.subscribe(()=> {
             this.warn('Your token has been expired');
             this.authService.logout();

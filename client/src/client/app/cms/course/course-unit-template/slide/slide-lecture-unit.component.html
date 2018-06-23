@@ -5,6 +5,7 @@
 </style>
 
 <div *ngIf="mode=='design'">
+  <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
   <div class="ui-g">
     <div class="ui-g-6">
       <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)"

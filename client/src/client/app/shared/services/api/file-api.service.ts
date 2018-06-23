@@ -17,38 +17,46 @@ export class FileAPIService {
         let headers = new Headers();
         headers.append('Accept', 'application/json');
         let options = new RequestOptions({ headers: headers });
+        this.appEvent.startHttpTransaction();
         return this.http.post(Config.CLOUD_ENDPOINT +'/file/upload', formData, options)
             .map(res => res.json())
-            .catch(error => Observable.throw(error));
+            .do(()=> {
+                this.appEvent.finishHttpTransaction();
+            })
+            .catch(error =>  {
+                this.appEvent.finishHttpTransaction();
+                return Observable.throw(error)}
+            );
     }
 
     unzip(filename: any, cloudid: number):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
+        this.appEvent.startHttpTransaction();
         return this.http.post(Config.CLOUD_ENDPOINT + '/file/unzip', JSON.stringify({cloudid: cloudid, filename:filename }), options)
-            .map((response: Response) => response.json())
-            .catch(error => Observable.throw(error));
+            .map(res => res.json())
+            .do(()=> {
+                this.appEvent.finishHttpTransaction();
+            })
+            .catch(error =>  {
+                this.appEvent.finishHttpTransaction();
+                return Observable.throw(error)}
+            );
     }
 
     convert2Pdf(filename: any, cloudid: number):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
+        this.appEvent.startHttpTransaction();
         return this.http.post(Config.CLOUD_ENDPOINT + '/file/convert2pdf', JSON.stringify({cloudid: cloudid, filename:filename }), options)
-            .map((response: Response) => response.json())
-            .catch(error => Observable.throw(error));
+            .map(res => res.json())
+            .do(()=> {
+                this.appEvent.finishHttpTransaction();
+            })
+            .catch(error =>  {
+                this.appEvent.finishHttpTransaction();
+                return Observable.throw(error)}
+            );
     }
 
-    sendMail(subject: string, body:string, recipient:string, cloudid: number) : Observable<any> {
-        let formData:FormData = new FormData();
-        formData.append('subject', subject);
-        formData.append('body', body);
-        formData.append('recipient', recipient);
-        formData.append('cloudid', cloudid.toString());
-        let headers = new Headers();
-        headers.append('Accept', 'application/json');
-        let options = new RequestOptions({ headers: headers });
-        return this.http.post(Config.CLOUD_ENDPOINT +'/cloud/send_mmail', formData, options)
-            .map(res => res.json())
-            .catch(error => Observable.throw(error)); 
-    }
 }

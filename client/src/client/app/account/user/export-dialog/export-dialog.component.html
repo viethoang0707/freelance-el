@@ -1,4 +1,5 @@
 <p-dialog header="{{'Export to Excel'|translate}}" [(visible)]="display" modal="true" width="300" [responsive]="true">
+  <div class="spinner" [hidden]="!loading"></div>
   <div class="ui-g form-group">
     <div class="ui-g-12">
       <label> {{'Exported fields' | translate}}</label>

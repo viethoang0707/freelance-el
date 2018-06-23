@@ -26,6 +26,8 @@ export abstract class BaseComponent implements APIContext {
 	settingService: SettingService;
 	appEvent: AppEventManager;
 
+	loading: boolean;
+
 	constructor() {
 		this.apiService = ServiceLocator.injector.get(ModelAPIService);
 		this.fileApiService = ServiceLocator.injector.get(FileAPIService);
@@ -36,6 +38,12 @@ export abstract class BaseComponent implements APIContext {
 		this.confirmationService = ServiceLocator.injector.get(ConfirmationService);
 		this.translateService = ServiceLocator.injector.get(TranslateService);
 		this.settingService = ServiceLocator.injector.get(SettingService);
+		this.appEvent.onStartHTTP.subscribe(()=> {
+			this.loading =  true;
+		});
+		this.appEvent.onFinishHTTP.subscribe(()=> {
+			this.loading =  false;
+		});
 	}
 
 	get ContextUser():User {

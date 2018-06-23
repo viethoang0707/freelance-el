@@ -1,4 +1,5 @@
 <p-dialog header="{{'Save survey sheet'|translate}}" [(visible)]="display" modal="true" width="300" [responsive]="true" appendTo="body">
+  <div class="spinner" [hidden]="!loading"></div>
   <div class="ui-dialog-content">
     <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && save()" id="saveSurveySheet" #f="ngForm" novalidate autocomplete="off">
       <div class="ui-g form-group ui-fluid">

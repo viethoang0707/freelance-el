@@ -1,4 +1,5 @@
 <p-dialog header="{{'Exam setting'|translate}}" [(visible)]="display" modal="false" width="500" height="100%" [responsive]="true" appendTo="body">
+    <div class="spinner" [hidden]="!loading"></div>
     <p-scrollPanel [style]="{width: '100%', height: '300px'}">
         <form novalidate (ngSubmit)="f.form.valid && saveExamSetting()" #f="ngForm" autocomplete="off">
             <div class="ui-g-12 ui-fluid form-group">

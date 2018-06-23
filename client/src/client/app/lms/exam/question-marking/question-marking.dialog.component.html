@@ -1,4 +1,5 @@
 <p-dialog header="{{'Marking candidate' | translate}}" [(visible)]="display" modal="true" width="960" [responsive]="true" appendTo="body">
+  <div class="spinner" [hidden]="!loading"></div>
   <p-card>
     <p-header>
       <span>

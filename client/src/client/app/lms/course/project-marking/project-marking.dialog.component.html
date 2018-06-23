@@ -1,4 +1,5 @@
 <p-dialog header="{{'Marking project' | translate}}" [(visible)]="display" modal="true" width="960" [responsive]="true" appendTo="body">
+  <div class="spinner" [hidden]="!loading"></div>
   <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
     <div class="ui-g-6">
       <span>

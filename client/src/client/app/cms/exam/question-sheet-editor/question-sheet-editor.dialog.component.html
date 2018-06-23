@@ -1,4 +1,5 @@
 <p-dialog header="{{'Question sheet design'|translate}}" [(visible)]="display" modal="false" width="960" height="600" [responsive]="true" appendTo="body">
+  <div class="spinner" [hidden]="!loading"></div>
   <p-scrollPanel [style]="{width: '100%', height: '480px'}">
     <div class="ui-g ui-fluid form-group">
       <div *ngFor="let level of QUESTION_LEVEL | keys" class="ui-g-12">
