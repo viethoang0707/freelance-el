@@ -55,11 +55,11 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="object.is_public">
+            <div >
               <button type="button" pButton icon="ui-icon-change-history" label="{{editor.id?translateService.instant('Editor') +':'+ editor.name:translateService.instant('Select editor')}}"
                 (click)="selectEditor()"></button>
             </div>
-            <div *ngIf="object.is_public">
+            <div >
               <button type="button" pButton icon="ui-icon-change-history" label="{{object.competency_level_id? object.competency_name+'-'+ object.competency_level_name:translateService.instant('Select competency level')}}"
                 (click)="selectCompetencyLevel()"></button>
             </div>

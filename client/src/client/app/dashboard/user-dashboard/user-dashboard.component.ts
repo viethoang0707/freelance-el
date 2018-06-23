@@ -80,29 +80,29 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     return member.course_id == course.id && member.role == 'student';
                 });
                 course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'supervisor';
+                    return member.course_id == course.id && member.role == 'teacher';
                 });
                 course["supervisor"] = _.find(courseMembers, (member: CourseMember) => {
-                        return member.course_id == course.id && (member.role == 'supervisor';
-                 });
+                    return member.course_id == course.id && member.role == 'supervisor';
+                });
                 course["editor"] = _.find(courseMembers, (member: CourseMember) => {
                     return member.course_id == course.id && member.role == 'editor';
                 });
                 if (course["supervisor"])
-                    course["editor"] =  course["teacher"] =  course["supervisor"];
+                    course["editor"] = course["teacher"] = course["supervisor"];
             });
             courses.sort((course1: Course, course2: Course): any => {
                 return this.getLastCourseTimestamp(course2) - this.getLastCourseTimestamp(course1);
             });
             this.courses = courses;
-            var classMembers = _.filter(courseMembers, (member:CourseMember)=> {
+            var classMembers = _.filter(courseMembers, (member: CourseMember) => {
                 return member.class_id != null;
             });
-            CourseMember.populateClasses(this, classMembers).subscribe(classList=> {
+            CourseMember.populateClasses(this, classMembers).subscribe(classList => {
                 classList = _.uniq(classList, (clazz: CourseClass) => {
                     return clazz.id;
                 });
-                this.events = this.events.concat(_.map(classList, (clazz:CourseClass)=> {
+                this.events = this.events.concat(_.map(classList, (clazz: CourseClass) => {
                     return {
                         title: clazz.name,
                         start: clazz.start,
@@ -115,7 +115,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    getLastCourseTimestamp(course:Course) {
+    getLastCourseTimestamp(course: Course) {
         var timestamp = course.create_date.getTime();
         if (course["student"] && course["student"].create_date.getTime() < timestamp)
             timestamp = course["student"].create_date.getTime();
@@ -140,7 +140,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 return exam.id;
             });
             exams.sort((exam1: Exam, exam2: Exam): any => {
-                return this.getLastExamTimestamp(exam2) -  this.getLastExamTimestamp(exam1);
+                return this.getLastExamTimestamp(exam2) - this.getLastExamTimestamp(exam1);
             });
             _.each(exams, (exam: Exam) => {
                 exam["candidate"] = _.find(examMembers, (member: ExamMember) => {
@@ -153,7 +153,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
                 });
                 if (exam["supervisor"])
-                    exam["editor"] =  exam["teacher"] =  exam["supervisor"];
+                    exam["editor"] = exam["teacher"] = exam["supervisor"];
             });
             this.exams = exams;
             var countApi = _.map(exams, (exam: Exam) => {
@@ -167,9 +167,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     for (var i = 0; i < exams.length; i++) {
                         exams[i]["question_count"] = counts[i];
                     }
-                    
+
                 });
-             this.events = this.events.concat(_.map(exams, (exam:Exam)=> {
+            this.events = this.events.concat(_.map(exams, (exam: Exam) => {
                 return {
                     title: exam.name,
                     start: exam.start,
@@ -181,7 +181,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    getLastExamTimestamp(exam:Exam) {
+    getLastExamTimestamp(exam: Exam) {
         var timestamp = exam.create_date.getTime();
         if (exam["candidate"] && exam["candidate"].create_date.getTime() < timestamp)
             timestamp = exam["candidate"].create_date.getTime();
@@ -209,7 +209,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    getLastConferenceTimestamp(conf:Conference) {
+    getLastConferenceTimestamp(conf: Conference) {
         var timestamp = conf.create_date.getTime();
         if (conf["member"] && conf["member"].create_date.getTime() < timestamp)
             timestamp = conf["member"].create_date.getTime();
@@ -236,14 +236,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             });
     }
 
-    joinConference(conference,member) {
+    joinConference(conference, member) {
         if (member.is_active)
-            this.meetingSerivce.join( conference.room_ref,member.room_member_ref);
+            this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
         else
             this.error('You are  not allowed to join the conference');
     }
 
-    editSyllabus(course: Course, member:CourseMember) {
+    editSyllabus(course: Course, member: CourseMember) {
         CourseSyllabus.byCourse(this, course.id).subscribe(syllabus => {
             this.syllabusDialog.show(syllabus, course, member);
         });

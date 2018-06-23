@@ -10,7 +10,7 @@
         <div class="ui-toolbar-group-left">
           <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addCourse()" icon="ui-icon-add"></button>
           <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editCourse()" *ngIf="selectedCourse"></button>
-          <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCourse()" *ngIf="selectedCourse && selectedCourse.status=='unpublished'"></button>
+          <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCourse()" *ngIf="selectedCourse && selectedCourse.status!='published'"></button>
           <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollCourse()" *ngIf="selectedCourse"></button>
         </div>
         <div class="ui-toolbar-group-right">

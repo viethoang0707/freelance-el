@@ -1,23 +1,26 @@
 <div *ngIf="mode=='design'">
-  <div class="ui-g">
-    <div class="ui-g-6">
-      <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
-      </p-fileUpload>
-      <a href="{{lecture.package_url}}" target="_blank" *ngIf="lecture.package_url">{{'Download SCORM package file'|translate}}</a>
-    </div>
-    <div class="ui-g-6">
-      <span class="md-inputfield">
+    <div class="ui-g">
+        <div class="ui-g-6">
+          <p-blockUI [blocked]="blockedUpload" [target]="uploadPanel"></p-blockUI>
+            <ng-container #uploadPanel>
+                <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
+                </p-fileUpload>
+                <a href="{{lecture.package_url}}" target="_blank" *ngIf="lecture.package_url">{{'Download SCORM package file'|translate}}</a>
+            </ng-container>
+        </div>
+        <div class="ui-g-6">
+            <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="lecture.entry_file"  name="entry_file" required>
             <label>{{'Entry file'|translate}}</label>
           </span>
+        </div>
     </div>
-  </div>
 </div>
 <div *ngIf="mode=='preview'" style="height: 430px;">
-  <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
-  <span>{{'If you cannot see the SCORM unit, please '|translate}}<a target="_blank" href="{{lecture.base_url+'/'+lecture.entry_file}}">{{'click here'|translate}}</a></span>
+    <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
+    <span>{{'If you cannot see the SCORM unit, please '|translate}}<a target="_blank" href="{{lecture.base_url+'/'+lecture.entry_file}}">{{'click here'|translate}}</a></span>
 </div>
 <div *ngIf="mode=='study'" style="height: 380px; margin-bottom: 25px;" class="scorm-study-mode">
-  <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
-  <span>{{'If you cannot see the SCORM unit, please '|translate}}<a target="_blank" href="{{lecture.base_url+'/'+lecture.entry_file}}">{{'click here'|translate}}</a></span>
+    <iframe width="100%" height="100%" [src]="(lecture.base_url+'/'+lecture.entry_file) | safe"></iframe>
+    <span>{{'If you cannot see the SCORM unit, please '|translate}}<a target="_blank" href="{{lecture.base_url+'/'+lecture.entry_file}}">{{'click here'|translate}}</a></span>
 </div>

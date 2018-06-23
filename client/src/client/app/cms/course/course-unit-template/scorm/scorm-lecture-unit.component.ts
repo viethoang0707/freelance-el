@@ -27,16 +27,17 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	@Input() mode;
 	private unit: CourseUnit;
 	private lecture: SCORMLecture;
+	private blockedUpload: boolean;
 
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new SCORMLecture();
+		this.blockedUpload =  false;
 	}
 
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		
 		SCORMLecture.byCourseUnit(this, unit.id).subscribe((lecture: SCORMLecture) => {
 			if (lecture)
 				this.lecture = lecture;
@@ -54,17 +55,24 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
+		this.blockedUpload =  true;
 		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.lecture.package_url = data["url"];
 						var serverFile = data["filename"]
-						this.fileApiService.unzip(serverFile,  this.authService.LoginToken.cloud_id).subscribe((data)=> {
+						this.fileApiService.unzip(serverFile,  this.authService.LoginToken.cloud_id)
+						.subscribe((data)=> {
 							this.lecture.base_url = data["url"];
+							this.blockedUpload =  false;
+						}, ()=> {
+							this.blockedUpload =  false;
 						});
 					});
 				}
+			}, ()=> {
+				this.blockedUpload =  false;
 			}
 		);
 	}

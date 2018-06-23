@@ -62,7 +62,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                 return course.id;
             });
             courses.sort((course1: Course, course2: Course): any => {
-                return (this.getLastCourseTimestamp(course2)- this.getLastCourseTimestamp(course1);
+                return this.getLastCourseTimestamp(course2)- this.getLastCourseTimestamp(course1);
             });
             _.each(courses, (course: Course) => {
                 course["student"] = _.find(courseMembers, (member: CourseMember) => {
