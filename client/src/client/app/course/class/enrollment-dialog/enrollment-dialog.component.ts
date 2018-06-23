@@ -76,7 +76,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	addStudent() {
 		this.usersDialog.show();
-		this.usersDialog.onSelectUsers.subscribe(users => {
+		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			var userIds = _.pluck(users, 'id');
 			if (this.course.mode =='group')
 				this.courseClass.enroll(this, userIds).subscribe((result) => {
@@ -105,7 +105,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	addTeacher() {
 		this.usersDialog.show();
-		this.usersDialog.onSelectUsers.subscribe(users => {
+		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			var userIds = _.pluck(users, 'id');
 			var members = _.map(users, (user:User)=> {
 				var member = new CourseMember();

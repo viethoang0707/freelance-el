@@ -44,7 +44,7 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
 
     selectCourseGroup() {
     	this.groupDialog.show();
-    	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
+    	this.groupDialog.onSelectGroup.first().subscribe((group:Group) => {
             
     		Course.listByGroup(this, group.id).subscribe((courses:Course[]) => {
     			this.memberReport.render(courses);
@@ -55,7 +55,7 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
 
     selectIndividualCourses() {
 		this.courseDialog.show();
-    	this.courseDialog.onSelectCourses.subscribe((courses:Course[]) => {
+    	this.courseDialog.onSelectCourses.first().subscribe((courses:Course[]) => {
 			this.memberReport.render(courses);
 		});
     }

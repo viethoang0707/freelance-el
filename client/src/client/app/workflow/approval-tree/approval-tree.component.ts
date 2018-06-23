@@ -80,7 +80,7 @@ export class ApprovalTreeComponent extends BaseComponent {
     selectSupervisor() {
         if (this.selectedUser)
             this.adminDialog.show();
-        this.adminDialog.onSelectUsers.subscribe((admin: User) => {
+        this.adminDialog.onSelectUsers.first().subscribe((admin: User) => {
             this.selectedUser.supervisor_id = admin.id;
             this.selectedUser.save(this).subscribe(() => {
                 this.buildEscalationTree();

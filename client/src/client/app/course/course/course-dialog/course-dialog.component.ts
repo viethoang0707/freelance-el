@@ -57,7 +57,7 @@ export class CourseDialog extends BaseDialog<Course> {
 
 	selectEditor() {
 		this.usersDialog.show();
-		this.usersDialog.onSelectUsers.subscribe(users => {
+		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			if (users.length > 1) {
 				this.error('You can select only one editor.');
 				return;

@@ -106,7 +106,7 @@ export class SurveyContentDialog extends BaseComponent {
 	loadSheetTemplate() {
 		if (this.surveyQuestions.length == 0)
 			this.selectSheetDialog.show();
-		this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl: SurveySheet) => {
+		this.selectSheetDialog.onSelectSheet.first().subscribe((sheetTempl: SurveySheet) => {
 			SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(surveyQuestions => {
 				this.surveyQuestions = _.map(surveyQuestions, surveyQuestion => {
 					var newSurveyQuestion = surveyQuestion.clone();
@@ -126,7 +126,7 @@ export class SurveyContentDialog extends BaseComponent {
 	designSheet() {
 		if (this.surveyQuestions.length == 0){
 			this.selectQuestionDialog.show();
-			this.selectQuestionDialog.onSelectQuestions.subscribe(questions => {
+			this.selectQuestionDialog.onSelectQuestions.first().subscribe(questions => {
 				this.surveyQuestions = _.map(questions, (question:Question) => {
 					var newSurveyQuestion = new SurveyQuestion();
 					newSurveyQuestion.question_id = question.id;

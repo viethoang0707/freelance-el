@@ -43,7 +43,7 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
 
     selectUserGroup() {
     	this.groupDialog.show();
-    	this.groupDialog.onSelectGroup.subscribe((group:Group) => {
+    	this.groupDialog.onSelectGroup.first().subscribe((group:Group) => {
             
     		User.listByGroup(this, group.id).subscribe(users => {
                 this.courseReport.clear();
@@ -55,7 +55,7 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
 
     selectIndividualUsers() {
     	this.userDialog.show();
-    	this.userDialog.onSelectUsers.subscribe((users:User[]) => {
+    	this.userDialog.onSelectUsers.first().subscribe((users:User[]) => {
 			this.courseReport.clear();
             this.courseReport.render(users);
 		});

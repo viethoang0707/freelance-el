@@ -124,7 +124,7 @@ export class ExamContentDialog extends BaseComponent {
 	loadSheetTemplate() {
 		if (this.sheet && !this.sheet.finalized)
 			this.selectSheetDialog.show();
-		this.selectSheetDialog.onSelectSheet.subscribe((sheetTempl: QuestionSheet) => {
+		this.selectSheetDialog.onSelectSheet.first().subscribe((sheetTempl: QuestionSheet) => {
 			ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions => {
 				this.examQuestions = _.map(examQuestions, examQuestion => {
 					return examQuestion.clone();

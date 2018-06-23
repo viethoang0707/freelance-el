@@ -66,7 +66,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     displayCourses(courseMembers: CourseMember[]) {
         courseMembers = _.filter(courseMembers, (member: CourseMember) => {
-            return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
+            return member.course_id && member.status == 'active';
         });
         CourseMember.populateCourses(this, courseMembers).subscribe((courses) => {
             courses = _.filter(courses, (course: Course) => {

@@ -84,7 +84,7 @@ export class ExamDialog extends BaseDialog<Exam> {
 
     selectCompetencyLevel() {
         this.competencyLevelDialog.show();
-        this.competencyLevelDialog.onSelectCompetencyLevel.subscribe(level => {
+        this.competencyLevelDialog.onSelectCompetencyLevel.first().subscribe(level => {
                 this.object.competency_level_id = level.id;
                 this.object.competency_level_name = level.name;
                 this.object.competency_id = level.competency_id;

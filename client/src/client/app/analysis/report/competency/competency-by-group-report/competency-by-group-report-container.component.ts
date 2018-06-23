@@ -47,7 +47,7 @@ export class CompetencyByGroupReportContainerComponent extends BaseComponent{
 
     selectGroups() {
     	this.groupDialog.show();
-    	this.groupDialog.onSelectGroups.subscribe((groups:Group[]) => {
+    	this.groupDialog.onSelectGroups.first().subscribe((groups:Group[]) => {
             this.groups = groups;
     		if (this.competency && this,groups.length) {
                 this.competencyReport.clear();
@@ -58,7 +58,7 @@ export class CompetencyByGroupReportContainerComponent extends BaseComponent{
 
     selectCompetency() {
     	this.competencyDialog.show();
-    	this.competencyDialog.onSelectCompetency.subscribe((competency: Competency) => {
+    	this.competencyDialog.onSelectCompetency.first().subscribe((competency: Competency) => {
 			this.competency = competency;
             if (this.competency && this.groups.length) {
                 this.competencyReport.clear();

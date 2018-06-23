@@ -52,7 +52,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     displayCourses(courseMembers: CourseMember[]) {
         courseMembers = _.filter(courseMembers, (member: CourseMember) => {
-            return member.course_id && (member.course_mode == 'self-study' || member.class_id) && member.status == 'active';
+            return member.course_id && member.status == 'active';
         });
         CourseMember.populateCourses(this, courseMembers).subscribe((courses) => {
             courses = _.filter(courses, (course: Course) => {
@@ -156,12 +156,15 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.keyword =  this.keyword.trim();
         if ( this.keyword.length==0)
             this.filteredCourses =  this.courses;
-        else
+        else {
+            var keyword = this.keyword.toLowerCase();
             this.filteredCourses =  _.filter(this.courses, (course:Course)=> {
-                return course.name.includes(this.keyword) 
-                || course.summary.includes(this.keyword)
-                || course.code.includes(this.keyword)
-                || course.description.includes(this.keyword);
+                return course.name.toLowerCase().includes(this.keyword) 
+                || course.summary.toLowerCase().includes(this.keyword)
+                || course.code.toLowerCase().includes(this.keyword)
+                || course.description.toLowerCase().includes(this.keyword);
             });
+        }
+            
     }
 }

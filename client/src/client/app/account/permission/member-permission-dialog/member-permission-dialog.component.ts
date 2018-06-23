@@ -44,7 +44,7 @@ export class MemberPermissionDialog extends BaseComponent {
 
     addMember() {
         this.usersDialog.show();
-        this.usersDialog.onSelectUsers.subscribe(users => {
+        this.usersDialog.onSelectUsers.first().subscribe(users => {
             var updateApi = _.map(users, (user: User) => {
                 user.permission_id = this.permission.id;
                 return user.__api__update();

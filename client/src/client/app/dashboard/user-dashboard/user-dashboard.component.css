@@ -96,3 +96,5 @@ h4.title{
 .task-box:hover, .card:hover{
 	box-shadow: 0 0 11px #03a9f4;
 }
+.material-icons.fail { color: red; }
+.material-icons.success { color: green; }

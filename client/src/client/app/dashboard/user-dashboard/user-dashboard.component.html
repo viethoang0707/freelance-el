@@ -20,8 +20,12 @@
                             <ul class="list-cmt">
                                 <li class="clearfix" >
                                     <ng-container *ngIf="!course.IsAvailable">
-                                        <i class="material-icons">error-outline</i>
+                                        <i class="material-icons fail">error-outline</i>
                                         <span class="cmt-title">{{'Course not available'|translate}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="course.IsAvailable">
+                                        <i class="material-icons success">check</i>
+                                        <span class="cmt-title">{{'Course is available'|translate}}</span>
                                     </ng-container>
                                     </li>
                                     <li class="clearfix">

@@ -55,7 +55,7 @@ export class ExamEnrollDialog extends BaseComponent {
 
     addCandidate() {
         this.usersDialog.show();
-        this.usersDialog.onSelectUsers.subscribe(users => {
+        this.usersDialog.onSelectUsers.first().subscribe(users => {
             var userIds = _.pluck(users, 'id');
             this.exam.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
@@ -65,7 +65,7 @@ export class ExamEnrollDialog extends BaseComponent {
 
     addSupervisor() {
         this.usersDialog.show();
-        this.usersDialog.onSelectUsers.subscribe(users => {
+        this.usersDialog.onSelectUsers.first().subscribe(users => {
             var members = _.map(users, (user: User) => {
                 var member = new ExamMember();
                 member.role = 'supervisor';

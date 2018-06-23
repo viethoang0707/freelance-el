@@ -60,8 +60,6 @@ export class PermissionListComponent extends BaseComponent {
 
     deletePermission() {
         if (this.selectedPermission) {
-//             User.countByPermission(this, this.selectedPermission.id).subscribe(count=> {
-//                 if (count > 0 )
             User.listByPermission(this, this.selectedPermission.id).subscribe(users=> {
                 if (users.length)
                     this.error(this.translateService.instant('You cannot delete permission assigned to other uers'))
@@ -89,7 +87,7 @@ export class PermissionListComponent extends BaseComponent {
     permissionAccess(){
         if (this.selectedPermission)
             this.userPermissionDialog.show();
-        this.userPermissionDialog.onSelectGroup.subscribe((group:Group)=> {
+        this.userPermissionDialog.onSelectGroup.first().subscribe((group:Group)=> {
             this.selectedPermission.user_group_id = group.id;
             this.selectedPermission.save(this).subscribe(()=> {
                 this.loadPermission();
