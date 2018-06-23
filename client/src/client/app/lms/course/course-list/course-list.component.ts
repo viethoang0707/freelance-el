@@ -31,8 +31,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     COURSE_MODE = COURSE_MODE;
 
     private courses: Course[];
+    private filteredCourses: Course[];
     private courseMembers: CourseMember[];
     private reportUtils: ReportUtils;
+    @Input() keyword: string;
 
     @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
 
@@ -60,21 +62,26 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                 return course.id;
             });
             courses.sort((course1: Course, course2: Course): any => {
-                return (course1.create_date.getTime() - course2.create_date.getTime());
+                return (this.getLastCourseTimestamp(course2)- this.getLastCourseTimestamp(course1);
             });
             _.each(courses, (course: Course) => {
                 course["student"] = _.find(courseMembers, (member: CourseMember) => {
                     return member.course_id == course.id && member.role == 'student';
                 });
                 course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && (member.role == 'teacher' || member.role == 'supervisor');
+                    return member.course_id == course.id && member.role == 'teacher';
                 });
+                course["supervisor"] = _.find(courseMembers, (member: CourseMember) => {
+                        return member.course_id == course.id && member.role == 'supervisor';
+                 });
                 course["editor"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && (member.role == 'editor'|| member.role == 'supervisor');
+                    return member.course_id == course.id && member.role == 'editor';
                 });
+                if (course["supervisor"])
+                    course["editor"] =  course["teacher"] =  course["supervisor"];
                 course["courseMemberData"] = {};
             });
-            this.courses = courses;
+            this.courses = this.filteredCourses = courses;
             var apiList = _.map(this.courses, (course: Course) => {
                 return CourseSyllabus.__api__byCourse(course.id);
             });
@@ -130,4 +137,31 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/manage', course.id]);
     }
 
+    getLastCourseTimestamp(course:Course) {
+        var timestamp = course.create_date.getTime();
+        if (course["student"] && course["student"].create_date.getTime() < timestamp)
+            timestamp = course["student"].create_date.getTime();
+        if (course["teacher"] && course["teacher"].create_date.getTime() < timestamp)
+            timestamp = course["teacher"].create_date.getTime();
+        if (course["editor"] && course["editor"].create_date.getTime() < timestamp)
+            timestamp = course["editor"].create_date.getTime();
+        if (course["supervisor"] && course["supervisor"].create_date.getTime() < timestamp)
+            timestamp = course["supervisor"].create_date.getTime();
+        return timestamp;
+    }
+
+    filterCourse() {
+        if (!this.keyword)
+            return;
+        this.keyword =  this.keyword.trim();
+        if ( this.keyword.length==0)
+            this.filteredCourses =  this.courses;
+        else
+            this.filteredCourses =  _.filter(this.courses, (course:Course)=> {
+                return course.name.includes(this.keyword) 
+                || course.summary.includes(this.keyword)
+                || course.code.includes(this.keyword)
+                || course.description.includes(this.keyword);
+            });
+    }
 }

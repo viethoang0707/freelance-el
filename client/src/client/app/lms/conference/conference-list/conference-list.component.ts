@@ -23,7 +23,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 })
 export class ConferenceListComponent extends BaseComponent implements OnInit {
 
-	private conferenceMembers: ConferenceMember[];
+	private conferences: Conference[];
 
 	CONFERENCE_STATUS = CONFERENCE_STATUS;
 
@@ -33,13 +33,22 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         ConferenceMember.listByUser(this, this.ContextUser.id).subscribe((conferenceMembers) => {
-            conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
-                return member.conference_id && member.conference_status == 'open';
+            this.displayConferences(conferenceMembers);
+        });
+    }
+
+    displayConferences(conferenceMembers: ConferenceMember[]) {
+        conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
+            return member.conference_id && member.conference_status == 'open';
+        });
+        ConferenceMember.populateConferences(this, conferenceMembers).subscribe(conferences => {
+            conferences.sort((conf1: Conference, conf2: Conference): any => {
+                return this.getLastConferenceTimestamp(conf2) - this.getLastConferenceTimestamp(conf1);
             });
-            ConferenceMember.populateConferences(this, conferenceMembers).subscribe(() => {
-                this.conferenceMembers =  conferenceMembers;
-                this.conferenceMembers.sort((member1:ConferenceMember, member2:ConferenceMember): any => {
-                    return member1.create_date.getTime() - member2.create_date.getTime();
+            this.conferences = conferences;
+            _.each(conferences, (conf: Conference) => {
+                conferences["member"] = _.find(conferenceMembers, (member: ConferenceMember) => {
+                    return member.conference_id == conf.id;
                 });
             });
         });
@@ -50,6 +59,13 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
             this.meetingSerivce.join(member.conference.room_ref, member.room_member_ref);
         else
             this.error(this.translateService.instant('You are  not allowed to join the conference'));
+    }
+
+    getLastConferenceTimestamp(conf:Conference) {
+        var timestamp = conf.create_date.getTime();
+        if (conf["member"] && conf["member"].create_date.getTime() < timestamp)
+            timestamp = conf["member"].create_date.getTime();
+        return timestamp;
     }
 
 }

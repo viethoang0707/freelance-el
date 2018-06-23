@@ -76,6 +76,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.syl = syl;
 		this.courseMember =  member;
 		this.course = course;
+		this.buildCourseTree();
 	}
 
 	clearSelection() {

@@ -18,9 +18,11 @@
                             <span class="image-box-tag">{{COURSE_MODE[course.mode]}}</span>
                             <p class="summary">{{course.summary}}</p>
                             <ul class="list-cmt">
-                                <li class="clearfix" *ngIf="!course.IsAvailable">
+                                <li class="clearfix" >
+                                    <ng-container *ngIf="!course.IsAvailable">
                                         <i class="material-icons">error-outline</i>
                                         <span class="cmt-title">{{'Course not available'|translate}}</span>
+                                    </ng-container>
                                     </li>
                                     <li class="clearfix">
                                         <i class="material-icons">toys</i>

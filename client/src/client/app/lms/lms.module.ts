@@ -40,7 +40,6 @@ import { CourseRecommendComponent } from './course/course-recommend/course-recom
 import { SurveyListComponent} from './survey/survey-list/survey-list.component';
 import { LMSProfileDialog } from './course/lms-profile/lms-profile-dialog.component';
 import { WebcamModule } from 'ngx-webcam';
-import { MessageDialog } from './course/course-message/course-message.dialog.component';
 
 @NgModule({
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,AnalysisModule],

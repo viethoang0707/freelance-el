@@ -60,7 +60,7 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
                 return survey.id;
             });
             surveys.sort((survey1: Survey, survey2: Survey): any => {
-                return (survey2.create_date.getTime() - survey1.create_date.getTime());
+                return  this.getLastSurveyTimestamp(survey2) - this.getLastSurveyTimestamp(survey1);
             });
             _.each(surveys, (survey: SurveyMember) => {
                 survey["candidate"] = _.find(surveyMembers, (member: SurveyMember) => {
@@ -72,6 +72,8 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
                 survey["editor"] = _.find(surveyMembers, (member: SurveyMember) => {
                     return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
                 });
+                if (survey["supervisor"])
+                    survey["editor"] =  survey["teacher"] =  survey["supervisor"];
             });
             this.surveys = surveys;
               var countApi = _.map(surveys, (survey: Survey) => {
@@ -101,6 +103,17 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
                 this.surveyStudyDialog.show(survey, member);
             }
         });
+    }
+
+    getLastSurveyTimestamp(survey:Survey) {
+        var timestamp = survey.create_date.getTime();
+        if (survey["candidate"] && survey["candidate"].create_date.getTime() < timestamp)
+            timestamp = survey["candidate"].create_date.getTime();
+        if (survey["editor"] && survey["editor"].create_date.getTime() < timestamp)
+            timestamp = survey["exam"].create_date.getTime();
+        if (survey["supervisor"] && survey["supervisor"].create_date.getTime() < timestamp)
+            timestamp = survey["supervisor"].create_date.getTime();
+        return timestamp;
     }
 
 }

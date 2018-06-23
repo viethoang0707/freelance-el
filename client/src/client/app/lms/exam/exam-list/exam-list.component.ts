@@ -65,7 +65,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 return exam.id;
             });
             exams.sort((exam1: Exam, exam2: Exam): any => {
-                return (exam2.create_date.getTime() - exam1.create_date.getTime());
+                return this.getLastExamTimestamp(exam2) - this.getLastExamTimestamp(exam1);
             });
             _.each(exams, (exam: Exam) => {
                 exam["candidate"] = _.find(examMembers, (member: ExamMember) => {
@@ -77,6 +77,8 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 exam["editor"] = _.find(examMembers, (member: ExamMember) => {
                     return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
                 });
+                if (exam["supervisor"])
+                    exam["editor"] =  exam["teacher"] =  exam["supervisor"];
                 if (exam["candidate"]) {
                     exam["submit"] = _.find(submits, (submit: Submission) => {
                         return submit.member_id == exam["candidate"].id && submit.exam_id == exam.id;
@@ -112,6 +114,17 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 });
             this.exams = exams;
         });
+    }
+
+    getLastExamTimestamp(exam:Exam) {
+        var timestamp = exam.create_date.getTime();
+        if (exam["candidate"] && exam["candidate"].create_date.getTime() < timestamp)
+            timestamp = exam["candidate"].create_date.getTime();
+        if (exam["editor"] && exam["editor"].create_date.getTime() < timestamp)
+            timestamp = exam["exam"].create_date.getTime();
+        if (exam["supervisor"] && exam["supervisor"].create_date.getTime() < timestamp)
+            timestamp = exam["supervisor"].create_date.getTime();
+        return timestamp;
     }
 
     manageExam(exam: Exam, member: ExamMember) {

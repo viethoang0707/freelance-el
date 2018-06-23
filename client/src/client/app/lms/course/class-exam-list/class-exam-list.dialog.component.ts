@@ -79,7 +79,7 @@ export class ClassExamListDialog extends BaseComponent {
 			classExam.course_id = this.courseClass.course_id;
 			classExam.class_id = this.courseClass.id;
 			classExam.save(this).subscribe(() => {
-					this.loadExams();
+				this.loadExams();
 			});
 		});
 	}
@@ -95,8 +95,8 @@ export class ClassExamListDialog extends BaseComponent {
 	manageExam() {
 		if (this.selectedClassExam)  {
 			ExamMember.byExamAndUser(this, this.ContextUser.id ,this.selectedClassExam.exam_id).subscribe(member=> {
-				this.onManageReceiver.next([this.selectedClassExam.id, member.id]);
 				this.hide();
+				this.onManageReceiver.next([this.selectedClassExam.id, member.id]);
 			});
 		}
 	}

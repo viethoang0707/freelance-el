@@ -173,7 +173,7 @@ export abstract class BaseModel {
             for(var i=0;i<apiList.length;i++) {
                 var api = apiList[i];
                 var object =  MapUtils.deserializeModel(api.params["model"], api.params["values"]);
-                Cache.objectUpdate(object;
+                Cache.objectUpdate(object);
             }
         });
     }

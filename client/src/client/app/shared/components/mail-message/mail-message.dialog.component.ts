@@ -16,7 +16,6 @@ export class MailMessageDialog extends BaseComponent {
 	private display: boolean;
 	private subject: string;
 	private body: string;
-	private members: CourseMember[];
 
     constructor() {
         super();

@@ -5,7 +5,7 @@ const DevConfig: EnvConfig = {
   CONFERENCE_ENDPOINT: 'http://localhost:4444',
   SOCKET_ENDPOINT: 'http://localhost:3000',
   ENV: 'DEV',
-  VERSION: '1.0.0'
+  VERSION: '2.0.1'
 };
 
 export = DevConfig;

@@ -75,19 +75,24 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             courses = _.uniq(courses, (course: Course) => {
                 return course.id;
             });
-            courses.sort((course1: Course, course2: Course): any => {
-                return (course2.create_date.getTime() - course1.create_date.getTime());
-            });
             _.each(courses, (course: Course) => {
                 course["student"] = _.find(courseMembers, (member: CourseMember) => {
                     return member.course_id == course.id && member.role == 'student';
                 });
                 course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && (member.role == 'teacher' || member.role == 'supervisor');
+                    return member.course_id == course.id && member.role == 'supervisor';
                 });
+                course["supervisor"] = _.find(courseMembers, (member: CourseMember) => {
+                        return member.course_id == course.id && (member.role == 'supervisor';
+                 });
                 course["editor"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && (member.role == 'editor'|| member.role == 'supervisor');
+                    return member.course_id == course.id && member.role == 'editor';
                 });
+                if (course["supervisor"])
+                    course["editor"] =  course["teacher"] =  course["supervisor"];
+            });
+            courses.sort((course1: Course, course2: Course): any => {
+                return this.getLastCourseTimestamp(course2) - this.getLastCourseTimestamp(course1);
             });
             this.courses = courses;
             var classMembers = _.filter(courseMembers, (member:CourseMember)=> {
@@ -110,6 +115,19 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
+    getLastCourseTimestamp(course:Course) {
+        var timestamp = course.create_date.getTime();
+        if (course["student"] && course["student"].create_date.getTime() < timestamp)
+            timestamp = course["student"].create_date.getTime();
+        if (course["teacher"] && course["teacher"].create_date.getTime() < timestamp)
+            timestamp = course["teacher"].create_date.getTime();
+        if (course["editor"] && course["editor"].create_date.getTime() < timestamp)
+            timestamp = course["editor"].create_date.getTime();
+        if (course["supervisor"] && course["supervisor"].create_date.getTime() < timestamp)
+            timestamp = course["supervisor"].create_date.getTime();
+        return timestamp;
+    }
+
     displayExams(examMembers: ExamMember[]) {
         examMembers = _.filter(examMembers, (member: ExamMember) => {
             return member.exam_id && member.status == 'active';
@@ -122,7 +140,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 return exam.id;
             });
             exams.sort((exam1: Exam, exam2: Exam): any => {
-                return (exam2.create_date.getTime() - exam1.create_date.getTime());
+                return this.getLastExamTimestamp(exam2) -  this.getLastExamTimestamp(exam1);
             });
             _.each(exams, (exam: Exam) => {
                 exam["candidate"] = _.find(examMembers, (member: ExamMember) => {
@@ -134,6 +152,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 exam["editor"] = _.find(examMembers, (member: ExamMember) => {
                     return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
                 });
+                if (exam["supervisor"])
+                    exam["editor"] =  exam["teacher"] =  exam["supervisor"];
             });
             this.exams = exams;
             var countApi = _.map(exams, (exam: Exam) => {
@@ -161,13 +181,24 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
+    getLastExamTimestamp(exam:Exam) {
+        var timestamp = exam.create_date.getTime();
+        if (exam["candidate"] && exam["candidate"].create_date.getTime() < timestamp)
+            timestamp = exam["candidate"].create_date.getTime();
+        if (exam["editor"] && exam["editor"].create_date.getTime() < timestamp)
+            timestamp = exam["exam"].create_date.getTime();
+        if (exam["supervisor"] && exam["supervisor"].create_date.getTime() < timestamp)
+            timestamp = exam["supervisor"].create_date.getTime();
+        return timestamp;
+    }
+
     displayConferences(conferenceMembers: ConferenceMember[]) {
         conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
             return member.conference_id && member.conference_status == 'open';
         });
         ConferenceMember.populateConferences(this, conferenceMembers).subscribe(conferences => {
             conferences.sort((conf1: Conference, conf2: Conference): any => {
-                return conf2.create_date.getTime() - conf1.create_date.getTime();
+                return this.getLastConferenceTimestamp(conf2) - this.getLastConferenceTimestamp(conf1);
             });
             this.conferences = conferences;
             _.each(conferences, (conf: Conference) => {
@@ -176,6 +207,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 });
             });
         });
+    }
+
+    getLastConferenceTimestamp(conf:Conference) {
+        var timestamp = conf.create_date.getTime();
+        if (conf["member"] && conf["member"].create_date.getTime() < timestamp)
+            timestamp = conf["member"].create_date.getTime();
+        return timestamp;
     }
 
     ngOnInit() {

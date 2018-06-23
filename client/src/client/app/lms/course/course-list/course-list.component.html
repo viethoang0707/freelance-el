@@ -10,7 +10,12 @@ ul {
 </style>
 <div class="card card-w-title">
     <h1>{{'My courses'|translate}}</h1>
-    <p-dataList [value]="courses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
+    <div class="search mrg-bt">
+        <div class="ui-inputgroup">
+            <input type="text" pInputText   (input)="filterCourse()" placeholder="{{'Keyword'|translate}}" name="keywordInput" [(ngModel)]="keyword">
+        </div>
+    </div>
+    <p-dataList [value]="filteredCourses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
         <ng-template let-course pTemplate="item">
             <p-card styleClass="lms-course-list-item">
                 <div class="ui-g">

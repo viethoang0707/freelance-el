@@ -5,7 +5,7 @@ const TestConfig: EnvConfig = {
   CONFERENCE_ENDPOINT: 'https://meeting.test.vietinterview.com',
   SOCKET_ENDPOINT: 'https://socket.test.vietinterview.com',
   ENV: 'TEST',
-  VERSION: '1.0.0'
+  VERSION: '2.0.1'
 };
 
 export = TestConfig;
