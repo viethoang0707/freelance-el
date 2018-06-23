@@ -42,19 +42,15 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        BaseModel.bulk_search(this,
-            SurveyMember.__api__listByUser(this.ContextUser.id),
-            SurveySubmission.__api__listByUser(this.ContextUser.id))
-            .subscribe(jsonArray => {
-                var members = SurveyMember.toArray(jsonArray[0]);
-                var submits = SurveySubmission.toArray(jsonArray[1]);
-                this.displaySurveys(members, submits);
+        SurveyMember.listByUser(this, this.ContextUser.id)
+            .subscribe(members => {
+                this.displaySurveys(members);
             });
     }
 
-    displaySurveys(surveyMembers: SurveyMember[], submits: SurveySubmission[]) {
+    displaySurveys(surveyMembers: SurveyMember[]) {
         surveyMembers = _.filter(surveyMembers, (member: SurveyMember) => {
-            return member.survey_id!=null;
+            return member.survey_id != null;
         });
         SurveyMember.populateSurveys(this, surveyMembers).subscribe(surveys => {
             surveys = _.filter(surveys, (survey: Survey) => {
@@ -67,37 +63,33 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
                 return (survey2.create_date.getTime() - survey1.create_date.getTime());
             });
             _.each(surveys, (survey: SurveyMember) => {
-                surveys["candidate"] = _.find(surveyMembers, (member: SurveyMember) => {
+                survey["candidate"] = _.find(surveyMembers, (member: SurveyMember) => {
                     return member.survey_id == survey.id && member.role == 'candidate';
                 });
-                surveys["supervisor"] = _.find(surveyMembers, (member: SurveyMember) => {
+                survey["supervisor"] = _.find(surveyMembers, (member: SurveyMember) => {
                     return member.survey_id == survey.id && member.role == 'supervisor';
                 });
-                surveys["editor"] = _.find(surveyMembers, (member: SurveyMember) => {
+                survey["editor"] = _.find(surveyMembers, (member: SurveyMember) => {
                     return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
                 });
-                if (survey["candidate"]) {
-                    survey["submit"] = _.find(submits, (submit: SurveySubmission) => {
-                        return submit.member_id == survey["candidate"].id && submit.survey_id == survey.id;
-                    });
             });
-             var countApi = _.map(surveys, (survey: Survey) => {
-                return SurveyQuestion.__api__countBySurvey(survey.id);
-            });
-            BaseModel.bulk_count(this, ...countApi)
-                .map((jsonArray) => {
-                    return _.flatten(jsonArray);
-                })
-                .subscribe(counts => {
-                    for (var i = 0; i < surveys.length; i++) {
-                        surveys[i]["question_count"] = counts[i];
-                    }
-                });
-            this.surveys =  surveys;
+            this.surveys = surveys;
+              var countApi = _.map(surveys, (survey: Survey) => {
+                 return SurveyQuestion.__api__countBySurvey(survey.id);
+             });
+             BaseModel.bulk_count(this, ...countApi)
+                 .map((jsonArray) => {
+                     return _.flatten(jsonArray);
+                 })
+                 .subscribe(counts => {
+                     for (var i = 0; i < surveys.length; i++) {
+                         surveys[i]["question_count"] = counts[i];
+                     }
+                 });
         });
     }
 
-    
+
     editContent(survey: Survey) {
         this.surveyContentDialog.show(survey);
     }
