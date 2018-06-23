@@ -81,7 +81,7 @@
     <select-competency-level-dialog></select-competency-level-dialog>
   </p-scrollPanel>
   <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save for review'|translate}}" (click)="f.ngSubmit.emit()" *ngIf="object.supervisor_id == ContextUser.id && course.review_state!='approved' && !ContextUser.IsSuperAdmin"></button>
+    <button type="button" pButton icon="fa-check" label="{{'Save for review'|translate}}" (click)="f.ngSubmit.emit()" *ngIf="object.supervisor_id == ContextUser.id && object.review_state!='approved' && !ContextUser.IsSuperAdmin"></button>
     <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" *ngIf="object.supervisor_id == ContextUser.id || ContextUser.IsSuperAdmin"></button>
     <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
   </p-footer>
