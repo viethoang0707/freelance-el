@@ -1,100 +1,79 @@
-.user-card-footer{
-	padding: 10px;
-	text-align: center;
+.hrm-toolbar-tree{
+}
+.mrg-bt{
+    margin-bottom: 15px;
 }
 
-ul.list-cmt{
-	margin: 0;
-    padding-left: 0;
-}
-
-.border-end{
-	border-bottom: none;
+.list-cmt{
+	padding-left: 0;
 }
 
 .list-cmt li{
 	list-style: none;
-	padding: 16px 8px;
+	padding: 10px 14px;
     border-bottom: 1px solid #dbdbdb;
+}
+
+.list-cmt li i{
+	font-size: 24px;
+    margin-right: 8px;
+    width: 32px;
+    vertical-align: middle;
+    color: #757575;
 }
 
 .list-cmt li .cmt-title{
 	font-weight: 700;
     margin-right: 8px;
-    color: #484747;
 }
 
 .list-cmt li .cmt-detail{
-	color: #757575;
+	color: #283593;
 	float: right;
 }
 
-h4.title{
-	margin-top: 0;
+.c-title{
+	font-size: 15px;
+}
+
+.c-status{
+	background-color: #e91e63;
+	border-radius: 9px;
+    padding: 2px 8px;
+    color: #fff;
+}
+
+.profile-image-wrapper img{
+	width: 100%;
+	border: 1px solid #dbdbdb;
+}
+
+.border{
+	border-bottom: 1px solid #dbdbdb;
+}
+
+.heading-course{
 	font-weight: 600;
-	white-space: nowrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-  	margin-bottom: 14px;
-}
-
-.summary{
-	white-space: nowrap;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-  	height: 17px;
-}
-
-.tit{
-	margin-top: 0;
-}
-
-.icon{
-	font-size: 24px;
-    margin-right: 5px;
-}
-
-.card-exam{
-	position: relative;
-	padding: 0;
-}
-
-.exam-card-content{
-	padding: 0 15px;
-}
-
-.exam-card-name{
-	font-size: 20px;
-    color: #212121;
-    position: absolute;
-    top: 20px;
-    margin-left: 80px;
-    font-weight: 700;
-    white-space: nowrap;
+	color: #192fa9;
+	float: left;
     overflow: hidden;
-  	text-overflow: ellipsis;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 5px 10px 0 0;
 }
-
-.image-box-footer{
-	margin-top: 14px;
-}
-
-/*.course-card-header{
-	border-top: 1px solid #f5f5f5;
-	border-bottom: 1px solid #f5f5f5;
-}*/
 
 .display-none{
 	display: none;
 }
 
-.dashboard-list-title{
-	color: #0e22b5;
-	margin: 0;
+.search input{
+	border: 1px solid #bdbdbd; 
+	width: 400px; 
+	border-bottom-left-radius: 3px; 
+	border-top-left-radius: 3px
 }
 
-.task-box:hover, .card:hover{
-	box-shadow: 0 0 11px #03a9f4;
+.search button{
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0
 }
-.material-icons.fail { color: red; }
-.material-icons.success { color: green; }

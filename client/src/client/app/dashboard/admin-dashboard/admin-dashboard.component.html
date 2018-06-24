@@ -11,8 +11,8 @@
                         <div class="ui-g">
                             <div class="ui-g-9">
                                 <div class="ui-g-12 border">
-                                    <button pButton type="button" icon="ui-icon-check" title="{{'Approve'| translate}}" label="{{'Approve'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="approveTicket(ticket)" [disabled]="ticket.status!='open'"></button>
-                                    <button pButton type="button" icon="ui-icon-block" title="{{'Reject'| translate}}" label="{{'Reject'|translate}}" class=" red-btn" style="margin-right:4px;" (click)="rejectTicket(ticket)" [disabled]="ticket.status!='open'"></button>
+                                    <button pButton type="button" icon="ui-icon-check" title="{{'Approve'| translate}}" label="{{'Approve'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="approveTicket(ticket)" [disabled]="ticket.status=='approved'"></button>
+                                    <button pButton type="button" icon="ui-icon-block" title="{{'Reject'| translate}}" label="{{'Reject'|translate}}" class=" red-btn" style="margin-right:4px;" (click)="rejectTicket(ticket)" [disabled]="ticket.status=='rejected'"></button>
                                 </div>
                                 <div class="ui-g-12">
                                     <h4 class="heading-course">
