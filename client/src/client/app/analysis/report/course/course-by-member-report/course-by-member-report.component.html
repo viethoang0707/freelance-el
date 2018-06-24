@@ -1,6 +1,6 @@
 <div class="ui-g content">
     <div class="ui-g-12 removePd">
-        <p-table #dataTable [value]="records" [responsive]="true" sortField="user_login" sortMode="single" (onSort)="onSort()">
+        <p-table #dataTable [value]="records" [responsive]="true">
             <ng-template pTemplate="caption">
                 {{'Course by member report'|translate}}
             </ng-template>
@@ -26,12 +26,12 @@
             <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                 <tr>
                     <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
-                        {{rowData.user_login}} {{rowData.index}} {{rowData.size}}
+                        {{rowData.user_login}}
                     </td>
                     <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
                         {{rowData.user_name}}
                     </td>
-                    <td>{{rowData.course_code}}</td>
+                    <td>{{rowData.course_code}} {{rowIndex}} {{rowData.index}}</td>
                     <td>{{rowData.course_name}}</td>
                     <td>{{COURSE_MODE[rowData.course_mode] | translate}}</td>
                     <td>{{rowData.date_register}}</td>

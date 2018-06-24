@@ -22,7 +22,8 @@ import { WorkflowService } from '../../shared/services/workflow.service';
 @Component({
     moduleId: module.id,
     selector: 'admin-dashboard',
-    templateUrl: 'admin-dashboard.component.html'
+    templateUrl: 'admin-dashboard.component.html',
+       // styleUrls: ['admin-dashboard.component.css'],
 
 })
 export class AdminDashboardComponent extends BaseComponent implements OnInit {
@@ -99,7 +100,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     approveTicket(ticket: Ticket) {
-        if (ticket.status == 'open') {
+        if (ticket.status == 'pending') {
             this.workflowService.approveTicket(this, ticket.id).subscribe(()=> {
                 this.info(this.translateService.instant('Ticket approved'));
                 this.approvalTickets = _.reject(this.approvalTickets, (obj:Ticket)=> {
@@ -110,7 +111,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     }
 
     rejectTicket(ticket: Ticket) {
-        if (ticket.status == 'open') {
+        if (ticket.status == 'pending') {
             this.workflowService.rejectTicket(this, ticket.id).subscribe(()=> {
                 this.info(this.translateService.instant('Ticket rejected'));
                 this.approvalTickets = _.reject(this.approvalTickets, (obj:Ticket)=> {

@@ -42,36 +42,10 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 	}
 
 	ngOnInit() {
-		this.updateRowGroupMetaData();
 	}
 
 	clear() {
 		this.records = [];
-	}
-
-	onSort() {
-		this.updateRowGroupMetaData();
-	}
-
-	updateRowGroupMetaData() {
-		this.rowGroupMetadata = {};
-		if (this.records) {
-			for (let i = 0; i < this.records.length; i++) {
-				let rowData = this.records[i];
-				let brand = rowData.user_login;
-				if (i == 0) {
-					this.rowGroupMetadata[brand] = { index: 0, size: 1 };
-				}
-				else {
-					let previousRowData = this.records[i - 1];
-					let previousRowGroup = previousRowData.brand;
-					if (brand === previousRowGroup)
-						this.rowGroupMetadata[brand].size++;
-					else
-						this.rowGroupMetadata[brand] = { index: i, size: 1 };
-				}
-			}
-		}
 	}
 
 	export() {
@@ -93,6 +67,7 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 			apiList.push(CourseMember.__api__listByUser(users[i].id));
 			apiList.push(CourseLog.__api__userStudyActivity(users[i].id,null));
 		};
+		var records = [];
 		BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
 			for (var i=0;i<users.length; i++) {
 				var members = CourseMember.toArray(jsonArr[2*i]);
@@ -109,12 +84,15 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 				memberRecords = memberRecords.filter((memberRecord: any) => {
 					return memberRecord.course_code !== '' && memberRecord.course_mode !== '' && memberRecord.course_name !== '';
 				});
-				this.records = this.records.concat(memberRecords);
+				records = records.concat(memberRecords);
 			}
-			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(this.records, "user_login");
-			this.records.forEach(record => {
-				record.index = this.rowGroupMetadata[record.user_login].index;
-				record.size = this.rowGroupMetadata[record.user_login].size;
+			this.rowGroupMetadata =  this.reportUtils.createRowGroupMetaData(records,"user_login");
+			_.each(records, record => {
+				record["index"] = this.rowGroupMetadata[record["user_login"]].index;
+				record["size"] = this.rowGroupMetadata[record["user_login"]].size;
+			});
+			this.records  = _.sortBy(records ,record=> {
+				return +record["index"];
 			});
 		});
 	}
@@ -131,10 +109,16 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 		var result = this.reportUtils.analyzeCourseMemberActivity(logs);
 		if (result[0] != Infinity)
 			record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
+		else
+			record["first_attempt"]='';
 		if (result[1] != Infinity)
 			record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATE_FORMAT);
+		else
+			record["last_attempt"] ='';
 		if (!Number.isNaN(result[2]))
 			record["time_spent"] = this.timePipe.transform(+(result[2]), 'min');
+		else
+			record["time_spent"] =0;
 		return record;
 	}
 

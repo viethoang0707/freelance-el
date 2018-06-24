@@ -5,7 +5,7 @@
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Ticket'|translate}} ({{approvalTickets.length}})" leftIcon="ui-icon-widgets">
-         <p-dataList [value]="approvalTickets" [paginator]="true" [rows]="5" styleClass="lms-ticket-list">
+         <p-dataList [value]="approvalTickets" [paginator]="true" [rows]="5" styleClass="lms-course-list">
                 <ng-template let-ticket pTemplate="item">
                     <p-card styleClass="lms-course-list-item">
                         <div class="ui-g">

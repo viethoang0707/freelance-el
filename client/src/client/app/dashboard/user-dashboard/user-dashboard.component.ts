@@ -35,7 +35,7 @@ import * as _ from 'underscore';
     moduleId: module.id,
     selector: 'user-dashboard',
     templateUrl: 'user-dashboard.component.html',
-
+    styleUrls: ['dashboard.component.css'],
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
 
@@ -63,55 +63,42 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.header = SCHEDULER_HEADER;
     }
 
-    displayCourses(courseMembers: CourseMember[]) {
-        courseMembers = _.filter(courseMembers, (member: CourseMember) => {
-            return member.course_id && member.status == 'active';
+    displayCourses() {
+        var courseMembers = this.lmsService.MyCourseMember;
+        var courses = this.lmsService.MyCourse;
+        var classList = this.lmsService.MyClass;
+        courses = _.filter(courses, (course: Course) => {
+            return course.review_state == 'approved';
         });
-        CourseMember.populateCourses(this, courseMembers).subscribe((courses) => {
-            courses = _.filter(courses, (course: Course) => {
-                return course.review_state == 'approved';
+        _.each(courses, (course: Course) => {
+            course["student"] = _.find(courseMembers, (member: CourseMember) => {
+                return member.course_id == course.id && member.role == 'student';
             });
-            courses = _.uniq(courses, (course: Course) => {
-                return course.id;
+            course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
+                return member.course_id == course.id && member.role == 'teacher';
             });
-            _.each(courses, (course: Course) => {
-                course["student"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'student';
-                });
-                course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'teacher';
-                });
-                course["supervisor"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'supervisor';
-                });
-                course["editor"] = _.find(courseMembers, (member: CourseMember) => {
-                    return member.course_id == course.id && member.role == 'editor';
-                });
-                if (course["supervisor"])
-                    course["editor"] = course["teacher"] = course["supervisor"];
+            course["supervisor"] = _.find(courseMembers, (member: CourseMember) => {
+                return member.course_id == course.id && member.role == 'supervisor';
             });
-            courses.sort((course1: Course, course2: Course): any => {
-                return this.getLastCourseTimestamp(course2) - this.getLastCourseTimestamp(course1);
+            course["editor"] = _.find(courseMembers, (member: CourseMember) => {
+                return member.course_id == course.id && member.role == 'editor';
             });
-            this.courses = courses;
-            var classMembers = _.filter(courseMembers, (member: CourseMember) => {
-                return member.class_id != null;
-            });
-            CourseMember.populateClasses(this, classMembers).subscribe(classList => {
-                classList = _.uniq(classList, (clazz: CourseClass) => {
-                    return clazz.id;
-                });
-                this.events = this.events.concat(_.map(classList, (clazz: CourseClass) => {
-                    return {
-                        title: clazz.name,
-                        start: clazz.start,
-                        end: clazz.end,
-                        id: clazz.id,
-                        allDay: true
-                    }
-                }));
-            });
+            if (course["supervisor"])
+                course["editor"] = course["teacher"] = course["supervisor"];
         });
+        courses.sort((course1: Course, course2: Course): any => {
+            return this.getLastCourseTimestamp(course2) - this.getLastCourseTimestamp(course1);
+        });
+        this.courses = courses;
+        this.events = this.events.concat(_.map(classList, (clazz: CourseClass) => {
+            return {
+                title: clazz.name,
+                start: clazz.start,
+                end: clazz.end,
+                id: clazz.id,
+                allDay: true
+            }
+        }));
     }
 
     getLastCourseTimestamp(course: Course) {
@@ -127,57 +114,36 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         return timestamp;
     }
 
-    displayExams(examMembers: ExamMember[]) {
-        examMembers = _.filter(examMembers, (member: ExamMember) => {
-            return member.exam_id && member.status == 'active';
+    displayExams() {
+        var examMembers = this.lmsService.MyExamMember;
+        var exams = this.lmsService.MyExam;
+        _.each(exams, (exam: Exam) => {
+            exam["candidate"] = _.find(examMembers, (member: ExamMember) => {
+                return member.exam_id == exam.id && member.role == 'candidate';
+            });
+            exam["supervisor"] = _.find(examMembers, (member: ExamMember) => {
+                return member.exam_id == exam.id && member.role == 'supervisor';
+            });
+            exam["editor"] = _.find(examMembers, (member: ExamMember) => {
+                return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
+            });
+            if (exam["supervisor"])
+                exam["editor"] = exam["teacher"] = exam["supervisor"];
         });
-        ExamMember.populateExams(this, examMembers).subscribe(exams => {
-            exams = _.filter(exams, (exam: Exam) => {
-                return exam.review_state == 'approved';
-            });
-            exams = _.uniq(exams, (exam: Exam) => {
-                return exam.id;
-            });
-            exams.sort((exam1: Exam, exam2: Exam): any => {
-                return this.getLastExamTimestamp(exam2) - this.getLastExamTimestamp(exam1);
-            });
-            _.each(exams, (exam: Exam) => {
-                exam["candidate"] = _.find(examMembers, (member: ExamMember) => {
-                    return member.exam_id == exam.id && member.role == 'candidate';
-                });
-                exam["supervisor"] = _.find(examMembers, (member: ExamMember) => {
-                    return member.exam_id == exam.id && member.role == 'supervisor';
-                });
-                exam["editor"] = _.find(examMembers, (member: ExamMember) => {
-                    return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
-                });
-                if (exam["supervisor"])
-                    exam["editor"] = exam["teacher"] = exam["supervisor"];
-            });
-            this.exams = exams;
-            var countApi = _.map(exams, (exam: Exam) => {
-                return ExamQuestion.__api__countByExam(exam.id);
-            });
-            BaseModel.bulk_count(this, ...countApi)
-                .map((jsonArray) => {
-                    return _.flatten(jsonArray);
-                })
-                .subscribe(counts => {
-                    for (var i = 0; i < exams.length; i++) {
-                        exams[i]["question_count"] = counts[i];
-                    }
+        exams.sort((exam1: Exam, exam2: Exam): any => {
+            return this.getLastExamTimestamp(exam2) - this.getLastExamTimestamp(exam1);
+        });
 
-                });
-            this.events = this.events.concat(_.map(exams, (exam: Exam) => {
-                return {
-                    title: exam.name,
-                    start: exam.start,
-                    end: exam.end,
-                    id: exam.id,
-                    allDay: true
-                }
-            }));
-        });
+        this.exams = exams;
+        this.events = this.events.concat(_.map(exams, (exam: Exam) => {
+            return {
+                title: exam.name,
+                start: exam.start,
+                end: exam.end,
+                id: exam.id,
+                allDay: true
+            }
+        }));
     }
 
     getLastExamTimestamp(exam: Exam) {
@@ -191,19 +157,16 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         return timestamp;
     }
 
-    displayConferences(conferenceMembers: ConferenceMember[]) {
-        conferenceMembers = _.filter(conferenceMembers, (member: ConferenceMember) => {
-            return member.conference_id && member.conference_status == 'open';
+    displayConferences() {
+        var conferenceMembers = this.lmsService.MyConferenceMember;
+        var conferences = this.lmsService.MyConference;
+        conferences.sort((conf1: Conference, conf2: Conference): any => {
+            return this.getLastConferenceTimestamp(conf2) - this.getLastConferenceTimestamp(conf1);
         });
-        ConferenceMember.populateConferences(this, conferenceMembers).subscribe(conferences => {
-            conferences.sort((conf1: Conference, conf2: Conference): any => {
-                return this.getLastConferenceTimestamp(conf2) - this.getLastConferenceTimestamp(conf1);
-            });
-            this.conferences = conferences;
-            _.each(conferences, (conf: Conference) => {
-                conferences["member"] = _.find(conferenceMembers, (member: ConferenceMember) => {
-                    return member.conference_id == conf.id;
-                });
+        this.conferences = conferences;
+        _.each(conferences, (conf: Conference) => {
+            conferences["member"] = _.find(conferenceMembers, (member: ConferenceMember) => {
+                return member.conference_id == conf.id;
             });
         });
     }
@@ -216,23 +179,11 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        BaseModel.bulk_search(this,
-            CourseMember.__api__listByUser(this.ContextUser.id),
-            ExamMember.__api__listByUser(this.ContextUser.id),
-            ConferenceMember.__api__listByUser(this.ContextUser.id),
-            Survey.__api__listAvailableSurvey(),
-            SurveyMember.__api__listByUser(this.ContextUser.id)
-        )
-            .subscribe(jsonArray => {
-                var courseMembers = CourseMember.toArray(jsonArray[0]);
-                var examMembers = ExamMember.toArray(jsonArray[1]);
-                var conferenceMembers = ConferenceMember.toArray(jsonArray[2]);
-                var surveys = Survey.toArray(jsonArray[3]);
-                var surveyMembers = SurveyMember.toArray(jsonArray[4]);
-                this.displayCourses(courseMembers);
-                this.displayExams(examMembers);
-                this.displayConferences(conferenceMembers);
-            });
+        this.lmsService.init(this).subscribe(() => {
+            this.displayCourses();
+            this.displayExams();
+            this.displayConferences();
+        });
     }
 
     joinConference(conference, member) {
@@ -241,8 +192,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         else
             this.error('You are  not allowed to join the conference');
     }
-
-    
 
     studyCourse(course: Course, member: CourseMember) {
         this.router.navigate(['/lms/courses/study', course.id, member.id]);

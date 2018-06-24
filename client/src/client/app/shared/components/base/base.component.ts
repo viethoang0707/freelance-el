@@ -15,6 +15,7 @@ import { NotificationService } from '../../../shared/services/notification.servi
 import { User } from '../../models/elearning/user.model';
 import { Permission } from '../../models/elearning/permission.model';
 import { WorkflowService } from '../../services/workflow.service';
+import { LMSService } from '../../services/lms.service';
 
 export abstract class BaseComponent implements APIContext {
 	apiService: ModelAPIService;
@@ -26,6 +27,7 @@ export abstract class BaseComponent implements APIContext {
 	translateService: TranslateService;
 	settingService: SettingService;
 	workflowService: WorkflowService;
+	lmsService: LMSService;
 	appEvent: AppEventManager;
 
 	loading: boolean;
@@ -41,6 +43,8 @@ export abstract class BaseComponent implements APIContext {
 		this.translateService = ServiceLocator.injector.get(TranslateService);
 		this.settingService = ServiceLocator.injector.get(SettingService);
 		this.workflowService = ServiceLocator.injector.get(WorkflowService);
+		this.lmsService = ServiceLocator.injector.get(LMSService);
+
 		this.appEvent.onStartHTTP.subscribe(()=> {
 			this.loading =  true;
 		});
