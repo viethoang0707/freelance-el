@@ -23,7 +23,7 @@ import { WorkflowService } from '../../shared/services/workflow.service';
     moduleId: module.id,
     selector: 'admin-dashboard',
     templateUrl: 'admin-dashboard.component.html',
-       // styleUrls: ['admin-dashboard.component.css'],
+    styleUrls: ['admin-dashboard.component.css'],
 
 })
 export class AdminDashboardComponent extends BaseComponent implements OnInit {
@@ -83,8 +83,8 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
     onEventClick(event) {
         var eventId = event.calEvent.id;
-        var model = eventId.split('-')[0];
-        var id = eventId.split('-')[1];
+        var model = eventId.split(':')[0];
+        var id = eventId.split(':')[1];
         if (model == Exam.Model) {
             var exam = _.find(this.exams, (exam)=> {
                 return exam.id == id;

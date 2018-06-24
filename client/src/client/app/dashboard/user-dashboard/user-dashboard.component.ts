@@ -35,7 +35,8 @@ import * as _ from 'underscore';
     moduleId: module.id,
     selector: 'user-dashboard',
     templateUrl: 'user-dashboard.component.html',
-    
+    styleUrls: ['user-dashboard.component.css'],
+
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
 

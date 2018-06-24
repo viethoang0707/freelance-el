@@ -1,7 +1,7 @@
 <p-tabView [style]="{width: '100%', height: '720px'}">
     <p-tabPanel header="{{'Calendar'|translate}}" leftIcon="ui-icon-date-range">
         <div style="text-align:center">
-            <p-schedule [events]="events" (onEventClick)="onEventClick($event)" [header]="header" [height]="640"></p-schedule>
+            <p-schedule [events]="events"  [editable]="true" (onEventClick)="onEventClick($event)" [header]="header" [height]="640"></p-schedule>
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Ticket'|translate}} ({{approvalTickets.length}})" leftIcon="ui-icon-widgets">

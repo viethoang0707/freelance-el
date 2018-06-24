@@ -1,7 +1,7 @@
 <p-tabView [style]="{width: '100%', height: '720px'}">
     <p-tabPanel header="{{'Calendar'|translate}}" leftIcon="ui-icon-date-range">
         <div  style="text-align:center">
-            <p-schedule #lmsSchedule [events]="events" [editable]="true" (onEventClick)="onEventClick($event)" styleClass="schedule-dashboard" [header]="header" [height]="640"></p-schedule>
+            <p-schedule #lmsSchedule [events]="events" [editable]="true"styleClass="schedule-dashboard" [header]="header" [height]="640"></p-schedule>
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Recent course'|translate}}" leftIcon="ui-icon-school">
