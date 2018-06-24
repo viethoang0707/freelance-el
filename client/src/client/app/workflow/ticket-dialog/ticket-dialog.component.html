@@ -1,6 +1,5 @@
 <p-dialog header="{{'Ticket'|translate}}" [(visible)]="display" modal="false" width="960" [responsive]="true" appendTo="body">
   <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-    <p-scrollPanel [style]="{width: '100%', height: '450px'}">
       <div class="ui-g ui-fluid form-group">
         <div class="ui-g-12">
           <span>{{'Status'|translate}}:{{TICKET_STATUS[object.status]}}</span>
@@ -39,29 +38,10 @@
               <label>{{'Content'|translate}}</label>
           </span>
         </div>
-        <div class="ui-g-12 chat">
-          <p-panel header="Comment">
-            <ul class="chat-messages">
-              <li *ngFor="let comment of comments" [ngClass]="{'message-from': ContextUser.id != comment.submit_user_id, 'message-own': ContextUser.id == comment.submit_user_id}"> 
-                <span>{{comment.title}}</span>
-              </li>
-            </ul>
-            <div class="new-message">
-              <div class="message-input">
-                <div class="ui-inputgroup">
-                    <button pButton type="button" label="Send" (click)="commentTicket()"></button>
-                    <input type="text" name="reply" placeholder="{{'Write a comment'|translate}}" [(ngModel)]="replyText"/>       
-                </div>
-              </div>
-            </div>
-          </p-panel>
-        </div>
       </div>
-    </p-scrollPanel>
   </form>
   <p-footer>
     <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" *ngIf="ContextUser.id == object.submit_user_id"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
-  <select-user-dialog></select-user-dialog>
 </p-dialog>

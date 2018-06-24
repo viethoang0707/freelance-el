@@ -1,10 +1,10 @@
 <p-tabView [style]="{width: '100%', height: '720px'}">
-    <p-tabPanel header="{{'Calendar'|translate}}" leftIcon="ui-icon-calendar">
+    <p-tabPanel header="{{'Calendar'|translate}}" leftIcon="ui-icon-date-range">
         <div  style="text-align:center">
             <p-schedule #lmsSchedule [events]="events" [editable]="true" (onEventClick)="onEventClick($event)" styleClass="schedule-dashboard" [header]="header" [height]="640"></p-schedule>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="{{'Course'|translate}}" leftIcon="ui-icon-school">
+    <p-tabPanel header="{{'Recent course'|translate}}" leftIcon="ui-icon-school">
         <div class="ui-g user-dashboard">
             <div class="ui-g-12 dashboard-courses-list">
                 <div class="ui-g-3 image-box card-course" *ngFor="let course of courses | slice:0:4">
@@ -33,11 +33,6 @@
                                         <span class="cmt-title">{{'Code'|translate}}</span>
                                         <span class="cmt-detail">{{course.code}}</span>
                                     </li>
-                                    <li class="clearfix">
-                                        <i class="material-icons">invert_colors</i>
-                                        <span class="cmt-title">{{'Mode'|translate}}</span>
-                                        <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
-                                    </li>
                                     <li class="clearfix" style="border-bottom: none;">
                                         <i class="material-icons">toc</i>
                                         <span class="cmt-title">{{'Group'|translate}}</span>
@@ -48,7 +43,7 @@
                             </div>
                             <div class="image-box-footer">
                                 <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null" [disabled]="! course.IsAvailable"></button>
-                                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 purple-btn" (click)="editSyllabus(course, course.editor)" *ngIf="course.editor!=null"></button>
+                                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, course.editor)" *ngIf="course.editor!=null"></button>
                                 <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null "[disabled]="!course.IsAvailable"></button>
                                 
                         </div>
@@ -57,7 +52,7 @@
             </div>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="{{'Exam'|translate}}" leftIcon="ui-icon-grade">
+    <p-tabPanel header="{{'Recent exam'|translate}}" leftIcon="ui-icon-grade">
         <div class="ui-g user-dashboard">
             <div class="ui-g-12 dashboard-exam-list">
                 <div class="ui-g-3" *ngFor="let exam of exams | slice:0:4">
@@ -96,7 +91,7 @@
                         </div>
                         <div class="user-card-footer">
                             <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate !=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
-                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="purple-btn mr4" (click)="editExamContent(exam)" *ngIf="exam.editor != null"></button>
+                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="blue-grey-btn mr4" (click)="editExamContent(exam)" *ngIf="exam.editor != null"></button>
                             <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor !=null"></button>
                         </div>
                     </div>
@@ -104,7 +99,7 @@
             </div>
         </div>
     </p-tabPanel>
-    <p-tabPanel header="{{'Conference'|translate}}" leftIcon="ui-icon-call">
+    <p-tabPanel header="{{'Live conference'|translate}}" leftIcon="ui-icon-call">
         <div class="ui-g user-dashboard">
             <div class="ui-g-12 dashboard-live-conference">
                 <div class="ui-g-3" *ngFor="let conference of conferences | slice:0:4; let i = index ">
@@ -126,6 +121,5 @@
         </div>
     </p-tabPanel>
 </p-tabView>
-<course-syllabus-dialog></course-syllabus-dialog>
 <exam-content-dialog></exam-content-dialog>
 <exam-study-dialog></exam-study-dialog>

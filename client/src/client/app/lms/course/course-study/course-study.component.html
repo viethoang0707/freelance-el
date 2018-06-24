@@ -14,8 +14,8 @@
             </div>
             <div class="image-box-footer fRight">
               <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder' && !studyMode"></button>
-              <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
-              <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
+              <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
+              <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
             </div>
             <div class="clearfix"></div>
             <div>
@@ -166,7 +166,7 @@
       <div class="ui-g-12 ">
         <p-toolbar>
           <div class="ui-toolbar-group-left">
-            <button pButton type="button " label="{{ 'View certificate'|translate}} " class="purple-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
+            <button pButton type="button " label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
           </div>
         </p-toolbar>
         <p-dataList [value]="completedMembers" [paginator]="true" [rows]="5">
@@ -259,7 +259,7 @@
         <div class="ui-g-4">
           <div class="task-box task-box-1">
             <div class="task-box-header">
-              <button pButton type="button " label="{{ 'Join'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
+              <button pButton type="button " label="{{ 'Join'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
             </div>
             <div class="task-box-content">
               <h3>{{'Live conference'|translate}} : {{conference.name}}</h3>

@@ -4,6 +4,7 @@ import  { CourseComponent } from './course.component'
 import { CourseListComponent } from './course/course-list/course-list.component';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
+import { CourseEnrollmentListComponent } from './enrollment/course-list/course-list.component';
 
 export const CourseRoutes: Routes = [
     {
@@ -20,6 +21,13 @@ export const CourseRoutes: Routes = [
                component: CourseListComponent,
                data: {
                   breadcrumb: 'Courses'
+                }
+            },
+            {
+               path: "enrollment",
+               component: CourseEnrollmentListComponent,
+               data: {
+                  breadcrumb: 'Enrollment'
                 }
             },
             {

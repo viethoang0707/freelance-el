@@ -5,9 +5,9 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addExam()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editExam()" *ngIf="selectedExam"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editExam()" *ngIf="selectedExam"></button>
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteExam()" *ngIf="selectedExam"></button>
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollExam()" *ngIf="selectedExam"></button>
+                    <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview()" *ngIf="selectedExam &&  selectedExam.review_state !='approved'"></button>
                 </div>
                  <div class="ui-toolbar-group-right">
                     <span class="md-inputfield search">
@@ -15,10 +15,6 @@
                         (input)="examTable.filterGlobal($event.target.value, 'contains')">   
                         <i class="fa fa-search"></i>      
                     </span>
-                </div>
-                <div class="ui-toolbar-group-right">
-                     <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock" (click)="openSurvey() " [disabled]=" selectedSurvey && selectedSurvey.status=='open'" ></button>
-                     <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeSurvey() " [disabled]=" selectedSurvey && selectedSurvey.status=='closed'" ></button>
                 </div>
             </p-toolbar>
             <p-table #examTable [value]="exams" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedExam" [responsive]="true" [globalFilterFields]="['name']">
@@ -45,6 +41,14 @@
                             {{'Reviewed'|translate}}
                             <p-sortIcon [field]="'review_state'"></p-sortIcon>
                         </th>
+                        <th [pSortableColumn]="'create_date'">
+                            {{'Created'|translate}}
+                            <p-sortIcon [field]="'create_date'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'write_date'">
+                            {{'Updated'|translate}}
+                            <p-sortIcon [field]="'write_date'"></p-sortIcon>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-exam>
@@ -55,13 +59,14 @@
                         <td class="showformb">{{exam.end | date : "dd/MM/yyyy, h:mm a"}}</td>
                         <td class="showformb">{{EXAM_STATUS[exam.status] | translate}}</td>
                         <td class="showformb">{{REVIEW_STATE[exam.review_state] | translate}}</td>
+                        <td>{{exam.create_date | date : "dd/MM/yyyy "}}</td>
+                        <td>{{exam.write_date | date : "dd/MM/yyyy "}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
                     {{'Total records'|translate}} : {{exams?.length}}
                 </ng-template>
             </p-table>
-            <exam-enrollment-dialog></exam-enrollment-dialog>
             <exam-dialog></exam-dialog>
         </div>
     </div>

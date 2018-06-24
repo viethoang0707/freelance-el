@@ -8,7 +8,7 @@
       <div class="ui-g-12">
         <div class="ui-g-4">
           <label>{{'Enrollment'|translate}}</label>
-          <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" [inline]="true" required [locale]="locale" (onSelect)="onDateSelect($event)"></p-calendar>
+          <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" [inline]="true" required [locale]="locale" (onSelect)="onDateSelect($event)" [showIcon]="true" ></p-calendar>
         </div>
         <div class="ui-g-8 ">
           <span class="md-inputfield">

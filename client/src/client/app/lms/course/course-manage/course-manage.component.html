@@ -23,11 +23,11 @@
             <div class="ui-g-12 ">
                 <p-toolbar>
                     <div class="ui-toolbar-group-left ">
-                        <button pButton type="button " label="{{ 'Students'|translate}} " class="purple-btn " icon="ui-icon-people " (click)="manageClass(selectedClass) " [disabled]="!selectedClass"></button>
-                        <button pButton type="button " label="{{ 'Projects'|translate}} " class="purple-btn " icon="ui-icon-assignment " (click)="manageProject(selectedClass) " [disabled]="!selectedClass"></button>
-                        <button pButton type="button " label="{{ 'Exams'|translate}} " class="purple-btn " icon="ui-icon-grade " (click)="manageExam(selectedClass) " [disabled]="!selectedClass"></button>
-                        <button pButton type="button " label="{{ 'Surveys'|translate}} " class="purple-btn " icon="ui-icon-question-answer" (click)="manageSurvey(selectedClass) " [disabled]="!selectedClass"></button>
-                        <button pButton type="button " label="{{ 'Conferences'|translate}} " class="purple-btn " icon="ui-icon-call " (click)="manageConference(selectedClass) " [disabled]="!selectedClass"></button>
+                        <button pButton type="button " label="{{ 'Students'|translate}} " class="blue-grey-btn " icon="ui-icon-people " (click)="manageClass(selectedClass) " [disabled]="!selectedClass"></button>
+                        <button pButton type="button " label="{{ 'Projects'|translate}} " class="blue-grey-btn " icon="ui-icon-assignment " (click)="manageProject(selectedClass) " [disabled]="!selectedClass"></button>
+                        <button pButton type="button " label="{{ 'Exams'|translate}} " class="blue-grey-btn " icon="ui-icon-grade " (click)="manageExam(selectedClass) " [disabled]="!selectedClass"></button>
+                        <button pButton type="button " label="{{ 'Surveys'|translate}} " class="blue-grey-btn " icon="ui-icon-question-answer" (click)="manageSurvey(selectedClass) " [disabled]="!selectedClass"></button>
+                        <button pButton type="button " label="{{ 'Conferences'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="manageConference(selectedClass) " [disabled]="!selectedClass"></button>
                     </div>
                     <div class="ui-toolbar-group-right ">
                         <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeClass() " [disabled]=" selectedClass && selectedClass.status=='closed'"></button>
@@ -77,7 +77,7 @@
                 <p-toolbar>
                     <div class="ui-toolbar-group-left">
                         <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addMaterial()" icon="ui-icon-add"></button>
-                        <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editMaterial()" *ngIf="selectedMaterial"></button>
+                        <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editMaterial()" *ngIf="selectedMaterial"></button>
                         <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteMaterial()" *ngIf="selectedMaterial"></button>
                     </div>
                 </p-toolbar>
@@ -116,7 +116,7 @@
                 <p-toolbar>
                     <div class="ui-toolbar-group-left">
                         <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addFaq()" icon="ui-icon-add"></button>
-                        <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editFaq()" *ngIf="selectedFaq"></button>
+                        <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editFaq()" *ngIf="selectedFaq"></button>
                         <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteFaq()" *ngIf="selectedFaq"></button>
                     </div>
                 </p-toolbar>

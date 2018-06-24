@@ -10,6 +10,8 @@ import { GroupListComponent } from '../shared/components/group-list/group-list.c
 import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 import { QuestionSheetListComponent } from './question/question-sheet-list/question-sheet-list.component';
+import { ExamEnrollmentListComponent } from './exam/exam-enrollment-list/exam-enrollment-list.component';
+import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/survey-enrollment-list.component';
 
 export const AssessmentRoutes: Routes = [
   {
@@ -29,6 +31,13 @@ export const AssessmentRoutes: Routes = [
         }
       },
       {
+        path: "exam-enrollment",
+        component: ExamEnrollmentListComponent,
+        data: {
+          breadcrumb: 'Exam enrollments'
+        }
+      },
+      {
         path: "question-sheets",
         component: QuestionSheetListComponent,
         data: {
@@ -40,6 +49,13 @@ export const AssessmentRoutes: Routes = [
         component: SurveyListComponent,
         data: {
           breadcrumb: 'Surveys'
+        }
+      },
+      {
+        path: "survey-enrollment",
+        component: SurveyEnrollmentListComponent,
+        data: {
+          breadcrumb: 'Survey enrollments'
         }
       },
       {

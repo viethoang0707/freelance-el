@@ -36,6 +36,7 @@ export class Course extends BaseModel{
         this.competency_level_name =  undefined;
         this.prequisite_course_id = undefined;
         this.prequisite_course_id__DESC__ = undefined;
+        this.prequisite_course_name= undefined;
         this.complete_unit_by_order = undefined;
         this.competency_group_id = undefined;
         this.competency_group_name = undefined;
@@ -51,6 +52,7 @@ export class Course extends BaseModel{
     competency_level_id: number;
     competency_level_name: string;
     prequisite_course_id:number;
+    prequisite_course_name: string;
     prequisite_course_id__DESC__:string;
     name:string;
     syllabus_id:number;
@@ -87,6 +89,20 @@ export class Course extends BaseModel{
         return Course.search(context,[],"[('group_id','=',"+groupId+")]");
     }
 
+    static __api__allForEnroll(): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved'),('status','=','published')]");
+    }
+
+    static allForEnroll(context:APIContext):Observable<any> {
+        if (Cache.hit(Course.Model))
+            return Observable.of(Cache.load(Course.Model)).map(courses=> {
+                return _.filter(courses, (course:Course)=> {
+                    return course.review_state == 'approved' && course.status =='published';
+                });
+            });
+        return Course.search(context,[],"[('review_state','=','approved'),('status','=','published')]");
+    }
+
     static __api__listByCompetency(competencyId: number): SearchReadAPI {
         return new SearchReadAPI(Course.Model, [],"[('competency_id','=',"+competencyId+")]");
     }
@@ -99,6 +115,20 @@ export class Course extends BaseModel{
                 });
             });
         return Course.search(context,[],"[('competency_id','=',"+competencyId+")]");
+    }
+
+    static __api__listBySupervisor(supervisorId: number): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, [],"[('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static listBySupervisor(context:APIContext, supervisorId: number):Observable<any> {
+        if (Cache.hit(Course.Model))
+            return Observable.of(Cache.load(Course.Model)).map(courses=> {
+                return _.filter(courses, (course:Course)=> {
+                    return course.supervisor_id == supervisorId;
+                });
+            });
+        return Course.search(context,[],"[('supervisor_id','=',"+supervisorId+")]");
     }
 
     static __api__listByGroupAndMode(groupId: number, mode:string): SearchReadAPI {

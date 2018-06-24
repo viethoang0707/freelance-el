@@ -10,8 +10,6 @@ import { HomeComponent } from '../home.component';
 import { SettingService } from '../../shared/services/setting.service';
 import { SelectItem } from 'primeng/primeng';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { Notification } from '../../shared/models/ticket/notification.model';
-import { Ticket } from '../../shared/models/ticket/ticket.model';
 import { TicketDialog } from '../../workflow/ticket-dialog/ticket-dialog.component';
 import * as _ from 'underscore'
 import { Course } from '../../shared/models/elearning/course.model';
@@ -37,7 +35,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	@ViewChild(TicketDialog) ticketDialog: TicketDialog;
 
 	constructor(private router:Router, private parent:HomeComponent, 
-		private eventManager: HomeEventManager, private socketService:WebSocketService) {
+		private eventManager: HomeEventManager) {
 		super();
 		this.lang = this.translateService.currentLang;
 		this.notifs = [];
@@ -46,11 +44,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
 	ngOnInit() {
 		this.viewMode = this.settingService.ViewMode;
-		this.loadNotification();
-		this.socketService.join(this.ContextUser.id, this.authService.LoginToken.cloud_id);
-		this.socketService.onNotify.subscribe(data=> {
-			this.loadNotification();
-		});
 		if (this.viewMode =='admin')
 			this.loadStats();
 	}
@@ -71,21 +64,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	            this.teacherCount = counts[2];
 	            this.studentCount = counts[3];
 	        });
-	}
-
-	loadNotification() {
-		Notification.listByUser(this, this.ContextUser.id).subscribe(notifs=> {
-			this.notifs =  notifs;
-		});
-	}
-
-	showTicket(notif:Notification) {
-		Ticket.get(this, notif.ticket_id).subscribe(ticket=> {
-			this.ticketDialog.show(ticket);
-			notif.delete(this).subscribe(()=> {
-				this.loadNotification();
-			})
-		});
 	}
 
 	setLang(lang: string) {

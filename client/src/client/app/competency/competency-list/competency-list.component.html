@@ -9,7 +9,7 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addCompetency()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editCompetency()" *ngIf="selectedCompetency"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editCompetency()" *ngIf="selectedCompetency"></button>
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCompetency()" *ngIf="selectedCompetency"></button>
                 </div>
             </p-toolbar>
@@ -27,6 +27,14 @@
                         <th>
                             {{'Level'|translate}}
                         </th>
+                        <th [pSortableColumn]="'create_date'">
+                            {{'Created'|translate}}
+                            <p-sortIcon [field]="'create_date'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'write_date'">
+                            {{'Updated'|translate}}
+                            <p-sortIcon [field]="'write_date'"></p-sortIcon>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-competency let-i="rowIndex">
@@ -36,6 +44,8 @@
                         <td>
                             {{competency.levelSummary()}}
                         </td>
+                        <td>{{competency.create_date | date : "dd/MM/yyyy "}}</td>
+                        <td>{{competency.write_date | date : "dd/MM/yyyy "}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

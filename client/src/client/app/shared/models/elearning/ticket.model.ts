@@ -5,7 +5,7 @@ import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 
-@Model('eticket.ticket')
+@Model('etraining.ticket')
 export class Ticket extends BaseModel{
 
     constructor(){
@@ -54,6 +54,14 @@ export class Ticket extends BaseModel{
 
     static listByApproveUser(context:APIContext, userId:number):Observable<any> {
         return Ticket.search(context,[], "[('approve_user_id','=',"+userId+")]");
+    }
+
+    static __api__listPendingBySubmitUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('submit_user_id','=',"+userId+"),('status','=','pending')]");
+    }
+
+    static listPendingByApproveUser(context:APIContext, userId:number):Observable<any> {
+        return Ticket.search(context,[], "[('approve_user_id','=',"+userId+"),('status','=','pending')]");
     }
 
     static listBySubmitUser(context:APIContext, userId:number):Observable<any> {

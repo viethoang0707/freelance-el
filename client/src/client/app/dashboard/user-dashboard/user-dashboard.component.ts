@@ -35,7 +35,6 @@ import * as _ from 'underscore';
     moduleId: module.id,
     selector: 'user-dashboard',
     templateUrl: 'user-dashboard.component.html',
-    styleUrls: ['user-dashboard.component.css'],
 
 })
 export class UserDashboardComponent extends BaseComponent implements OnInit {
@@ -243,11 +242,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             this.error('You are  not allowed to join the conference');
     }
 
-    editSyllabus(course: Course, member: CourseMember) {
-        CourseSyllabus.byCourse(this, course.id).subscribe(syllabus => {
-            this.syllabusDialog.show(syllabus, course, member);
-        });
-    }
+    
 
     studyCourse(course: Course, member: CourseMember) {
         this.router.navigate(['/lms/courses/study', course.id, member.id]);

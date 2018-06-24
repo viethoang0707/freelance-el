@@ -73,4 +73,18 @@ export class Survey extends BaseModel{
         return Survey.search(context,[],"[('is_public','=',True)]");
     }
 
+    static __api__allForEnroll(): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved'),('status','=','published')]");
+    }
+
+    static allForEnroll(context:APIContext):Observable<any> {
+        if (Cache.hit(Survey.Model))
+            return Observable.of(Cache.load(Survey.Model)).map(surveys=> {
+                return _.filter(surveys, (survey:Survey)=> {
+                    return survey.review_state == 'approved' && survey.status =='published';
+                });
+            });
+        return Survey.search(context,[],"[('review_state','=','approved'),('status','=','published')]");
+    }
+
 }

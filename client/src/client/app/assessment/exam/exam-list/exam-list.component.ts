@@ -26,28 +26,12 @@ export class ExamListComponent extends BaseComponent {
     private selectedExam: Exam;
     private exams: Exam[];
     private events: any[];
-    private header: any;
-    
+
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
 
     constructor() {
         super();
-        this.header = SCHEDULER_HEADER;
-    }
-
-    enrollExam() {
-        if (this.selectedExam ) {
-            if (this.selectedExam.review_state != 'approved') {
-                this.warn('Exam not reviewed yet');
-                return;
-            }
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have enroll permission for this exam');
-                return;
-            }
-            this.examEnrollDialog.enroll(this.selectedExam);
-        }
     }
 
     ngOnInit() {
@@ -57,7 +41,7 @@ export class ExamListComponent extends BaseComponent {
 
     addExam() {
         var exam = new Exam();
-        exam.is_public =  true;
+        exam.is_public = true;
         this.examDialog.show(exam);
         this.examDialog.onCreateComplete.subscribe(() => {
             this.loadExams();
@@ -65,83 +49,43 @@ export class ExamListComponent extends BaseComponent {
     }
 
     editExam() {
-        if (this.selectedExam) {
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have enroll permission for this exam');
-                return;
-            }
-            this.examDialog.show(this.selectedExam);
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
+            this.error('You do not have enroll permission for this exam');
+            return;
         }
+        this.examDialog.show(this.selectedExam);
     }
 
     deleteExam() {
-        if (this.selectedExam) {
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have enroll permission for this exam');
-                return;
-            }
-            this.confirm('Are you sure to delete ?', () => {
-                this.selectedExam.delete(this).subscribe(() => {
-                    this.loadExams();
-                    this.selectedExam = null;
-                })
-            });
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
+            this.error('You do not have enroll permission for this exam');
+            return;
         }
-    }
-
-    onDayClick() {
-        this.addExam();
-    }
-
-    onEventClick(event) {
-        var examId = event.calEvent.id;
-        this.selectedExam = _.find(this.exams, (exam) => {
-            return exam.id == examId;
+        this.confirm('Are you sure to delete ?', () => {
+            this.selectedExam.delete(this).subscribe(() => {
+                this.loadExams();
+                this.selectedExam = null;
+            })
         });
-        this.editExam();
     }
 
     loadExams() {
         Exam.listPublicExam(this).subscribe(exams => {
             this.exams = exams;
-            this.events = _.map(exams, (exam:Exam) => {
-                return {
-                    title: exam.name,
-                    start: exam.start,
-                    end: exam.end,
-                    id: exam.id,
-                    allDay: true
-                }
-            });
             this.exams.sort((exam1, exam2): any => {
                 return exam1.id - exam2.id;
             });
         });
     }
 
-    closeExam() {
-        if (this.selectedExam) {
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have close permission for this exam');
-                return;
-            }
-            this.selectedExam.status = 'closed';
-            this.selectedExam.save(this).subscribe(() => {
-                this.success('Exam close');
-            });
+    requestReview() {
+        if (this.ContextUser.id != this.selectedExam.supervisor_id) {
+            this.error('You do not have submit-review permission for this exam');
+            return;
         }
-    }
-
-    openExam() {
-        if (this.selectedExam) {
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have open permission for this exam');
-                return;
-            }
-            this.selectedExam.status = 'open';
-            this.selectedExam.save(this).subscribe(() => {
-                this.success('Exam open');
-            });
-        }
+        this.workflowService.createExamReviewTicket(this, this.selectedExam).subscribe(() => {
+            this.success('Request submitted');
+            this.selectedExam.refresh(this).subscribe();
+        });
     }
 }

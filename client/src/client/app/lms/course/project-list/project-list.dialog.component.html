@@ -5,11 +5,11 @@
       <p-toolbar>
         <div class="ui-toolbar-group-left">
           <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addProject()" icon="ui-icon-add"></button>
-          <button pButton type="button" label="{{'Edit'|translate}}" class="purple-btn" icon="ui-icon-mode-edit" (click)="editProject()" *ngIf="selectedProject"></button>
+          <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editProject()" *ngIf="selectedProject"></button>
           <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteProject()" *ngIf="selectedProject"></button>
         </div>
         <div class="ui-toolbar-group-right">
-          <button pButton type="button " label="{{ 'Mark'|translate}} " class="purple-btn " icon="ui-icon-local-offer" (click)="markProject()" [disabled]="!selectedProject"></button>
+          <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="markProject()" [disabled]="!selectedProject"></button>
         </div>
       </p-toolbar>
       <p-table #examTable [value]="projects" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">

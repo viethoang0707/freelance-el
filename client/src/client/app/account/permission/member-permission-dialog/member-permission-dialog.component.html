@@ -1,58 +1,73 @@
 <p-dialog header="{{'Permission member'|translate}}" [(visible)]="display" modal="true" width="1200" height="100%" [responsive]="true">
-  <div class="spinner" [hidden]="!loading"></div>
-  <p-scrollPanel [style]="{width: '100%', height: '460px'}">
-    <div class="ui-g-12 ">
-      <p-toolbar>
-        <div class="ui-toolbar-group-left ">
-          <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMember() "></button>
-          <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember() " *ngIf="selectedUsers && selectedUsers.length "></button>
+    <div class="spinner" [hidden]="!loading"></div>
+    <p-scrollPanel [style]="{width: '100%', height: '460px'}">
+        <div class="ui-g-12 ">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left ">
+                    <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMember() "></button>
+                    <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember() " *ngIf="selectedUsers && selectedUsers.length "></button>
+                </div>
+            </p-toolbar>
+            <p-table #userTable [value]="users" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers " [responsive]="true " sortField="name">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 2.25em">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th [pSortableColumn]="'name'">
+                            {{'Name'|translate}}
+                            <p-sortIcon [field]="'name'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'login'">
+                            {{'Login'|translate}}
+                            <p-sortIcon [field]="'login'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'email'">
+                            {{'Email'|translate}}
+                            <p-sortIcon [field]="'email'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'position'">
+                            {{'Position'|translate}}
+                            <p-sortIcon [field]="'position'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'gender'">
+                            {{'Gender'|translate}}
+                            <p-sortIcon [field]="'gender'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'dob'">
+                            {{'Date of birth'|translate}}
+                            <p-sortIcon [field]="'dob'"></p-sortIcon>
+                        </th>
+                        <th>{{'Phone'|translate}}</th>
+                        <th [pSortableColumn]="'group_id__DESC__'">
+                            {{'Department'|translate}}
+                            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr [pSelectableRow]="user ">
+                        <td>
+                            <p-tableCheckbox [value]="user"></p-tableCheckbox>
+                        </td>
+                        <td class="showformb" style="text-align: left;">{{user.name}}</td>
+                        <td>{{user.login}}</td>
+                        <td class="showformb" style="text-align: left;">{{user.email}}</td>
+                        <td class="showformb">{{user.position}}</td>
+                        <td class="showformb">{{user.gender}}</td>
+                        <td class="showformb">{{user.dob | date : "dd/MM/yyyy "}}}</td>
+                        <td class="showformb">{{user.phone}}</td>
+                        <td class="showformb">{{user.group_id__DESC__}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    {{'Total records'|translate}} : {{users?.length}}
+                </ng-template>
+            </p-table>
         </div>
-      </p-toolbar>
-      <p-table #userTable [value]="users" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers " [responsive]="true " sortField="name">
-        <ng-template pTemplate="header">
-          <tr>
-            <th style="width: 2.25em">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th>
-            <th [pSortableColumn]="'name'">
-              {{'Name'|translate}}
-              <p-sortIcon [field]="'name'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'login'">
-              {{'Login'|translate}}
-              <p-sortIcon [field]="'login'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'email'">
-              {{'Email'|translate}}
-              <p-sortIcon [field]="'email'"></p-sortIcon>
-            </th>
-            <th>{{'Phone'|translate}}</th>
-            <th [pSortableColumn]="'group_id__DESC__'">
-              {{'Department'|translate}}
-              <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-user>
-          <tr [pSelectableRow]="user ">
-            <td>
-              <p-tableCheckbox [value]="user"></p-tableCheckbox>
-            </td>
-            <td class="showformb" style="text-align: left;">{{user.name}}</td>
-            <td>{{user.login}}</td>
-            <td class="showformb" style="text-align: left;">{{user.email}}</td>
-            <td class="showformb">{{user.phone}}</td>
-            <td class="showformb">{{user.group_id__DESC__}}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-          {{'Total records'|translate}} : {{users?.length}}
-        </ng-template>
-      </p-table>
-    </div>
-  </p-scrollPanel>
-  <select-user-dialog></select-user-dialog>
-  <p-footer>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+    </p-scrollPanel>
+    <select-user-dialog></select-user-dialog>
+    <p-footer>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
 </p-dialog>

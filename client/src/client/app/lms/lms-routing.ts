@@ -14,6 +14,9 @@ import { CourseSearchComponent } from './course/course-search/course-search.comp
 import { SurveySupervisorGuard } from '../shared/guards/survey-supervisor.guard';
 import { SurveyListComponent} from './survey/survey-list/survey-list.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
+import { CourseViewComponent } from './course/course-view/course-view.component';
+import { CourseEditComponent } from './course/course-edit/course-edit.component';
+
 
 export const LMSRoutes: Routes = [
     {
@@ -37,7 +40,6 @@ export const LMSRoutes: Routes = [
                data: {
                  breadcrumb:'Manage exam'
                },
-               canActivate:[ExamSupervisorGuard]
             },
             {
                path: "courses",
@@ -61,12 +63,25 @@ export const LMSRoutes: Routes = [
                }
             },
             {
+               path: "courses/edit/:courseId/:memberId",
+               component: CourseEditComponent,
+               data: {
+                 breadcrumb:'Edit course'
+               },
+            },
+            {
                path: "courses/manage/:courseId",
                component: CourseManageComponent,
                data: {
                  breadcrumb:'Manage course'
                },
-               canActivate:[TeacherGuard]
+            },
+            {
+               path: "courses/view/:courseId",
+               component: CourseViewComponent,
+               data: {
+                 breadcrumb:'View course'
+               }
             },
             {
                path: "courses/study/:courseId/:memberId",
@@ -74,7 +89,6 @@ export const LMSRoutes: Routes = [
                data: {
                  breadcrumb:'Study course'
                },
-               canActivate:[StudentGuard]
             },
             {
                path: "meetings",

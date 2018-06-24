@@ -17,9 +17,10 @@ export class MenuService {
                 { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] , code:'DASHBOARD'},
                 { label: '', separator: true, styleClass: 'menu-separator' },
                 {
-                    label: 'Syllabus', icon: 'school', code:'SCHOOL',
+                    label: 'Course', icon: 'school', code:'SCHOOL',
                     items: [
                         { label: 'Course', routerLink: ['/course/courses'] ,code:'SCHOOL-COURSE'}, 
+                        { label: 'Enrollment', routerLink: ['/course/enrollment'] ,code:'SCHOOL-ENROLLMENT'}, 
                         { label: 'Course group', routerLink: ['/course/groups'] ,code:'SCHOOL-GROUP'},
                     ]
                 },
@@ -28,10 +29,14 @@ export class MenuService {
                     items: [
                         { label: 'Question banks', routerLink: ['/assessment/questions'],code:'ASSESSMENT-QUESTION' },
                         { label: 'Question category', routerLink: ['/assessment/groups'],code:'ASSESSMENT-QUESTION_GROUP' },
+                        { label: '', separator: true, styleClass: 'menu-separator' },
                         { label: 'Exam', routerLink: ['/assessment/exams'] ,code:'ASSESSMENT-EXAM'},
-                        { label: 'Question sheets', routerLink: ['/assessment/question-sheets'],code:'ASSESSMENT-QUESTION_SHEET' },
+                        { label: 'Exam enrollment', routerLink: ['/assessment/exam-enrollment'] ,code:'ASSESSMENT-EXAM_ENROLL'},
+                        { label: 'Question sheet templates', routerLink: ['/assessment/question-sheets'],code:'ASSESSMENT-QUESTION_SHEET' },
+                        { label: '', separator: true, styleClass: 'menu-separator' },
                         { label: 'Survey', routerLink: ['/assessment/surveys'] ,code:'ASSESSMENT-SURVEY'},
-                        { label: 'Survey sheets', routerLink: ['/assessment/survey-sheets'],code:'ASSESSMENT-SURVEY_SHEET' },
+                        { label: 'Survey enrollment', routerLink: ['/assessment/survey-enrollment'] ,code:'ASSESSMENT-SURVEY_ENROLL'},
+                        { label: 'Survey sheet templates', routerLink: ['/assessment/survey-sheets'],code:'ASSESSMENT-SURVEY_SHEET' },
                     ]
                 },
                 {
@@ -90,6 +95,7 @@ export class MenuService {
     _.each(menu, ((menuItem: MenuItem) => {
       if (!menuItem.separator) {
         var node = this.convertMenuNodeToTreeNode(menuItem);
+        node.expanded =  true;
         tree.push(node);
       }
     }));
@@ -132,7 +138,7 @@ export class MenuService {
     if (this.authService.UserProfile.IsSuperAdmin)
       return this.ADMIN_MENU;
     var menuCodes = []
-    if (this.authService.UserPermission.menu_access)
+    if (this.authService.UserPermission && this.authService.UserPermission.menu_access)
       menuCodes = JSON.parse(this.authService.UserPermission.menu_access);
     var menu = [];
     _.each(this.ADMIN_MENU, ((menuItem: MenuItem) => {

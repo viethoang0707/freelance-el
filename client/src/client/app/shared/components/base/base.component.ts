@@ -14,6 +14,7 @@ import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { User } from '../../models/elearning/user.model';
 import { Permission } from '../../models/elearning/permission.model';
+import { WorkflowService } from '../../services/workflow.service';
 
 export abstract class BaseComponent implements APIContext {
 	apiService: ModelAPIService;
@@ -24,6 +25,7 @@ export abstract class BaseComponent implements APIContext {
 	confirmationService: ConfirmationService;
 	translateService: TranslateService;
 	settingService: SettingService;
+	workflowService: WorkflowService;
 	appEvent: AppEventManager;
 
 	loading: boolean;
@@ -38,6 +40,7 @@ export abstract class BaseComponent implements APIContext {
 		this.confirmationService = ServiceLocator.injector.get(ConfirmationService);
 		this.translateService = ServiceLocator.injector.get(TranslateService);
 		this.settingService = ServiceLocator.injector.get(SettingService);
+		this.workflowService = ServiceLocator.injector.get(WorkflowService);
 		this.appEvent.onStartHTTP.subscribe(()=> {
 			this.loading =  true;
 		});

@@ -5,8 +5,9 @@ import { APIContext } from '../context';
 import { Conference } from './conference.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import * as moment from 'moment';
+import {SERVER_DATETIME_FORMAT} from '../constants';
 import { ExecuteAPI } from '../../services/api/execute.api';
-import * as _ from 'underscore';
 
 @Model('etraining.course_class')
 export class CourseClass extends BaseModel{
@@ -64,5 +65,36 @@ export class CourseClass extends BaseModel{
 
     }
 
+    static __api__listBySupervisor(supervisorId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseClass.Model, [],"[('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static listBySupervisor(context:APIContext, supervisorId: number):Observable<any> {
+        if (Cache.hit(CourseClass.Model))
+            return Observable.of(Cache.load(CourseClass.Model)).map(classList=> {
+                return _.filter(classList, (clazz:CourseClass)=> {
+                    return clazz.supervisor_id == supervisorId;
+                });
+            });
+        return CourseClass.search(context,[],"[('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static __api__listBySupervisorAndDate(supervisorId: number, start:Date, end:Date): SearchReadAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(CourseClass.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static listBySupervisorAndDate(context:APIContext, supervisorId: number, start:Date, end:Date):Observable<any> {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        if (Cache.hit(CourseClass.Model))
+            return Observable.of(Cache.load(CourseClass.Model)).map(classList=> {
+                return _.filter(classList, (clazz:CourseClass)=> {
+                    return clazz.start.getTime() >=  start.getTime() && clazz.start.getTime() <= end.getTime() && clazz.supervisor_id == supervisorId;
+                });
+            });
+        return CourseClass.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
+    }
 
 }

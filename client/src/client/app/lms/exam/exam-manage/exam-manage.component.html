@@ -3,14 +3,14 @@
   <div class="ui-g-12 ">
         <p-toolbar>
           <div class="ui-toolbar-group-left ">
-            <button pButton type="button " label="{{ 'Question sheet'|translate}} " class="purple-btn " icon="ui-icon-question-answer" (click)="showQuestionSheet()" ></button>
-            <button pButton type="button " label="{{ 'Mark'|translate}} " class="purple-btn " icon="ui-icon-local-offer" (click)="mark()" [disabled]="!selectedRecord"></button>
-            <button pButton type="button " label="{{ 'Answer sheet'|translate}} " class="purple-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedRecord"></button>
+            <button pButton type="button " label="{{ 'Question sheet'|translate}} " class="blue-grey-btn " icon="ui-icon-question-answer" (click)="showQuestionSheet()" ></button>
+            <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="mark()" [disabled]="!selectedRecord"></button>
+            <button pButton type="button " label="{{ 'Answer sheet'|translate}} " class="blue-grey-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedRecord"></button>
           <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeExam() " [disabled]=" selectedRecord && selectedRecord.status=='closed'" ></button>
         </div>
           <div class="ui-toolbar-group-right ">
-            <button pButton type="button " label="{{ 'Result report'|translate}} " class="purple-btn " icon="ui-icon-data-usage" (click)="showExamReport()" ></button>
-            <button pButton type="button " label="{{ 'Statistics'|translate}} " class="purple-btn " icon="ui-icon-equalizer" (click)="showExamStats()" ></button>
+            <button pButton type="button " label="{{ 'Result report'|translate}} " class="blue-grey-btn " icon="ui-icon-data-usage" (click)="showExamReport()" ></button>
+            <button pButton type="button " label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer" (click)="showExamStats()" ></button>
           </div>
         </p-toolbar>
         <p-table #scoreTable [value]="scoreRecords" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">

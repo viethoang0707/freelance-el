@@ -91,6 +91,20 @@ export class Exam extends BaseModel{
         return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 
+    static __api__allForEnroll(): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved'),('status','=','published')]");
+    }
+
+    static allForEnroll(context:APIContext):Observable<any> {
+        if (Cache.hit(Exam.Model))
+            return Observable.of(Cache.load(Exam.Model)).map(exams=> {
+                return _.filter(exams, (exam:Exam)=> {
+                    return exam.review_state == 'approved' && exam.status =='published';
+                });
+            });
+        return Exam.search(context,[],"[('review_state','=','approved'),('status','=','published')]");
+    }
+
     __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
         return new ExecuteAPI(Exam.Model, 'enroll',{userIds:userIds, examId:examId}, null);
     }
@@ -106,5 +120,37 @@ export class Exam extends BaseModel{
 
     static listPublicExam(context:APIContext):Observable<any> {
         return Exam.search(context,[],"[('is_public','=',True)]");
+    }
+
+    static __api__listBySupervisor(supervisorId: number): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model, [],"[('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static listBySupervisor(context:APIContext, supervisorId: number):Observable<any> {
+        if (Cache.hit(Exam.Model))
+            return Observable.of(Cache.load(Exam.Model)).map(exams=> {
+                return _.filter(exams, (exam:Exam)=> {
+                    return exam.supervisor_id == supervisorId;
+                });
+            });
+        return Exam.search(context,[],"[('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static __api__listBySupervisorAndDate(supervisorId: number, start:Date, end:Date): SearchReadAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Exam.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static listBySupervisorAndDate(context:APIContext, supervisorId: number, start:Date, end:Date):Observable<any> {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        if (Cache.hit(Exam.Model))
+            return Observable.of(Cache.load(Exam.Model)).map(exams=> {
+                return _.filter(exams, (exam:Exam)=> {
+                    return exam.start.getTime() >=  start.getTime() && exam.start.getTime() <= end.getTime() && exam.supervisor_id == supervisorId;
+                });
+            });
+        return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
     }
 }

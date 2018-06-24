@@ -19,13 +19,16 @@ import { QuestionSheetListComponent } from './question/question-sheet-list/quest
 import { QuestionSheetPreviewDialog } from './question/question-sheet-preview/question-sheet-preview.dialog.component';
 import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
 import { SurveySheetPreviewDialog } from './question/survey-sheet-preview/survey-sheet-preview.dialog.component';
+import { ExamEnrollmentListComponent } from './exam/exam-enrollment-list/exam-enrollment-list.component';
+import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/survey-enrollment-list.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule],
     declarations: [AssessmentComponent, ExamListComponent, ExamDialog,QuestionSheetListComponent,QuestionSheetPreviewDialog,
     				QuestionListComponent, QuestionDialog, QuestionContainerDirective,MultiChoiceQuestionComponent,
     				SingleChoiceQuestionComponent, OpenEndQuestionComponent, QuestionImportDialog, ExamEnrollDialog,
-    				SurveySheetListComponent, SurveySheetPreviewDialog, SurveyListComponent, SurveyDialog, SurveyEnrollDialog],
+    				SurveySheetListComponent, SurveySheetPreviewDialog, SurveyListComponent, SurveyDialog, SurveyEnrollDialog,
+    				SurveyEnrollmentListComponent, ExamEnrollmentListComponent],
     providers: [],
     exports: [QuestionContainerDirective, ExamDialog, QuestionSheetPreviewDialog, SurveySheetPreviewDialog, SurveyDialog],
     entryComponents: [SingleChoiceQuestionComponent, OpenEndQuestionComponent, MultiChoiceQuestionComponent]

@@ -5,7 +5,7 @@
                 	<p-dropdown [options]="exams" [(ngModel)]="selectedExam" placeholder="{{'Select an exam'|translate}}" (onChange)="selectExam()" optionLabel="name"></p-dropdown>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="{{'Export'|translate}}"  class="purple-btn" icon="ui-icon-file-download" (click)="export()"></button>
+                    <button pButton type="button" label="{{'Export'|translate}}"  class="blue-grey-btn" icon="ui-icon-file-download" (click)="export()"></button>
                 </div>
             </p-toolbar>
             <exam-result-stats-report></exam-result-stats-report>

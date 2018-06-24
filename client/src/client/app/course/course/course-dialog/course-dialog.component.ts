@@ -7,7 +7,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { Course } from '../../../shared/models/elearning/course.model';
-import { Ticket } from '../../../shared/models/ticket/ticket.model';
+import { Ticket } from '../../../shared/models/elearning/ticket.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
@@ -31,7 +31,6 @@ export class CourseDialog extends BaseDialog<Course> {
 	private courseStatus: SelectItem[];
 	private treeUtils: TreeUtils;
 	private editor: CourseMember;
-
 
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
@@ -116,9 +115,5 @@ export class CourseDialog extends BaseDialog<Course> {
 			}
 		});
 	}
-
-	review() {
-	}
-
 }
 

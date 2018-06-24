@@ -245,7 +245,10 @@ export abstract class BaseModel {
 
     refresh(context: APIContext): Observable<any> {
         if (this.id) {
-            return BaseModel.get(context, this.id).do(object=> {
+            var getApi = new ListAPI(this.Model, [this.id], []);
+            return context.apiService.execute(getApi, 
+                context.authService.LoginToken).do(items=> {
+                var object = MapUtils.deserializeModel(this.Model, items[0]);
                 Object.assign(this, object);
                 Cache.objectUpdate(this);
             });

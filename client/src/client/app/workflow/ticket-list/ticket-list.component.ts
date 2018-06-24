@@ -5,8 +5,7 @@ import { WorkflowService } from '../../shared/services/workflow.service';
 import { WebSocketService } from '../../shared/services/socket.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, TICKET_STATUS } from '../../shared/models/constants'
-import { Ticket } from '../../shared/models/ticket/ticket.model';
-import { Notification } from '../../shared/models/ticket/notification.model';
+import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { TicketDialog } from '../ticket-dialog/ticket-dialog.component';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../shared/models/base.model';
@@ -48,7 +47,7 @@ export class TicketListComponent extends BaseComponent {
 
     approveTicket(ticket: Ticket) {
         if (ticket.status == 'open') {
-            this.workflowService.approveTicket(this, ticket).subscribe(()=> {
+            this.workflowService.approveTicket(this, ticket.id).subscribe(()=> {
                 this.info(this.translateService.instant('Ticket approved'));
             });
         }
@@ -56,7 +55,7 @@ export class TicketListComponent extends BaseComponent {
 
     rejectTicket(ticket: Ticket) {
         if (ticket.status == 'open') {
-            this.workflowService.rejectTicket(this, ticket).subscribe(()=> {
+            this.workflowService.rejectTicket(this, ticket.id).subscribe(()=> {
                 this.info(this.translateService.instant('Ticket rejected'));
             });
         }

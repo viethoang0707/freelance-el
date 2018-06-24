@@ -4,8 +4,7 @@ import { WorkflowService } from '../../shared/services/workflow.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { WebSocketService } from '../../shared/services/socket.service';
 import { BaseDialog } from '../../shared/components/base/base.dialog';
-import { Ticket } from '../../shared/models/ticket/ticket.model';
-import { Comment } from '../../shared/models/ticket/comment.model';
+import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { Http, Response } from '@angular/http';
 import { DEFAULT_DATE_LOCALE, EXAM_MEMBER_ROLE, TICKET_STATUS } from '../../shared/models/constants'
 import {SelectItem, MenuItem} from 'primeng/api';
@@ -31,16 +30,6 @@ export class TicketDialog extends BaseDialog<Ticket> {
     }
 
     ngOnInit() {
-        this.onShow.subscribe(object=> {
-            Comment.listByTicket(this, object.id).subscribe(comments => {
-                this.comments = comments;
-            })
-        });
-
-        this.onUpdateComplete.subscribe((object)=> {
-            this.workflowService.updateTicket(this, object).subscribe(()=> {
-            });
-        });
     }
 
     approveTicket() {
@@ -57,19 +46,6 @@ export class TicketDialog extends BaseDialog<Ticket> {
                 this.info(this.translateService.instant('Ticket rejected'));
             });
         }
-    }
-
-    commentTicket() {
-        var comment = new Comment();
-        comment.submit_user_id =  this.authService.UserProfile.id;
-        comment.content = this.replyText;
-        comment.date_submit =  new Date();
-        comment.ticket_id =  this.object.id;
-        comment.save(this).subscribe(()=> {
-            this.workflowService.updateTicket(this, this.object).subscribe(()=> {
-                this.comments.push(comment);
-            });
-        });
     }
 
 }

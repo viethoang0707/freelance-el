@@ -20,7 +20,7 @@ export class SurveySheet extends BaseModel{
     name: string;
     seed:number;
     finalized:boolean;
-
+    
     clone() {
         var sheet = new SurveySheet();
         sheet.name =  this.name;

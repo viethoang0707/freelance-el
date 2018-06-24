@@ -48,7 +48,7 @@
               </ul>
               <p-footer>
                 <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(survey, survey.candidate)"  [disabled]="!survey.IsAvailable || survey.candidate.enroll_status=='completed'" *ngIf="survey.candidate!=null"></button>
-                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" purple-btn" style="margin-right:4px;" (click)="editContent(survey)" *ngIf="survey.editor!=null"></button>
+                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="editContent(survey)" *ngIf="survey.editor!=null"></button>
               </p-footer>
             </p-card>
           </div>

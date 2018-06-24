@@ -207,8 +207,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			this.selectedUnit = this.selectedNode.data;
 			if (this.studyMode == true) {
 				this.studyMode = false;
-				this.unloadCurrentUnit();
 			}
+			this.unloadCurrentUnit();
 		}
 	}
 

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular
 import { MenuItem } from 'primeng/primeng';
 import { User } from '../../shared/models/elearning/user.model';
 import { Course } from '../../shared/models/elearning/course.model';
-import { CourseDialog } from '../../course/course/course-dialog/course-dialog.component';
+import { CourseClassDialog } from '../../course/enrollment/class-dialog/class-dialog.component';
 import { CourseMember } from '../../shared/models/elearning/course-member.model';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { SelectItem } from 'primeng/api';
@@ -12,9 +12,12 @@ import { Group } from '../../shared/models/elearning/group.model';
 import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { USER_STATUS, SERVER_DATETIME_FORMAT, COURSE_MODE, CONTENT_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants';
+import { USER_STATUS, SERVER_DATETIME_FORMAT,TICKET_STATUS, CONTENT_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseModel } from '../../shared/models/base.model';
+import { CourseClass } from '../../shared/models/elearning/course-class.model';
+import { Ticket } from '../../shared/models/elearning/ticket.model';
+import { WorkflowService } from '../../shared/services/workflow.service';
 
 @Component({
     moduleId: module.id,
@@ -24,97 +27,99 @@ import { BaseModel } from '../../shared/models/base.model';
 })
 export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
-    COURSE_MODE =  COURSE_MODE;
-    CONTENT_STATUS = CONTENT_STATUS;
+    TICKET_STATUS = TICKET_STATUS;
 
     private events: any[];
-    private exams: Exam[];
-    private courses: Course[];
-    private course: Course;
-    private selectedExam: any;
     private header: any;
-    private now: Date;
+    private exams: Exam[];
+    private classes: CourseClass[];
+    private approvalTickets : Ticket[];
+    private dateUtils: DateUtils;
 
     @ViewChild(ExamDialog) examDialog: ExamDialog;
-    @ViewChild(CourseDialog) courseDialog: CourseDialog;
-    
-    constructor(private dateUtils: DateUtils) {
+    @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
+
+    constructor(private workflowService: WorkflowService) {
         super();
         this.header = SCHEDULER_HEADER;
-        this.now = new Date();
-        this.course = new Course();
+        this.dateUtils =  new DateUtils();
     }
 
     ngOnInit() {  
-        this.loadExams();
-        this.loadCourses();
-    }
-
-
-    addExam() {
-        this.examDialog.show(new Exam());
-        this.examDialog.onCreateComplete.subscribe(() => {
-            this.loadExams();
-        });
-    }
-
-    editExam(exam) {
-        if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
-                this.error('You do not have edit permission for this exam');
-                return;
-            }
-        this.examDialog.show(exam);
-        this.examDialog.onUpdateComplete.subscribe(() => {
-            this.loadExams();
-        });
-    }
-
-    editCourse(course) {
-        if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
-                this.error('You do not have edit permission for this course');
-                return;
-            }
-        this.courseDialog.show(course);
-        this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.loadCourses();
-        });
-    }
-
-    onDayClick() {
-        this.addExam();
-    }
-
-    onEventClick(event) {
-        var examId = event.calEvent.id;
-        var exam = _.find(this.exams, (exam)=> {
-            return exam.id == examId;
-        });
-        this.editExam(exam);
-    }
-
-    loadExams() {
-        Exam.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(exams => {
-            this.exams = exams;
-            this.events = _.map(exams, (exam:Exam)=> {
+        var now =  new Date();
+        this.events = [];
+        this.approvalTickets = [];
+        BaseModel
+        .bulk_search(this,
+            Exam.__api__listBySupervisorAndDate(this.ContextUser.id,this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
+            CourseClass.__api__listBySupervisorAndDate(this.ContextUser.id,this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
+            Ticket.__api__listPendingByApproveUser(this.ContextUser.id))
+        .subscribe(jsonArr=> {
+            this.exams = Exam.toArray(jsonArr[0]);
+            var examEvents =  _.map(this.exams, (exam:Exam)=> {
                 return {
                     title: exam.name,
                     start: exam.start,
                     end: exam.end,
-                    id: exam.id,
+                    id: Exam.Model+':'+exam.id,
                     allDay: true
-                }
-            });
-            
+                    }
+                });
+            this.classes =  CourseClass.toArray(jsonArr[1]);
+            var classEvents =  _.map(this.classes, (clazz:CourseClass)=> {
+                return {
+                    title: clazz.name,
+                    start: clazz.start,
+                    end: clazz.end,
+                    id: CourseClass.Model+':'+clazz.id,
+                    allDay: true
+                    }
+                });
+            this.events = this.events.concat(examEvents).concat(classEvents);
+            this.approvalTickets =  Ticket.toArray(jsonArr[2]);
         });
     }
 
-    loadCourses() {
-        Course.searchByDate(this,this.dateUtils.firstDateOfMonth(this.now),this.dateUtils.lastDateOfMonth(this.now)).subscribe(courses => {
-            this.courses = courses;
-            this.courses.sort((course1:Course, course2:Course): any => {
-                return (course1.create_date.getTime() - course2.create_date.getTime())
+    onEventClick(event) {
+        var eventId = event.calEvent.id;
+        var model = eventId.split('-')[0];
+        var id = eventId.split('-')[1];
+        if (model == Exam.Model) {
+            var exam = _.find(this.exams, (exam)=> {
+                return exam.id == id;
             });
-        });
+            this.examDialog.show(exam);
+        }
+        if (model == CourseClass.Model) {
+            var clazz = _.find(this.classes, (clazz:CourseClass)=> {
+                return clazz.id == id;
+            });
+            this.classDialog.show(clazz);
+        }
+    }
+
+    approveTicket(ticket: Ticket) {
+        if (ticket.status == 'open') {
+            this.workflowService.approveTicket(this, ticket.id).subscribe(()=> {
+                this.info(this.translateService.instant('Ticket approved'));
+                this.approvalTickets = _.reject(this.approvalTickets, (obj:Ticket)=> {
+                    return obj.id == ticket.id;
+                });
+            });
+        }
+    }
+
+    rejectTicket(ticket: Ticket) {
+        if (ticket.status == 'open') {
+            this.workflowService.rejectTicket(this, ticket.id).subscribe(()=> {
+                this.info(this.translateService.instant('Ticket rejected'));
+                this.approvalTickets = _.reject(this.approvalTickets, (obj:Ticket)=> {
+                    return obj.id == ticket.id;
+                });
+            });
+        }
     }
 }
+
+
 
