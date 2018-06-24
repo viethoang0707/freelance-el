@@ -39,7 +39,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
 
-    constructor(private workflowService: WorkflowService) {
+    constructor() {
         super();
         this.header = SCHEDULER_HEADER;
         this.dateUtils =  new DateUtils();

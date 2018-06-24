@@ -7,11 +7,7 @@ import { ConferenceListComponent } from './conference/conference-list/conference
 import { CourseManageComponent } from './course/course-manage/course-manage.component';
 import { CourseStudyComponent } from './course/course-study/course-study.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
-import { StudentGuard } from '../shared/guards/student.guard';
-import { TeacherGuard } from '../shared/guards/teacher.guard';
-import { ExamSupervisorGuard } from '../shared/guards/exam-supervisor.guard';
 import { CourseSearchComponent } from './course/course-search/course-search.component';
-import { SurveySupervisorGuard } from '../shared/guards/survey-supervisor.guard';
 import { SurveyListComponent} from './survey/survey-list/survey-list.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { CourseViewComponent } from './course/course-view/course-view.component';

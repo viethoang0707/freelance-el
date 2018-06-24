@@ -8,6 +8,7 @@ import { Cache } from '../../helpers/cache.utils';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
 import { ExecuteAPI } from '../../services/api/execute.api';
+import * as _ from 'underscore';
 
 @Model('etraining.course_class')
 export class CourseClass extends BaseModel{

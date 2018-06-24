@@ -56,12 +56,20 @@ export class Ticket extends BaseModel{
         return Ticket.search(context,[], "[('approve_user_id','=',"+userId+")]");
     }
 
-    static __api__listPendingBySubmitUser(userId: number): SearchReadAPI {
-        return new SearchReadAPI(Ticket.Model, [],"[('submit_user_id','=',"+userId+"),('status','=','pending')]");
+    static __api__listPendingByApproveUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('approve_user_id','=',"+userId+"),('status','=','pending')]");
     }
 
     static listPendingByApproveUser(context:APIContext, userId:number):Observable<any> {
         return Ticket.search(context,[], "[('approve_user_id','=',"+userId+"),('status','=','pending')]");
+    }
+
+    static __api__listPendingBySubmitUser(userId: number): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('submit_user_id','=',"+userId+"),('status','=','pending')]");
+    }
+
+    static listPendingBySubmitUser(context:APIContext, userId:number):Observable<any> {
+        return Ticket.search(context,[], "[('submit_user_id','=',"+userId+"),('status','=','pending')]");
     }
 
     static listBySubmitUser(context:APIContext, userId:number):Observable<any> {

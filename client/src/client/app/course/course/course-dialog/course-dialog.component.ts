@@ -35,7 +35,7 @@ export class CourseDialog extends BaseDialog<Course> {
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 
-	constructor( private workflowService: WorkflowService) {
+	constructor( ) {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.courseStatus = _.map(CONTENT_STATUS, (val, key) => {

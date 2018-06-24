@@ -24,7 +24,7 @@ export class TicketListComponent extends BaseComponent {
 
     @ViewChild(TicketDialog) ticketDialog: TicketDialog;
 
-    constructor(private workflowService:WorkflowService, private socketSerivce: WebSocketService) {
+    constructor( private socketSerivce: WebSocketService) {
         super();
         this.submitTickets = [];
         this.approvalTickets = [];
