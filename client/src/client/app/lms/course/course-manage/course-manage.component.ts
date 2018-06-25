@@ -27,6 +27,7 @@ import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
+import { MailMessageDialog } from '../../../shared/components/mail-message/mail-message.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -56,7 +57,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-
+	@ViewChild(MailMessageDialog) mailDialog: MailMessageDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -109,6 +110,15 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
 		}
+	}
+
+	broadcastMessage() {
+		CourseMember.listByClass(this, this.selectedClass.id).subscribe(members => {
+			if (members.length) {
+				var emails = _.pluck(members,"email");
+				this.mailDialog.show(emails);
+			}
+		});
 	}
 
 	previewUnit() {

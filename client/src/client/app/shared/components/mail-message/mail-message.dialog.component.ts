@@ -31,7 +31,7 @@ export class MailMessageDialog extends BaseComponent {
 
     show(recipients: string[]) {
     	this.display = true;
-        this.recipients = [];
+        this.recipients = recipients;
     }
 
     send() {
