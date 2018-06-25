@@ -6,7 +6,7 @@
     </p-tabPanel>
     <p-tabPanel header="{{'Recent course'|translate}}" leftIcon="ui-icon-school">
         <div class="ui-g user-dashboard">
-            <div class="ui-lg-12 dashboard-courses-list">
+            <div class="ui-lg-12 ui-g-12 dashboard-courses-list">
                 <div class="ui-lg-3 ui-md-6 ui-g-12 image-box card-course" *ngFor="let course of courses | slice:0:4">
                     <div class="card">
                         <div class="course-card-header">
@@ -54,7 +54,7 @@
     </p-tabPanel>
     <p-tabPanel header="{{'Recent exam'|translate}}" leftIcon="ui-icon-grade">
         <div class="ui-g user-dashboard">
-            <div class="ui-lg-12 dashboard-exam-list">
+            <div class="ui-lg-12 ui-g-12 dashboard-exam-list">
                 <div class="ui-lg-3 ui-md-6 ui-g-12 image-box card-exam" *ngFor="let exam of exams | slice:0:4">
                     <div class="card">
                         <div class="exam-card-header">
@@ -101,7 +101,7 @@
     </p-tabPanel>
     <p-tabPanel header="{{'Live conference'|translate}}" leftIcon="ui-icon-call">
         <div class="ui-g user-dashboard">
-            <div class="ui-lg-12 dashboard-live-conference">
+            <div class="ui-lg-12 ui-g-12 dashboard-live-conference">
                 <div class="ui-lg-3 ui-md-6 ui-g-12" *ngFor="let conference of conferences | slice:0:4; let i = index ">
                     <div class="task-box task-box-{{i%4 +1}}">
                         <div class="task-box-header">
