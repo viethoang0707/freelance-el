@@ -10,7 +10,6 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SelectItem } from 'primeng/api';
-import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
@@ -22,7 +21,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 
 	private display: boolean;
 	private courseClass: CourseClass;
-	private classExam: ClassExam;
+	private classExam: Exam;
 	private members: CourseMember[];
 	private selectedMember: ExamMember;
 
@@ -33,12 +32,12 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.members = [];
 	}
 
-	show(classExam: ClassExam, clazz: CourseClass) {
+	show(classExam: Exam, clazz: CourseClass) {
 		this.display = true;
 		this.courseClass = clazz;
 		this.classExam = classExam;
 		BaseModel
-			.bulk_search(this, CourseMember.__api__listByClass(this.classExam.class_id), ExamMember.__api__listByExam(this.classExam.exam_id))
+			.bulk_search(this, CourseMember.__api__listByClass(this.classExam.id), ExamMember.__api__listByExam(this.courseClass.id))
 			.subscribe(jsonArr => {
 				var members = CourseMember.toArray(jsonArr[0]);
 				this.members = _.filter(members, (member:CourseMember)=> {
@@ -114,11 +113,12 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		}
 	}
 
-	createExamMember(member) {
+	createExamMember(member:CourseMember) {
 		var examMember = new ExamMember();
 		examMember.role = "candidate";
-		examMember.exam_id = this.classExam.exam_id;
+		examMember.exam_id = this.classExam.id;
 		examMember.user_id = member.user_id;
+		examMember.course_member_id = member.id;
 		examMember.date_register = new Date();
 		examMember.status = 'active';
 		return examMember;

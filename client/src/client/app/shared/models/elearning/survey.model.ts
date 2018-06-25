@@ -25,8 +25,10 @@ export class Survey extends BaseModel{
         this.supervisor_name = undefined;
         this.is_public =  undefined;
         this.review_state = undefined;
+        this.course_class_id = undefined;
 	}
 
+    course_class_id: number;
     review_state:string;
     name:string;
     summary: string;
@@ -85,6 +87,20 @@ export class Survey extends BaseModel{
                 });
             });
         return Survey.search(context,[],"[('review_state','=','approved'),('status','=','published')]");
+    }
+
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model, [],"[('course_class_id','=',"+classId+")]");
+    }
+
+    static listByClass(context:APIContext, classId: number):Observable<any> {
+        if (Cache.hit(Survey.Model))
+            return Observable.of(Cache.load(Survey.Model)).map(surveys=> {
+                return _.filter(surveys, (survey:Survey)=> {
+                    return survey.supervisor_id == classId;
+                });
+            });
+        return Survey.search(context,[],"[('course_class_id','=',"+classId+")]");
     }
 
 }

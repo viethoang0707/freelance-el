@@ -8,7 +8,6 @@ import { GROUP_CATEGORY, SURVEY_STATUS } from '../../../shared/models/constants'
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Survey } from '../../../shared/models/elearning/survey.model';
-import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
 import { SelectItem } from 'primeng/api';
 import { SurveyDialog } from '../../../assessment/survey/survey-dialog/survey-dialog.component';
 import { SurveyContentDialog } from '../../../cms/survey/content-dialog/survey-content.dialog.component';
@@ -27,8 +26,8 @@ export class ClassSurveyListDialog extends BaseComponent {
 
 	private display: boolean;
 	private courseClass: CourseClass;
-	private classSurveys: ClassSurvey[];
-	private selectedClassSurvey: ClassSurvey;
+	private classSurveys: Survey[];
+	private selectedClassSurvey: any;
 	
 	@ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
 	@ViewChild(ClassSurveyEnrollDialog) enrollDialog: ClassSurveyEnrollDialog;
@@ -49,7 +48,7 @@ export class ClassSurveyListDialog extends BaseComponent {
 	}
 
 	loadSurveys() {
-		ClassSurvey.listByClass(this, this.courseClass.id).subscribe(classSurveys => {
+		Survey.listByClass(this, this.courseClass.id).subscribe(classSurveys => {
 			this.classSurveys = classSurveys;
 		});
 	}
@@ -70,15 +69,10 @@ export class ClassSurveyListDialog extends BaseComponent {
 		var survey = new Survey();
 		survey.is_public =  false;
 		survey.supervisor_id =  this.ContextUser.id;
+		survey.course_class_id = this.courseClass.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.subscribe(() => {
-			var classSurvey = new ClassSurvey();
-			classSurvey.survey_id = survey.id;
-			classSurvey.course_id = this.courseClass.course_id;
-			classSurvey.class_id = this.courseClass.id;
-			classSurvey.save(this).subscribe(() => {
 				this.loadSurveys();
-			});
 		});
 	}
 

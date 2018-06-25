@@ -33,7 +33,6 @@ import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content
 import { ExamStudyDialog } from '../../exam/exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Route, } from '@angular/router';
-import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { CertificatePrintDialog } from '../certificate-print/certificate-print.dialog.component';
 import { AnswerPrintDialog } from '../../exam/answer-print/answer-print.dialog.component';
@@ -47,7 +46,6 @@ import { CourseClass } from '../../../shared/models/elearning/course-class.model
 import { BaseModel } from '../../../shared/models/base.model';
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
-import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
 import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog.component';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 

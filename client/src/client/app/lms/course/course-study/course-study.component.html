@@ -81,7 +81,7 @@
                       </li>
                     </ul>
                     <p-footer>
-                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Submit'| translate}}" label="{{'Submit project'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="submitProject(project)" [disabled]="project.submit || project.status!='open'"></button>
+                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Submit'| translate}}" label="{{'Submit project'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="submitProject(project)" [disabled]="project.submit || !project.IsAvailable"></button>
                     </p-footer>
                   </p-card>
                 </div>
@@ -314,7 +314,7 @@
                       </li>
                     </ul>
                     <p-footer>
-                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(survey, survey.member)" *ngIf="survey.IsAvailable  && survey.member && survey.member.enroll_status!='completed'"></button>
+                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(survey, survey.candidate)" *ngIf="survey.IsAvailable  && survey.candidate && survey.candidate.enroll_status!='completed'"></button>
                     </p-footer>
                   </p-card>
                 </div>

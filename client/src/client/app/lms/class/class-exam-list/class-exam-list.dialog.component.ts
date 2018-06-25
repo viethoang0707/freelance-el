@@ -8,7 +8,6 @@ import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Exam } from '../../../shared/models/elearning/exam.model';
-import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { SelectItem } from 'primeng/api';
 import { ExamDialog } from '../../../assessment/exam/exam-dialog/exam-dialog.component';
 import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
@@ -26,14 +25,14 @@ export class ClassExamListDialog extends BaseComponent {
 
 	private display: boolean;
 	private courseClass: CourseClass;
-	private classExams: ClassExam[];
-	private selectedClassExam: ClassExam;
+	private classExams: Exam[];
+	private selectedClassExam: any;
 	private onManageReceiver: Subject<any> = new Subject();
-    onManage: Observable<any> = this.onManageReceiver.asObservable();
+	onManage: Observable<any> = this.onManageReceiver.asObservable();
 
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
-	@ViewChild(ExamContentDialog) examContentDialog:ExamContentDialog;
+	@ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
 
 	constructor(private router: Router) {
 		super();
@@ -46,15 +45,13 @@ export class ClassExamListDialog extends BaseComponent {
 		this.display = true;
 		this.classExams = [];
 		this.courseClass = courseClass;
-		this.selectedClassExam =  null;
+		this.selectedClassExam = null;
 		this.loadExams();
 	}
 
 	loadExams() {
-		ClassExam.listByClass(this, this.courseClass.id).subscribe(classExams => {
-			this.classExams = _.filter(classExams, (exam: ClassExam)=> {
-				return exam.IsValid;
-			});
+		Exam.listByClass(this, this.courseClass.id).subscribe(classExams => {
+			this.classExams = classExams;
 		});
 	}
 
@@ -64,24 +61,19 @@ export class ClassExamListDialog extends BaseComponent {
 
 	enroll() {
 		if (this.selectedClassExam) {
-			this.examEnrollDialog.show(this.selectedClassExam,this.courseClass);
+			this.examEnrollDialog.show(this.selectedClassExam, this.courseClass);
 		}
 	}
 
 	addExam() {
 		var exam = new Exam();
-		exam.is_public =  false;
-		exam.supervisor_id =  this.ContextUser.id;
+		exam.is_public = false;
+		exam.supervisor_id = this.ContextUser.id;
+		exam.course_class_id = this.courseClass.id;
 		this.examDialog.show(exam);
-		this.examDialog.onCreateComplete.subscribe(() => {
-			var classExam = new ClassExam();
-			classExam.exam_id = exam.id;
-			classExam.course_id = this.courseClass.course_id;
-			classExam.class_id = this.courseClass.id;
-			classExam.save(this).subscribe(() => {
-				this.loadExams();
-			});
-		});
+		this.examDialog.onCreateComplete.subscribe(()=> {
+			this.loadExams();
+		})
 	}
 
 	editExam() {
@@ -93,8 +85,8 @@ export class ClassExamListDialog extends BaseComponent {
 	}
 
 	manageExam() {
-		if (this.selectedClassExam)  {
-			ExamMember.byExamAndUser(this, this.ContextUser.id ,this.selectedClassExam.exam_id).subscribe(member=> {
+		if (this.selectedClassExam) {
+			ExamMember.byExamAndUser(this, this.ContextUser.id, this.selectedClassExam.exam_id).subscribe(member => {
 				this.hide();
 				this.onManageReceiver.next([this.selectedClassExam.id, member.id]);
 			});

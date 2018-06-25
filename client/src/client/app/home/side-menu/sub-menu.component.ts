@@ -31,7 +31,8 @@ export class SubMenuComponent {
     private activeIndex: number;
     private hover: boolean;
 
-    constructor(public app: HomeComponent, public router: Router, public location: Location) { }
+    constructor(public app: HomeComponent, public router: Router, public location: Location) {
+     }
 
     itemClick(event: Event, item: MenuItem, index: number)  {
         // avoid processing disabled items
@@ -39,6 +40,8 @@ export class SubMenuComponent {
             event.preventDefault();
             return true;
         }
+
+
 
         // activate current item and deactivate active sibling if any
         if (item.routerLink || item.items || item.command || item.url) {
@@ -75,5 +78,7 @@ export class SubMenuComponent {
 
     set reset(val: boolean) {
         this._reset = val;
+        if (val)
+            this.activeIndex = null;
     }
 }

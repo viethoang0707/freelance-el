@@ -33,7 +33,6 @@ import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content
 import { ExamStudyDialog } from '../../exam/exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Route, } from '@angular/router';
-import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { CertificatePrintDialog } from '../certificate-print/certificate-print.dialog.component';
 import { AnswerPrintDialog } from '../../exam/answer-print/answer-print.dialog.component';
@@ -48,7 +47,6 @@ import { CourseClass } from '../../../shared/models/elearning/course-class.model
 import { BaseModel } from '../../../shared/models/base.model';
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
-import { ClassSurvey } from '../../../shared/models/elearning/class-survey.model';
 import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog.component';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 
@@ -88,7 +86,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private studyMode: boolean;
 	private enableLogging: boolean;
 	private logs: CourseLog[];
-	private surveys: ClassSurvey[];
+	private surveys: Survey[];
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -117,95 +115,68 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
-			/*this.lmsService.init(this).subscribe(()=> {
-				this.lmsService.initCourseContent(this).subscribe(()=> {
-					this.course =  this.lmsService.getCourse(courseId);
-					this.member =  this.lmsService.getCourseMember(memberId);
-					var apiList = [
-						CourseLog.__api__memberStudyActivity(memberId, courseId),
-						Certificate.__api__byMember(this.member.id),
-					];
-				});
-			});*/
-			BaseModel
-				.bulk_list(this, Course.__api__get([courseId]), CourseMember.__api__get([memberId]))
-				.subscribe(jsonArr => {
-					this.course = Course.toArray(jsonArr[0])[0];
-					this.member = CourseMember.toArray(jsonArr[1])[0];
-					var apiList = [
-						CourseLog.__api__memberStudyActivity(memberId, courseId),
-						CourseFaq.__api__listByCourse(this.course.id),
-						CourseMaterial.__api__listByCourse(this.course.id),
-						CourseSyllabus.__api__byCourse(this.course.id),
-						Certificate.__api__byMember(this.member.id),
-						ConferenceMember.__api__byCourseMember(this.member.id),
-					];
-					if (this.member.class_id) {
-						apiList.push(ClassExam.__api__listByClass(this.member.class_id));
-						apiList.push(ExamMember.__api__listByUser(this.ContextUser.id));
-						apiList.push(Submission.__api__listByUser(this.ContextUser.id));
-						apiList.push(Project.__api__listByClass(this.member.class_id));
-						apiList.push(ProjectSubmission.__api__listByMember(this.member.id));
-						apiList.push(ClassSurvey.__api__listByClass(this.member.class_id));
-						apiList.push(SurveyMember.__api__listByUser(this.ContextUser.id));
-					}
-					BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr1 => {
-						this.logs = CourseLog.toArray(jsonArr1[0]);
-						this.faqs = CourseFaq.toArray(jsonArr1[1]);
-						this.materials = CourseMaterial.toArray(jsonArr1[2]);
-						var sylList = CourseSyllabus.toArray(jsonArr1[3]);
-						if (sylList.length) {
-							this.displayCouseSyllabus(sylList[0]);
-						}
-						var certList = Certificate.toArray(jsonArr1[4]);
-						if (certList.length)
-							this.certificate = certList[0];
-						var conferenceMemberList = ConferenceMember.toArray(jsonArr1[5]);
-						if (conferenceMemberList.length) {
-							this.conferenceMember = conferenceMemberList[0];
-							this.conferenceMember.populateConference(this).subscribe(() => {
-								this.conference = this.conferenceMember.conference;
-							})
-						}
+			this.lmsService.init(this).subscribe(() => {
+				this.lmsService.initCourseContent(this).subscribe(() => {
+					this.lmsService.initClassContent(this).subscribe(() => {
+						this.course = this.lmsService.getCourse(courseId);
+						this.member = this.lmsService.getCourseMember(memberId);
+						this.faqs = this.lmsService.getCourseFaqs(courseId);
+						this.materials = this.lmsService.getCourseMaterials(courseId);
+						this.syl = this.lmsService.getCourseSyllabus(courseId);
+						this.units = this.lmsService.getSyllabusUnit(this.syl.id);
+						var apiList = [
+							CourseLog.__api__memberStudyActivity(memberId, courseId),
+							Certificate.__api__byMember(this.member.id),
+						];
 						if (this.member.class_id) {
-							var classExams = ClassExam.toArray(jsonArr1[6]);
-							var examMembers = ExamMember.toArray(jsonArr1[7]);
-							var submits = Submission.toArray(jsonArr1[8]);
-							this.displayExam(classExams, examMembers, submits);
-							var projects = Project.toArray(jsonArr1[9]);
-							var projectSubmits = ProjectSubmission.toArray(jsonArr1[10]);
-							this.displayProject(projects, projectSubmits);
-							var classSurveys = ClassSurvey.toArray(jsonArr1[11]);
-							var surveyMembers = SurveyMember.toArray(jsonArr1[12]);
-							this.displaySurveys(classSurveys, surveyMembers);
+							apiList.push(Submission.__api__listByMember(this.ContextUser.id));
+							apiList.push(ProjectSubmission.__api__listByMember(this.member.id));
 						}
-					});
+						BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
+							this.logs = CourseLog.toArray(jsonArr[0]);
+							var certList = Certificate.toArray(jsonArr[1]);
+							if (certList.length)
+								this.certificate = certList[0];
+							this.displayCouseSyllabus();
+							this.conferenceMember = this.lmsService.getClassConferenceMember(memberId);
+							if (this.conferenceMember)
+								this.conference = this.conferenceMember.conference;
+							if (this.member.class_id) {
+								var classExams = this.lmsService.MyClassExam;
+								var examMembers = this.lmsService.getClassExamMember(memberId);
+								var submits = Submission.toArray(jsonArr[2]);
+								this.displayExam(classExams, examMembers, submits);
+								var projects = this.lmsService.MyProject;
+								var projectSubmits = ProjectSubmission.toArray(jsonArr[3]);
+								this.displayProject(projects, projectSubmits);
+								this.surveys = this.lmsService.MyClassSurvey;
+							}
+						});
+					})
 				});
+			});
 		});
 	}
 
-	displayCouseSyllabus(syl: CourseSyllabus) {
-		this.syl = syl;
-		CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
-			this.units = _.filter(units, (unit: CourseUnit) => {
-				return unit.status == 'published';
-			});
-			_.each(this.units, (unit: CourseUnit) => {
-				var log = _.find(this.logs, (obj: CourseLog) => {
-					return obj.res_id == unit.id && obj.res_model == CourseUnit.Model && obj.code == 'COMPLETE_COURSE_UNIT';
-				});
-				if (log)
-					unit["completed"] = true;
-			});
-			this.tree = this.sylUtils.buildGroupTree(units);
-			this.treeList = this.sylUtils.flattenTree(this.tree);
-			var last_attempt = _.max(this.logs, (log: CourseLog) => {
-				return log.start.getTime();
-			});
-			if (last_attempt) {
-				this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
-			}
+	displayCouseSyllabus() {
+		this.units = _.filter(this.units, (unit: CourseUnit) => {
+			return unit.status == 'published';
 		});
+		_.each(this.units, (unit: CourseUnit) => {
+			var log = _.find(this.logs, (obj: CourseLog) => {
+				return obj.res_id == unit.id && obj.res_model == CourseUnit.Model && obj.code == 'COMPLETE_COURSE_UNIT';
+			});
+			if (log)
+				unit["completed"] = true;
+		});
+		this.tree = this.sylUtils.buildGroupTree(this.units);
+		this.treeList = this.sylUtils.flattenTree(this.tree);
+		var last_attempt = _.max(this.logs, (log: CourseLog) => {
+			return log.start.getTime();
+		});
+		if (last_attempt) {
+			this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
+		}
 	}
 
 	nodeSelect(event: any) {
@@ -338,40 +309,37 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission[]) {
-		var examIds = _.pluck(classExams, 'exam_id');
+	displayExam(classExams: Exam[], members: ExamMember[], submits: Submission[]) {
+		var examIds = _.pluck(classExams, 'id');
 		members = _.filter(members, member => {
 			return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
 		});
 		ExamGrade.listByExams(this, examIds).subscribe(grades => {
-			ExamMember.populateExams(this, members).subscribe(() => {
-				_.each(members, (member: ExamMember) => {
-					var examGrades = _.filter(grades, (grade:ExamGrade)=> {
-						return grade.exam_id == member.exam_id;
-					});
-					member["submit"] = _.find(submits, (submit: Submission) => {
-						return submit.member_id == member.id && submit.exam_id == member.exam.id;
-					});
-					if (!member["submit"])
-						member["score"] = ''
-					else {
-						member["score"] = member["submit"].score;
-						member["grade"] = ExamGrade.gradeScore(examGrades, member["score"]);
-					}
-					ExamQuestion.countByExam(this, member.exam.id).subscribe(count => {
-						member["question_count"] = count;
-					});
+			_.each(members, (member: ExamMember) => {
+				var examGrades = _.filter(grades, (grade: ExamGrade) => {
+					return grade.exam_id == member.exam_id;
 				});
-				members.sort((m1: ExamMember, m2: ExamMember): any => {
-					return (m1.exam.create_date.getTime() - m2.exam.create_date.getTime());
+				member["submit"] = _.find(submits, (submit: Submission) => {
+					return submit.member_id == member.id && submit.exam_id == member.exam.id;
 				});
-				this.examMembers = members;
-				this.completedMembers = _.filter(members, (member: ExamMember) => {
-					return member.enroll_status == 'completed';
+				if (!member["submit"])
+					member["score"] = ''
+				else {
+					member["score"] = member["submit"].score;
+					member["grade"] = ExamGrade.gradeScore(examGrades, member["score"]);
+				}
+				ExamQuestion.countByExam(this, member.exam.id).subscribe(count => {
+					member["question_count"] = count;
 				});
 			});
+			members.sort((m1: ExamMember, m2: ExamMember): any => {
+				return (m1.exam.create_date.getTime() - m2.exam.create_date.getTime());
+			});
+			this.examMembers = members;
+			this.completedMembers = _.filter(members, (member: ExamMember) => {
+				return member.enroll_status == 'completed';
+			});
 		});
-
 	}
 
 
@@ -414,22 +382,9 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	submitProject(project: Project) {
-		if (!project.IsAvailable)
-			this.error('Project is not active');
-		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
-			this.projectSubmitDialog.show(project, this.member);
-		}
-		);
+		this.projectSubmitDialog.show(project, this.member);
 	}
 
-	displaySurveys(surveys: ClassSurvey[], members: SurveyMember[]) {
-		_.each(surveys, (survey: ClassSurvey) => {
-			survey["member"] = _.find(members, (m: SurveyMember) => {
-				return m.survey_id == survey.survey_id;
-			});
-		});
-		this.surveys = surveys;
-	}
 
 	startSurvey(survey: Survey, member: SurveyMember) {
 		if (!survey.IsAvailable) {

@@ -34,7 +34,6 @@ import { ExamQuestion } from '../models/elearning/exam-question.model';
 import { Group } from '../models/elearning/group.model';
 import { ReportUtils } from '../helpers/report.utils';
 import { Route, } from '@angular/router';
-import { ClassExam } from '../models/elearning/class-exam.model';
 import { Certificate } from '../models/elearning/course-certificate.model';
 import { MeetingService } from '../services/meeting.service';
 import { Project } from '../models/elearning/project.model';
@@ -43,7 +42,6 @@ import { CourseClass } from '../models/elearning/course-class.model';
 import { BaseModel } from '../models/base.model';
 import { Survey } from '../models/elearning/survey.model';
 import { SurveyMember } from '../models/elearning/survey-member.model';
-import { ClassSurvey } from '../models/elearning/class-survey.model';
 import { ExamGrade } from '../models/elearning/exam-grade.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Token } from '../models/cloud/token.model';
@@ -65,6 +63,15 @@ export class LMSService {
   private myConferenceMembers: ConferenceMember[];
   private __myConferenceMembers__dirty: boolean;
   private __myConferenceMembers__touch: boolean;
+  private myClassExams: any;
+  private __myClassExams__dirty: boolean;
+  private __myClassExams__touch: boolean;
+  private myClassSurveys: any;
+  private __myClassSurveys__dirty: boolean;
+  private __myClassSurveys__touch: boolean;
+  private myProjects: any;
+  private __myProjects__dirty: boolean;
+  private __myProjects__touch: boolean;
 
   private mySyllabus: CourseSyllabus[];
   private myUnits: any;
@@ -101,10 +108,7 @@ export class LMSService {
 
   invalidateAllll() {
     this.initialized = false;
-    this.invalidateCourseContent();
     this.courseAnalyticInitialized =  false;
-    this.classInitialized =  false;
-    
     this.myExamMembers = [];
     this.__myExamMembers__dirty = false;
     this.__myExamMembers__touch = false;
@@ -117,6 +121,10 @@ export class LMSService {
     this.myConferenceMembers = [];
     this.__myConferenceMembers__dirty = false;
     this.__myConferenceMembers__touch = false;
+
+    this.invalidateCourseContent();
+    this.invalidateClassContent();
+    
   }
 
   invalidateCourseContent() {
@@ -134,17 +142,16 @@ export class LMSService {
   }
 
   invalidateClassContent() {
-    this.syllabusInitialized =  false;
-    this.mySyllabus = [];
-    this.__mySyllabus__touch =  false;
-    this.__mySyllabus__dirty = false;
-    this.myUnits = {};
-    this.myFaqs = {};
-    this.myMaterials = {};
-    this.myCourseMembers = [];
-    this.myClassMembers = [];
-    this.__myCourseMembers__dirty = false;
-    this.__myCourseMembers__touch = false;
+    this.classInitialized =  false;
+    this.myClassExams = {};
+    this.__myClassExams__dirty = false;
+    this.__myClassExams__touch = false;
+    this.myProjects = {};
+    this.__myProjects__dirty = false;
+    this.__myProjects__touch = false;
+    this.myClassSurveys = {};
+    this.__myClassSurveys__dirty = false;
+    this.__myClassSurveys__touch = false;
   }
 
   init(context: APIContext): Observable<any> {
@@ -263,6 +270,31 @@ export class LMSService {
     });
   }
 
+  initClassContent(context: APIContext):Observable<any> {
+    if (this.classInitialized)
+      return Observable.of([]);
+    if (!this.initialized)
+      return Observable.throw('Must run initialize first');
+    var apiList = [];
+    var classList = this.MyClass;
+    for (var i=0;i<classList.length;i++) {
+      apiList.push(Exam.__api__listByClass(classList[i].id));
+      apiList.push(Project.__api__listByClass(classList[i].id));
+      apiList.push(Survey.__api__listByClass(classList[i].id));
+    };
+    return BaseModel.bulk_search(context, ...apiList).do(jsonArr=> {
+        for (var i=0;i<classList.length;i++) {
+          var exams = Exam.toArray(jsonArr[3*i]);
+          this.myClassExams[classList[i].id] =  exams;
+          var projects = Project.toArray(jsonArr[3*i+1]);
+          this.myProjects[classList[i].id] =  projects;
+          var surveys = Survey.toArray(jsonArr[3*i+2]);
+          this.myClassSurveys[classList[i].id] =  surveys;
+        }
+        this.classInitialized =  true;
+    });
+  }
+
   initCourseAnalytic(context: APIContext): Observable<any> {
     if (this.courseAnalyticInitialized)
       return Observable.of([]);
@@ -319,6 +351,24 @@ export class LMSService {
     });
   }
 
+  getClassExamMember(courseMemberId: number) {
+    return _.filter(this.myExamMembers, (examMember:ExamMember)=> {
+      return examMember.course_member_id == courseMemberId;
+    });
+  }
+
+  getClassSurveyMember(courseMemberId: number) {
+    return _.filter(this.mySurveyMembers, (surveyMember:SurveyMember)=> {
+      return surveyMember.course_member_id == courseMemberId;
+    });
+  }
+
+  getClassConferenceMember(courseMemberId: number) {
+    return _.find(this.myConferenceMembers, (confMember:ConferenceMember)=> {
+      return confMember.course_member_id == courseMemberId;
+    });
+  }
+
   get MyCourseSyllabus(): CourseSyllabus[] {
     return this.mySyllabus;
   }
@@ -341,6 +391,47 @@ export class LMSService {
 
   get MySurveyMember(): SurveyMember[] {
     return this.mySurveyMembers;
+  }
+
+  get MyClassExam(): Exam[] {
+    var exams =  this.MyClassExam;
+    _.each(exams, (exam: Exam) => {
+      exam["candidate"] = _.find(this.myExamMembers, (member: ExamMember) => {
+        return member.exam_id == exam.id && member.role == 'candidate';
+      });
+      exam["supervisor"] = _.find(this.myExamMembers, (member: ExamMember) => {
+        return member.exam_id == exam.id && member.role == 'supervisor';
+      });
+      exam["editor"] = _.find(this.myExamMembers, (member: ExamMember) => {
+        return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
+      });
+      if (exam["supervisor"])
+        exam["editor"] = exam["teacher"] = exam["supervisor"];
+    });
+    return exams;
+  }
+
+  get MyClassSurvey(): Survey[] {
+    var surveys = this.myClassSurveys;
+    _.each(surveys, (survey: Survey) => {
+      survey["candidate"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+        return member.survey_id == survey.id && member.role == 'candidate';
+      });
+      survey["supervisor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+        return member.survey_id == survey.id && member.role == 'supervisor';
+      });
+      survey["editor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+        return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
+      });
+      if (survey["supervisor"])
+        survey["editor"] = survey["teacher"] = survey["supervisor"];
+    });
+    return surveys;
+
+  }
+
+  get MyProject(): Project[] {
+    return this.myProjects;
   }
 
   get MyCourse(): Course[] {
@@ -415,9 +506,23 @@ export class LMSService {
     var surveys = _.map(this.mySurveyMembers, (member: SurveyMember) => {
       return member.survey;
     });
-    return _.uniq(surveys, (survey: Survey) => {
+    surveys =  _.uniq(surveys, (survey: Survey) => {
       return survey.id;
     });
+    _.each(surveys, (survey: Survey) => {
+      survey["candidate"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+        return member.survey_id == survey.id && member.role == 'candidate';
+      });
+      survey["supervisor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+        return member.survey_id == survey.id && member.role == 'supervisor';
+      });
+      survey["editor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+        return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
+      });
+      if (survey["supervisor"])
+        survey["editor"] = survey["teacher"] = survey["supervisor"];
+    });
+    return surveys;
   }
 
   getLastCourseTimestamp(course: Course) {

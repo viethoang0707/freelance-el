@@ -36,9 +36,11 @@ export class Exam extends BaseModel{
         this.competency_level_name =  undefined;
         this.is_public =  undefined;
         this.review_state = undefined;
+        this.course_class_id = undefined;
 	}
 
     review_state:string;
+    course_class_id:number;
     competency_id: number;
     competency_name: string;
     competency_group_id: number;
@@ -152,5 +154,19 @@ export class Exam extends BaseModel{
                 });
             });
         return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    static __api__listByClass(classId: number): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model, [],"[('course_class_id','=',"+classId+")]");
+    }
+
+    static listByClass(context:APIContext, classId: number):Observable<any> {
+        if (Cache.hit(Exam.Model))
+            return Observable.of(Cache.load(Exam.Model)).map(exams=> {
+                return _.filter(exams, (exam:Exam)=> {
+                    return exam.supervisor_id == classId;
+                });
+            });
+        return Exam.search(context,[],"[('course_class_id','=',"+classId+")]");
     }
 }

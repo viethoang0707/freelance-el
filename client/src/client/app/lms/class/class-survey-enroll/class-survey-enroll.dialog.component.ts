@@ -105,9 +105,10 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 	}
 
 
-	createSurveyMember(member) {
+	createSurveyMember(member:CourseMember) {
 		var surveyMember = new SurveyMember();
         surveyMember.survey_id = this.survey.id;
+        surveyMember.course_member_id =  member.id;
         surveyMember.user_id = member.user_id;
         surveyMember.date_register =  new Date();
         return surveyMember;

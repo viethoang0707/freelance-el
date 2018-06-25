@@ -29,7 +29,6 @@ import { Submission } from '../../../shared/models/elearning/submission.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { ExcelService } from '../../../shared/services/excel.service';
 import { BaseModel } from '../../../shared/models/base.model';
-import { ClassExam } from '../../../shared/models/elearning/class-exam.model';
 import { User } from '../../../shared/models/elearning/user.model';
 
 
@@ -117,7 +116,7 @@ export class GradebookDialog extends BaseComponent {
                 CourseSyllabus.__api__byCourse(this.member.course_id),
                 CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
                 Certificate.__api__byMember(this.member.id),
-                ClassExam.__api__listByClass(this.member.class_id),
+                Exam.__api__listByClass(this.member.class_id),
                 ExamMember.__api__listByUser(this.ContextUser.id),
                 Submission.__api__listByUser(this.ContextUser.id),
                 Project.__api__listByClass(this.member.class_id),
@@ -131,7 +130,7 @@ export class GradebookDialog extends BaseComponent {
                 var certList = Certificate.toArray(jsonArr[2]);
                 if (certList.length)
                     this.certificate = certList[0];
-                var classExams = ClassExam.toArray(jsonArr[3]);
+                var classExams = Exam.toArray(jsonArr[3]);
                 var examMembers = ExamMember.toArray(jsonArr[4]);
                 var submits = Submission.toArray(jsonArr[5]);
                 this.displayExam(classExams, examMembers, submits);
@@ -160,8 +159,8 @@ export class GradebookDialog extends BaseComponent {
         this.stats.push(record);
     }
 
-    displayExam(classExams: ClassExam[], members: ExamMember[], submits: Submission[]) {
-        var examIds = _.pluck(classExams, 'exam_id');
+    displayExam(classExams: Exam[], members: ExamMember[], submits: Submission[]) {
+        var examIds = _.pluck(classExams, 'id');
         members = _.filter(members, member => {
             return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
         });

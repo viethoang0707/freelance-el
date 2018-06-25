@@ -16,6 +16,7 @@ export class SurveyMember extends BaseModel{
         super();
         
         this.survey_id = undefined;
+        this.course_member_id =  undefined;
         this.date_register = undefined;
         this.name = undefined;
         this.login = undefined;
@@ -29,6 +30,7 @@ export class SurveyMember extends BaseModel{
         this.survey =  new Survey();
     }
 
+    course_member_id: number;
     role: string;
     survey_id: number;
     survey: Survey;
