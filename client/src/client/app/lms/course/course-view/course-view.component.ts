@@ -61,7 +61,7 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	CONTENT_STATUS = CONTENT_STATUS;
-	COURSE_MODE =  COURSE_MODE;
+	COURSE_MODE = COURSE_MODE;
 
 	private course: Course;
 	private member: CourseMember;
@@ -81,7 +81,7 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
 
-	constructor(private router: Router, private route: ActivatedRoute,private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor(private router: Router, private route: ActivatedRoute, private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
@@ -90,35 +90,25 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			Course.get(this, courseId)
-				.subscribe(course => {
-					this.course = course;
-					var apiList = [
-						CourseFaq.__api__listByCourse(this.course.id),
-						CourseMaterial.__api__listByCourse(this.course.id),
-						CourseSyllabus.__api__byCourse(this.course.id)
-					];
-					BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr1 => {
-						this.faqs = CourseFaq.toArray(jsonArr1[0]);
-						this.materials = CourseMaterial.toArray(jsonArr1[1]);
-						var sylList = CourseSyllabus.toArray(jsonArr1[2]);
-						if (sylList.length) {
-							this.displayCouseSyllabus(sylList[0]);
-						}
-					});
+			this.lmsService.init(this).subscribe(() => {
+				this.lmsService.initCourseContent(this).subscribe(() => {
+					this.course = this.lmsService.getCourse(courseId);
+					this.faqs = this.lmsService.getCourseFaqs(courseId);
+					this.materials = this.lmsService.getCourseMaterials(courseId);
+					this.syl = this.lmsService.getCourseSyllabus(courseId);
+					this.units = this.lmsService.getSyllabusUnit(this.syl.id)
+					this.displayCouseSyllabus();
 				});
+			});
 		});
 	}
 
-	displayCouseSyllabus(syl: CourseSyllabus) {
-		this.syl = syl;
-		CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
-			this.units = _.filter(units, (unit: CourseUnit) => {
-				return unit.status == 'published';
-			});
-			this.tree = this.sylUtils.buildGroupTree(units);
-			this.treeList = this.sylUtils.flattenTree(this.tree);
+	displayCouseSyllabus() {
+		this.units = _.filter(this.units, (unit: CourseUnit) => {
+			return unit.status == 'published';
 		});
+		this.tree = this.sylUtils.buildGroupTree(units);
+		this.treeList = this.sylUtils.flattenTree(this.tree);
 	}
 
 	nodeSelect(event: any) {
@@ -185,21 +175,5 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 			currentNodeIndex++;
 		}
 		return (currentNodeIndex < this.treeList.length ? this.treeList[currentNodeIndex].data : null);
-	}
-
-
-	openUnit() {
-		var detailComponent = CourseUnitRegister.Instance.lookup(this.selectedUnit.type);
-		let viewContainerRef = this.unitHost.viewContainerRef;
-		if (detailComponent) {
-			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-			viewContainerRef.clear();
-			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			(<ICourseUnit>this.componentRef.instance).mode = 'study';
-			(<ICourseUnit>this.componentRef.instance).render(this.selectedUnit);
-		} else {
-			viewContainerRef.clear();
-			this.componentRef = null;
-		}
 	}
 }

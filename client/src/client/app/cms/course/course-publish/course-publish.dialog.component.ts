@@ -19,11 +19,11 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 
 @Component({
     moduleId: module.id,
-    selector: 'course-syllabus-dialog',
-    templateUrl: 'course-syllabus.dialog.component.html',
-    styleUrls: ['course-syllabus.dialog.component.css'],
+    selector: 'course-publish-dialog',
+    templateUrl: 'course-publish.dialog.component.html',
+    styleUrls: ['course-publish.dialog.component.css'],
 })
-export class CourseSyllabusDialog extends BaseComponent {
+export class CoursePublishDialog extends BaseComponent {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
@@ -112,7 +112,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 				this.sylUtils.addChildNode(this.selectedNode, unit);
 			else
 				this.sylUtils.addRootNode(this.tree, unit);
-			this.lmsService.invalidateCourseContent();
 		});
 	}
 
@@ -121,7 +120,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.unitDialog.show(this.selectedNode.data);
 			this.unitDialog.onUpdateComplete.subscribe(()=> {
 				this.buildCourseTree();
-				this.lmsService.invalidateCourseContent();
 			});
 		}
 	}
@@ -136,7 +134,6 @@ export class CourseSyllabusDialog extends BaseComponent {
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
-                    this.lmsService.invalidateCourseContent();
                 })
              });
 		}
@@ -154,7 +151,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.sylUtils.moveUp(this.tree,this.selectedNode);
 			CourseUnit.updateArray(this, this.units).subscribe(()=> {
 				this.success('Move sucessfully');
-				this.lmsService.invalidateCourseContent();
 			});
 		}
 	}
@@ -165,7 +161,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.sylUtils.moveDown(this.tree,this.selectedNode);
 			CourseUnit.updateArray(this, this.units).subscribe(()=> {
 				this.success('Move sucessfully');
-				this.lmsService.invalidateCourseContent();
 			});
 		}
 	}
@@ -185,6 +180,16 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.selectedNode.data.course_id = this.course.id;
 			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
+	}
+
+	submitForReview() {
+
+	}
+
+	updateStatus() {
+		this.syl.save(this).subscribe(()=> {
+			this.success(this.translateService.instant('Syllabus status updated'));
+		});
 	}
 
 }

@@ -4,7 +4,9 @@
         <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
             <div class="ui-g-3">
                 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+                <div class="ui-g-12">
                 <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, member)"></button>
+            </div>
             </div>
             <div class="ui-g-9" *ngIf="selectedUnit">
                 <div class="card">

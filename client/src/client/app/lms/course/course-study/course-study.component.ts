@@ -99,8 +99,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(ProjectSubmissionDialog) projectSubmitDialog: ProjectSubmissionDialog;
 	@ViewChild(SurveyStudyDialog) surveyDialog: SurveyStudyDialog;
 
-
-
 	constructor(private router: Router, private route: ActivatedRoute,
 		private meetingSerivce: MeetingService, private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
@@ -119,6 +117,16 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
+			/*this.lmsService.init(this).subscribe(()=> {
+				this.lmsService.initCourseContent(this).subscribe(()=> {
+					this.course =  this.lmsService.getCourse(courseId);
+					this.member =  this.lmsService.getCourseMember(memberId);
+					var apiList = [
+						CourseLog.__api__memberStudyActivity(memberId, courseId),
+						Certificate.__api__byMember(this.member.id),
+					];
+				});
+			});*/
 			BaseModel
 				.bulk_list(this, Course.__api__get([courseId]), CourseMember.__api__get([memberId]))
 				.subscribe(jsonArr => {

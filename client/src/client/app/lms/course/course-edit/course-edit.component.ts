@@ -39,6 +39,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
 	private course: Course;
+	private units: CourseUnit[];
 	private member: CourseMember;
 	private selectedFaq: CourseFaq;
 	private faqs: CourseFaq[];
@@ -47,9 +48,9 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	private tree: TreeNode[];
 	private syl: CourseSyllabus;
 	private selectedNode: TreeNode;
-	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
+	private treeList: TreeNode[];t
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -67,62 +68,39 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			var memberId = +params['memberId'];
-			BaseModel
-				.bulk_list(this, Course.__api__get([courseId]), CourseMember.__api__get([memberId]))
-				.subscribe(jsonArr => {
-					this.course = Course.toArray(jsonArr[0])[0];
-					this.member = CourseMember.toArray(jsonArr[1])[0];
+			this.lmsService.init(this).subscribe(()=> {
+				this.lmsService.initCourseContent(this).subscribe(()=> {
+					this.course = this.lmsService.getCourse(courseId);
+					this.faqs = this.lmsService.getCourseFaqs(courseId);
+					this.materials =  this.lmsService.getCourseMaterials(courseId);
+					this.syl = this.lmsService.getCourseSyllabus(courseId);
+					this.units = this.lmsService.getSyllabusUnit(this.syl.id)
+					this.displayCouseSyllabus();
 				});
-			Course.get(this, courseId).subscribe(course => {
-				this.course = course;
-				BaseModel
-					.bulk_search(this,
-						CourseFaq.__api__listByCourse(course.id),
-						CourseMaterial.__api__listByCourse(course.id),
-						CourseSyllabus.__api__byCourse(course.id))
-					.subscribe((jsonArr) => {
-						this.faqs = CourseFaq.toArray(jsonArr[0]);
-						this.materials = CourseMaterial.toArray(jsonArr[1]);
-						var sylList = CourseSyllabus.toArray(jsonArr[2]);
-						if (sylList.length) {
-							this.displaySyllabus(sylList[0]);
-						}
-					});
 			});
 		});
 	}
 
-	displaySyllabus(syl: CourseSyllabus) {
-		this.syl = syl;
-		CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
-			this.units = _.filter(units, (unit: CourseUnit) => {
-				return unit.status == 'published';
-			});
-			this.tree = this.sylUtils.buildGroupTree(units);
+	displayCouseSyllabus() {
+		this.units = _.filter(this.units, (unit: CourseUnit) => {
+			return unit.status == 'published';
 		});
+		this.tree = this.sylUtils.buildGroupTree(this.units);
+		this.treeList = this.sylUtils.flattenTree(this.tree);
 	}
 
 	editSyllabus() {
-        CourseSyllabus.byCourse(this, this.course.id).subscribe(syllabus => {
-            this.syllabusDialog.show(syllabus, this.course);
-        });
+         this.syllabusDialog.show(this.syl, this.course);
     }
 	
-	
-	loadFaqs() {
-		CourseFaq.listByCourse(this, this.course.id)
-			.subscribe(faqs => {
-				this.faqs = faqs;
-			})
-	}
 
 	addFaq() {
 		var faq = new CourseFaq();
 		faq.course_id = this.course.id;
 		this.faqDialog.show(faq);
 		this.faqDialog.onCreateComplete.subscribe(() => {
-			this.loadFaqs();
+			this.faqs.push(faq);
+			this.lmsService.invalidateCourseContent();
 		});
 	}
 
@@ -135,26 +113,22 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		if (this.selectedFaq)
 			this.confirm('Are you sure to delete ?', () => {
 				this.selectedFaq.delete(this).subscribe(() => {
-					this.loadFaqs();
+					this.faqs = _.reject(this.faqs, (obj:CourseFaq)=> {
+						return obj.id == this.selectedFaq.id;
+					});
 					this.selectedFaq = null;
+					this.lmsService.invalidateCourseContent();
 				})
 			});
 	}
-
-	loadMaterials() {
-		CourseMaterial.listByCourse(this, this.course.id)
-			.subscribe(materials => {
-				this.materials = materials;
-			});
-	}
-
 
 	addMaterial() {
 		var material = new CourseMaterial();
 		material.course_id = this.course.id;
 		this.materialDialog.show(material);
 		this.materialDialog.onCreateComplete.subscribe(() => {
-			this.loadMaterials();
+			this.materials.push(material);
+			this.lmsService.invalidateCourseContent();
 		});
 	}
 
@@ -167,7 +141,10 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		if (this.selectedMaterial)
 			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				this.selectedMaterial.delete(this).subscribe(() => {
-					this.loadMaterials();
+					this.materials = _.reject(this.materials, (obj:CourseMaterial)=> {
+						return obj.id == this.selectedMaterial.id;
+					});
+					this.lmsService.invalidateCourseContent();
 					this.selectedMaterial = null;
 				})
 			});

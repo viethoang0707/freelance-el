@@ -68,45 +68,44 @@ export class LMSService {
   private __myConferenceMembers__touch: boolean;
 
   private mySyllabus: CourseSyllabus[];
-  private myUnits: {};
+  private myUnits: any;
+  private myFaqs: any;
+  private myMaterials: any;
   private __mySyllabus__dirty: boolean;
   private __mySyllabus__touch: boolean;
 
   private initialized: boolean;
   private syllabusInitialized: boolean;
+  private classInitialized: boolean;
   private courseAnalyticInitialized: boolean;
   private examAnalyticInitialized: boolean;
+  private courseLogInitialized: boolean;
 
   private reportUtils: ReportUtils;
 
   constructor(private settingService: SettingService, private appEvent: AppEventManager) {
     this.settingService.viewModeEvents.subscribe(() => {
-      this.clearAll();
+      this.invalidateAllll();
     });
     this.appEvent.onLogin.subscribe(() => {
-      this.clearAll();
+      this.invalidateAllll();
     });
     this.appEvent.onLogout.subscribe(() => {
-      this.clearAll();
+      this.invalidateAllll();
     });
     this.appEvent.onTokenExpired.subscribe(() => {
-      this.clearAll();
+      this.invalidateAllll();
     });
-    this.clearAll();
+    this.invalidateAllll();
     this.reportUtils =  new ReportUtils();
   }
 
-  private clearAll() {
+  invalidateAllll() {
     this.initialized = false;
-    this.syllabusInitialized =  false;
-    this.mySyllabus = [];
-    this.__mySyllabus__touch =  false;
-    this.__mySyllabus__dirty = false;
-    this.myUnits = [];
-    this.myCourseMembers = [];
-    this.myClassMembers = [];
-    this.__myCourseMembers__dirty = false;
-    this.__myCourseMembers__touch = false;
+    this.invalidateCourseContent();
+    this.courseAnalyticInitialized =  false;
+    this.classInitialized =  false;
+    
     this.myExamMembers = [];
     this.__myExamMembers__dirty = false;
     this.__myExamMembers__touch = false;
@@ -119,6 +118,34 @@ export class LMSService {
     this.myConferenceMembers = [];
     this.__myConferenceMembers__dirty = false;
     this.__myConferenceMembers__touch = false;
+  }
+
+  invalidateCourseContent() {
+    this.syllabusInitialized =  false;
+    this.mySyllabus = [];
+    this.__mySyllabus__touch =  false;
+    this.__mySyllabus__dirty = false;
+    this.myUnits = {};
+    this.myFaqs = {};
+    this.myMaterials = {};
+    this.myCourseMembers = [];
+    this.myClassMembers = [];
+    this.__myCourseMembers__dirty = false;
+    this.__myCourseMembers__touch = false;
+  }
+
+  invalidateClassContent() {
+    this.syllabusInitialized =  false;
+    this.mySyllabus = [];
+    this.__mySyllabus__touch =  false;
+    this.__mySyllabus__dirty = false;
+    this.myUnits = {};
+    this.myFaqs = {};
+    this.myMaterials = {};
+    this.myCourseMembers = [];
+    this.myClassMembers = [];
+    this.__myCourseMembers__dirty = false;
+    this.__myCourseMembers__touch = false;
   }
 
   init(context: APIContext): Observable<any> {
@@ -218,14 +245,20 @@ export class LMSService {
     for (var i = 0; i < courses.length; i++) {
         searchApiList.push(CourseSyllabus.__api__byCourse(courses[i].id));
         searchApiList.push(CourseUnit.__api__listByCourse(courses[i].id));
+        searchApiList.push(CourseFaq.__api__listByCourse(courses[i].id));
+        searchApiList.push(CourseMaterial.__api__listByCourse(courses[i].id));
     }
     return BaseModel.bulk_search(context, ...searchApiList).do(jsonArr=> {
         for (var i = 0; i < courses.length; i++) {
-          var sylList = CourseSyllabus.toArray(jsonArr[2*i]);
+          var sylList = CourseSyllabus.toArray(jsonArr[4*i]);
           var syllabus = sylList[0];
-          var unitList = CourseUnit.toArray(jsonArr[2*i+1]);
+          var unitList = CourseUnit.toArray(jsonArr[4*i+1]);
+          var faqList = CourseFaq.toArray(jsonArr[4*i+2]);
+          var materialList = CourseMaterial.toArray(jsonArr[4*i+3]);
           this.mySyllabus.push(syllabus);
           this.myUnits[syllabus.id] =  unitList;
+          this.myFaqs[courses[i].id] =  faqList;
+          this.myMaterials[courses[i].id] =  materialList;
         }
         this.syllabusInitialized =  true;
     });
@@ -253,11 +286,32 @@ export class LMSService {
         };
         this.courseAnalyticInitialized =  true;
     });
+  }
 
+  getCourse(courseId):Course {
+    var courses = this.MyCourse;
+    return _.find(courses, (course:Course)=> {
+      return course.id == courseId;
+    });
+  }
+
+  getCourseMember(memberId):CourseMember {
+    var members = this.MyCourseMember;
+    return _.find(members, (member:CourseMember)=> {
+      return member.id == memberId;
+    });
   }
 
   getSyllabusUnit(sylId: number):CourseUnit[] {
     return this.myUnits[sylId];
+  }
+
+  getCourseFaqs(courseId: number):CourseFaq[] {
+    return this.myFaqs[courseId];
+  }
+
+  getCourseMaterials(courseId: number):CourseMaterial[] {
+    return this.myMaterials[courseId];
   }
 
   getCourseSyllabus(courseId: number): CourseSyllabus {

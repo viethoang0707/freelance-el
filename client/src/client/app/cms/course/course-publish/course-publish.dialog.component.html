@@ -10,6 +10,7 @@
         </div>
         <div class="ui-toolbar-group-right">
           <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings" (click)="showSetting()" label="{{'Setting'|translate}}"></button>
+          <button pButton type="button" class="orange-btn"  (click)="submitForReview()" label="{{'Submit for review'|translate}}" *ngIf="syl.review_state!='approved'"></button>
         </div>
       </p-toolbar>
       <div class="ui-g-4" style="padding: 10px 10px 0 0">

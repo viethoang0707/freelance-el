@@ -23,6 +23,7 @@ import { SurveyContentDialog } from './survey/content-dialog/survey-content.dial
 import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-save.dialog.component';
 import { ValidateGradePipe } from './exam/exam-setting/grade.pipe';
 import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.component';
+import { CoursePublishDialog } from './course/course-publish/course-publish.dialog.component';
 
 
 @NgModule({
@@ -33,7 +34,7 @@ import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.compo
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,
 		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog,ValidateGradePipe, ExamSettingDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, 
-	ProjectContentDialog, SurveyContentDialog],
+	ProjectContentDialog, SurveyContentDialog, CoursePublishDialog],
 	providers: [],
 	entryComponents: [FolderCourseUnitComponent, ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
 		VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]
