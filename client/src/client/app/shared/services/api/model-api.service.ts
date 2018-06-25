@@ -19,6 +19,7 @@ export class ModelAPIService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         var params = api.params;
+        console.log(params);
         params["token"] = token.code;
         var endpoint = Config.CLOUD_ENDPOINT + api.Method;
         this.appEvent.startHttpTransaction();
