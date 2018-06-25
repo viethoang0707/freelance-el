@@ -1,5 +1,8 @@
 <div class="ui-g card card-w-title">
+  <div class="ui-lg-12 ui-g-12">
   <h1>{{'Course study'|translate}}: {{course.name}} </h1>
+  </div>
+  <div class="ui-lg-12 ui-g-12">
   <p-tabView [style]="{width: '100%', height: '600px'}">
     <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze" [disabled]="syl.status!='published'">
       <div class="ui-lg-3 ui-md-3 ui-g-12 course-study-tree">
@@ -29,7 +32,7 @@
       </div>
     </p-tabPanel>
     <p-tabPanel *ngIf="member.class_id" header="{{'Project'|translate}}" leftIcon="ui-icon-assignment">
-      <div class="ui-g-12 ">
+      <div class="ui-lg-12 ui-g-12">
         <p-dataList [value]="projects" [paginator]="true" [rows]="5">
           <ng-template let-project pTemplate="item">
             <p-card>
@@ -93,7 +96,7 @@
       </div>
     </p-tabPanel>
     <p-tabPanel *ngIf="member.class_id" header="{{'Exam'|translate}}" leftIcon="ui-icon-grade">
-      <div class="ui-g-12 ">
+      <div class="ui-lg-12 ui-g-12">
         <p-dataList [value]="examMembers" [paginator]="true" [rows]="5">
           <ng-template let-member pTemplate="item">
             <p-card>
@@ -163,7 +166,7 @@
       </div>
     </p-tabPanel>
     <p-tabPanel *ngIf="member.class_id" header="{{'Gradebook'|translate}}" leftIcon="ui-icon-book">
-      <div class="ui-g-12 ">
+      <div class="ui-lg-12 ui-g-12">
         <p-toolbar>
           <div class="ui-toolbar-group-left">
             <button pButton type="button " label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
@@ -328,4 +331,5 @@
       </div>
     </p-tabPanel>
   </p-tabView>
+  </div>
 </div>
