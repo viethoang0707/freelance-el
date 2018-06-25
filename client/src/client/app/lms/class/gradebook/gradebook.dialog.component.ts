@@ -114,7 +114,7 @@ export class GradebookDialog extends BaseComponent {
         Observable.concat(this.lmsService.init(this),
             this.lmsService.initCourseContent(this),
             this.lmsService.initClassContent(this)
-        ).subscribe(() => {
+        ).last().subscribe(() => {
             BaseModel
                 .bulk_search(this,
                     CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
@@ -150,7 +150,7 @@ export class GradebookDialog extends BaseComponent {
             record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
         record["time_spent"] = this.timePipe.transform(+result[2], 'min');
         if (units.length)
-            record["complete_percent"] = Math.floor(+result[3] * 100 / +totalUnit);
+            record["complete_percent"] = Math.floor(+result[3] * 100 / +units.length);
         else
             record["complete_percent"] = 0;
         record["complete_unit"] = +result[3];

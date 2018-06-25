@@ -90,7 +90,7 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 			var courseId = +params['courseId'];
 			Observable.concat(this.lmsService.init(this),
 				this.lmsService.initCourseContent(this)
-			).subscribe(() => {
+			).last().subscribe(() => {
 				this.course = this.lmsService.getCourse(courseId);
 				this.faqs = this.lmsService.getCourseFaqs(courseId);
 				this.materials = this.lmsService.getCourseMaterials(courseId);

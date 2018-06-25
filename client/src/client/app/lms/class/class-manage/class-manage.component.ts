@@ -113,7 +113,7 @@ export class ClassManageComponent extends BaseComponent {
 			Observable.concat(this.lmsService.init(this),
 				this.lmsService.initCourseContent(this),
 				this.lmsService.initClassContent(this)
-			).subscribe(() => {
+			).last().subscribe(() => {
 				this.courseClass = this.lmsService.getCourseClass(classId);
 				this.course = this.lmsService.getCourse(courseId);
 				this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
@@ -243,7 +243,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	editExamContent() {
-		this.examContentDialog.show(this.selectedClassExam));
+		this.examContentDialog.show(this.selectedClassExam);
 	}
 
 

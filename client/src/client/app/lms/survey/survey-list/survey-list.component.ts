@@ -42,55 +42,33 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        SurveyMember.listByUser(this, this.ContextUser.id)
-            .subscribe(members => {
-                this.displaySurveys(members);
-            });
-    }
-
-    displaySurveys(surveyMembers: SurveyMember[]) {
-        surveyMembers = _.filter(surveyMembers, (member: SurveyMember) => {
-            return member.survey_id != null;
-        });
-        SurveyMember.populateSurveys(this, surveyMembers).subscribe(surveys => {
-            surveys = _.filter(surveys, (survey: Survey) => {
-                return survey.review_state == 'approved';
-            });
-            surveys = _.uniq(surveys, (survey: Survey) => {
-                return survey.id;
-            });
-            surveys.sort((survey1: Survey, survey2: Survey): any => {
-                return  this.getLastSurveyTimestamp(survey2) - this.getLastSurveyTimestamp(survey1);
-            });
-            _.each(surveys, (survey: SurveyMember) => {
-                survey["candidate"] = _.find(surveyMembers, (member: SurveyMember) => {
-                    return member.survey_id == survey.id && member.role == 'candidate';
-                });
-                survey["supervisor"] = _.find(surveyMembers, (member: SurveyMember) => {
-                    return member.survey_id == survey.id && member.role == 'supervisor';
-                });
-                survey["editor"] = _.find(surveyMembers, (member: SurveyMember) => {
-                    return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
-                });
-                if (survey["supervisor"])
-                    survey["editor"] =  survey["teacher"] =  survey["supervisor"];
-            });
-            this.surveys = surveys;
-              var countApi = _.map(surveys, (survey: Survey) => {
-                 return SurveyQuestion.__api__countBySurvey(survey.id);
-             });
-             BaseModel.bulk_count(this, ...countApi)
-                 .map((jsonArray) => {
-                     return _.flatten(jsonArray);
-                 })
-                 .subscribe(counts => {
-                     for (var i = 0; i < surveys.length; i++) {
-                         surveys[i]["question_count"] = counts[i];
-                     }
-                 });
+        this.lmsService.init(this).subscribe(() => {
+            this.displaySurveys();
         });
     }
 
+    displaySurveys() {
+        var surveys = this.lmsService.MySurvey;
+        surveys = _.filter(surveys, (survey: Survey) => {
+            return survey.review_state == 'approved';
+        });
+        surveys.sort((survey1: Survey, survey2: Survey): any => {
+            return this.lmsService.getLastSurveyTimestamp(survey2) - this.getLastSurveyTimestamp(survey1);
+        });
+        this.surveys = surveys;
+        var countApi = _.map(surveys, (survey: Survey) => {
+            return SurveyQuestion.__api__countBySurvey(survey.id);
+        });
+        BaseModel.bulk_count(this, ...countApi)
+            .map((jsonArray) => {
+                return _.flatten(jsonArray);
+            })
+            .subscribe(counts => {
+                for (var i = 0; i < surveys.length; i++) {
+                    surveys[i]["question_count"] = counts[i];
+                }
+            });
+    }
 
     editContent(survey: Survey) {
         this.surveyContentDialog.show(survey);
@@ -105,15 +83,5 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
         });
     }
 
-    getLastSurveyTimestamp(survey:Survey) {
-        var timestamp = survey.create_date.getTime();
-        if (survey["candidate"] && survey["candidate"].create_date.getTime() < timestamp)
-            timestamp = survey["candidate"].create_date.getTime();
-        if (survey["editor"] && survey["editor"].create_date.getTime() < timestamp)
-            timestamp = survey["exam"].create_date.getTime();
-        if (survey["supervisor"] && survey["supervisor"].create_date.getTime() < timestamp)
-            timestamp = survey["supervisor"].create_date.getTime();
-        return timestamp;
-    }
 
 }

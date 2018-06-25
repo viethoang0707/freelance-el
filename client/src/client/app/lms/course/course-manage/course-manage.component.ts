@@ -71,11 +71,11 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			var memberId = +params['memberId'];
+			this.memberId = +params['memberId'];
 			Observable.concat(this.lmsService.init(this),
 				this.lmsService.initCourseContent(this),
 				this.lmsService.initClassContent(this)
-			).subscribe(() => {
+			).last().subscribe(() => {
 				this.course = this.lmsService.getCourse(courseId);
 				this.faqs = this.lmsService.getCourseFaqs(courseId);
 				this.materials = this.lmsService.getCourseMaterials(courseId);

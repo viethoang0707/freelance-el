@@ -109,6 +109,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.conferenceMember = new ConferenceMember();
 		this.studyMode = false;
 		this.enableLogging = false;
+		this.syl =  new CourseSyllabus();
 	}
 
 	ngOnInit() {
@@ -118,7 +119,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 			Observable.concat(this.lmsService.init(this),
 				this.lmsService.initCourseContent(this),
 				this.lmsService.initClassContent(this)
-			).subscribe(() => {
+			).last().subscribe(() => {
 				this.course = this.lmsService.getCourse(courseId);
 						this.member = this.lmsService.getCourseMember(memberId);
 						this.faqs = this.lmsService.getCourseFaqs(courseId);

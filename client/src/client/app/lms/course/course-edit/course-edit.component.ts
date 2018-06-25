@@ -25,7 +25,6 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { ProjectListDialog } from '../../class/project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
 
@@ -71,7 +70,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 			var courseId = +params['courseId'];
 			Observable.concat(this.lmsService.init(this),
 				this.lmsService.initCourseContent(this)
-			).subscribe(() => {
+			).last().subscribe(() => {
 				this.course = this.lmsService.getCourse(courseId);
 				this.faqs = this.lmsService.getCourseFaqs(courseId);
 				this.materials = this.lmsService.getCourseMaterials(courseId);

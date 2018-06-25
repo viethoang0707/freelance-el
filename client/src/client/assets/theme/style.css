@@ -488,7 +488,6 @@ body .lms-conference-list-item .ui-panel .ui-panel-footer {
   border-bottom: 6px solid rgba(0, 174, 239, .174);
   border-top: 6px solid rgba(0, 174, 239, .8);
   border-radius: 100%;
-  z-index: 9999;
 }
 
 @-webkit-keyframes rotation {
