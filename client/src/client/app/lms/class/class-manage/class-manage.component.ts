@@ -102,6 +102,8 @@ export class ClassManageComponent extends BaseComponent {
 				value: viewMode.value,
 			}
 		});
+		this.classSurveys = [];
+		this.classExams = [];
 	}
 
 	ngOnInit() {
