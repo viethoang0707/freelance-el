@@ -55,7 +55,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
         }
     }
 
-    uploadFile(file) {
+    changeFile(file) {
 		
 		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {

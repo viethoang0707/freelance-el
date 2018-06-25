@@ -201,7 +201,7 @@ export class LMSService {
           Exam.__api__get(examIds),
           Conference.__api__get(conferenceIds),
           Survey.__api__get(surveyIds)
-        ).do(jsonArr1 => {
+        ).flatMap(jsonArr1 => {
           var courses = Course.toArray(jsonArr1[0]);
           _.each(this.myCourseMembers, (member: CourseMember) => {
             member.course = _.find(courses, (course: Course) => {
@@ -233,6 +233,7 @@ export class LMSService {
             });
           });
           this.initialized = true;
+          return Observable.of(null);
         });
       });
   }
@@ -532,7 +533,7 @@ export class LMSService {
         return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
       });
       if (exam["supervisor"])
-        exam["editor"] = exam["teacher"] = exam["supervisor"];
+        exam["editor"] = exam["supervisor"];
       exam["examMemberData"] = exam["examMemberData"] || {};
     });
     return exams;
@@ -556,7 +557,7 @@ export class LMSService {
         return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
       });
       if (survey["supervisor"])
-        survey["editor"] = survey["teacher"] = survey["supervisor"];
+        survey["editor"] = survey["supervisor"];
     });
     return surveys;
   }

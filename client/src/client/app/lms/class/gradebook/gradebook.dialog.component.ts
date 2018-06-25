@@ -111,32 +111,34 @@ export class GradebookDialog extends BaseComponent {
         this.projects = [];
         this.stats = [];
         this.member = member;
-        Observable.concat(this.lmsService.init(this),
-            this.lmsService.initCourseContent(this),
-            this.lmsService.initClassContent(this)
-        ).last().subscribe(() => {
-            BaseModel
-                .bulk_search(this,
-                    CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
-                    Certificate.__api__byMember(this.member.id),
-                    ExamMember.__api__listByUser(this.ContextUser.id),
-                    Submission.__api__listByUser(this.ContextUser.id),
-                    ProjectSubmission.__api__listByMember(this.member.id))
-                .subscribe(jsonArr => {
-                    var logs = CourseLog.toArray(jsonArr[0]);
-                    this.computeCourseStats(this.lmsService.getCourseSyllabusFromCourse(member.course_id), logs);
-                    var certList = Certificate.toArray(jsonArr[1]);
-                    if (certList.length)
-                        this.certificate = certList[0];
-                    var classExams = this.lmsService.getClassExams(member.class_id);
-                    var examMembers = ExamMember.toArray(jsonArr[2]);
-                    var submits = Submission.toArray(jsonArr[3]);
-                    this.displayExam(classExams, examMembers, submits);
-                    var projects = this.lmsService.getClassProjects(member.class_id);
-                    var projectSubmits = ProjectSubmission.toArray(jsonArr[4]);
-                    this.displayProject(projects, projectSubmits);
+        this.lmsService.init(this).subscribe(() => {
+            this.lmsService.initCourseContent(this).subscribe(() => {
+                this.lmsService.initClassContent(this).subscribe(() => {
+                    BaseModel
+                        .bulk_search(this,
+                            CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
+                            Certificate.__api__byMember(this.member.id),
+                            ExamMember.__api__listByUser(this.ContextUser.id),
+                            Submission.__api__listByUser(this.ContextUser.id),
+                            ProjectSubmission.__api__listByMember(this.member.id))
+                        .subscribe(jsonArr => {
+                            var logs = CourseLog.toArray(jsonArr[0]);
+                            this.computeCourseStats(this.lmsService.getCourseSyllabusFromCourse(member.course_id), logs);
+                            var certList = Certificate.toArray(jsonArr[1]);
+                            if (certList.length)
+                                this.certificate = certList[0];
+                            var classExams = this.lmsService.getClassExams(member.class_id);
+                            var examMembers = ExamMember.toArray(jsonArr[2]);
+                            var submits = Submission.toArray(jsonArr[3]);
+                            this.displayExam(classExams, examMembers, submits);
+                            var projects = this.lmsService.getClassProjects(member.class_id);
+                            var projectSubmits = ProjectSubmission.toArray(jsonArr[4]);
+                            this.displayProject(projects, projectSubmits);
+                        });
                 });
+            });
         });
+
     }
 
     computeCourseStats(syl: CourseSyllabus, logs: CourseLog[]) {

@@ -72,17 +72,18 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
 			this.memberId = +params['memberId'];
-			Observable.concat(this.lmsService.init(this),
-				this.lmsService.initCourseContent(this),
-				this.lmsService.initClassContent(this)
-			).last().subscribe(() => {
-				this.course = this.lmsService.getCourse(courseId);
-				this.faqs = this.lmsService.getCourseFaqs(courseId);
-				this.materials = this.lmsService.getCourseMaterials(courseId);
-				this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
-				this.units = this.lmsService.getSyllabusUnit(this.syl.id);
-				this.classes = this.lmsService.MyClass;
-				this.displaySyllabus();
+			this.lmsService.init(this).subscribe(() => {
+				this.lmsService.initCourseContent(this).subscribe(() => {
+					this.lmsService.initClassContent(this).subscribe(() => {
+						this.course = this.lmsService.getCourse(courseId);
+						this.faqs = this.lmsService.getCourseFaqs(courseId);
+						this.materials = this.lmsService.getCourseMaterials(courseId);
+						this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
+						this.units = this.lmsService.getSyllabusUnit(this.syl.id);
+						this.classes = this.lmsService.MyClass;
+						this.displaySyllabus();
+					})
+				})
 			});
 		});
 	}
@@ -97,11 +98,11 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	manageConference() {
-			this.conferenceDialog.show(this.selectedClass);
+		this.conferenceDialog.show(this.selectedClass);
 	}
 
 	manageClass() {
-			this.router.navigate(['/lms/courses/manage/class', this.course.id, this.selectedClass.id, this.memberId]);
+		this.router.navigate(['/lms/courses/manage/class', this.course.id, this.selectedClass.id, this.memberId]);
 	}
 
 	nodeSelect(event: any) {

@@ -43,15 +43,13 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        Observable.concat(
-            this.lmsService.init(this),
-            this.lmsService.initExamAnalytic(this))
-        .last()
-        .subscribe(() => {
-            Submission.listByUser(this, this.ContextUser.id).subscribe((submits) => {
-                this.submits = submits;
-                var exams = this.lmsService.MyExam;
-                this.displayExams(exams);
+        this.lmsService.init(this).subscribe(() => {
+            this.lmsService.initExamAnalytic(this).subscribe(() => {
+                Submission.listByUser(this, this.ContextUser.id).subscribe((submits) => {
+                    this.submits = submits;
+                    var exams = this.lmsService.MyExam;
+                    this.displayExams(exams);
+                })
             });
         });
     }
