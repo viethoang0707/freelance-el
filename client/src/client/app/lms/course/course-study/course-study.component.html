@@ -1,11 +1,11 @@
-<div class="card card-w-title">
+<div class="ui-g card card-w-title">
   <h1>{{'Course study'|translate}}: {{course.name}} </h1>
   <p-tabView [style]="{width: '100%', height: '600px'}">
     <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
-      <div class="ui-g-3 course-study-tree">
+      <div class="ui-lg-3 ui-md-3 ui-g-12 course-study-tree">
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
       </div>
-      <div class="ui-g-9" *ngIf="selectedUnit">
+      <div class="ui-lg-9 ui-md-9 ui-g-12" *ngIf="selectedUnit">
         <div class="card course-study-unit">
           <div class="image-box-content">
             <div class="fLeft">
@@ -38,7 +38,7 @@
                 </div>
               </p-header>
               <div class="ui-g body-exam">
-                <div class="ui-g-8">
+                <div class="ui-lg-8 ui-g-12">
                   <h4 class="title">{{project.name}}</h4>
                   <span class="e-status">
                     {{PROJECT_STATUS[project.status] | translate}}
@@ -56,7 +56,7 @@
                   </p-accordion>
                   
                 </div>
-                <div class="ui-g-4">
+                <div class="ui-lg-4 ui-g-12">
                   <p-card>
                     <ul class="list-cmt">
                       <li class="clearfix">
@@ -102,7 +102,7 @@
                 </div>
               </p-header>
               <div class="ui-g body-exam">
-                <div class="ui-g-8">
+                <div class="ui-lg-8 ui-g-12">
                   <h4 class="title">{{member.exam.name}}</h4>
                   <span class="e-status">
                     {{EXAM_STATUS[member.exam.status] | translate}}
@@ -119,7 +119,7 @@
                   
                   <!-- </div> -->
                 </div>
-                <div class="ui-g-4">
+                <div class="ui-lg-4 ui-g-12">
                   <p-card>
                     <ul class="list-cmt">
                       <li class="clearfix">
@@ -177,7 +177,7 @@
                 </div>
               </p-header>
               <div class="ui-g body-exam">
-                <div class="ui-g-8">
+                <div class="ui-lg-8 ui-g-12">
                   <h4>{{member.exam.name}}</h4>
                   <span class="e-status">
                     {{EXAM_STATUS[member.exam.status] | translate}}
@@ -189,7 +189,7 @@
                   <h5 class="e-title">{{'Instruction'|translate}}</h5>
                   <p [innerHTML]="member.exam.instruction"></p>
                 </div>
-                <div class="ui-g-4">
+                <div class="ui-lg-4 ui-g-12">
                   <p-card>
                     <ul class="list-cmt">
                       <li class="clearfix">
