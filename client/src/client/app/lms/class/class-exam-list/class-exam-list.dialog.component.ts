@@ -12,7 +12,7 @@ import { SelectItem } from 'primeng/api';
 import { ExamDialog } from '../../../assessment/exam/exam-dialog/exam-dialog.component';
 import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
 import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
 	moduleId: module.id,

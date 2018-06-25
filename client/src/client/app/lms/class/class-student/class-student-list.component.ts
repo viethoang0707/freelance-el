@@ -18,6 +18,7 @@ import { TimeConvertPipe } from '../../../shared/pipes/time.pipe';
 import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { LMSProfileDialog } from '../../course/lms-profile/lms-profile-dialog.component';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
@@ -39,7 +40,7 @@ export class ClassStudentListComponent extends BaseComponent {
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
 	@ViewChild(LMSProfileDialog) lmsProfileDialog : LMSProfileDialog;
 
-	constructor(private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
+	constructor(private router: Router, private route: ActivatedRoute, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
 		this.reportUtils = new ReportUtils();
 		this.viewModes = [

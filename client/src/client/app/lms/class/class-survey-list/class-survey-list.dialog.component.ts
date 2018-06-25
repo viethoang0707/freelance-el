@@ -11,9 +11,9 @@ import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SelectItem } from 'primeng/api';
 import { SurveyDialog } from '../../../assessment/survey/survey-dialog/survey-dialog.component';
 import { SurveyContentDialog } from '../../../cms/survey/content-dialog/survey-content.dialog.component';
-import { Router } from '@angular/router';
 import { ClassSurveyEnrollDialog } from '../class-survey-enroll/class-survey-enroll.dialog.component';
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
 	moduleId: module.id,

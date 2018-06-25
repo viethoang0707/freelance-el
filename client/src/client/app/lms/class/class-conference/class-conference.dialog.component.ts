@@ -13,6 +13,7 @@ import { Room } from '../../../shared/models/meeting/room.model';
 import { RoomMember } from '../../../shared/models/meeting/room-member.model';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     moduleId: module.id,
