@@ -73,6 +73,7 @@ export class LMSService {
   private __myProjects__dirty: boolean;
   private __myProjects__touch: boolean;
 
+
   private mySyllabus: CourseSyllabus[];
   private myUnits: any;
   private myFaqs: any;
@@ -103,12 +104,12 @@ export class LMSService {
       this.invalidateAllll();
     });
     this.invalidateAllll();
-    this.reportUtils =  new ReportUtils();
+    this.reportUtils = new ReportUtils();
   }
 
   invalidateAllll() {
     this.initialized = false;
-    this.courseAnalyticInitialized =  false;
+    this.courseAnalyticInitialized = false;
     this.myExamMembers = [];
     this.__myExamMembers__dirty = false;
     this.__myExamMembers__touch = false;
@@ -124,13 +125,13 @@ export class LMSService {
 
     this.invalidateCourseContent();
     this.invalidateClassContent();
-    
+
   }
 
   invalidateCourseContent() {
-    this.syllabusInitialized =  false;
+    this.syllabusInitialized = false;
     this.mySyllabus = [];
-    this.__mySyllabus__touch =  false;
+    this.__mySyllabus__touch = false;
     this.__mySyllabus__dirty = false;
     this.myUnits = {};
     this.myFaqs = {};
@@ -142,7 +143,7 @@ export class LMSService {
   }
 
   invalidateClassContent() {
-    this.classInitialized =  false;
+    this.classInitialized = false;
     this.myClassExams = {};
     this.__myClassExams__dirty = false;
     this.__myClassExams__touch = false;
@@ -249,49 +250,49 @@ export class LMSService {
     });
     var searchApiList = [];
     for (var i = 0; i < courses.length; i++) {
-        searchApiList.push(CourseSyllabus.__api__byCourse(courses[i].id));
-        searchApiList.push(CourseUnit.__api__listByCourse(courses[i].id));
-        searchApiList.push(CourseFaq.__api__listByCourse(courses[i].id));
-        searchApiList.push(CourseMaterial.__api__listByCourse(courses[i].id));
+      searchApiList.push(CourseSyllabus.__api__byCourse(courses[i].id));
+      searchApiList.push(CourseUnit.__api__listByCourse(courses[i].id));
+      searchApiList.push(CourseFaq.__api__listByCourse(courses[i].id));
+      searchApiList.push(CourseMaterial.__api__listByCourse(courses[i].id));
     }
-    return BaseModel.bulk_search(context, ...searchApiList).do(jsonArr=> {
-        for (var i = 0; i < courses.length; i++) {
-          var sylList = CourseSyllabus.toArray(jsonArr[4*i]);
-          var syllabus = sylList[0];
-          var unitList = CourseUnit.toArray(jsonArr[4*i+1]);
-          var faqList = CourseFaq.toArray(jsonArr[4*i+2]);
-          var materialList = CourseMaterial.toArray(jsonArr[4*i+3]);
-          this.mySyllabus.push(syllabus);
-          this.myUnits[syllabus.id] =  unitList;
-          this.myFaqs[courses[i].id] =  faqList;
-          this.myMaterials[courses[i].id] =  materialList;
-        }
-        this.syllabusInitialized =  true;
+    return BaseModel.bulk_search(context, ...searchApiList).do(jsonArr => {
+      for (var i = 0; i < courses.length; i++) {
+        var sylList = CourseSyllabus.toArray(jsonArr[4 * i]);
+        var syllabus = sylList[0];
+        var unitList = CourseUnit.toArray(jsonArr[4 * i + 1]);
+        var faqList = CourseFaq.toArray(jsonArr[4 * i + 2]);
+        var materialList = CourseMaterial.toArray(jsonArr[4 * i + 3]);
+        this.mySyllabus.push(syllabus);
+        this.myUnits[syllabus.id] = unitList;
+        this.myFaqs[courses[i].id] = faqList;
+        this.myMaterials[courses[i].id] = materialList;
+      }
+      this.syllabusInitialized = true;
     });
   }
 
-  initClassContent(context: APIContext):Observable<any> {
+  initClassContent(context: APIContext): Observable<any> {
     if (this.classInitialized)
       return Observable.of([]);
     if (!this.initialized)
       return Observable.throw('Must run initialize first');
     var apiList = [];
     var classList = this.MyClass;
-    for (var i=0;i<classList.length;i++) {
+    for (var i = 0; i < classList.length; i++) {
       apiList.push(Exam.__api__listByClass(classList[i].id));
       apiList.push(Project.__api__listByClass(classList[i].id));
       apiList.push(Survey.__api__listByClass(classList[i].id));
+      apiList.push(Certificate.__api__listByClass(classList[i].id));
     };
-    return BaseModel.bulk_search(context, ...apiList).do(jsonArr=> {
-        for (var i=0;i<classList.length;i++) {
-          var exams = Exam.toArray(jsonArr[3*i]);
-          this.myClassExams[classList[i].id] =  exams;
-          var projects = Project.toArray(jsonArr[3*i+1]);
-          this.myProjects[classList[i].id] =  projects;
-          var surveys = Survey.toArray(jsonArr[3*i+2]);
-          this.myClassSurveys[classList[i].id] =  surveys;
-        }
-        this.classInitialized =  true;
+    return BaseModel.bulk_search(context, ...apiList).do(jsonArr => {
+      for (var i = 0; i < classList.length; i++) {
+        var exams = Exam.toArray(jsonArr[3 * i]);
+        this.myClassExams[classList[i].id] = exams;
+        var projects = Project.toArray(jsonArr[3 * i + 1]);
+        this.myProjects[classList[i].id] = projects;
+        var surveys = Survey.toArray(jsonArr[3 * i + 2]);
+      }
+      this.classInitialized = true;
     });
   }
 
@@ -308,66 +309,121 @@ export class LMSService {
     });
     var searchApiList = [];
     for (var i = 0; i < courses.length; i++) {
-        searchApiList.push(CourseMember.__api__listByCourse(courses[i].id))
+      searchApiList.push(CourseMember.__api__listByCourse(courses[i].id))
     }
     return BaseModel.bulk_search(context, ...searchApiList).map(jsonArr => {
-        for (var i = 0; i < courses.length; i++) {
-            var members = CourseMember.toArray(jsonArr[i]);
-            courses[i]["courseMemberData"] = this.reportUtils.analyseCourseMember(courses[i], members);
-        };
-        this.courseAnalyticInitialized =  true;
+      for (var i = 0; i < courses.length; i++) {
+        var members = CourseMember.toArray(jsonArr[i]);
+        courses[i]["courseMemberData"] = this.reportUtils.analyseCourseMember(courses[i], members);
+      };
+      this.courseAnalyticInitialized = true;
     });
   }
 
-  getCourse(courseId):Course {
+  initExamAnalytic(context: APIContext): Observable<any> {
+    if (this.examAnalyticInitialized)
+      return Observable.of([]);
+    if (!this.initialized)
+      return Observable.throw('Must run initialize first');
+    var exams = _.map(this.myExamMembers, (member: ExamMember) => {
+      return member.exam;
+    });
+    exams = _.uniq(exams, (exam: Exam) => {
+      return exam.id;
+    });
+    var countApi = _.map(exams, (exam: Exam) => {
+      return ExamQuestion.__api__countByExam(exam.id);
+    });
+    var countSubscription = BaseModel.bulk_count(context, ...countApi)
+      .map((jsonArray) => {
+        return _.flatten(jsonArray);
+      })
+      .do(counts => {
+        for (var i = 0; i < exams.length; i++) {
+          exams[i]["question_count"] = counts[i];
+        }
+      });
+    var listApi = _.map(exams, (exam: Exam) => {
+      return ExamMember.__api__listByExam(exam.id);
+    });
+    var searchSubscription = BaseModel.bulk_search(context, ...listApi)
+      .do(jsonArr => {
+        for (var i = 0; i < exams.length; i++) {
+          var members = ExamMember.toArray(jsonArr[i]);
+          exams[i]["examMemberData"] = this.reportUtils.analyseExamMember(exams[i], members);
+        }
+      });
+    return Observable.forkJoin(countSubscription, searchSubscription);
+  }
+
+  getCourse(courseId): Course {
     var courses = this.MyCourse;
-    return _.find(courses, (course:Course)=> {
+    return _.find(courses, (course: Course) => {
       return course.id == courseId;
     });
   }
 
-  getCourseMember(memberId):CourseMember {
+  getCourseMember(memberId): CourseMember {
     var members = this.MyCourseMember;
-    return _.find(members, (member:CourseMember)=> {
+    return _.find(members, (member: CourseMember) => {
       return member.id == memberId;
     });
   }
 
-  getSyllabusUnit(sylId: number):CourseUnit[] {
+  getSyllabusUnit(sylId: number): CourseUnit[] {
     return this.myUnits[sylId];
   }
 
-  getCourseFaqs(courseId: number):CourseFaq[] {
+  getCourseFaqs(courseId: number): CourseFaq[] {
     return this.myFaqs[courseId];
   }
 
-  getCourseMaterials(courseId: number):CourseMaterial[] {
+  getCourseMaterials(courseId: number): CourseMaterial[] {
     return this.myMaterials[courseId];
   }
 
-  getCourseSyllabus(courseId: number): CourseSyllabus {
-    return _.find(this.mySyllabus, (syl:CourseSyllabus)=> {
+  getCourseSyllabusFromCourse(courseId: number): CourseSyllabus {
+    return _.find(this.mySyllabus, (syl: CourseSyllabus) => {
       return syl.course_id == courseId;
     });
   }
 
+  getCourseClass(classId: number): CourseClass {
+    return _.find(this.MyClass, (clazz: CourseClass) => {
+      return clazz.id == classId;
+    });
+  }
+
   getClassExamMember(courseMemberId: number) {
-    return _.filter(this.myExamMembers, (examMember:ExamMember)=> {
+    return _.filter(this.myExamMembers, (examMember: ExamMember) => {
       return examMember.course_member_id == courseMemberId;
     });
   }
 
   getClassSurveyMember(courseMemberId: number) {
-    return _.filter(this.mySurveyMembers, (surveyMember:SurveyMember)=> {
+    return _.filter(this.mySurveyMembers, (surveyMember: SurveyMember) => {
       return surveyMember.course_member_id == courseMemberId;
     });
   }
 
   getClassConferenceMember(courseMemberId: number) {
-    return _.find(this.myConferenceMembers, (confMember:ConferenceMember)=> {
+    return _.find(this.myConferenceMembers, (confMember: ConferenceMember) => {
       return confMember.course_member_id == courseMemberId;
     });
   }
+
+  getExam(examId: number): Exam {
+    return _.find(this.MyExam, (exam: Exam) => {
+      return exam.id == examId;
+    });
+  }
+
+  getExamMember(memberId: number): ExamMember {
+    return _.find(this.myExamMembers, (member: ExamMember) => {
+      return member.id == memberId;
+    });
+  }
+
 
   get MyCourseSyllabus(): CourseSyllabus[] {
     return this.mySyllabus;
@@ -393,46 +449,18 @@ export class LMSService {
     return this.mySurveyMembers;
   }
 
-  get MyClassExam(): Exam[] {
-    var exams =  this.MyClassExam;
-    _.each(exams, (exam: Exam) => {
-      exam["candidate"] = _.find(this.myExamMembers, (member: ExamMember) => {
-        return member.exam_id == exam.id && member.role == 'candidate';
-      });
-      exam["supervisor"] = _.find(this.myExamMembers, (member: ExamMember) => {
-        return member.exam_id == exam.id && member.role == 'supervisor';
-      });
-      exam["editor"] = _.find(this.myExamMembers, (member: ExamMember) => {
-        return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
-      });
-      if (exam["supervisor"])
-        exam["editor"] = exam["teacher"] = exam["supervisor"];
-    });
-    return exams;
+  getClassExams(classId: number): Exam[] {
+    return this.myClassExams[classId];
   }
 
-  get MyClassSurvey(): Survey[] {
-    var surveys = this.myClassSurveys;
-    _.each(surveys, (survey: Survey) => {
-      survey["candidate"] = _.find(this.myExamMembers, (member: SurveyMember) => {
-        return member.survey_id == survey.id && member.role == 'candidate';
-      });
-      survey["supervisor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
-        return member.survey_id == survey.id && member.role == 'supervisor';
-      });
-      survey["editor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
-        return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
-      });
-      if (survey["supervisor"])
-        survey["editor"] = survey["teacher"] = survey["supervisor"];
-    });
-    return surveys;
-
+  getClassSurveys(classId: number): Survey[] {
+    return this.myClassSurveys[classId];
   }
 
-  get MyProject(): Project[] {
-    return this.myProjects;
+  getClassProjects(classId: number): Project[] {
+    return this.myProjects[classId];
   }
+
 
   get MyCourse(): Course[] {
     var courses = _.map(this.myCourseMembers, (member: CourseMember) => {
@@ -456,13 +484,13 @@ export class LMSService {
       });
       if (course["supervisor"])
         course["editor"] = course["teacher"] = course["supervisor"];
-      course["courseMemberData"] = {};
+      course["courseMemberData"] = course["courseMemberData"] || {};
     });
     return courses;
   }
 
   get MyClass(): CourseClass[] {
-    var classes = _.map(this.myCourseMembers, (member: CourseMember) => {
+    var classes = _.map(this.myClassMembers, (member: CourseMember) => {
       return member.clazz;
     });
     return _.uniq(classes, (clazz: CourseClass) => {
@@ -498,6 +526,7 @@ export class LMSService {
       });
       if (exam["supervisor"])
         exam["editor"] = exam["teacher"] = exam["supervisor"];
+      exam["examMemberData"] = exam["examMemberData"] || {};
     });
     return exams;
   }
@@ -506,7 +535,7 @@ export class LMSService {
     var surveys = _.map(this.mySurveyMembers, (member: SurveyMember) => {
       return member.survey;
     });
-    surveys =  _.uniq(surveys, (survey: Survey) => {
+    surveys = _.uniq(surveys, (survey: Survey) => {
       return survey.id;
     });
     _.each(surveys, (survey: Survey) => {
@@ -549,6 +578,18 @@ export class LMSService {
       timestamp = exam["supervisor"].create_date.getTime();
     return timestamp;
   }
+
+  getLastSurveyTimestamp(survey: Survey) {
+    var timestamp = survey.create_date.getTime();
+    if (survey["candidate"] && survey["candidate"].create_date.getTime() < timestamp)
+      timestamp = survey["candidate"].create_date.getTime();
+    if (survey["editor"] && survey["editor"].create_date.getTime() < timestamp)
+      timestamp = survey["exam"].create_date.getTime();
+    if (survey["supervisor"] && survey["supervisor"].create_date.getTime() < timestamp)
+      timestamp = survey["supervisor"].create_date.getTime();
+    return timestamp;
+  }
+
 
   getLastConferenceTimestamp(conf: Conference) {
     var timestamp = conf.create_date.getTime();

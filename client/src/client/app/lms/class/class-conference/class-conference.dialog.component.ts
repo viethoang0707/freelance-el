@@ -13,6 +13,7 @@ import { Room } from '../../../shared/models/meeting/room.model';
 import { RoomMember } from '../../../shared/models/meeting/room-member.model';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -60,7 +61,6 @@ export class ClassConferenceDialog extends BaseComponent {
 					this.members = members;
 				});
 			}
-					
 		});
 	}
 
@@ -127,7 +127,6 @@ export class ClassConferenceDialog extends BaseComponent {
 			if (conferenceMember) {
 				conferenceMember.is_active = true;
 				conferenceMember.save(this).subscribe(()=> {
-					
 				});
 			} else {
 				var roomMember = RoomMember.createRoomMember(member.name, member.image, this.room.id, member.role);
@@ -139,7 +138,6 @@ export class ClassConferenceDialog extends BaseComponent {
 					conferenceMember.is_active = true;
 					conferenceMember.save(this).subscribe(()=> {
 						member.conferenceMember = conferenceMember;
-						
 					});
 				});
 			}

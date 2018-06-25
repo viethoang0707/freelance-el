@@ -16,6 +16,7 @@ import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-un
 import { CourseSettingDialog } from '../course-setting/course-setting.dialog.component';
 import * as _ from 'underscore';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
     moduleId: module.id,
@@ -36,31 +37,16 @@ export class CoursePublishDialog extends BaseComponent {
 	private selectedUnit:CourseUnit;
 	private sylUtils : SyllabusUtils;
 	private course: Course;
-	private courseStatus: SelectItem[];
-	private onShowReceiver: Subject<any> = new Subject();
-    private onHideReceiver: Subject<any> = new Subject();
-    onShow: Observable<any> = this.onShowReceiver.asObservable();
-    onHide: Observable<any> = this.onHideReceiver.asObservable();
+	private contentStatus: SelectItem[];
 
-	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-	@ViewChild(CourseSettingDialog) settingDialog: CourseSettingDialog;
 
     constructor() {
         super();
         this.sylUtils = new SyllabusUtils();
-        this.items = [
-            {label: this.translateService.instant(COURSE_UNIT_TYPE['folder']), command: ()=> { this.addUnit('folder')}},
-            {label: this.translateService.instant(COURSE_UNIT_TYPE['html']), command: ()=> { this.addUnit('html')}},
-            {label: this.translateService.instant(COURSE_UNIT_TYPE['slide']), command: ()=> { this.addUnit('slide')}},
-            {label: this.translateService.instant(COURSE_UNIT_TYPE['video']), command: ()=> { this.addUnit('video')}},
-            {label: this.translateService.instant(COURSE_UNIT_TYPE['exercise']), command: ()=> { this.addUnit('exercise')}},
-            {label: this.translateService.instant(COURSE_UNIT_TYPE['scorm']), command: ()=> { this.addUnit('scorm')}},
-
-        ];
         this.syl = new CourseSyllabus();
         this.course = new Course();
-        this.courseStatus = _.map(CONTENT_STATUS, (val, key)=> {
+        this.contentStatus = _.map(CONTENT_STATUS, (val, key)=> {
 			return {
 				label: this.translateService.instant(val),
 				value: key
@@ -68,12 +54,13 @@ export class CoursePublishDialog extends BaseComponent {
 		});
     }
 
-    show(syl: CourseSyllabus, course: Course) {
-    	this.onShowReceiver.next();
+    show(course: Course) {
 		this.display = true;
-		this.syl = syl;
 		this.course = course;
-		this.buildCourseTree();
+		CourseSyllabus.byCourse(this, course.id).subscribe((syl)=> {
+			this.syl = syl;
+			this.buildCourseTree();
+		});
 	}
 
 	clearSelection() {
@@ -90,81 +77,12 @@ export class CoursePublishDialog extends BaseComponent {
 		}
 	}
 
-	showSetting() {
-		this.settingDialog.show(this.course);
-	}
-
-	addUnit(type:string) {
-		if (type!='folder' && (!this.selectedNode || this.selectedNode.data.type != 'folder')) {
-			this.error(this.translateService.instant('You need to select a folder.')) ;
-			return;
-		}
-		var maxOrder = this.selectedNode ? this.selectedNode.children.length : this.tree.length; 
-		var unit = new CourseUnit();
-		unit.syllabus_id =  this.syl.id;
-		unit.icon = COURSE_UNIT_ICON[type];
-		unit.type =  type;
-		unit.name = 'New unit';
-		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
-		unit.order = maxOrder;
-		unit.save(this).subscribe(()=> {
-			if (this.selectedNode)
-				this.sylUtils.addChildNode(this.selectedNode, unit);
-			else
-				this.sylUtils.addRootNode(this.tree, unit);
-		});
-	}
-
-	editUnit() {
-		if (this.selectedNode) {
-			this.unitDialog.show(this.selectedNode.data);
-			this.unitDialog.onUpdateComplete.subscribe(()=> {
-				this.buildCourseTree();
-			});
-		}
-	}
-
-	deleteUnit() {
-		if (this.selectedNode) {
-			if (this.selectedNode.children.length) {
-				this.error(this.translateService.instant('Cannot delete non-empty folder'));
-				return;
-			}
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                this.selectedNode.data.delete(this).subscribe(() => {
-                    this.buildCourseTree();
-                    this.selectedNode = null;
-                })
-             });
-		}
-	}
-
 	hide() {
 		this.clearSelection();
 		this.display = false;
-		this.onHideReceiver.next();
 	}
 
-	moveUp() {
-		if (this.selectedNode) {
-			var unit =  this.selectedNode.data;
-			this.sylUtils.moveUp(this.tree,this.selectedNode);
-			CourseUnit.updateArray(this, this.units).subscribe(()=> {
-				this.success('Move sucessfully');
-			});
-		}
-	}
-
-	moveDown() {
-		if (this.selectedNode) {
-			var unit =  this.selectedNode.data;
-			this.sylUtils.moveDown(this.tree,this.selectedNode);
-			CourseUnit.updateArray(this, this.units).subscribe(()=> {
-				this.success('Move sucessfully');
-			});
-		}
-	}
-
+	
 	nodeSelect(event:any) {
 		if (this.selectedNode) {
 			if (this.selectedUnit && this.selectedUnit.id == this.selectedNode.data.id) {
@@ -182,15 +100,16 @@ export class CoursePublishDialog extends BaseComponent {
 		}
 	}
 
-	submitForReview() {
-
-	}
-
-	updateStatus() {
-		this.syl.save(this).subscribe(()=> {
-			this.success(this.translateService.instant('Syllabus status updated'));
+	save() {
+		var saveApiList = _.map(this.units, (unit:CourseUnit)=> {
+			return unit.__api__update();
+		});
+		saveApiList.push(this.syl.__api__update());
+		BaseModel.bulk_update(this, ...saveApiList).subscribe(()=> {
+			this.hide();
 		});
 	}
+
 
 }
 

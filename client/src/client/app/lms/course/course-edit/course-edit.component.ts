@@ -12,7 +12,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import {
-	GROUP_CATEGORY,CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -25,7 +25,6 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { ProjectListDialog } from '../../class/project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
 
@@ -51,7 +50,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	private selectedNode: TreeNode;
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
-	private treeList: TreeNode[];t
+	private treeList: TreeNode[]; t
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -69,15 +68,15 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			this.lmsService.init(this).subscribe(()=> {
-				this.lmsService.initCourseContent(this).subscribe(()=> {
-					this.course = this.lmsService.getCourse(courseId);
-					this.faqs = this.lmsService.getCourseFaqs(courseId);
-					this.materials =  this.lmsService.getCourseMaterials(courseId);
-					this.syl = this.lmsService.getCourseSyllabus(courseId);
-					this.units = this.lmsService.getSyllabusUnit(this.syl.id)
-					this.displayCouseSyllabus();
-				});
+			Observable.concat(this.lmsService.init(this),
+				this.lmsService.initCourseContent(this)
+			).last().subscribe(() => {
+				this.course = this.lmsService.getCourse(courseId);
+				this.faqs = this.lmsService.getCourseFaqs(courseId);
+				this.materials = this.lmsService.getCourseMaterials(courseId);
+				this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
+				this.units = this.lmsService.getSyllabusUnit(this.syl.id)
+				this.displayCouseSyllabus();
 			});
 		});
 	}
@@ -91,9 +90,9 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	}
 
 	editSyllabus() {
-         this.syllabusDialog.show(this.syl, this.course);
-    }
-	
+		this.syllabusDialog.show(this.course);
+	}
+
 
 	addFaq() {
 		var faq = new CourseFaq();
@@ -114,7 +113,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		if (this.selectedFaq)
 			this.confirm('Are you sure to delete ?', () => {
 				this.selectedFaq.delete(this).subscribe(() => {
-					this.faqs = _.reject(this.faqs, (obj:CourseFaq)=> {
+					this.faqs = _.reject(this.faqs, (obj: CourseFaq) => {
 						return obj.id == this.selectedFaq.id;
 					});
 					this.selectedFaq = null;
@@ -142,7 +141,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		if (this.selectedMaterial)
 			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				this.selectedMaterial.delete(this).subscribe(() => {
-					this.materials = _.reject(this.materials, (obj:CourseMaterial)=> {
+					this.materials = _.reject(this.materials, (obj: CourseMaterial) => {
 						return obj.id == this.selectedMaterial.id;
 					});
 					this.lmsService.invalidateCourseContent();

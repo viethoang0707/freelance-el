@@ -8,6 +8,10 @@ import { TranslateModule, } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { CourseGuard } from './guards/course.guard';
+import { ExamGuard } from './guards/exam.guard';
+import { SurveyGuard } from './guards/survey.guard';
+import { SyllabusGuard } from './guards/syllabus.guard';
 import { ModelAPIService } from './services/api/model-api.service';
 import { FileAPIService } from './services/api/file-api.service';
 import { AccountAPIService } from './services/api/account-api.service';
@@ -343,6 +347,10 @@ export class ErpSharedModule {
             providers: [
                 AuthGuard,
                 AdminGuard,
+                CourseGuard,
+                ExamGuard, 
+                SurveyGuard,
+                SyllabusGuard,
                 AccountAPIService,
                 ModelAPIService,
                 FileAPIService,

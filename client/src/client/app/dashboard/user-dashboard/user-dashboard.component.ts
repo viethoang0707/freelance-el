@@ -28,6 +28,7 @@ import { BaseModel } from '../../shared/models/base.model';
 import { Survey } from '../../shared/models/elearning/survey.model';
 import { SurveyStudyDialog } from '../../lms/survey/survey-study/survey-study.dialog.component';
 import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
+import { CoursePublishDialog } from '../../cms/course/course-publish/course-publish.dialog.component';
 
 import * as _ from 'underscore';
 
@@ -54,6 +55,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
     @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
+    @ViewChild(CoursePublishDialog) publisiDialog: CoursePublishDialog;
 
     constructor(private meetingSerivce: MeetingService, private router: Router) {
         super();
@@ -139,16 +141,16 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/view', course.id]);
     }
 
-    editSyllabus(course: Course) {
-        this.router.navigate(['/lms/courses/view', course.id]);
+    editSyllabus(course: Course, member: CourseMember) {
+        this.router.navigate(['/lms/courses/view', course.id, member.id]);
     }
 
     publishCourse(course: Course) {
-        this.router.navigate(['/lms/courses/publish', course.id]);
+        this.publisiDialog.show(course);
     }
 
-    manageCourse(course: Course) {
-        this.router.navigate(['/lms/courses/manage', course.id]);
+    manageCourse(course: Course, member: CourseMember) {
+        this.router.navigate(['/lms/courses/manage', course.id, member.id]);
     }
 
     manageExam(exam: Exam, member: ExamMember) {

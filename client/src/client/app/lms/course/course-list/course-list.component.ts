@@ -16,6 +16,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
+import { CoursePublishDialog } from '../../../cms/course/course-publish/course-publish.dialog.component';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     @Input() keyword: string;
 
     @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
+    @ViewChild(CoursePublishDialog) publisiDialog: CoursePublishDialog;
 
     constructor(private router: Router) {
         super();
@@ -44,10 +46,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.lmsService.init(this).subscribe(() => {
-            this.lmsService.initCourseContent(this).subscribe(() => {
-                this.displayCourses();
-            });
+        Observable.concat(this.lmsService.init(this),
+            this.lmsService.initCourseContent(this)
+        ).last().subscribe(() => {
+            this.displayCourses();
         });
     }
 
@@ -58,7 +60,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
                 return -this.lmsService.getLastCourseTimestamp(course);
             });
             for (var i = 0; i < courses.length; i++) {
-                var syllabus = this.lmsService.getCourseSyllabus(courses[i].id);
+                var syllabus = this.lmsService.getCourseSyllabusFromCourse(courses[i].id);
                 var units = this.lmsService.getSyllabusUnit(syllabus.id);
                 courses[i]["unit_count"] = units.length;
             };
@@ -73,29 +75,16 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/view', course.id]);
     }
 
-    editSyllabus(course: Course) {
-        this.router.navigate(['/lms/courses/edit', course.id]);
+    editSyllabus(course: Course, member:CourseMember) {
+        this.router.navigate(['/lms/courses/edit', course.id, member.id]);
     }
 
     publishCourse(course: Course) {
-        this.router.navigate(['/lms/courses/publish', course.id]);
+        this.publisiDialog.show(course);
     }
 
-    manageCourse(course: Course) {
-        this.router.navigate(['/lms/courses/manage', course.id]);
-    }
-
-    getLastCourseTimestamp(course: Course) {
-        var timestamp = course.create_date.getTime();
-        if (course["student"] && course["student"].create_date.getTime() < timestamp)
-            timestamp = course["student"].create_date.getTime();
-        if (course["teacher"] && course["teacher"].create_date.getTime() < timestamp)
-            timestamp = course["teacher"].create_date.getTime();
-        if (course["editor"] && course["editor"].create_date.getTime() < timestamp)
-            timestamp = course["editor"].create_date.getTime();
-        if (course["supervisor"] && course["supervisor"].create_date.getTime() < timestamp)
-            timestamp = course["supervisor"].create_date.getTime();
-        return timestamp;
+    manageCourse(course: Course, member:CourseMember) {
+        this.router.navigate(['/lms/courses/manage', course.id, member.id]);
     }
 
     filterCourse() {

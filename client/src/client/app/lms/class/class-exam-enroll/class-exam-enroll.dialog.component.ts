@@ -11,6 +11,7 @@ import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
