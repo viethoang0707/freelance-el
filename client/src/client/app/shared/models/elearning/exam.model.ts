@@ -94,17 +94,17 @@ export class Exam extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved'),('status','=','published')]");
+        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
         if (Cache.hit(Exam.Model))
             return Observable.of(Cache.load(Exam.Model)).map(exams=> {
                 return _.filter(exams, (exam:Exam)=> {
-                    return exam.review_state == 'approved' && exam.status =='published';
+                    return exam.review_state == 'approved' ;
                 });
             });
-        return Exam.search(context,[],"[('review_state','=','approved'),('status','=','published')]");
+        return Exam.search(context,[],"[('review_state','=','approved')]");
     }
 
     __api__enroll(examId: number, userIds: number[]): SearchReadAPI {

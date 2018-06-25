@@ -76,17 +76,17 @@ export class Survey extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved'),('status','=','published')]");
+        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
         if (Cache.hit(Survey.Model))
             return Observable.of(Cache.load(Survey.Model)).map(surveys=> {
                 return _.filter(surveys, (survey:Survey)=> {
-                    return survey.review_state == 'approved' && survey.status =='published';
+                    return survey.review_state == 'approved' ;
                 });
             });
-        return Survey.search(context,[],"[('review_state','=','approved'),('status','=','published')]");
+        return Survey.search(context,[],"[('review_state','=','approved')]");
     }
 
     static __api__listByClass(classId: number): SearchReadAPI {

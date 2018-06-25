@@ -90,17 +90,17 @@ export class Course extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved'),('status','=','published')]");
+        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
         if (Cache.hit(Course.Model))
             return Observable.of(Cache.load(Course.Model)).map(courses=> {
                 return _.filter(courses, (course:Course)=> {
-                    return course.review_state == 'approved' && course.status =='published';
+                    return course.review_state == 'approved' ;
                 });
             });
-        return Course.search(context,[],"[('review_state','=','approved'),('status','=','published')]");
+        return Course.search(context,[],"[('review_state','=','approved')]");
     }
 
     static __api__listByCompetency(competencyId: number): SearchReadAPI {
