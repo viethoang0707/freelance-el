@@ -200,6 +200,7 @@ export class GradebookDialog extends BaseComponent {
     displayProject(projects: Project[], submits: ProjectSubmission[]) {
         this.projects = projects;
         _.each(projects, (project: Project) => {
+            console.log('submit:', submits);
             project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
                 return submit.project_id == project.id;
             });
@@ -208,6 +209,10 @@ export class GradebookDialog extends BaseComponent {
                     project["score"] = project["submit"].score;
                 else
                     project["score"] = '';
+            } else {
+                project["submit"] = [];
+                project["submit"]["date_submit"] = '';
+                project["submit"]["score"] = '';
             }
         });
     }
