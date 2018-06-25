@@ -36,7 +36,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private selectedUnit:CourseUnit;
 	private sylUtils : SyllabusUtils;
 	private course: Course;
-	private courseMember: CourseMember;
 	private courseStatus: SelectItem[];
 	private onShowReceiver: Subject<any> = new Subject();
     private onHideReceiver: Subject<any> = new Subject();
@@ -60,7 +59,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 
         ];
         this.syl = new CourseSyllabus();
-        this.courseMember =  new CourseMember();
         this.course = new Course();
         this.courseStatus = _.map(CONTENT_STATUS, (val, key)=> {
 			return {
@@ -70,11 +68,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 		});
     }
 
-    show(syl: CourseSyllabus, course: Course, member: CourseMember) {
+    show(syl: CourseSyllabus, course: Course) {
     	this.onShowReceiver.next();
 		this.display = true;
 		this.syl = syl;
-		this.courseMember =  member;
 		this.course = course;
 		this.buildCourseTree();
 	}

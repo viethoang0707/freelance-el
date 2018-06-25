@@ -105,7 +105,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 
 	editSyllabus() {
         CourseSyllabus.byCourse(this, this.course.id).subscribe(syllabus => {
-            this.syllabusDialog.show(syllabus, this.course, this.member);
+            this.syllabusDialog.show(syllabus, this.course);
         });
     }
 	
