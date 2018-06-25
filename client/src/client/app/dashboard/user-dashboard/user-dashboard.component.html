@@ -19,35 +19,33 @@
                             <p class="summary">{{course.summary}}</p>
                             <ul class="list-cmt">
                                 <li class="clearfix" >
-                                    <ng-container *ngIf="!course.IsAvailable">
-                                        <i class="material-icons fail">error-outline</i>
-                                        <span class="cmt-title">{{'Course not available'|translate}}</span>
-                                    </ng-container>
-                                    <ng-container *ngIf="course.IsAvailable">
-                                        <i class="material-icons success">check</i>
-                                        <span class="cmt-title">{{'Course is available'|translate}}</span>
-                                    </ng-container>
-                                    </li>
-                                    <li class="clearfix">
-                                        <i class="material-icons">toys</i>
-                                        <span class="cmt-title">{{'Code'|translate}}</span>
-                                        <span class="cmt-detail">{{course.code}}</span>
-                                    </li>
-                                    <li class="clearfix" style="border-bottom: none;">
-                                        <i class="material-icons">toc</i>
-                                        <span class="cmt-title">{{'Group'|translate}}</span>
-                                        <span class="cmt-detail">{{course.group_id__DESC__}}</span>
-                                    </li>
-                                    
-                                </ul>
-                            </div>
-                            <div class="image-box-footer">
-                                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null" [disabled]="! course.IsAvailable"></button>
-                                <button pButton type="button" icon="ui-icon-visibility" title="{{'View'| translate}}" label="{{'View'|translate}}" class="mr4 blue-grey-btn" (click)="viewCourse(course)" *ngIf="course.teacher!=null" ></button>
-                                <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishCourse(course)" *ngIf="course.supervisor!=null" ></button>
-                                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, course.editor)" *ngIf="course.editor!=null"></button>
-                                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null "[disabled]="!course.IsAvailable"></button>
-                                
+                                <ng-container *ngIf="!course.IsAvailable">
+                                    <i class="material-icons fail">error-outline</i>
+                                    <span class="cmt-title">{{'Course not available'|translate}}</span>
+                                </ng-container>
+                                <ng-container *ngIf="course.IsAvailable">
+                                    <i class="material-icons success">check</i>
+                                    <span class="cmt-title">{{'Course is available'|translate}}</span>
+                                </ng-container>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="material-icons">toys</i>
+                                    <span class="cmt-title">{{'Code'|translate}}</span>
+                                    <span class="cmt-detail">{{course.code}}</span>
+                                </li>
+                                <li class="clearfix" style="border-bottom: none;">
+                                    <i class="material-icons">toc</i>
+                                    <span class="cmt-title">{{'Group'|translate}}</span>
+                                    <span class="cmt-detail">{{course.group_id__DESC__}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="image-box-footer">
+                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null" [disabled]="! course.IsAvailable"></button>
+                            <button pButton type="button" icon="ui-icon-visibility" title="{{'View'| translate}}" label="{{'View'|translate}}" class="mr4 blue-grey-btn" (click)="viewCourse(course)" *ngIf="course.teacher!=null" ></button>
+                            <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishCourse(course)" *ngIf="course.supervisor!=null" ></button>
+                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, course.editor)" *ngIf="course.editor!=null"></button>
+                            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null "[disabled]="!course.IsAvailable"></button>
                         </div>
                     </div>
                 </div>
