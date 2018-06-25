@@ -1,5 +1,5 @@
-<p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true"
-  [closeOnEscape]="false" [closable]="false">
+<div class="ui-g exem-study">
+<p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true" [closeOnEscape]="false" [closable]="false">
   <div class="spinner" [hidden]="!loading"></div>
   <div class="ui-g-12 ui-lg-12 removePd">
     <div class="ui-lg-6 ui-g-12removePd">
@@ -38,56 +38,59 @@
     </div>
   </div>
   <div class="clear mb20"></div>
-  <p-card>
-    <p-header>
-      <span class="exam-question-title fLeft mt5 ml5 txtBold">
-        {{'Question'|translate}} {{(qIndex+1) +'/' + examQuestions.length}} {{'-' + currentQuestion.title}}
-      </span>
-      <div class="exam-timer fRight mr5 txtBold">
-        <i class="material-icons fLeft mt3">access_time</i>
-        <span class="mt5 dpInB">{{ timeLeft | clock }}</span>
-      </div>
-      <div class="clear"></div>
-      <p-progressBar [value]="progress"></p-progressBar>
-    </p-header>
-    <div class="ui-g">
-      <div class="ui-lg-8 ui-g-12">
-        <ng-template question-container></ng-template>
-      </div>
-      <div class="ui-lg-4 ui-g-12">
-        <ul class="list-cmt">
-          <li class="clearfix ui-messages-info remove-background remove-border">
-            <span class="cmt-title">{{'Total question'|translate}}:</span>
-            <span class="cmt-detail">{{stats.total}}</span>
-          </li>
-          <li class="clearfix ui-messages-success remove-background remove-border">
-            <span class="cmt-title">{{'Total attempt'|translate}}:</span>
-            <span class="cmt-detail">{{stats.attempt}}</span>
-          </li>
-          <li class="clearfix ui-messages-error remove-background remove-border">
-            <span class="cmt-title">{{'Total unattempt'|translate}}:</span>
-            <span class="cmt-detail">{{stats.unattempt}}</span>
-          </li>
-        </ul>
-        <div>
-          <div class="dpInB fLeft" *ngFor="let question of examQuestions; let i = index">
-            <button type="button" pButton [ngClass]="{'mt10': true, 'lineHeight2-25': true, 'ui-button-success':question.checkAnswer}"
-              (click)="displayQuestion(i)">{{ i + 1 }}</button>
-          </div>
-          <div class="clear"></div>
+  <div class="ui-g-12 ui-lg-12">
+    <p-card>
+      <p-header>
+        <span class="exam-question-title fLeft mt5 ml5 txtBold">
+          {{'Question'|translate}} {{(qIndex+1) +'/' + examQuestions.length}} {{'-' + currentQuestion.title}}
+        </span>
+        <div class="exam-timer fRight mr5 txtBold">
+          <i class="material-icons fLeft mt3">access_time</i>
+          <span class="mt5 dpInB">{{ timeLeft | clock }}</span>
+        </div>
+        <div class="clear"></div>
+        <p-progressBar [value]="progress"></p-progressBar>
+      </p-header>
+      <div class="ui-g">
+        <div class="ui-lg-8 ui-g-12">
+          <ng-template question-container></ng-template>
+        </div>
+        <div class="ui-lg-4 ui-g-12">
+          <ul class="list-cmt">
+            <li class="clearfix ui-messages-info remove-background remove-border">
+              <span class="cmt-title">{{'Total question'|translate}}:</span>
+              <span class="cmt-detail">{{stats.total}}</span>
+            </li>
+            <li class="clearfix ui-messages-success remove-background remove-border">
+              <span class="cmt-title">{{'Total attempt'|translate}}:</span>
+              <span class="cmt-detail">{{stats.attempt}}</span>
+            </li>
+            <li class="clearfix ui-messages-error remove-background remove-border">
+              <span class="cmt-title">{{'Total unattempt'|translate}}:</span>
+              <span class="cmt-detail">{{stats.unattempt}}</span>
+            </li>
+          </ul>
           <div>
-            <p-messages [(value)]="msgs"></p-messages>
+            <div class="dpInB fLeft" *ngFor="let question of examQuestions; let i = index">
+              <button type="button" pButton [ngClass]="{'mt10': true, 'lineHeight2-25': true, 'ui-button-success':question.checkAnswer}"
+                (click)="displayQuestion(i)">{{ i + 1 }}</button>
+            </div>
+            <div class="clear"></div>
+            <div>
+              <p-messages [(value)]="msgs"></p-messages>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <exam-submission-dialog></exam-submission-dialog>
-    <p-footer>
-      <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}"
-        class=" blue-grey-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
-      <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn"
-        style="margin-right:4px;" (click)="next()" *ngIf="qIndex < examQuestions.length-1"></button>
-      <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" style="margin-left: 550px;" (click)="submitExam()" ></button>
-    </p-footer>
-  </p-card>
+      <exam-submission-dialog></exam-submission-dialog>
+      <p-footer>
+        <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}"
+          class=" blue-grey-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
+        <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn"
+          style="margin-right:4px;" (click)="next()" *ngIf="qIndex < examQuestions.length-1"></button>
+        <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" style="margin-left: 550px;" (click)="submitExam()" ></button>
+      </p-footer>
+    </p-card>
+  </div>
 </p-dialog>
+</div>
