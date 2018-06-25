@@ -307,6 +307,9 @@ export class LMSService {
     courses = _.uniq(courses, (course: Course) => {
       return course.id;
     });
+    _.each(courses, (course: Course) => {
+      course["courseMemberData"] = course["courseMemberData"] || {};
+    });
     var searchApiList = [];
     for (var i = 0; i < courses.length; i++) {
       searchApiList.push(CourseMember.__api__listByCourse(courses[i].id))
@@ -330,6 +333,9 @@ export class LMSService {
     });
     exams = _.uniq(exams, (exam: Exam) => {
       return exam.id;
+    });
+    _.each(exams, (exam: Exam) => {
+      exam["examMemberData"] = exam["examMemberData"] || {};
     });
     var countApi = _.map(exams, (exam: Exam) => {
       return ExamQuestion.__api__countByExam(exam.id);
@@ -488,6 +494,7 @@ export class LMSService {
     });
     return courses;
   }
+
 
   get MyClass(): CourseClass[] {
     var classes = _.map(this.myClassMembers, (member: CourseMember) => {

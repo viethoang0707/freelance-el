@@ -53,7 +53,7 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
             return survey.review_state == 'approved';
         });
         surveys.sort((survey1: Survey, survey2: Survey): any => {
-            return this.lmsService.getLastSurveyTimestamp(survey2) - this.getLastSurveyTimestamp(survey1);
+            return this.lmsService.getLastSurveyTimestamp(survey2) - this.lmsService.getLastSurveyTimestamp(survey1);
         });
         this.surveys = surveys;
         var countApi = _.map(surveys, (survey: Survey) => {
