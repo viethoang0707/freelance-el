@@ -35,10 +35,6 @@ export class LMSProfileDialog extends BaseDialog<User> {
 	private examMembers: ExamMember[];
 	private certificates: Certificate[];
 	private skills: Achivement[];
-	private _courseMembers: CourseMember[];
-	private _examMembers: ExamMember[];
-	private _certificates: Certificate[];
-	private _skills: Achivement[];
 
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
@@ -47,10 +43,6 @@ export class LMSProfileDialog extends BaseDialog<User> {
 		this.courseMembers = [];
 		this.skills = [];
 		this.examMembers = [];
-
-		this._courseMembers = [];
-		this._skills = [];
-		this._examMembers = [];
 	}
 
 
@@ -60,35 +52,13 @@ export class LMSProfileDialog extends BaseDialog<User> {
 			this.skills = [];
 			this.examMembers = [];
 
-
-			CourseMember.listByUser(this, object.user_id).subscribe(courseMembers => {
-				this._courseMembers = courseMembers;
-			});
-
-			this._courseMembers = _.filter(this._courseMembers, (member: CourseMember) => {
-				return member.role == 'student';
-			});
-			_.each(this._courseMembers, (member: CourseMember) => {
-				member["certificate"] = _.find(this.certificates, (cert: Certificate) => {
-					return cert.member_id == member.id;
-				});
-			});
-
-
-			ExamMember.listByUser(this, object.user_id).subscribe(examMembers => {
-				this._examMembers = examMembers;
-			});
-
-
-			this._skills = [];
-			this.examMembers = [];
 			BaseModel
 				.bulk_search(this,
-					CourseMember.__api__listByUser(object.id),
-					Certificate.__api__listByUser(object.id),
-					Achivement.__api__listByUser(object.id),
-					ExamMember.__api__listByUser(object.id),
-					Submission.__api__listByUser(object.id))
+					CourseMember.__api__listByUser(object.user_id),
+					Certificate.__api__listByUser(object.user_id),
+					Achivement.__api__listByUser(object.user_id),
+					ExamMember.__api__listByUser(object.user_id),
+					Submission.__api__listByUser(object.user_id))
 				.subscribe((jsonArr) => {
 					this.courseMembers = CourseMember.toArray(jsonArr[0]);
 					this.certificates = Certificate.toArray(jsonArr[1]);
@@ -151,22 +121,24 @@ export class LMSProfileDialog extends BaseDialog<User> {
 	}
 
 	exportCourse() {
-		let output = _.map(this._courseMembers, courseMember => {
-			return { 'Course': courseMember['course_name'], 'Register date': courseMember['date_register'], 'Enrollment status': courseMember['enroll_status'], 'Certificate': courseMember['certificate'] };
+		let output = _.map(this.courseMembers, courseMember => {
+			return {
+				'Course': courseMember['course_name'], 'Register date': courseMember['date_register'], 'Enrollment status': courseMember['enroll_status'], 'Certificate': courseMember['certificate'] ? 'Yes' : 'No'
+			};
 		})
 		this.excelService.exportAsExcelFile(output, 'course_history_report');
 	}
 
 	exportExam() {
-		let output = _.map(this._examMembers, courseMember => {
-			return { 'Exam': courseMember['exam_name'], 'Register date': courseMember['date_register'], 'Enrollment status': courseMember['enroll_status'], 'Grade': courseMember['grade'] };
+		let output = _.map(this.examMembers, examMember => {
+			return { 'Exam': examMember['exam_name'], 'Register date': examMember['date_register'], 'Enrollment status': examMember['enroll_status'], 'Grade': examMember['grade'] };
 		})
 		this.excelService.exportAsExcelFile(output, 'exam_history_report');
 	}
 
 	exportSkill() {
-		let output = _.map(this.courseMembers, courseMember => {
-			return { 'Competency': courseMember['competency_name'], 'Level': courseMember['competency_level_name'], 'Date acquired': courseMember['date_acquire'] };
+		let output = _.map(this.skills, skill => {
+			return { 'Competency': skill['competency_name'], 'Level': skill['competency_level_name'], 'Date acquired': skill['date_acquire'] };
 		})
 		this.excelService.exportAsExcelFile(output, 'skill_report');
 	}
