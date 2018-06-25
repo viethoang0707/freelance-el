@@ -3,7 +3,7 @@
     <div class="spinner" [hidden]="!loading"></div>
     <p-tabView styleClass="profile-dialog">
       <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school" [style]="{width: '100%', height: '430px'}">
-        <p-table [value]="courseMembers">
+        <p-table [value]="_courseMembers">
           <ng-template pTemplate="header">
             <tr>
               <th>{{'Course'|translate}}</th>
@@ -21,7 +21,7 @@
               <td>{{member.date_register}}</td>
               <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
               <td>
-                <a *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
+                <a style="cursor: pointer; color: seagreen" *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
               </td>
             </tr>
           </ng-template>
@@ -29,7 +29,7 @@
       </p-tabPanel>
 
       <p-tabPanel header="{{'Exam history'|translate}}" leftIcon="ui-icon-grade" [style]="{width: '100%', height: '430px'}">
-        <p-table [value]="examMembers">
+        <p-table [value]="_examMembers">
           <ng-template pTemplate="header">
             <tr>
               <th>{{'Exam'|translate}}</th>
@@ -54,7 +54,7 @@
 
 
       <p-tabPanel header="{{'Skill'|translate}}" leftIcon="ui-icon-linear-scale" [style]="{width: '100%', height: '430px'}">
-        <p-table [value]="skills">
+        <p-table [value]="_skills">
           <ng-template pTemplate="header">
             <tr>
               <th>{{'Competency'|translate}}</th>
