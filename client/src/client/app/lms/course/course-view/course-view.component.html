@@ -11,21 +11,17 @@
                             </span>
                         </div>
                         <div class="ui-lg-8 ui-g-12">
-                            <h4 class="heading-course">
+                            <h3 class="heading-course">
                                 <span>{{course.name}}</span>
-                            </h4>
+                            </h3>
                             <span class="c-status">
                                 {{CONTENT_STATUS[course.status]|translate}}
                             </span>
                             <div class="clearfix"></div>
-                            <p-accordion styleClass="cont">
-                                <p-accordionTab header="{{'Summary' | translate}}">
-                                    {{course.summary}}
-                                </p-accordionTab>
-                                <p-accordionTab header="{{'Description' | translate}}">
-                                    <p [innerHTML]="course.description"></p>
-                                </p-accordionTab>
-                            </p-accordion>
+                            <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Summary'|translate}}</h4>
+                            <p>{{course.summary}}</p>
+                            <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Description'|translate}}</h4>
+                            <p [innerHTML]="course.description"></p>
                         </div>
                     </div>
                     <div class="ui-lg-4 ui-g-12">

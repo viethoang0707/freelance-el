@@ -1,10 +1,11 @@
-<div class="card card-w-title">
-  <h1>{{'My exams'|translate}}</h1>
+<div class="card card-w-title ui-g">
+  <div class="ui-g-12 ui-lg-12"><h1>{{'My exams'|translate}}</h1></div>
+  <div class="ui-g-12 ui-lg-12">
   <p-dataList [value]="exams" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
     <ng-template let-exam pTemplate="item">
       <p-card styleClass="lms-exam-list-item">
         <div class="ui-g">
-          <div class="ui-g-8">
+          <div class="ui-lg-8 ui-g-12">
             <div class="mt5">
               <h4 class="title">{{exam.name}}</h4>
               <span class="e-status">
@@ -49,7 +50,7 @@
             </div>
           <!-- </div> -->
           </div>
-          <div class="ui-g-4">
+          <div class="ui-lg-4 ui-g-12">
             <p-card styleClass="lms-exam-detail">
               <ul class="list-cmt">
                 <li class="clearfix" *ngIf="!exam.IsAvailable">
@@ -96,4 +97,5 @@
   </p-dataList>
   <exam-content-dialog></exam-content-dialog>
   <exam-study-dialog></exam-study-dialog>
+  </div>
 </div>
