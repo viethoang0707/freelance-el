@@ -42,6 +42,14 @@ export class CourseUnit extends BaseModel{
         return CourseUnit.search(context,[], "[('syllabus_id','=',"+sylId+")]");
     }
 
+    static __api__listByCourse(courseId: number): SearchReadAPI {
+        return new SearchReadAPI(CourseUnit.Model, [],"[('course_id','=',"+courseId+")]");
+    }
+
+    static listByCourse(context:APIContext, courseId:number):Observable<any> {
+        return CourseUnit.search(context,[], "[('course_id','=',"+courseId+")]");
+    }
+
     static __api__countBySyllabus(sylId: number): SearchCountAPI {
         return new SearchCountAPI(CourseUnit.Model, "[('syllabus_id','=',"+sylId+"),('type','!=','folder')]");
     }

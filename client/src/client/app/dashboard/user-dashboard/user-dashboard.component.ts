@@ -71,26 +71,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         courses = _.filter(courses, (course: Course) => {
             return course.review_state == 'approved';
         });
-        _.each(courses, (course: Course) => {
-            course["student"] = _.find(courseMembers, (member: CourseMember) => {
-                return member.course_id == course.id && member.role == 'student';
-            });
-            course["teacher"] = _.find(courseMembers, (member: CourseMember) => {
-                return member.course_id == course.id && member.role == 'teacher';
-            });
-            course["supervisor"] = _.find(courseMembers, (member: CourseMember) => {
-                return member.course_id == course.id && member.role == 'supervisor';
-            });
-            course["editor"] = _.find(courseMembers, (member: CourseMember) => {
-                return member.course_id == course.id && member.role == 'editor';
-            });
-            if (course["supervisor"])
-                course["editor"] = course["teacher"] = course["supervisor"];
+        this.courses = _.sortBy(courses, (course: Course) => {
+            return -this.lmsService.getLastCourseTimestamp(course);
         });
-        courses.sort((course1: Course, course2: Course): any => {
-            return this.getLastCourseTimestamp(course2) - this.getLastCourseTimestamp(course1);
-        });
-        this.courses = courses;
         this.events = this.events.concat(_.map(classList, (clazz: CourseClass) => {
             return {
                 title: clazz.name,
@@ -102,40 +85,12 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         }));
     }
 
-    getLastCourseTimestamp(course: Course) {
-        var timestamp = course.create_date.getTime();
-        if (course["student"] && course["student"].create_date.getTime() < timestamp)
-            timestamp = course["student"].create_date.getTime();
-        if (course["teacher"] && course["teacher"].create_date.getTime() < timestamp)
-            timestamp = course["teacher"].create_date.getTime();
-        if (course["editor"] && course["editor"].create_date.getTime() < timestamp)
-            timestamp = course["editor"].create_date.getTime();
-        if (course["supervisor"] && course["supervisor"].create_date.getTime() < timestamp)
-            timestamp = course["supervisor"].create_date.getTime();
-        return timestamp;
-    }
-
     displayExams() {
         var examMembers = this.lmsService.MyExamMember;
         var exams = this.lmsService.MyExam;
-        _.each(exams, (exam: Exam) => {
-            exam["candidate"] = _.find(examMembers, (member: ExamMember) => {
-                return member.exam_id == exam.id && member.role == 'candidate';
-            });
-            exam["supervisor"] = _.find(examMembers, (member: ExamMember) => {
-                return member.exam_id == exam.id && member.role == 'supervisor';
-            });
-            exam["editor"] = _.find(examMembers, (member: ExamMember) => {
-                return member.exam_id == exam.id && (member.role == 'editor' || member.role == 'supervisor');
-            });
-            if (exam["supervisor"])
-                exam["editor"] = exam["teacher"] = exam["supervisor"];
+        this.exams = _.sortBy(exams, (exam: Exam) => {
+            return -this.lmsService.getLastExamTimestamp(exam);
         });
-        exams.sort((exam1: Exam, exam2: Exam): any => {
-            return this.getLastExamTimestamp(exam2) - this.getLastExamTimestamp(exam1);
-        });
-
-        this.exams = exams;
         this.events = this.events.concat(_.map(exams, (exam: Exam) => {
             return {
                 title: exam.name,
@@ -147,24 +102,12 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         }));
     }
 
-    getLastExamTimestamp(exam: Exam) {
-        var timestamp = exam.create_date.getTime();
-        if (exam["candidate"] && exam["candidate"].create_date.getTime() < timestamp)
-            timestamp = exam["candidate"].create_date.getTime();
-        if (exam["editor"] && exam["editor"].create_date.getTime() < timestamp)
-            timestamp = exam["exam"].create_date.getTime();
-        if (exam["supervisor"] && exam["supervisor"].create_date.getTime() < timestamp)
-            timestamp = exam["supervisor"].create_date.getTime();
-        return timestamp;
-    }
-
     displayConferences() {
         var conferenceMembers = this.lmsService.MyConferenceMember;
         var conferences = this.lmsService.MyConference;
-        conferences.sort((conf1: Conference, conf2: Conference): any => {
-            return this.getLastConferenceTimestamp(conf2) - this.getLastConferenceTimestamp(conf1);
+        this.conferences = _.sortBy(conferences, (conf: Conference) => {
+            return -this.lmsService.getLastConferenceTimestamp(conf);
         });
-        this.conferences = conferences;
         _.each(conferences, (conf: Conference) => {
             conferences["member"] = _.find(conferenceMembers, (member: ConferenceMember) => {
                 return member.conference_id == conf.id;
@@ -172,12 +115,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    getLastConferenceTimestamp(conf: Conference) {
-        var timestamp = conf.create_date.getTime();
-        if (conf["member"] && conf["member"].create_date.getTime() < timestamp)
-            timestamp = conf["member"].create_date.getTime();
-        return timestamp;
-    }
 
     ngOnInit() {
         this.lmsService.init(this).subscribe(() => {
@@ -198,7 +135,19 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/study', course.id, member.id]);
     }
 
-    manageCourse(course: Course, member: CourseMember) {
+    viewCourse(course: Course) {
+        this.router.navigate(['/lms/courses/view', course.id]);
+    }
+
+    editSyllabus(course: Course) {
+        this.router.navigate(['/lms/courses/view', course.id]);
+    }
+
+    publishCourse(course: Course) {
+        this.router.navigate(['/lms/courses/publish', course.id]);
+    }
+
+    manageCourse(course: Course) {
         this.router.navigate(['/lms/courses/manage', course.id]);
     }
 
