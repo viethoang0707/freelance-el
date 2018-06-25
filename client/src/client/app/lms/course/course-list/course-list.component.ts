@@ -74,7 +74,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     editSyllabus(course: Course) {
-        this.router.navigate(['/lms/courses/view', course.id]);
+        this.router.navigate(['/lms/courses/edit', course.id]);
     }
 
     publishCourse(course: Course) {

@@ -60,9 +60,8 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 export class CourseViewComponent extends BaseComponent implements OnInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
-	EXAM_STATUS = EXAM_STATUS;
-	PROJECT_STATUS = PROJECT_STATUS;
-	SURVEY_STATUS = SURVEY_STATUS;
+	CONTENT_STATUS = CONTENT_STATUS;
+	COURSE_MODE =  COURSE_MODE;
 
 	private course: Course;
 	private member: CourseMember;

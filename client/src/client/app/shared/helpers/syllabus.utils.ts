@@ -66,6 +66,7 @@ export class SyllabusUtils {
           data: unit,
           label: unit.name,
           icon: unit.icon,
+          expanded: true,
           children: children
         });
     });
