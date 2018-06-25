@@ -48,7 +48,6 @@ import { ExamGrade } from '../models/elearning/exam-grade.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Token } from '../models/cloud/token.model';
 import { APIContext } from '../models/context';
-import * as _ from 'underscore';
 
 @Injectable()
 export class LMSService {
@@ -163,7 +162,7 @@ export class LMSService {
           return isFinite(parseInt(member.course_id + "")) && member.status == 'active';
         });
         this.myClassMembers = _.filter(this.myCourseMembers, (member: CourseMember) => {
-          return isFinite(parseInt(member.class_id + "");
+          return isFinite(parseInt(member.class_id + ""));
         });
         this.myExamMembers = _.filter(ExamMember.toArray(jsonArray[1]), (member: ExamMember) => {
           return isFinite(parseInt(member.exam_id + "")) && member.status == 'active';
@@ -172,7 +171,7 @@ export class LMSService {
           return isFinite(parseInt(member.conference_id + "")) && member.conference_status == 'open' && member.is_active;
         });
         this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
-          return isFinite(parseInt(member.survey_id + "");
+          return isFinite(parseInt(member.survey_id + ""));
         });
         this.__myCourseMembers__touch = true;
         this.__myExamMembers__touch = true;

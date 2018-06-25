@@ -17,9 +17,9 @@ import {
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
-import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
-import { ClassExamListDialog } from '../class-exam-list/class-exam-list.dialog.component';
-import { ClassManageDialog } from '../class-manage/class-manage.component';
+import { ClassConferenceDialog } from '../../class/class-conference/class-conference.dialog.component';
+import { ClassExamListDialog } from '../../class/class-exam-list/class-exam-list.dialog.component';
+import { ClassManageDialog } from '../../class/class-manage/class-manage.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
@@ -27,9 +27,10 @@ import { CourseMaterialDialog } from '../course-material/course-material.dialog.
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
-import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';import { ProjectListDialog } from '../project-list/project-list.dialog.component';
+import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
+import { ProjectListDialog } from '../../class/project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
-import { ClassSurveyListDialog } from '../class-survey-list/class-survey-list.dialog.component';
+import { ClassSurveyListDialog } from '../../class/class-survey-list/class-survey-list.dialog.component';
 
 @Component({
 	moduleId: module.id,
