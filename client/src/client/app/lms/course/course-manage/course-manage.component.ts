@@ -18,7 +18,6 @@ import {
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../../class/class-conference/class-conference.dialog.component';
-import { ClassExamListDialog } from '../../class/class-exam-list/class-exam-list.dialog.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
@@ -27,9 +26,7 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { ProjectListDialog } from '../../class/project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
-import { ClassSurveyListDialog } from '../../class/class-survey-list/class-survey-list.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -53,14 +50,12 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
+	private memberId: number;
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
-	@ViewChild(ClassExamListDialog) examListDialog: ClassExamListDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
-	@ViewChild(ClassSurveyListDialog) surveyListDialog: ClassSurveyListDialog;
 
 
 	constructor(private router: Router, private route: ActivatedRoute) {
@@ -76,6 +71,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
+			var memberId = +params['memberId'];
 			Observable.concat(this.lmsService.init(this),
 				this.lmsService.initCourseContent(this),
 				this.lmsService.initClassContent(this)
@@ -92,45 +88,20 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	displaySyllabus() {
-				this.units = _.filter(this.units, (unit: CourseUnit) => {
-					return unit.status == 'published';
-				});
-				this.tree = this.sylUtils.buildGroupTree(this.units);
-				if(this.syl.status != 'published')
-		this.warn('Cours syllabus is not published');
+		this.units = _.filter(this.units, (unit: CourseUnit) => {
+			return unit.status == 'published';
+		});
+		this.tree = this.sylUtils.buildGroupTree(this.units);
+		if (this.syl.status != 'published')
+			this.warn('Cours syllabus is not published');
 	}
 
 	manageConference() {
-		if (this.selectedClass) {
 			this.conferenceDialog.show(this.selectedClass);
-		}
 	}
 
 	manageClass() {
-		if (this.selectedClass) {
-			this.router.navigate(['/lms/courses/manage/class', this.course.id, this.selectedClass.id]);
-		}
-	}
-
-	manageExam() {
-		if (this.selectedClass) {
-			this.examListDialog.show(this.selectedClass);
-			this.examListDialog.onManage.subscribe(data => {
-				this.router.navigate(['/lms/exams/manage', data[0], data[1]]);
-			});
-		}
-	}
-
-	manageSurvey() {
-		if (this.selectedClass) {
-			this.surveyListDialog.show(this.selectedClass);
-		}
-	}
-
-	manageProject() {
-		if (this.selectedClass) {
-			this.projectListDialog.show(this.selectedClass);
-		}
+			this.router.navigate(['/lms/courses/manage/class', this.course.id, this.selectedClass.id, this.memberId]);
 	}
 
 	nodeSelect(event: any) {

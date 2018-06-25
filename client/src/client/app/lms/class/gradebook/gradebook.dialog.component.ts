@@ -111,51 +111,49 @@ export class GradebookDialog extends BaseComponent {
         this.projects = [];
         this.stats = [];
         this.member = member;
-        BaseModel
-            .bulk_search(this,
-                CourseSyllabus.__api__byCourse(this.member.course_id),
-                CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
-                Certificate.__api__byMember(this.member.id),
-                Exam.__api__listByClass(this.member.class_id),
-                ExamMember.__api__listByUser(this.ContextUser.id),
-                Submission.__api__listByUser(this.ContextUser.id),
-                Project.__api__listByClass(this.member.class_id),
-                ProjectSubmission.__api__listByMember(this.member.id))
-            .subscribe(jsonArr => {
-                var sylList = CourseSyllabus.toArray(jsonArr[0]);
-                var logs = CourseLog.toArray(jsonArr[1]);
-                if (sylList.length) {
-                    this.computeCourseStats(sylList[0], logs);
-                }
-                var certList = Certificate.toArray(jsonArr[2]);
-                if (certList.length)
-                    this.certificate = certList[0];
-                var classExams = Exam.toArray(jsonArr[3]);
-                var examMembers = ExamMember.toArray(jsonArr[4]);
-                var submits = Submission.toArray(jsonArr[5]);
-                this.displayExam(classExams, examMembers, submits);
-                var projects = Project.toArray(jsonArr[6]);
-                var projectSubmits = ProjectSubmission.toArray(jsonArr[7]);
-                this.displayProject(projects, projectSubmits);
-            });
+        Observable.concat(this.lmsService.init(this),
+            this.lmsService.initCourseContent(this),
+            this.lmsService.initClassContent(this)
+        ).subscribe(() => {
+            BaseModel
+                .bulk_search(this,
+                    CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
+                    Certificate.__api__byMember(this.member.id),
+                    ExamMember.__api__listByUser(this.ContextUser.id),
+                    Submission.__api__listByUser(this.ContextUser.id),
+                    ProjectSubmission.__api__listByMember(this.member.id))
+                .subscribe(jsonArr => {
+                    var logs = CourseLog.toArray(jsonArr[0]);
+                    this.computeCourseStats(this.lmsService.getCourseSyllabusFromCourse(member.course_id), logs);
+                    var certList = Certificate.toArray(jsonArr[1]);
+                    if (certList.length)
+                        this.certificate = certList[0];
+                    var classExams = this.lmsService.getClassExams(member.class_id);
+                    var examMembers = ExamMember.toArray(jsonArr[2]);
+                    var submits = Submission.toArray(jsonArr[3]);
+                    this.displayExam(classExams, examMembers, submits);
+                    var projects = this.lmsService.getClassProjects(member.class_id);
+                    var projectSubmits = ProjectSubmission.toArray(jsonArr[4]);
+                    this.displayProject(projects, projectSubmits);
+                });
+        });
     }
 
     computeCourseStats(syl: CourseSyllabus, logs: CourseLog[]) {
         var record = {};
-        CourseUnit.countBySyllabus(this, syl.id).subscribe(totalUnit => {
-            record["total_unit"] = totalUnit;
-            var result = this.reportUtils.analyzeCourseMemberActivity(logs);
-            if (result[0] != Infinity)
-                record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
-            if (result[1] != Infinity)
-                record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
-            record["time_spent"] = this.timePipe.transform(+result[2], 'min');
-            if (totalUnit)
-                record["complete_percent"] = Math.floor(+result[3] * 100 / +totalUnit);
-            else
-                record["complete_percent"] = 0;
-            record["complete_unit"] = +result[3];
-        });
+        var units = this.lmsService.getSyllabusUnit(syl.id);
+        record["total_unit"] = units.length;
+        var result = this.reportUtils.analyzeCourseMemberActivity(logs);
+        if (result[0] != Infinity)
+            record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
+        if (result[1] != Infinity)
+            record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
+        record["time_spent"] = this.timePipe.transform(+result[2], 'min');
+        if (units.length)
+            record["complete_percent"] = Math.floor(+result[3] * 100 / +totalUnit);
+        else
+            record["complete_percent"] = 0;
+        record["complete_unit"] = +result[3];
         this.stats.push(record);
     }
 
@@ -165,6 +163,9 @@ export class GradebookDialog extends BaseComponent {
             return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
         });
         ExamGrade.listByExams(this, examIds).subscribe(grades => {
+            var exams = _.map(members, (member: ExamMember) => {
+                return member.exam;
+            })
             ExamMember.populateExams(this, members).subscribe(exams => {
                 _.each(exams, (exam: Exam) => {
                     var examGrades = _.filter(grades, (grade: ExamGrade) => {
@@ -184,9 +185,6 @@ export class GradebookDialog extends BaseComponent {
                             exam["grade"] = grade.name;
                         exam["score"] = exam["submit"].score;
                     }
-                    ExamQuestion.countByExam(this, exam.id).subscribe(count => {
-                        exam["question_count"] = count;
-                    });
                 });
                 this.exams.sort((exam1, exam2): any => {
                     return (exam1.create_date < exam2.create_date);

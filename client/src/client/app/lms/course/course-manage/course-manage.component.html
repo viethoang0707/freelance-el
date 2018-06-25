@@ -1,14 +1,12 @@
 <div class="card card-w-title course-syllabus">
-    <p-tabView [style]="{width: '100%', height: '460px'}">
+    <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Class list'|translate}}" leftIcon="ui-icon-supervisor-account" *ngIf="course.mode=='group'">
             <div class="ui-g-12 ">
                 <p-toolbar>
                     <div class="ui-toolbar-group-left ">
                         <button pButton type="button " label="{{ 'Students'|translate}} " class="blue-grey-btn " icon="ui-icon-people " (click)="manageClass(selectedClass) " [disabled]="!selectedClass"></button>
-                        <button pButton type="button " label="{{ 'Projects'|translate}} " class="blue-grey-btn " icon="ui-icon-assignment " (click)="manageProject(selectedClass) " [disabled]="!selectedClass"></button>
-                        <button pButton type="button " label="{{ 'Exams'|translate}} " class="blue-grey-btn " icon="ui-icon-grade " (click)="manageExam(selectedClass) " [disabled]="!selectedClass"></button>
-                        <button pButton type="button " label="{{ 'Surveys'|translate}} " class="blue-grey-btn " icon="ui-icon-question-answer" (click)="manageSurvey(selectedClass) " [disabled]="!selectedClass"></button>
                         <button pButton type="button " label="{{ 'Conferences'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="manageConference(selectedClass) " [disabled]="!selectedClass"></button>
+                        <button pButton type="button " label="{{ 'Annoucement'|translate}} " class="blue-grey-btn " icon="ui-icon-send " (click)="broadcastMessage(selectedClass) " [disabled]="!selectedClass"></button>
                     </div>
                     <div class="ui-toolbar-group-right ">
                         <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeClass() " [disabled]=" selectedClass && selectedClass.status=='closed'"></button>
@@ -48,9 +46,6 @@
                 </p-table>
             </div>
             <class-conference-dialog></class-conference-dialog>
-            <class-exam-list-dialog></class-exam-list-dialog>
-            <class-survey-list-dialog></class-survey-list-dialog>
-            <project-list-dialog></project-list-dialog>
         </p-tabPanel>
                 <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze" [disabled]="syl.status!='published'">
             <div class="ui-g-3">
