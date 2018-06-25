@@ -47,7 +47,7 @@
                                 <td pEditableColumn>
                                     <p-cellEditor>
                                         <ng-template pTemplate="input">
-                                             <p-spinner [(ngModel)]="grade.min_score" name="grade_min"></p-spinner>
+                                             <p-spinner [(ngModel)]="grade.min_score" name="grade_min" min="0"></p-spinner>
                                         </ng-template>
                                         <ng-template pTemplate="output">
                                             {{grade.min_score}}
@@ -57,7 +57,7 @@
                                 <td pEditableColumn>
                                     <p-cellEditor>
                                         <ng-template pTemplate="input">
-                                             <p-spinner [(ngModel)]="grade.max_score" name="grade_max"></p-spinner>
+                                             <p-spinner [(ngModel)]="grade.max_score" name="grade_max" min="0"></p-spinner>
                                         </ng-template>
                                         <ng-template pTemplate="output">
                                             {{grade.max_score}}

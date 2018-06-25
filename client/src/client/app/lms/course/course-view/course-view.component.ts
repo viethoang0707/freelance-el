@@ -88,15 +88,15 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			Observable.concat(this.lmsService.init(this),
-				this.lmsService.initCourseContent(this)
-			).last().subscribe(() => {
-				this.course = this.lmsService.getCourse(courseId);
-				this.faqs = this.lmsService.getCourseFaqs(courseId);
-				this.materials = this.lmsService.getCourseMaterials(courseId);
-				this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
-				this.units = this.lmsService.getSyllabusUnit(this.syl.id)
-				this.displayCouseSyllabus();
+			this.lmsService.init(this).subscribe(() => {
+				this.lmsService.initCourseContent(this).subscribe(() => {
+					this.course = this.lmsService.getCourse(courseId);
+					this.faqs = this.lmsService.getCourseFaqs(courseId);
+					this.materials = this.lmsService.getCourseMaterials(courseId);
+					this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
+					this.units = this.lmsService.getSyllabusUnit(this.syl.id)
+					this.displayCouseSyllabus();
+				});
 			});
 		});
 	}

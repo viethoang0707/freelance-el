@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { map, concatAll } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
@@ -46,25 +47,25 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        Observable.concat(this.lmsService.init(this),
-            this.lmsService.initCourseContent(this)
-        ).last().subscribe(() => {
-            this.displayCourses();
-        });
+        this.lmsService.init(this).subscribe(()=> {
+            this.lmsService.initCourseContent(this).subscribe(()=> {
+                this.lmsService.initCourseAnalytic(this).subscribe(()=> {
+                    this.displayCourses();
+                });
+            });
+        })
     }
 
     displayCourses() {
-        this.lmsService.initCourseAnalytic(this).subscribe(() => {
-            var courses = this.lmsService.MyCourse;
-            this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
-                return -this.lmsService.getLastCourseTimestamp(course);
-            });
-            for (var i = 0; i < courses.length; i++) {
-                var syllabus = this.lmsService.getCourseSyllabusFromCourse(courses[i].id);
-                var units = this.lmsService.getSyllabusUnit(syllabus.id);
-                courses[i]["unit_count"] = units.length;
-            };
-        })
+        var courses = this.lmsService.MyCourse;
+        this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
+            return -this.lmsService.getLastCourseTimestamp(course);
+        });
+        for (var i = 0; i < courses.length; i++) {
+            var syllabus = this.lmsService.getCourseSyllabusFromCourse(courses[i].id);
+            var units = this.lmsService.getSyllabusUnit(syllabus.id);
+            courses[i]["unit_count"] = units.length;
+        };
     }
 
     studyCourse(course: Course, member: CourseMember) {
@@ -75,7 +76,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/view', course.id]);
     }
 
-    editSyllabus(course: Course, member:CourseMember) {
+    editSyllabus(course: Course, member: CourseMember) {
         this.router.navigate(['/lms/courses/edit', course.id, member.id]);
     }
 
@@ -83,7 +84,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.publisiDialog.show(course);
     }
 
-    manageCourse(course: Course, member:CourseMember) {
+    manageCourse(course: Course, member: CourseMember) {
         this.router.navigate(['/lms/courses/manage', course.id, member.id]);
     }
 

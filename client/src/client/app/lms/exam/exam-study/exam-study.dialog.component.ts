@@ -142,6 +142,7 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	updateStats() {
+		this.stats.total = this.questions.length;
 		var validAnswers = _.filter(this.answers, (ans: any) => {
 			return ans.option_id != "" && ans.option_id != "0";
 		});

@@ -110,27 +110,28 @@ export class ClassManageComponent extends BaseComponent {
 			var classId = +params['classId'];
 			this.memberId = +params['memberId'];
 			this.viewMode = "outline";
-			Observable.concat(this.lmsService.init(this),
-				this.lmsService.initCourseContent(this),
-				this.lmsService.initClassContent(this)
-			).last().subscribe(() => {
-				this.courseClass = this.lmsService.getCourseClass(classId);
-				this.course = this.lmsService.getCourse(courseId);
-				this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
-				this.projects = this.lmsService.getClassProjects(classId);
-				this.classExams = this.lmsService.getClassExams(classId);
-				this.classSurveys =  this.lmsService.getClassSurveys(classId);
-				BaseModel.bulk_search(this,
-					CourseMember.__api__listByClass(this.courseClass.id),
-					CourseLog.__api__classActivity(this.courseClass.id),
-					Certificate.__api__listByClass(this.courseClass.id))
-					.subscribe(jsonArr => {
-						this.courseMembers = CourseMember.toArray(jsonArr[0]);
-						var logs = CourseLog.toArray(jsonArr[1]);
-						this.certificates = Certificate.toArray(jsonArr[2]);
-						this.loadMemberStats(logs);
+			this.lmsService.init(this).subscribe(() => {
+				this.lmsService.initCourseContent(this).subscribe(() => {
+					this.lmsService.initClassContent(this).subscribe(() => {
+						this.courseClass = this.lmsService.getCourseClass(classId);
+						this.course = this.lmsService.getCourse(courseId);
+						this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
+						this.projects = this.lmsService.getClassProjects(classId);
+						this.classExams = this.lmsService.getClassExams(classId);
+						this.classSurveys = this.lmsService.getClassSurveys(classId);
+						BaseModel.bulk_search(this,
+							CourseMember.__api__listByClass(this.courseClass.id),
+							CourseLog.__api__classActivity(this.courseClass.id),
+							Certificate.__api__listByClass(this.courseClass.id))
+							.subscribe(jsonArr => {
+								this.courseMembers = CourseMember.toArray(jsonArr[0]);
+								var logs = CourseLog.toArray(jsonArr[1]);
+								this.certificates = Certificate.toArray(jsonArr[2]);
+								this.loadMemberStats(logs);
+							})
 					})
-			});
+				})
+			})
 		});
 	}
 
@@ -231,6 +232,10 @@ export class ClassManageComponent extends BaseComponent {
 
 	editExam() {
 		this.examDialog.show(this.selectedClassExam);
+	}
+
+	enrollExam() {
+		this.examEnrollDialog.show(this.selectedClassExam,this.courseClass);
 	}
 
 	manageExam() {

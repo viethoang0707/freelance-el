@@ -1,5 +1,5 @@
 <div class="card card-w-title">
-    <h1>{{'Class'|translate}}: {{courseClass.name}}  <button pButton type="button" label="{{ 'Back to course'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" *ngIf="selectedRecord"></button></h1>
+    <h1>{{'Class'|translate}}: {{courseClass.name}} </h1>
    
     <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
@@ -145,7 +145,7 @@
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addExam()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editExam()" *ngIf="selectedClassExam"></button>
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedClassExam"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollExam()" *ngIf="selectedClassExam"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <button pButton type="button" icon="ui-icon-star" title="{{'Manage'| translate}}" *ngIf="selectedClassExam" label="{{'Manage'|translate}}" (click)="manageExam()" class="orange-btn">
@@ -236,10 +236,6 @@
                 </ng-template>
             </p-table>
         </p-tabPanel>
-        <p-tabPanel header="{{'Conference'|translate}}" leftIcon="ui-icon-call">
-        </p-tabPanel>
-        <p-tabPanel header="{{'Annoucement'|translate}}" leftIcon="ui-icon-send">
-        </p-tabPanel>
     </p-tabView>
     <lms-profile-dialog></lms-profile-dialog>
     <gradebook-dialog></gradebook-dialog>
@@ -248,4 +244,5 @@
     <exam-dialog></exam-dialog>
     <class-exam-enroll-dialog></class-exam-enroll-dialog>
     <exam-content-dialog></exam-content-dialog>
+    <survey-content-dialog></survey-content-dialog>
 </div>
