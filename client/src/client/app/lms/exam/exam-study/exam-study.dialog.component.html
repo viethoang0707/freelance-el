@@ -1,38 +1,38 @@
 <p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true"
   [closeOnEscape]="false" [closable]="false">
   <div class="spinner" [hidden]="!loading"></div>
-  <div class="ui-g-12 removePd">
-    <div class="ui-g-6 removePd">
-      <div class="ui-g-6 removePd">
+  <div class="ui-g-12 ui-lg-12 removePd">
+    <div class="ui-lg-6 ui-g-12removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{'Exam Name'|translate}}:</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{exam.name}}</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{'Name Member'|translate}}:</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{member.name}}</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{'Username'|translate}}:</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{member.login}}</h4>
       </div>
     </div>
-    <div class="ui-g-6 removePd">
-      <div class="ui-g-6 removePd">
+    <div class="ui-lg-6 ui-g-12 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{'Exam Date'|translate}}:</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{exam.start | date : "dd/MM/yyyy"}}</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{'Exam Code'|translate}}:</h4>
       </div>
-      <div class="ui-g-6 removePd">
+      <div class="ui-lg-6 ui-g-12 removePd">
         <h4 class="mt10 mb10">{{ exam.id + '' + member.id }}</h4>
       </div>
     </div>
@@ -51,10 +51,10 @@
       <p-progressBar [value]="progress"></p-progressBar>
     </p-header>
     <div class="ui-g">
-      <div class="ui-g-8">
+      <div class="ui-lg-8 ui-g-12">
         <ng-template question-container></ng-template>
       </div>
-      <div class="ui-g-4">
+      <div class="ui-lg-4 ui-g-12">
         <ul class="list-cmt">
           <li class="clearfix ui-messages-info remove-background remove-border">
             <span class="cmt-title">{{'Total question'|translate}}:</span>
