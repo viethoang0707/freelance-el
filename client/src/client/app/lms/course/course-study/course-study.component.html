@@ -1,7 +1,7 @@
 <div class="ui-g card card-w-title">
   <h1>{{'Course study'|translate}}: {{course.name}} </h1>
   <p-tabView [style]="{width: '100%', height: '600px'}">
-    <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
+    <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze" [disabled]="syl.status!='published'">
       <div class="ui-lg-3 ui-md-3 ui-g-12 course-study-tree">
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
       </div>

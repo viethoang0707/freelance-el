@@ -73,7 +73,7 @@
                     </div>
                 </div>
         </p-tabPanel>
-        <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
+        <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze" [disabled]="syl.status!='published'">
             <div class="ui-g-3 course-study-tree">
                 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
             </div>

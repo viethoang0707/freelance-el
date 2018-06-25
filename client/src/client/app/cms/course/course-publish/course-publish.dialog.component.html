@@ -13,13 +13,14 @@
                     <div class="card course-syllabus-unit">
                         <div class="image-box-content">
                             <div>
+                               <div class="ui-g-12">
+                                    <p-selectButton [options]="contentStatus" [(ngModel)]="selectedUnit.status" name="unitStatus"></p-selectButton>
+                                </div>
                                 <h3 class="removeMT">{{selectedUnit.name}}</h3>
                                 <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]|translate}}</span>
                             </div>
                             <div class="image-box-footer">
-                                <div class="ui-g-12">
-                                    <p-selectButton [options]="contentStatus" [(ngModel)]="selectedUnit.status" name="unitStatus"></p-selectButton>
-                                </div>
+                               
                                 <div class="ui-g-12">
                                     <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit()" *ngIf="selectedUnit.type!='folder'"></button>
                                 </div>

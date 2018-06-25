@@ -12,7 +12,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import {
-	GROUP_CATEGORY,CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -60,7 +60,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(ClassExamListDialog) examListDialog: ClassExamListDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
-	@ViewChild(ClassSurveyListDialog) surveyListDialog : ClassSurveyListDialog;
+	@ViewChild(ClassSurveyListDialog) surveyListDialog: ClassSurveyListDialog;
 
 
 	constructor(private router: Router, private route: ActivatedRoute) {
@@ -70,32 +70,34 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.faqs = [];
 		this.materials = [];
 		this.course = new Course();
+		this.syl = new CourseSyllabus();
 	}
 
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			this.lmsService.init(this).subscribe(() => {
-				this.lmsService.initCourseContent(this).subscribe(() => {
-					this.lmsService.initClassContent(this).subscribe(() => {
-						this.course = this.lmsService.getCourse(courseId);
-						this.faqs = this.lmsService.getCourseFaqs(courseId);
-						this.materials = this.lmsService.getCourseMaterials(courseId);
-						this.syl = this.lmsService.getCourseSyllabus(courseId);
-						this.units = this.lmsService.getSyllabusUnit(this.syl.id);
-						this.classes = this.lmsService.MyClass;
-						this.displaySyllabus();
-					});
-				});
+			Observable.concat(this.lmsService.init(this),
+				this.lmsService.initCourseContent(this),
+				this.lmsService.initClassContent(this)
+			).subscribe(() => {
+				this.course = this.lmsService.getCourse(courseId);
+				this.faqs = this.lmsService.getCourseFaqs(courseId);
+				this.materials = this.lmsService.getCourseMaterials(courseId);
+				this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
+				this.units = this.lmsService.getSyllabusUnit(this.syl.id);
+				this.classes = this.lmsService.MyClass;
+				this.displaySyllabus();
 			});
 		});
 	}
 
 	displaySyllabus() {
-		this.units = _.filter(this.units, (unit: CourseUnit) => {
-			return unit.status == 'published';
-		});
-		this.tree = this.sylUtils.buildGroupTree(this.units);
+				this.units = _.filter(this.units, (unit: CourseUnit) => {
+					return unit.status == 'published';
+				});
+				this.tree = this.sylUtils.buildGroupTree(this.units);
+				if(this.syl.status != 'published')
+		this.warn('Cours syllabus is not published');
 	}
 
 	manageConference() {
@@ -106,15 +108,15 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	manageClass() {
 		if (this.selectedClass) {
-			this.router.navigate(['/class/manage/student/',this.course.id, this.selectedClass.id]);
+			this.router.navigate(['/lms/courses/manage/class', this.course.id, this.selectedClass.id]);
 		}
 	}
 
 	manageExam() {
 		if (this.selectedClass) {
 			this.examListDialog.show(this.selectedClass);
-			this.examListDialog.onManage.subscribe(data=> {
-				this.router.navigate(['/lms/exams/manage',data[0], data[1]]);
+			this.examListDialog.onManage.subscribe(data => {
+				this.router.navigate(['/lms/exams/manage', data[0], data[1]]);
 			});
 		}
 	}

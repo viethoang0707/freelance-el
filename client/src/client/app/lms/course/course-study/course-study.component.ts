@@ -115,14 +115,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
-			this.lmsService.init(this).subscribe(() => {
-				this.lmsService.initCourseContent(this).subscribe(() => {
-					this.lmsService.initClassContent(this).subscribe(() => {
-						this.course = this.lmsService.getCourse(courseId);
+			Observable.concat(this.lmsService.init(this),
+				this.lmsService.initCourseContent(this),
+				this.lmsService.initClassContent(this)
+			).subscribe(() => {
+				this.course = this.lmsService.getCourse(courseId);
 						this.member = this.lmsService.getCourseMember(memberId);
 						this.faqs = this.lmsService.getCourseFaqs(courseId);
 						this.materials = this.lmsService.getCourseMaterials(courseId);
-						this.syl = this.lmsService.getCourseSyllabus(courseId);
+						this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
 						this.units = this.lmsService.getSyllabusUnit(this.syl.id);
 						var apiList = [
 							CourseLog.__api__memberStudyActivity(memberId, courseId),
@@ -142,19 +143,17 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 							if (this.conferenceMember)
 								this.conference = this.conferenceMember.conference;
 							if (this.member.class_id) {
-								var classExams = this.lmsService.MyClassExam;
+								var classExams = this.lmsService.getClassExams(this.member.class_id);
 								var examMembers = this.lmsService.getClassExamMember(memberId);
 								var submits = Submission.toArray(jsonArr[2]);
 								this.displayExam(classExams, examMembers, submits);
-								var projects = this.lmsService.MyProject;
+								var projects = this.lmsService.getClassProjects(this.member.class_id);
 								var projectSubmits = ProjectSubmission.toArray(jsonArr[3]);
 								this.displayProject(projects, projectSubmits);
-								this.surveys = this.lmsService.MyClassSurvey;
+								this.surveys = this.lmsService.getClassSurveys(this.member.class_id);
 							}
 						});
-					})
-				});
-			});
+					});
 		});
 	}
 
@@ -177,6 +176,8 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		if (last_attempt) {
 			this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
 		}
+		if (this.syl.status !='published')
+			this.warn('Cours syllabus is not published');
 	}
 
 	nodeSelect(event: any) {

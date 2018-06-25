@@ -46,10 +46,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.lmsService.init(this).subscribe(() => {
-            this.lmsService.initCourseContent(this).subscribe(() => {
-                this.displayCourses();
-            });
+        Observable.concat(this.lmsService.init(this),
+            this.lmsService.initCourseContent(this)
+        ).subscribe(() => {
+            this.displayCourses();
         });
     }
 

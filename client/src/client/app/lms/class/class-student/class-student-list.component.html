@@ -1,7 +1,7 @@
 <div class="card card-w-title">
-    <h1>{{'Course'|translate}}: {{course.name}} </h1>
-        <div class="ui-g-12">
-            <h3>{{'Class'|translate}}: {{courseClass.name}} </h3>
+    <h3>{{'Class'|translate}}: {{courseClass.name}} </h3>
+    <button pButton type="button" label="{{ 'Back to course'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" *ngIf="selectedRecord"></button>
+        <div>
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{ 'View'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" *ngIf="selectedRecord"></button>

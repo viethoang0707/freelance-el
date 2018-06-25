@@ -74,7 +74,7 @@ export const LMSRoutes: Routes = [
                },
             },
             {
-               path: "class/manage/student/:courseId:classId",
+               path: "courses/manage/class/:courseId/:classId",
                component: ClassStudentListComponent,
                data: {
                  breadcrumb:'Manage class student'

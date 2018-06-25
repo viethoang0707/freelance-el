@@ -88,15 +88,15 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			this.lmsService.init(this).subscribe(() => {
-				this.lmsService.initCourseContent(this).subscribe(() => {
-					this.course = this.lmsService.getCourse(courseId);
-					this.faqs = this.lmsService.getCourseFaqs(courseId);
-					this.materials = this.lmsService.getCourseMaterials(courseId);
-					this.syl = this.lmsService.getCourseSyllabus(courseId);
-					this.units = this.lmsService.getSyllabusUnit(this.syl.id)
-					this.displayCouseSyllabus();
-				});
+			Observable.concat(this.lmsService.init(this),
+				this.lmsService.initCourseContent(this)
+			).subscribe(() => {
+				this.course = this.lmsService.getCourse(courseId);
+				this.faqs = this.lmsService.getCourseFaqs(courseId);
+				this.materials = this.lmsService.getCourseMaterials(courseId);
+				this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
+				this.units = this.lmsService.getSyllabusUnit(this.syl.id)
+				this.displayCouseSyllabus();
 			});
 		});
 	}
@@ -107,6 +107,8 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 		});
 		this.tree = this.sylUtils.buildGroupTree(this.units);
 		this.treeList = this.sylUtils.flattenTree(this.tree);
+		if (this.syl.status != 'published')
+			this.warn('Cours syllabus is not published');
 	}
 
 	nodeSelect(event: any) {

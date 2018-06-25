@@ -52,7 +52,7 @@
             <class-survey-list-dialog></class-survey-list-dialog>
             <project-list-dialog></project-list-dialog>
         </p-tabPanel>
-                <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
+                <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze" [disabled]="syl.status!='published'">
             <div class="ui-g-3">
                 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
             </div>
