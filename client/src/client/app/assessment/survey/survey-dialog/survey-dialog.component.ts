@@ -92,7 +92,7 @@ export class SurveyDialog extends BaseDialog<Survey> {
                 return;
             } else if (users.length == 1) {
                 var user = users[0];
-                this.editor.id = user.id;
+                this.editor.user_id = user.id;
                 this.editor.name = user.name;
             }
         });
