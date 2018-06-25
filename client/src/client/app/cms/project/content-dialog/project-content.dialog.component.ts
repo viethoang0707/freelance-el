@@ -56,18 +56,34 @@ export class ProjectContentDialog extends BaseDialog<Project> {
     }
 
     changeFile(file) {
-		
-		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
-			data => {
-				if (data["result"]) {
-					this.ngZone.run(()=> {
-						this.object.file_url = data["url"];
-						this.object.filename = file.filename;
-					});
-				}
-			}
-		);
+        this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
+            data => {
+                if (data["result"]) {
+                    this.ngZone.run(()=> {
+                        this.object.url = data["url"];
+                        this.object.filename = file.name;
+                    });
+                }
+            },
+            () => {
+            }
+        );
 	}
+
+    uploadFile(file) {
+        this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
+            data => {
+                if (data["result"]) {
+                    this.ngZone.run(()=> {
+                        this.object.url = data["url"];
+                        this.object.filename = file.name;
+                    });
+                }
+            },
+            () => {
+            }
+        );
+    }
 
 }
 

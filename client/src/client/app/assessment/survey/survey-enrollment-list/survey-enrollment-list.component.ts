@@ -46,7 +46,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
                 this.warn('Survey not reviewed yet');
                 return;
             }
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id == this.selectedSurvey.supervisor_id) {
+            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
                 this.error('You do not have enroll permission for this survey');
                 return;
             }
