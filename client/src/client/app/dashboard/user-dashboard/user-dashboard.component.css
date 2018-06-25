@@ -6,6 +6,8 @@
 
 .list-cmt{
 	padding-left: 0;
+	margin-bottom: 0;
+	margin-top: 0;
 }
 
 .list-cmt li{
@@ -32,7 +34,7 @@
 	float: right;
 }
 
-.c-title{
+/*.c-title{
 	font-size: 15px;
 }
 
@@ -41,7 +43,7 @@
 	border-radius: 9px;
     padding: 2px 8px;
     color: #fff;
-}
+}*/
 
 .profile-image-wrapper img{
 	width: 100%;
@@ -76,4 +78,38 @@
 .search button{
 	border-bottom-left-radius: 0;
 	border-top-left-radius: 0
+}
+
+.summary{
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+h4.title{
+	margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.exam-card-name{
+	font-size: 20px;
+    color: #212121;
+    position: absolute;
+    top: -45px;
+    margin-left: 30px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.exam-card-content{
+    background-color: #ffffff;
+    position: relative;
+}
+
+.user-card-footer{
+	text-align: center;
+    padding-bottom: 10px;
 }
