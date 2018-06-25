@@ -145,7 +145,7 @@
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addExam()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editExam()" *ngIf="selectedClassExam"></button>
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enroll()" *ngIf="selectedClassExam"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollExam()" *ngIf="selectedClassExam"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <button pButton type="button" icon="ui-icon-star" title="{{'Manage'| translate}}" *ngIf="selectedClassExam" label="{{'Manage'|translate}}" (click)="manageExam()" class="orange-btn">
@@ -235,10 +235,6 @@
                     </tr>
                 </ng-template>
             </p-table>
-        </p-tabPanel>
-        <p-tabPanel header="{{'Conference'|translate}}" leftIcon="ui-icon-call">
-        </p-tabPanel>
-        <p-tabPanel header="{{'Annoucement'|translate}}" leftIcon="ui-icon-send">
         </p-tabPanel>
     </p-tabView>
     <lms-profile-dialog></lms-profile-dialog>

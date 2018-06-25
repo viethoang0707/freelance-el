@@ -234,6 +234,10 @@ export class ClassManageComponent extends BaseComponent {
 		this.examDialog.show(this.selectedClassExam);
 	}
 
+	enrollExam() {
+		this.examEnrollDialog.show(this.selectedClassExam,this.courseClass);
+	}
+
 	manageExam() {
 		var examMembers = this.lmsService.getClassExamMember(this.memberId);
 		var supervisor = _.find(examMembers, (examMember: ExamMember) => {
