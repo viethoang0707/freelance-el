@@ -19,7 +19,6 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../../class/class-conference/class-conference.dialog.component';
 import { ClassExamListDialog } from '../../class/class-exam-list/class-exam-list.dialog.component';
-import { ClassManageDialog } from '../../class/class-manage/class-manage.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
@@ -46,9 +45,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	private members: CourseMember[];
 	private selectedClass: CourseClass;
 	private classes: CourseClass[];
-	private selectedFaq: CourseFaq;
 	private faqs: CourseFaq[];
-	private selectedMaterial: CourseMaterial;
 	private materials: CourseMaterial[];
 	private tree: TreeNode[];
 	private syl: CourseSyllabus;
@@ -61,7 +58,6 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
 	@ViewChild(ClassExamListDialog) examListDialog: ClassExamListDialog;
-	@ViewChild(ClassManageDialog) classManageDialog: ClassManageDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
 	@ViewChild(ClassSurveyListDialog) surveyListDialog : ClassSurveyListDialog;
@@ -79,46 +75,27 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			Course.get(this, courseId).subscribe(course => {
-				this.course = course;
-				BaseModel
-					.bulk_search(this,
-						CourseMember.__api__byCourseAndUser(this.ContextUser.id, course.id),
-						CourseClass.__api__listByCourse(course.id),
-						CourseFaq.__api__listByCourse(course.id),
-						CourseMaterial.__api__listByCourse(course.id),
-						CourseSyllabus.__api__byCourse(course.id))
-					.subscribe((jsonArr) => {
-						var members = CourseMember.toArray(jsonArr[0]);
-						this.members = _.filter(members, (member: CourseMember) => {
-							return member.role == 'teacher';
-						});
-						var classList = CourseClass.toArray(jsonArr[1]);
-						this.classes = _.filter(classList, (obj: CourseClass) => {
-							var member = _.find(this.members, (member: CourseMember) => {
-								return member.class_id == obj.id;
-							});
-							return member != null;
-						});
-						this.faqs = CourseFaq.toArray(jsonArr[2]);
-						this.materials = CourseMaterial.toArray(jsonArr[3]);
-						var sylList = CourseSyllabus.toArray(jsonArr[4]);
-						if (sylList.length) {
-							this.displaySyllabus(sylList[0]);
-						}
+			this.lmsService.init(this).subscribe(() => {
+				this.lmsService.initCourseContent(this).subscribe(() => {
+					this.lmsService.initClassContent(this).subscribe(() => {
+						this.course = this.lmsService.getCourse(courseId);
+						this.faqs = this.lmsService.getCourseFaqs(courseId);
+						this.materials = this.lmsService.getCourseMaterials(courseId);
+						this.syl = this.lmsService.getCourseSyllabus(courseId);
+						this.units = this.lmsService.getSyllabusUnit(this.syl.id);
+						this.classes = this.lmsService.MyClass;
+						this.displaySyllabus();
 					});
+				});
 			});
 		});
 	}
 
-	displaySyllabus(syl: CourseSyllabus) {
-		this.syl = syl;
-		CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
-			this.units = _.filter(units, (unit: CourseUnit) => {
-				return unit.status == 'published';
-			});
-			this.tree = this.sylUtils.buildGroupTree(units);
+	displaySyllabus() {
+		this.units = _.filter(this.units, (unit: CourseUnit) => {
+			return unit.status == 'published';
 		});
+		this.tree = this.sylUtils.buildGroupTree(this.units);
 	}
 
 	manageConference() {
@@ -129,7 +106,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	manageClass() {
 		if (this.selectedClass) {
-			this.classManageDialog.show(this.selectedClass);
+			this.router.navigate(['/class/manage/student/',this.course.id, this.selectedClass.id]);
 		}
 	}
 
@@ -152,69 +129,6 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		if (this.selectedClass) {
 			this.projectListDialog.show(this.selectedClass);
 		}
-	}
-
-	loadFaqs() {
-		CourseFaq.listByCourse(this, this.course.id)
-			.subscribe(faqs => {
-				this.faqs = faqs;
-			})
-	}
-
-	addFaq() {
-		var faq = new CourseFaq();
-		faq.course_id = this.course.id;
-		this.faqDialog.show(faq);
-		this.faqDialog.onCreateComplete.subscribe(() => {
-			this.loadFaqs();
-		});
-	}
-
-	editFaq() {
-		if (this.selectedFaq)
-			this.faqDialog.show(this.selectedFaq);
-	}
-
-	deleteFaq() {
-		if (this.selectedFaq)
-			this.confirm('Are you sure to delete ?', () => {
-				this.selectedFaq.delete(this).subscribe(() => {
-					this.loadFaqs();
-					this.selectedFaq = null;
-				})
-			});
-	}
-
-	loadMaterials() {
-		CourseMaterial.listByCourse(this, this.course.id)
-			.subscribe(materials => {
-				this.materials = materials;
-			});
-	}
-
-
-	addMaterial() {
-		var material = new CourseMaterial();
-		material.course_id = this.course.id;
-		this.materialDialog.show(material);
-		this.materialDialog.onCreateComplete.subscribe(() => {
-			this.loadMaterials();
-		});
-	}
-
-	editMaterial() {
-		if (this.selectedMaterial)
-			this.materialDialog.show(this.selectedMaterial);
-	}
-
-	deleteMaterial() {
-		if (this.selectedMaterial)
-			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-				this.selectedMaterial.delete(this).subscribe(() => {
-					this.loadMaterials();
-					this.selectedMaterial = null;
-				})
-			});
 	}
 
 	nodeSelect(event: any) {
@@ -245,6 +159,5 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 			});
 		}
 	}
-
 }
 

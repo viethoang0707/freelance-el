@@ -15,7 +15,7 @@ import { QuestionSheetPrintDialog } from './exam/question-sheet-print/question-s
 import { ConferenceListComponent } from './conference/conference-list/conference-list.component';
 import { CourseMaterialDialog } from './course/course-material/course-material.dialog.component';
 import { CourseFaqDialog } from './course/course-faq/course-faq.dialog.component';
-import { ClassManageDialog } from './class/class-manage/class-manage.component';
+import { ClassStudentListComponent } from './class/class-student/class-student-list.component';
 import { GradebookDialog } from './class/gradebook/gradebook.dialog.component';
 import { ClassExamEnrollDialog } from './class/class-exam-enroll/class-exam-enroll.dialog.component';
 import { ClassExamListDialog } from './class/class-exam-list/class-exam-list.dialog.component';
@@ -50,7 +50,7 @@ import { CourseEditComponent } from './course/course-edit/course-edit.component'
     				 ExamSubmissionDialog,ClassExamListDialog,ExamManageComponent,QuestionSheetPrintDialog,
     				ClassConferenceDialog, ConferenceListComponent,CourseManageComponent,
     				CourseMaterialDialog, CourseFaqDialog, CourseStudyComponent,ProjectSubmissionDialog,
-    				GradebookDialog, ClassManageDialog, ClassExamEnrollDialog, CourseCertificateDialog,
+    				GradebookDialog, ClassStudentListComponent, ClassExamEnrollDialog, CourseCertificateDialog,
     				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectListDialog, ProjectMarkingDialog,
                     ClassSurveyEnrollDialog, SurveyStatsDialog, ClassSurveyListDialog, SurveyStudyDialog,
                     CourseSearchComponent, CourseRecommendComponent,SurveyListComponent,CourseViewComponent,

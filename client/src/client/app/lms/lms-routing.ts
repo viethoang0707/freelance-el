@@ -12,6 +12,7 @@ import { SurveyListComponent} from './survey/survey-list/survey-list.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
+import { ClassStudentListComponent } from './class/class-student/class-student-list.component';
 
 
 export const LMSRoutes: Routes = [
@@ -70,6 +71,13 @@ export const LMSRoutes: Routes = [
                component: CourseManageComponent,
                data: {
                  breadcrumb:'Manage course'
+               },
+            },
+            {
+               path: "class/manage/student/:courseId:classId",
+               component: ClassStudentListComponent,
+               data: {
+                 breadcrumb:'Manage class student'
                },
             },
             {

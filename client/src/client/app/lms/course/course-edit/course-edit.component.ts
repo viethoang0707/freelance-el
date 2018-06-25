@@ -91,7 +91,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	}
 
 	editSyllabus() {
-         this.syllabusDialog.show(this.syl, this.course);
+         this.syllabusDialog.show(this.course);
     }
 	
 

@@ -37,10 +37,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private sylUtils : SyllabusUtils;
 	private course: Course;
 	private courseStatus: SelectItem[];
-	private onShowReceiver: Subject<any> = new Subject();
-    private onHideReceiver: Subject<any> = new Subject();
-    onShow: Observable<any> = this.onShowReceiver.asObservable();
-    onHide: Observable<any> = this.onHideReceiver.asObservable();
 
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
@@ -68,12 +64,14 @@ export class CourseSyllabusDialog extends BaseComponent {
 		});
     }
 
-    show(syl: CourseSyllabus, course: Course) {
-    	this.onShowReceiver.next();
+    show(course: Course) {
 		this.display = true;
-		this.syl = syl;
+		this.display = true;
 		this.course = course;
-		this.buildCourseTree();
+		CourseSyllabus.byCourse(this, course.id).subscribe((syl)=> {
+			this.syl = syl;
+			this.buildCourseTree();
+		});
 	}
 
 	clearSelection() {
@@ -145,7 +143,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 	hide() {
 		this.clearSelection();
 		this.display = false;
-		this.onHideReceiver.next();
 	}
 
 	moveUp() {

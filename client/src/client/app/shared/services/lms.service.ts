@@ -364,7 +364,7 @@ export class LMSService {
   }
 
   getClassConferenceMember(courseMemberId: number) {
-    return _.find(this.myConferenceMembers, (confMember:ConferenceMember)=> {
+    return _.find(this.myConferenceMembers, (confMember:ConferenceMember) {
       return confMember.course_member_id == courseMemberId;
     });
   }

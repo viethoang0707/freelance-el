@@ -1,7 +1,7 @@
-<p-dialog header="{{'Student list'|translate}}" [(visible)]="display" modal="true" positionLeft="0" positionTop="0" styleClass="ui-g-12 class-manage" [responsive]="true" appendTo="body">
-    <div class="spinner" [hidden]="!loading"></div>
-    <p-scrollPanel [style]="{width: '100%', height: '510px'}">
+<div class="card card-w-title">
+    <h1>{{'Course'|translate}}: {{course.name}} </h1>
         <div class="ui-g-12">
+            <h3>{{'Class'|translate}}: {{courseClass.name}} </h3>
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{ 'View'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" *ngIf="selectedRecord"></button>
@@ -100,10 +100,6 @@
                 </p-table>
             </div>
         </div>
-    </p-scrollPanel>
     <lms-profile-dialog></lms-profile-dialog>
     <gradebook-dialog></gradebook-dialog>
-    <p-footer>
-        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-</p-dialog>
+</div>

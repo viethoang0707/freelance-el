@@ -21,16 +21,16 @@ import { LMSProfileDialog } from '../../course/lms-profile/lms-profile-dialog.co
 
 @Component({
 	moduleId: module.id,
-	selector: 'class-manage-dialog',
-	templateUrl: 'class-manage.component.html',
-	styleUrls: ['class-manage.component.css'],
+	selector: 'class-student-list',
+	templateUrl: 'class-student-list.component.html',
+	styleUrls: ['class-student-list.component.css'],
 })
-export class ClassManageDialog extends BaseComponent {
+export class ClassStudentListComponent extends BaseComponent {
 
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
+	
 	private records: any;
 	private selectedRecord: any;
-	private display: boolean;
 	private courseClass: CourseClass;
 	private reportUtils: ReportUtils;
 	private viewModes: SelectItem[];
@@ -58,9 +58,6 @@ export class ClassManageDialog extends BaseComponent {
 
 	}
 
-	hide() {
-		this.display = false;
-	}
 
 	viewGradebook() {
 		if (this.selectedRecord)
@@ -118,7 +115,6 @@ export class ClassManageDialog extends BaseComponent {
 	}
 
 	show(courseClass: CourseClass) {
-		this.display = true;
 		this.viewMode = "outline";
 		this.courseClass = courseClass;
 		BaseModel.bulk_search(this,
