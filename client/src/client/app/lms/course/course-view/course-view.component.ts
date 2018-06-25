@@ -107,7 +107,7 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 		this.units = _.filter(this.units, (unit: CourseUnit) => {
 			return unit.status == 'published';
 		});
-		this.tree = this.sylUtils.buildGroupTree(units);
+		this.tree = this.sylUtils.buildGroupTree(this.units);
 		this.treeList = this.sylUtils.flattenTree(this.tree);
 	}
 
