@@ -118,9 +118,9 @@ export class ClassManageComponent extends BaseComponent {
 						this.courseClass = this.lmsService.getCourseClass(classId);
 						this.course = this.lmsService.getCourse(courseId);
 						this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
-						this.projects = this.lmsService.getClassProjects(classId);
-						this.classExams = this.lmsService.getClassExams(classId);
-						this.classSurveys = this.lmsService.getClassSurveys(classId);
+						this.projects = this.lmsService.getClassProjects(classId) || [];
+						this.classExams = this.lmsService.getClassExams(classId) || [];
+						this.classSurveys = this.lmsService.getClassSurveys(classId) || [];
 						BaseModel.bulk_search(this,
 							CourseMember.__api__listByClass(this.courseClass.id),
 							CourseLog.__api__classActivity(this.courseClass.id),
