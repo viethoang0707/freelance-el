@@ -7,6 +7,12 @@
 	height: 528px;
 }
 
+@media screen and (max-width: 400px) {
+	.course-study-unit{
+	height: auto;
+}
+}
+
 .list-cmt{
 	padding-left: 0;
 }

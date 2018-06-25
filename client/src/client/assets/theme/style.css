@@ -578,7 +578,7 @@ body .ui-progressbar .ui-progressbar-value {
 
 .mobile-logo{
   width: 140px;
-  height: 40px;
+  height: 40px !important;
 }
 
 .course-syllabus-dialog .ui-splitbutton{
