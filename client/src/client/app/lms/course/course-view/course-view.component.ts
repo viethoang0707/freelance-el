@@ -15,8 +15,6 @@ import { Conference } from '../../../shared/models/elearning/conference.model'; 
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
-import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
-import { ClassExamListDialog } from '../class-exam-list/class-exam-list.dialog.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
@@ -45,7 +43,6 @@ import { CourseUnitContainerDirective } from '../../../cms/course/course-unit-te
 import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.interface';
 import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
-import { ProjectSubmissionDialog } from '../project-submit/project-submission.dialog.component';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { BaseModel } from '../../../shared/models/base.model';
 import { Survey } from '../../../shared/models/elearning/survey.model';

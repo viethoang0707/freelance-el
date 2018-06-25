@@ -1,5 +1,6 @@
-<div class="card card-w-title course-syllabus">
-    <p-tabView [style]="{width: '100%', height: '460px'}">
+<div class="card card-w-title">
+    <h1>{{'Course'|translate}}: {{course.name}} </h1>
+    <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
             <div class="ui-g-3">
                 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>

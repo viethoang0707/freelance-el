@@ -17,9 +17,6 @@ import {
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
-import { ClassConferenceDialog } from '../class-conference/class-conference.dialog.component';
-import { ClassExamListDialog } from '../class-exam-list/class-exam-list.dialog.component';
-import { ClassManageDialog } from '../class-manage/class-manage.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';

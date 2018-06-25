@@ -17,7 +17,7 @@ import { SelectItem } from 'primeng/api';
 import { TimeConvertPipe } from '../../../shared/pipes/time.pipe';
 import { GradebookDialog } from '../gradebook/gradebook.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
-import { LMSProfileDialog } from '../lms-profile/lms-profile-dialog.component';
+import { LMSProfileDialog } from '../../course/lms-profile/lms-profile-dialog.component';
 
 @Component({
 	moduleId: module.id,
