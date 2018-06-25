@@ -62,7 +62,11 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
 				this.exerciseQuestions = exerciseQuestions;
 				ExerciseQuestion.populateQuestions(this, this.exerciseQuestions).subscribe(() => {
-					if (this.mode == 'preview')
+					var questions = _.map(exerciseQuestions, (exerviseQuestion:ExerciseQuestion)=> {
+                    return exerviseQuestion.question;
+                });
+                Question.populateOptions(this, questions).subscribe(()=> {
+                	if (this.mode == 'preview')
 						setTimeout(() => {
 							var componentHostArr = this.questionsComponents.toArray();
 							for (var i = 0; i < exerciseQuestions.length; i++) {
@@ -76,6 +80,9 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 						this.qIndex = 0;
 						this.displayQuestion(this.qIndex);
 					}
+                });
+
+					
 				});
 			})
 		}
