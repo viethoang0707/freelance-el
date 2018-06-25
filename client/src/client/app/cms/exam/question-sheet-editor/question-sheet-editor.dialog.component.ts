@@ -43,10 +43,7 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.examQuestions = [];
-		this.tree = {};
-		this.selectorGroups = {};
-		this.selectedNodes = {};
+		
 		_.each(QUESTION_LEVEL, (val, key) => {
 			this.selectorGroups[key] = {};
 			this.selectorGroups[key]["number"] = 0;
@@ -103,6 +100,10 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 
 	show() {
 		this.display = true;
+		this.examQuestions = [];
+		this.tree = {};
+		this.selectorGroups = {};
+		this.selectedNodes = {};
 	}
 
 

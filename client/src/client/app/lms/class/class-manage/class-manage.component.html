@@ -1,5 +1,5 @@
 <div class="card card-w-title">
-    <h1>{{'Class'|translate}}: {{courseClass.name}}  <button pButton type="button" label="{{ 'Back to course'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" *ngIf="selectedRecord"></button></h1>
+    <h1>{{'Class'|translate}}: {{courseClass.name}} </h1>
    
     <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
@@ -244,4 +244,5 @@
     <exam-dialog></exam-dialog>
     <class-exam-enroll-dialog></class-exam-enroll-dialog>
     <exam-content-dialog></exam-content-dialog>
+    <survey-content-dialog></survey-content-dialog>
 </div>
