@@ -41,8 +41,18 @@ export class RoomMember extends BaseModel{
         roomMember.name =  name;
         roomMember.avatar = avatar;
         roomMember.is_supervisor =  role =='teacher';
+        roomMember.ref = RoomMember.makeid();
         return roomMember;
     }
 
+    static makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 24; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
 
 }

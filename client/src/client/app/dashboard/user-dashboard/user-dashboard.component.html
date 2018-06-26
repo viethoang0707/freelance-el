@@ -102,18 +102,18 @@
     <p-tabPanel header="{{'Live conference'|translate}}" leftIcon="ui-icon-call">
         <div class="ui-g user-dashboard">
             <div class="ui-lg-12 ui-g-12 dashboard-live-conference">
-                <div class="ui-lg-3 ui-md-6 ui-g-12" *ngFor="let conference of conferences | slice:0:4; let i = index ">
+                <div class="ui-lg-3 ui-md-6 ui-g-12" *ngFor="let member of conferenceMembers | slice:0:4; let i = index ">
                     <div class="task-box task-box-{{i%4 +1}}">
                         <div class="task-box-header">
-                            <span class="task-status">{{CONFERENCE_STATUS[conference.status] | translate}}</span>
+                            <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
                         </div>
                         <div class="task-box-content">
-                            <h4>{{conference.name}}</h4>
-                            <p class="mb10">{{'Room password'|translate}} {{':'+conference.room_pass}}
+                            <h4>{{member.conference.name}}</h4>
+                            <p class="mb10">{{'Room password'|translate}} {{':'+member.conference.room_pass}}
                             </p>
                         </div>
                         <div class="task-box-footer">
-                            <button pButton type="button " label="{{ 'Join'|translate}} " class="btn-footer" icon="ui-icon-call " (click)="joinConference(conference, conference.member) " [disabled]="conference.status!='open'"></button>
+                            <button pButton type="button " label="{{ 'Join'|translate}} " class="btn-footer" icon="ui-icon-call " (click)="joinConference(member.conference, member) " [disabled]="member.conference.status!='open'"></button>
                         </div>
                     </div>
                 </div>

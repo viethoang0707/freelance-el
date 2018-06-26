@@ -45,7 +45,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     COURSE_MODE = COURSE_MODE;
     EXAM_STATUS = EXAM_STATUS;
 
-    private conferences: Conference[];
+    private conferenceMembers: ConferenceMember[];
     private courses: Course[];
     private exams: Exam[];
     private header: any;
@@ -59,7 +59,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     constructor(private meetingSerivce: MeetingService, private router: Router) {
         super();
-        this.conferences = [];
+        this.conferenceMembers = [];
         this.exams = [];
         this.courses = [];
         this.events = [];
@@ -105,15 +105,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayConferences() {
-        var conferenceMembers = this.lmsService.MyConferenceMember;
-        var conferences = this.lmsService.MyConference;
-        this.conferences = _.sortBy(conferences, (conf: Conference) => {
-            return -this.lmsService.getLastConferenceTimestamp(conf);
-        });
-        _.each(conferences, (conf: Conference) => {
-            conferences["member"] = _.find(conferenceMembers, (member: ConferenceMember) => {
-                return member.conference_id == conf.id;
-            });
+        this.conferenceMembers = this.lmsService.MyConferenceMember;
+        this.conferenceMembers = _.sortBy(this.conferenceMembers, (member: ConferenceMember) => {
+            return -this.lmsService.getLastConferenceTimestamp(member.conference);
         });
     }
 
