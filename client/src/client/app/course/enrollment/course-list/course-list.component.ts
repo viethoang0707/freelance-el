@@ -51,7 +51,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
 
     enrollCourse() {
         if (this.ContextUser.id != this.selectedCourse.supervisor_id) {
-            this.error('You do not have enroll permission for this course');
+            this.error(this.translateService.instant('You do not have enroll permission for this course'));
             return;
         }
         if (this.selectedCourse) {
