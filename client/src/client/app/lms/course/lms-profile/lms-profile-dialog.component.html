@@ -47,7 +47,7 @@
               <td>{{member.exam_name}}</td>
               <td>{{member.date_register}}</td>
               <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
-              <td>{{member.grade}}</td>
+              <td>{{member.grade?.name}}</td>
             </tr>
           </ng-template>
         </p-table>

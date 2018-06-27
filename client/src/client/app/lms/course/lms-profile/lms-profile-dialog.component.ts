@@ -131,7 +131,7 @@ export class LMSProfileDialog extends BaseDialog<User> {
 
 	exportExam() {
 		let output = _.map(this.examMembers, examMember => {
-			return { 'Exam': examMember['exam_name'], 'Register date': examMember['date_register'], 'Enrollment status': examMember['enroll_status'], 'Grade': examMember['grade'] };
+			return { 'Exam': examMember['exam_name'], 'Register date': examMember['date_register'], 'Enrollment status': examMember['enroll_status'], 'Grade': examMember['grade'] ? examMember['grade'].name : '' };
 		})
 		this.excelService.exportAsExcelFile(output, 'exam_history_report');
 	}
