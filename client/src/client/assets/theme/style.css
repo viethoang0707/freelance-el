@@ -603,6 +603,8 @@ body .exem-study .ui-dialog .ui-dialog-content{
 }
 body .exem-study .ui-dialog .ui-dialog-content{
   height: 100%;
+}body .exem-study .ui-dialog .ui-dialog-content{
+  height: 100%;
 }
 
 @media screen and (max-width: 500px) {
