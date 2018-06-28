@@ -14,6 +14,8 @@ import { IQuestion } from '../question-template/question.interface';
 import { QuestionRegister } from '../question-template/question.decorator';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
 
+declare var $: any;
+
 @Component({
 	moduleId: module.id,
 	selector: 'question-dialog',

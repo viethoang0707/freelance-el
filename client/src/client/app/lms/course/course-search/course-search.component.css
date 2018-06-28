@@ -1,8 +1,14 @@
 .search input{
 	border: 1px solid #bdbdbd; 
-	width: 400px; 
+	width: 360px; 
 	border-bottom-left-radius: 3px; 
 	border-top-left-radius: 3px
+}
+
+@media screen and (max-width: 500px) {
+	.search input{
+		width: 320px;
+	}
 }
 
 .search button{
