@@ -306,6 +306,12 @@ body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
   padding-right: 6px;
 }
 
+body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
+  height: 100px;
+  overflow: hidden;
+  padding: 0;
+}
+
 .dashboard-live-conference .task-box-footer .btn-footer {
   float: right;
 }
