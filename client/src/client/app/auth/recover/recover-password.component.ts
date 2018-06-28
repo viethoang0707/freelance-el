@@ -12,18 +12,24 @@ import { Token } from '../../shared/models/cloud/token.model';
 
 export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
+    private buildMode: string = "<%= BUILD_TYPE %>";
+    private actionDone: boolean;
+    
     @Input() recover_email: string;
+    @Input() cloudid: string;
+
 
     constructor() { 
       super(); 
     }
 
     ngOnInit() {
+      this.actionDone =  false;
     }
 
     recoverPassword() {
-        this.authService.resetPass(this.recover_email).subscribe(() => {
-            this.success('Password recovery instruction sent to your email')
+        this.accApiService.resetPasswordRequest(this.recover_email, this.cloudid).subscribe(() => {
+            this.actionDone =  true;
         });
     }
 }

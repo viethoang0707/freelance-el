@@ -17,7 +17,6 @@ import { User } from '../../shared/models/elearning/user.model';
 export class LoginComponent extends BaseComponent implements OnInit {
 
     private credential: Credential;
-    private account: Token;
     private returnUrl: string;
     private buildMode: string = "<%= BUILD_TYPE %>";
 
@@ -37,7 +36,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     login() {
         this.authService.login(this.credential, this.cloudid).subscribe(
-            (resp) => {
+            resp => {
                 let user:User = resp["user"];
                 this.appEvent.userLogin(user);
                 this.authService.Remember = this.remember;

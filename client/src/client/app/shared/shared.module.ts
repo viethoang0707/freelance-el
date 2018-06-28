@@ -91,7 +91,8 @@ import { ListboxModule } from 'primeng/primeng';
 import { MegaMenuModule } from 'primeng/primeng';
 import { MenuModule } from 'primeng/primeng';
 import { MenubarModule } from 'primeng/primeng';
-import { MessagesModule } from 'primeng/primeng';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/primeng';
 import { OrderListModule } from 'primeng/primeng';
 import { OrganizationChartModule } from 'primeng/primeng';
@@ -177,6 +178,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         MenuModule,
         MenubarModule,
         MessagesModule,
+        MessageModule,
         MultiSelectModule,
         OrderListModule,
         OrganizationChartModule,
@@ -210,7 +212,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         TreeTableModule,
         TranslateModule,
         PdfViewerModule
-        ],
+    ],
     declarations: [
         // App components
         MatchInputValidatorDirective,
@@ -308,6 +310,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         MenuModule,
         MenubarModule,
         MessagesModule,
+        MessageModule,
         MultiSelectModule,
         OrderListModule,
         OrganizationChartModule,
@@ -341,7 +344,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         TreeTableModule,
         TranslateModule,
         PdfViewerModule
-        ],
+    ],
 })
 export class ErpSharedModule {
     static forRoot(): ModuleWithProviders {
@@ -351,7 +354,7 @@ export class ErpSharedModule {
                 AuthGuard,
                 AdminGuard,
                 CourseGuard,
-                ExamGuard, 
+                ExamGuard,
                 SurveyGuard,
                 SyllabusGuard,
                 AccountAPIService,

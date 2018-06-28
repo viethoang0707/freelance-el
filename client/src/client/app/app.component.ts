@@ -10,7 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
 	moduleId: module.id,
 	selector: 'app',
-	template: `<router-outlet></router-outlet>`
+	template: `<div class="spinner" [hidden]="!loading"></div>
+				<router-outlet></router-outlet>`
 })
 export class AppComponent extends BaseComponent{
 

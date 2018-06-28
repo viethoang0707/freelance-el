@@ -97,11 +97,6 @@ export class AuthService {
         });
     }
 
-    resetPass(email: string): Observable<any> {;
-        return this.accountService.resetPass(email);
-    }
-
-
     logout() {
         Cache.invalidateAll();
         this.clearUserProfile();

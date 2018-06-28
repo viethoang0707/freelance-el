@@ -13,7 +13,7 @@ export class AccountAPIService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         var endpoint = Config.CLOUD_ENDPOINT + '/account/login';
-        var params = {username: username, password: password, code: cloud_code} 
+        var params = {username: username, password: password, cloud_code: cloud_code} 
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
             .map((response: Response) => response.json()).do(()=> {
@@ -25,11 +25,27 @@ export class AccountAPIService {
             } );
     }
 
-    resetPass(email:string):Observable<any>{
+    resetPasswordRequest(email:string, cloud_code:string):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        var endpoint = Config.CLOUD_ENDPOINT + '/account/reset_pass';
-        var params = {email: email} 
+        var endpoint = Config.CLOUD_ENDPOINT + '/account/resetpass/request';
+        var params = {email: email,  cloud_code: cloud_code} 
+        this.appEvent.startHttpTransaction();
+        return this.http.post(endpoint, JSON.stringify(params), options)
+            .map((response: Response) => response.json()).do(()=> {
+                this.appEvent.finishHttpTransaction();
+            })
+            .catch( (e) => {
+                console.log(e);
+                return Observable.throw(e);
+            } );
+    }
+
+    resetPasswordExecute(token:string, new_pass:string, cloud_code:string):Observable<any>{
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        var endpoint = Config.CLOUD_ENDPOINT + '/account/resetpass/execute';
+        var params = {new_pass: new_pass, token: token,  cloud_code: cloud_code} 
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
             .map((response: Response) => response.json()).do(()=> {
