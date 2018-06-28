@@ -310,6 +310,10 @@ body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
   height: 100px;
   overflow: hidden;
   padding: 0;
+
+.dashboard-courses-list .image-box .card .image-box-footer {
+  padding-bottom: 10px;
+  padding-right: 6px;
 }
 
 .dashboard-live-conference .task-box-footer .btn-footer {
