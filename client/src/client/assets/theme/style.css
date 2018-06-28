@@ -684,3 +684,7 @@ body .exem-study .ui-dialog .ui-dialog-content{
     display: none !important;
   }
 }
+
+body .ui-dialog.course-dialog .ui-dialog-content{
+  height: 85%;
+}
