@@ -301,7 +301,6 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   color: #fff;
 }
 
-<<<<<<< HEAD
 .dashboard-courses-list .image-box .card .image-box-footer{
   padding-bottom: 10px;
   padding-right: 6px;
@@ -311,11 +310,10 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   height: 100px;
   overflow: hidden;
   padding: 0;
-=======
+
 .dashboard-courses-list .image-box .card .image-box-footer {
   padding-bottom: 10px;
   padding-right: 6px;
->>>>>>> 175db91e1a684f43d01c68a801192f7783dd0637
 }
 
 .dashboard-live-conference .task-box-footer .btn-footer {
@@ -344,8 +342,8 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
 .dashboard-live-conference .task-box.task-box-4 .task-box-header,
 .dashboard-live-conference .task-box.task-box-4 .task-box-footer .btn-footer {
   /* background-color: #616161;*/
-  background-color: #71a23c;
-}
+ /*background-color: #71a23c;
+}*/
 
 body .user-dashboard .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler {
   display: none;
