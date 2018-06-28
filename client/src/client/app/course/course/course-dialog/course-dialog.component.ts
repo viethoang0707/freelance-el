@@ -17,6 +17,9 @@ import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { WorkflowService } from '../../../shared/services/workflow.service';
 import { SelectCompetencyLevelDialog } from '../../../shared/components/select-competency-level-dialog/select-competency-level-dialog.component';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
+
+declare var $: any;
 
 @Component({
 	moduleId: module.id,
@@ -25,6 +28,7 @@ import { SelectCompetencyLevelDialog } from '../../../shared/components/select-c
 })
 export class CourseDialog extends BaseDialog<Course> {
 
+	WINDOW_HEIGHT: any;
 	private tree: TreeNode[];
 	private items: MenuItem[];
 	private selectedNode: TreeNode;
@@ -45,6 +49,7 @@ export class CourseDialog extends BaseDialog<Course> {
 			}
 		});
 		this.editor = new CourseMember();
+		this.WINDOW_HEIGHT = $(window).height();
 	}
 
 	nodeSelect(event: any) {
