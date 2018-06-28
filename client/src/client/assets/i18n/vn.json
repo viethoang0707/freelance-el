@@ -450,5 +450,10 @@
 	"You do not have submit-review permission for this survey": "Bạn không có quyền gửi đánh giá cho bản khảo sát này",
 	"Request submitted": "Đã gửi yêu cầu",
 	"Created": "Khởi tạo",
-	"Updated": "Cập nhật"
+	"Updated": "Cập nhật",
+	"Search Courses": "Tìm kiếm khóa học",
+	"Course search": "Tìm kiếm khóa học",
+	"Select a competency": "Chọn một năng lực",
+	"Send enrollment request": "Gửi yêu cầu đăng ký",
+	"Course recommend": "Đề xuất khóa học"
 }

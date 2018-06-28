@@ -301,6 +301,16 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   color: #fff;
 }
 
+.dashboard-courses-list .image-box .card .image-box-footer{
+  padding-bottom: 10px;
+  padding-right: 6px;
+ }
+
+/*body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
+  height: 100px;
+  overflow: hidden;
+  padding: 0;
+
 .dashboard-courses-list .image-box .card .image-box-footer {
   padding-bottom: 10px;
   padding-right: 6px;
@@ -342,7 +352,7 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
 .dashboard-live-conference .task-box.task-box-4 .task-box-header,
 .dashboard-live-conference .task-box.task-box-4 .task-box-footer .btn-footer {
   /* background-color: #616161;*/
- /* background-color: #71a23c;
+ /*background-color: #71a23c;
 }*/
 
 body .user-dashboard .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler {
@@ -590,7 +600,22 @@ body .ui-progressbar .ui-progressbar-value {
 }
 
 .button-add-ques.ui-splitbutton {
-  display: inline;
+    display: inline;
+}
+
+@media screen and (max-width: 500px) {
+  .tree-unit-course-study{
+    height: 150px;
+    overflow: auto;}
+
+    .layout-wrapper .layout-main .layout-footer {
+    padding: 5px 10px;
+  }
+
+  .layout-wrapper .layout-main .layout-footer .footer-text-left,
+  .layout-wrapper .layout-main .layout-footer .footer-text-right{
+    margin-top: 5px !important;
+  }
 }
 
 @media screen and (max-width: 400px) {
