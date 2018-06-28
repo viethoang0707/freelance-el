@@ -64,12 +64,10 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
             var memberId = +params['memberId'];
             var examId = +params['examId'];
-            Exam.get(this, examId).subscribe(exam => {
-                ExamMember.get(this, memberId).subscribe(member => {
-                    this.member = member;
-					this.exam = exam;
-					this.loadScores();
-                });
+            this.lmsService.init(this).subscribe(()=> {
+                this.exam = this.lmsService.getExam(examId);
+                this.member = this.lmsService.getExamMember(memberId);
+                this.loadScores();
             });
         });
 	}
@@ -126,7 +124,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                     }
                 });
             });
-
     }
 
     showExamReport() {

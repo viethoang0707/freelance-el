@@ -12,14 +12,12 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import {
-	GROUP_CATEGORY,CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
+	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ClassConferenceDialog } from '../../class/class-conference/class-conference.dialog.component';
-import { ClassExamListDialog } from '../../class/class-exam-list/class-exam-list.dialog.component';
-import { ClassManageDialog } from '../../class/class-manage/class-manage.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
@@ -28,9 +26,8 @@ import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { ProjectListDialog } from '../../class/project-list/project-list.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
-import { ClassSurveyListDialog } from '../../class/class-survey-list/class-survey-list.dialog.component';
+import { MailMessageDialog } from '../../../shared/components/mail-message/mail-message.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -46,9 +43,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	private members: CourseMember[];
 	private selectedClass: CourseClass;
 	private classes: CourseClass[];
-	private selectedFaq: CourseFaq;
 	private faqs: CourseFaq[];
-	private selectedMaterial: CourseMaterial;
 	private materials: CourseMaterial[];
 	private tree: TreeNode[];
 	private syl: CourseSyllabus;
@@ -56,16 +51,13 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
+	private memberId: number;
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
-	@ViewChild(ClassExamListDialog) examListDialog: ClassExamListDialog;
-	@ViewChild(ClassManageDialog) classManageDialog: ClassManageDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-	@ViewChild(ProjectListDialog) projectListDialog: ProjectListDialog;
-	@ViewChild(ClassSurveyListDialog) surveyListDialog : ClassSurveyListDialog;
-
+	@ViewChild(MailMessageDialog) mailDialog: MailMessageDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -74,153 +66,59 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.faqs = [];
 		this.materials = [];
 		this.course = new Course();
+		this.syl = new CourseSyllabus();
 	}
 
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			Course.get(this, courseId).subscribe(course => {
-				this.course = course;
-				BaseModel
-					.bulk_search(this,
-						CourseMember.__api__byCourseAndUser(this.ContextUser.id, course.id),
-						CourseClass.__api__listByCourse(course.id),
-						CourseFaq.__api__listByCourse(course.id),
-						CourseMaterial.__api__listByCourse(course.id),
-						CourseSyllabus.__api__byCourse(course.id))
-					.subscribe((jsonArr) => {
-						var members = CourseMember.toArray(jsonArr[0]);
-						this.members = _.filter(members, (member: CourseMember) => {
-							return member.role == 'teacher';
-						});
-						var classList = CourseClass.toArray(jsonArr[1]);
-						this.classes = _.filter(classList, (obj: CourseClass) => {
-							var member = _.find(this.members, (member: CourseMember) => {
-								return member.class_id == obj.id;
-							});
-							return member != null;
-						});
-						this.faqs = CourseFaq.toArray(jsonArr[2]);
-						this.materials = CourseMaterial.toArray(jsonArr[3]);
-						var sylList = CourseSyllabus.toArray(jsonArr[4]);
-						if (sylList.length) {
-							this.displaySyllabus(sylList[0]);
-						}
-					});
+			this.memberId = +params['memberId'];
+			this.lmsService.init(this).subscribe(() => {
+				this.lmsService.initCourseContent(this).subscribe(() => {
+					this.lmsService.initClassContent(this).subscribe(() => {
+						this.course = this.lmsService.getCourse(courseId);
+						this.faqs = this.lmsService.getCourseFaqs(courseId);
+						this.materials = this.lmsService.getCourseMaterials(courseId);
+						this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
+						this.units = this.lmsService.getSyllabusUnit(this.syl.id);
+						this.classes = this.lmsService.MyClass;
+						this.displaySyllabus();
+					})
+				})
 			});
 		});
 	}
 
-	displaySyllabus(syl: CourseSyllabus) {
-		this.syl = syl;
-		CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
-			this.units = _.filter(units, (unit: CourseUnit) => {
-				return unit.status == 'published';
-			});
-			this.tree = this.sylUtils.buildGroupTree(units);
+	displaySyllabus() {
+		this.units = _.filter(this.units, (unit: CourseUnit) => {
+			return unit.status == 'published';
 		});
+		this.tree = this.sylUtils.buildGroupTree(this.units);
+		if (this.syl.status != 'published')
+			this.warn('Cours syllabus is not published');
 	}
 
 	manageConference() {
-		if (this.selectedClass) {
-			this.conferenceDialog.show(this.selectedClass);
-		}
+		this.conferenceDialog.show(this.selectedClass);
 	}
 
 	manageClass() {
-		if (this.selectedClass) {
-			this.classManageDialog.show(this.selectedClass);
-		}
-	}
-
-	manageExam() {
-		if (this.selectedClass) {
-			this.examListDialog.show(this.selectedClass);
-			this.examListDialog.onManage.subscribe(data=> {
-				this.router.navigate(['/lms/exams/manage',data[0], data[1]]);
-			});
-		}
-	}
-
-	manageSurvey() {
-		if (this.selectedClass) {
-			this.surveyListDialog.show(this.selectedClass);
-		}
-	}
-
-	manageProject() {
-		if (this.selectedClass) {
-			this.projectListDialog.show(this.selectedClass);
-		}
-	}
-
-	loadFaqs() {
-		CourseFaq.listByCourse(this, this.course.id)
-			.subscribe(faqs => {
-				this.faqs = faqs;
-			})
-	}
-
-	addFaq() {
-		var faq = new CourseFaq();
-		faq.course_id = this.course.id;
-		this.faqDialog.show(faq);
-		this.faqDialog.onCreateComplete.subscribe(() => {
-			this.loadFaqs();
-		});
-	}
-
-	editFaq() {
-		if (this.selectedFaq)
-			this.faqDialog.show(this.selectedFaq);
-	}
-
-	deleteFaq() {
-		if (this.selectedFaq)
-			this.confirm('Are you sure to delete ?', () => {
-				this.selectedFaq.delete(this).subscribe(() => {
-					this.loadFaqs();
-					this.selectedFaq = null;
-				})
-			});
-	}
-
-	loadMaterials() {
-		CourseMaterial.listByCourse(this, this.course.id)
-			.subscribe(materials => {
-				this.materials = materials;
-			});
-	}
-
-
-	addMaterial() {
-		var material = new CourseMaterial();
-		material.course_id = this.course.id;
-		this.materialDialog.show(material);
-		this.materialDialog.onCreateComplete.subscribe(() => {
-			this.loadMaterials();
-		});
-	}
-
-	editMaterial() {
-		if (this.selectedMaterial)
-			this.materialDialog.show(this.selectedMaterial);
-	}
-
-	deleteMaterial() {
-		if (this.selectedMaterial)
-			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-				this.selectedMaterial.delete(this).subscribe(() => {
-					this.loadMaterials();
-					this.selectedMaterial = null;
-				})
-			});
+		this.router.navigate(['/lms/courses/manage/class', this.course.id, this.selectedClass.id, this.memberId]);
 	}
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
 		}
+	}
+
+	broadcastMessage() {
+		CourseMember.listByClass(this, this.selectedClass.id).subscribe(members => {
+			if (members.length) {
+				var emails = _.pluck(members,"email");
+				this.mailDialog.show(emails);
+			}
+		});
 	}
 
 	previewUnit() {
@@ -245,6 +143,5 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 			});
 		}
 	}
-
 }
 

@@ -12,7 +12,11 @@ import { SurveyListComponent} from './survey/survey-list/survey-list.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
-
+import { ClassManageComponent } from './class/class-manage/class-manage.component';
+import { CourseGuard } from '../shared/guards/course.guard';
+import { ExamGuard } from '../shared/guards/exam.guard';
+import { SyllabusGuard } from '../shared/guards/syllabus.guard';
+import { SurveyGuard } from '../shared/guards/survey.guard';
 
 export const LMSRoutes: Routes = [
     {
@@ -36,6 +40,7 @@ export const LMSRoutes: Routes = [
                data: {
                  breadcrumb:'Manage exam'
                },
+               canActivate:[ExamGuard]
             },
             {
                path: "courses",
@@ -59,18 +64,28 @@ export const LMSRoutes: Routes = [
                }
             },
             {
-               path: "courses/edit/:courseId",
+               path: "courses/edit/:courseId/:memberId",
                component: CourseEditComponent,
                data: {
                  breadcrumb:'Edit course'
                },
+               canActivate:[SyllabusGuard]
             },
             {
-               path: "courses/manage/:courseId",
+               path: "courses/manage/:courseId/:memberId",
                component: CourseManageComponent,
                data: {
                  breadcrumb:'Manage course'
                },
+               canActivate:[CourseGuard]
+            },
+            {
+               path: "courses/manage/class/:courseId/:classId/:memberId",
+               component: ClassManageComponent,
+               data: {
+                 breadcrumb:'Manage class student'
+               },
+               canActivate:[CourseGuard]
             },
             {
                path: "courses/view/:courseId",

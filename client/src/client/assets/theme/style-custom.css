@@ -30,6 +30,11 @@
     clear: both;
 }
 
+.full-dialog{
+    width: 100%;
+    height: 100%;
+}
+
 .large-dialog {
 	width: 960px;
 	height:720px;
@@ -38,4 +43,14 @@
 .large-dialog-panel {
 	width: 100%;
 	height:655px;
+}
+
+.small-dialog {
+    width: 640px;
+    height:640px;
+}
+
+.small-dialog-panel {
+    width: 100%;
+    height:575px;
 }

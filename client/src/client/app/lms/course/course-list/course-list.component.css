@@ -68,12 +68,11 @@
 
 .search input{
 	border: 1px solid #bdbdbd; 
-	width: 400px; 
+	width: 360px; 
 	border-bottom-left-radius: 3px; 
 	border-top-left-radius: 3px;
 	border-radius: 3px;
     height: 30px;
-    margin-left: 50px;
 }
 
 .search button{

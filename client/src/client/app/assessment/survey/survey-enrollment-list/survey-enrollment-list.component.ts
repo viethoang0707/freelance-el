@@ -43,11 +43,11 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     enrollSurvey() {
         if (this.selectedSurvey) {
             if (this.selectedSurvey.review_state != 'approved') {
-                this.warn('Survey not reviewed yet');
+                this.warn(this.translateService.instant('Survey not reviewed yet'));
                 return;
             }
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id == this.selectedSurvey.supervisor_id) {
-                this.error('You do not have enroll permission for this survey');
+            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
+                this.error(this.translateService.instant('You do not have enroll permission for this survey'));
                 return;
             }
             this.surveyEnrollDialog.enroll(this.selectedSurvey);
@@ -64,12 +64,12 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     closeSurvey() {
         if (this.selectedSurvey) {
             if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error('You do not have close permission for this survey');
+                this.error(this.translateService.instant('You do not have close permission for this survey'));
                 return;
             }
             this.selectedSurvey.status = 'closed';
             this.selectedSurvey.save(this).subscribe(() => {
-                this.success('Survey close');
+                this.success(this.translateService.instant('Survey close'));
             });
         }
     }
@@ -77,12 +77,12 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     openSurvey() {
         if (this.selectedSurvey) {
             if  (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error('You do not have open permission for this survey');
+                this.error(this.translateService.instant('You do not have open permission for this survey'));
                 return;
             }
             this.selectedSurvey.status = 'open';
             this.selectedSurvey.save(this).subscribe(() => {
-                this.success('Survey open');
+                this.success(this.translateService.instant('Survey open'));
             });
         }
     }

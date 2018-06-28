@@ -4,6 +4,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import * as _ from 'underscore';
+import { NotificationService } from '../../services/notification.service';
 
 
 @Component({
@@ -14,18 +15,30 @@ import * as _ from 'underscore';
 export class MailMessageDialog extends BaseComponent {
 
 	private display: boolean;
-	private subject: string;
-	private body: string;
+	private recipients: string[];
 
-    constructor() {
+    @Input() subject: string;
+	@Input() body: string;
+
+
+
+    constructor(private mailService: NotificationService) {
         super();
     }
 
     ngOnInit() {
     }
 
-    show() {
+    show(recipients: string[]) {
     	this.display = true;
+        this.recipients = recipients;
+    }
+
+    send() {
+        this.mailService.broadcast(this, this.subject, this.body, this.recipients).subscribe(()=> {
+            this.success('Mail sent');
+            this.hide();
+        })
     }
 
     hide() {

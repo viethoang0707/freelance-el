@@ -8,6 +8,10 @@ import { TranslateModule, } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { CourseGuard } from './guards/course.guard';
+import { ExamGuard } from './guards/exam.guard';
+import { SurveyGuard } from './guards/survey.guard';
+import { SyllabusGuard } from './guards/syllabus.guard';
 import { ModelAPIService } from './services/api/model-api.service';
 import { FileAPIService } from './services/api/file-api.service';
 import { AccountAPIService } from './services/api/account-api.service';
@@ -45,6 +49,7 @@ import { SelectCompetencyDialog } from './components/select-competency-dialog/se
 import { SelectCompetencyLevelDialog } from './components/select-competency-level-dialog/select-competency-level-dialog.component';
 import { SelectSurveySheetDialog } from './components/select-survey-sheet-dialog/select-survey-sheet-dialog.component';
 import { SelectQuestionSheetDialog } from './components/select-question-sheet-dialog/select-question-sheet-dialog.component';
+import { MailMessageDialog } from './components/mail-message/mail-message.dialog.component'
 import { AccordionModule } from 'primeng/primeng';
 import { AutoCompleteModule } from 'primeng/primeng';
 import { BreadcrumbModule } from 'primeng/primeng';
@@ -228,7 +233,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectMultiGroupDialog,
         SelectCompetencyDialog,
         SelectCompetencyLevelDialog,
-        SelectSurveySheetDialog
+        SelectSurveySheetDialog,
+        MailMessageDialog
     ],
     exports: [
         // Angular modules
@@ -259,6 +265,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         SelectCompetencyDialog,
         SelectCompetencyLevelDialog,
         SelectSurveySheetDialog,
+        MailMessageDialog,
         // PrimeNG modules
         AccordionModule,
         AutoCompleteModule,
@@ -343,6 +350,10 @@ export class ErpSharedModule {
             providers: [
                 AuthGuard,
                 AdminGuard,
+                CourseGuard,
+                ExamGuard, 
+                SurveyGuard,
+                SyllabusGuard,
                 AccountAPIService,
                 ModelAPIService,
                 FileAPIService,
