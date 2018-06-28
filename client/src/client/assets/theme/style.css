@@ -16,28 +16,13 @@ body {
 
 img.pre-loading {
   position: absolute;
-  width: 800px;
-  height: 500px;
-  left: calc((100% - 800px)/2);
-  top: calc((100vh - 500px)/2);
-}
-
-@media screen and (max-width: 1024px) {
-  img.pre-loading {
-    width: 600px;
-    height: 400px;
-    top: 100px;
-    left: calc((100% - 600px)/2);
-  }
+  width: 70%;
+  left: 15%;
 }
 
 @media screen and (max-width: 768px) {
   img.pre-loading {
-    width: 400px;
-    height: 300px;
-    position: fixed;
-    top: 100px;
-    left: calc((100% - 400px)/2);
+    top: 30%;
   }
 }
 
@@ -639,4 +624,8 @@ body .ui-progressbar .ui-progressbar-value {
   .tree-unit-course-study{
     height: 150px;
     overflow: auto;}
+}
+
+body .ui-dialog.course-dialog .ui-dialog-content{
+  height: 85%;
 }
