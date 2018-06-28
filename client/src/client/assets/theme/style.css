@@ -310,6 +310,10 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   height: 100px;
   overflow: hidden;
   padding: 0;
+
+.dashboard-courses-list .image-box .card .image-box-footer {
+  padding-bottom: 10px;
+  padding-right: 6px;
 }
 
 .dashboard-live-conference .task-box-footer .btn-footer {
