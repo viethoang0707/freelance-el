@@ -12,6 +12,7 @@ import { GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants
 import { QuestionContainerDirective } from '../question-template/question-container.directive';
 import { IQuestion } from '../question-template/question.interface';
 import { QuestionRegister } from '../question-template/question.decorator';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
 
 @Component({
 	moduleId: module.id,
@@ -24,12 +25,14 @@ export class QuestionDialog extends BaseDialog<Question>  {
 	private selectedNode: TreeNode;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
+	WINDOW_HEIGHT: any;
 
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private changeDetectionRef: ChangeDetectorRef) {
 		super();
 		this.treeUtils = new TreeUtils();
+		this.WINDOW_HEIGHT = $(window).height();
 	}
 
 	nodeSelect(event: any) {
