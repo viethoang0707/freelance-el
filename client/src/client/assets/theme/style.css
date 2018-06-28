@@ -281,6 +281,11 @@ body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
   padding: 0;
 }
 
+.dashboard-courses-list .image-box .card .image-box-footer {
+  padding-bottom: 10px;
+  padding-right: 6px;
+}
+
 .dashboard-live-conference .task-box-footer .btn-footer {
   float: right;
 }
@@ -307,7 +312,7 @@ body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
 .dashboard-live-conference .task-box.task-box-4 .task-box-header,
 .dashboard-live-conference .task-box.task-box-4 .task-box-footer .btn-footer {
   /* background-color: #616161;*/
-  background-color: #71a23c;
+ background-color: #71a23c;
 }
 
 body .user-dashboard .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler {
