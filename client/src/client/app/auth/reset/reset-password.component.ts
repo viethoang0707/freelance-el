@@ -12,27 +12,29 @@ import { Token } from '../../shared/models/cloud/token.model';
 
 export class ResetPasswordComponent extends BaseComponent implements OnInit {
 
-    private actionDone: boolean;
-    private token: string;
-    private buildMode: string = "<%= BUILD_TYPE %>";
-    
-    @Input() new_pass: string;
-    @Input() confirm_pass: string;
-    @Input() cloudid: string;
+  private token: string;
+  private buildMode: string = "<%= BUILD_TYPE %>";
 
-    constructor(private route: ActivatedRoute, private router: Router) { 
-      super(); 
-    }
+  @Input() new_pass: string;
+  @Input() confirm_pass: string;
+  @Input() cloudid: string;
 
-    ngOnInit() {
-      this.actionDone =  false;
-      this.token = this.route.snapshot.queryParams['token'] || '/';
-    }
+  constructor(private route: ActivatedRoute, private router: Router) {
+    super();
+  }
 
-    resetPassword() {
-        this.accApiService.resetPasswordExecute(this.token, this.new_pass, this.cloudid).subscribe(() => {
-            this.actionDone =  true;
-        });
-    }
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.token = params['token'];
+    });
+  }
+
+  resetPassword() {
+    this.accApiService.resetPasswordExecute(this.token, this.new_pass, this.cloudid).subscribe(() => {
+      this.success('Your password has been reset successfully.');
+    }, (err) => {
+      this.error(err["message"]);
+    });
+  }
 }
 

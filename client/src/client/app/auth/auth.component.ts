@@ -8,7 +8,7 @@ declare var $: any;
 @Component({
     moduleId: module.id,
     selector: 'auth',
-    template: '<router-outlet></router-outlet>',
+    template: '<p-growl ></p-growl><router-outlet></router-outlet>',
 })
 
 export class AuthComponent  {

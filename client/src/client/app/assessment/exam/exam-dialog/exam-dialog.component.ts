@@ -18,6 +18,7 @@ import { SelectCompetencyLevelDialog } from '../../../shared/components/select-c
     moduleId: module.id,
     selector: 'exam-dialog',
     templateUrl: 'exam-dialog.component.html',
+    styleUrls: ['exam-dialog.component.css'],
 })
 export class ExamDialog extends BaseDialog<Exam> {
 

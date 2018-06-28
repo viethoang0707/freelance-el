@@ -25,7 +25,7 @@ export class FileAPIService {
             })
             .catch(error =>  {
                 this.appEvent.finishHttpTransaction();
-                return Observable.throw(error)}
+                return Observable.throw(error.json())}
             );
     }
 

@@ -76,7 +76,7 @@ export class Survey extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved')]");
+        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved'),('status','=','open')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
@@ -86,7 +86,7 @@ export class Survey extends BaseModel{
                     return survey.review_state == 'approved' ;
                 });
             });
-        return Survey.search(context,[],"[('review_state','=','approved')]");
+        return Survey.search(context,[],"[('review_state','=','approved'),('status','=','open')]");
     }
 
     static __api__listByClass(classId: number): SearchReadAPI {
