@@ -31,7 +31,7 @@
         </div>
       </div>
     </p-tabPanel>
-    <p-tabPanel *ngIf="member.class_id" header="{{'Project'|translate}}" leftIcon="ui-icon-assignment">
+    <p-tabPanel *ngIf="member.class_id" header="{{'Project'|translate}}" leftIcon="ui-icon-assignment" styleClass="project-course-study" headerStyleClass="project-course-study">
       <div class="ui-lg-12 ui-g-12">
         <p-dataList [value]="projects" [paginator]="true" [rows]="5">
           <ng-template let-project pTemplate="item">
@@ -57,7 +57,6 @@
                       </div>
                     </p-accordionTab>
                   </p-accordion>
-                  
                 </div>
                 <div class="ui-lg-4 ui-g-12">
                   <p-card>
@@ -96,7 +95,7 @@
       </div>
     </p-tabPanel>
     <p-tabPanel *ngIf="member.class_id" header="{{'Exam'|translate}}" leftIcon="ui-icon-grade">
-      <div class="ui-lg-12 ui-g-12">
+      <div class="ui-lg-12 ui-md-12 ui-g-12">
         <p-dataList [value]="examMembers" [paginator]="true" [rows]="5">
           <ng-template let-member pTemplate="item">
             <p-card>
@@ -105,7 +104,7 @@
                 </div>
               </p-header>
               <div class="ui-g body-exam">
-                <div class="ui-lg-8 ui-g-12">
+                <div class="ui-lg-8 ui-md-12 ui-g-12">
                   <h4 class="title">{{member.exam.name}}</h4>
                   <span class="e-status">
                     {{EXAM_STATUS[member.exam.status] | translate}}
@@ -122,7 +121,7 @@
                   
                   <!-- </div> -->
                 </div>
-                <div class="ui-lg-4 ui-g-12">
+                <div class="ui-lg-4 ui-md-12 ui-g-12">
                   <p-card>
                     <ul class="list-cmt">
                       <li class="clearfix">
@@ -166,7 +165,7 @@
       </div>
     </p-tabPanel>
     <p-tabPanel *ngIf="member.class_id" header="{{'Gradebook'|translate}}" leftIcon="ui-icon-book">
-      <div class="ui-lg-12 ui-g-12">
+      <div class="ui-lg-12 ui-md-12 ui-g-12">
         <p-toolbar>
           <div class="ui-toolbar-group-left">
             <button pButton type="button " label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
@@ -180,7 +179,7 @@
                 </div>
               </p-header>
               <div class="ui-g body-exam">
-                <div class="ui-lg-8 ui-g-12">
+                <div class="ui-lg-8 ui-md-12 ui-g-12">
                   <h4>{{member.exam.name}}</h4>
                   <span class="e-status">
                     {{EXAM_STATUS[member.exam.status] | translate}}
@@ -192,7 +191,7 @@
                   <h5 class="e-title">{{'Instruction'|translate}}</h5>
                   <p [innerHTML]="member.exam.instruction"></p>
                 </div>
-                <div class="ui-lg-4 ui-g-12">
+                <div class="ui-lg-4 ui-md-12 ui-g-12">
                   <p-card>
                     <ul class="list-cmt">
                       <li class="clearfix">
@@ -234,7 +233,7 @@
         <certificate-print-dialog></certificate-print-dialog>
       </div>
     </p-tabPanel>
-    <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download">
+    <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download" styleClass="course-material-study" headerStyleClass="course-material-study">
       <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
         <ul class="task-list-container">
           <li *ngFor="let material of materials">
@@ -258,8 +257,8 @@
       </div>
     </p-tabPanel>
     <p-tabPanel *ngIf="course.mode=='group'" header="{{'Conference'|translate}}" leftIcon="ui-icon-call">
-      <div class="ui-g-12">
-        <div class="ui-g-4">
+      <div class="ui-lg-12 ui-md-12 ui-g-12">
+        <div class="ui-lg-4 ui-md-6 ui-g-12">
           <div class="task-box task-box-1">
             <div class="task-box-header">
               <button pButton type="button " label="{{ 'Join'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
@@ -278,7 +277,7 @@
       </div>
     </p-tabPanel>
     <p-tabPanel *ngIf="member.class_id" header="{{'Survey'|translate}}" leftIcon="ui-icon-question-answer">
-      <div class="ui-g-12 ">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
         <p-dataList [value]="surveys" [paginator]="true" [rows]="5">
           <ng-template let-survey pTemplate="item">
             <p-card>
@@ -287,7 +286,7 @@
                 </div>
               </p-header>
               <div class="ui-g body-exam">
-                <div class="ui-g-8">
+                <div class="ui-lg-8 ui-md-12 ui-g-12">
                   <h4 class="title">{{survey.name}}</h4>
                   <span class="e-status">
                     {{SURVEY_STATUS[survey.status] | translate}}
@@ -302,7 +301,7 @@
                     </p-accordionTab>
                   </p-accordion>
                 </div>
-                <div class="ui-g-4">
+                <div class="ui-lg-4 ui-md-12 ui-g-12">
                   <p-card>
                     <ul class="list-cmt">
                       <li class="clearfix">
