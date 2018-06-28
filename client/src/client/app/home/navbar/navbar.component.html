@@ -51,19 +51,19 @@
             <li class="stats-items" #stats [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === stats}" (click)="eventManager.topbarRootItemClick( stats)" *ngIf="ContextUser.IsAdmin">
                 <a> 
             <i class="topbar-icon material-icons">person_pin_circle</i>
-            <div> {{userCount}} {{'users'|translate}}</div>
+            <div> {{userCount}} {{'Users'|translate}}</div>
         </a>
                 <a>
             <i class="topbar-icon material-icons">school</i>
-            <div> {{courseCount}} {{'courses'|translate}}</div>
+            <div> {{courseCount}} {{'Courses'|translate}}</div>
         </a>
                 <a>
             <i class="topbar-icon material-icons">people</i>
-            <div> {{studentCount}} {{'students'|translate}}</div>
+            <div> {{studentCount}} {{'Students'|translate}}</div>
         </a>
                 <a>
             <i class="topbar-icon material-icons">people</i>
-            <div> {{teacherCount}} {{'teachers'|translate}}</div>
+            <div> {{teacherCount}} {{'Teachers'|translate}}</div>
         </a>
             </li>
         </ul>
