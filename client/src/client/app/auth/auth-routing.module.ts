@@ -12,10 +12,10 @@ import { ResetPasswordComponent } from './reset/reset-password.component';
                 path: 'auth',
                 component: AuthComponent,
                 children: [
-                    {path: '', pathMatch: 'full', component: LoginComponent},
                     {path: 'login', component: LoginComponent},
                     {path: 'recover-pass', component: RecoverPasswordComponent},
-                    {path: 'reset-pass', component: RecoverPasswordComponent},
+                    {path: 'reset-pass/:token', component: ResetPasswordComponent},
+                    {path: '', pathMatch: 'full', component: LoginComponent},
                 ]
             }
         ])

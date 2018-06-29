@@ -13,7 +13,6 @@ import { Token } from '../../shared/models/cloud/token.model';
 export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
     private buildMode: string = "<%= BUILD_TYPE %>";
-    private actionDone: boolean;
     
     @Input() recover_email: string;
     @Input() cloudid: string;
@@ -24,12 +23,13 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.actionDone =  false;
     }
 
     recoverPassword() {
         this.accApiService.resetPasswordRequest(this.recover_email, this.cloudid).subscribe(() => {
-            this.actionDone =  true;
+            this.success('Instruction to reset passwrod will be sent to your email.');
+        }, (err)=> {
+          this.error(err["message"]);
         });
     }
 }

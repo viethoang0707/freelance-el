@@ -13,7 +13,7 @@ export const DEFAULT_DATE_LOCALE = {
     today: 'Today',
     clear: 'Clear'
 };
-
+export const COURSE_STATUS = { 'open': 'Open', 'closed': 'Closed' };
 export const EXAM_STATUS = { 'open': 'Open', 'closed': 'Closed' };
 export const CLASS_STATUS = { 'open': 'Open', 'closed': 'Closed' };
 export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM', SURVEY: 'SURVEY', COMPETENCY: 'COMPETENCY' };

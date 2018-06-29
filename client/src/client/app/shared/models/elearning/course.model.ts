@@ -90,7 +90,7 @@ export class Course extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved')]");
+        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved'),('status','=','open')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
@@ -100,7 +100,7 @@ export class Course extends BaseModel{
                     return course.review_state == 'approved' ;
                 });
             });
-        return Course.search(context,[],"[('review_state','=','approved')]");
+        return Course.search(context,[],"[('review_state','=','approved'),('status','=','open')]");
     }
 
     static __api__listByCompetency(competencyId: number): SearchReadAPI {
