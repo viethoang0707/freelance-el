@@ -571,7 +571,7 @@ body .ui-dialog.course-dialog .ui-dialog-content{
   height: 85%;
 }
 
-body .exem-study .ui-dialog .ui-dialog-content{
+body .exam-study .ui-dialog .ui-dialog-content{
   height: 100%;
 }
 
@@ -580,9 +580,6 @@ body .exem-study .ui-dialog .ui-dialog-content{
     height: 150px;
     overflow: auto;}
 
-  .exam-study .ui-dialog-content.ui-widget-content {
-    height: 500px !important;
-  }
   .exam-study .btn-submit-exam {
     margin-left: 0 !important;
   }
