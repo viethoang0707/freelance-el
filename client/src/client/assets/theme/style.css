@@ -257,10 +257,7 @@ body .linkPage.ui-paginator {
   border: none;
 }
 
-body .linkPage.ui-paginator>a {
-  color: #283593;
-}
-
+body .linkPage.ui-paginator>a,
 body .linkPage.ui-paginator .ui-paginator-pages a {
   color: #283593;
 }
@@ -269,11 +266,6 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   background-color: #283593;
   color: #fff;
 }
-
-.dashboard-courses-list .image-box .card .image-box-footer{
-  padding-bottom: 10px;
-  padding-right: 6px;
- }
 
 body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
   height: 100px;
@@ -556,19 +548,6 @@ body .ui-progressbar .ui-progressbar-value {
   display: inline;
 }
 
-@media screen and (max-width: 400px) {
-  .tree-unit-course-study {
-    height: 150px;
-    overflow: auto;
-  }
-  .exam-study .ui-dialog-content.ui-widget-content {
-    height: 500px !important;
-  }
-  .exam-study .btn-submit-exam {
-    margin-left: 0 !important;
-  }
-}
-
 .mobile-logo {
   width: 140px;
   height: 40px !important;
@@ -617,13 +596,8 @@ body .exem-study .ui-dialog .ui-dialog-content{
     margin-top: 5px !important;
   }
 
-  .layout-wrapper .layout-main .layout-footer .footer-text-right {
-    margin-top: 10px;
-    text-align: center;
-    display: block;
-    float: none;
-  }
-  .layout-wrapper .layout-main .layout-footer .footer-text-left {
+  .layout-wrapper .layout-main .layout-footer .footer-text-right,
+  .layout-wrapper .layout-main .layout-footer .footer-text-left{
     margin-top: 10px;
     text-align: center;
     display: block;
