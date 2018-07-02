@@ -107,7 +107,7 @@
 	"Teachers": "Giáo viên",
 	"Confirmation": "Xác nhận",
 	"Are you sure to delete?": "Bạn có chắc chắn xóa không?",
-	"Exam enrollment": "Kỳ thi tuyển sinh",
+	"Exam enrollment": "Tuyển sinh kỳ thi",
 	"Course enrollment": "Tuyển sinh khóa học",
 	"Title": "Tiêu đề",
 	"Level": "Cấp độ",
@@ -397,6 +397,7 @@
 	"Project start time is required": "Nhập thời gian bắt đầu bài tập lớn là bắt buộc",
 	"Project end time is required": "Nhập thời gian kết thúc bài tập lớn là bắt buộc",
 	"Competency": "Quản lý Năng lực",
+	"COMPETENCY": "Quản lý Năng lực",
 	"New level": "Cấp độ mới",
 	"Object created successfully.": "Đối tương đã được tạo thành công",
 	"Permission denied": "Quyền bị từ chối",
@@ -435,6 +436,7 @@
 	"Question sheet templates": "Mẫu đề thi",
 	"Survey": "Khảo sát",
 	"Surveys": "Khảo sát",
+	"SURVEY": "Khảo sát",
 	"My survey": "Khảo sát của tôi",
 	"My surveys": "Khảo sát của tôi",
 	"Survey sheets": "Phiếu khảo sát",
@@ -460,5 +462,6 @@
 	"Course recommend": "Đề xuất khóa học",
 	"Attachment": "Tập tin đính kèm",
 	"Exam not available": "Kỳ thi không khả dụng",
+	"Course not available": "Khóa học không khả dụng",
 	"Recent exam": "Kỳ thi gần đây"
 }
