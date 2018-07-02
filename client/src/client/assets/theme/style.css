@@ -281,31 +281,6 @@ body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
   padding: 0;
 }
 
-.dashboard-courses-list .image-box .card .image-box-footer {
-  padding-bottom: 10px;
-  padding-right: 6px;
-}
-
-body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
-  height: 100px;
-  overflow: hidden;
-  padding: 0;
-
-.dashboard-courses-list .image-box .card .image-box-footer {
-  padding-bottom: 10px;
-  padding-right: 6px;
-}
-
-body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
-  height: 100px;
-  overflow: hidden;
-  padding: 0;
-
-.dashboard-courses-list .image-box .card .image-box-footer {
-  padding-bottom: 10px;
-  padding-right: 6px;
-}
-
 .dashboard-live-conference .task-box-footer .btn-footer {
   float: right;
 }
@@ -612,17 +587,6 @@ body .ui-dialog.course-dialog .ui-dialog-content{
   height: 85%;
 }
 
-body .exem-study .ui-dialog .ui-dialog-content{
-  height: 100%;
-}
-body .exem-study .ui-dialog .ui-dialog-content{
-  height: 100%;
-}body .exem-study .ui-dialog .ui-dialog-content{
-  height: 100%;
-}
-body .exem-study .ui-dialog .ui-dialog-content{
-  height: 100%;
-}
 body .exem-study .ui-dialog .ui-dialog-content{
   height: 100%;
 }
