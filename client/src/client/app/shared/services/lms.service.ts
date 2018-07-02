@@ -52,34 +52,18 @@ export class LMSService {
 
   private myCourseMembers: CourseMember[];
   private myClassMembers: CourseMember[];
-  private __myCourseMembers__dirty: boolean;
-  private __myCourseMembers__touch: boolean;
   private myExamMembers: ExamMember[];
-  private __myExamMembers__dirty: boolean;
-  private __myExamMembers__touch: boolean;
   private mySurveyMembers: SurveyMember[];
-  private __mySurveyMembers__dirty: boolean;
-  private __mySurveyMembers__touch: boolean;
   private myConferenceMembers: ConferenceMember[];
-  private __myConferenceMembers__dirty: boolean;
-  private __myConferenceMembers__touch: boolean;
   private myClassExams: any;
-  private __myClassExams__dirty: boolean;
-  private __myClassExams__touch: boolean;
   private myClassSurveys: any;
-  private __myClassSurveys__dirty: boolean;
-  private __myClassSurveys__touch: boolean;
   private myProjects: any;
-  private __myProjects__dirty: boolean;
-  private __myProjects__touch: boolean;
 
 
   private mySyllabus: CourseSyllabus[];
   private myUnits: any;
   private myFaqs: any;
   private myMaterials: any;
-  private __mySyllabus__dirty: boolean;
-  private __mySyllabus__touch: boolean;
 
   private initialized: boolean;
   private syllabusInitialized: boolean;
@@ -111,17 +95,9 @@ export class LMSService {
     this.initialized = false;
     this.courseAnalyticInitialized = false;
     this.myExamMembers = [];
-    this.__myExamMembers__dirty = false;
-    this.__myExamMembers__touch = false;
     this.mySurveyMembers = [];
-    this.__mySurveyMembers__dirty = false;
-    this.__mySurveyMembers__touch = false;
     this.mySurveyMembers = [];
-    this.__mySurveyMembers__dirty = false;
-    this.__mySurveyMembers__touch = false;
     this.myConferenceMembers = [];
-    this.__myConferenceMembers__dirty = false;
-    this.__myConferenceMembers__touch = false;
 
     this.invalidateCourseContent();
     this.invalidateClassContent();
@@ -131,28 +107,18 @@ export class LMSService {
   invalidateCourseContent() {
     this.syllabusInitialized = false;
     this.mySyllabus = [];
-    this.__mySyllabus__touch = false;
-    this.__mySyllabus__dirty = false;
     this.myUnits = {};
     this.myFaqs = {};
     this.myMaterials = {};
     this.myCourseMembers = [];
     this.myClassMembers = [];
-    this.__myCourseMembers__dirty = false;
-    this.__myCourseMembers__touch = false;
   }
 
   invalidateClassContent() {
     this.classInitialized = false;
     this.myClassExams = {};
-    this.__myClassExams__dirty = false;
-    this.__myClassExams__touch = false;
     this.myProjects = {};
-    this.__myProjects__dirty = false;
-    this.__myProjects__touch = false;
     this.myClassSurveys = {};
-    this.__myClassSurveys__dirty = false;
-    this.__myClassSurveys__touch = false;
   }
 
   init(context: APIContext): Observable<any> {
@@ -181,10 +147,6 @@ export class LMSService {
         this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
           return isFinite(parseInt(member.survey_id + ""));
         });
-        this.__myCourseMembers__touch = true;
-        this.__myExamMembers__touch = true;
-        this.__mySurveyMembers__touch = true;
-        this.__myConferenceMembers__touch = true;
         if (this.myCourseMembers.length == 0 && this.myExamMembers.length == 0
           && this.mySurveyMembers.length == 0 && this.myConferenceMembers.length == 0) {
           this.initialized = true;
@@ -547,13 +509,13 @@ export class LMSService {
       return survey.id;
     });
     _.each(surveys, (survey: Survey) => {
-      survey["candidate"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+      survey["candidate"] = _.find(this.mySurveyMembers, (member: SurveyMember) => {
         return member.survey_id == survey.id && member.role == 'candidate';
       });
-      survey["supervisor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+      survey["supervisor"] = _.find(this.mySurveyMembers, (member: SurveyMember) => {
         return member.survey_id == survey.id && member.role == 'supervisor';
       });
-      survey["editor"] = _.find(this.myExamMembers, (member: SurveyMember) => {
+      survey["editor"] = _.find(this.mySurveyMembers, (member: SurveyMember) => {
         return member.survey_id == survey.id && (member.role == 'editor' || member.role == 'supervisor');
       });
       if (survey["supervisor"])

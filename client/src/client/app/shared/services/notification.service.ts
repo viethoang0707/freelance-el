@@ -12,7 +12,7 @@ export class NotificationService {
     constructor(private apiService: ModelAPIService) { }
 
 
-    broadcast(context: APIContext, subject: string, body:string, recipients:string[]) : Observable<any> {
+    broadcast(context: APIContext, subject: string, body:string, recipients:string) : Observable<any> {
         var params = {subject: subject, body: body, recipients: recipients};
         var executeApi = new ExecuteAPI('etraining.notification_service','broadcastMail', params, null)
         return this.apiService.execute(executeApi,context.authService.LoginToken);

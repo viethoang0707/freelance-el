@@ -9,7 +9,7 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
-import { DEFAULT_DATE_LOCALE, GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
+import { DEFAULT_DATE_LOCALE, GROUP_CATEGORY, CONTENT_STATUS, CLASS_STATUS, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
@@ -22,11 +22,7 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 })
 export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit {
 
-	COURSE_MODE = COURSE_MODE;
-	CONTENT_STATUS = CONTENT_STATUS;
-	COURSE_MEMBER_ROLE = COURSE_MEMBER_ROLE;
-	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
-	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
+	CLASS_STATUS = CLASS_STATUS;
 
 	private rangeDates: Date[];
 	private locale:any;
@@ -35,6 +31,7 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	private members: CourseMember[];
 	private items: MenuItem[];
 	private treeUtils: TreeUtils;
+	private classStatus: SelectItem[];
 	
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -42,6 +39,12 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 		super();
 		this.locale = DEFAULT_DATE_LOCALE;
 		this.treeUtils = new TreeUtils();
+		this.classStatus = _.map(CLASS_STATUS, (val, key) => {
+			return {
+				label: this.translateService.instant(val),
+				value: key
+			}
+		});
 	}
 
 	ngOnInit() {

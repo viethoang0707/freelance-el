@@ -17,6 +17,7 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
     moduleId: module.id,
     selector: 'survey-dialog',
     templateUrl: 'survey-dialog.component.html',
+    styleUrls: ['survey-dialog.component.css'],
 })
 export class SurveyDialog extends BaseDialog<Survey> {
 

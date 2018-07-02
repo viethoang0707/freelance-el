@@ -18,7 +18,7 @@ import { Achivement } from '../../../shared/models/elearning/achievement.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
-
+import { ExcelService } from '../../../shared/services/excel.service';
 
 @Component({
 	moduleId: module.id,
@@ -30,7 +30,7 @@ export class LMSProfileDialog extends BaseDialog<User> {
 
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 	EXAM_MEMBER_ENROLL_STATUS = EXAM_MEMBER_ENROLL_STATUS;
-	
+
 	private courseMembers: CourseMember[];
 	private examMembers: ExamMember[];
 	private certificates: Certificate[];
@@ -38,7 +38,7 @@ export class LMSProfileDialog extends BaseDialog<User> {
 
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
-	constructor() {
+	constructor(private excelService: ExcelService) {
 		super();
 		this.courseMembers = [];
 		this.skills = [];
@@ -51,72 +51,96 @@ export class LMSProfileDialog extends BaseDialog<User> {
 			this.courseMembers = [];
 			this.skills = [];
 			this.examMembers = [];
+
 			BaseModel
-			.bulk_search(this,
-				CourseMember.__api__listByUser(object.id),
-				Certificate.__api__listByUser(object.id),
-				Achivement.__api__listByUser(object.id),
-				ExamMember.__api__listByUser(object.id),
-	            Submission.__api__listByUser(object.id))
-			.subscribe((jsonArr)=> {
-				this.courseMembers =  CourseMember.toArray(jsonArr[0]);
-				this.certificates =  Certificate.toArray(jsonArr[1]);
-				this.skills =  Achivement.toArray(jsonArr[2]);
-				this.examMembers = ExamMember.toArray(jsonArr[3]);
-                var submits = Submission.toArray(jsonArr[4]);
-                this.displayExams(submits);
-				this.displayCourseHistory();
-				this.displaySkills();
-			});
+				.bulk_search(this,
+					CourseMember.__api__listByUser(object.user_id),
+					Certificate.__api__listByUser(object.user_id),
+					Achivement.__api__listByUser(object.user_id),
+					ExamMember.__api__listByUser(object.user_id),
+					Submission.__api__listByUser(object.user_id))
+				.subscribe((jsonArr) => {
+					this.courseMembers = CourseMember.toArray(jsonArr[0]);
+					this.certificates = Certificate.toArray(jsonArr[1]);
+					this.skills = Achivement.toArray(jsonArr[2]);
+					this.examMembers = ExamMember.toArray(jsonArr[3]);
+					var submits = Submission.toArray(jsonArr[4]);
+					this.displayExams(submits);
+					this.displayCourseHistory();
+					this.displaySkills();
+				});
 		});
 	}
 
 	displayCourseHistory() {
-		this.courseMembers =  _.filter(this.courseMembers, (member: CourseMember) => {
+		this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
 			return member.role == 'student';
 		});
 		_.each(this.courseMembers, (member: CourseMember) => {
-			member["certificate"] = _.find(this.certificates, (cert:Certificate) => {
+			member["certificate"] = _.find(this.certificates, (cert: Certificate) => {
 				return cert.member_id == member.id;
 			});
 		});
 	}
 
 	displaySkills() {
-		this.skills.sort((s1:Achivement,s2:Achivement)=> {
+		this.skills.sort((s1: Achivement, s2: Achivement) => {
 			return s1.date_acquire.getTime() - s2.date_acquire.getTime();
 		});
 	}
 
 
 	displayExams(submits: Submission[]) {
-        this.examMembers = _.filter(this.examMembers , (member: ExamMember) => {
-            return (member.exam_id && member.status == 'active' && member.role == 'candidate');
-        });
-        this.examMembers.sort((member1, member2): any => {
-            return (member1.exam.create_date < member1.exam.create_date)
-        });
-        var examIds = _.pluck(this.examMembers, 'exam_id');
-        ExamGrade.listByExams(this, examIds).subscribe(grades => {
-	        _.each(this.examMembers, (member: ExamMember) => {
-	        	var examGrades = _.filter(grades, (grade:ExamGrade)=> {
-						return grade.exam_id == member.exam_id;
+		this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
+			return (member.exam_id && member.status == 'active' && member.role == 'candidate');
+		});
+		this.examMembers.sort((member1, member2): any => {
+			return (member1.exam.create_date < member1.exam.create_date)
+		});
+		var examIds = _.pluck(this.examMembers, 'exam_id');
+		ExamGrade.listByExams(this, examIds).subscribe(grades => {
+			_.each(this.examMembers, (member: ExamMember) => {
+				var examGrades = _.filter(grades, (grade: ExamGrade) => {
+					return grade.exam_id == member.exam_id;
 				});
-	            member["submit"] = _.find(submits, (submit: Submission) => {
-	                return submit.member_id == member.id && submit.exam_id == member.exam_id;
-	            });
-	            if (member["submit"]) {
-	                member["score"] = member["submit"].score;
-	                member["grade"] = ExamGrade.gradeScore(examGrades, member["score"]);
-	            }
-	            else
-	                member["score"] = '';
-	        });
-	    });
-    }
+				member["submit"] = _.find(submits, (submit: Submission) => {
+					return submit.member_id == member.id && submit.exam_id == member.exam_id;
+				});
+				if (member["submit"]) {
+					member["score"] = member["submit"].score;
+					member["grade"] = ExamGrade.gradeScore(examGrades, member["score"]);
+				}
+				else
+					member["score"] = '';
+			});
+		});
+	}
 
 	printCertificate(certificate) {
 		this.certPrintDialog.show(certificate);
+	}
+
+	exportCourse() {
+		let output = _.map(this.courseMembers, courseMember => {
+			return {
+				'Course': courseMember['course_name'], 'Register date': courseMember['date_register'], 'Enrollment status': courseMember['enroll_status'], 'Certificate': courseMember['certificate'] ? 'Yes' : 'No'
+			};
+		})
+		this.excelService.exportAsExcelFile(output, 'course_history_report');
+	}
+
+	exportExam() {
+		let output = _.map(this.examMembers, examMember => {
+			return { 'Exam': examMember['exam_name'], 'Register date': examMember['date_register'], 'Enrollment status': examMember['enroll_status'], 'Grade': examMember['grade'] ? examMember['grade'].name : '' };
+		})
+		this.excelService.exportAsExcelFile(output, 'exam_history_report');
+	}
+
+	exportSkill() {
+		let output = _.map(this.skills, skill => {
+			return { 'Competency': skill['competency_name'], 'Level': skill['competency_level_name'], 'Date acquired': skill['date_acquire'] };
+		})
+		this.excelService.exportAsExcelFile(output, 'skill_report');
 	}
 
 }

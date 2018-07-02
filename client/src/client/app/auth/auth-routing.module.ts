@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AuthComponent } from './auth.component';
 import { LoginComponent } from './login/login.component';
 import { RecoverPasswordComponent } from './recover/recover-password.component';
+import { ResetPasswordComponent } from './reset/reset-password.component';
 
 @NgModule({
     imports: [
@@ -11,9 +12,10 @@ import { RecoverPasswordComponent } from './recover/recover-password.component';
                 path: 'auth',
                 component: AuthComponent,
                 children: [
-                    {path: '', pathMatch: 'full', component: LoginComponent},
                     {path: 'login', component: LoginComponent},
-                    {path: 'recover-password', component: RecoverPasswordComponent},
+                    {path: 'recover-pass', component: RecoverPasswordComponent},
+                    {path: 'reset-pass/:token', component: ResetPasswordComponent},
+                    {path: '', pathMatch: 'full', component: LoginComponent},
                 ]
             }
         ])

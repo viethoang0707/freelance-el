@@ -15,7 +15,7 @@ import { NotificationService } from '../../services/notification.service';
 export class MailMessageDialog extends BaseComponent {
 
 	private display: boolean;
-	private recipients: string[];
+	private recipients: string;
 
     @Input() subject: string;
 	@Input() body: string;
@@ -31,7 +31,11 @@ export class MailMessageDialog extends BaseComponent {
 
     show(recipients: string[]) {
     	this.display = true;
-        this.recipients = recipients;
+        recipients = _.filter(recipients, (email:string)=> {
+            email = email.trim();
+            return (email.length > 0)
+        });
+        this.recipients = recipients.join();
     }
 
     send() {

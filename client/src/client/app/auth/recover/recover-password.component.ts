@@ -12,7 +12,11 @@ import { Token } from '../../shared/models/cloud/token.model';
 
 export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
+    private buildMode: string = "<%= BUILD_TYPE %>";
+    
     @Input() recover_email: string;
+    @Input() cloudid: string;
+
 
     constructor() { 
       super(); 
@@ -22,8 +26,10 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
     }
 
     recoverPassword() {
-        this.authService.resetPass(this.recover_email).subscribe(() => {
-            this.success('Password recovery instruction sent to your email')
+        this.accApiService.resetPasswordRequest(this.recover_email, this.cloudid).subscribe(() => {
+            this.success('Instruction to reset passwrod will be sent to your email.');
+        }, (err)=> {
+          this.error(err["message"]);
         });
     }
 }
