@@ -21,27 +21,29 @@
                         <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
                         <label>{{'Name'|translate}}</label>
                         <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
-                          <div *ngIf="name.errors.required">
-                            {{'Name is required' | translate}}
-                          </div>
+                            <div *ngIf="name.errors.required">
+                                {{'Name is required' | translate}}
+                            </div>
                         </div>
                     </span>
                     <span class="md-inputfield mt30">
                         <input type="text" pInputText [(ngModel)]="object.code" #code="ngModel" name="code" required>
                         <label>{{'Code'|translate}}</label>
                         <div *ngIf="code.invalid && (code.dirty || code.touched)" class="ui-message ui-messages-error ui-corner-all">
-                          <div *ngIf="code.errors.required">
-                            {{'Code is required' | translate}}
-                          </div>
+                            <div *ngIf="code.errors.required">
+                                {{'Code is required' | translate}}
+                            </div>
                         </div>
                     </span>
                     <div class="mt20">
                         <label>{{'Mode'|translate}}</label>
                         <div style="margin:10px 0">
-                            <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode" inputId="opt1" #mode="ngModel" required></p-radioButton>
+                            <p-radioButton name="mode" value="self-study" [disabled]="object.id" label="{{'Self-study'|translate}}" [(ngModel)]="object.mode"
+                                inputId="opt1" #mode="ngModel" required></p-radioButton>
                         </div>
                         <div style="margin-bottom:10px">
-                            <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode" inputId="opt2" required></p-radioButton>
+                            <p-radioButton name="mode" value="group" [disabled]="object.id" label="{{'Group study'|translate}}" [(ngModel)]="object.mode"
+                                inputId="opt2" required></p-radioButton>
                         </div>
                         <div *ngIf="mode.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
                             <div *ngIf="mode.errors.required">
@@ -56,9 +58,15 @@
                         <textarea pInputTextarea [(ngModel)]="object.summary" name="summary"></textarea>
                     </div>
                     <div class="ui-g-4">
-                        <div class="ui-g-12"> <span (click)="selectEditor()">{{'Editor' |translate}}: {{editor.name}}<i class="material-icons">eject</i></span>
+                        <div class="ui-g-12">
+                            <span (click)="selectEditor()">{{'Editor' |translate}}: {{editor.name}}
+                                <i class="material-icons">eject</i>
+                            </span>
                         </div>
-                        <div class="ui-g-12"> <span (click)="selectCompetencyLevel()">{{'Competency level' |translate}}: {{object.competency_level_name}}<i class="material-icons">eject</i></span>
+                        <div class="ui-g-12">
+                            <span (click)="selectCompetencyLevel()">{{'Competency level' |translate}}: {{object.competency_level_name}}
+                                <i class="material-icons">eject</i>
+                            </span>
                         </div>
                     </div>
                 </div>
