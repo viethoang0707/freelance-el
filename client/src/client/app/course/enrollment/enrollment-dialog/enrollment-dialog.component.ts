@@ -122,7 +122,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 				return member;
 			});
 			CourseMember.createArray(this, members).subscribe(()=> {
-				this.success('Teacher registered successfully');
+				this.success(this.translateService.instant('Teacher registered successfully'));
 				this.loadMembers();
 			});
 		});

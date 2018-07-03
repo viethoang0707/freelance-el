@@ -9,37 +9,37 @@ ul {
 }
 </style>
 <div class="card card-w-title ui-g">
-    <div class="ui-lg-12 ui-g-12">
-        <div class="ui-lg-6 ui-g-12">
+    <div class="ui-lg-12 ui-md-12 ui-g-12">
+        <div class="ui-lg-6 ui-md-6 ui-g-12">
             <h1>{{'My courses'|translate}}</h1>
         </div>
-        <div class="search ui-lg-6 ui-g-12">
+        <div class="search ui-lg-6 ui-md-6 ui-g-12">
             <div class="ui-inputgroup fRight">
-                <input type="text" pInputText   (input)="filterCourse()" placeholder="{{'Keyword'|translate}}" name="keywordInput" [(ngModel)]="keyword">
+                <input type="text" pInputText (input)="filterCourse()" placeholder="{{'Keyword'|translate}}" name="keywordInput" [(ngModel)]="keyword">
             </div>
         </div>
     </div>
     <div class="clearfix"></div>
-    <div class="ui-lg-12 ui-g-12">
+    <div class="ui-lg-12 ui-md-12 ui-g-12">
         <p-dataList [value]="filteredCourses" [paginator]="true" [rows]="5" styleClass="lms-course-list">
             <ng-template let-course pTemplate="item">
                 <p-card styleClass="lms-course-list-item">
                     <div class="ui-g">
-                        <div class="ui-lg-9 ui-g-12">
+                        <div class="ui-lg-9 ui-md-12 ui-g-12">
                             <div class="ui-lg-12 ui-g-12 border">
                                 <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null" [disabled]="! course.IsAvailable"></button>
-                                    <button pButton type="button" icon="ui-icon-visibility" title="{{'View'| translate}}" label="{{'View'|translate}}" class="mr4 blue-grey-btn" (click)="viewCourse(course)" *ngIf="course.teacher!=null" ></button>
-                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishCourse(course)" *ngIf="course.supervisor!=null" ></button>
-                                    <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course,course.editor!)" *ngIf="course.editor!=null"></button>
-                                    <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null "[disabled]="!course.IsAvailable"></button>
+                                <button pButton type="button" icon="ui-icon-visibility" title="{{'View'| translate}}" label="{{'View'|translate}}" class="mr4 blue-grey-btn" (click)="viewCourse(course)" *ngIf="course.teacher!=null" ></button>
+                                <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishCourse(course)" *ngIf="course.supervisor!=null" ></button>
+                                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course,course.editor!)" *ngIf="course.editor!=null"></button>
+                                <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null "[disabled]="!course.IsAvailable"></button>
                             </div>
-                            <div class="ui-lg-3 ui-g-12">
+                            <div class="ui-lg-3 ui-md-4 ui-g-12">
                                 <span class="profile-image-wrapper">
                                     <img [src]='course.logo | imageBase64' [ngClass]="{'display-none' : !course.logo}"  />
                                     <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg">
                                 </span>
                             </div>
-                            <div class="ui-lg-5 ui-g-12">
+                            <div class="ui-lg-5 ui-md-8 ui-g-12">
                                 <h4 class="heading-course"><span>{{course.name}}</span></h4>
                                 <span class="c-status">{{CONTENT_STATUS[course.status]|translate}}</span>
                                 <div class="clearfix"></div>
@@ -52,7 +52,7 @@ ul {
                                     </p-accordionTab>
                                 </p-accordion>
                             </div>
-                            <div class="ui-lg-4 ui-g-12">
+                            <div class="ui-lg-4 ui-md-12 ui-g-12">
                                 <div class="status-bars" *ngIf="course.teacher !=null && course.mode=='group'">
                                     <!-- <div class="card"> -->
                                     <ul>
@@ -82,7 +82,7 @@ ul {
                                 </div>
                             </div>
                         </div>
-                        <div class="ui-lg-3 ui-g-12">
+                        <div class="ui-lg-3 ui-md-12 ui-g-12">
                             <p-card styleClass="lms-course-detail">
                                 <ul class="list-cmt">
                                     <li class="clearfix" *ngIf="!course.IsAvailable">

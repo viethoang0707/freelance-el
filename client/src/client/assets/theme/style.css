@@ -16,28 +16,13 @@ body {
 
 img.pre-loading {
   position: absolute;
-  width: 800px;
-  height: 500px;
-  left: calc((100% - 800px)/2);
-  top: calc((100vh - 500px)/2);
-}
-
-@media screen and (max-width: 1024px) {
-  img.pre-loading {
-    width: 600px;
-    height: 400px;
-    top: 100px;
-    left: calc((100% - 600px)/2);
-  }
+  width: 70%;
+  left: 15%;
 }
 
 @media screen and (max-width: 768px) {
   img.pre-loading {
-    width: 400px;
-    height: 300px;
-    position: fixed;
-    top: 100px;
-    left: calc((100% - 400px)/2);
+    top: 30%;
   }
 }
 
@@ -185,38 +170,7 @@ body .ui-datepicker-buttonpane>button.red-btn {
   .footer {
     width: calc(100% - 32px);
   }
-}
-
-@media screen and (max-width: 500px) {
-  .layout-wrapper .layout-main .layout-footer .footer-text-right {
-    margin-top: 10px;
-    text-align: center;
-    display: block;
-    float: none;
-  }
-  .layout-wrapper .layout-main .layout-footer .footer-text-left {
-    margin-top: 10px;
-    text-align: center;
-    display: block;
-    float: none;
-  }
-  .showformb {
-    display: none !important;
-  }
-  .ui-table .ui-table-tbody>tr>td {
-    border: 0px !important;
-  }
-  .card {
-    padding: 0px !important;
-  }
-  .ui-g-12 {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-  }
-  body .ui-buttonset>.ui-button:first-child {
-    float: left !important;
-  }
-}
+}  
 
 .ui-state-default {
   border: none;
@@ -316,9 +270,15 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   color: #fff;
 }
 
-.dashboard-courses-list .image-box .card .image-box-footer {
+.dashboard-courses-list .image-box .card .image-box-footer{
   padding-bottom: 10px;
   padding-right: 6px;
+ }
+
+body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
+  height: 100px;
+  overflow: hidden;
+  padding: 0;
 }
 
 .dashboard-live-conference .task-box-footer .btn-footer {
@@ -387,13 +347,6 @@ body .user-dashboard .ui-fieldset.ui-widget-content {
   width: 100%;
   height: 530px;
   overflow: auto;
-}
-
-@media screen and (max-width: 500px) {
-  .tree-unit-course-study {
-    height: 150px;
-    overflow: auto;
-  }
 }
 
 .tree-unit-course-syllabus {
@@ -603,10 +556,10 @@ body .ui-progressbar .ui-progressbar-value {
     height: 150px;
     overflow: auto;
   }
-  .exem-study .ui-dialog-content.ui-widget-content {
+  .exam-study .ui-dialog-content.ui-widget-content {
     height: 500px !important;
   }
-  .exem-study .btn-submit-exam {
+  .exam-study .btn-submit-exam {
     margin-left: 0 !important;
   }
 }
@@ -620,11 +573,86 @@ body .ui-progressbar .ui-progressbar-value {
   display: inline;
 }
 
-.exem-study .btn-submit-exam {
+.exam-study .btn-submit-exam {
   margin-left: 550px;
     overflow: auto;
 }
 
 .tree-question-dialog{
   max-height: 380px;
+    display: inline;
+}
+
+body .ui-dialog.course-dialog .ui-dialog-content{
+  height: 85%;
+  overflow: auto;
+}
+
+body .exam-study .ui-dialog-content.ui-widget-content{
+  height: 100% !important;
+}
+
+@media screen and (max-width: 500px) {
+  .tree-unit-course-study{
+    height: 150px;
+    overflow: auto;}
+
+  .exam-study .ui-dialog-content.ui-widget-content {
+    height: 500px !important;
+  }
+  .exam-study .btn-submit-exam {
+    margin-left: 0 !important;
+  }
+
+  .layout-wrapper .layout-main .layout-footer {
+    padding: 5px 10px;
+  }
+
+  .layout-wrapper .layout-main .layout-footer .footer-text-left,
+  .layout-wrapper .layout-main .layout-footer .footer-text-right{
+    margin-top: 5px !important;
+  }
+
+  .layout-wrapper .layout-main .layout-footer .footer-text-right {
+    margin-top: 10px;
+    text-align: center;
+    display: block;
+    float: none;
+  }
+  .layout-wrapper .layout-main .layout-footer .footer-text-left {
+    margin-top: 10px;
+    text-align: center;
+    display: block;
+    float: none;
+  }
+  .showformb {
+    display: none !important;
+  }
+  .ui-table .ui-table-tbody>tr>td {
+    border: 0px !important;
+  }
+  .card {
+    padding: 0px !important;
+  }
+  .ui-g-12 {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  body .ui-buttonset>.ui-button:first-child {
+    float: left !important;
+  }
+
+  .lms-course-list-item button{
+    margin-bottom: 5px;
+  }
+
+  .fc .fc-toolbar > * > *{
+    margin-left: .5em;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .project-course-study, .course-material-study{
+    display: none !important;
+  }
 }

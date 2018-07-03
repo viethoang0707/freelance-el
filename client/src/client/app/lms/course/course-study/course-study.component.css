@@ -7,10 +7,9 @@
 	height: 528px;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
 	.course-study-unit{
-	height: auto;
-}
+	height: auto;}
 }
 
 .list-cmt{
