@@ -103,12 +103,12 @@ export class ExamStudyDialog extends BaseComponent {
 						this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
 						this.answers = Answer.toArray(jsonArr[1]);
 						ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
-							var questions = _.map(this.examQuestions, (examQuestion:ExamQuestion)=> {
-		                        return examQuestion.question;
-		                    });
-		                    Question.populateOptions(this, questions).subscribe(()=> {
-		                    	this.startExam();
-		                    });
+							var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
+								return examQuestion.question;
+							});
+							Question.populateOptions(this, questions).subscribe(() => {
+								this.startExam();
+							});
 						});
 					});
 			});
@@ -171,6 +171,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.submission.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
 		BaseModel.bulk_update(this, this.member.__api__update(), this.submission.__api__update()).subscribe(() => {
 			ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe();
+			this.timeLeft = 0;
 			this.hide();
 		});
 	}
@@ -261,7 +262,7 @@ export class ExamStudyDialog extends BaseComponent {
 				.takeUntil(new Subject())
 				.subscribe(() => {
 					this.timeLeft -= 1000;
-					if(this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
+					if (this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
 						this.warn(this.translateService.instant('A little minutes remaining!'));
 					if (this.timeLeft <= 0)
 						this.finishExam();
