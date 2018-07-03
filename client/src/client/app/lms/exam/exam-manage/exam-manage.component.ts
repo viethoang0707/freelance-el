@@ -34,15 +34,15 @@ import { BaseModel } from '../../../shared/models/base.model';
 
 
 @Component({
-	moduleId: module.id,
-	selector: 'exam-manage',
-	templateUrl: 'exam-manage.component.html',
+    moduleId: module.id,
+    selector: 'exam-manage',
+    templateUrl: 'exam-manage.component.html',
     styleUrls: ['exam-manage.component.css'],
 })
 export class ExamManageComponent extends BaseComponent implements OnInit {
 
-	private exam: Exam;
-	private member: ExamMember;
+    private exam: Exam;
+    private member: ExamMember;
     private members: ExamMember[];
     private scoreRecords: any;
     private selectedRecord: any;
@@ -54,23 +54,23 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     @ViewChild(ExamReportDialog) reportDialog: ExamReportDialog;
     @ViewChild(ExamStatsDialog) statsDialog: ExamStatsDialog;
 
-	constructor(private router: Router, private route: ActivatedRoute) {
-		super();
-		this.exam = new Exam();
-		this.member = new ExamMember();
-	}
+    constructor(private router: Router, private route: ActivatedRoute) {
+        super();
+        this.exam = new Exam();
+        this.member = new ExamMember();
+    }
 
-	ngOnInit() {
-		this.route.params.subscribe(params => {
+    ngOnInit() {
+        this.route.params.subscribe(params => {
             var memberId = +params['memberId'];
             var examId = +params['examId'];
-            this.lmsService.init(this).subscribe(()=> {
+            this.lmsService.init(this).subscribe(() => {
                 this.exam = this.lmsService.getExam(examId);
                 this.member = this.lmsService.getExamMember(memberId);
                 this.loadScores();
             });
         });
-	}
+    }
 
     showQuestionSheet() {
         QuestionSheet.byExam(this, this.exam.id).subscribe((sheet: QuestionSheet) => {
@@ -81,7 +81,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         });
     }
 
-	mark() {
+    mark() {
         if (this.selectedRecord)
             if (this.selectedRecord["submit"] == null) {
                 this.warn(this.translateService.instant('The member has not attempted the exam'));
@@ -115,14 +115,19 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
                     });
                     member["submit"] = submit;
                     if (submit) {
+                        console.log('member:', member);
                         if (submit.score != null) {
-                            member["score"] = submit.score;
+                            if (submit.score == "") {
+                                member["score"] = 0;
+                            } else {
+                                member["score"] = submit.score;
+                            }
                             member["grade"] = ExamGrade.gradeScore(grades, submit.score);
-                        }
-                        else
+                        } else
                             member["score"] = '';
                     }
                 });
+                console.log('member: ', members);
             });
     }
 
