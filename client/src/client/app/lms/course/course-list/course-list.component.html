@@ -13,7 +13,7 @@ ul {
         <div class="ui-lg-6 ui-md-6 ui-g-12">
             <h1>{{'My courses'|translate}}</h1>
         </div>
-        <div class="search ui-lg-6 ui-md-6 ui-g-12">
+        <div class="search ui-lg-6 ui-md-12 ui-g-12">
             <div class="ui-inputgroup fRight">
                 <input type="text" pInputText (input)="filterCourse()" placeholder="{{'Keyword'|translate}}" name="keywordInput" [(ngModel)]="keyword">
             </div>
@@ -86,7 +86,7 @@ ul {
                             <p-card styleClass="lms-course-detail">
                                 <ul class="list-cmt">
                                     <li class="clearfix" *ngIf="!course.IsAvailable">
-                                            <i class="material-icons">error-outline</i>
+                                            <i class="material-icons">error</i>
                                             <span class="cmt-title">{{'Course not available'|translate}}</span>
                                         </li>
                                     <li class="clearfix">
