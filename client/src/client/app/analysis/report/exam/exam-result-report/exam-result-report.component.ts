@@ -49,8 +49,8 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     }
 
     export() {
-        var output = _.map(this.records, record=> {
-            return{ 'Name': record['user_name'], 'Login': record['user_login'], 'User group': record['user_group'], 'Attempt date': record['date_attempt'], 'Score': record['score'], 'Result': record['result'] };
+        var output = _.map(this.records, record => {
+            return { 'Name': record['user_name'], 'Login': record['user_login'], 'User group': record['user_group'], 'Attempt date': record['date_attempt'], 'Score': record['score'], 'Result': record['result'] };
         });
         this.excelService.exportAsExcelFile(output, 'course_by_member_report');
     }
@@ -58,18 +58,18 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     render(exam: Exam) {
         this.clear();
         BaseModel
-        .bulk_search(this,
-            ExamMember.__api__listCandidateByExam(exam.id),
-            ExamGrade.__api__listByExam(exam.id),
-            Submission.__api__listByExam(exam.id),
-            ExamLog.__api__listByExam(exam.id))
-        .subscribe(jsonArr=> {
-            var members = ExamMember.toArray(jsonArr[0]);
-            var grades = ExamGrade.toArray(jsonArr[1]);
-            var submits = Submission.toArray(jsonArr[2]);
-            var logs = ExamLog.toArray(jsonArr[3]);
-            this.records = this.generateReport(exam, grades, submits, logs, members);
-        })
+            .bulk_search(this,
+                ExamMember.__api__listCandidateByExam(exam.id),
+                ExamGrade.__api__listByExam(exam.id),
+                Submission.__api__listByExam(exam.id),
+                ExamLog.__api__listByExam(exam.id))
+            .subscribe(jsonArr => {
+                var members = ExamMember.toArray(jsonArr[0]);
+                var grades = ExamGrade.toArray(jsonArr[1]);
+                var submits = Submission.toArray(jsonArr[2]);
+                var logs = ExamLog.toArray(jsonArr[3]);
+                this.records = this.generateReport(exam, grades, submits, logs, members);
+            })
     }
 
 
@@ -97,6 +97,9 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
             var grade = _.find(grades, (obj) => {
                 return obj.min_score <= record["score"] && obj.max_score >= record["score"]
             });
+            if (record["score"] == "") {
+                record["score"] = 0;
+            }
             if (grade)
                 record["grade"] = grade.name;
         }
