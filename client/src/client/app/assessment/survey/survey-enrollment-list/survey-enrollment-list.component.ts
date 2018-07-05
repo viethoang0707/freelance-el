@@ -46,8 +46,8 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
                 this.warn(this.translateService.instant('Survey not reviewed yet'));
                 return;
             }
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error(this.translateService.instant('You do not have enroll permission for this survey'));
+            if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
+                this.error('You do not have enroll permission for this survey');
                 return;
             }
             this.surveyEnrollDialog.enroll(this.selectedSurvey);
@@ -55,14 +55,15 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Survey.allForEnroll(this).subscribe(surveys=> {
-            this.surveys =  surveys;
+        Survey.allForEnroll(this).subscribe(surveys => {
+            this.surveys = surveys;
         })
     }
 
 
     closeSurvey() {
         if (this.selectedSurvey) {
+<<<<<<< HEAD
             if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
                 this.error(this.translateService.instant('You do not have close permission for this survey'));
                 return;
@@ -70,12 +71,23 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             this.selectedSurvey.status = 'closed';
             this.selectedSurvey.save(this).subscribe(() => {
                 this.success(this.translateService.instant('Survey close'));
+=======
+            if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
+                this.error('You do not have close permission for this survey');
+                return;
+            }
+            this.confirm('Are you sure to proceed ?', () => {
+                this.selectedSurvey.close(this).subscribe(() => {
+                    this.success('Survey close');
+                });
+>>>>>>> Refactor LMS
             });
         }
     }
 
     openSurvey() {
         if (this.selectedSurvey) {
+<<<<<<< HEAD
             if  (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
                 this.error(this.translateService.instant('You do not have open permission for this survey'));
                 return;
@@ -83,7 +95,18 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             this.selectedSurvey.status = 'open';
             this.selectedSurvey.save(this).subscribe(() => {
                 this.success(this.translateService.instant('Survey open'));
+=======
+            if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
+                this.error('You do not have open permission for this survey');
+                return;
+            }
+            this.confirm('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened', () => {
+                this.selectedSurvey.open(this).subscribe(() => {
+                    this.success('Survey open');
+                });
+>>>>>>> Refactor LMS
             });
+
         }
     }
 }

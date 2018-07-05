@@ -3,11 +3,6 @@
     <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
         <p-scrollPanel [styleClass]="large-dialog-panel">
             <div class="ui-g ui-fluid form-group">
-                <div class="ui-g-12">
-                    <div class="publish-status">
-                        <p-selectButton [options]="examStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
-                    </div>
-                </div>
                 <div class="ui-g-6">
                     <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>

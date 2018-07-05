@@ -22,7 +22,6 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 export class SurveyDialog extends BaseDialog<Survey> {
 
     private locale:any;
-    private surveyStatus: SelectItem[];
     private rangeDates: Date[]; 
     private allowToChangeState: boolean;
     private editor: SurveyMember;
@@ -32,12 +31,6 @@ export class SurveyDialog extends BaseDialog<Survey> {
     constructor(private http: Http) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
-        this.surveyStatus = _.map(SURVEY_STATUS, (val, key)=> {
-            return {
-                label: this.translateService.instant(val),
-                value: key
-            }
-        });
         this.editor =  new SurveyMember();
     }
 

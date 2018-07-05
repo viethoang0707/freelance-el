@@ -22,32 +22,6 @@
               </p-accordionTab>
             </p-accordion>
             
-            <div class="status-bars" *ngIf="exam.supervisor!=null" >
-            <!-- <div class="card"> -->
-              <ul>
-                <li>
-                  <div class="status-bar status-bar-2">
-                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_registered}}%">{{exam.examMemberData.percentage_member_registered}}%</div>
-                  </div>
-                  <span>{{'Registered'|translate}}</span>
-                  <i class="material-icons">&#xE86C;</i>
-                </li>
-                <li>
-                  <div class="status-bar status-bar-3">
-                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_inprogress}}%">{{exam.examMemberData.percentage_member_inprogress}}%</div>
-                  </div>
-                  <span>{{'In-progress'|translate}}</span>
-                  <i class="material-icons">&#xE868;</i>
-                </li>
-                <li>
-                  <div class="status-bar status-bar-4">
-                    <div class="status-bar-value" style="width:{{exam.examMemberData.percentage_member_completed}}%">{{exam.examMemberData.percentage_member_completed}}</div>
-                  </div>
-                  <span>{{'Completed'|translate}}</span>
-                  <i class="material-icons">&#xE8B2;</i>
-                </li>
-              </ul>
-            </div>
           <!-- </div> -->
           </div>
           <div class="ui-lg-4 ui-md-12 ui-g-12">
@@ -72,10 +46,10 @@
                   <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
                   <span class="cmt-detail">{{exam.duration}}</span>
                 </li>
-                <li class="clearfix" *ngIf="exam.candidate != null">
+                <li class="clearfix" *ngIf="exam.candidate != null" *ngVar="getExamRecord(exam) as record">
                   <i class="material-icons">star</i>
                   <span class="cmt-title">{{'Score'|translate}}</span>
-                  <span class="cmt-detail">{{exam.score}}</span>
+                  <span class="cmt-detail">{{record.score}}</span>
                 </li>
                 <li class="clearfix" style="border-bottom: none;">
                   <i class="material-icons">done</i>

@@ -3,7 +3,7 @@
   <div class="ui-g-12 ">
     <p-toolbar>
       <div class="ui-toolbar-group-left ">
-        <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="mark()" [disabled]="!selectedRecord || !selectedRecord['submit']"></button>
+        <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="mark()" [disabled]="!selectedMember || getProjectSubmit(selectedMember).IsNew"></button>
       </div>
     </p-toolbar>
     <div>
@@ -31,7 +31,7 @@
         <a href="{{project.file_url}}" target="_blank" *ngIf="project.file_url">{{project.filename}}</a>
       </div>
     </div>
-    <p-table #scoreTable [value]="scoreRecords" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+    <p-table #scoreTable [value]="members" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
       <!--  sortField="role" -->
       <ng-template pTemplate="header">
         <tr>
@@ -53,16 +53,16 @@
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-record>
-        <tr [pSelectableRow]="record">
-          <td>{{record.name}}</td>
-          <td>{{record.group_id__DESC__}}</td>
-           <td class="showformb">{{record.date_submit | date : "dd/MM/yyyy, h:mm a"}}</td>
-          <td>{{record.score}}</td>
+      <ng-template pTemplate="body" let-member>
+        <tr [pSelectableRow]="record" *ngVar="getProjectSubmit(member) as projectSubmit">
+          <td>{{member.name}}</td>
+          <td>{{member.group_id__DESC__}}</td>
+           <td class="showformb">{{projectSubmit.date_submit | date : "dd/MM/yyyy, h:mm a"}}</td>
+          <td>{{projectSubmit.score}}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="summary">
-        {{'Total records'|translate}} : {{scoreRecords?.length}}
+        {{'Total records'|translate}} : {{members?.length}}
       </ng-template>
     </p-table>
   </div>

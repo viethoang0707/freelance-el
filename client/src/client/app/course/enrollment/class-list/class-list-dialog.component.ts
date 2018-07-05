@@ -93,4 +93,33 @@ export class ClassListDialog extends BaseComponent implements OnInit {
             })
         }
     }
+
+    closeClass() {
+        if (this.selectedClass) {
+            if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedClass.supervisor_id) {
+                this.error('You do not have close permission for this class');
+                return;
+            }
+            this.confirm('Are you sure to proceed ?', () => {
+                this.selectedClass.close(this).subscribe(() => {
+                    this.success('Class close');
+                });
+            });
+        }
+    }
+
+    openClass() {
+        if (this.selectedClass) {
+            if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedClass.supervisor_id) {
+                this.error('You do not have open permission for this class');
+                return;
+            }
+            this.confirm('Are you sure to proceed ?. You will not be able to enroll new members after the class is opened', () => {
+                this.selectedClass.open(this).subscribe(() => {
+                    this.success('Survey open');
+                });
+            });
+
+        }
+    }
 }

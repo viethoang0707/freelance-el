@@ -20,7 +20,7 @@ import { WorkflowService } from './services/workflow.service';
 import { WebSocketService } from './services/socket.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
-import { LMSService } from './services/lms.service';
+import { LMSProfileService } from './services/lms-profile.service';
 import { SettingService } from './services/setting.service';
 import { AppEventManager } from './services/app-event-manager.service';
 import { NotificationService } from './services/notification.service';
@@ -29,6 +29,7 @@ import { WindowRef } from './helpers/windonw.ref';
 import { TreeUtils } from './helpers/tree.utils';
 import { SyllabusUtils } from './helpers/syllabus.utils';
 import { ReportUtils } from './helpers/report.utils';
+import { VarDirective } from './helpers/ng-var.directive';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
@@ -223,6 +224,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         ClockPipe,
         SafePipe,
         ImageBase64Pipe,
+        VarDirective,
         ImageBase64Component,
         GroupDialog,
         GroupListComponent,
@@ -253,6 +255,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         ImageBase64Pipe,
         TimeConvertPipe,
         ClockPipe,
+        VarDirective,
         MatchInputValidatorDirective,
         ImageBase64Component,
         GroupDialog,
@@ -365,7 +368,7 @@ export class ErpSharedModule {
                 MeetingService,
                 WindowRef,
                 ExcelService,
-                LMSService,
+                LMSProfileService,
                 AppEventManager,
                 WorkflowService,
                 MenuService,

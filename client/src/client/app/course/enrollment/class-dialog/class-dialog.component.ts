@@ -31,7 +31,6 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	private members: CourseMember[];
 	private items: MenuItem[];
 	private treeUtils: TreeUtils;
-	private classStatus: SelectItem[];
 	
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -39,12 +38,6 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 		super();
 		this.locale = DEFAULT_DATE_LOCALE;
 		this.treeUtils = new TreeUtils();
-		this.classStatus = _.map(CLASS_STATUS, (val, key) => {
-			return {
-				label: this.translateService.instant(val),
-				value: key
-			}
-		});
 	}
 
 	ngOnInit() {

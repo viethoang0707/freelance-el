@@ -22,28 +22,16 @@ import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model
 	selector: 'project-marking-dialog',
 	templateUrl: 'project-marking.dialog.component.html',
 })
-export class ProjectMarkingDialog extends BaseDialog<ProjectSubmission>  implements OnInit{
+export class ProjectMarkingDialog extends BaseDialog<ProjectSubmission>  {
 
-	private member: CourseMember;
-	private setting: ExamSetting;
+
 	
 	constructor() {
 		super();
 		this.display = false;
-		this.member =  new CourseMember();
-		this.setting =  new ExamSetting();
+
 	}
 
-	ngOnInit() {
-		this.onShow.subscribe(object=> {
-			CourseMember.get(this, object.member_id).subscribe(member=> {
-				this.member = member;
-				ExamSetting.all(this).subscribe(settings=> {
-					if (settings.length)
-						this.setting =  settings[0];
-				});
-			});
-		});
-	}
+
 
 }

@@ -9,8 +9,6 @@ import { CourseClass } from '../../../shared/models/elearning/course-class.model
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
-import { Room } from '../../../shared/models/meeting/room.model';
-import { RoomMember } from '../../../shared/models/meeting/room-member.model';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -24,10 +22,8 @@ export class ClassConferenceDialog extends BaseComponent {
 
 	private display: boolean;
 	private courseClass: CourseClass;
-	private members: CourseMember[];
+	private members: ConferenceMember[];
 	private conference: Conference;
-	private selectedMember: CourseMember;
-	private room: Room;
 
 	constructor() {
 		super();
@@ -40,28 +36,17 @@ export class ClassConferenceDialog extends BaseComponent {
 	show(courseClass: CourseClass) {
 		this.display = true;
 		this.courseClass = courseClass;
-		BaseModel
-			.bulk_search(this, Conference.__api__byClass(courseClass.id), CourseMember.__api__listByClass(courseClass.id))
-			.subscribe(jsonArr => {
-				var conferences = Conference.toArray(jsonArr[0]);
-				var members = CourseMember.toArray(jsonArr[1]);
-				if (conferences.length) {
-					this.conference = conferences[0];
-					BaseModel
-						.bulk_search(this, Room.__api__byRef(this.conference.room_ref), ConferenceMember.__api__listByConference(this.conference.id))
-						.subscribe(jsonArr => {
-							var rooms = Room.toArray(jsonArr[0]);
-							var conferenceMembers = ConferenceMember.toArray(jsonArr[1]);
-							_.each(members, (member: CourseMember) => {
-								member["conferenceMember"] = _.find(conferenceMembers, (confMember: ConferenceMember) => {
-									return confMember.course_member_id == member.id;
-								});
-								member["is_active"] = member["conferenceMember"] && member["conferenceMember"].is_active;
-							});
-							this.members = members;
-						});
-				}
+		if (courseClass.status == 'open') {
+			Conference.get(this, courseClass.conference_id).subscribe(confernece => {
+				this.conference = confernece;
+				ConferenceMember.listByConference(this, this.conference.id).subscribe(members=> {
+					this.members =  members;
+				});
 			});
+		} else {
+			this.members = [];
+			this.conference = new Conference();
+		}
 	}
 
 	hide() {
@@ -69,78 +54,32 @@ export class ClassConferenceDialog extends BaseComponent {
 	}
 
 	openConference() {
-		if (this.conference.id && this.conference.status != 'open') {
-			this.conference.status = 'open';
-			this.conference.save(this).subscribe(() => {
-				this.info(this.translateService.instant('Conference open'));
-			});
-		}
-		if (!this.conference.id) {
-			this.room = Room.createWebminarRoom(this.courseClass.name);
-			this.room.ref = this.conference.room_ref = Room.makeid();
-			this.conference.room_pass = this.room.password;
-			this.conference.class_id = this.courseClass.id;
-			this.conference.status = 'open';
-			this.room.save(this).subscribe(() => {
-				this.conference.save(this).subscribe(() => {
-					this.info(this.translateService.instant('Conference open'));
-					var conferenceMembers = [];
-					var roomMembers = [];
-					for (var i = 0; i < this.members.length; i++) {
-						var member = this.members[i];
-						var conferenceMember = new ConferenceMember();
-						conferenceMember.conference_id = this.conference.id;
-						conferenceMember.course_member_id = member.id;
-						member["conferenceMember"] = conferenceMember;
-						member["is_active"] = true;
-						conferenceMembers.push(conferenceMember);
-						var roomMember = RoomMember.createRoomMember(member.name, member.image, this.room.id, member.role);
-						roomMembers.push(roomMember);
-						conferenceMember.room_member_ref = roomMember.ref;
-					}
-					ConferenceMember.createArray(this, conferenceMembers).subscribe(() => {
-						RoomMember.createArray(this, roomMembers).subscribe(() => {
-						});
-					});
+		this.conference.open(this).subscribe(() => {
+			this.info(this.translateService.instant('Conference open'));
+			ConferenceMember.listByConference(this, this.conference.id).subscribe(members=> {
+					this.members =  members;
 				});
-			})
-		}
+		});
 	}
 
 
 	closeConference() {
-		if (this.conference.id && this.conference.status != 'closed') {
-			this.conference.status = 'closed';
-			this.conference.save(this).subscribe(() => {
-				this.info('Conference closed');
-			});
-		}
+		this.conference.close(this).subscribe(() => {
+			this.info(this.translateService.instant('Conference closed'));
+			ConferenceMember.listByConference(this, this.conference.id).subscribe(members=> {
+					this.members =  members;
+				});
+		});
 	}
 
-	accessControl(event: any, member: any) {
-		var conferenceMember = member.conferenceMember;
-		if (event.checked) {
-			if (conferenceMember) {
-				conferenceMember.is_active = true;
-				conferenceMember.save(this).subscribe(() => {
-				});
-			} else {
-				var roomMember = RoomMember.createRoomMember(member.name, member.image, this.room.id, member.role);
-				conferenceMember = new ConferenceMember();
-				conferenceMember.conference_id = this.conference.id;
-				conferenceMember.room_member_ref = roomMember.ref ;
-				conferenceMember.course_member_id = member.id;
-				conferenceMember.is_active = true;
-				BaseModel.bulk_create(this, roomMember.__api__create(), conferenceMember.__api__create()).subscribe(() => {
-					member["conferenceMember"] = conferenceMember;
-				})
-			}
-		} else {
-			if (conferenceMember) {
-				conferenceMember.is_active = false;
-				conferenceMember.save(this).subscribe(() => {
-				});
-			}
-		}
+	activateMember(member:ConferenceMember) {
+		member.is_active =  true;
+		member.save(this).subscribe();
+	}
+
+	deactivateMember(member:ConferenceMember) {
+		member.is_active =  false;
+		member.save(this).subscribe();
 	}
 }
+

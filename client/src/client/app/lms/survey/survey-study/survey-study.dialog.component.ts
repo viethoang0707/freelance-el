@@ -79,28 +79,23 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.WINDOW_HEIGHT =  $(window).height();
 	}
 
-	createSubmission(): Observable<any> {
-		return SurveySubmission.byMemberAndSurvey(this, this.member.id, this.survey.id).flatMap((submit: SurveySubmission) => {
-			if (!submit) {
-				submit = new SurveySubmission();
-				submit.member_id = this.member.id;
-				submit.start = new Date();
-				return submit.save(this);
-			} else {
-				return Observable.of(submit);
-			}
-		});
-	}
-
 	show(survey: Survey, member: SurveyMember) {
 		this.onShowReceiver.next();
 		this.display = true;
 		this.survey = survey;
 		this.member = member;
 		this.qIndex = 0;
-		this.createSubmission().subscribe((submit: SurveySubmission) => {
+
+		if (this.survey.sheet_status != 'published') {
+			this.error('Exam content has not been published');
+			return;
+		}
+
+
+		SurveySubmission.get(this, this.member.submission_id).subscribe((submit: SurveySubmission) => {
 			this.submission = submit;
-			SurveySheet.bySurvey(this, this.survey.id).subscribe(sheet => {
+			this.submission.start = new Date();
+			SurveySheet.get(this, this.survey.sheet_id).subscribe(sheet => {
 				this.sheet = sheet;
 				BaseModel.bulk_search(this,
 					SurveyQuestion.__api__listBySheet(this.sheet.id),

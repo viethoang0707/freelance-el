@@ -25,6 +25,7 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Http, Response } from '@angular/http';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { BaseModel } from '../../../shared/models/base.model';
+import { ProjectRecord } from '../../../shared/models/elearning/project-record.model';
 
 
 @Component({
@@ -39,8 +40,9 @@ export class ProjectManageDialog extends BaseComponent {
     
     private display: boolean;
 	private project: Project;
-    private scoreRecords: any;
-    private selectedRecord: any;
+    private submits: ProjectSubmission[];
+    private members: CourseMember[];
+    private selectedMember: any;
     
     @ViewChild(ProjectMarkingDialog) projectMarkDialog: ProjectMarkingDialog;
 
@@ -56,35 +58,21 @@ export class ProjectManageDialog extends BaseComponent {
             ProjectSubmission.__api__listByProject(this.project.id),
             CourseMember.__api__listByClass(this.project.class_id))
             .subscribe(jsonArr => {
-                var submits = ProjectSubmission.toArray(jsonArr[0]);
-                var members = CourseMember.toArray(jsonArr[1]);
-                this.loadScores(submits, members);
-            })
+                this.submits = ProjectSubmission.toArray(jsonArr[0]);
+                this.members = CourseMember.toArray(jsonArr[1]);
+            });
 	}
 
 	mark() {
-        if (this.selectedRecord && this.selectedRecord['submit'])
-            this.projectMarkDialog.show(this.selectedRecord['submit']);
+        var submit = this.getProjectSubmit(this.selectedMember);
+        if (!submit.IsNew)
+            this.projectMarkDialog.show(submit);
     }
 
-    loadScores(submits: ProjectSubmission[], members: CourseMember[]) {
-        this.scoreRecords = members;
-        _.each(members, (member: CourseMember) => {
-            var submit = _.find(submits, (obj: ProjectSubmission) => {
-                return obj.member_id == member.id;
-            });
-            member["submit"] = submit;
-            if (submit) {
-                if (submit.score != null) {
-                    member["score"] = submit.score;
-                    member["date_submit"] = submit.date_submit;
-                }
-                else {
-                    member["score"] = '';
-                    member["date_submit"] = '';
-                }
-            }
-        });
+    getProjectSubmit(member: CourseMember) {
+        return _.find(this.submits, (submit: ProjectSubmission) => {
+            return submit.member_id == member.id;
+        }) || new ProjectSubmission();
     }
 
     hide() {

@@ -23,10 +23,12 @@ export class CourseUnit extends BaseModel{
         this.syllabus_id = undefined;
         this.icon = undefined;
         this.status = undefined;
+        this.course_id =  undefined;
 	}
 
     name:string;
     parent_id: number;
+    course_id: number;
     order: number;
     icon: string;
     syllabus_id: number;

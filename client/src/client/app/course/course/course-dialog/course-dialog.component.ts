@@ -33,7 +33,6 @@ export class CourseDialog extends BaseDialog<Course> {
 	private tree: TreeNode[];
 	private items: MenuItem[];
 	private selectedNode: TreeNode;
-	private courseStatus: SelectItem[];
 	private treeUtils: TreeUtils;
 	private editor: CourseMember;
 
@@ -43,12 +42,6 @@ export class CourseDialog extends BaseDialog<Course> {
 	constructor( ) {
 		super();
 		this.treeUtils = new TreeUtils();
-		this.courseStatus = _.map(COURSE_STATUS, (val, key) => {
-			return {
-				label: this.translateService.instant(val),
-				value: key
-			}
-		});
 		this.editor = new CourseMember();
 		this.WINDOW_HEIGHT = $(window).height();
 	}

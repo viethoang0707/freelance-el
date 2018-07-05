@@ -74,15 +74,10 @@ export class QuestionMarkingDialog extends BaseComponent {
 	}
 
 	save() {
-		if (!this.submit.score)
-			this.submit.score = 0;
-		this.submit.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
-		this.submit.save(this).subscribe(() => {
-			Answer.updateArray(this, this.answers).subscribe(() => {
-				this.success(this.translateService.instant('Marking saved sucessfully'));
-				this.onMarkCompleteReceiver.next();
-				this.hide();
-			});
+		Answer.updateArray(this, this.answers).subscribe(() => {
+			this.success(this.translateService.instant('Marking saved sucessfully'));
+			this.onMarkCompleteReceiver.next();
+			this.hide();
 		});
 	}
 }

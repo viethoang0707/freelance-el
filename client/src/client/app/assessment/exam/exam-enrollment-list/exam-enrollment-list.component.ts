@@ -62,9 +62,10 @@ export class ExamEnrollmentListComponent extends BaseComponent {
                 this.error('You do not have close permission for this exam');
                 return;
             }
-            this.selectedExam.status = 'closed';
-            this.selectedExam.save(this).subscribe(() => {
-                this.success('Exam close');
+            this.confirm('Are you sure to proceed ?', ()=> {
+                this.selectedExam.close(this).subscribe(() => {
+                    this.success('Exam close');
+                });
             });
         }
     }
@@ -75,9 +76,10 @@ export class ExamEnrollmentListComponent extends BaseComponent {
                 this.error('You do not have open permission for this exam');
                 return;
             }
-            this.selectedExam.status = 'open';
-            this.selectedExam.save(this).subscribe(() => {
-                this.success('Exam open');
+            this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', ()=> {
+                this.selectedExam.open(this).subscribe(() => {
+                    this.success('Exam open');
+                });
             });
         }
     }

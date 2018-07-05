@@ -21,40 +21,34 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 export class ClassExamEnrollDialog extends BaseComponent {
 
 	private display: boolean;
-	private courseClass: CourseClass;
-	private classExam: Exam;
-	private members: CourseMember[];
+	private exam: Exam;
 	private selectedMember: ExamMember;
+	private examMembers: ExamMember[];
+	private courseMembers: CourseMember[];
 
 	constructor() {
 		super();
 		this.display = false;
-		this.courseClass = new CourseClass();
-		this.members = [];
+		this.examMembers = [];
+		this.courseMembers = [];
 	}
 
-	show(classExam: Exam, clazz: CourseClass) {
+	show(exam: Exam) {
 		this.display = true;
-		this.courseClass = clazz;
-		this.classExam = classExam;
+		this.examMembers = [];
+		this.courseMembers = [];
+		this.exam = exam;
 		BaseModel
-			.bulk_search(this, CourseMember.__api__listByClass(this.classExam.id), ExamMember.__api__listByExam(this.courseClass.id))
+			.bulk_search(this, CourseMember.__api__listByClass(exam.course_class_id), ExamMember.__api__listByExam(exam.id))
 			.subscribe(jsonArr => {
-				var members = CourseMember.toArray(jsonArr[0]);
-				this.members = _.filter(members, (member:CourseMember)=> {
+				var courseMembers = CourseMember.toArray(jsonArr[0]);
+				this.courseMembers = _.filter(courseMembers, (member:CourseMember)=> {
 					return member.role =='student';
-				})
+				});
 				var examMembers = ExamMember.toArray(jsonArr[1]);
-				_.each(this.members, (member: CourseMember) => {
-					var examMember = _.find(examMembers, (obj: ExamMember) => {
-						return obj.user_id == member.user_id;
-					});
-					if (examMember) {
-						member["examMember"] = examMember;
-						member["allowed"] = examMember.status == 'active';
-					} else
-						member["allowed"] = false;
-				})
+				this.examMembers = _.filter(examMembers, (member:ExamMember)=> {
+					return member.role =='candidate';
+				});
 			});
 	}
 
@@ -63,65 +57,36 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	}
 
 	registerAll() {
-		var newMembers = [];
-		var currentMembers = [];
-		_.each(this.members, (member) => {
-			if (!member["examMember"]) {
-				member["examMember"] = this.createExamMember(member);
-				newMembers.push(member["examMember"]);
-			} else {
-				var examMember = member["examMember"];
-				examMember.status = "active";
-				currentMembers.push(member["examMember"]);
-			}
-		});
-		Observable.forkJoin(ExamMember.createArray(this, newMembers), ExamMember.updateArray(this, currentMembers)).subscribe(() => {
+		var userIds = _.pluck(this.courseMembers,'user_id');
+		this.exam.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
 		});
 	}
 
-
-	unregisterAll() {
-		var examMembers = [];
-		_.each(this.members, (member) => {
-			if (member["examMember"]) {
-				var examMember = member["examMember"];
-				examMember.status = "suspend";
-				examMembers.push(member);
-			}
-		});
-		return ExamMember.updateArray(this, examMembers);
+	activateMember(member:ExamMember) {
+		member.status = 'active';
+		member.save(this).subscribe();
 	}
 
-	registerUnregister(event: any, member: any) {
-		var examMember = member["examMember"];
-		if (event.checked) {
-			if (examMember) {
-				examMember.status = "active";
-				examMember.save(this).subscribe();
-				member["allowed"] = true;
-			} else {
-				examMember = this.createExamMember(member);
-				examMember.save(this).subscribe(() => {
-					member["examMember"] = examMember;
-					member["allowed"] = true;
-				});
-			}
-		} else {
-			examMember.status = "suspend";
-			examMember.save(this).subscribe();
-			member["allowed"] = false;
-		}
+
+	suspendMember(member:ExamMember) {
+		member.status = 'suspend';
+		member.save(this).subscribe();
 	}
 
-	createExamMember(member:CourseMember) {
-		var examMember = new ExamMember();
-		examMember.role = "candidate";
-		examMember.exam_id = this.classExam.id;
-		examMember.user_id = member.user_id;
-		examMember.course_member_id = member.id;
-		examMember.date_register = new Date();
-		examMember.status = 'active';
-		return examMember;
-	}
+	closeExam() {
+        this.confirm('Are you sure to proceed ?', ()=> {
+            this.exam.close(this).subscribe(() => {
+                this.success('Exam close');
+            });
+        });
+    }
+
+    openExam() {
+        this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', ()=> {
+            this.exam.open(this).subscribe(() => {
+                this.success('Exam open');
+            });
+        });
+    }
 }

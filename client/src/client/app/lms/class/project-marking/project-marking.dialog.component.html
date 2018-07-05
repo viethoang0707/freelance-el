@@ -3,11 +3,6 @@
   <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
     <div class="ui-g-6">
       <span>
-          {{'Student'|translate}} {{member.name}}
-        </span>
-    </div>
-    <div class="ui-g-6">
-      <span>
           {{'Submit date'|translate}} :{{object.date_submit | date : "dd/MM/yyyy"}}
         </span>
     </div>
@@ -16,7 +11,7 @@
     </div>
     <div class="ui-g-6">
       <label>{{'Score'|translate}}</label>
-      <p-spinner size="30" [(ngModel)]="object.score" [min]="0" [max]="setting.scale" name="score" ></p-spinner>
+      <p-spinner size="30" [(ngModel)]="object.score" [min]="0"  name="score" ></p-spinner>
     </div>
   </form>
   <p-footer>

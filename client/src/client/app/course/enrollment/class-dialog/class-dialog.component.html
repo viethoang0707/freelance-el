@@ -6,11 +6,6 @@
         <label style="font-weight: 600;">{{'Course'|translate}}:{{object.course_name}}</label>
       </div>
       <div class="ui-g-12">
-                    <div class="publish-status">
-                        <p-selectButton [options]="classStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
-                    </div>
-                </div>
-      <div class="ui-g-12">
         <div class="ui-g-4">
           <label>{{'Enrollment'|translate}}</label>
           <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" [inline]="true" required [locale]="locale" (onSelect)="onDateSelect($event)" [showIcon]="true" ></p-calendar>

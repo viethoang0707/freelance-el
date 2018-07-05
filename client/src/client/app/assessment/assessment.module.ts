@@ -2,12 +2,8 @@ import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
 import  { AssessmentComponent } from './assessment.component'
-import { ExamListComponent } from './exam/exam-list/exam-list.component';
 import { ExamDialog } from './exam/exam-dialog/exam-dialog.component';
-import { ExamEnrollDialog } from './exam/enrollment-dialog/enrollment-dialog.component';
-import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 import { SurveyDialog } from './survey/survey-dialog/survey-dialog.component';
-import { SurveyEnrollDialog } from './survey/enrollment-dialog/enrollment-dialog.component';
 import { QuestionListComponent } from './question/question-list/question-list.component';
 import { QuestionDialog } from './question/question-dialog/question-dialog.component';
 import { QuestionContainerDirective } from './question/question-template/question-container.directive';
@@ -19,16 +15,13 @@ import { QuestionSheetListComponent } from './question/question-sheet-list/quest
 import { QuestionSheetPreviewDialog } from './question/question-sheet-preview/question-sheet-preview.dialog.component';
 import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
 import { SurveySheetPreviewDialog } from './question/survey-sheet-preview/survey-sheet-preview.dialog.component';
-import { ExamEnrollmentListComponent } from './exam/exam-enrollment-list/exam-enrollment-list.component';
-import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/survey-enrollment-list.component';
 
 @NgModule({
     imports: [ErpSharedModule, AuthModule],
-    declarations: [AssessmentComponent, ExamListComponent, ExamDialog,QuestionSheetListComponent,QuestionSheetPreviewDialog,
+    declarations: [AssessmentComponent, ExamDialog,QuestionSheetListComponent,QuestionSheetPreviewDialog,
     				QuestionListComponent, QuestionDialog, QuestionContainerDirective,MultiChoiceQuestionComponent,
-    				SingleChoiceQuestionComponent, OpenEndQuestionComponent, QuestionImportDialog, ExamEnrollDialog,
-    				SurveySheetListComponent, SurveySheetPreviewDialog, SurveyListComponent, SurveyDialog, SurveyEnrollDialog,
-    				SurveyEnrollmentListComponent, ExamEnrollmentListComponent],
+    				SingleChoiceQuestionComponent, OpenEndQuestionComponent, QuestionImportDialog,
+    				SurveySheetListComponent, SurveySheetPreviewDialog, SurveyDialog ],
     providers: [],
     exports: [QuestionContainerDirective, ExamDialog, QuestionSheetPreviewDialog, SurveySheetPreviewDialog, SurveyDialog],
     entryComponents: [SingleChoiceQuestionComponent, OpenEndQuestionComponent, MultiChoiceQuestionComponent]

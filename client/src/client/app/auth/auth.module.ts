@@ -6,11 +6,10 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { AuthComponent } from './auth.component';
 import { ResetPasswordComponent } from './reset/reset-password.component';
-import { MatchInputValidatorDirective } from './reset/match-input.validator';
 
 @NgModule({
 	imports: [CommonModule, AuthRoutingModule, ErpSharedModule],
-	declarations: [LoginComponent, RecoverPasswordComponent, ResetPasswordComponent, AuthComponent, MatchInputValidatorDirective],
+	declarations: [LoginComponent, RecoverPasswordComponent, ResetPasswordComponent, AuthComponent],
 	exports: []
 })
 export class AuthModule {

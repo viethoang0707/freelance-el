@@ -47,25 +47,24 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.lmsService.init(this).subscribe(()=> {
-            this.lmsService.initCourseContent(this).subscribe(()=> {
-                this.lmsService.initCourseAnalytic(this).subscribe(()=> {
-                    this.displayCourses();
-                });
-            });
+        this.lmsProfileService.init(this).subscribe(() => {
+            this.displayCourses();
         })
     }
 
     displayCourses() {
-        var courses = this.lmsService.MyCourse;
-        this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
-            return -this.lmsService.getLastCourseTimestamp(course);
+        var courses = this.lmsProfileService.MyCourses;
+        _.each(courses, (course:Course)=> {
+            course['student'] =  this.lmsProfileService.getCourseMemberByRole('student', course.id);
+            course['teacher'] =  this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
+            course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
+            course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
+            if (course['supervisor'])
+                course['teahcer'] =  course['editor'] =  course['supervisor'];
         });
-        for (var i = 0; i < courses.length; i++) {
-            var syllabus = this.lmsService.getCourseSyllabusFromCourse(courses[i].id);
-            var units = this.lmsService.getSyllabusUnit(syllabus.id);
-            courses[i]["unit_count"] = units.length;
-        };
+        this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
+            return -this.lmsProfileService.getLastCourseTimestamp(course);
+        });
     }
 
     studyCourse(course: Course, member: CourseMember) {

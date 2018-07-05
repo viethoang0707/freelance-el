@@ -28,11 +28,15 @@ export class SurveyMember extends BaseModel{
         this.enroll_status = undefined;
         this.role = undefined;
         this.survey =  new Survey();
+        this.submission_id = undefined;
+        this.survey_review_state =  undefined;
     }
 
+    submission_id:number;
     course_member_id: number;
     role: string;
     survey_id: number;
+    survey_review_state: string;
     survey: Survey;
     user_id: number;
     login: string;
