@@ -107,24 +107,28 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			var userIds = _.pluck(users, 'id');
-			var members = _.map(users, (user:User)=> {
-				var member = new CourseMember();
-				if (this.courseClass) {
-					member.course_id = this.courseClass.course_id;
-					member.class_id =  this.courseClass.id;
-				}
-				member.role = 'teacher';
-				member.course_id = this.course.id;
-				member.user_id = user.id;
-				member.status = 'active';
-				member.enroll_status = 'registered';
-				member.date_register = new Date();
-				return member;
-			});
-			CourseMember.createArray(this, members).subscribe(()=> {
-				this.success(this.translateService.instant('Teacher registered successfully'));
-				this.loadMembers();
-			});
+			if (this.course.mode =='group')
+				this.courseClass.enrollStaff(this, userIds).subscribe((result) => {
+					this.loadMembers();
+					var failList = result['failList'];
+					_.each(failList, userId => {
+						let user: User = _.find(users, (obj: User) => {
+							return obj.id == userId;
+						});
+						this.warn(`User ${user.name} does not meet course requirement`);
+					});
+				});
+			if (this.course.mode =='self-study')
+				this.course.enrollStaff(this, userIds).subscribe((result) => {
+					this.loadMembers();
+					var failList = result['failList'];
+					_.each(failList, userId => {
+						let user: User = _.find(users, (obj: User) => {
+							return obj.id == userId;
+						});
+						this.warn(`User ${user.name} does not meet course requirement`);
+					});
+				});
 		});
 	}
 

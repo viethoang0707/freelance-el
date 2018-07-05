@@ -113,3 +113,11 @@ h4.title{
 	text-align: center;
     padding-bottom: 10px;
 }
+
+i.success {
+	color: green;
+}
+
+i.fail {
+	color: red;
+}

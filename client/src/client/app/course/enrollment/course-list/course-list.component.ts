@@ -4,7 +4,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, CONTENT_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
+import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, COURSE_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { ClassListDialog } from '../class-list/class-list-dialog.component';
@@ -23,14 +23,14 @@ import { User } from '../../../shared/models/elearning/user.model';
 export class CourseEnrollmentListComponent extends BaseComponent {
 
     COURSE_MODE = COURSE_MODE;
-    CONTENT_STATUS = CONTENT_STATUS;
+    COURSE_STATUS = COURSE_STATUS;
     REVIEW_STATE = REVIEW_STATE;
 
     private tree: TreeNode[];
     private courses: Course[];
     private displayCourses: Course[];
     private selectedGroupNodes: TreeNode[];
-    private selectedCourse: any;
+    private selectedCourse: Course;
     private treeUtils: TreeUtils;
 
     @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
@@ -42,7 +42,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listCourseGroup(this).subscribe(groups=> {
+        Group.listCourseGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         })
         this.loadCourses();
@@ -54,12 +54,10 @@ export class CourseEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this course'));
             return;
         }
-        if (this.selectedCourse) {
-            if (this.selectedCourse.mode=='self-study')
-                this.courseEnrollDialog.enrollCourse(this.selectedCourse);
-            else if (this.selectedCourse.mode=='group')
-                this.classListDialog.show(this.selectedCourse);
-        }
+        if (this.selectedCourse.mode == 'self-study')
+            this.courseEnrollDialog.enrollCourse(this.selectedCourse);
+        else if (this.selectedCourse.mode == 'group')
+            this.classListDialog.show(this.selectedCourse);
     }
 
     loadCourses() {
@@ -69,49 +67,46 @@ export class CourseEnrollmentListComponent extends BaseComponent {
             this.displayCourses.sort((course1, course2): any => {
                 return (course2.id - course1.id)
             });
-            
         });
     }
 
     filterCourse() {
         if (this.selectedGroupNodes.length != 0) {
             this.displayCourses = _.filter(this.courses, course => {
-                var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
+                var parentGroupNode = _.find(this.selectedGroupNodes, node => {
                     return node.data.id == course.group_id;
                 });
                 return parentGroupNode != null;
             });
         } else {
-            this.displayCourses =  this.courses;
+            this.displayCourses = this.courses;
         }
     }
 
     closeCourse() {
-        if (this.selectedCourse) {
-            if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
-                this.error('You do not have close permission for this class');
-                return;
-            }
-            this.confirm('Are you sure to proceed ? You will not be able to add new class after the course is closed', () => {
-                this.selectedCourse.close(this).subscribe(() => {
-                    this.success('Class close');
-                });
-            });
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+            this.error('You do not have close permission for this class');
+            return;
         }
+        this.confirm('Are you sure to proceed ? You will not be able to add new class after the course is closed', () => {
+            this.selectedCourse.close(this).subscribe(() => {
+                this.selectedCourse.status = 'closed';
+                this.success('Class close');
+            });
+        });
     }
 
     openCourse() {
-        if (this.selectedCourse) {
-            if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
-                this.error('You do not have open permission for this class');
-                return;
-            }
-            this.confirm('Are you sure to proceed ?.', () => {
-                this.selectedCourse.open(this).subscribe(() => {
-                    this.success('Class close');
-                });
-            });
-
+        if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+            this.error('You do not have open permission for this class');
+            return;
         }
+        this.confirm('Are you sure to proceed ?.', () => {
+            this.selectedCourse.open(this).subscribe(() => {
+                this.selectedCourse.status = 'open';
+                this.success('Class close');
+            });
+        });
+
     }
 }

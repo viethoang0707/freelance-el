@@ -56,7 +56,9 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
             CourseClass.__api__listBySupervisorAndDate(this.ContextUser.id,this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
             Ticket.__api__listPendingByApproveUser(this.ContextUser.id))
         .subscribe(jsonArr=> {
-            this.exams = Exam.toArray(jsonArr[0]);
+            this.exams = _.filter(Exam.toArray(jsonArr[0]), (exam:Exam)=> {
+                return exam.IsAvailable;
+              }) ;
             var examEvents =  _.map(this.exams, (exam:Exam)=> {
                 return {
                     title: exam.name,
@@ -66,7 +68,9 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
                     allDay: true
                     }
                 });
-            this.classes =  CourseClass.toArray(jsonArr[1]);
+            this.classes = _.filter(CourseClass.toArray(jsonArr[1]), (clz:CourseClass)=> {
+                return clz.IsAvailable;
+              }) ;
             var classEvents =  _.map(this.classes, (clazz:CourseClass)=> {
                 return {
                     title: clazz.name,

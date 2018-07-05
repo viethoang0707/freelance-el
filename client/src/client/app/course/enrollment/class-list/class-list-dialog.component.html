@@ -9,8 +9,8 @@
                     <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteClass() " *ngIf="selectedClass"></button>
                 </div>
                 <div class="ui-toolbar-group-right ">
-                    <button pButton type="button " label="{{ 'Enroll'|translate}} " class="green-btn " icon="ui-icon-people " *ngIf="selectedClass && selectedClass.status=='initial'" (click)="enroll() "></button>
-                    <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock" (click)="openClass() " [disabled]=" selectedClass && selectedClass.status !='initial'"></button>
+                    <button pButton type="button " label="{{ 'Enroll'|translate}} " class="green-btn " icon="ui-icon-people " *ngIf="selectedClass && selectedClass.IsAvailable" (click)="enroll() "></button>
+                    <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="openClass() " [disabled]=" selectedClass && selectedClass.status =='open'"></button>
                     <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeClass() " [disabled]=" selectedClass && selectedClass.status=='closed'"></button>
                 </div>
             </p-toolbar>
@@ -41,7 +41,7 @@
                     <tr [pSelectableRow]="courseClass ">
                         <td style="text-align: left; ">{{courseClass.name}}</td>
                         <td style="text-align: left; ">{{courseClass.course_name}}</td>
-                        <td style="text-align: left; ">{{CLASS_STATUS[courseClass.status]}}</td>
+                        <td >{{CLASS_STATUS[courseClass.status]}}</td>
                         <td>{{courseClass.start | date : "dd/MM/yyyy "}}</td>
                         <td>{{courseClass.end | date : "dd/MM/yyyy "}}</td>
                     </tr>
