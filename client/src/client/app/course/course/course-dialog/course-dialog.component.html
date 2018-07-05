@@ -1,4 +1,4 @@
-<p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false"  [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-dialog" [responsive]="true">
+<p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false"  [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-dialog" [responsive]="true"  appendTo="body">
     <div class="spinner" [hidden]="!loading" ></div>
     <p-scrollPanel>
         <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">

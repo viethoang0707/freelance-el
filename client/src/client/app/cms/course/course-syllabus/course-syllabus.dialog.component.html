@@ -1,4 +1,5 @@
-<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-syllabus-dialog" [responsive]="true">
+<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false"  
+[height]="WINDOW_HEIGHT"  positionLeft="0" positionTop="0" styleClass="ui-g-12 course-syllabus-dialog" [responsive]="true">
   <div class="spinner" [hidden]="!loading"></div>
   <div class="ui-g">
     <div class="ui-g-12 course-syllabus">
