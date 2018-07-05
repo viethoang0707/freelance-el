@@ -4,7 +4,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, CONTENT_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
+import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, COURSE_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { CourseDialog } from '../course-dialog/course-dialog.component';
@@ -22,7 +22,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 export class CourseListComponent extends BaseComponent {
 
     COURSE_MODE = COURSE_MODE;
-    CONTENT_STATUS = CONTENT_STATUS;
+    COURSE_STATUS = COURSE_STATUS;
     REVIEW_STATE = REVIEW_STATE;
 
     private tree: TreeNode[];

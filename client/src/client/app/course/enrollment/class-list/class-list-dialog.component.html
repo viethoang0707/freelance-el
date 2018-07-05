@@ -24,6 +24,9 @@
                         <th>
                             {{'Course'|translate}}
                         </th>
+                        <th>
+                            {{'Status'|translate}}
+                        </th>
                         <th [pSortableColumn]=" 'start' ">
                             {{'Start'|translate}}
                             <p-sortIcon [field]=" 'start' "></p-sortIcon>
@@ -38,6 +41,7 @@
                     <tr [pSelectableRow]="courseClass ">
                         <td style="text-align: left; ">{{courseClass.name}}</td>
                         <td style="text-align: left; ">{{courseClass.course_name}}</td>
+                        <td style="text-align: left; ">{{CLASS_STATUS[courseClass.status]}}</td>
                         <td>{{courseClass.start | date : "dd/MM/yyyy "}}</td>
                         <td>{{courseClass.end | date : "dd/MM/yyyy "}}</td>
                     </tr>

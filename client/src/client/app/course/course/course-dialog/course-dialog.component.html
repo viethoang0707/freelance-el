@@ -7,15 +7,11 @@
                     <label>{{'Logo'|translate}}</label>
                     <image-base64 [(src64)]="object.logo"></image-base64>
                 </div>
-                <div class="ui-g-6">
+                <div class="ui-g-8">
                     <label>{{'Parent group'|translate}}</label>
                     <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
                     <div *ngIf="selectedNode==null" class="ui-message ui-messages-error ui-corner-all">
                         {{'Selected group is required' | translate}}</div>
-                </div>
-                <div class="ui-g-3 logo-course">
-                    <label>{{'Logo'|translate}}</label>
-                    <image-base64 [(src64)]="object.logo"></image-base64>
                 </div>
                 <div class="ui-g-3">
                     <span class="md-inputfield mt20">
