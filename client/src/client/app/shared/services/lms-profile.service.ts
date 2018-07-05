@@ -256,6 +256,12 @@ export class LMSProfileService {
     });
   }
 
+  surveyMemberById(id:number) {
+    return _.find(this.mySurveyMembers, (member:SurveyMember)=> {
+      return member.id ==  id;
+    });
+  }
+
   examMembersByClassId(classId:number) {
     return _.filter(this.myExamMembers, (member:ExamMember)=> {
       return member.class_id ==  classId;

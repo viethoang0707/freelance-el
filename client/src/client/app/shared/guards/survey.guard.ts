@@ -6,6 +6,7 @@ import { ModelAPIService } from '../services/api/model-api.service';
 import { APIContext } from '../models/context';
 import { SurveyMember } from '../models/elearning/survey-member.model';
 import * as _ from 'underscore';
+import { LMSProfileService } from '../services/lms-profile.service';
 
 @Injectable()
 export class SurveyGuard implements CanActivate, APIContext {
@@ -13,7 +14,7 @@ export class SurveyGuard implements CanActivate, APIContext {
 	apiService: ModelAPIService;
 	authService: AuthService;
 
-	constructor(apiService: ModelAPIService, authService: AuthService, private lmsService: LMSService, private router: Router) {
+	constructor(apiService: ModelAPIService, authService: AuthService, private lmsService: LMSProfileService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
 	}
@@ -24,12 +25,9 @@ export class SurveyGuard implements CanActivate, APIContext {
 		if (!surveyId || !memberId)
 			return Observable.of(false);
 		return this.lmsService.init(this)
-		.map(members=> {
-			var surveyMembers = this.lmsService.MySurveyMember;
-            var member = _.find(surveyMembers, (obj:SurveyMember)=> {
-                return obj.survey_id == surveyId && obj.id == memberId && ( obj.role == 'editor' ||  obj.role == 'supervisor' );
-            });
-            return member != null;
+		.map(()=> {
+			var member = this.lmsService.surveyMemberById(memberId);
+            return member != null && ( member.role == 'editor' ||  member.role == 'supervisor' );
         }).catch(() => {
             return Observable.of(false);
         });
