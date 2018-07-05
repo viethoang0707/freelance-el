@@ -37,8 +37,14 @@ export class Exam extends BaseModel{
         this.is_public =  undefined;
         this.review_state = undefined;
         this.course_class_id = undefined;
+        this.sheet_id =  undefined;
+        this.question_count = undefined;
+        this.sheet_status = undefined;
 	}
 
+    sheet_id: number;
+    question_count: number;
+    sheet_status: string;
     review_state:string;
     course_class_id:number;
     competency_id: number;
@@ -94,7 +100,7 @@ export class Exam extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved'),('status','=','open')]");
+        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
@@ -104,7 +110,7 @@ export class Exam extends BaseModel{
                     return exam.review_state == 'approved' ;
                 });
             });
-        return Exam.search(context,[],"[('review_state','=','approved'),('status','=','open')]");
+        return Exam.search(context,[],"[('review_state','=','approved')]");
     }
 
     __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
@@ -168,5 +174,23 @@ export class Exam extends BaseModel{
                 });
             });
         return Exam.search(context,[],"[('course_class_id','=',"+classId+")]");
+    }
+
+    __api__open(examId: number): ExecuteAPI {
+        return new ExecuteAPI(Exam.Model, 'open',{examId:examId}, null);
+    }
+
+    open(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__open(this.id), 
+            context.authService.LoginToken);
+    }
+
+    __api__close(examId: number): ExecuteAPI {
+        return new ExecuteAPI(Exam.Model, 'close',{examId:examId}, null);
+    }
+
+    close(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__close(this.id), 
+            context.authService.LoginToken);
     }
 }

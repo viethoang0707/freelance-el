@@ -10,7 +10,6 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model';
-import { Room } from '../../../shared/models/meeting/room.model';
 import { MeetingService } from '../../../shared/services/meeting.service';
 import { BaseModel } from '../../../shared/models/base.model';
 
@@ -32,16 +31,17 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.lmsService.init(this).subscribe(() => {
-            this.displayConferences();
+        this.lmsProfileService.init(this).subscribe(() => {
+            var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
+            this.displayConferences(conferenceMembers);
         });
     }
 
-    displayConferences() {
-        this.conferenceMembers = this.lmsService.MyConferenceMember;
-        this.conferenceMembers = _.sortBy(this.conferenceMembers, (member: ConferenceMember) => {
-            return -this.lmsService.getLastConferenceTimestamp(member.conference);
+    displayConferences(conferenceMembers: ConferenceMember[]) {
+        conferenceMembers = _.sortBy(conferenceMembers, (member: ConferenceMember) => {
+            return -this.lmsProfileService.getLastConferenceTimestamp(member);
         });
+        this.conferenceMembers = conferenceMembers;
     }
 
     joinConference(conference, member) {

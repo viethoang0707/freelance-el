@@ -85,4 +85,33 @@ export class CourseEnrollmentListComponent extends BaseComponent {
             this.displayCourses =  this.courses;
         }
     }
+
+    closeCourse() {
+        if (this.selectedCourse) {
+            if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+                this.error('You do not have close permission for this class');
+                return;
+            }
+            this.confirm('Are you sure to proceed ? You will not be able to add new class after the course is closed', () => {
+                this.selectedCourse.close(this).subscribe(() => {
+                    this.success('Class close');
+                });
+            });
+        }
+    }
+
+    openCourse() {
+        if (this.selectedCourse) {
+            if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+                this.error('You do not have open permission for this class');
+                return;
+            }
+            this.confirm('Are you sure to proceed ?.', () => {
+                this.selectedCourse.open(this).subscribe(() => {
+                    this.success('Class close');
+                });
+            });
+
+        }
+    }
 }

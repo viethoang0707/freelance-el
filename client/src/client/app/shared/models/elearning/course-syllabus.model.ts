@@ -19,6 +19,7 @@ export class CourseSyllabus extends BaseModel{
         this.supervisor_id =  undefined;
         this.supervisor_name = undefined;
         this.review_state =  undefined;
+        this.unit_count = undefined;
 	}    
 
     review_state: string;
@@ -27,22 +28,14 @@ export class CourseSyllabus extends BaseModel{
     course_id: number;
     supervisor_id: number;
     supervisor_name: string;
+    unit_count: number;
 
-    static __api__byCourse(courseId: number): SearchReadAPI {
+    static __api__listByCourse(courseId: number): SearchReadAPI {
         return new SearchReadAPI(CourseSyllabus.Model, [],"[('course_id','=',"+courseId+")]");
     }
 
-    static byCourse(context:APIContext, courseId: number):Observable<any> {
-        return CourseSyllabus.single(context,[],"[('course_id','=',"+courseId+")]")
+    static listByCourse( context:APIContext, courseId: number): Observable<any[]> {
+        return CourseSyllabus.search(context,[],"[('course_id','=',"+courseId+")]");
     }
 
-    static fromCourseArray(context:APIContext, courseIds: number[]):Observable<any> {
-        var apiList = _.map(courseIds, courseId=> {
-            return this.__api__byCourse(courseId);
-        })
-        return BaseModel.bulk_search(context, ...apiList).map(jsonArr=> {
-            jsonArr =  _.flatten(jsonArr);
-            return CourseSyllabus.toArray(jsonArr);
-        });
-    }
 }

@@ -15,11 +15,13 @@ export class SurveySheet extends BaseModel{
         this.name = undefined;
         this.seed = undefined;
         this.finalized = undefined;
+        this.status =  undefined;
 	}
     survey_id: number;
     name: string;
     seed:number;
     finalized:boolean;
+    status: string;
     
     clone() {
         var sheet = new SurveySheet();
@@ -29,16 +31,9 @@ export class SurveySheet extends BaseModel{
         return sheet;
     }
 
-    static __api__bySurvey(surveyId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveySheet.Model, [],"[('survey_id','=',"+surveyId+")]");
-    }
 
     static __api__listTemplate(): SearchReadAPI {
         return new SearchReadAPI(SurveySheet.Model, [],"[('survey_id','=',False)]");
-    }
-
-    static bySurvey( context:APIContext, surveyId: number): Observable<any> {
-        return SurveySheet.single(context,[],"[('survey_id','=',"+surveyId+")]");
     }
 
     static listTemplate( context:APIContext): Observable<any> {

@@ -42,32 +42,24 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.lmsService.init(this).subscribe(() => {
-            this.displaySurveys();
+        this.lmsProfileService.init(this).subscribe(() => {
+            var surveys = this.lmsProfileService.MySurveys;
+            this.displaySurveys(surveys);
         });
     }
 
-    displaySurveys() {
-        var surveys = this.lmsService.MySurvey;
-        surveys = _.filter(surveys, (survey: Survey) => {
-            return survey.review_state == 'approved';
+    displaySurveys(surveys: Survey[]) {
+        _.each(surveys, (survey:Survey)=> {
+            survey['candidate'] =  this.lmsProfileService.getSurveyMemberByRole('candidate', survey.id);
+            survey['editor'] =  this.lmsProfileService.getSurveyMemberByRole('editor', survey.id);
+            survey['supervisor'] =  this.lmsProfileService.getSurveyMemberByRole('supervisor', survey.id);
+            if (survey['supervisor'])
+                 survey['editor'] =  survey['supervisor'];
         });
         surveys.sort((survey1: Survey, survey2: Survey): any => {
-            return this.lmsService.getLastSurveyTimestamp(survey2) - this.lmsService.getLastSurveyTimestamp(survey1);
+            return this.lmsProfileService.getLastSurveyTimestamp(survey2) - this.lmsProfileService.getLastSurveyTimestamp(survey1);
         });
         this.surveys = surveys;
-        var countApi = _.map(surveys, (survey: Survey) => {
-            return SurveyQuestion.__api__countBySurvey(survey.id);
-        });
-        BaseModel.bulk_count(this, ...countApi)
-            .map((jsonArray) => {
-                return _.flatten(jsonArray);
-            })
-            .subscribe(counts => {
-                for (var i = 0; i < surveys.length; i++) {
-                    surveys[i]["question_count"] = counts[i];
-                }
-            });
     }
 
     editContent(survey: Survey) {

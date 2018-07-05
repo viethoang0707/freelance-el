@@ -23,7 +23,6 @@ import { SelectCompetencyLevelDialog } from '../../../shared/components/select-c
 export class ExamDialog extends BaseDialog<Exam> {
 
     private locale: any;
-    private examStatus: SelectItem[];
     private rangeDates: Date[];
     private editor: ExamMember;
     
@@ -33,12 +32,6 @@ export class ExamDialog extends BaseDialog<Exam> {
     constructor(private http: Http) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
-        this.examStatus = _.map(EXAM_STATUS, (val, key) => {
-            return {
-                label: this.translateService.instant(val),
-                value: key
-            }
-        });
         this.editor =  new ExamMember();
     }
 
@@ -101,7 +94,7 @@ export class ExamDialog extends BaseDialog<Exam> {
                 return;
             } else if (users.length == 1) {
                 var user = users[0];
-                this.editor.id = user.id;
+                this.editor.user_id = user.id;
                 this.editor.name = user.name;
             }
         });

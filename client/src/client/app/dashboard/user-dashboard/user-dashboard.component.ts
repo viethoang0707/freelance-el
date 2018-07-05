@@ -11,7 +11,6 @@ import { ExamQuestion } from '../../shared/models/elearning/exam-question.model'
 import { CourseClass } from '../../shared/models/elearning/course-class.model';
 import { ConferenceMember } from '../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../shared/models/elearning/conference.model';
-import { Room } from '../../shared/models/meeting/room.model';
 import { MeetingService } from '../../shared/services/meeting.service';
 import { User } from '../../shared/models/elearning/user.model';
 import { GROUP_CATEGORY, CONFERENCE_STATUS, COURSE_MODE, EXAM_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants'
@@ -66,32 +65,40 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.header = SCHEDULER_HEADER;
     }
 
-    displayCourses() {
-        var courseMembers = this.lmsService.MyCourseMember;
-        var courses = this.lmsService.MyCourse;
-        var classList = this.lmsService.MyClass;
-        courses = _.filter(courses, (course: Course) => {
-            return course.review_state == 'approved';
+    displayCourses(courses:Course[]) {
+        _.each(courses, (course:Course)=> {
+            course['student'] =  this.lmsProfileService.getCourseMemberByRole('student', course.id);
+            course['teacher'] =  this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
+            course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
+            course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
+            if (course['supervisor'])
+                course['teahcer'] =  course['editor'] =  course['supervisor'];
         });
-        this.courses = _.sortBy(courses, (course: Course) => {
-            return -this.lmsService.getLastCourseTimestamp(course);
+        this.courses =  _.sortBy(courses, (course: Course) => {
+            return -this.lmsProfileService.getLastCourseTimestamp(course);
         });
-        this.events = this.events.concat(_.map(classList, (clazz: CourseClass) => {
-            return {
-                title: clazz.name,
-                start: clazz.start,
-                end: clazz.end,
-                id: clazz.id,
-                allDay: true
-            }
-        }));
+        var classList = this.lmsProfileService.MyClasses;
+            this.events = this.events.concat(_.map(classList, (clazz: CourseClass) => {
+                return {
+                    title: clazz.name,
+                    start: clazz.start,
+                    end: clazz.end,
+                    id: clazz.id,
+                    allDay: true
+                }
+            }));
     }
 
-    displayExams() {
-        var examMembers = this.lmsService.MyExamMember;
-        var exams = this.lmsService.MyExam;
-        this.exams = _.sortBy(exams, (exam: Exam) => {
-            return -this.lmsService.getLastExamTimestamp(exam);
+    displayExams(exams: Exam[]) {
+        _.each(exams, (exam:Exam)=> {
+            exam['candidate'] =  this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
+            exam['editor'] =  this.lmsProfileService.getExamMemberByRole('editor', exam.id);
+            exam['supervisor'] =  this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
+            if (exam['supervisor'])
+                exam['editor'] =  exam['supervisor'];
+        });
+        exams.sort((exam1: Exam, exam2: Exam): any => {
+            return this.lmsProfileService.getLastExamTimestamp(exam2) - this.lmsProfileService.getLastExamTimestamp(exam1);
         });
         this.events = this.events.concat(_.map(exams, (exam: Exam) => {
             return {
@@ -102,21 +109,25 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 allDay: true
             }
         }));
+        this.exams = exams;
     }
 
-    displayConferences() {
-        this.conferenceMembers = this.lmsService.MyConferenceMember;
-        this.conferenceMembers = _.sortBy(this.conferenceMembers, (member: ConferenceMember) => {
-            return -this.lmsService.getLastConferenceTimestamp(member.conference);
+    displayConferences(conferenceMembers: ConferenceMember[]) {
+        conferenceMembers = _.sortBy(conferenceMembers, (member: ConferenceMember) => {
+            return -this.lmsProfileService.getLastConferenceTimestamp(member);
         });
+        this.conferenceMembers = conferenceMembers;
     }
 
 
     ngOnInit() {
-        this.lmsService.init(this).subscribe(() => {
-            this.displayCourses();
-            this.displayExams();
-            this.displayConferences();
+        this.lmsProfileService.init(this).subscribe(() => {
+            var courses = this.lmsProfileService.MyCourses;
+            var exams = this.lmsProfileService.MyExams;
+            var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
+            this.displayCourses(courses);
+            this.displayExams(exams);
+            this.displayConferences(conferenceMembers);
         });
     }
 

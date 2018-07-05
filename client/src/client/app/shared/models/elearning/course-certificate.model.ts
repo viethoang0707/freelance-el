@@ -45,10 +45,6 @@ export class Certificate extends BaseModel{
     course_mode: string;
     course_code: string;
 
-    static byMember( context:APIContext, memberId: number): Observable<any[]> {
-        return Certificate.single(context,[],"[('member_id','!=',"+memberId+")]")
-    }
-
     static listByUser(context: APIContext, userId: number): Observable<any[]> {
         return Certificate.search(context, [], "[('user_id','='," + userId + ")]");
     }
@@ -58,7 +54,12 @@ export class Certificate extends BaseModel{
         return new SearchReadAPI(Certificate.Model, [],"[('user_id','=',"+userId+")]");
     }
 
-    static __api__byMember(memberId: number): SearchReadAPI {
+    static listByMember(context: APIContext, memberId: number): Observable<any[]> {
+        return Certificate.search(context, [], "[('member_id','='," + memberId + ")]");
+    }
+
+
+    static __api__listByMember(memberId: number): SearchReadAPI {
         return new SearchReadAPI(Certificate.Model, [],"[('member_id','=',"+memberId+")]");
     }
 

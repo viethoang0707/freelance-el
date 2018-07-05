@@ -71,23 +71,6 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
                     || course.description.includes(this.keyword);
                 });
             this.courses =  courses;
-            var courseIds = _.pluck(this.courses, 'id');
-            CourseSyllabus.fromCourseArray(this, courseIds).subscribe(sylList => {
-                _.each(this.courses, (course: Course) => {
-                    course["syllabus"] = _.find(sylList, (syl: CourseSyllabus) => {
-                        return syl.course_id == course.id;
-                    });
-                });
-                var sylIds = _.pluck(sylList, 'id');
-                CourseUnit.countBySyllabusArray(this, sylIds).subscribe(unitCounts => {
-                    for (var i = 0; i < sylIds.length; i++) {
-                        let course: Course = _.find(this.courses, (obj: Course) => {
-                            return obj["syllabus"].id == sylIds[i];
-                        });
-                        course["unit_count"] = unitCounts[i];
-                    }
-                });
-            });
         });
     }
 

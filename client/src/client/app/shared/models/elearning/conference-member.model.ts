@@ -4,7 +4,6 @@ import { Conference } from './conference.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
-import { RoomMember } from '../meeting/room-member.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
 import { DeleteAPI } from '../../services/api/delete.api';
@@ -37,6 +36,7 @@ export class ConferenceMember extends BaseModel{
     email: string;
     phone: string;
     name: string;
+    group_name: string;
     room_member_ref:string;
     is_active: boolean;
     class_id: number;
@@ -48,11 +48,11 @@ export class ConferenceMember extends BaseModel{
     group_id__DESC__: string;
 
 
-    static __api__byCourseMember(memberId: number): SearchReadAPI {
+    static __api__listByCourseMember(memberId: number): SearchReadAPI {
         return new SearchReadAPI(ConferenceMember.Model, [],"[('course_member_id','=',"+memberId+")]");
     }
 
-    static byCourseMember(context:APIContext, memberId: number):Observable<any> {
+    static listByCourseMember(context:APIContext, memberId: number):Observable<any> {
         return ConferenceMember.single(context,[],"[('course_member_id','=',"+memberId+")]");
     }
 

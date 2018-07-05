@@ -41,10 +41,16 @@ export class Course extends BaseModel{
         this.competency_group_id = undefined;
         this.competency_group_name = undefined;
         this.review_state = undefined;
+        this.syllabus_id = undefined;
+        this.unit_count = undefined;
+        this.syllabus_status = undefined;
 	}
 
     complete_unit_by_order: boolean;
     competency_id: number;
+    syllabus_id: number;
+    unit_count: number;
+    syllabus_status: string;
     competency_name: string;
     review_state: string;
     competency_group_id: number;
@@ -55,7 +61,6 @@ export class Course extends BaseModel{
     prequisite_course_name: string;
     prequisite_course_id__DESC__:string;
     name:string;
-    syllabus_id:number;
     group_id:number;
     supervisor_id: number;
     supervisor_name: string;
@@ -90,7 +95,7 @@ export class Course extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved'),('status','=','open')]");
+        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
@@ -100,7 +105,7 @@ export class Course extends BaseModel{
                     return course.review_state == 'approved' ;
                 });
             });
-        return Course.search(context,[],"[('review_state','=','approved'),('status','=','open')]");
+        return Course.search(context,[],"[('review_state','=','approved')]");
     }
 
     static __api__listByCompetency(competencyId: number): SearchReadAPI {
@@ -171,6 +176,24 @@ export class Course extends BaseModel{
         return context.apiService.execute(this.__api__enroll(this.id, userIds), 
             context.authService.LoginToken);
 
+    }
+
+    __api__open(courseId: number): ExecuteAPI {
+        return new ExecuteAPI(Course.Model, 'open',{courseId:courseId}, null);
+    }
+
+    open(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__open(this.id), 
+            context.authService.LoginToken);
+    }
+
+    __api__close(courseId: number): ExecuteAPI {
+        return new ExecuteAPI(Course.Model, 'close',{courseId:courseId}, null);
+    }
+
+    close(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__close(this.id), 
+            context.authService.LoginToken);
     }
 
 }

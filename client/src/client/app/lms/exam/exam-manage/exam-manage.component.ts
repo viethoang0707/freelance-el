@@ -31,6 +31,7 @@ import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.m
 import { ExamReportDialog } from '../exam-report/exam-report.dialog.component';
 import { ExamStatsDialog } from '../exam-stats/exam-stats.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
+import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 
 
 @Component({
@@ -44,9 +45,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     private exam: Exam;
     private member: ExamMember;
     private members: ExamMember[];
-    private scoreRecords: any;
-    private selectedRecord: any;
+    private selectedMember: any;
     private questions: ExamQuestion[];
+    private records: ExamRecord[];
 
     @ViewChild(QuestionMarkingDialog) questionMarkDialog: QuestionMarkingDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
@@ -64,16 +65,16 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         this.route.params.subscribe(params => {
             var memberId = +params['memberId'];
             var examId = +params['examId'];
-            this.lmsService.init(this).subscribe(() => {
-                this.exam = this.lmsService.getExam(examId);
-                this.member = this.lmsService.getExamMember(memberId);
+            this.lmsProfileService.init(this).subscribe(()=> {
+                this.exam = this.lmsProfileService.examById(examId);
+                this.member = this.lmsProfileService.examMemberById(memberId);
                 this.loadScores();
             });
         });
     }
 
     showQuestionSheet() {
-        QuestionSheet.byExam(this, this.exam.id).subscribe((sheet: QuestionSheet) => {
+        QuestionSheet.get(this, this.exam.sheet_id).subscribe((sheet: QuestionSheet) => {
             if (!sheet || !sheet.finalized)
                 this.error(this.translateService.instant('The exam questions has not been set up'));
             else
@@ -81,53 +82,23 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         });
     }
 
-    mark() {
-        if (this.selectedRecord)
-            if (this.selectedRecord["submit"] == null) {
-                this.warn(this.translateService.instant('The member has not attempted the exam'));
-                return;
-            }
-        this.questionMarkDialog.show(this.selectedRecord, this.selectedRecord["submit"]);
-    }
 
     viewAnswerSheet() {
-        if (this.selectedRecord) {
-            if (this.selectedRecord.enroll_status != 'completed')
+        if (this.selectedMember) {
+            if (this.selectedMember.enroll_status != 'completed')
                 this.info(this.translateService.instant('Student has not completed the exam'));
             else
-                this.answerSheetDialog.show(this.exam, this.selectedRecord);
+                this.answerSheetDialog.show(this.exam, this.selectedMember);
         }
     }
 
     loadScores() {
         BaseModel.bulk_search(this,
-            ExamGrade.__api__listByExam(this.exam.id),
             ExamMember.__api__listCandidateByExam(this.exam.id),
-            Submission.__api__listByExam(this.exam.id))
+            ExamRecord.__api__listByExam(this.exam.id))
             .subscribe(jsonArr => {
-                var grades = ExamGrade.toArray(jsonArr[0]);
-                var members = ExamMember.toArray(jsonArr[1]);
-                var submits = Submission.toArray(jsonArr[2]);
-                this.scoreRecords = members;
-                _.each(members, (member: ExamMember) => {
-                    var submit = _.find(submits, (submit: Submission) => {
-                        return submit.member_id == member.id && submit.exam_id == this.exam.id;
-                    });
-                    member["submit"] = submit;
-                    if (submit) {
-                        console.log('member:', member);
-                        if (submit.score != null) {
-                            if (submit.score == "") {
-                                member["score"] = 0;
-                            } else {
-                                member["score"] = submit.score;
-                            }
-                            member["grade"] = ExamGrade.gradeScore(grades, submit.score);
-                        } else
-                            member["score"] = '';
-                    }
-                });
-                console.log('member: ', members);
+                this.members = ExamMember.toArray(jsonArr[0]);
+                this. records = ExamRecord.toArray(jsonArr[1]);
             });
     }
 
@@ -139,12 +110,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         this.statsDialog.show(this.exam);
     }
 
-    closeExam() {
-        if (this.selectedRecord) {
-            this.selectedRecord.status = 'closed';
-            this.selectedRecord.save(this).subscribe(() => {
-                this.success(this.translateService.instant('Exam close'));
-            });
-        }
+    getExamRecord(member: ExamMember) {
+        return _.find(this.records, (record: ExamRecord)=> {
+            return record.member_id == member.id
+        }) || new ExamRecord();
     }
 }

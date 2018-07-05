@@ -24,7 +24,7 @@
             <div>
               <ng-template course-unit-container></ng-template>
               <div style="text-align: center;">
-                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn mt5" (click)="completeUnit()" [disabled]="selectedUnit.completed" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
+                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn mt5" (click)="completeUnit()" [disabled]="completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
               </div>
             </div>
           </div>
@@ -71,10 +71,10 @@
                         <span class="cmt-title">{{'End date'|translate}}</span>
                         <span class="cmt-detail">{{project.end | date : "dd/MM/yyyy"}}</span>
                       </li>
-                      <li class="clearfix">
-                        <i class="material-icons">report</i>
-                        <span class="cmt-title">{{'Submit status'|translate}}</span>
-                        <span class="cmt-detail">{{project["submit"]?'Yes':'No'}}</span>
+                      <li class="clearfix" *ngVar="getProjectSubmit(project) as submit">
+                        <i class="material-icons">date_range</i>
+                        <span class="cmt-title">{{'Submit date'|translate}}</span>
+                        <span class="cmt-detail">{{submit.date_submit | date : "dd/MM/yyyy"}}</span>
                       </li>
                       <li class="clearfix">
                         <i class="material-icons">star</i>
@@ -118,8 +118,6 @@
                       <p [innerHTML]="member.exam.instruction"></p>
                     </p-accordionTab>
                   </p-accordion>
-                  
-                  <!-- </div> -->
                 </div>
                 <div class="ui-lg-4 ui-md-12 ui-g-12">
                   <p-card>
@@ -142,12 +140,7 @@
                       <li class="clearfix">
                         <i class="material-icons">done</i>
                         <span class="cmt-title">{{'Number of question'|translate}}</span>
-                        <span class="cmt-detail">{{member.question_count}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">star</i>
-                        <span class="cmt-title">{{'Score'|translate}}</span>
-                        <span class="cmt-detail">{{member.score}}</span>
+                        <span class="cmt-detail">{{member.exam.question_count}}</span>
                       </li>
                     </ul>
                     <p-footer>
@@ -169,66 +162,9 @@
         <p-toolbar>
           <div class="ui-toolbar-group-left">
             <button pButton type="button " label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
+            <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" ></button>
           </div>
         </p-toolbar>
-        <p-dataList [value]="completedMembers" [paginator]="true" [rows]="5">
-          <ng-template let-member pTemplate="item">
-            <p-card>
-              <p-header>
-                <div class="head-exam">
-                </div>
-              </p-header>
-              <div class="ui-g body-exam">
-                <div class="ui-lg-8 ui-md-12 ui-g-12">
-                  <h4>{{member.exam.name}}</h4>
-                  <span class="e-status">
-                    {{EXAM_STATUS[member.exam.status] | translate}}
-                  </span>
-                  <h5 class="e-title">{{'Summary'|translate}}</h5>
-                  <p>
-                    {{member.exam.summary}}
-                  </p>
-                  <h5 class="e-title">{{'Instruction'|translate}}</h5>
-                  <p [innerHTML]="member.exam.instruction"></p>
-                </div>
-                <div class="ui-lg-4 ui-md-12 ui-g-12">
-                  <p-card>
-                    <ul class="list-cmt">
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'Start date'|translate}}</span>
-                        <span class="cmt-detail">{{member.exam.start | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'End date'|translate}}</span>
-                        <span class="cmt-detail">{{member.exam.end | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">alarm</i>
-                        <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
-                        <span class="cmt-detail">{{member.exam.duration}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">star</i>
-                        <span class="cmt-title">{{'Score'|translate}}</span>
-                        <span class="cmt-detail">{{member.score}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">star</i>
-                        <span class="cmt-title">{{'Grade'|translate}}</span>
-                        <span class="cmt-detail">{{member.grade}}</span>
-                      </li>
-                    </ul>
-                    <p-footer>
-                      <button pButton type="button" icon="ui-icon-timeline" title="{{'Answer'| translate}}" label="{{'Answer'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="viewAnswer(member.exam)"></button>
-                    </p-footer>
-                  </p-card>
-                </div>
-                </div>
-            </p-card>
-          </ng-template>
-        </p-dataList>
         <answer-print-dialog></answer-print-dialog>
         <certificate-print-dialog></certificate-print-dialog>
       </div>
@@ -269,13 +205,13 @@
               </p>
             </div>
             <div class="task-box-footer">
-              <!-- <span class="task-status">{{CONFERENCE_STATUS[conference.status]|translate}}</span> -->
               <span class="task-status">{{conference.status}}</span>
             </div>
           </div>
         </div>
       </div>
     </p-tabPanel>
+<<<<<<< HEAD
     <p-tabPanel *ngIf="member.class_id" header="{{'Survey'|translate}}" leftIcon="ui-icon-question-answer">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <p-dataList [value]="surveys" [paginator]="true" [rows]="5">
@@ -329,6 +265,8 @@
         <survey-study-dialog></survey-study-dialog>
       </div>
     </p-tabPanel>
+=======
+>>>>>>> Refactor LMS
   </p-tabView>
   </div>
 </div>

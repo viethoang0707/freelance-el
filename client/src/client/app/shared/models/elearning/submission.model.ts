@@ -32,21 +32,6 @@ export class Submission extends BaseModel{
     start: Date;
     score: number;
 
-    static __api__byUserAndExam(userId: number, examId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]");
-    }
-
-    static byUserAndExam( context:APIContext, userId: number, examId: number): Observable<any> {
-        return Submission.single(context,[],"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]");
-    }
-
-    static __api__byMemberAndExam(memberId: number,examId:number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]")
-    }
-
-    static byMemberAndExam( context:APIContext, memberId: number, examId: number): Observable<any> {
-        return Submission.single(context,[],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
-    }
     
     static __api__listByUser(userId: number): SearchReadAPI {
         return new SearchReadAPI(Submission.Model, [],"[('user_id','=',"+userId+")]");
@@ -64,11 +49,12 @@ export class Submission extends BaseModel{
         return Submission.search(context,[],"[('exam_id','=',"+examId+")]");
     }
 
-     static __api__listByMember(memberId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+")]");
+    static __api__byMemberAndExam(memberId: number, examId: number): SearchReadAPI {
+        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+"),('exam_id','=',"+examId+")]");
     }
 
-    static listByMember( context:APIContext, memberId: number): Observable<any> {
-        return Submission.search(context,[],"[('member_id','=',"+memberId+")]");
+    static byMemberAndExam( context:APIContext, memberId: number, examId: number): Observable<any> {
+        return Submission.single(context,[],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
     }
+
 }

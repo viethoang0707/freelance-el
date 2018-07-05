@@ -49,7 +49,7 @@
             <div *ngIf="exams.length">
                 <p-dataList [value]="exams" [paginator]="true" [rows]="5">
                     <ng-template let-exam pTemplate="item">
-                        <p-card>
+                        <p-card *ngVar="getExamRecord(exam) as examRecord">
                             <p-header>
                                 <div class="head-exam">
                                 </div>
@@ -86,12 +86,12 @@
                                             <li class="clearfix">
                                                 <i class="material-icons">star</i>
                                                 <span class="cmt-title">{{'Score'|translate}}</span>
-                                                <span class="cmt-detail">{{exam.score}}</span>
+                                                <span class="cmt-detail">{{examRecord.score}}</span>
                                             </li>
                                             <li class="clearfix">
                                                 <i class="material-icons">star</i>
                                                 <span class="cmt-title">{{'Grade'|translate}}</span>
-                                                <span class="cmt-detail">{{exam.grade}}</span>
+                                                <span class="cmt-detail">{{examRecord.grade}}</span>
                                             </li>
                                         </ul>
                                         <p-footer>
@@ -108,7 +108,7 @@
             <div *ngIf="projects.length">
                 <p-dataList [value]="projects" [paginator]="true" [rows]="5">
                     <ng-template let-project pTemplate="item">
-                        <p-card>
+                        <p-card *ngVar="getProjectSubmit(project) as projectSubmit">
                             <p-header>
                                 <div class="head-exam">
                                 </div>
@@ -140,12 +140,12 @@
                                             <li class="clearfix">
                                                 <i class="material-icons">date_range</i>
                                                 <span class="cmt-title">{{'Submit date'|translate}}</span>
-                                                <span class="cmt-detail">{{project.date_submit | date : "dd/MM/yyyy"}}</span>
+                                                <span class="cmt-detail">{{projectSubmit.date_submit | date : "dd/MM/yyyy"}}</span>
                                             </li>
                                             <li class="clearfix">
                                                 <i class="material-icons">star</i>
                                                 <span class="cmt-title">{{'Score'|translate}}</span>
-                                                <span class="cmt-detail">{{project.score}}</span>
+                                                <span class="cmt-detail">{{projectSubmit.score}}</span>
                                             </li>
                                         </ul>
                                         <p-footer>

@@ -7,6 +7,7 @@ import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import { Course } from './course.model';
+import { Certificate } from './course-certificate.model';
 import { CourseLog } from './log.model';
 import { ListAPI } from '../../services/api/list.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
@@ -40,11 +41,21 @@ export class CourseMember extends BaseModel {
         this.group_id__DESC__ = undefined;
         this.course = new Course();
         this.clazz =  new CourseClass();
+        this.certificate =  new Certificate();
+        this.certificate_id = undefined;
+        this.conference_member_id = undefined;
+        this.conference_member =  new ConferenceMember();
+        this.course_review_state =  undefined;
     }
 
     course_id: number;
+    course_review_state: string;
+    conference_member_id: number;
+    conference_member: ConferenceMember;
     course; Course;
     clazz: CourseClass;
+    certificate_id: number;
+    certificate: Certificate;
     user_id: number;
     class_id: number;
     status: string;
@@ -154,12 +165,12 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    __api__complete_course(memberId: number): ExecuteAPI {
-        return new ExecuteAPI(CourseMember.Model, 'complete_course',{memberId:memberId}, null);
+    __api__complete_course(memberId: number, certificateId: number): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'complete_course',{memberId:memberId, certificateId:certificateId}, null);
     }
 
-    completeCourse(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__complete_course(this.id), 
+    completeCourse(context:APIContext, certificateId: number):Observable<any> {
+        return context.apiService.execute(this.__api__complete_course(this.id, certificateId), 
             context.authService.LoginToken);
     }
 
@@ -185,6 +196,32 @@ export class CourseMember extends BaseModel {
             _.each(members, (member:CourseMember)=> {
                 member.clazz =  _.find(classList, (clazz:CourseClass)=> {
                     return member.class_id == clazz.id;
+                });
+            });
+        });
+    }
+
+    __api__populateConferenceMember(): ListAPI {
+        return new ListAPI(ConferenceMember.Model, [this.conference_member_id], []);
+    }
+
+    populateConferenceMember(context: APIContext): Observable<any> {
+        if (!this.conference_member_id)
+            return Observable.of(null);
+        return ConferenceMember.get(context, this.conference_member_id).do(member => {
+            this.conference_member = member;
+        });
+    }
+
+    static populateConferenceMembers(context: APIContext, members: CourseMember[]): Observable<any> {
+        var memberIds = _.pluck(members,'conference_member_id');
+        memberIds = _.filter(memberIds, id=> {
+            return id;
+        });
+        return ConferenceMember.array(context, memberIds).do(memberList=> {
+            _.each(members, (member:CourseMember)=> {
+                member.conference_member =  _.find(memberList, (confMember:ConferenceMember)=> {
+                    return member.conference_member_id == confMember.id;
                 });
             });
         });

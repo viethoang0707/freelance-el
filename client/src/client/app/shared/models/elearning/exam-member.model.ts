@@ -32,14 +32,20 @@ export class ExamMember extends BaseModel{
         this.group_id__DESC__ = undefined;
         this.course_member_id =  undefined;
         this.exam =  new Exam();
+        this.submission_id = undefined;
+        this.class_id =  undefined;
+        this.exam_review_state =  undefined;
     }
 
+    submission_id: number;
     exam_id: number;
     course_member_id: number;
     exam_name: string;
     exam: Exam;
     user_id: number;
+    class_id: number;
     status: string;
+    exam_review_state: string;
     enroll_status: string;
     role: string;
     login: string;

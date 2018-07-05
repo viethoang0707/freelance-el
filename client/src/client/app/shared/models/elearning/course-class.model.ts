@@ -23,6 +23,7 @@ export class CourseClass extends BaseModel{
         this.supervisor_id = undefined;
         this.supervisor_name = undefined;
         this.start = undefined;
+        this.conference_id =  undefined;
         this.end = undefined;
         this.status = undefined;
 	}
@@ -31,6 +32,7 @@ export class CourseClass extends BaseModel{
     course_name:string;
     supervisor_name:string;
     course_id: number;
+    conference_id: number;
     supervisor_id: number;
     status: string;
 
@@ -96,6 +98,24 @@ export class CourseClass extends BaseModel{
                 });
             });
         return CourseClass.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
+    }
+
+    __api__open(classId: number): ExecuteAPI {
+        return new ExecuteAPI(CourseClass.Model, 'open',{classId:classId}, null);
+    }
+
+    open(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__open(this.id), 
+            context.authService.LoginToken);
+    }
+
+    __api__close(classId: number): ExecuteAPI {
+        return new ExecuteAPI(CourseClass.Model, 'close',{classId:classId}, null);
+    }
+
+    close(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__close(this.id), 
+            context.authService.LoginToken);
     }
 
 }

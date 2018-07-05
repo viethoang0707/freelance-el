@@ -92,10 +92,20 @@ export class ExamStudyDialog extends BaseComponent {
 		this.member = member;
 		this.qIndex = 0;
 
-		this.createSubmission().subscribe((submit: Submission) => {
+		if (this.exam.sheet_status != 'published') {
+			this.error('Exam content has not been published');
+			return;
+		}
+
+		Submission.get(this, this.member.submission_id).subscribe((submit: Submission) => {
 			this.submission = submit;
-			QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
+			this.submission.start = new Date();
+			QuestionSheet.get(this, this.exam.sheet_id).subscribe((sheet:QuestionSheet) => {
 				this.sheet = sheet;
+				if (this.sheet.status != 'published') {
+					this.error('Exam content has not been pubished');
+					return;
+				}
 				BaseModel.bulk_search(this,
 					ExamQuestion.__api__listBySheet(this.sheet.id),
 					Answer.__api__listBySubmit(this.submission.id))
@@ -112,19 +122,6 @@ export class ExamStudyDialog extends BaseComponent {
 						});
 					});
 			});
-		});
-	}
-
-	createSubmission(): Observable<any> {
-		return Submission.byMemberAndExam(this, this.member.id, this.exam.id).flatMap((submit: Submission) => {
-			if (!submit) {
-				submit = new Submission();
-				submit.member_id = this.member.id;
-				submit.start = new Date();
-				return submit.save(this);
-			} else {
-				return Observable.of(submit);
-			}
 		});
 	}
 

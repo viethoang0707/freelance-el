@@ -1,50 +1,54 @@
 <p-dialog header="{{'Class exam enroll'|translate}}" [(visible)]="display" modal="true" width="800" [responsive]="true" appendTo="body">
-  <div class="spinner" [hidden]="!loading"></div>
-  <p-scrollPanel [style]="{width: '100%', height: '480px'}">
-    <div class="ui-g-12 ">
-      <p-toolbar>
-        <div class="ui-toolbar-group-left ">
-          <button pButton type="button " label="{{ 'Register all'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="registerAll() "></button>
-          <button pButton type="button " label="{{ 'Unregister all'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="unregisterAll() "></button>
+    <div class="spinner" [hidden]="!loading"></div>
+    <p-scrollPanel [style]="{width: '100%', height: '480px'}">
+        <div class="ui-g-12 ">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left ">
+                    <button pButton type="button " label="{{ 'Register all'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="enrollAll() " *ngIf="members.length==0"></button>
+                </div>
+                <div class="ui-toolbar-group-right">
+                     <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock" (click)="openExam() " [disabled]=" exam.status!='initial'" ></button>
+                     <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeExam() " [disabled]=" exam.status=='closed'" ></button>
+                </div>
+            </p-toolbar>
+            <p-table #candidateTable [value]="examMembers" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedMember " [responsive]="true " sortField="name">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th [pSortableColumn]="'name'">
+                            {{'Name'|translate}}
+                            <p-sortIcon [field]="'name'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'email'">
+                            {{'Email'|translate}}
+                            <p-sortIcon [field]="'email'"></p-sortIcon>
+                        </th>
+                        <th>{{'Phone'|translate}}</th>
+                        <th [pSortableColumn]="'group_id__DESC__'">
+                            {{'Group'|translate}}
+                            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                        </th>
+                        <th>{{'Suspend/Activate'|translate}}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-member>
+                    <tr [pSelectableRow]="member ">
+                        <td>{{member.name}}</td>
+                        <td>{{member.email}}</td>
+                        <td>{{member.phone}}</td>
+                        <td>{{member.group_id__DESC__}}</td>
+                        <td>
+                            <button pButton type="button " label="{{ 'Activate'|translate}} " class="green-btn " (click)="activateMember(member) " *ngIf="member.status=='suspend'"></button>
+                            <button pButton type="button " label="{{ 'Suspend'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="suspendMember(member) " *ngIf="member.status=='active'"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    {{'Total records'|translate}} : {{examMembers?.length}}
+                </ng-template>
+            </p-table>
         </div>
-      </p-toolbar>
-      <p-table #candidateTable [value]="members" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedMember " [responsive]="true " sortField="name">
-            <ng-template pTemplate="header">
-              <tr>
-                <th [pSortableColumn]="'name'">
-                  {{'Name'|translate}}
-                  <p-sortIcon [field]="'name'"></p-sortIcon>
-                </th>
-                <th [pSortableColumn]="'email'">
-                  {{'Email'|translate}}
-                  <p-sortIcon [field]="'email'"></p-sortIcon>
-                </th>
-                <th>{{'Phone'|translate}}</th>
-                <th [pSortableColumn]="'group_id__DESC__'">
-                  {{'Group'|translate}}
-                  <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
-                </th>
-                <th>{{'Suspend/Activate'|translate}}</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-member>
-              <tr [pSelectableRow]="member ">
-                <td>{{member.name}}</td>
-                <td>{{member.email}}</td>
-                <td>{{member.phone}}</td>
-                <td>{{member.group_id__DESC__}}</td>
-                <td>
-                  <p-inputSwitch [(ngModel)]="member.allowed"  (onChange)="registerUnregister($event,member)"  onLabel="'Registered'|translate" offLabel="'Unregistered'|translate"></p-inputSwitch>
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-              {{'Total records'|translate}} : {{members?.length}}
-            </ng-template>
-          </p-table>
-    </div>
-  </p-scrollPanel>
-  <p-footer>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+    </p-scrollPanel>
+    <p-footer>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
 </p-dialog>

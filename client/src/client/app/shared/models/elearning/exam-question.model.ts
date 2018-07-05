@@ -88,16 +88,6 @@ export class ExamQuestion extends BaseModel{
         return ExamQuestion.count(context,"[('exam_id','=',"+examId+")]");
     }
 
-    static __api__byQuestion(questionId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamQuestion.Model, [],"[('question_id','=',"+questionId+")]");
-    }
-
-    static byQuestion( context:APIContext, questionId: number): Observable<any[]> {
-        return ExamQuestion.search(context,[],"[('question_id','=',"+questionId+")]").map(questions =>{
-            return questions.length ? questions[0]: null;
-        });
-    }
-
     __api__populateQuestion(): ListAPI {
         return new ListAPI(Question.Model, [this.question_id], []);
     }

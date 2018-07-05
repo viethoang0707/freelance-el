@@ -17,6 +17,7 @@ import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Route, Router } from '@angular/router';
 import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
+import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     private exams: Exam[];
     private reportUtils: ReportUtils;
-    private submits: Submission[];
+    private examRecords: ExamRecord[];
 
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -43,34 +44,22 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.lmsService.init(this).subscribe(() => {
-            this.lmsService.initExamAnalytic(this).subscribe(() => {
-                Submission.listByUser(this, this.ContextUser.id).subscribe((submits) => {
-                    this.submits = submits;
-                    var exams = this.lmsService.MyExam;
-                    this.displayExams(exams);
-                })
-            });
+        this.lmsProfileService.init(this).subscribe(() => {
+            this.displayExams(this.lmsProfileService.MyExams);
+            this.examRecords =  this.lmsProfileService.MyExamRecords;
         });
     }
 
     displayExams(exams: Exam[]) {
-        exams = _.filter(exams, (exam: Exam) => {
-            return exam.review_state == 'approved';
+        _.each(exams, (exam:Exam)=> {
+            exam['candidate'] =  this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
+            exam['editor'] =  this.lmsProfileService.getExamMemberByRole('editor', exam.id);
+            exam['supervisor'] =  this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
+            if (exam['supervisor'])
+                exam['editor'] =  exam['supervisor'];
         });
         exams.sort((exam1: Exam, exam2: Exam): any => {
-            return this.lmsService.getLastExamTimestamp(exam2) - this.lmsService.getLastExamTimestamp(exam1);
-        });
-        _.each(exams, (exam: Exam) => {
-            if (exam["candidate"]) {
-                exam["submit"] = _.find(this.submits, (submit: Submission) => {
-                    return submit.member_id == exam["candidate"].id && submit.exam_id == exam.id;
-                });
-                if (exam["submit"])
-                    exam["score"] = exam["submit"].score;
-                else
-                    exam["score"] = '';
-            }
+            return this.lmsProfileService.getLastExamTimestamp(exam2) - this.lmsProfileService.getLastExamTimestamp(exam1);
         });
         this.exams = exams;
     }
@@ -94,6 +83,12 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 this.examStudyDialog.show(exam, member);
             }
         });
+    }
+
+    getExamRecord(exam:Exam) {
+        return _.find(this.examRecords, (record:ExamRecord)=> {
+            return record.exam_id == exam.id;
+        }) || new ExamRecord();
     }
 
 }

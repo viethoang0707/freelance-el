@@ -30,6 +30,8 @@ import { ProjectSubmission } from '../../../shared/models/elearning/project-subm
 import { ExcelService } from '../../../shared/services/excel.service';
 import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
+import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
+import { Course } from '../../../shared/models/elearning/course.model';
 
 
 @Component({
@@ -42,8 +44,11 @@ export class GradebookDialog extends BaseComponent {
 
     private display: boolean;
     private member: CourseMember;
+    private course: Course;
     private exams: Exam[];
+    private examRecords: ExamRecord[];
     private projects: Project[];
+    private projectSubmits: ProjectSubmission[];
     private certificate: Certificate;
     private stats: any;
     private reportUtils: ReportUtils;
@@ -70,11 +75,13 @@ export class GradebookDialog extends BaseComponent {
             this.translateService.instant('Score'),
         ]
         var records = [];
-        records = records.concat(_.map(this.exams, exam => {
-            return [exam["name"], exam["score"]];
+        records = records.concat(_.map(this.exams, (exam: Exam) => {
+            let examRecord: ExamRecord = this.getExamRecord(exam);
+            return [exam.name, examRecord.score];
         }));
-        records = records.concat(_.map(this.projects, project => {
-            return [project["name"], project["score"]];
+        records = records.concat(_.map(this.projects, (project: Project) => {
+            let submit: ProjectSubmission = this.getProjectSubmit(project);
+            return [project.name, submit.score];
         }));
         this.excelService.exportAsExcelFile(header.concat(records), 'gradebook_report');
     }
@@ -99,7 +106,7 @@ export class GradebookDialog extends BaseComponent {
         this.certDialog.show(certificate);
         this.certDialog.onCreateComplete.subscribe((obj: Certificate) => {
             this.certificate = obj;
-            this.member.completeCourse(this).subscribe(() => {
+            this.member.completeCourse(this, certificate.id).subscribe(() => {
                 this.success('Congratulations! You have completed the course.');
             })
         });
@@ -111,109 +118,56 @@ export class GradebookDialog extends BaseComponent {
         this.projects = [];
         this.stats = [];
         this.member = member;
-        this.lmsService.init(this).subscribe(() => {
-            this.lmsService.initCourseContent(this).subscribe(() => {
-                this.lmsService.initClassContent(this).subscribe(() => {
-                    BaseModel
-                        .bulk_search(this,
-                            CourseLog.__api__memberStudyActivity(this.member.id, this.member.course_id),
-                            Certificate.__api__byMember(this.member.id),
-                            ExamMember.__api__listByUser(this.ContextUser.id),
-                            Submission.__api__listByUser(this.ContextUser.id),
-                            ProjectSubmission.__api__listByMember(this.member.id))
-                        .subscribe(jsonArr => {
-                            var logs = CourseLog.toArray(jsonArr[0]);
-                            this.computeCourseStats(this.lmsService.getCourseSyllabusFromCourse(member.course_id), logs);
-                            var certList = Certificate.toArray(jsonArr[1]);
-                            if (certList.length)
-                                this.certificate = certList[0];
-                            var classExams = this.lmsService.getClassExams(member.class_id);
-                            var examMembers = ExamMember.toArray(jsonArr[2]);
-                            var submits = Submission.toArray(jsonArr[3]);
-                            this.displayExam(classExams, examMembers, submits);
-                            var projects = this.lmsService.getClassProjects(member.class_id);
-                            var projectSubmits = ProjectSubmission.toArray(jsonArr[4]);
-                            this.displayProject(projects, projectSubmits);
+        this.lmsProfileService.init(this).subscribe(() => {
+            this.course = this.lmsProfileService.courseById(member.course_id);
+            this.projects = this.lmsProfileService.projectsByClass(this.member.class_id);
+            this.exams = this.lmsProfileService.examsByClass(this.member.class_id);
+            BaseModel.bulk_search(this,
+                Certificate.__api__listByMember(this.member.id),
+                ProjectSubmission.__api__listByMember(this.member.id),
+                ExamRecord.__api__listByMember(this.member.id))
+                .subscribe(jsonArr => {
+                    var certificates = Certificate.toArray(jsonArr[0]);
+                    if (certificates.length)
+                        this.certificate = certificates[0];
+                    this.projectSubmits = ProjectSubmission.toArray(jsonArr[1]);
+                    this.examRecords = ExamRecord.toArray(jsonArr[2]);
+                    CourseLog.memberStudyActivity(this, this.member.id, this.member.course_id)
+                        .subscribe(logs => {
+                            this.computeCourseStats(logs);
                         });
                 });
-            });
         });
-
     }
 
-    computeCourseStats(syl: CourseSyllabus, logs: CourseLog[]) {
+    computeCourseStats(logs: CourseLog[]) {
         var record = {};
-        var units = this.lmsService.getSyllabusUnit(syl.id);
-        record["total_unit"] = units.length;
+        record["total_unit"] = this.course.unit_count;
         var result = this.reportUtils.analyzeCourseMemberActivity(logs);
         if (result[0] != Infinity)
             record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
         if (result[1] != Infinity)
             record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
         record["time_spent"] = this.timePipe.transform(+result[2], 'min');
-        if (units.length)
-            record["complete_percent"] = Math.floor(+result[3] * 100 / +units.length);
+        if (this.course.unit_count)
+            record["complete_percent"] = Math.floor(+result[3] * 100 / +this.course.unit_count);
         else
             record["complete_percent"] = 0;
         record["complete_unit"] = +result[3];
         this.stats.push(record);
     }
 
-    displayExam(classExams: Exam[], members: ExamMember[], submits: Submission[]) {
-        var examIds = _.pluck(classExams, 'id');
-        members = _.filter(members, member => {
-            return member.enroll_status != 'completed' && _.contains(examIds, member.exam_id);
-        });
-        ExamGrade.listByExams(this, examIds).subscribe(grades => {
-            var exams = _.map(members, (member: ExamMember) => {
-                return member.exam;
-            })
-            ExamMember.populateExams(this, members).subscribe(exams => {
-                _.each(exams, (exam: Exam) => {
-                    var examGrades = _.filter(grades, (grade: ExamGrade) => {
-                        return grade.exam_id == exam.id;
-                    });
-                    exam["member"] = _.find(members, (member: ExamMember) => {
-                        return member.exam_id == exam.id;
-                    });
-                    exam["submit"] = _.find(submits, (submit: Submission) => {
-                        return submit.member_id == exam["member"].id && submit.exam_id == exam.id;
-                    });
-                    if (!exam["submit"])
-                        exam["score"] = ''
-                    else {
-                        var grade = ExamGrade.gradeScore(examGrades, exam["submit"].score);
-                        if (grade)
-                            exam["grade"] = grade.name;
-                        exam["score"] = exam["submit"].score;
-                    }
-                });
-                this.exams.sort((exam1, exam2): any => {
-                    return (exam1.create_date < exam2.create_date);
-                });
-            });
-        });
+
+    getExamRecord(exam: Exam) {
+        return _.find(this.examRecords, (record: ExamRecord) => {
+            return record.exam_id == exam.id;
+        }) || new ExamRecord();
     }
 
-
-    displayProject(projects: Project[], submits: ProjectSubmission[]) {
-        this.projects = projects;
-        _.each(projects, (project: Project) => {
-            console.log('submit:', submits);
-            project["submit"] = _.find(submits, (submit: ProjectSubmission) => {
-                return submit.project_id == project.id;
-            });
-            if (project["submit"]) {
-                if (project["submit"].score != null)
-                    project["score"] = project["submit"].score;
-                else
-                    project["score"] = '';
-            } else {
-                project["submit"] = [];
-                project["submit"]["date_submit"] = '';
-                project["submit"]["score"] = '';
-            }
-        });
+    getProjectSubmit(project: Project) {
+        return _.find(this.projectSubmits, (submit: ProjectSubmission) => {
+            return submit.project_id == project.id;
+        }) || new ProjectSubmission();
     }
 
 }

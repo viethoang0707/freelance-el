@@ -82,12 +82,6 @@ export class SurveyQuestion extends BaseModel {
         return SurveyQuestion.count(context, "[('sheet_id','='," + sheetId + ")]");
     }
 
-    static byQuestion(context: APIContext, questionId: number): Observable<any[]> {
-        return SurveyQuestion.search(context, [], "[('question_id','='," + questionId + ")]").map(questions => {
-            return questions.length ? questions[0] : null;
-        });
-    }
-
     __api__populateQuestion(): ListAPI {
         return new ListAPI(Question.Model, [this.question_id], []);
     }

@@ -62,17 +62,6 @@ export class ExerciseQuestion extends BaseModel{
         return ExerciseQuestion.count(context,"[('exercise_id','=',"+exerciseId+")]");
     }
 
-
-    static __api__byQuestion(questionId: number): SearchReadAPI {
-        return new SearchReadAPI(ExerciseQuestion.Model, [],"[('question_id','=',"+questionId+")]");
-    }
-
-    static byQuestion( context:APIContext, questionId: number): Observable<any[]> {
-        return ExerciseQuestion.search(context,[],"[('question_id','=',"+questionId+")]").map(questions =>{
-            return questions.length ? questions[0]: null;
-        });
-    }
-
     __api__populateQuestion(): ListAPI {
         return new ListAPI(Question.Model, [this.question_id], []);
     }

@@ -57,7 +57,7 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	loadQuestionSheet() {
-		QuestionSheet.byExam(this, this.exam.id).subscribe(sheet => {
+		QuestionSheet.get(this, this.exam.sheet_id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
 				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {

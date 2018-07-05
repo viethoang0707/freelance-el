@@ -39,8 +39,6 @@ import { ClassSurveyEnrollDialog } from '../class-survey-enroll/class-survey-enr
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
 import { Conference } from '../../../shared/models/elearning/conference.model';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
-import { Room } from '../../../shared/models/meeting/room.model';
-import { RoomMember } from '../../../shared/models/meeting/room-member.model';
 
 @Component({
 	moduleId: module.id,
@@ -66,16 +64,16 @@ export class ClassManageComponent extends BaseComponent {
 
 	private projects: Project[];
 	private selectedProject: Project;
-	private syl: CourseSyllabus;
 	private courseMembers: CourseMember[];
 	private certificates: Certificate[];
 	private classExams: Exam[];
+	private logs: CourseLog[];
 	private selectedClassExam: any;
 	private classSurveys: Survey[];
 	private selectedClassSurvey: any;
 	private conference: Conference;
 	private selectedMember: CourseMember;
-	private room: Room;
+	private courseContent: any;
 
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
 	@ViewChild(LMSProfileDialog) lmsProfileDialog: LMSProfileDialog;
@@ -112,28 +110,23 @@ export class ClassManageComponent extends BaseComponent {
 			var classId = +params['classId'];
 			this.memberId = +params['memberId'];
 			this.viewMode = "outline";
-			this.lmsService.init(this).subscribe(() => {
-				this.lmsService.initCourseContent(this).subscribe(() => {
-					this.lmsService.initClassContent(this).subscribe(() => {
-						this.courseClass = this.lmsService.getCourseClass(classId);
-						this.course = this.lmsService.getCourse(courseId);
-						this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
-						this.projects = this.lmsService.getClassProjects(classId) || [];
-						this.classExams = this.lmsService.getClassExams(classId) || [];
-						this.classSurveys = this.lmsService.getClassSurveys(classId) || [];
-						BaseModel.bulk_search(this,
-							CourseMember.__api__listByClass(this.courseClass.id),
-							CourseLog.__api__classActivity(this.courseClass.id),
-							Certificate.__api__listByClass(this.courseClass.id))
-							.subscribe(jsonArr => {
-								this.courseMembers = CourseMember.toArray(jsonArr[0]);
-								var logs = CourseLog.toArray(jsonArr[1]);
-								this.certificates = Certificate.toArray(jsonArr[2]);
-								this.loadMemberStats(logs);
-							})
-					})
-				})
-			})
+			this.lmsProfileService.init(this).subscribe(() => {
+				this.courseClass = this.lmsProfileService.classById(classId);
+				this.course = this.lmsProfileService.courseById(courseId);
+				this.projects = this.lmsProfileService.projectsByClass(classId) || [];
+				this.classExams = this.lmsProfileService.examsByClass(classId) || [];
+				this.classSurveys = this.lmsProfileService.surveysByClass(classId) || [];
+				BaseModel.bulk_search(this,
+					CourseMember.__api__listByClass(classId),
+					Certificate.__api__listByClass(classId),
+					CourseLog.__api__classActivity(classId))
+					.subscribe(jsonArr => {
+						this.courseMembers = CourseMember.toArray(jsonArr[0]);
+						this.certificates = Certificate.toArray(jsonArr[1]);
+						this.logs = CourseLog.toArray(jsonArr[2]);
+						this.loadMemberStats(this.logs);
+					});
+			});
 		});
 	}
 
@@ -152,8 +145,7 @@ export class ClassManageComponent extends BaseComponent {
 		this.studentRecords = _.filter(this.courseMembers, (member: CourseMember) => {
 			return member.role == 'student';
 		});
-		var courseUnits = this.lmsService.getSyllabusUnit(this.syl.id)
-		var totalUnit = courseUnits.length;
+		var totalUnit = this.course.unit_count;
 		_.each(this.studentRecords, (record => {
 			var certificate = _.find(this.certificates, (cert: Certificate) => {
 				return cert.member_id == record["id"];
@@ -195,8 +187,8 @@ export class ClassManageComponent extends BaseComponent {
 		project.course_id = this.courseClass.course_id;
 		this.projectContentDialog.show(project);
 		this.projectContentDialog.onCreateComplete.subscribe(() => {
-			this.projects.push(project);
-			this.lmsService.invalidateClassContent();
+			this.lmsProfileService.addProject(project);
+			this.projects = this.lmsProfileService.projectsByClass(this.courseClass.id) || [];
 		});
 	}
 
@@ -208,10 +200,8 @@ export class ClassManageComponent extends BaseComponent {
 		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 			this.selectedProject.delete(this).subscribe(() => {
 				this.success(this.translateService.instant('Project deleted'));
-				this.projects = _.reject(this.projects, (project: Project) => {
-					return project.id == this.selectedProject.id;
-				});
-				this.lmsService.invalidateClassContent();
+				this.lmsProfileService.removeProject(this.selectedProject);
+				this.projects = this.lmsProfileService.projectsByClass(this.courseClass.id) || [];
 			});
 		});
 	}
@@ -227,9 +217,9 @@ export class ClassManageComponent extends BaseComponent {
 		exam.course_class_id = this.courseClass.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.subscribe(() => {
-			this.classExams.push(exam);
-			this.lmsService.invalidateClassContent();
-		})
+			this.lmsProfileService.addExam(exam);
+			this.classExams = this.lmsProfileService.examsByClass(this.courseClass.id) || [];
+		});
 	}
 
 	editExam() {
@@ -237,16 +227,11 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	enrollExam() {
-		this.examEnrollDialog.show(this.selectedClassExam,this.courseClass);
+		this.examEnrollDialog.show(this.selectedClassExam);
 	}
 
 	manageExam() {
-		var examMembers = this.lmsService.getClassExamMember(this.memberId);
-		var supervisor = _.find(examMembers, (examMember: ExamMember) => {
-			return examMember.role == 'supervisor';
-		});
-		if (supervisor)
-			this.router.navigate(['/lms/exams/manage', this.selectedClassExam.id, supervisor.id]);
+		this.router.navigate(['/lms/exams/manage', this.selectedClassExam.id, this.memberId]);
 	}
 
 	editExamContent() {
@@ -255,7 +240,7 @@ export class ClassManageComponent extends BaseComponent {
 
 
 	enrollSurvey() {
-		this.enrollDialog.show(this.selectedClassSurvey, this.courseClass);
+		this.enrollDialog.show(this.selectedClassSurvey);
 	}
 
 	addSurvey() {
@@ -265,7 +250,8 @@ export class ClassManageComponent extends BaseComponent {
 		survey.course_class_id = this.courseClass.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.subscribe(() => {
-			this.classSurveys.push(survey);
+			this.lmsProfileService.addSurvey(survey);
+			this.classSurveys = this.lmsProfileService.surveysByClass(this.courseClass.id) || [];
 		});
 	}
 
@@ -275,11 +261,12 @@ export class ClassManageComponent extends BaseComponent {
 
 	viewReportSurvey() {
 		this.statsDialog.show(this.selectedClassSurvey);
-
 	}
 
 	editSurveyContent() {
 		this.surveyContentDialog.show(this.selectedClassSurvey);
 	}
+
+
 
 }

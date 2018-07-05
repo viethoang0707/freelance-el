@@ -154,14 +154,16 @@ export abstract class BaseModel {
         if (apiList.length==0)
             return Observable.of([]);
         var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__bulk_create(apiList), token).do(jsonArr=> {
+        return context.apiService.execute(this.__api__bulk_create(apiList), token).map(jsonArr=> {
+            var objects = [];
             var resp = _.flatten(jsonArr);
             for(var i=0;i<resp.length;i++) {
                 var api = apiList[i];
-                var object =  MapUtils.deserializeModel(api.params["model"], api.params["values"]);
-                object["id"] == +resp[i]["id"];
+                var object =  MapUtils.deserializeModel(api.params["model"], resp[i]["record"]);
+                objects.push(object);
                 Cache.objectCreate(object);
             }
+            return objects;
         });
     }
 
@@ -261,7 +263,8 @@ export abstract class BaseModel {
         var token = context.authService.LoginToken;
         if (!this.id) {
             return context.apiService.execute(this.__api__create(), token).map(data => {
-                this.id = data.id;
+                var object = MapUtils.deserializeModel(this.Model, data.record);
+                Object.assign(this, object);
                 Cache.objectCreate(this);
                 return this;
             });

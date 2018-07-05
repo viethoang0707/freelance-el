@@ -50,7 +50,7 @@ export class SurveyContentDialog extends BaseComponent {
 	}
 
 	loadSurveynSheet() {
-		SurveySheet.bySurvey(this, this.survey.id).subscribe(sheet => {
+		SurveySheet.get(this, this.survey.sheet_id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
 				SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions => {

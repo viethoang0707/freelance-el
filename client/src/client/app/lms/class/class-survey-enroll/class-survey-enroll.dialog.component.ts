@@ -22,60 +22,35 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 	SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
 
 	private display: boolean;
-	private courseClass: CourseClass;
 	private survey: Survey;
-	private members: CourseMember[];
-	private selectedMember: CourseMember;
+	private selectedMember: SurveyMember;
+	private surveyMembers: SurveyMember[];
+	private courseMembers: CourseMember[];
 
 	constructor() {
 		super();
 		this.display = false;
-		this.courseClass = new CourseClass();
-		this.members  = [];
+		this.surveyMembers = [];
+		this.courseMembers = [];
 	}
 
-	show(survey: Survey, clazz: CourseClass) {
+	show(survey: Survey) {
 		this.display = true;
-		this.courseClass =  clazz;
+		this.surveyMembers = [];
+		this.courseMembers = [];
 		this.survey = survey;
-
 		BaseModel
-			.bulk_search(this, CourseMember.__api__listByClass(this.courseClass.id), SurveyMember.__api__listBySurvey(this.survey.id))
+			.bulk_search(this, CourseMember.__api__listByClass(survey.course_class_id), SurveyMember.__api__listBySurvey(survey.id))
 			.subscribe(jsonArr => {
-				var members = CourseMember.toArray(jsonArr[0]);
-				this.members = _.filter(members, (member:CourseMember)=> {
+				var courseMembers = CourseMember.toArray(jsonArr[0]);
+				this.courseMembers = _.filter(courseMembers, (member:CourseMember)=> {
 					return member.role =='student';
-				})
-				var surveyMembers = SurveyMember.toArray(jsonArr[1]);
-				_.each(this.members, (member: CourseMember) => {
-					var surveyMember = _.find(surveyMembers, (obj: SurveyMember) => {
-						return obj.user_id == member.user_id;
-					});
-					if (surveyMember) {
-						member["surveyMember"] = surveyMember;
-						member["allowed"] = true;
-					} else
-						member["allowed"] = false;
-				})
-			});
-	}
-
-	registerUnregister(event: any, member: any) {
-		var surveyMember = member["surveyMember"];
-		if (event.checked) {
-			if (!surveyMember) {
-				surveyMember = this.createSurveyMember(member);
-				surveyMember.save(this).subscribe(() => {
-					member["allowed"] = true;
-					member["surveyMember"] = surveyMember;
 				});
-			}
-		} else {
-			surveyMember.delete(this).subscribe(()=> {
-				member["allowed"] = false;
-				member["surveyMember"] = null;
+				var surveyMembers = SurveyMember.toArray(jsonArr[1]);
+				this.surveyMembers = _.filter(surveyMembers, (member:SurveyMember)=> {
+					return member.role =='candidate';
+				});
 			});
-		}
 	}
 
 	hide() {
@@ -83,35 +58,25 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 	}
 
 	registerAll() {
-		var surveyMembers = _.map(this.members, member=> {
-			var surveyMember = this.createSurveyMember(member);
-			return surveyMember;
-		})
-		SurveyMember.createArray(this, surveyMembers).subscribe(()=> {
+		var userIds = _.pluck(this.courseMembers,'user_id');
+		this.survey.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
 		});
 	}
 
+	closeSurvey() {
+            this.confirm('Are you sure to proceed ?', () => {
+                this.survey.close(this).subscribe(() => {
+                    this.success('Survey close');
+                });
+            });
+    }
 
-	unregisterAll() {
-		var surveyMembers = [];
-		_.each(this.members, (member)=> {
-			if (member["surveyMember"]) 
-				surveyMembers.push(member["surveyMember"])
-		});
-		SurveyMember.deleteArray(this, surveyMembers).subscribe(()=> {
-			this.info('Unregister all successfully');
-		});
-	}
-
-
-	createSurveyMember(member:CourseMember) {
-		var surveyMember = new SurveyMember();
-        surveyMember.survey_id = this.survey.id;
-        surveyMember.role = 'candidate';
-        surveyMember.course_member_id =  member.id;
-        surveyMember.user_id = member.user_id;
-        surveyMember.date_register =  new Date();
-        return surveyMember;
-	}
+    openSurvey() {
+        this.confirm('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened', () => {
+            this.survey.open(this).subscribe(() => {
+                this.success('Survey open');
+            });
+        });
+    }
 }

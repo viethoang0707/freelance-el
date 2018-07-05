@@ -73,23 +73,19 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
 			this.memberId = +params['memberId'];
-			this.lmsService.init(this).subscribe(() => {
-				this.lmsService.initCourseContent(this).subscribe(() => {
-					this.lmsService.initClassContent(this).subscribe(() => {
-						this.course = this.lmsService.getCourse(courseId);
-						this.faqs = this.lmsService.getCourseFaqs(courseId);
-						this.materials = this.lmsService.getCourseMaterials(courseId);
-						this.syl = this.lmsService.getCourseSyllabusFromCourse(courseId);
-						this.units = this.lmsService.getSyllabusUnit(this.syl.id);
-						this.classes = this.lmsService.MyClass;
-						this.displaySyllabus();
-					})
-				})
+			this.course = this.lmsProfileService.courseById(courseId);
+			this.classes = this.lmsProfileService.classByCourseId(courseId);
+			this.lmsProfileService.getCourseContent(this, courseId).subscribe(content => {
+				this.syl = content["syllabus"];
+				this.faqs = content["faqs"];
+				this.materials = content["materials"];
+				this.units = content["units"];
+				this.displayCouseSyllabus();
 			});
 		});
 	}
 
-	displaySyllabus() {
+	displayCouseSyllabus() {
 		this.units = _.filter(this.units, (unit: CourseUnit) => {
 			return unit.status == 'published';
 		});
@@ -115,7 +111,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	broadcastMessage() {
 		CourseMember.listByClass(this, this.selectedClass.id).subscribe(members => {
 			if (members.length) {
-				var emails = _.pluck(members,"email");
+				var emails = _.pluck(members, "email");
 				this.mailDialog.show(emails);
 			}
 		});
@@ -127,21 +123,5 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	closeClass() {
-		if (this.selectedClass) {
-			this.selectedClass.status = 'closed';
-			CourseMember.listByClass(this, this.selectedClass.id).subscribe(members => {
-				_.each(members, (member: CourseMember) => {
-					member.enroll_status = 'completed';
-					return member.save(this);
-				});
-				this.selectedClass.save(this).subscribe(() => {
-					CourseMember.updateArray(this, this.members).subscribe(() => {
-						this.success('Class close');
-					})
-				});;
-			});
-		}
-	}
 }
 

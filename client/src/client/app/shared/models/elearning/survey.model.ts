@@ -4,6 +4,7 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { ExecuteAPI } from '../../services/api/execute.api';
 import { Cache } from '../../helpers/cache.utils';
 import * as moment from 'moment';
 import { SERVER_DATETIME_FORMAT} from '../constants';
@@ -26,8 +27,14 @@ export class Survey extends BaseModel{
         this.is_public =  undefined;
         this.review_state = undefined;
         this.course_class_id = undefined;
+        this.sheet_id =  undefined;
+        this.question_count = undefined;
+        this.sheet_status = undefined;
 	}
 
+    sheet_id: number;
+    question_count: number;
+    sheet_status: string;
     course_class_id: number;
     review_state:string;
     name:string;
@@ -55,18 +62,6 @@ export class Survey extends BaseModel{
         return true;
     }
 
-    static __api__listAvailableSurvey(): SearchReadAPI {
-        var now = new Date();
-        var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
-        return new SearchReadAPI(Survey.Model, [],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]");
-    }
-
-    static listAvailableSurvey(context:APIContext):Observable<any> {
-        var now = new Date();
-        var nowStr = moment(now).format(SERVER_DATETIME_FORMAT);
-        return Survey.search(context,[],"[('end','>=','"+nowStr+"'),('start','<=','"+nowStr+"'),('status','=','open')]");
-    }
-
     static __api__listPublicSurvey(): SearchReadAPI {
         return new SearchReadAPI(Survey.Model, [],"[('is_public','=',True)");
     }
@@ -76,7 +71,7 @@ export class Survey extends BaseModel{
     }
 
     static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved'),('status','=','open')]");
+        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved')]");
     }
 
     static allForEnroll(context:APIContext):Observable<any> {
@@ -86,7 +81,7 @@ export class Survey extends BaseModel{
                     return survey.review_state == 'approved' ;
                 });
             });
-        return Survey.search(context,[],"[('review_state','=','approved'),('status','=','open')]");
+        return Survey.search(context,[],"[('review_state','=','approved')]");
     }
 
     static __api__listByClass(classId: number): SearchReadAPI {
@@ -101,6 +96,33 @@ export class Survey extends BaseModel{
                 });
             });
         return Survey.search(context,[],"[('course_class_id','=',"+classId+")]");
+    }
+
+    __api__open(surveyId: number): ExecuteAPI {
+        return new ExecuteAPI(Survey.Model, 'open',{surveyId:surveyId}, null);
+    }
+
+    open(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__open(this.id), 
+            context.authService.LoginToken);
+    }
+
+    __api__close(surveyId: number): ExecuteAPI {
+        return new ExecuteAPI(Survey.Model, 'close',{surveyId:surveyId}, null);
+    }
+
+    close(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__close(this.id), 
+            context.authService.LoginToken);
+    }
+
+    __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
+        return new ExecuteAPI(Survey.Model, 'enroll',{userIds:userIds, examId:examId}, null);
+    }
+
+    enroll(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll(this.id, userIds), 
+            context.authService.LoginToken);
     }
 
 }

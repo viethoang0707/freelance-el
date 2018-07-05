@@ -17,6 +17,7 @@ export class QuestionSheet extends BaseModel{
         this.seed = undefined;
         this.finalized = undefined;
         this.name = undefined;
+        this.status =  undefined;
 	}
 
     name: string;
@@ -24,6 +25,7 @@ export class QuestionSheet extends BaseModel{
     exercise_id: number;
     seed:number;
     finalized:boolean;
+    status: string;
 
     static __api__byExam(examId: number): SearchReadAPI {
         return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',"+examId+")]");
@@ -38,11 +40,7 @@ export class QuestionSheet extends BaseModel{
         sheet.seed = this.seed;
         return sheet;
     }
-
-    static byExam( context:APIContext, examId: number): Observable<any> {
-        return QuestionSheet.single(context,[],"[('exam_id','=',"+examId+")]");
-    }
-
+    
     static __api__listTemplate(): SearchReadAPI {
         return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',False)]");
     }
