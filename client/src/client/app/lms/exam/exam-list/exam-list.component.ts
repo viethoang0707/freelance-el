@@ -32,7 +32,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     private exams: Exam[];
     private reportUtils: ReportUtils;
-    private examRecords: ExamRecord[];
 
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -46,7 +45,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.displayExams(this.lmsProfileService.MyExams);
-            this.examRecords =  this.lmsProfileService.MyExamRecords;
         });
     }
 
@@ -83,12 +81,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 this.examStudyDialog.show(exam, member);
             }
         });
-    }
-
-    getExamRecord(exam:Exam) {
-        return _.find(this.examRecords, (record:ExamRecord)=> {
-            return record.exam_id == exam.id;
-        }) || new ExamRecord();
     }
 
 }
