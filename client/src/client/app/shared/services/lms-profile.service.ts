@@ -200,6 +200,10 @@ export class LMSProfileService {
     return this.myCourses;
   }
 
+  get MyClasses() {
+    return this.myCourseClasses;
+  }
+
   get MyExams() {
     return this.myExams;
   }
@@ -324,6 +328,10 @@ export class LMSProfileService {
         this.courseContent[courseId] =  content;
         return content;
       });
+  }
+
+  clearCourseContent(courseId: number) {
+    delete this.courseContent[courseId];
   }
 
   addProject(project:Project) {

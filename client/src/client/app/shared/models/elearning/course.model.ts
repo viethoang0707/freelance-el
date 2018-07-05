@@ -61,7 +61,6 @@ export class Course extends BaseModel{
     prequisite_course_name: string;
     prequisite_course_id__DESC__:string;
     name:string;
-    syllabus_id:number;
     group_id:number;
     supervisor_id: number;
     supervisor_name: string;

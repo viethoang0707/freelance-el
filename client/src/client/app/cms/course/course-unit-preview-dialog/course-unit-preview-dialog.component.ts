@@ -44,7 +44,7 @@ export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 			this.nameUnit = object.name;
 
 			// Get treelist
-			CourseSyllabus.byCourse(this, object.course_id).subscribe(syl => {
+			CourseSyllabus.get(this, object.syllabus_id).subscribe(syl => {
 				CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
 					this.tree = this.sylUtils.buildGroupTree(units);
 					this.treeList = this.sylUtils.flattenTree(this.tree);

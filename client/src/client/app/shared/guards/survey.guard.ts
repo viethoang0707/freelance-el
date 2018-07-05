@@ -6,7 +6,6 @@ import { ModelAPIService } from '../services/api/model-api.service';
 import { APIContext } from '../models/context';
 import { SurveyMember } from '../models/elearning/survey-member.model';
 import * as _ from 'underscore';
-import { LMSService } from '../services/lms.service';
 
 @Injectable()
 export class SurveyGuard implements CanActivate, APIContext {

@@ -68,7 +68,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.display = true;
 		this.display = true;
 		this.course = course;
-		CourseSyllabus.byCourse(this, course.id).subscribe((syl)=> {
+		CourseSyllabus.get(this, course.syllabus_id).subscribe((syl)=> {
 			this.syl = syl;
 			this.buildCourseTree();
 		});
@@ -110,7 +110,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 				this.sylUtils.addChildNode(this.selectedNode, unit);
 			else
 				this.sylUtils.addRootNode(this.tree, unit);
-			this.lmsService.invalidateCourseContent();
+			this.lmsProfileService.clearCourseContent(this.course.id);
 		});
 	}
 
@@ -119,7 +119,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.unitDialog.show(this.selectedNode.data);
 			this.unitDialog.onUpdateComplete.subscribe(()=> {
 				this.buildCourseTree();
-				this.lmsService.invalidateCourseContent();
+				this.lmsProfileService.clearCourseContent(this.course.id);
 			});
 		}
 	}
@@ -134,7 +134,7 @@ export class CourseSyllabusDialog extends BaseComponent {
                 this.selectedNode.data.delete(this).subscribe(() => {
                     this.buildCourseTree();
                     this.selectedNode = null;
-                    this.lmsService.invalidateCourseContent();
+                    this.lmsProfileService.clearCourseContent(this.course.id);
                 })
              });
 		}
@@ -151,7 +151,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.sylUtils.moveUp(this.tree,this.selectedNode);
 			CourseUnit.updateArray(this, this.units).subscribe(()=> {
 				this.success('Move sucessfully');
-				this.lmsService.invalidateCourseContent();
+				this.lmsProfileService.clearCourseContent(this.course.id);
 			});
 		}
 	}
@@ -162,7 +162,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.sylUtils.moveDown(this.tree,this.selectedNode);
 			CourseUnit.updateArray(this, this.units).subscribe(()=> {
 				this.success('Move sucessfully');
-				this.lmsService.invalidateCourseContent();
+				this.lmsProfileService.clearCourseContent(this.course.id);
 			});
 		}
 	}

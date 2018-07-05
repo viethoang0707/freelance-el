@@ -1,3 +1,6 @@
+import { Directive, Input, ViewContainerRef, TemplateRef } from '@angular/core';
+
+
 @Directive({
     selector: '[ngVar]',
 })

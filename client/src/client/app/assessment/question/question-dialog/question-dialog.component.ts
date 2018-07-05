@@ -13,6 +13,7 @@ import { QuestionContainerDirective } from '../question-template/question-contai
 import { IQuestion } from '../question-template/question.interface';
 import { QuestionRegister } from '../question-template/question.decorator';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
+declare var $;
 
 declare var $: any;
 

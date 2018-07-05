@@ -59,7 +59,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 exam['editor'] =  exam['supervisor'];
         });
         exams.sort((exam1: Exam, exam2: Exam): any => {
-            return this.lmsProfileService.getLastExamTimestamp(exam2) - this.lmsService.getLastExamTimestamp(exam1);
+            return this.lmsProfileService.getLastExamTimestamp(exam2) - this.lmsProfileService.getLastExamTimestamp(exam1);
         });
         this.exams = exams;
     }

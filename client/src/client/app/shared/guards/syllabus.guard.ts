@@ -6,7 +6,6 @@ import { ModelAPIService } from '../services/api/model-api.service';
 import { APIContext } from '../models/context';
 import { CourseMember } from '../models/elearning/course-member.model';
 import * as _ from 'underscore';
-import { LMSService } from '../services/lms.service';
 
 @Injectable()
 export class SyllabusGuard implements CanActivate, APIContext {

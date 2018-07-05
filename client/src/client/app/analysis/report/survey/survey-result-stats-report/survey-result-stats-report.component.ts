@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
 import { ModelAPIService } from '../../../../shared/services/api/model-api.service';
@@ -15,7 +15,7 @@ import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, C
 import { Report } from '../../report.decorator';
 import { SelectGroupDialog } from '../../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
-import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
+import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { Survey } from '../../../../shared/models/elearning/survey.model';
 import { SurveyQuestion } from '../../../../shared/models/elearning/survey-question.model';
@@ -35,7 +35,7 @@ import { BaseModel } from '../../../../shared/models/base.model';
     selector: 'survey-result-stats-report',
     templateUrl: 'survey-result-stats-report.component.html',
 })
-export class SurveyResultStatsReportComponent extends BaseComponent{
+export class SurveyResultStatsReportComponent extends BaseComponent {
 
     private records: any;
     private statsUtils: StatsUtils;
@@ -43,21 +43,21 @@ export class SurveyResultStatsReportComponent extends BaseComponent{
     private ratingPercentage: any;
     private openAnswers: any;
 
-    constructor( private excelService: ExcelService, private datePipe: DatePipe) {
+    constructor(private excelService: ExcelService, private datePipe: DatePipe) {
         super();
         this.optionPercentage = {};
-        this.statsUtils =  new StatsUtils();
+        this.statsUtils = new StatsUtils();
     }
 
 
     export() {
-    	var header = [
+        var header = [
             this.translateService.instant('Question'),
             this.translateService.instant('Option'),
             this.translateService.instant('Percentage'),
-            
+
         ]
-        this.excelService.exportAsExcelFile(header.concat(this.records),'answer_statis');
+        this.excelService.exportAsExcelFile(header.concat(this.records), 'answer_statis');
     }
 
     clear() {
@@ -65,37 +65,32 @@ export class SurveyResultStatsReportComponent extends BaseComponent{
         this.optionPercentage = {};
     }
 
-    render(survey:Survey) {
+    render(survey: Survey) {
         this.clear();
-        BaseModel
-        .bulk_search(this,
-            SurveySheet.__api__bySurvey(survey.id),
-            SurveyAnswer.__api__listBySurvey(survey.id))
-        .subscribe(jsonArr=> {
-            var sheets = SurveySheet.toArray(jsonArr[0]);
-            var answers = SurveyAnswer.toArray(jsonArr[1]);
-            var statistics = this.statsUtils.examAnswerStatistics(answers);
-            this.optionPercentage = statistics['multichoice'];
-            this.ratingPercentage = statistics['rating'];
-            this.openAnswers = statistics['open'];
-            SurveyQuestion.listBySheet(this, sheets[0].id).subscribe(surveyQuestions=> {
-                var apiList = _.map(surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
-                    return QuestionOption.__api__listByQuestion(surveyQuestion.question_id)
-                });
-                BaseModel.bulk_search(this, ...apiList)
-                    .map(jsonArr=> _.flatten(jsonArr))
-                    .subscribe(jsonArr => {
-                        var options = QuestionOption.toArray(jsonArr);
-                        _.each(surveyQuestions, (surveyQuestion: SurveyQuestion)=> {
-                            surveyQuestion["options"] = _.filter(options, (opt:QuestionOption)=> {
-                                return opt.question_id == surveyQuestion.question_id;
-                            });
-                        });
-                        this.records =  surveyQuestions;
+        SurveySheet.get(this, survey.sheet_id).subscribe(sheet => {
+            SurveyAnswer.listBySurvey(this, survey.id).subscribe(answers => {
+                var statistics = this.statsUtils.examAnswerStatistics(answers);
+                this.optionPercentage = statistics['multichoice'];
+                this.ratingPercentage = statistics['rating'];
+                this.openAnswers = statistics['open'];
+                SurveyQuestion.listBySheet(this, sheet.id).subscribe(surveyQuestions => {
+                    var apiList = _.map(surveyQuestions, (surveyQuestion: SurveyQuestion) => {
+                        return QuestionOption.__api__listByQuestion(surveyQuestion.question_id)
                     });
+                    BaseModel.bulk_search(this, ...apiList)
+                        .map(jsonArr => _.flatten(jsonArr))
+                        .subscribe(jsonArr => {
+                            var options = QuestionOption.toArray(jsonArr);
+                            _.each(surveyQuestions, (surveyQuestion: SurveyQuestion) => {
+                                surveyQuestion["options"] = _.filter(options, (opt: QuestionOption) => {
+                                    return opt.question_id == surveyQuestion.question_id;
+                                });
+                            });
+                            this.records = surveyQuestions;
+                        });
+                });
             });
-        })
-    	
+        });
     }
 
     getOpenAnswers(question) {

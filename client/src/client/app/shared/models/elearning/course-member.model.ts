@@ -165,7 +165,7 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    __api__complete_course(memberId: number, certificateId: number;): ExecuteAPI {
+    __api__complete_course(memberId: number, certificateId: number): ExecuteAPI {
         return new ExecuteAPI(CourseMember.Model, 'complete_course',{memberId:memberId, certificateId:certificateId}, null);
     }
 

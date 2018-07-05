@@ -40,7 +40,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.courseMembers = [];
 		this.survey = survey;
 		BaseModel
-			.bulk_search(this, CourseMember.__api__listByClass(survey.course_class_id), ExamMember.__api__listByExam(exam.id))
+			.bulk_search(this, CourseMember.__api__listByClass(survey.course_class_id), SurveyMember.__api__listBySurvey(survey.id))
 			.subscribe(jsonArr => {
 				var courseMembers = CourseMember.toArray(jsonArr[0]);
 				this.courseMembers = _.filter(courseMembers, (member:CourseMember)=> {

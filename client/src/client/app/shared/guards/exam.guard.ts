@@ -6,7 +6,6 @@ import { ModelAPIService } from '../services/api/model-api.service';
 import { APIContext } from '../models/context';
 import { ExamMember } from '../models/elearning/exam-member.model';
 import * as _ from 'underscore';
-import { LMSService } from '../services/lms.service';
 
 @Injectable()
 export class ExamGuard implements CanActivate, APIContext {
