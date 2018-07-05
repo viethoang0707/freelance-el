@@ -1,10 +1,15 @@
 <div *ngIf="mode=='edit'">
-  <div class="ui-g-12 ">
+  <div class="ui-g-6">
     <label>{{'Content'|translate}}</label>
     <p-editor [(ngModel)]="question.content" [style]="{'height':'120px'}" name="content">
     </p-editor>
   </div>
-  <div class="ui-g-12">
+  <div class="ui-g-6">
+    <label>{{'Explanation'|translate}}</label>
+    <p-editor [(ngModel)]="question.explanation" [style]="{'height':'120px'}" name="explanation">
+    </p-editor>
+  </div>
+  <div class="ui-g-6">
     <p-panel header="{{'Options'|translate}}">
       <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addOption()" pTooltip="{{'Add option'|translate}}"></button>
       <ul class="options-question">
@@ -20,14 +25,8 @@
           {{'Add options is required' | translate}}</div>
         <div *ngIf="checkTrueOption == 'true'" class="ui-message ui-messages-error ui-corner-all">
           {{'Select the correct answer is required' | translate}}</div>
-
       </ul>
     </p-panel>
-  </div>
-  <div class="ui-g-12 ">
-    <label>{{'Explanation'|translate}}</label>
-    <p-editor [(ngModel)]="question.explanation" [style]="{'height':'120px'}" name="explanation">
-    </p-editor>
   </div>
 </div>
 <div *ngIf="mode=='study'">

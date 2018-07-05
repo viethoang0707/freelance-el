@@ -37,14 +37,14 @@
                             {{'Type'|translate}}
                             <p-sortIcon [field]="'type'"></p-sortIcon>
                         </th> 
-                        <th [pSortableColumn]="'create_date'">
+                        <!-- <th [pSortableColumn]="'create_date'">
                             {{'Created'|translate}}
                             <p-sortIcon [field]="'create_date'"></p-sortIcon>
                         </th>
                         <th [pSortableColumn]="'write_date'">
                             {{'Updated'|translate}}
                             <p-sortIcon [field]="'write_date'"></p-sortIcon>
-                        </th>   
+                        </th>    -->
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-question let-i="rowIndex">
@@ -56,8 +56,8 @@
                         <td class="q-content" [innerHTML]="question.content">{{question.content}}</td>
                         <td class="showformb">{{QUESTION_LEVEL[question.level] | translate}}</td>
                         <td class="showformb">{{QUESTION_TYPE[question.type] | translate}}</td>
-                        <td>{{question.create_date | date : "dd/MM/yyyy "}}</td>
-                        <td>{{question.write_date | date : "dd/MM/yyyy "}}</td>
+                        <!-- <td>{{question.create_date | date : "dd/MM/yyyy "}}</td>
+                        <td>{{question.write_date | date : "dd/MM/yyyy "}}</td> -->
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

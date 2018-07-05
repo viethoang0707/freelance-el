@@ -13,6 +13,9 @@ import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { SelectCompetencyLevelDialog } from '../../../shared/components/select-competency-level-dialog/select-competency-level-dialog.component';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
+
+declare var $: any;
 
 @Component({
     moduleId: module.id,
@@ -22,6 +25,7 @@ import { SelectCompetencyLevelDialog } from '../../../shared/components/select-c
 })
 export class ExamDialog extends BaseDialog<Exam> {
 
+    WINDOW_HEIGHT: any;
     private locale: any;
     private examStatus: SelectItem[];
     private rangeDates: Date[];
@@ -40,6 +44,7 @@ export class ExamDialog extends BaseDialog<Exam> {
             }
         });
         this.editor =  new ExamMember();
+        this.WINDOW_HEIGHT = $(window).height();
     }
 
     ngOnInit() {
