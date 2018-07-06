@@ -31,6 +31,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.display = false;
 		this.examMembers = [];
 		this.courseMembers = [];
+		this.exam =  new Exam();
 	}
 
 	show(exam: Exam) {

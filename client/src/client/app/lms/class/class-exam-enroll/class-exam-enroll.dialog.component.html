@@ -4,7 +4,7 @@
         <div class="ui-g-12 ">
             <p-toolbar>
                 <div class="ui-toolbar-group-left ">
-                    <button pButton type="button " label="{{ 'Register all'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="enrollAll() " *ngIf="members.length==0"></button>
+                    <button pButton type="button " label="{{ 'Register all'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="enrollAll() " *ngIf="examMembers.length==0"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                      <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="openExam() " [disabled]=" exam.status!='initial'" ></button>
