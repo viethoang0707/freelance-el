@@ -44,6 +44,8 @@ export class CourseClass extends BaseModel{
     get IsAvailable():boolean {
         if (this.status !='open')
             return false;
+        if (!this.end)
+            return false;
         var now = new Date();
         if (this.end.getTime() < now.getTime())
             return false;
