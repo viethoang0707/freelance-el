@@ -211,62 +211,6 @@
         </div>
       </div>
     </p-tabPanel>
-<<<<<<< HEAD
-    <p-tabPanel *ngIf="member.class_id" header="{{'Survey'|translate}}" leftIcon="ui-icon-question-answer">
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <p-dataList [value]="surveys" [paginator]="true" [rows]="5">
-          <ng-template let-survey pTemplate="item">
-            <p-card>
-              <p-header>
-                <div class="head-exam">
-                </div>
-              </p-header>
-              <div class="ui-g body-exam">
-                <div class="ui-lg-8 ui-md-12 ui-g-12">
-                  <h4 class="title">{{survey.name}}</h4>
-                  <span class="e-status">
-                    {{SURVEY_STATUS[survey.status] | translate}}
-                  </span>
-                  <div class="clearfix"></div>
-                  <p-accordion styleClass="cont">
-                    <p-accordionTab header="{{'Summary' | translate}}">
-                      {{survey.summary}}
-                    </p-accordionTab>
-                    <p-accordionTab header="{{'Instruction' | translate}}">
-                      <p [innerHTML]="survey.instruction"></p>
-                    </p-accordionTab>
-                  </p-accordion>
-                </div>
-                <div class="ui-lg-4 ui-md-12 ui-g-12">
-                  <p-card>
-                    <ul class="list-cmt">
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'Start date'|translate}}</span>
-                        <span class="cmt-detail">{{survey.start | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'End date'|translate}}</span>
-                        <span class="cmt-detail">{{survey.end | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                    </ul>
-                    <p-footer>
-                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(survey, survey.candidate)" *ngIf="survey.IsAvailable  && survey.candidate && survey.candidate.enroll_status!='completed'"></button>
-                    </p-footer>
-                  </p-card>
-                </div>
-              </div>
-              <p-footer>
-              </p-footer>
-            </p-card>
-          </ng-template>
-        </p-dataList>
-        <survey-study-dialog></survey-study-dialog>
-      </div>
-    </p-tabPanel>
-=======
->>>>>>> Refactor LMS
   </p-tabView>
   </div>
 </div>

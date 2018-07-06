@@ -30,7 +30,7 @@ export const CONTENT_STATUS = { 'draft': 'Draft', 'published': 'Published', 'unp
 export const COURSE_MODE = { 'self-study': 'Self-study', 'group': 'Group-study' };
 export const COURSE_MEMBER_ROLE = { 'student': 'Student', 'teacher': 'Teacher', 'supervisor': 'Supervisor', 'editor':'Editor' };
 export const COURSE_MEMBER_STATUS = { 'active': 'Active', 'withdraw': 'Withdraw', 'suspend': 'Suspended' };
-export const COURSE_MEMBER_ENROLL_STATUS = { 'in-study': 'In-study', 'complete': 'Complete', 'registered': 'Registered' };
+export const COURSE_MEMBER_ENROLL_STATUS = { 'in-study': 'In-study', 'completed': 'Complete', 'registered': 'Registered' };
 export const QUESTION_TYPE = { 'sc': 'Single-choice', 'mc': 'Multiple-choice', 'fb': 'Fill-the-blank', 'rate': 'Rating', 'ext': 'Open-ended' };
 export const QUESTION_LEVEL = { 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' };
 export const LANGS = { 'vn': 'Vietnamese', 'gb': 'English' };
@@ -47,7 +47,7 @@ export const COLOR_BAND = ["#FF6384", "#36A2EB", "#3366cc", "#dc3912", "#ff9900"
 export const PROJECT_STATUS = { 'open': 'Open', 'closed': 'Closed' , 'draft':'Draft'};
 export const SURVEY_STATUS = { 'open': 'Open', 'closed': 'Closed', 'initial': 'Initial' };
 export const SURVEY_MEMBER_ROLE = { 'candidate': 'Candidate', 'supervisor': 'Supervisor', 'editor':'Editor' };
-export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };
+export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'completed': 'Complete', 'registered': 'Registered' };
 export const PRINT_DIALOG_STYLE = `<style>
                   //........Customized style.......
                     .header{

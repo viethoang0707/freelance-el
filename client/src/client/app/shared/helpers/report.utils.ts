@@ -53,7 +53,7 @@ export class ReportUtils {
 		});
 		var timeforunit = 0;
 		if (first_attempt && last_attempt && startCourseUnitLogs.length && endCourseUnitLogs.length )
-			 timeforunit = first_attempt.start.getTime() - last_attempt.start.getTime();
+			 timeforunit = last_attempt.start.getTime() - first_attempt.start.getTime();
 
 		var unitCount = 0;
 		var unitLogs = {}
@@ -63,7 +63,7 @@ export class ReportUtils {
 				unitLogs[log.id] = unitLogs[log.id] ? unitLogs[log.id] + 1 : 1;
 			}
 
-			if (unitLogs[log.id] && unitLogs[log.id] >= 2)
+			if (unitLogs[log.id] ==1 )
 				unitCount++;
 		});
 
