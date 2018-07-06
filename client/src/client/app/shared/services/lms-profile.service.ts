@@ -61,34 +61,35 @@ export class LMSProfileService {
   private myExamSubmits: Submission[];
   private myCourses: Course[];
   private myExams: Exam[];
-  private myProjects: Project[];
   private myCourseClasses: CourseClass[];
   private mySurveys: Survey[];
   private myConferences: Conference[];
   private myCertificates: Certificate[];
   private courseContent: any;
+  private classContent: any;
   private initialized: boolean;
 
 
   constructor(private settingService: SettingService, private appEvent: AppEventManager) {
     this.settingService.viewModeEvents.subscribe(() => {
-      this.invalidateAllll();
+      this.invalidateAll();
     });
     this.appEvent.onLogin.subscribe(() => {
-      this.invalidateAllll();
+      this.invalidateAll();
     });
     this.appEvent.onLogout.subscribe(() => {
-      this.invalidateAllll();
+      this.invalidateAll();
     });
     this.appEvent.onTokenExpired.subscribe(() => {
-      this.invalidateAllll();
+      this.invalidateAll();
     });
-    this.invalidateAllll();
+    this.invalidateAll();
   }
 
-  invalidateAllll() {
+  invalidateAll() {
     this.initialized = false;
     this.courseContent = {};
+    this.classContent = {};
   }
 
 
@@ -274,12 +275,6 @@ export class LMSProfileService {
     });
   }
 
-  projectsByClass(classId: number) {
-    return _.filter(this.myProjects, (project: Project)=> {
-      return project.class_id == classId;
-    });
-  }
-
   examsByClass(classId: number) {
     return _.filter(this.myExams, (exam: Exam)=> {
       return exam.course_class_id == classId;
@@ -336,12 +331,40 @@ export class LMSProfileService {
       });
   }
 
+  getClassContent(context:APIContext, classId:number):Observable<any> {
+    if (this.classContent[classId])
+      return Observable.of(this.classContent[classId]);
+    return BaseModel.bulk_search(context,
+      Project.__api__listByClass(classId),
+    )
+      .map(jsonArray => {
+        var content = {};
+        content["projects"] =  Project.toArray(jsonArray[0]);
+        this.classContent[classId] =  content;
+        return content;
+      });
+  }
+
+  clearClassContent(classId: number) {
+    delete this.classContent[classId];
+  }
+
   clearCourseContent(courseId: number) {
     delete this.courseContent[courseId];
   }
 
   addProject(project:Project) {
-    this.myProjects.push(project);
+    var content = this.classContent[project.class_id];
+    if (content)
+      content["projects"].push(project);
+  }
+
+  removeProject(project:Project) {
+    var content = this.classContent[project.class_id];
+    if (content)
+      content["projects"] = _.reject(content["projects"], (obj:Project)=> {
+      return obj.id == project.id;
+    });
   }
 
   addExam(exam:Exam) {
@@ -369,13 +392,7 @@ export class LMSProfileService {
     if (content)
       content["units"].push(unit);
   }
-
-
-  removeProject(project:Project) {
-    this.myProjects = _.reject(this.myProjects, (obj:Project)=> {
-      return obj.id == project.id;
-    });
-  }
+  
 
   removeExam(exam:Exam) {
     this.myExams = _.reject(this.myExams, (obj:Exam)=> {

@@ -120,9 +120,10 @@ export class GradebookDialog extends BaseComponent {
         this.member = member;
         this.lmsProfileService.init(this).subscribe(() => {
             this.course = this.lmsProfileService.courseById(member.course_id);
-            this.projects = this.lmsProfileService.projectsByClass(this.member.class_id);
             this.exams = this.lmsProfileService.examsByClass(this.member.class_id);
-            BaseModel.bulk_search(this,
+            this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content=> {
+                this.projects = content["projects"];
+                BaseModel.bulk_search(this,
                 Certificate.__api__listByMember(this.member.id),
                 ProjectSubmission.__api__listByMember(this.member.id),
                 ExamRecord.__api__listByMember(this.member.id))
@@ -137,6 +138,7 @@ export class GradebookDialog extends BaseComponent {
                             this.computeCourseStats(logs);
                         });
                 });
+            });
         });
     }
 

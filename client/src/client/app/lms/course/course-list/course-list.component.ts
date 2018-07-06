@@ -71,6 +71,15 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/study', course.id, member.id]);
     }
 
+    withdrawCourse(course: Course, member: CourseMember) {
+        this.confirm('Are you sure to proceed ?', ()=> {
+            member.status = 'withdraw';
+            member.save(this).subscribe(()=> {
+                this.lmsProfileService.invalidateAll();
+            })
+        });
+    }
+
     viewCourse(course: Course) {
         this.router.navigate(['/lms/courses/view', course.id]);
     }

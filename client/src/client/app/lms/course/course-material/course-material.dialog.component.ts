@@ -24,14 +24,11 @@ export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 
 
 	ngOnInit() {
-		this.uploadInprogress =  false;
 	}
 
 	uploadFile(file) {
-		this.uploadInprogress = true;
 		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
-				this.uploadInprogress = false;
 				if (data["result"]) {
 					this.ngZone.run(()=> {
 						this.object.url = data["url"];
@@ -40,7 +37,6 @@ export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 				}
 			},
 			() => {
-				this.uploadInprogress = false;
 			}
 		);
 	}

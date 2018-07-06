@@ -144,8 +144,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 							if (this.conferenceMember)
 								this.conference = this.conferenceMember.conference; 
 							this.projectSubmits =  this.lmsProfileService.projectSubmitsByMember(this.member.id);
-            				this.projects = this.lmsProfileService.projectsByClass(this.member.class_id);
-						}
+            				this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content=> {
+                				this.projects = content["projects"];
+                			});
+            			}
 					})
 				});
 			});

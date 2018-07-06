@@ -113,10 +113,11 @@ export class ClassManageComponent extends BaseComponent {
 			this.lmsProfileService.init(this).subscribe(() => {
 				this.courseClass = this.lmsProfileService.classById(classId);
 				this.course = this.lmsProfileService.courseById(courseId);
-				this.projects = this.lmsProfileService.projectsByClass(classId) || [];
 				this.classExams = this.lmsProfileService.examsByClass(classId) || [];
 				this.classSurveys = this.lmsProfileService.surveysByClass(classId) || [];
-				BaseModel.bulk_search(this,
+				this.lmsProfileService.getClassContent(this, classId).subscribe(content=> {
+					this.projects =  content["projects"];
+					BaseModel.bulk_search(this,
 					CourseMember.__api__listByClass(classId),
 					Certificate.__api__listByClass(classId),
 					CourseLog.__api__classActivity(classId))
@@ -126,6 +127,7 @@ export class ClassManageComponent extends BaseComponent {
 						this.logs = CourseLog.toArray(jsonArr[2]);
 						this.loadMemberStats(this.logs);
 					});
+				});
 			});
 		});
 	}
@@ -188,7 +190,9 @@ export class ClassManageComponent extends BaseComponent {
 		this.projectContentDialog.show(project);
 		this.projectContentDialog.onCreateComplete.subscribe(() => {
 			this.lmsProfileService.addProject(project);
-			this.projects = this.lmsProfileService.projectsByClass(this.courseClass.id) || [];
+			this.lmsProfileService.getClassContent(this, this.courseClass.id).subscribe(content=> {
+				this.projects = content["projects"];
+			});
 		});
 	}
 
@@ -201,7 +205,9 @@ export class ClassManageComponent extends BaseComponent {
 			this.selectedProject.delete(this).subscribe(() => {
 				this.success(this.translateService.instant('Project deleted'));
 				this.lmsProfileService.removeProject(this.selectedProject);
-				this.projects = this.lmsProfileService.projectsByClass(this.courseClass.id) || [];
+				this.lmsProfileService.getClassContent(this, this.courseClass.id).subscribe(content=> {
+					this.projects = content["projects"];
+				});
 			});
 		});
 	}
