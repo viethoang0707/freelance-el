@@ -118,8 +118,8 @@ export class Survey extends BaseModel{
             context.authService.LoginToken);
     }
 
-    __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
-        return new ExecuteAPI(Survey.Model, 'enroll',{userIds:userIds, examId:examId}, null);
+    __api__enroll(surveyId: number, userIds: number[]): SearchReadAPI {
+        return new ExecuteAPI(Survey.Model, 'enroll',{userIds:userIds, surveyId:surveyId}, null);
     }
 
     enroll(context:APIContext, userIds: number[]):Observable<any> {
