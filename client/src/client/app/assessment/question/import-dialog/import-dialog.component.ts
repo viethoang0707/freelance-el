@@ -46,6 +46,7 @@ export class QuestionImportDialog extends BaseComponent {
 	import() {
 		Group.listQuestionGroup(this).subscribe(groups => {
 			var questionList = [];
+			var optionList = [];
 			for (var i = 0; i < this.records.length;) {
 				var record = this.records[i];
 				var question = new Question();
@@ -69,14 +70,15 @@ export class QuestionImportDialog extends BaseComponent {
 							option.content = optionRecord["option"];
 							options.push(option);
 						}
-						question["options"] = _.shuffle(options);
-					}
+						optionList.push( _.shuffle(options));
+					} else
+						optionList.push([])
 					i += optionLength;
 				} else
 					i++;
 				questionList.push(question);
 			}
-			Question.createArray(this,questionList).subscribe(()=> {
+			Question.importQuestion(this,questionList, optionList).subscribe(()=> {
 				this.onImportCompleteReceiver.next();
 				this.hide();
 			})
