@@ -16,7 +16,10 @@ export class SurveySheet extends BaseModel{
         this.seed = undefined;
         this.finalized = undefined;
         this.status =  undefined;
+        this.question_count =  undefined;
 	}
+
+    question_count: number;
     survey_id: number;
     name: string;
     seed:number;

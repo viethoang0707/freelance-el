@@ -18,9 +18,11 @@ export class QuestionSheet extends BaseModel{
         this.finalized = undefined;
         this.name = undefined;
         this.status =  undefined;
+        this.question_count =  undefined;
 	}
 
     name: string;
+    question_count: number;
     exam_id: number;
     exercise_id: number;
     seed:number;
