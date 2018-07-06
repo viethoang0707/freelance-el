@@ -7,7 +7,7 @@ import { ModelAPIService } from '../../../shared/services/api/model-api.service'
 import { AuthService } from '../../../shared/services/auth.service';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
 import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
@@ -29,7 +29,7 @@ import { CoursePublishDialog } from '../../../cms/course/course-publish/course-p
 
 export class CourseListComponent extends BaseComponent implements OnInit {
 
-    CONTENT_STATUS = CONTENT_STATUS;
+    COURSE_STATUS = COURSE_STATUS;
     COURSE_MODE = COURSE_MODE;
 
     private courses: Course[];
@@ -60,7 +60,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
             course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
             if (course['supervisor'])
-                course['teahcer'] =  course['editor'] =  course['supervisor'];
+                course['editor'] =  course['supervisor'];
         });
         this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);

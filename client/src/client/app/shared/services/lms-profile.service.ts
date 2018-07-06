@@ -147,7 +147,7 @@ export class LMSProfileService {
               return member.course_id == course.id;
             });
           });
-          this.myCourseClasses = Course.toArray(jsonArr1[1]);
+          this.myCourseClasses = CourseClass.toArray(jsonArr1[1]);
           _.each(this.myClassMembers, (member: CourseMember) => {
             member.clazz = _.find(this.myCourseClasses, (clazz: CourseClass) => {
               return member.class_id == clazz.id;
