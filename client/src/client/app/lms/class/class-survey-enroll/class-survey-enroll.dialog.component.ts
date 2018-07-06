@@ -58,7 +58,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.display = false;
 	}
 
-	registerAll() {
+	enrollAll() {
 		var userIds = _.pluck(this.courseMembers,'user_id');
 		this.survey.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
