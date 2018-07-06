@@ -24,6 +24,8 @@ import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-s
 import { ValidateGradePipe } from './exam/exam-setting/grade.pipe';
 import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.component';
 import { CoursePublishDialog } from './course/course-publish/course-publish.dialog.component';
+import { CourseBackupDialog } from './course/course-backup/course-backup.dialog.component';
+import { CourseRestoreDialog } from './course/course-restore/course-restore.dialog.component';
 
 
 @NgModule({
@@ -33,9 +35,9 @@ import { CoursePublishDialog } from './course/course-publish/course-publish.dial
 		SlideLectureCourseUnitComponent,QuestionSheetEditorDialog, QuestionSheetSaveDialog,SurveySheetSaveDialog,
 		ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, VideoLectureCourseUnitComponent,
 		 HtmlLectureCourseUnitComponent, CourseUnitDialog, SurveyContentDialog,ValidateGradePipe, ExamSettingDialog,
-		 CoursePublishDialog],
+		 CoursePublishDialog, CourseBackupDialog, CourseRestoreDialog],
 	exports: [ExamContentDialog, CourseSyllabusDialog, CourseUnitPreviewDialog, CourseUnitContainerDirective, 
-	ProjectContentDialog, SurveyContentDialog, CoursePublishDialog],
+	ProjectContentDialog, SurveyContentDialog, CoursePublishDialog, CourseBackupDialog, CourseRestoreDialog],
 	providers: [],
 	entryComponents: [FolderCourseUnitComponent, ExerciseCourseUnitComponent, SCORMLectureCourseUnitComponent, SlideLectureCourseUnitComponent,
 		VideoLectureCourseUnitComponent, HtmlLectureCourseUnitComponent]

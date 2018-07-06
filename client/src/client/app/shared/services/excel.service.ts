@@ -41,5 +41,20 @@ export class ExcelService {
     });
   }
 
+  public importFromJsonFile(file: any): Observable<any> {
+    return Observable.create(function (observer) {
+      var reader = new FileReader();
+      var textType = /application.json/;
+      if (file.type.match(textType)) {
+        reader.onload = function (e) {
+          var data = reader.result;
+          observer.next(data);
+          observer.complete();
+        }
+        reader.readAsText(file);
+      }
+    });
+  }
+
 
 }

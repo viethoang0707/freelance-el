@@ -2,11 +2,17 @@
     <h1>{{'Course'|translate}}: {{course.name}} </h1>
     <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
+            <div class="ui-g-12">
+                 <p-toolbar>
+                <button pButton type="button" icon="ui-icon-backup" title="{{'Backup'| translate}}" label="{{'Backup'|translate}}" class="green-btn" style="margin-right:4px;" (click)="backupCourse()"></button>
+                <button pButton type="button" icon="ui-icon-restore" title="{{'Restore'| translate}}" label="{{'Restore'|translate}}" class="blue-btn" style="margin-right:4px;" (click)="restoreCourse()"></button>
+            </p-toolbar>
+            </div>
             <div class="ui-g-3">
                 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
                 <div class="ui-g-12">
-                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, member)"></button>
-            </div>
+                    <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, member)"></button>
+                </div>
             </div>
             <div class="ui-g-9" *ngIf="selectedUnit">
                 <div class="card">
@@ -21,10 +27,11 @@
                     </div>
                 </div>
             </div>
+            <course-backup-dialog></course-backup-dialog>
+            <course-restore-dialog></course-restore-dialog>
             <course-syllabus-dialog></course-syllabus-dialog>
             <course-unit-preview-dialog></course-unit-preview-dialog>
         </p-tabPanel>
-        
         <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download">
             <div class="ui-g-12">
                 <p-toolbar>

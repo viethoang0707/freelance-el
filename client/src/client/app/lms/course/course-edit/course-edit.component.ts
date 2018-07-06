@@ -27,7 +27,8 @@ import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
-
+import { CourseBackupDialog } from '../../../cms/course/course-backup/course-backup.dialog.component';
+import { CourseRestoreDialog } from '../../../cms/course/course-restore/course-restore.dialog.component';
 @Component({
 	moduleId: module.id,
 	selector: 'course-edit',
@@ -56,6 +57,8 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
+	@ViewChild(CourseBackupDialog) backupDialog: CourseBackupDialog;
+    @ViewChild(CourseRestoreDialog) restoreDialog: CourseRestoreDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -160,6 +163,14 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 			this.unitPreviewDialog.show(this.selectedNode.data);
 		}
 	}
+
+	 backupCourse() {
+            this.backupDialog.show(this.course);
+    }
+
+    restoreCourse() {
+            this.restoreDialog.show(this.course);
+    }
 
 }
 
