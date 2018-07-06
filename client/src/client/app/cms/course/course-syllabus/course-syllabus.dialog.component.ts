@@ -16,6 +16,9 @@ import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-un
 import { CourseSettingDialog } from '../course-setting/course-setting.dialog.component';
 import * as _ from 'underscore';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
+
+declare var $: any;
 
 @Component({
     moduleId: module.id,
@@ -37,6 +40,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private sylUtils : SyllabusUtils;
 	private course: Course;
 	private courseStatus: SelectItem[];
+	WINDOW_HEIGHT: any;
 
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
@@ -62,6 +66,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 				value: key
 			}
 		});
+		this.WINDOW_HEIGHT = $(window).height();
     }
 
     show(course: Course) {

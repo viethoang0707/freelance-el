@@ -37,14 +37,14 @@
                             {{'Position'|translate}}
                             <p-sortIcon [field]="'position'"></p-sortIcon>
                         </th>
-                        <th [pSortableColumn]="'gender'">
+                        <!-- <th [pSortableColumn]="'gender'">
                             {{'Gender'|translate}}
                             <p-sortIcon [field]="'gender'"></p-sortIcon>
-                        </th>
+                        </th> 
                         <th [pSortableColumn]="'dob'">
                             {{'Date of birth'|translate}}
                             <p-sortIcon [field]="'dob'"></p-sortIcon>
-                        </th>
+                        </th> -->
                         <th [pSortableColumn]="'phone'">
                             {{'Phone'|translate}}
                             <p-sortIcon [field]="'phone'"></p-sortIcon>
@@ -65,8 +65,8 @@
                         <td>{{user.login}}</td>
                         <td class="showformb" style="text-align: left;">{{user.email}}</td>
                         <td class="showformb">{{user.position}}</td>
-                        <td class="showformb">{{user.gender}}</td>
-                        <td class="showformb">{{user.dob | date : "dd/MM/yyyy "}}</td>
+                        <!-- <td class="showformb">{{user.gender}}</td>
+                        <td class="showformb">{{user.dob | date : "dd/MM/yyyy "}}</td> -->
                         <td class="showformb">{{user.phone}}</td>
                         <td class="showformb">{{user.group_id__DESC__}}</td>
                         <td class="showformb">{{user.permission_id__DESC__}}</td>
