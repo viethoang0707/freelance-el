@@ -472,7 +472,7 @@ export class LMSProfileService {
   }
 
   getSurveyMemberByRole(role:string, surveyId: number) {
-    return _.find(this.myCourseMembers, (member:SurveyMember)=> {
+    return _.find(this.mySurveyMembers, (member:SurveyMember)=> {
       return member.role == role && member.survey_id == surveyId;
     });
   }

@@ -40,11 +40,6 @@ export class SelectSurveySheetDialog extends BaseComponent {
 		this.display = true;
 		SurveySheet.listTemplate(this).subscribe(sheets => {
 			this.sheets = sheets;
-			_.each(sheets, sheet=> {
-				SurveyQuestion.countBySheet(this, sheet["id"]).subscribe(count=> {
-					sheet["question_count"] =  count;
-				});
-			});
 		});
 	}
 

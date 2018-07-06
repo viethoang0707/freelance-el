@@ -41,11 +41,6 @@ export class SelectQuestionSheetDialog extends BaseComponent {
 		this.display = true;
 		QuestionSheet.listTemplate(this).subscribe(sheets => {
 			this.sheets = sheets;
-			_.each(sheets, sheet=> {
-				ExamQuestion.countBySheet(this, sheet["id"]).subscribe(count=> {
-					sheet["question_count"] =  count;
-				});
-			});
 		});
 	}
 
