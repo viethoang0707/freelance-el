@@ -63,15 +63,6 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
 
     closeSurvey() {
         if (this.selectedSurvey) {
-<<<<<<< HEAD
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error(this.translateService.instant('You do not have close permission for this survey'));
-                return;
-            }
-            this.selectedSurvey.status = 'closed';
-            this.selectedSurvey.save(this).subscribe(() => {
-                this.success(this.translateService.instant('Survey close'));
-=======
             if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
                 this.error('You do not have close permission for this survey');
                 return;
@@ -80,22 +71,12 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
                 this.selectedSurvey.close(this).subscribe(() => {
                     this.success('Survey close');
                 });
->>>>>>> Refactor LMS
             });
         }
     }
 
     openSurvey() {
         if (this.selectedSurvey) {
-<<<<<<< HEAD
-            if  (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error(this.translateService.instant('You do not have open permission for this survey'));
-                return;
-            }
-            this.selectedSurvey.status = 'open';
-            this.selectedSurvey.save(this).subscribe(() => {
-                this.success(this.translateService.instant('Survey open'));
-=======
             if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
                 this.error('You do not have open permission for this survey');
                 return;
@@ -104,7 +85,6 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
                 this.selectedSurvey.open(this).subscribe(() => {
                     this.success('Survey open');
                 });
->>>>>>> Refactor LMS
             });
 
         }

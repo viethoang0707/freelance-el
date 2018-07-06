@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../../shared/services/api.service';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { WebSocketService } from '../../../shared/services/socket.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -36,7 +35,7 @@ export class CourseRestoreDialog extends BaseComponent {
 	private electedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
 	private fileName: string;
-	private records: any[];
+	private data: string;
 	private course: Course;
 	private user: User;
 	private faqs: CourseFaq[];
@@ -107,14 +106,14 @@ export class CourseRestoreDialog extends BaseComponent {
 		var file = event.files[0];
 		this.fileName = file.name;
 		this.excelService.importFromJsonFile(file).subscribe(data => {
-			this.records = data;
+			this.data = data;
 		});
 	}
 
 	restoreCourse() {
 		var subscriptions = [];
-		console.log(this.records);
-		var output = JSON.parse(this.records);
+		console.log(this.data);
+		var output = JSON.parse(this.data);
 		var course_faq = output.course_faq;
 		var course_material =  output.course_material;
 		var course_syllabus = output.course_syllabus;

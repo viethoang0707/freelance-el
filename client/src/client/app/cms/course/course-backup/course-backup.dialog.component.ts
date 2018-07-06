@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { APIService } from '../../../shared/services/api.service';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { WebSocketService } from '../../../shared/services/socket.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -13,9 +12,7 @@ import { TreeNode, MenuItem, SelectItem } from 'primeng/api';
 import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, COURSE_STATUS } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
-import { CourseSyllabusSettingDialog } from '../syllabus-setting/syllabus-setting.dialog.component';
 import * as _ from 'underscore';
-import { Ticket } from '../../../shared/models/ticket/ticket.model';
 import { WorkflowService } from '../../../shared/services/workflow.service';
 import { CourseCertificateDialog } from '../../../lms/course/course-certificate/course-certificate.dialog.component';
 import { Jsonp } from '@angular/http';
@@ -44,7 +41,7 @@ export class CourseBackupDialog extends BaseComponent {
 	private faqs: CourseFaq[];
 	private downloadJsonHref;
 	private materials: CourseMaterial[];
-	private output: String;
+	private output: any;
 	private courseStatus: SelectItem[];
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
