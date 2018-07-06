@@ -86,6 +86,9 @@ export class ClassExamEnrollDialog extends BaseComponent {
     openExam() {
         this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', ()=> {
             this.exam.open(this).subscribe(() => {
+            	ExamMember.listByExam(this, this.exam.id).subscribe(members=> {
+					this.examMembers = members;
+				})
                 this.success('Exam open');
             });
         });

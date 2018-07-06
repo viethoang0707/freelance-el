@@ -68,7 +68,7 @@
                 </p-table>
             </div>
             <div [hidden]="viewMode=='outline'">
-                <p-table #detailTable [value]="records" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #detailTable [value]="studentRecords" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">
