@@ -21,3 +21,7 @@
 p.question{
 	margin:0;
 }
+
+.options-question .md-inputfield input{
+	width: 470px;
+}
