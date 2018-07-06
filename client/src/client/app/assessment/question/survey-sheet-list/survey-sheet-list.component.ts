@@ -36,29 +36,22 @@ export class SurveySheetListComponent extends BaseComponent {
         this.loadSurveySheets();
     }
 
-    deleteSheet(){
-        if(this.selectedSheet)
-            this.confirm('Are you sure to delete ?', () => {
-                this.selectedSheet.delete(this).subscribe(() => {
-                    this.selectedSheet = null;
-                    this.loadSurveySheets();
-                });
+    deleteSheet() {
+        this.confirm('Are you sure to delete ?', () => {
+            this.selectedSheet.delete(this).subscribe(() => {
+                this.selectedSheet = null;
+                this.loadSurveySheets();
             });
+        });
     }
 
     previewSheet() {
-        if(this.selectedSheet)
-            this.sheetDialog.show(this.selectedSheet);
+        this.sheetDialog.show(this.selectedSheet);
     }
 
     loadSurveySheets() {
         SurveySheet.listTemplate(this).subscribe(sheets => {
-            this.sheets =  sheets;
-            _.each(sheets, sheet=> {
-                SurveyQuestion.countBySheet(this, sheet["id"]).subscribe(count=> {
-                    sheet["question_count"] = count;
-                });
-            });
+            this.sheets = sheets;
         });
     }
 

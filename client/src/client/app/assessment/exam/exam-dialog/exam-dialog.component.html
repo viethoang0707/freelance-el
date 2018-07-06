@@ -3,7 +3,7 @@
     <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
         <p-scrollPanel [styleClass]="large-dialog-panel">
             <div class="ui-g ui-fluid form-group">
-                <div class="ui-g-6">
+                <div class="ui-g-4">
                     <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
             <label>{{'Name'|translate}}</label>
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-6">
+                <div class="ui-g-2">
                     <span class="md-inputfield">
               <input type="text" pInputText [(ngModel)]="object.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
               <label>{{'Duration (in minutes)'|translate}}</label>
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-12">
+                <div class="ui-g-6">
                     <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
             <label>{{'Summary'|translate}}</label>

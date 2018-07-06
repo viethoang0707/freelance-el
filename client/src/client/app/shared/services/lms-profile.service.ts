@@ -129,7 +129,7 @@ export class LMSProfileService {
         var classIds = _.pluck(this.myClassMembers, 'class_id');
         var courseIds = _.pluck(this.myCourseMembers, 'course_id');
         var examIds = _.pluck(this.myExamMembers, 'exam_id');
-        var surveyIds = _.pluck(this.myExamMembers, 'survey_id');
+        var surveyIds = _.pluck(this.mySurveyMembers, 'survey_id');
         var conferenceIds = _.pluck(this.myConferenceMembers, 'conference_id');
         return BaseModel.bulk_list(context,
           Course.__api__get(courseIds),

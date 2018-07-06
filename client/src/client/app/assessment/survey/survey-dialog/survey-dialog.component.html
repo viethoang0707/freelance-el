@@ -3,7 +3,7 @@
         <div class="spinner" [hidden]="!loading"></div>
         <p-scrollPanel [styleClass]="large-dialog-panel">
             <div class="ui-g ui-fluid form-group">
-                <div class="ui-g-6">
+                <div class="ui-g-4">
                     <span class="md-inputfield">
               <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
               <label>{{'Name'|translate}}</label>
@@ -15,7 +15,7 @@
               </div>
           </span>
                 </div>
-                <div class="ui-g-12">
+                <div class="ui-g-8">
                     <span class="md-inputfield">
               <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
               <label>{{'Summary'|translate}}</label>
@@ -48,9 +48,6 @@
                             {{'Exam end time is required' | translate}}
                         </div>
                     </div>
-                </div>
-                <div class="ui-g-6">
-                    <button type="button" pButton icon="ui-icon-change-history" label="{{editor.id?translateService.instant('Editor') +':'+ editor.name:translateService.instant('Select editor')}}" (click)="selectEditor()"></button>
                 </div>
             </div>
         </p-scrollPanel>

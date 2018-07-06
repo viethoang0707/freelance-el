@@ -37,33 +37,24 @@ export class QuestionSheetListComponent extends BaseComponent {
         this.loadQuestionSheets();
     }
 
-    deleteSheet(){
-        if(this.selectedSheet)
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                this.selectedSheet.delete(this).subscribe(() => {
-                    this.selectedSheet = null;
-                    this.loadQuestionSheets();
-                    
-                });
+    deleteSheet() {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+            this.selectedSheet.delete(this).subscribe(() => {
+                this.selectedSheet = null;
+                this.loadQuestionSheets();
             });
+        });
     }
 
     previewSheet() {
-        if(this.selectedSheet) {
-            ExamQuestion.listBySheet(this, this.selectedSheet.id).subscribe(examQuestion=> {
-                this.sheetDialog.show(this.selectedSheet,examQuestion);
-            });
-        }
+        ExamQuestion.listBySheet(this, this.selectedSheet.id).subscribe(examQuestion => {
+            this.sheetDialog.show(this.selectedSheet, examQuestion);
+        });
     }
 
     loadQuestionSheets() {
         QuestionSheet.listTemplate(this).subscribe(sheets => {
-            this.sheets =  sheets;
-            _.each(sheets, sheet=> {
-                ExamQuestion.countBySheet(this, sheet["id"]).subscribe(count=> {
-                    sheet["question_count"] = count;
-                });
-            })
+            this.sheets = sheets;
         });
     }
 
