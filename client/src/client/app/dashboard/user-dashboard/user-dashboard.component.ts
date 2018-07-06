@@ -72,7 +72,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
             course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
             if (course['supervisor'])
-                course['teahcer'] =  course['editor'] =  course['supervisor'];
+                course['teacher'] =  course['editor'] =  course['supervisor'];
         });
         this.courses =  _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);
@@ -147,7 +147,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editSyllabus(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/view', course.id, member.id]);
+        this.router.navigate(['/lms/courses/edit', course.id, member.id]);
     }
 
     publishCourse(course: Course) {
