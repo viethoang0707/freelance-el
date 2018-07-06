@@ -32,6 +32,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.display = false;
 		this.surveyMembers = [];
 		this.courseMembers = [];
+		this.survey =  new Survey();
 	}
 
 	show(survey: Survey) {

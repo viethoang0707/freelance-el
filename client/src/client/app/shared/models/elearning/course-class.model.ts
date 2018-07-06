@@ -68,6 +68,16 @@ export class CourseClass extends BaseModel{
 
     }
 
+    __api__enroll_staff(classId: number, userIds: number[]): ExecuteAPI {
+        return new ExecuteAPI(CourseClass.Model, 'enroll_staff',{classId:classId,userIds:userIds}, null);
+    }
+
+    enrollStaff(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll_staff(this.id, userIds), 
+            context.authService.LoginToken);
+
+    }
+
     static __api__listBySupervisor(supervisorId: number): SearchReadAPI {
         return new SearchReadAPI(CourseClass.Model, [],"[('supervisor_id','=',"+supervisorId+")]");
     }

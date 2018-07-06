@@ -21,7 +21,6 @@
     margin-right: 8px;
     width: 32px;
     vertical-align: middle;
-    color: #757575;
 }
 
 .list-cmt li .cmt-title{
@@ -112,4 +111,12 @@ h4.title{
 .user-card-footer{
 	text-align: center;
     padding-bottom: 10px;
+}
+
+i.success {
+	color: green;
+}
+
+i.fail {
+	color: red;
 }

@@ -72,21 +72,22 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
             course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
             if (course['supervisor'])
-                course['teahcer'] =  course['editor'] =  course['supervisor'];
+                course['teacher'] =  course['editor'] =  course['supervisor'];
         });
         this.courses =  _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);
         });
         var classList = this.lmsProfileService.MyClasses;
-            this.events = this.events.concat(_.map(classList, (clazz: CourseClass) => {
-                return {
+        _.each(classList, (clazz:CourseClass)=> {
+            if (clazz.IsAvailable)
+                this.events.push({
                     title: clazz.name,
                     start: clazz.start,
                     end: clazz.end,
                     id: clazz.id,
                     allDay: true
-                }
-            }));
+                });
+        })
     }
 
     displayExams(exams: Exam[]) {
@@ -96,19 +97,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             exam['supervisor'] =  this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
             if (exam['supervisor'])
                 exam['editor'] =  exam['supervisor'];
+            if (exam.IsAvailable)
+                this.events.push( {
+                    title: exam.name,
+                    start: exam.start,
+                    end: exam.end,
+                    id: exam.id,
+                    allDay: true
+                });
         });
         exams.sort((exam1: Exam, exam2: Exam): any => {
             return this.lmsProfileService.getLastExamTimestamp(exam2) - this.lmsProfileService.getLastExamTimestamp(exam1);
         });
-        this.events = this.events.concat(_.map(exams, (exam: Exam) => {
-            return {
-                title: exam.name,
-                start: exam.start,
-                end: exam.end,
-                id: exam.id,
-                allDay: true
-            }
-        }));
         this.exams = exams;
     }
 
@@ -147,7 +147,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editSyllabus(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/view', course.id, member.id]);
+        this.router.navigate(['/lms/courses/edit', course.id, member.id]);
     }
 
     publishCourse(course: Course) {

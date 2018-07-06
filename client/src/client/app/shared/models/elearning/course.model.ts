@@ -75,7 +75,7 @@ export class Course extends BaseModel{
     get IsAvailable():boolean {
         if (this.review_state != 'approved')
             return false;
-        if (this.status !='published')
+        if (this.status !='open')
             return false;
         return true;
     }
@@ -174,6 +174,15 @@ export class Course extends BaseModel{
 
     enroll(context:APIContext, userIds: number[]):Observable<any> {
         return context.apiService.execute(this.__api__enroll(this.id, userIds), 
+            context.authService.LoginToken);
+    }
+
+    __api__enroll_staff(courseId: number, userIds: number[]): ExecuteAPI {
+        return new ExecuteAPI(Course.Model, 'enroll_staff',{courseId: courseId,userIds:userIds}, null);
+    }
+
+    enrollStaff(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll_staff(this.id, userIds), 
             context.authService.LoginToken);
 
     }

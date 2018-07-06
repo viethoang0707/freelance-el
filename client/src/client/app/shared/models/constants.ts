@@ -13,9 +13,9 @@ export const DEFAULT_DATE_LOCALE = {
     today: 'Today',
     clear: 'Clear'
 };
-export const COURSE_STATUS = { 'open': 'Open', 'closed': 'Closed' };
-export const EXAM_STATUS = { 'open': 'Open', 'closed': 'Closed' };
-export const CLASS_STATUS = { 'open': 'Open', 'closed': 'Closed' };
+export const COURSE_STATUS = { 'open': 'Open', 'closed': 'Closed', 'initial': 'Initial'};
+export const EXAM_STATUS = { 'open': 'Open', 'closed': 'Closed' , 'initial': 'Initial'};
+export const CLASS_STATUS = { 'open': 'Open', 'closed': 'Closed' , 'initial': 'Initial'};
 export const REPORT_CATEGORY = { COURSE: 'COURSE', EXAM: 'EXAM', SURVEY: 'SURVEY', COMPETENCY: 'COMPETENCY' };
 export const EXPORT_DATETIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
 export const EXPORT_DATE_FORMAT = "dd-MM-yyyy";
@@ -35,7 +35,7 @@ export const QUESTION_TYPE = { 'sc': 'Single-choice', 'mc': 'Multiple-choice', '
 export const QUESTION_LEVEL = { 'easy': 'Easy', 'medium': 'Medium', 'hard': 'Hard' };
 export const LANGS = { 'vn': 'Vietnamese', 'gb': 'English' };
 export const REVIEW_STATE = { 'initial': 'Initial', 'approved': 'Approved', 'rejected': 'Rejected', 'pending':'Pending' };
-export const TICKET_STATUS = { 'open': 'Open', 'approved': 'Approved', 'rejected': 'Rejected','pending':'Pending' };
+export const TICKET_STATUS = { 'initial': 'Initial', 'open': 'Open', 'approved': 'Approved', 'rejected': 'Rejected','pending':'Pending' };
 export const EXAM_TIME_WARNING = 60000;
 export const DEFAULT_LANG = 'gb';
 export const SCHEDULER_HEADER = {
@@ -44,8 +44,8 @@ export const SCHEDULER_HEADER = {
     right: 'month,agendaWeek,agendaDay'
 }
 export const COLOR_BAND = ["#FF6384", "#36A2EB", "#3366cc", "#dc3912", "#ff9900", "#109618", "#990099"];
-export const PROJECT_STATUS = { 'open': 'Open', 'closed': 'Closed' };
-export const SURVEY_STATUS = { 'open': 'Open', 'closed': 'Closed' };
+export const PROJECT_STATUS = { 'open': 'Open', 'closed': 'Closed' , 'draft':'Draft'};
+export const SURVEY_STATUS = { 'open': 'Open', 'closed': 'Closed', 'initial': 'Initial' };
 export const SURVEY_MEMBER_ROLE = { 'candidate': 'Candidate', 'supervisor': 'Supervisor', 'editor':'Editor' };
 export const SURVEY_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'complete': 'Complete', 'registered': 'Registered' };
 export const PRINT_DIALOG_STYLE = `<style>

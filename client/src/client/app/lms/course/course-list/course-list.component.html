@@ -41,7 +41,7 @@ ul {
                             </div>
                             <div class="ui-lg-5 ui-md-8 ui-g-12">
                                 <h4 class="heading-course"><span>{{course.name}}</span></h4>
-                                <span class="c-status">{{CONTENT_STATUS[course.status]|translate}}</span>
+                                <span class="c-status">{{COURSE_STATUS[course.status]|translate}}</span>
                                 <div class="clearfix"></div>
                                 <p-accordion styleClass="cont">
                                     <p-accordionTab header="{{'Summary' | translate}}">
@@ -52,9 +52,8 @@ ul {
                                     </p-accordionTab>
                                 </p-accordion>
                             </div>
-                            <div class="ui-lg-4 ui-md-12 ui-g-12">
+                            <!--div class="ui-lg-4 ui-md-12 ui-g-12">
                                 <div class="status-bars" *ngIf="course.teacher !=null && course.mode=='group'">
-                                    <!-- <div class="card"> -->
                                     <ul>
                                         <li>
                                             <div class="status-bar status-bar-2">
@@ -78,9 +77,9 @@ ul {
                                             <span>{{'Completed'|translate}}</span>
                                         </li>
                                     </ul>
-                                    <!-- </div> -->
+                                    
                                 </div>
-                            </div>
+                          </div> -->
                         </div>
                         <div class="ui-lg-3 ui-md-12 ui-g-12">
                             <p-card styleClass="lms-course-detail">

@@ -46,11 +46,6 @@
                   <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
                   <span class="cmt-detail">{{exam.duration}}</span>
                 </li>
-                <li class="clearfix" *ngIf="exam.candidate != null" *ngVar="getExamRecord(exam) as record">
-                  <i class="material-icons">star</i>
-                  <span class="cmt-title">{{'Score'|translate}}</span>
-                  <span class="cmt-detail">{{record.score}}</span>
-                </li>
                 <li class="clearfix" style="border-bottom: none;">
                   <i class="material-icons">done</i>
                   <span class="cmt-title">{{'Number of question'|translate}}</span>

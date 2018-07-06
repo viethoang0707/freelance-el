@@ -8,8 +8,8 @@
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollCourse()" *ngIf="selectedCourse"></button>
-                    <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock" (click)="openCourse() " [disabled]=" selectedCourse && selectedCourse.status=='open'"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollCourse()" *ngIf="selectedCourse && selectedCourse.IsAvailable"></button>
+                    <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="openCourse() " [disabled]=" selectedCourse && selectedCourse.status=='open'"></button>
                     <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeCourse() " [disabled]=" selectedCourse && selectedCourse.status=='closed'"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
@@ -44,7 +44,7 @@
                             <p-sortIcon [field]="'review_state'"></p-sortIcon>
                         </th>
                         <th [pSortableColumn]="'supervisor_name'">
-                            {{'Created by'|translate}}
+                            {{'Supervisor'|translate}}
                             <p-sortIcon [field]="'supervisor_name'"></p-sortIcon>
                         </th>
                         <th [pSortableColumn]="'create_date'">
@@ -62,7 +62,7 @@
                         <td style="text-align: left;">{{course.name}}</td>
                         <td class="showformb">{{course.code}}</td>
                         <td class="showformb">{{COURSE_MODE[course.mode] | translate}}</td>
-                        <td class="showformb">{{CONTENT_STATUS[course.status] | translate}}</td>
+                        <td class="showformb">{{COURSE_STATUS[course.status] | translate}}</td>
                         <td class="showformb">{{REVIEW_STATE[course.review_state] | translate}}</td>
                         <td class="showformb">{{course.supervisor_name}}</td>
                         <td>{{course.create_date | date : "dd/MM/yyyy "}}</td>

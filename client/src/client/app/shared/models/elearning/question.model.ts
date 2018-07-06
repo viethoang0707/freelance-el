@@ -9,6 +9,7 @@ import { SearchReadAPI } from '../../services/api/search-read.api';
 import { CreateAPI } from '../../services/api/create.api';
 import { BulkSearchReadAPI } from '../../services/api/bulk-search-read.api';
 import { MapUtils } from '../../helpers/map.utils';
+import { ExecuteAPI } from '../../services/api/execute.api';
 
 @Model('etraining.question')
 export class Question extends BaseModel{
@@ -107,6 +108,16 @@ export class Question extends BaseModel{
                 });
             });
         })
+    }
+
+    static __api__import_question(questions: any, options: any): ExecuteAPI {
+        return new ExecuteAPI(Question.Model, 'import_question',{questions:questions,options:options}, null);
+    }
+
+    static importQuestion(context:APIContext, questions: any, options: any):Observable<any> {
+        return context.apiService.execute(Question.__api__import_question(questions, options), 
+            context.authService.LoginToken);
+
     }
 
 }

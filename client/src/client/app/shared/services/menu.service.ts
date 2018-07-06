@@ -73,8 +73,9 @@ export class MenuService {
     private USER_MENU = [
                 { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
                 { label: '', separator: true, styleClass: 'menu-separator' },
-                { label: 'My course', icon: 'school', routerLink: ['/lms/courses'] },
-                { label: 'My exam', icon: 'alarm_add', routerLink: ['/lms/exams'] },
+                { label: 'My courses', icon: 'school', routerLink: ['/lms/courses'] },
+                { label: 'My exams', icon: 'alarm_add', routerLink: ['/lms/exams'] },
+                { label: 'My surveys', icon: 'question_answer', routerLink: ['/lms/surveys'] },
                 { label: 'My conference', icon: 'perm_phone_msg', routerLink: ['/lms/meetings'] },
                  { label: '', separator: true, styleClass: 'menu-separator' },
                  { label: 'Course search', icon: 'search', routerLink: ['/lms/courses/search'] },
