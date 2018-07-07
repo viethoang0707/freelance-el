@@ -171,4 +171,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             this.examStudyDialog.show(exam, member);
         });
     }
+
+    publishExam(exam:Exam) {
+        exam.sheet_status = 'published';
+        exam.save(this).subscribe();
+    }
+
+    unpublishExam(exam:Exam) {
+        exam.sheet_status = 'unpublished';
+        exam.save(this).subscribe();
+    }
 }

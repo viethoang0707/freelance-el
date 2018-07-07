@@ -75,5 +75,14 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
         });
     }
 
+    publishSurvey(survey:Survey) {
+        survey.sheet_status = 'published';
+        survey.save(this).subscribe();
+    }
+
+    unpublishSurvey(survey:Survey) {
+        survey.sheet_status = 'unpublished';
+        survey.save(this).subscribe();
+    }
 
 }

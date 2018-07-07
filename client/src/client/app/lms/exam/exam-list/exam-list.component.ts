@@ -74,6 +74,16 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         this.examContentDialog.show(exam);
     }
 
+    publishExam(exam:Exam) {
+        exam.sheet_status = 'published';
+        exam.save(this).subscribe();
+    }
+
+    unpublishExam(exam:Exam) {
+        exam.sheet_status = 'unpublished';
+        exam.save(this).subscribe();
+    }
+
     startExam(exam: Exam, member: ExamMember) {
         this.confirmationService.confirm({
             message: this.translateService.instant('Are you sure to start?'),

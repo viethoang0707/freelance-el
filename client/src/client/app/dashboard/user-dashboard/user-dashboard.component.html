@@ -1,7 +1,7 @@
 <p-tabView [style]="{width: '100%'}">
     <p-tabPanel header="{{'Calendar'|translate}}" leftIcon="ui-icon-date-range">
         <div style="text-align:center">
-            <p-schedule #lmsSchedule [events]="events" [editable]="true"styleClass="schedule-dashboard" [header]="header" [height]="640"></p-schedule>
+            <p-schedule #lmsSchedule [events]="events" [editable]="true" styleClass="schedule-dashboard" [header]="header" [height]="640"></p-schedule>
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Recent course'|translate}}" leftIcon="ui-icon-school">
@@ -18,7 +18,7 @@
                             <span class="image-box-tag">{{COURSE_MODE[course.mode]}}</span>
                             <p class="summary">{{course.summary}}</p>
                             <ul class="list-cmt">
-                                <li class="clearfix" >
+                                <li class="clearfix">
                                     <ng-container *ngIf="!course.IsAvailable">
                                         <i class="material-icons fail">error</i>
                                         <span class="cmt-title">{{'Course not available'|translate}}</span>
@@ -37,15 +37,15 @@
                                     <i class="material-icons">toc</i>
                                     <span class="cmt-title">{{'Group'|translate}}</span>
                                     <span class="cmt-detail">{{course.group_id__DESC__}}</span>
-                                </li>                                
+                                </li>
                             </ul>
                         </div>
                         <div class="image-box-footer">
                             <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="mr4 mb6 green-btn" (click)="studyCourse(course, course.student)" *ngIf="course.student!=null" [disabled]="! course.IsAvailable"></button>
-                            <button pButton type="button" icon="ui-icon-visibility" title="{{'View'| translate}}" label="{{'View'|translate}}" class="mr4 mb6 blue-grey-btn" (click)="viewCourse(course)" *ngIf="course.teacher!=null" ></button>
-                            <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 mb6 blue-grey-btn" (click)="publishCourse(course)" *ngIf="course.supervisor!=null" ></button>
+                            <button pButton type="button" icon="ui-icon-visibility" title="{{'View'| translate}}" label="{{'View'|translate}}" class="mr4 mb6 blue-grey-btn" (click)="viewCourse(course)" *ngIf="course.teacher!=null"></button>
+                            <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 mb6 blue-grey-btn" (click)="publishCourse(course)" *ngIf="course.supervisor!=null"></button>
                             <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 mb6 blue-grey-btn" (click)="editSyllabus(course, course.editor)" *ngIf="course.editor!=null"></button>
-                            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 mb6 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null "[disabled]="!course.IsAvailable"></button>     
+                            <button pButton type="button" icon="ui-icon-supervisor-account" title="{{'Manage course'| translate}}" label="{{'Manage'|translate}}" class="mr4 mb6 orange-btn" (click)="manageCourse(course, course.teacher)" *ngIf="course.teacher !=null " [disabled]="!course.IsAvailable"></button>
                         </div>
                     </div>
                 </div>
@@ -91,6 +91,8 @@
                         </div>
                         <div class="user-card-footer">
                             <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate !=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
+                            <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='published'"></button>
+                            <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 red-btn" (click)="unpublishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='unpublished'"></button>
                             <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="blue-grey-btn mr4" (click)="editExamContent(exam)" *ngIf="exam.editor != null"></button>
                             <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor !=null"></button>
                         </div>
