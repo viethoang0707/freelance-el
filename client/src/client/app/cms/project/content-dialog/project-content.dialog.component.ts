@@ -59,7 +59,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
             data => {
                 if (data["result"]) {
                     this.ngZone.run(()=> {
-                        this.object.url = data["url"];
+                        this.object.file_url = data["url"];
                         this.object.filename = data["filename"];
                     });
                 }
