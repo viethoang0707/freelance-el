@@ -62,7 +62,7 @@ export class ClassManageComponent extends BaseComponent {
 	private viewMode: any;
 	private course: Course;
 	private memberId: number;
-
+	private courseUnits: CourseUnit[];
 	private projects: Project[];
 	private selectedProject: Project;
 	private courseMembers: CourseMember[];
@@ -117,8 +117,8 @@ export class ClassManageComponent extends BaseComponent {
 				this.course = this.lmsProfileService.courseById(courseId);
 				this.classExams = this.lmsProfileService.examsByClass(classId) || [];
 				this.classSurveys = this.lmsProfileService.surveysByClass(classId) || [];
-				this.lmsProfileService.getClassContent(this, classId).subscribe(content=> {
-					this.projects =  content["projects"];
+				this.lmsProfileService.getClassContent(this, classId).subscribe(classContent=> {
+					this.projects =  classContent["projects"];
 					BaseModel.bulk_search(this,
 					CourseMember.__api__listByClass(classId),
 					Certificate.__api__listByClass(classId),
@@ -127,7 +127,10 @@ export class ClassManageComponent extends BaseComponent {
 						this.courseMembers = CourseMember.toArray(jsonArr[0]);
 						this.certificates = Certificate.toArray(jsonArr[1]);
 						this.logs = CourseLog.toArray(jsonArr[2]);
-						this.loadMemberStats(this.logs);
+						this.lmsProfileService.getCourseContent(this, courseId).subscribe(courseContent=> {
+							this.courseUnits = courseContent["units"];
+							this.loadMemberStats(this.logs);
+						});
 					});
 				});
 			});
