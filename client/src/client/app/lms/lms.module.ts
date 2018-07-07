@@ -39,6 +39,7 @@ import { LMSProfileDialog } from './course/lms-profile/lms-profile-dialog.compon
 import { WebcamModule } from 'ngx-webcam';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
+import { ClassMemberActivityDialog } from './class/class-member-activity/class-member-activity.dialog.component';
 
 @NgModule({
     imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,AnalysisModule],
@@ -51,7 +52,7 @@ import { CourseEditComponent } from './course/course-edit/course-edit.component'
     				ExamReportDialog, ExamStatsDialog, ProjectManageDialog, ProjectMarkingDialog,
                     ClassSurveyEnrollDialog, SurveyStatsDialog, SurveyStudyDialog,
                     CourseSearchComponent, CourseRecommendComponent,SurveyListComponent,CourseViewComponent,
-                    CourseEditComponent],
+                    CourseEditComponent, ClassMemberActivityDialog],
 
     exports: [CertificatePrintDialog, ExamStudyDialog, SurveyStudyDialog, AnswerPrintDialog, ExamSubmissionDialog],
     providers: []

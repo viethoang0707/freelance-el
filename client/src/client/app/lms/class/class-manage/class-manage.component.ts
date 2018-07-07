@@ -39,6 +39,7 @@ import { ClassSurveyEnrollDialog } from '../class-survey-enroll/class-survey-enr
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
 import { Conference } from '../../../shared/models/elearning/conference.model';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
+import { ClassMemberActivityDialog } from '../class-member-activity/class-member-activity.dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -86,6 +87,7 @@ export class ClassManageComponent extends BaseComponent {
 	@ViewChild(ClassSurveyEnrollDialog) enrollDialog: ClassSurveyEnrollDialog;
 	@ViewChild(SurveyContentDialog) surveyContentDialog: SurveyContentDialog;
 	@ViewChild(SurveyStatsDialog) statsDialog: SurveyStatsDialog;
+	@ViewChild(ClassMemberActivityDialog) memberActivityChart: ClassMemberActivityDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -132,6 +134,9 @@ export class ClassManageComponent extends BaseComponent {
 		});
 	}
 
+	viewChart(record) {
+		this.memberActivityChart.show(record);
+	}
 
 	viewGradebook() {
 		if (this.selectedRecord)

@@ -82,6 +82,9 @@
                             <th *ngFor="let unit of courseUnits">
                                 {{unit.name}}
                             </th>
+                            <th>
+                                {{'Chart' | translate}}
+                            </th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-record>
@@ -89,6 +92,9 @@
                             <td>{{record.name}}</td>
                             <td>{{record.group_id__DESC__}}</td>
                             <td *ngFor="let unit of courseUnits">{{checkUnitComplete(record,unit)}}</td>
+                            <td>
+                                <button pButton type="button" label="{{'Chart'|translate}}" class="blue-grey-btn" icon="ui-icon-timeline" (click)="viewChart(record)"></button>
+                            </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="summary">
@@ -248,4 +254,5 @@
     <survey-content-dialog></survey-content-dialog>
     <class-survey-enroll-dialog></class-survey-enroll-dialog>
     <survey-stats-dialog></survey-stats-dialog>
+    <class-member-activity-dialog></class-member-activity-dialog>
 </div>

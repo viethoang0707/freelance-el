@@ -86,6 +86,25 @@ export class StatsUtils {
 		});
 	}
 
+	courseMemberStatisticByDate(context: APIContext, memberId: number, courseId: number, startDate: Date, endDate: Date): Observable<any> {
+		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
+		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
+		return CourseLog.search(context, [], "[('member_id','='," + memberId + "),('course_id','='," + courseId + "),('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "'),('res_model','=','etraining.course')]").map(logs => {
+			var dayLengthMills = 1000 * 60 * 60 * 24;
+			var slots = [];
+			var starTimeMillis = startDate.getTime();
+			var endTimeMills = endDate.getTime();
+			for (var i = 0; starTimeMillis + i * dayLengthMills < endTimeMills; i++)
+				slots.push(0);
+			_.each(logs, (log: CourseLog) => {
+				var start = new Date(log.start);
+				var index = Math.floor((start.getTime() - starTimeMillis) / dayLengthMills);
+				slots[index]++;
+			});
+			return slots;
+		});
+	}
+
 	examAnswerStatistics(answers: any[]): any {
 		var multichoiceAnswer = _.filter(answers, ans => {
 			return ans["question_type"] == 'sc' || ans["question_type"] == 'mc';

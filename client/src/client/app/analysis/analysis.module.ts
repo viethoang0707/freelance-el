@@ -32,7 +32,7 @@ import { CompetencyProfileChartComponent } from './chart/competency-profile-char
 import { CompetencyProfileChartContainerComponent } from './chart/competency-profile-chart/competency-profile-chart-container.component';
 import { CompetencyProgressChartComponent } from './chart/competency-progress-chart/competency-progress-chart.component';
 import { CompetencyProgressChartContainerComponent } from './chart/competency-progress-chart/competency-progress-chart-container.component';
-
+import { CourseMemberActivityChartComponent } from './chart/course-member-activity-chart/course-member-activity-chart.component';
 
 @NgModule({
 	imports: [ErpSharedModule, AuthModule],
@@ -63,6 +63,7 @@ import { CompetencyProgressChartContainerComponent } from './chart/competency-pr
 	CompetencyProfileChartContainerComponent,
 	CompetencyProgressChartComponent,
 	CompetencyProgressChartContainerComponent,
+	CourseMemberActivityChartComponent,
 	ReportContainerDirective],
 	entryComponents: [
 		ExamResultReportContainerComponent,
@@ -77,7 +78,8 @@ import { CompetencyProgressChartContainerComponent } from './chart/competency-pr
         CompetencyProfileChartContainerComponent,
         CompetencyProgressChartContainerComponent
     ],
-	exports: [ExamResultReportComponent,SurveyResultStatsReportComponent,ExamResultStatsReportComponent],
+	exports: [ExamResultReportComponent,SurveyResultStatsReportComponent,ExamResultStatsReportComponent,
+	 CourseMemberActivityChartComponent],
 	providers: [DatePipe, TimeConvertPipe]
 })
 export class AnalysisModule {
