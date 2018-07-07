@@ -8,7 +8,7 @@ import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { Http, Response } from '@angular/http';
-import { DEFAULT_DATE_LOCALE, PROJECT_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
+import { DEFAULT_DATE_LOCALE, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
 import {SelectItem, MenuItem} from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -27,12 +27,6 @@ export class ProjectContentDialog extends BaseDialog<Project> {
     constructor(private http: Http, private ngZone: NgZone) {
         super();
         this.locale = DEFAULT_DATE_LOCALE;
-        this.projectStatus = _.map(PROJECT_STATUS, (val, key)=> {
-            return {
-                label: this.translateService.instant(val),
-                value: key
-            }
-        });
     }
 
     ngOnInit() {
