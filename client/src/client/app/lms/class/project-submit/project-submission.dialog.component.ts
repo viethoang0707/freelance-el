@@ -62,7 +62,12 @@ export class ProjectSubmissionDialog extends BaseComponent {
         }
     }
 
-    changeFile(file) {
+    changeFile(event: any) {
+        let file = event.files[0];
+        this.uploadFile(file);
+    }
+
+    uploadFile(file) {
         this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
             data => {
                 if (data["result"]) {

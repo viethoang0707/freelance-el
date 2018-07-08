@@ -44,7 +44,6 @@ export class ExamStudyDialog extends BaseComponent {
 	private sheet: QuestionSheet;
 	private qIndex: number;
 	private examQuestions: ExamQuestion[];
-	private questions: Question[];
 	private answers: Answer[];
 	private submission: Submission;
 	private timer: any;
@@ -69,7 +68,6 @@ export class ExamStudyDialog extends BaseComponent {
 		this.display = false;
 		this.examQuestions = [];
 		this.answers = [];
-		this.questions = [];
 		this.exam = new Exam();
 		this.sheet = new QuestionSheet();
 		this.currentQuestion = new ExamQuestion();
@@ -139,7 +137,7 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	updateStats() {
-		this.stats.total = this.questions.length;
+		this.stats.total = this.examQuestions.length;
 		var validAnswers = _.filter(this.answers, (ans: any) => {
 			return ans.option_id != "" && ans.option_id != "0";
 		});
