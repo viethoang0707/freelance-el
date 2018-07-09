@@ -51,14 +51,17 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
 
 
     export() {
-        var header = [
-            this.translateService.instant('Question'),
-            this.translateService.instant('Option'),
-            this.translateService.instant('Percentage'),
-
-        ]
-        this.excelService.exportAsExcelFile(header.concat(this.records), 'answer_statis');
-    }
+        var output = _.map(this.records, (record) => {
+            var row = {};
+            row["Qiestion"] = record["title"] +"/" + record["content"];
+            row["Options"] = ""
+            _.each(record["options"], option => {
+                row["Options"] += this.getRatePercentage(option)+";"
+            });
+            return row;
+        });
+        this.excelService.exportAsExcelFile(output, 'exam_member_result_report');
+   }
 
     clear() {
         this.records = [];
@@ -69,7 +72,7 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
         this.clear();
         SurveySheet.get(this, survey.sheet_id).subscribe(sheet => {
             SurveyAnswer.listBySurvey(this, survey.id).subscribe(answers => {
-                var statistics = this.statsUtils.examAnswerStatistics(answers);
+                var statistics = this.statsUtils.surveyAnswerStatistics(answers);
                 this.optionPercentage = statistics['multichoice'];
                 this.ratingPercentage = statistics['rating'];
                 this.openAnswers = statistics['open'];
@@ -103,14 +106,6 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
     getRatePercentage(question) {
         if (this.ratingPercentage[question.id])
             return this.ratingPercentage[question.id]
-        else
-            return 0;
-    }
-
-
-    getCheckPercentage(option) {
-        if (this.optionPercentage[option.id])
-            return this.optionPercentage[option.id]
         else
             return 0;
     }

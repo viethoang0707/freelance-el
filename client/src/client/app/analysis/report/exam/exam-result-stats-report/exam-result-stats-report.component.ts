@@ -48,13 +48,17 @@ export class ExamResultStatsReportComponent extends BaseComponent{
     }
 
     export() {
-    	var header = [
-            this.translateService.instant('Question'),
-            this.translateService.instant('Option'),
-            this.translateService.instant('Percentage'),
-        ]
-        this.excelService.exportAsExcelFile(header.concat(this.records),'answer_statis');
-    }
+        var output = _.map(this.records, (record) => {
+            var row = {};
+            row["Qiestion"] = record["title"] +"/" + record["content"];
+            row["Options"] = ""
+            _.each(record["options"], option => {
+                row["Options"] += this.getCheckPercentage(option)+";"
+            });
+            return row;
+        });
+        this.excelService.exportAsExcelFile(output, 'exam_member_result_report');
+   }
 
     clear() {
         this.records = [];

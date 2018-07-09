@@ -11,7 +11,7 @@
                 <button pButton type="button " label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer" (click)="showExamStats()"></button>
             </div>
         </p-toolbar>
-        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMember" [responsive]="true" *ngIf="exam.status=='closed'">
+        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
             <!--  sortField="role" -->
             <ng-template pTemplate="header">
                 <tr>

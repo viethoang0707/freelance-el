@@ -54,7 +54,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-member>
-        <tr [pSelectableRow]="record" *ngVar="getProjectSubmit(member) as projectSubmit">
+        <tr [pSelectableRow]="member" *ngVar="getProjectSubmit(member) as projectSubmit">
           <td>{{member.name}}</td>
           <td>{{member.group_id__DESC__}}</td>
            <td class="showformb">{{projectSubmit.date_submit | date : "dd/MM/yyyy, h:mm a"}}</td>

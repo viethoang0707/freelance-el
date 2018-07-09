@@ -245,7 +245,9 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	manageExam() {
-		this.router.navigate(['/lms/exams/manage', this.selectedClassExam.id, this.memberId]);
+		var supervisor = this.lmsProfileService.getExamMemberByRole('supervisor',this.selectedClassExam.id );
+		if (supervisor)
+			this.router.navigate(['/lms/exams/manage', this.selectedClassExam.id, supervisor.id]);
 	}
 
 	editExamContent() {

@@ -158,6 +158,8 @@ export class StatsUtils {
 				questionAttempts[ans["question_id"]]++;
 			if (!ratingPercentage[ans["question_id"]])
 				ratingPercentage[ans["question_id"]] = 0;
+			else
+				ratingPercentage[ans["question_id"]]++;
 			if (ans.text)
 				ratingPercentage[ans["question_id"]] += +ans.text;
 		});
