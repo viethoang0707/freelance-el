@@ -39,16 +39,6 @@ export class Question extends BaseModel{
     max_rating: number;
     options: QuestionOption[];
 
-    static __api__createWithOption(question:Question, options:QuestionOption[]): CreateAPI {
-        question.options =  options;
-        return new CreateAPI(Question.Model, question);
-    }
-
-    static createWithOption(context: APIContext, question:Question, options:QuestionOption[]):Observable<any> {
-        question.options =  options;
-        return question.save(context);
-    }
-
     static __api__listByGroup(groupId: number): SearchReadAPI {
         return new SearchReadAPI(Question.Model, [],"[('group_id','=',"+groupId+")]");
     }

@@ -57,7 +57,9 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 			var newOptions = _.filter(this.options, (option:QuestionOption)=> {
 				return option.IsNew;
 			});
-			return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.createArray(this, newOptions));
+			if (existOptions.length || newOptions.length)
+				return Observable.forkJoin(QuestionOption.updateArray(this, existOptions),QuestionOption.createArray(this, newOptions));
+			return Observable.of(null);
 		});
 	}
 

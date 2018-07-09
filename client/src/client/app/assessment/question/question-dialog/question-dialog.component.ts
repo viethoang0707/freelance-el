@@ -77,8 +77,10 @@ export class QuestionDialog extends BaseDialog<Question>  {
 		})
 	}
 
-	saveQuestion() {
-		(<IQuestion>this.componentRef.instance).saveEditor();
+	save() {
+		(<IQuestion>this.componentRef.instance).saveEditor().subscribe(()=> {
+			this.hide();
+		});
 	}
 }
 
