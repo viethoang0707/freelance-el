@@ -118,7 +118,7 @@ export class LMSProfileService {
           return isFinite(parseInt(member.conference_id + "")) && member.conference_status == 'open' && member.is_active;
         });
         this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
-          return isFinite(parseInt(member.survey_id + "")) && member.role=='supervisor' && member.survey_review_state =='approved';
+          return isFinite(parseInt(member.survey_id + ""))  && member.survey_review_state =='approved';
         });
         this.myCertificates = Certificate.toArray(jsonArray[4]);
         if (this.myCourseMembers.length == 0 && this.myExamMembers.length == 0
