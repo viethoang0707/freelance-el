@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
 import { ModelAPIService } from '../../../../shared/services/api/model-api.service';
@@ -16,7 +16,7 @@ import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, C
 import { Report } from '../../report.decorator';
 import { SelectGroupDialog } from '../../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
-import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
+import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { Group } from '../../../../shared/models/elearning/group.model';
 import { ExamQuestion } from '../../../../shared/models/elearning/exam-question.model';
@@ -35,64 +35,66 @@ import { BaseModel } from '../../../../shared/models/base.model';
     selector: 'exam-result-stats-report',
     templateUrl: 'exam-result-stats-report.component.html',
 })
-export class ExamResultStatsReportComponent extends BaseComponent{
+export class ExamResultStatsReportComponent extends BaseComponent {
 
     private records: any;
     private statsUtils: StatsUtils;
     private optionPercentage: any;
 
-    constructor( private excelService: ExcelService, private datePipe: DatePipe) {
+    constructor(private excelService: ExcelService, private datePipe: DatePipe) {
         super();
         this.optionPercentage = {};
-        this.statsUtils =  new StatsUtils();
+        this.statsUtils = new StatsUtils();
     }
 
     export() {
         var output = _.map(this.records, (record) => {
             var row = {};
-            row["Qiestion"] = record["title"] +"/" + record["content"];
-            row["Options"] = ""
-            _.each(record["options"], option => {
-                row["Options"] += this.getCheckPercentage(option)+";"
+            row["Question"] = this.strip(record["content"]);
+            row["Options"] = "";
+            row["Options Percentages"] = "";
+            _.each(record["options"], (option: any) => {
+                row["Options Percentages"] += Math.round(this.getCheckPercentage(option) * 100) / 100 + "| ";
+                row["Options"] += option.content + "| ";
             });
             return row;
         });
         this.excelService.exportAsExcelFile(output, 'exam_member_result_report');
-   }
+    }
 
     clear() {
         this.records = [];
         this.optionPercentage = {};
     }
 
-    render(exam:Exam) {
+    render(exam: Exam) {
         this.clear();
         BaseModel
-        .bulk_search(this,
-            QuestionSheet.__api__byExam(exam.id),
-            Answer.__api__listByExam(exam.id))
-        .subscribe(jsonArr=> {
-            var sheets = QuestionSheet.toArray(jsonArr[0]);
-            var answers = Answer.toArray(jsonArr[1]);
-            var statistics = this.statsUtils.examAnswerStatistics(answers);
-            this.optionPercentage = statistics['multichoice'];
-            ExamQuestion.listBySheet(this, sheets[0].id).subscribe(examQuestions=> {
-                var apiList = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
-                    return QuestionOption.__api__listByQuestion(examQuestion.question_id)
-                });
-                BaseModel.bulk_search(this, ...apiList)
-                    .map(jsonArr=> _.flatten(jsonArr))
-                    .subscribe(jsonArr => {
-                        var options = QuestionOption.toArray(jsonArr);
-                        _.each(examQuestions, (examQuestion: ExamQuestion)=> {
-                            examQuestion["options"] = _.filter(options, (opt:QuestionOption)=> {
-                                return opt.question_id == examQuestion.question_id;
-                            });
-                        });
-                        this.records =  examQuestions;
+            .bulk_search(this,
+                QuestionSheet.__api__byExam(exam.id),
+                Answer.__api__listByExam(exam.id))
+            .subscribe(jsonArr => {
+                var sheets = QuestionSheet.toArray(jsonArr[0]);
+                var answers = Answer.toArray(jsonArr[1]);
+                var statistics = this.statsUtils.examAnswerStatistics(answers);
+                this.optionPercentage = statistics['multichoice'];
+                ExamQuestion.listBySheet(this, sheets[0].id).subscribe(examQuestions => {
+                    var apiList = _.map(examQuestions, (examQuestion: ExamQuestion) => {
+                        return QuestionOption.__api__listByQuestion(examQuestion.question_id)
                     });
+                    BaseModel.bulk_search(this, ...apiList)
+                        .map(jsonArr => _.flatten(jsonArr))
+                        .subscribe(jsonArr => {
+                            var options = QuestionOption.toArray(jsonArr);
+                            _.each(examQuestions, (examQuestion: ExamQuestion) => {
+                                examQuestion["options"] = _.filter(options, (opt: QuestionOption) => {
+                                    return opt.question_id == examQuestion.question_id;
+                                });
+                            });
+                            this.records = examQuestions;
+                        });
+                });
             });
-        });
     }
 
 
@@ -103,4 +105,10 @@ export class ExamResultStatsReportComponent extends BaseComponent{
             return 0;
     }
 
+
+    strip(html) {
+        var tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }
 }
