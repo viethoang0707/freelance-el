@@ -246,7 +246,8 @@ export class ClassManageComponent extends BaseComponent {
 
 	manageExam() {
 		var supervisor = this.lmsProfileService.getExamMemberByRole('supervisor',this.selectedClassExam.id );
-		if (supervisor)
+		var teacher = this.lmsProfileService.getExamMemberByRole('teacher',this.selectedClassExam.id );
+		if (supervisor || teacher)
 			this.router.navigate(['/lms/exams/manage', this.selectedClassExam.id, supervisor.id]);
 	}
 

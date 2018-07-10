@@ -62,6 +62,9 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.survey.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
+			SurveyMember.listBySurvey(this, this.survey.id).subscribe(members=> {
+				this.surveyMembers = members;
+			});
 		});
 	}
 
@@ -79,9 +82,6 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 			this.survey.open(this).subscribe(() => {
 				this.survey.status = 'open';
 				this.success('Survey open');
-				SurveyMember.listBySurvey(this, this.survey.id).subscribe(members=> {
-					this.surveyMembers = members;
-				})
 			});
 		});
 	}

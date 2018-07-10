@@ -19,6 +19,7 @@ import { SelectUsersDialog } from '../../../../shared/components/select-user-dia
 import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { BaseModel } from '../../../../shared/models/base.model';
+import { ExamRecord } from '../../../../shared/models/elearning/exam-record.model';
 
 
 @Component({
@@ -60,48 +61,39 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         BaseModel
             .bulk_search(this,
                 ExamMember.__api__listCandidateByExam(exam.id),
-                ExamGrade.__api__listByExam(exam.id),
-                Submission.__api__listByExam(exam.id),
+                ExamRecord.__api__listByExam(exam.id),
                 ExamLog.__api__listByExam(exam.id))
             .subscribe(jsonArr => {
                 var members = ExamMember.toArray(jsonArr[0]);
-                var grades = ExamGrade.toArray(jsonArr[1]);
-                var submits = Submission.toArray(jsonArr[2]);
-                var logs = ExamLog.toArray(jsonArr[3]);
-                this.records = this.generateReport(exam, grades, submits, logs, members);
+                var records = ExamRecord.toArray(jsonArr[1]);
+                var logs = ExamLog.toArray(jsonArr[2]);
+                this.records = this.generateReport(exam, records, logs, members);
             })
     }
 
 
-    generateReport(exam: Exam, grades: ExamGrade[], submits: Submission[], logs: ExamLog[], members: ExamMember[]) {
+    generateReport(exam: Exam, records: ExamRecord[], logs: ExamLog[], members: ExamMember[]) {
         var rows = [];
         _.each(members, (member: ExamMember) => {
             var userLogs = _.filter(logs, (log: ExamLog) => {
                 return log.user_id == member.user_id;
             });
-            var submit = _.find(submits, (obj: Submission) => {
+            var examRecord = _.find(records, (obj: ExamRecord) => {
                 return obj.member_id == member.id;
             });
-            rows.push(this.generateReportRow(exam, grades, member, submit, userLogs));
+            rows.push(this.generateReportRow(exam, member, examRecord, userLogs));
         });
         return rows;
     }
 
-    generateReportRow(exam: Exam, grades: ExamGrade[], member: ExamMember, submit: Submission, logs: ExamLog[]): any {
+    generateReportRow(exam: Exam, member: ExamMember, examRecord: ExamRecord, logs: ExamLog[]): any {
         var record = {};
         record["user_login"] = member.login;
         record["user_name"] = member.name;
         record["user_group"] = member.group_id__DESC__;
-        if (submit) {
-            record["score"] = submit.score;
-            var grade = _.find(grades, (obj) => {
-                return obj.min_score <= record["score"] && obj.max_score >= record["score"]
-            });
-            if (record["score"] == "") {
-                record["score"] = 0;
-            }
-            if (grade)
-                record["grade"] = grade.name;
+        if (examRecord) {
+            record["score"] = examRecord.score;
+            record["grade"] = examRecord.grade;
         }
         if (logs && logs.length) {
             var result = this.reportUtils.analyzeExamMemberActivity(logs);

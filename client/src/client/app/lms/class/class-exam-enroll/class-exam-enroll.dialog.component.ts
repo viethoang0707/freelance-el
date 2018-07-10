@@ -60,6 +60,9 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	enrollAll() {
 		var userIds = _.pluck(this.courseMembers,'user_id');
 		this.exam.enroll(this, userIds).subscribe(() => {
+			ExamMember.listByExam(this, this.exam.id).subscribe(members=> {
+					this.examMembers = members;
+				})
 			this.info('Register all successfully');
 		});
 	}
@@ -78,6 +81,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	closeExam() {
         this.confirm('Are you sure to proceed ?', ()=> {
             this.exam.close(this).subscribe(() => {
+            	this.exam.status =  'closed';
                 this.success('Exam close');
             });
         });
@@ -86,9 +90,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
     openExam() {
         this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', ()=> {
             this.exam.open(this).subscribe(() => {
-            	ExamMember.listByExam(this, this.exam.id).subscribe(members=> {
-					this.examMembers = members;
-				})
+            	this.exam.status =  'open';
                 this.success('Exam open');
             });
         });
