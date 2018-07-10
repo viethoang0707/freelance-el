@@ -126,7 +126,7 @@ export class GradebookDialog extends BaseComponent {
                 BaseModel.bulk_search(this,
                 Certificate.__api__listByMember(this.member.id),
                 ProjectSubmission.__api__listByMember(this.member.id),
-                ExamRecord.__api__listByMember(this.member.id))
+                ExamRecord.__api__listByCourseMember(this.member.id))
                 .subscribe(jsonArr => {
                     var certificates = Certificate.toArray(jsonArr[0]);
                     if (certificates.length)

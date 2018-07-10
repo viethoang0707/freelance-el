@@ -19,11 +19,13 @@ export class ExamRecord extends BaseModel{
         this.submission_id =  undefined;
         this.class_id =  undefined;
         this.exam_id =  undefined;
+        this.course_member_id = undefined;
 	}
 
     score: number;
     grade: string;
     member_id: number;
+    course_member_id: number;
     user_id: number;
     exam_id: number;
     class_id: number;
@@ -39,6 +41,14 @@ export class ExamRecord extends BaseModel{
 
     static __api__listByMember(memberId: number): SearchReadAPI {
         return new SearchReadAPI(ExamRecord.Model, [],"[('member_id','=',"+memberId+")]");
+    }
+
+    static listByCourseMember(context: APIContext, memberId: number): Observable<any[]> {
+        return ExamRecord.search(context, [], "[('course_member_id','='," + memberId + ")]");
+    }
+
+    static __api__listByCourseMember(memberId: number): SearchReadAPI {
+        return new SearchReadAPI(ExamRecord.Model, [],"[('course_member_id','=',"+memberId+")]");
     }
 
     static listByMember(context: APIContext, memberId: number): Observable<any[]> {
