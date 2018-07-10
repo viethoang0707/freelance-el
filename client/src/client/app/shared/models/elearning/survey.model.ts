@@ -72,18 +72,18 @@ export class Survey extends BaseModel{
         return Survey.search(context,[],"[('is_public','=',True)]");
     }
 
-    static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved')]");
+    static __api__allForEnrollPublic(): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
-    static allForEnroll(context:APIContext):Observable<any> {
+    static allForEnrollPublic(context:APIContext):Observable<any> {
         if (Cache.hit(Survey.Model))
             return Observable.of(Cache.load(Survey.Model)).map(surveys=> {
                 return _.filter(surveys, (survey:Survey)=> {
-                    return survey.review_state == 'approved' ;
+                    return survey.review_state == 'approved' && survey.is_public;
                 });
             });
-        return Survey.search(context,[],"[('review_state','=','approved')]");
+        return Survey.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]]");
     }
 
     static __api__listByClass(classId: number): SearchReadAPI {
@@ -127,4 +127,12 @@ export class Survey extends BaseModel{
             context.authService.LoginToken);
     }
 
+    __api__enroll_supervior(examId: number, userIds: number[]): SearchReadAPI {
+        return new ExecuteAPI(Survey.Model, 'enroll_supervisor',{userIds:userIds, examId:examId}, null);
+    }
+
+    enrollSupervisor(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll_supervior(this.id, userIds), 
+            context.authService.LoginToken);
+    }
 }

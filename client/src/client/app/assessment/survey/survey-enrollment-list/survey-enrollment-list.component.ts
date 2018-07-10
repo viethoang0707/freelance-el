@@ -55,7 +55,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Survey.allForEnroll(this).subscribe(surveys => {
+        Survey.allForEnrollPublic(this).subscribe(surveys => {
             this.surveys = surveys;
         })
     }
@@ -69,6 +69,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             }
             this.confirm('Are you sure to proceed ?', () => {
                 this.selectedSurvey.close(this).subscribe(() => {
+                    this.selectedSurvey.status = 'closed';
                     this.success('Survey close');
                 });
             });
@@ -83,6 +84,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             }
             this.confirm('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened', () => {
                 this.selectedSurvey.open(this).subscribe(() => {
+                    this.selectedSurvey.status = 'open';
                     this.success('Survey open');
                 });
             });

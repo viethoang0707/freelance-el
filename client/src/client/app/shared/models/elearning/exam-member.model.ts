@@ -10,6 +10,7 @@ import * as _ from 'underscore';
 import { Cache } from '../../helpers/cache.utils';
 import { ListAPI } from '../../services/api/list.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
+import { ExecuteAPI } from '../../services/api/execute.api';
 
 @Model('etraining.exam_member')
 export class ExamMember extends BaseModel{
@@ -129,6 +130,15 @@ export class ExamMember extends BaseModel{
 
     static examSupervisor(context: APIContext, examId: number): Observable<any> {
         return ExamMember.single(context, [], "[('role','=','supervisor'),('exam_id','='," + examId + ")]");
+    }
+
+    __api__submit_score(memberId: number): ExecuteAPI {
+        return new ExecuteAPI(Exam.Model, 'submit_score',{memberId:memberId}, null);
+    }
+
+    submitScore(context:APIContext):Observable<any> {
+        return context.apiService.execute(this.__api__submit_score(this.id), 
+            context.authService.LoginToken);
     }
 
 

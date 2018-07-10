@@ -59,23 +59,15 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
-            })
+            });
         });
     }
 
     addSupervisor() {
         this.usersDialog.show();
         this.usersDialog.onSelectUsers.first().subscribe(users => {
-            var members = _.map(users, (user: User) => {
-                var member = new ExamMember();
-                member.role = 'supervisor';
-                member.exam_id = this.exam.id;
-                member.user_id = user.id;
-                member.date_register = new Date();
-                member.status = 'active';
-                return member;
-            });
-            ExamMember.createArray(this, members).subscribe(() => {
+            var userIds = _.pluck(users, 'id');
+            this.exam.enrollSupervisor(this, userIds).subscribe(() => {
                 this.loadMembers();
             });
         });

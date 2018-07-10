@@ -10,6 +10,8 @@ import { GroupListComponent } from '../shared/components/group-list/group-list.c
 import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
 import { QuestionSheetListComponent } from './question/question-sheet-list/question-sheet-list.component';
 import { ExamEnrollmentListComponent } from './exam/exam-enrollment-list/exam-enrollment-list.component';
+import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/survey-enrollment-list.component';
+import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 
 export const AssessmentRoutes: Routes = [
   {
@@ -22,10 +24,38 @@ export const AssessmentRoutes: Routes = [
     children:
     [
       {
+        path: "exams",
+        component: ExamListComponent,
+        data: {
+          breadcrumb: 'Exams'
+        }
+      },
+      {
+        path: "exam-enrollments",
+        component: ExamEnrollmentListComponent,
+        data: {
+          breadcrumb: 'Exam enrollments'
+        }
+      },
+      {
         path: "question-sheets",
         component: QuestionSheetListComponent,
         data: {
           breadcrumb: 'Question sheets'
+        }
+      },
+      {
+        path: "surveys",
+        component: SurveyListComponent,
+        data: {
+          breadcrumb: 'Surveys'
+        }
+      },
+      {
+        path: "survey-enrollments",
+        component: SurveyEnrollmentListComponent,
+        data: {
+          breadcrumb: 'Survey enrollment'
         }
       },
       {
@@ -40,13 +70,6 @@ export const AssessmentRoutes: Routes = [
         component: QuestionListComponent,
         data: {
           breadcrumb: 'Questions'
-        }
-      },
-      {
-        path: "question-sheets",
-        component: QuestionSheetListComponent,
-        data: {
-          breadcrumb: 'Question sheets'
         }
       },
       {

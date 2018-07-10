@@ -101,18 +101,18 @@ export class Exam extends BaseModel{
         return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"')]");
     }
 
-    static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved')]");
+    static __api__allForEnrollPublic(): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
-    static allForEnroll(context:APIContext):Observable<any> {
+    static allForEnrollPublic(context:APIContext):Observable<any> {
         if (Cache.hit(Exam.Model))
             return Observable.of(Cache.load(Exam.Model)).map(exams=> {
                 return _.filter(exams, (exam:Exam)=> {
-                    return exam.review_state == 'approved' ;
+                    return exam.review_state == 'approved'  && exam.is_public;
                 });
             });
-        return Exam.search(context,[],"[('review_state','=','approved')]");
+        return Exam.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]]");
     }
 
     __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
@@ -193,6 +193,15 @@ export class Exam extends BaseModel{
 
     close(context:APIContext):Observable<any> {
         return context.apiService.execute(this.__api__close(this.id), 
+            context.authService.LoginToken);
+    }
+
+    __api__enroll_supervior(examId: number, userIds: number[]): SearchReadAPI {
+        return new ExecuteAPI(Exam.Model, 'enroll_supervisor',{userIds:userIds, examId:examId}, null);
+    }
+
+    enrollSupervisor(context:APIContext, userIds: number[]):Observable<any> {
+        return context.apiService.execute(this.__api__enroll_supervior(this.id, userIds), 
             context.authService.LoginToken);
     }
 }

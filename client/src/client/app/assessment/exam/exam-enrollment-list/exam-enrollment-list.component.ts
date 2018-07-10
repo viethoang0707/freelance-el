@@ -51,7 +51,7 @@ export class ExamEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Exam.allForEnroll(this).subscribe(exams=> {
+        Exam.allForEnrollPublic(this).subscribe(exams=> {
             this.exams =  exams;
         });
     }
@@ -62,8 +62,9 @@ export class ExamEnrollmentListComponent extends BaseComponent {
                 this.error('You do not have close permission for this exam');
                 return;
             }
-            this.confirm('Are you sure to proceed ?', ()=> {
+            this.confirm('Are you sure to proceed ?  You will not be able to enroll students after the exam is closed', ()=> {
                 this.selectedExam.close(this).subscribe(() => {
+                    this.selectedExam.status = 'closed';
                     this.success('Exam close');
                 });
             });
@@ -76,8 +77,9 @@ export class ExamEnrollmentListComponent extends BaseComponent {
                 this.error('You do not have open permission for this exam');
                 return;
             }
-            this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', ()=> {
+            this.confirm('Are you sure to proceed ?', ()=> {
                 this.selectedExam.open(this).subscribe(() => {
+                    this.selectedExam.status = 'open';
                     this.success('Exam open');
                 });
             });

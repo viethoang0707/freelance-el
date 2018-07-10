@@ -1,5 +1,5 @@
-import { Component, OnInit, Input,ViewChild} from '@angular/core';
-import { Observable}     from 'rxjs/Observable';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -10,7 +10,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { Http, Response } from '@angular/http';
 import { DEFAULT_DATE_LOCALE, SURVEY_STATUS, EXAM_MEMBER_ROLE, SURVEY_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
-import {SelectItem, MenuItem} from 'primeng/api';
+import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -22,22 +22,22 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class SurveyEnrollDialog extends BaseComponent {
 
-    SURVEY_STATUS =  SURVEY_STATUS;
-    SURVEY_MEMBER_ENROLL_STATUS =  SURVEY_MEMBER_ENROLL_STATUS;
+    SURVEY_STATUS = SURVEY_STATUS;
+    SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
 
     private display: boolean;
 	private survey: Survey;
     private members: SurveyMember[];
     private selectedMembers: any;
-    
-    
+
+
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
-	
+
 	constructor() {
 		super();
 	}
 
-	enroll(survey:Survey) {
+	enroll(survey: Survey) {
 		this.display = true;
 		this.survey = survey;
         this.selectedMembers = [];
@@ -49,18 +49,12 @@ export class SurveyEnrollDialog extends BaseComponent {
 	}
 
 
-	 addMember() {
+
+    addMember() {
         this.usersDialog.show();
         this.usersDialog.onSelectUsers.first().subscribe(users => {
-            var members = _.map(users, (user:User)=> {
-                var member = new SurveyMember();
-                member.role = 'candidate';
-                member.survey_id = this.survey.id;
-                member.user_id = user.id;
-                member.date_register =  new Date();
-                return member;
-            });
-            SurveyMember.createArray(this, members).subscribe(()=> {
+            var userIds = _.pluck(users, 'id');
+            this.survey.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
             });
         });
@@ -69,7 +63,7 @@ export class SurveyEnrollDialog extends BaseComponent {
     deleteMember(members) {
         if (members && members.length)
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                SurveyMember.deleteArray(this, members).subscribe(()=> {
+                SurveyMember.deleteArray(this, members).subscribe(() => {
                     this.selectedMembers = [];
                     this.loadMembers();
                 });
@@ -78,7 +72,7 @@ export class SurveyEnrollDialog extends BaseComponent {
 
     loadMembers() {
         SurveyMember.listBySurvey(this, this.survey.id).subscribe(members => {
-             this.members = members;
+            this.members = members;
         });
     }
 }

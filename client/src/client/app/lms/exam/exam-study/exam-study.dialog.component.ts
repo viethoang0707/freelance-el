@@ -161,13 +161,13 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	finishExam() {
-		this.member.enroll_status = 'completed';
 		this.submission.end = new Date();
-		this.submission.score = _.reduce(this.answers, (sum, ans) => { return sum + (+ans.score); }, 0);
-		BaseModel.bulk_update(this, this.member.__api__update(), this.submission.__api__update()).subscribe(() => {
-			ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe();
-			this.timeLeft = 0;
-			this.hide();
+		this.submission.save(this).subscribe(()=> {
+			this.member.submitScore(this).subscribe(()=> {
+				ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe();
+				this.timeLeft = 0;
+				this.hide();
+			});
 		});
 	}
 
