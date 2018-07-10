@@ -43,6 +43,7 @@ export class ExamDialog extends BaseDialog<Exam> {
     ngOnInit() {
         this.onShow.subscribe(object => {
             if (object.IsNew)  {
+                this.editor =  new ExamMember();
                 object.supervisor_id = this.ContextUser.id;
                 object.review_state = this.ContextUser.IsSuperAdmin ?'approved':'initial';
             } else {
