@@ -1,12 +1,13 @@
-<p-dialog header="{{'Exam'|translate}}" [(visible)]="display" modal="false" [responsive]="true" appendTo="body"   [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 exam-dialog">
+<p-dialog header="{{'Exam'|translate}}" [(visible)]="display" modal="false" [responsive]="true" appendTo="body" [height]="WINDOW_HEIGHT"
+    positionLeft="0" positionTop="0" styleClass="ui-g-12 exam-dialog">
     <div class="spinner" [hidden]="!loading"></div>
     <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
         <p-scrollPanel [style]="{width: '100%', height: '80vh'}">
-            <div class="ui-g ui-fluid form-group">
+            <div class="ui-g ui-fluid form-group pt30">
                 <div class="ui-g-4">
                     <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
-            <label>{{'Name'|translate}}</label>
+                        <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
+                        <label>{{'Name'|translate}}</label>
                     </span>
                     <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
                         <div *ngIf="name.errors.required">
@@ -16,9 +17,9 @@
                 </div>
                 <div class="ui-g-2">
                     <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
-              <label>{{'Duration (in minutes)'|translate}}</label>
-          </span>
+                        <input type="text" pInputText [(ngModel)]="object.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
+                        <label>{{'Duration (in minutes)'|translate}}</label>
+                    </span>
                     <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="ui-message ui-messages-error ui-corner-all">
                         <div *ngIf="duration.errors.required">
                             {{'Duration is required' | translate}}
@@ -27,9 +28,9 @@
                 </div>
                 <div class="ui-g-6">
                     <span class="md-inputfield">
-            <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
-            <label>{{'Summary'|translate}}</label>
-          </span>
+                        <input type="text" pInputText [(ngModel)]="object.summary" name="summary">
+                        <label>{{'Summary'|translate}}</label>
+                    </span>
                 </div>
                 <div class="ui-g-12">
                     <div class="ui-g-8">
@@ -38,30 +39,38 @@
                         </p-editor>
                     </div>
                     <div class="ui-g-4">
-                        <div class="ui-g-12"> <span (click)="selectEditor()">{{'Editor' |translate}}: {{editor.name}}<i class="material-icons">eject</i></span>
+                        <div class="ui-g-12">
+                            <span (click)="selectEditor()">{{'Editor' |translate}}: {{editor.name}}
+                                <i class="material-icons">eject</i>
+                            </span>
                         </div>
-                        <div class="ui-g-12"> <span (click)="selectCompetencyLevel()">{{'Competency level' |translate}}: {{object.competency_level_name}}<i class="material-icons">eject</i></span>
+                        <div class="ui-g-12">
+                            <span (click)="selectCompetencyLevel()">{{'Competency level' |translate}}: {{object.competency_level_name}}
+                                <i class="material-icons">eject</i>
+                            </span>
                         </div>
                     </div>
                 </div>
-            <div class="ui-g-6">
-                <label>{{'Start'|translate}}</label>
-                <p-calendar [(ngModel)]="object.start" showTime="true" hourFormat="24" #start="ngModel" name="start" required="true" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
-                <div *ngIf="start.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
-                    <div *ngIf="start.errors.required">
-                        {{'Exam start time is required' | translate}}
+                <div class="ui-g-6">
+                    <label>{{'Start'|translate}}</label>
+                    <p-calendar [(ngModel)]="object.start" showTime="true" hourFormat="24" #start="ngModel" name="start" required="true" dateFormat="dd/mm/yy"
+                        [showIcon]="true"></p-calendar>
+                    <div *ngIf="start.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+                        <div *ngIf="start.errors.required">
+                            {{'Exam start time is required' | translate}}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="ui-g-6">
-                <label>{{'End'|translate}}</label>
-                <p-calendar [(ngModel)]="object.end" showTime="true" hourFormat="24" #end="ngModel" name="end" required="true" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
-                <div *ngIf="end.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
-                    <div *ngIf="end.errors.required">
-                        {{'Exam end time is required' | translate}}
+                <div class="ui-g-6">
+                    <label>{{'End'|translate}}</label>
+                    <p-calendar [(ngModel)]="object.end" showTime="true" hourFormat="24" #end="ngModel" name="end" required="true" dateFormat="dd/mm/yy"
+                        [showIcon]="true"></p-calendar>
+                    <div *ngIf="end.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+                        <div *ngIf="end.errors.required">
+                            {{'Exam end time is required' | translate}}
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
         </p-scrollPanel>
     </form>
