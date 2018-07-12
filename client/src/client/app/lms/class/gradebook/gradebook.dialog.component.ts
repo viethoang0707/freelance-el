@@ -95,8 +95,8 @@ export class GradebookDialog extends BaseComponent {
     }
 
     issueCertificate() {
-        if (this.member.enroll_status != 'completed') {
-            this.error('This member has not completed the course');
+        if (this.member.enroll_status == 'completed') {
+            this.error('This member already completed the course');
             return;
         }
         var certificate = new Certificate();
@@ -107,6 +107,7 @@ export class GradebookDialog extends BaseComponent {
         this.certDialog.onCreateComplete.subscribe((obj: Certificate) => {
             this.certificate = obj;
             this.member.completeCourse(this, certificate.id).subscribe(() => {
+                this.member.enroll_status = 'completed';
                 this.success('Congratulations! You have completed the course.');
             })
         });
