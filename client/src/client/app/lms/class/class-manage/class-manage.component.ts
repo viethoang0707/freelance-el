@@ -231,8 +231,10 @@ export class ClassManageComponent extends BaseComponent {
 		exam.course_class_id = this.courseClass.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.subscribe(() => {
-			this.lmsProfileService.addExam(exam);
-			this.classExams = this.lmsProfileService.examsByClass(this.courseClass.id) || [];
+			this.lmsProfileService.addExam(exam).subscribe(()=> {
+				this.classExams = this.lmsProfileService.examsByClass(this.courseClass.id) || [];
+			});
+			
 		});
 	}
 
@@ -267,8 +269,9 @@ export class ClassManageComponent extends BaseComponent {
 		survey.course_class_id = this.courseClass.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.subscribe(() => {
-			this.lmsProfileService.addSurvey(survey);
-			this.classSurveys = this.lmsProfileService.surveysByClass(this.courseClass.id) || [];
+			this.lmsProfileService.addSurvey(survey).subscribe(()=> {
+				this.classSurveys = this.lmsProfileService.surveysByClass(this.courseClass.id) || [];	
+			});
 		});
 	}
 
