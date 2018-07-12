@@ -83,7 +83,7 @@ export class Survey extends BaseModel{
                     return survey.review_state == 'approved' && survey.is_public;
                 });
             });
-        return Survey.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]]");
+        return Survey.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
     static __api__listByClass(classId: number): SearchReadAPI {
