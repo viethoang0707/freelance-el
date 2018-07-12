@@ -12,7 +12,7 @@
         <div class="card course-study-unit">
           <div class="image-box-content">
             <div class="fLeft">
-              <h3 class="removeMT mb5">{{selectedUnit.name}}</h3>
+              <h3 class="removeMT mb5 mr10 fLeft heading-unit-course">{{selectedUnit.name}}</h3>
               <span class="complete-status" *ngIf="completedUnitIds.includes(selectedUnit.id)">{{'Completed'|translate}}</span>
               <span class="incomplete-status" *ngIf="!completedUnitIds.includes(selectedUnit.id)">{{'Incompleted'|translate}}</span>
               <div class="clearfix"></div>
