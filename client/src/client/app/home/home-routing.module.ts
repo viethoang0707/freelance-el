@@ -54,7 +54,7 @@ import { CompetencyRoutes } from '../competency/competency-routing';
           },
           {
             path: 'workflow',
-            loadChildren: 'app/workflow/workflow.module#WorlflowModule'
+            loadChildren: 'app/workflow/workflow.module#WorkflowModule'
           },
         ]
       },

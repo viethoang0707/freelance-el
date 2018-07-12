@@ -52,7 +52,7 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
 
     searchCourse() {
         this.courses = [];
-        var domain = "('status','=','published')";
+        var domain = "('status','=','open'),('review_state','=','approved')";
         if (this.selectedCompetency)
             domain += ",('competency_id','=',"+this.selectedCompetency.id +")";
         if (this.selfStudyMode && !this.groupStudyMode)
