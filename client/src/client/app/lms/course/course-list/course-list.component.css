@@ -79,3 +79,10 @@
 	border-bottom-left-radius: 0;
 	border-top-left-radius: 0
 }
+
+@media screen and (max-width: 500px) {
+	.search input{
+		width: 280px;
+		margin-right: 20px;
+	}
+}
