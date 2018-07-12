@@ -38,19 +38,19 @@ export class ProjectConfig extends SeedConfig {
             ...this.NPM_DEPENDENCIES,
             { src: 'reflect-metadata/Reflect.js', inject: true },
             { src: 'jquery/dist/jquery.min.js', inject: true },
-            { src: 'primeng/resources/primeng.css', inject: true },
+            { src: 'primeng/resources/primeng.min.css', inject: true },
             { src: `primeng/resources/themes/${this.PRIME_NG_THEME}/theme.css`, inject: true },
-            { src: 'font-awesome/css/font-awesome.css', inject: true },
+            { src: 'font-awesome/css/font-awesome.min.css', inject: true },
             { src: 'nanoscroller/bin/css/nanoscroller.css', inject: true },
             { src: 'nanoscroller/bin/javascripts/jquery.nanoscroller.js', inject: true },
             { src: 'chart.js/dist/Chart.bundle.min.js', inject: true },
             { src: 'moment/min/moment.min.js', inject: true },
-            { src: 'fullcalendar/dist/fullcalendar.js', inject: true },
-            { src: 'fullcalendar/dist/fullcalendar.css', inject: true },
+            { src: 'fullcalendar/dist/fullcalendar.min.js', inject: true },
+            { src: 'fullcalendar/dist/fullcalendar.min.css', inject: true },
             { src: 'quill/dist/quill.core.css', inject: true },
             { src: 'quill/dist/quill.snow.css', inject: true },
-            { src: 'quill/dist/quill.js', inject: true },
-            { src: 'file-saver/FileSaver.js', inject: true },
+            { src: 'quill/dist/quill.min.js', inject: true },
+            { src: 'file-saver/FileSaver.min.js', inject: true },
         ];
 
         // Add `local` third-party libraries to be injected/bundled.
@@ -58,9 +58,6 @@ export class ProjectConfig extends SeedConfig {
             { src: `${this.ASSETS_SRC}/theme/theme-generic.css`, inject: true, vendor: false },
             { src: `${this.APP_SRC}/assets/layout/script/ripple.js`, inject: true, vendor: true },
             { src: `${this.ASSETS_SRC}/fonts/flag-icon-css/css/flag-icon.min.css`, inject: true, vendor: true },
-            //{ src: `${this.ASSETS_SRC}/layout/css/layout-brown.css`, inject: true, vendor: false },
-            // { src: `${this.ASSETS_SRC}/layout/css/layout-cityscape.css`, inject: true, vendor: false },
-            //{ src: `${this.ASSETS_SRC}/theme/theme-brown.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/layout/css/layout-bluegrey.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/theme-bluegrey.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/style.css`, inject: true, vendor: false },
@@ -117,7 +114,7 @@ export class ProjectConfig extends SeedConfig {
                 name: 'ngx-webcam',
                 path: 'node_modules/ngx-webcam',
                 packageMeta: {
-                    main: 'bundles/ngx-webcam.umd.js',
+                    main: 'bundles/ngx-webcam.umd.min.js',
                     defaultExtension: 'js'
                 }
             },
@@ -132,7 +129,7 @@ export class ProjectConfig extends SeedConfig {
                 name: 'ng2-pdf-viewer',
                 path: 'node_modules/ng2-pdf-viewer',
                 packageMeta: {
-                    main:'bundles/ng2-pdf-viewer.umd.js',
+                    main:'bundles/ng2-pdf-viewer.umd.min.js',
                     defaultExtension: 'js',
                     format: 'cjs'
                 }

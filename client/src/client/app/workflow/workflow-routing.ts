@@ -6,10 +6,11 @@ import { TicketDialog } from './ticket-dialog/ticket-dialog.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
 import { ApprovalTreeComponent } from './approval-tree/approval-tree.component';
+import { RouterModule } from '@angular/router';
 
 export const WorkflowRoutes: Routes = [
   {
-    path: "workflow",
+    path: '',
     component: WorkflowComponent,
     data: {
       breadcrumb: 'Workflow'
@@ -35,3 +36,9 @@ export const WorkflowRoutes: Routes = [
   }
 
 ]
+
+@NgModule({
+  imports: [RouterModule.forChild(WorkflowRoutes)],
+  exports: [RouterModule]
+})
+export class WorkflowRoutingModule {}

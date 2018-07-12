@@ -374,7 +374,6 @@ export class ErpSharedModule {
                 MenuService,
                 NotificationService,
                 SettingService,
-                WebSocketService,
                 ConfirmationService]
         };
     }

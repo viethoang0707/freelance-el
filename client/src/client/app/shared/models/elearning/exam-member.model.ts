@@ -133,7 +133,7 @@ export class ExamMember extends BaseModel{
     }
 
     __api__submit_score(memberId: number): ExecuteAPI {
-        return new ExecuteAPI(Exam.Model, 'submit_score',{memberId:memberId}, null);
+        return new ExecuteAPI(ExamMember.Model, 'submit_score',{memberId:memberId}, null);
     }
 
     submitScore(context:APIContext):Observable<any> {

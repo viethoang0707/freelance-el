@@ -25,7 +25,7 @@ export class TicketDialog extends BaseDialog<Ticket> {
 
     @Input() replyText;
 
-    constructor( private socketService: WebSocketService) {
+    constructor( ) {
         super();
     }
 

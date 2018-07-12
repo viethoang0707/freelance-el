@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { SettingComponent } from './setting.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
+import { RouterModule } from '@angular/router';
 
 export const SettingRoutes: Routes = [
   {
-    path: "setting",
+    path: '',
     component: SettingComponent,
     canActivate: [AdminGuard],
     data: {
@@ -17,3 +18,9 @@ export const SettingRoutes: Routes = [
   }
 
 ]
+
+@NgModule({
+  imports: [RouterModule.forChild(SettingRoutes)],
+  exports: [RouterModule]
+})
+export class SettingRoutingModule {}

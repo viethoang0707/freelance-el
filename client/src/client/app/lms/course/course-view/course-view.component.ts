@@ -89,7 +89,7 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
 			this.lmsProfileService.init(this).subscribe(() => {
-				this.lmsProfileService.getCourseContent(this, courseId).subscribe(content => {
+				this.lmsProfileService.getCourseContent( courseId).subscribe(content => {
 					this.syl = content["syllabus"];
 					this.faqs = content["faqs"];
 					this.materials = content["materials"];

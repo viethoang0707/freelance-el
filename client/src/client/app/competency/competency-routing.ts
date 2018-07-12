@@ -6,10 +6,11 @@ import { CompetencyDialog } from './competency-dialog/competency-dialog.componen
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
 import { CompetencyMatrixComponent } from './competency-matrix/competency-matrix.component';
+import { RouterModule } from '@angular/router';
 
 export const CompetencyRoutes: Routes = [
   {
-    path: "competency",
+    path: '',
     component: CompetencyComponent,
     data: {
       breadcrumb: 'Competency'
@@ -43,3 +44,9 @@ export const CompetencyRoutes: Routes = [
   }
 
 ]
+
+@NgModule({
+  imports: [RouterModule.forChild(CompetencyRoutes)],
+  exports: [RouterModule]
+})
+export class CompetencyRoutingModule {}

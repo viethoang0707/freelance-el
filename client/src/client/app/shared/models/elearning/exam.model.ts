@@ -112,7 +112,7 @@ export class Exam extends BaseModel{
                     return exam.review_state == 'approved'  && exam.is_public;
                 });
             });
-        return Exam.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]]");
+        return Exam.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
     __api__enroll(examId: number, userIds: number[]): SearchReadAPI {

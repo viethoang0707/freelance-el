@@ -8,9 +8,10 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { DashboardComponent } from './dashboard.component'
 import { DateUtils } from '../shared/helpers/date.utils';
+import { DashboardRoutingModule } from './dashboard-routing';
 
 @NgModule({
-	imports: [ErpSharedModule, AssessmentModule, CourseModule,CMSModule, LMSModule],
+	imports: [DashboardRoutingModule, ErpSharedModule, AssessmentModule, CourseModule,CMSModule, LMSModule],
 	declarations: [
 		DashboardComponent, 
 		AdminDashboardComponent, 

@@ -21,9 +21,10 @@ import { QuestionSheetListComponent } from './question/question-sheet-list/quest
 import { QuestionSheetPreviewDialog } from './question/question-sheet-preview/question-sheet-preview.dialog.component';
 import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
 import { SurveySheetPreviewDialog } from './question/survey-sheet-preview/survey-sheet-preview.dialog.component';
+import { AssessmentRoutingModule } from './assessment-routing';
 
 @NgModule({
-    imports: [ErpSharedModule, AuthModule],
+    imports: [AssessmentRoutingModule, ErpSharedModule, AuthModule],
     declarations: [AssessmentComponent, ExamDialog,QuestionSheetListComponent,QuestionSheetPreviewDialog,
     				QuestionListComponent, QuestionDialog, QuestionContainerDirective,MultiChoiceQuestionComponent,
     				SingleChoiceQuestionComponent, OpenEndQuestionComponent, QuestionImportDialog,

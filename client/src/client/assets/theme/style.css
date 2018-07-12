@@ -576,7 +576,11 @@ body .exam-study .ui-dialog-content.ui-widget-content{
 }
 
 .ui-fluid .ui-message {
-    display: -webkit-box;
+  display: -webkit-box;
+}
+
+.lms-search-course .lms-course-list.ui-datascroller .ui-datascroller-content{
+  border: none;
 }
 
 @media screen and (max-width: 500px) {

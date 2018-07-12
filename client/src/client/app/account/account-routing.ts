@@ -4,10 +4,11 @@ import { GroupListComponent } from '../shared/components/group-list/group-list.c
 import { UserListComponent } from './user/user-list/user-list.component';
 import { PermissionListComponent } from './permission/permission-list/permission-list.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
+import { RouterModule } from '@angular/router';
 
 export const AccountRoutes: Routes = [
   {
-    path: "account",
+    path: '',
     data: {
       breadcrumb: 'Account'
     },
@@ -41,3 +42,9 @@ export const AccountRoutes: Routes = [
   }
 
 ]
+
+@NgModule({
+  imports: [RouterModule.forChild(AccountRoutes)],
+  exports: [RouterModule]
+})
+export class AccountRoutingModule {}

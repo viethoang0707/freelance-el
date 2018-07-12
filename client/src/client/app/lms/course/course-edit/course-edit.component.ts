@@ -73,7 +73,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 			var courseId = +params['courseId'];
 			this.lmsProfileService.init(this).subscribe(() => {
 					this.course = this.lmsProfileService.courseById(courseId);
-					this.lmsProfileService.getCourseContent(this, courseId).subscribe(content=> {
+					this.lmsProfileService.getCourseContent(courseId).subscribe(content=> {
 						this.syl = content["syllabus"];
 						this.faqs =  content["faqs"];
 						this.materials =  content["materials"];
@@ -100,7 +100,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.faqDialog.show(faq);
 		this.faqDialog.onCreateComplete.subscribe(() => {
 			this.lmsProfileService.addCourseFaq(faq);
-			this.lmsProfileService.getCourseContent(this, this.course.id).subscribe(content=> {
+			this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
 				this.faqs =  content["faqs"];
 			});
 		});
@@ -116,7 +116,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 			this.confirm('Are you sure to delete ?', () => {
 				this.selectedFaq.delete(this).subscribe(() => {
 					this.lmsProfileService.removeCourseFaq(this.selectedFaq);
-					this.lmsProfileService.getCourseContent(this, this.course.id).subscribe(content=> {
+					this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
 						this.faqs =  content["faqs"];
 					});
 				})
@@ -129,7 +129,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.materialDialog.show(material);
 		this.materialDialog.onCreateComplete.subscribe(() => {
 			this.lmsProfileService.addCourseMaterial(material);
-			this.lmsProfileService.getCourseContent(this, this.course.id).subscribe(content=> {
+			this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
 				this.materials =  content["materials"];
 			});
 		});
@@ -145,7 +145,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				this.selectedMaterial.delete(this).subscribe(() => {
 					this.lmsProfileService.removeCourseMaterial(this.selectedMaterial);
-					this.lmsProfileService.getCourseContent(this, this.course.id).subscribe(content=> {
+					this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
 						this.materials =  content["materials"];
 					});
 				});

@@ -4,10 +4,11 @@ import { AnalysisComponent } from './analysis.component';
 import { ReportComponent } from './report/report.component';
 import { ChartComponent } from './chart/chart.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
+import { RouterModule } from '@angular/router';
 
 export const AnalysisRoutes: Routes = [
   {
-    path: "analysis",
+    path: '',
     component: AnalysisComponent,
     data: {
       breadcrumb: 'Analysis'
@@ -33,3 +34,9 @@ export const AnalysisRoutes: Routes = [
   }
 
 ]
+
+@NgModule({
+  imports: [RouterModule.forChild(AnalysisRoutes)],
+  exports: [RouterModule]
+})
+export class AnalysisRoutingModule {}

@@ -5,9 +5,10 @@ import { CompetencyComponent } from './competency.component'
 import { CompetencyListComponent } from './competency-list/competency-list.component';
 import { CompetencyDialog } from './competency-dialog/competency-dialog.component';
 import { CompetencyMatrixComponent } from './competency-matrix/competency-matrix.component';
+import { CompetencyRoutingModule } from './competency-routing';
 
 @NgModule({
-    imports: [ErpSharedModule, AuthModule],
+    imports: [CompetencyRoutingModule, ErpSharedModule, AuthModule],
     declarations: [CompetencyComponent,CompetencyListComponent,CompetencyDialog, CompetencyMatrixComponent],
     providers: [],
     exports: [],

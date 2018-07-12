@@ -20,7 +20,6 @@ export class AppComponent extends BaseComponent{
 		this.translateService.setDefaultLang(DEFAULT_LANG);
         this.translateService.use(this.settingService.Lang);
 		console.log('Environment config', Config);
-        
 	}
 
 

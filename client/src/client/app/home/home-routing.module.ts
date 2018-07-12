@@ -20,18 +20,44 @@ import { CompetencyRoutes } from '../competency/competency-routing';
         component: HomeComponent,
         canActivate: [AuthGuard],
         children: [
-          ...DashboardRoutes,
-          ...SettingRoutes,
-          ...AccountRoutes,
-          ...CourseRoutes,
-          ...AssessmentRoutes,
-          ...AnalysisRoutes,
-          ...LMSRoutes,
-          ...WorkflowRoutes,
-          ...CompetencyRoutes
+          {
+            path: 'account',
+            loadChildren: 'app/account/account.module#AccountModule'
+          },
+          {
+            path: 'analysis',
+            loadChildren: 'app/analysis/analysis.module#AnalysisModule'
+          },
+          {
+            path: 'assessment',
+            loadChildren: 'app/assessment/assessment.module#AssessmentModule'
+          },
+          {
+            path: 'competency',
+            loadChildren: 'app/competency/competency.module#CompetencyModule'
+          },
+          {
+            path: 'course',
+            loadChildren: 'app/course/course.module#CourseModule'
+          },
+          {
+            path: 'dashboard',
+            loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
+          },
+          {
+            path: 'lms',
+            loadChildren: 'app/lms/lms.module#LMSModule'
+          },
+          {
+            path: 'setting',
+            loadChildren: 'app/setting/setting.module#SettingModule'
+          },
+          {
+            path: 'workflow',
+            loadChildren: 'app/workflow/workflow.module#WorkflowModule'
+          },
         ]
       },
-      {path: '**', redirectTo: ''}
     ])
   ],
   exports: [RouterModule]

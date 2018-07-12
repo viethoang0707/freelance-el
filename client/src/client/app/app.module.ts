@@ -8,16 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { ErpSharedModule } from './shared/shared.module';
-import { WorkflowModule } from './workflow/workflow.module';
-import { SettingModule } from './setting/setting.module';
-import { AccountModule } from './account/account.module';
-import { CourseModule } from './course/course.module';
-import { AssessmentModule } from './assessment/assessment.module';
-import { AnalysisModule } from './analysis/analysis.module';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { CMSModule } from './cms/cms.module';
-import { LMSModule } from './lms/lms.module';
-import { CompetencyModule } from './competency/competency.module';
 import { InterceptHttp } from './shared/helpers/intercept.http';
 import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
@@ -31,20 +21,9 @@ import { ProgressBarModule } from 'primeng/primeng';
         BrowserModule,
         BrowserAnimationsModule,
         HttpModule,
-        AppRoutingModule,
-        AuthModule,
-        HomeModule.forRoot(),
-        DashboardModule,
-        SettingModule,
-        AccountModule,
-        CourseModule,
-        AssessmentModule,
-        AnalysisModule,
-        WorkflowModule,
-        CMSModule,
-        CompetencyModule,
-        LMSModule,
         ErpSharedModule.forRoot(),
+        HomeModule.forRoot(),
+        AppRoutingModule,
         TranslateModule.forRoot({
             loader: { provide: TranslateLoader, useClass: CustomTranslationLoader }
         })
