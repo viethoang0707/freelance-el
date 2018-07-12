@@ -4,10 +4,10 @@
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollExam()" *ngIf="selectedExam && selectedExam.status=='initial'"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollExam()" *ngIf="selectedExam && selectedExam.status=='open'"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                     <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock" (click)="openExam() " [disabled]=" selectedExam && selectedExam.status!='open'" ></button>
+                     <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock" (click)="openExam() " [disabled]=" selectedExam && selectedExam.status=='open'" ></button>
                      <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeExam() " [disabled]=" selectedExam && selectedExam.status=='closed'" ></button>
                 </div>
             </p-toolbar>
