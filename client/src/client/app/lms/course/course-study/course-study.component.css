@@ -16,6 +16,20 @@
 	padding-left: 0;
 }
 
+.complete-status{
+	background-color: green;
+	border-radius: 9px;
+    padding: 2px 8px;
+    color: #fff;
+}
+
+.incomplete-status{
+	background-color: grey;
+	border-radius: 9px;
+    padding: 2px 8px;
+    color: #fff;
+}
+
 .list-cmt li{
 	list-style: none;
 	padding: 10px 14px;

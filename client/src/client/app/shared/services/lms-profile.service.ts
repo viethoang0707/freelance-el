@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Config } from '../../env.config';
+import { Observable, Subject } from 'rxjs/Rx';
 import { AuthService } from './auth.service';
 import { AppEventManager } from './app-event-manager.service';
 import { SettingService } from './setting.service';
@@ -43,7 +44,6 @@ import { BaseModel } from '../models/base.model';
 import { Survey } from '../models/elearning/survey.model';
 import { SurveyMember } from '../models/elearning/survey-member.model';
 import { ExamGrade } from '../models/elearning/exam-grade.model';
-import { Observable, Subject } from 'rxjs/Rx';
 import { Token } from '../models/cloud/token.model';
 import { APIContext } from '../models/context';
 import { ExamRecord } from '../models/elearning/exam-record.model';
@@ -68,7 +68,7 @@ export class LMSProfileService {
   private courseContent: any;
   private classContent: any;
   private initialized: boolean;
-
+  private context: APIContext;
 
   constructor(private settingService: SettingService, private appEvent: AppEventManager) {
     this.settingService.viewModeEvents.subscribe(() => {
@@ -94,6 +94,7 @@ export class LMSProfileService {
 
 
   init(context: APIContext): Observable<any> {
+    this.context =  context;
     if (this.initialized)
       return Observable.of([]);
     var userId = context.authService.UserProfile.id;
@@ -311,10 +312,10 @@ export class LMSProfileService {
     });
   }
 
-  getCourseContent(context:APIContext, courseId:number):Observable<any> {
+  getCourseContent(courseId:number):Observable<any> {
     if (this.courseContent[courseId])
       return Observable.of(this.courseContent[courseId]);
-    return BaseModel.bulk_search(context,
+    return BaseModel.bulk_search(this.context,
       CourseSyllabus.__api__listByCourse(courseId),
       CourseUnit.__api__listByCourse(courseId),
       CourseFaq.__api__listByCourse(courseId),
@@ -331,10 +332,10 @@ export class LMSProfileService {
       });
   }
 
-  getClassContent(context:APIContext, classId:number):Observable<any> {
+  getClassContent(classId:number):Observable<any> {
     if (this.classContent[classId])
       return Observable.of(this.classContent[classId]);
-    return BaseModel.bulk_search(context,
+    return BaseModel.bulk_search(this.context,
       Project.__api__listByClass(classId),
     )
       .map(jsonArray => {
@@ -367,12 +368,23 @@ export class LMSProfileService {
     });
   }
 
-  addExam(exam:Exam) {
+  addExam(exam:Exam):Observable<any> {
     this.myExams.push(exam);
+    return ExamMember.listByUser(this.context, this.context.authService.UserProfile.id).do(members=> {
+      this.myExamMembers = _.filter(members, (member: ExamMember) => {
+          return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state =='approved';
+        });
+    });
+    
   }
 
-  addSurvey(survey:Survey) {
+  addSurvey(survey:Survey):Observable<any> {
     this.mySurveys.push(survey);
+    return SurveyMember.listByUser(this.context, this.context.authService.UserProfile.id).do(members=> {
+      this.mySurveyMembers = _.filter(members, (member: SurveyMember) => {
+          return isFinite(parseInt(member.survey_id + ""))  && member.survey_review_state =='approved';
+        });
+    });
   }
 
   addCourseFaq(faq:CourseFaq) {

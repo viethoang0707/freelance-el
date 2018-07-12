@@ -20,6 +20,7 @@ export class CourseSyllabus extends BaseModel{
         this.supervisor_name = undefined;
         this.review_state =  undefined;
         this.unit_count = undefined;
+        this.complete_unit_by_order =  undefined;
 	}    
 
     review_state: string;
@@ -29,6 +30,7 @@ export class CourseSyllabus extends BaseModel{
     supervisor_id: number;
     supervisor_name: string;
     unit_count: number;
+    complete_unit_by_order: boolean;
 
     static __api__listByCourse(courseId: number): SearchReadAPI {
         return new SearchReadAPI(CourseSyllabus.Model, [],"[('course_id','=',"+courseId+")]");

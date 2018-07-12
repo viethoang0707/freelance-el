@@ -13,6 +13,9 @@
           <div class="image-box-content">
             <div class="fLeft">
               <h3 class="removeMT mb5">{{selectedUnit.name}}</h3>
+              <span class="complete-status" *ngIf="completedUnitIds.includes(selectedUnit.id)">{{'Completed'|translate}}</span>
+              <span class="incomplete-status" *ngIf="!completedUnitIds.includes(selectedUnit.id)">{{'Incompleted'|translate}}</span>
+              <div class="clearfix"></div>
               <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type] |translate }}</span>
             </div>
             <div class="image-box-footer fRight">
@@ -25,6 +28,7 @@
               <ng-template course-unit-container></ng-template>
               <div style="text-align: center;">
                 <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn mt5" (click)="completeUnit()" [disabled]="completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
+                <button pButton type="button" icon="ui-icon-zoom-in" title="{{'Zoom in'| translate}}" label="{{'Zoom in'|translate}}" class="blue-grey-btn mt5" (click)="previewUnit()" [disabled]="completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
               </div>
             </div>
           </div>
@@ -214,3 +218,4 @@
   </p-tabView>
   </div>
 </div>
+<course-unit-preview-dialog></course-unit-preview-dialog>

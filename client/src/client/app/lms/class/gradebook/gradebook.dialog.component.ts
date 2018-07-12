@@ -121,7 +121,7 @@ export class GradebookDialog extends BaseComponent {
         this.lmsProfileService.init(this).subscribe(() => {
             this.course = this.lmsProfileService.courseById(member.course_id);
             this.exams = this.lmsProfileService.examsByClass(this.member.class_id);
-            this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content=> {
+            this.lmsProfileService.getClassContent(this.member.class_id).subscribe(content=> {
                 this.projects = content["projects"];
                 BaseModel.bulk_search(this,
                 Certificate.__api__listByMember(this.member.id),
