@@ -51,6 +51,7 @@ import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 import { GradebookDialog } from '../../class/gradebook/gradebook.dialog.component';
+import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -102,6 +103,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	@ViewChild(ProjectSubmissionDialog) projectSubmitDialog: ProjectSubmissionDialog;
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
+	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute,
 		private meetingSerivce: MeetingService, private componentFactoryResolver: ComponentFactoryResolver) {
@@ -139,15 +141,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 						this.logs = logs;
 						this.displayCouseSyllabus();
 						if (this.member.class_id) {
-							this.examMembers =  this.lmsProfileService.examMembersByClassId(this.member.class_id);
-							this.conferenceMember =  this.lmsProfileService.conferenceMemberByClass(this.member.class_id);
+							this.examMembers = this.lmsProfileService.examMembersByClassId(this.member.class_id);
+							this.conferenceMember = this.lmsProfileService.conferenceMemberByClass(this.member.class_id);
 							if (this.conferenceMember)
-								this.conference = this.conferenceMember.conference; 
-							this.projectSubmits =  this.lmsProfileService.projectSubmitsByMember(this.member.id);
-            				this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content=> {
-                				this.projects = content["projects"];
-                			});
-            			}
+								this.conference = this.conferenceMember.conference;
+							this.projectSubmits = this.lmsProfileService.projectSubmitsByMember(this.member.id);
+							this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content => {
+								this.projects = content["projects"];
+							});
+						}
 					})
 				});
 			});
@@ -307,11 +309,11 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-    getProjectSubmit(project: Project) {
-        return  _.find(this.projectSubmits, (submit: ProjectSubmission) => {
-            return submit.project_id == project.id;
-        }) || new ProjectSubmission();
-    }
+	getProjectSubmit(project: Project) {
+		return _.find(this.projectSubmits, (submit: ProjectSubmission) => {
+			return submit.project_id == project.id;
+		}) || new ProjectSubmission();
+	}
 
 	joinConference() {
 		if (this.conference.id && this.conferenceMember.id && this.conferenceMember.is_active)
@@ -324,4 +326,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.projectSubmitDialog.show(project, this.member);
 	}
 
+	previewUnit() {
+		if (this.selectedNode) {
+			this.selectedNode.data.course_id = this.course.id;
+			this.unitPreviewDialog.show(this.selectedNode.data);
+		}
+	}
 }

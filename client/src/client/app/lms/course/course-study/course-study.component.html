@@ -25,6 +25,7 @@
               <ng-template course-unit-container></ng-template>
               <div style="text-align: center;">
                 <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn mt5" (click)="completeUnit()" [disabled]="completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
+                <button pButton type="button" icon="ui-icon-zoom-in" title="{{'Zoom in'| translate}}" label="{{'Zoom in'|translate}}" class="blue-grey-btn mt5" (click)="previewUnit()" [disabled]="completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
               </div>
             </div>
           </div>
@@ -214,3 +215,4 @@
   </p-tabView>
   </div>
 </div>
+<course-unit-preview-dialog></course-unit-preview-dialog>
