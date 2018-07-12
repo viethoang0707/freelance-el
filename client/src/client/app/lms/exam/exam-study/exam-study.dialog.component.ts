@@ -164,8 +164,8 @@ export class ExamStudyDialog extends BaseComponent {
 		this.submission.end = new Date();
 		this.submission.save(this).subscribe(()=> {
 			this.member.submitScore(this).subscribe(()=> {
+				this.member.enroll_status = 'completed';
 				ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe();
-				this.timeLeft = 0;
 				this.hide();
 			});
 		});
