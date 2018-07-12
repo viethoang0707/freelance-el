@@ -1,14 +1,14 @@
 <div class="card card-w-title ui-g">
     <div class="ui-lg-6 ui-md-12 ui-g-12"><h1>{{'Search courses'|translate}}</h1></div>
-    <div class="search ui-lg-6 ui-md-12 ui-g-12">
-        <div class="ui-inputgroup fRight">
+    <div class="search ui-g-12">
+        <div class="ui-inputgroup ">
             <input type="text" pInputText placeholder="Keyword" name="keyword" [(ngModel)]="keyword">
             <button pButton type="button" icon="ui-icon-search" (click)="searchCourse()"></button>
         </div>
     </div>
     <div class="ui-lg-3 ui-md-12 ui-g-12">
         <div class="ui-lg-12 ui-md-6 ui-g-6 filter-course">
-            <p-panel header="Filter by mode" [toggleable]="true" headerStyleClass="filter-course-search">
+            <p-panel header="Advance search" [toggleable]="true" headerStyleClass="filter-course-search">
                 <div class="ui-g checkbox-filter">
                     <div class="ui-lg-6 ui-md-12 ui-g-12">
                         <p-checkbox name="self_study_mode" value="'self-study'" label="{{'Self-study'|translate}}" [(ngModel)]="selfStudyMode" binary="true"></p-checkbox>
@@ -16,15 +16,12 @@
                     <div class="ui-lg-6 ui-md-12 ui-g-12">
                         <p-checkbox name="group_mode" value="'group'" label="{{'Group study'|translate}}" [(ngModel)]="groupStudyMode" binary="true"></p-checkbox>
                     </div>
+                    <div class="ui-g-12 checkbox-filter">
+                    <p-dropdown [options]="competencies" optionLabel="name" dataKey="id" [(ngModel)]="selectedCompetency" placeholder="{{'Select a competency'| translate}}"></p-dropdown>
+                </div>
                 </div>
             </p-panel>
         </div>
-        <div class="ui-lg-12 ui-md-6 ui-g-6 filter-course">
-            <p-panel header="Filter by competency" [toggleable]="true" headerStyleClass="filter-course-search">
-                <div class="ui-g checkbox-filter">
-                    <p-dropdown [options]="competencies" optionLabel="name" dataKey="id" [(ngModel)]="selectedCompetency" placeholder="{{'Select a competency'| translate}}"></p-dropdown>
-                </div>
-            </p-panel>
     </div>
     <div class="col-lg-9 ui-md-12 ui-g-12 ml20" style="width: 75%;" *ngIf="courses && courses.length">
         <p-dataScroller [value]="courses" [rows]="10" styleClass="lms-course-list">
