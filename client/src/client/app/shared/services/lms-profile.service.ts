@@ -44,7 +44,6 @@ import { BaseModel } from '../models/base.model';
 import { Survey } from '../models/elearning/survey.model';
 import { SurveyMember } from '../models/elearning/survey-member.model';
 import { ExamGrade } from '../models/elearning/exam-grade.model';
-import { Observable, Subject } from 'rxjs/Rx';
 import { Token } from '../models/cloud/token.model';
 import { APIContext } from '../models/context';
 import { ExamRecord } from '../models/elearning/exam-record.model';
@@ -95,9 +94,9 @@ export class LMSProfileService {
 
 
   init(context: APIContext): Observable<any> {
+    this.context =  context;
     if (this.initialized)
       return Observable.of([]);
-    this.context =  context;
     var userId = context.authService.UserProfile.id;
     return BaseModel.bulk_search(context,
       CourseMember.__api__listByUser(userId),

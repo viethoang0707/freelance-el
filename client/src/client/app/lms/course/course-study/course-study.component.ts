@@ -130,7 +130,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 				}
 				this.member = this.lmsProfileService.courseMemberById(memberId);
 				this.certificate = this.lmsProfileService.certificateByMember(memberId);
-				this.lmsProfileService.getCourseContent(this, courseId).subscribe(content => {
+				this.lmsProfileService.getCourseContent(courseId).subscribe(content => {
 					this.syl = content["syllabus"];
 					this.faqs = content["faqs"];
 					this.materials = content["materials"];
@@ -144,7 +144,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 							if (this.conferenceMember)
 								this.conference = this.conferenceMember.conference; 
 							this.projectSubmits =  this.lmsProfileService.projectSubmitsByMember(this.member.id);
-            				this.lmsProfileService.getClassContent(this, this.member.class_id).subscribe(content=> {
+            				this.lmsProfileService.getClassContent(this.member.class_id).subscribe(content=> {
                 				this.projects = content["projects"];
                 			});
             			}
