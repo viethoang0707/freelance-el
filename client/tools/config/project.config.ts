@@ -45,12 +45,12 @@ export class ProjectConfig extends SeedConfig {
             { src: 'nanoscroller/bin/javascripts/jquery.nanoscroller.js', inject: true },
             { src: 'chart.js/dist/Chart.bundle.min.js', inject: true },
             { src: 'moment/min/moment.min.js', inject: true },
-            { src: 'fullcalendar/dist/fullcalendar.min.js', inject: true },
+            { src: 'fullcalendar/dist/fullcalendar.js', inject: true },
             { src: 'fullcalendar/dist/fullcalendar.min.css', inject: true },
             { src: 'quill/dist/quill.core.css', inject: true },
             { src: 'quill/dist/quill.snow.css', inject: true },
-            { src: 'quill/dist/quill.min.js', inject: true },
-            { src: 'file-saver/FileSaver.min.js', inject: true },
+            { src: 'quill/dist/quill.js', inject: true },
+            { src: 'file-saver/FileSaver.js', inject: true },
         ];
 
         // Add `local` third-party libraries to be injected/bundled.
@@ -114,7 +114,7 @@ export class ProjectConfig extends SeedConfig {
                 name: 'ngx-webcam',
                 path: 'node_modules/ngx-webcam',
                 packageMeta: {
-                    main: 'bundles/ngx-webcam.umd.min.js',
+                    main: 'bundles/ngx-webcam.umd.js',
                     defaultExtension: 'js'
                 }
             },
@@ -129,7 +129,7 @@ export class ProjectConfig extends SeedConfig {
                 name: 'ng2-pdf-viewer',
                 path: 'node_modules/ng2-pdf-viewer',
                 packageMeta: {
-                    main:'bundles/ng2-pdf-viewer.umd.min.js',
+                    main:'bundles/ng2-pdf-viewer.umd.js',
                     defaultExtension: 'js',
                     format: 'cjs'
                 }
