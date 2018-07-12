@@ -40,9 +40,10 @@ import { WebcamModule } from 'ngx-webcam';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
 import { ClassMemberActivityDialog } from './class/class-member-activity/class-member-activity.dialog.component';
+import { LMSRoutingModule } from './lms-routing';
 
 @NgModule({
-    imports: [ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,AnalysisModule],
+    imports: [LMSRoutingModule,ErpSharedModule, CMSModule, AssessmentModule, AuthModule, WebcamModule,AnalysisModule],
     declarations: [LMSComponent, ExamListComponent, ExamStudyDialog,AnswerPrintDialog,
     				CourseListComponent, QuestionMarkingDialog,CertificatePrintDialog,LMSProfileDialog,
     				 ExamSubmissionDialog,ExamManageComponent,QuestionSheetPrintDialog,

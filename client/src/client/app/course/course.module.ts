@@ -10,9 +10,10 @@ import { CourseListComponent } from './course/course-list/course-list.component'
 import { CourseDialog } from './course/course-dialog/course-dialog.component';
 import { CourseEnrollDialog } from './enrollment/enrollment-dialog/enrollment-dialog.component';
 import { CourseEnrollmentListComponent } from './enrollment/course-list/course-list.component';
+import { CourseRoutingModule } from './course-routing';
 
 @NgModule({
-    imports: [ErpSharedModule, AuthModule],
+    imports: [CourseRoutingModule,ErpSharedModule, AuthModule],
     declarations: [CourseComponent, CourseClassDialog, ClassListDialog,ByCoursePipe,ByClassPipe,
     				CourseListComponent, CourseDialog, CourseEnrollDialog, CourseEnrollmentListComponent],
     exports: [CourseDialog, CourseClassDialog],

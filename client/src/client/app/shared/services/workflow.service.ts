@@ -19,7 +19,7 @@ import { ExecuteAPI } from '../../shared/services/api/execute.api';
 @Injectable()
 export class WorkflowService {
 
-  constructor(private authService: AuthService, private socketService: WebSocketService) {
+  constructor(private authService: AuthService) {
   }
 
   createCourseReviewTicket(context: APIContext, course: Course): Observable<any> {

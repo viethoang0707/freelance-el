@@ -52,13 +52,12 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
         this.appEvent.onUnauthorizedAccess.subscribe(()=> {
             this.error('Access denied. You must login again!')
             this.authService.logout();
-            this.router.navigate(['/auth']);
         });
-        router.navigate(['/dashboard']);
     }
 
     ngOnInit() {
         // Fill the cache
+        this.router.navigate(['/dashboard']);
         BaseModel.bulk_search(this,Group.__api__all()).subscribe();
     }
 

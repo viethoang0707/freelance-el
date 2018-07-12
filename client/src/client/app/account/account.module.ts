@@ -13,9 +13,10 @@ import { MenuPermissionDialog } from './permission/menu-permission-dialog/menu-p
 import { MemberPermissionDialog } from './permission/member-permission-dialog/member-permission-dialog.component';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AccountRoutingModule } from './account-routing';
 
 @NgModule({
-    imports: [ErpSharedModule, AuthModule, LMSModule, CalendarModule, RadioButtonModule],
+    imports: [AccountRoutingModule, ErpSharedModule, AuthModule, LMSModule],
     declarations: [UserListComponent,
         UserDialog,
         UserExportDialog,

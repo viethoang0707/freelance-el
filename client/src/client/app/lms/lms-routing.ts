@@ -17,10 +17,11 @@ import { CourseGuard } from '../shared/guards/course.guard';
 import { ExamGuard } from '../shared/guards/exam.guard';
 import { SyllabusGuard } from '../shared/guards/syllabus.guard';
 import { SurveyGuard } from '../shared/guards/survey.guard';
+import { RouterModule } from '@angular/router';
 
 export const LMSRoutes: Routes = [
     {
-       path: "lms",
+       path: '',
        component: LMSComponent,
        data: {
          breadcrumb:'LMS'
@@ -119,3 +120,9 @@ export const LMSRoutes: Routes = [
     }
 
 ]
+
+@NgModule({
+  imports: [RouterModule.forChild(LMSRoutes)],
+  exports: [RouterModule]
+})
+export class LMSRoutingModule {}

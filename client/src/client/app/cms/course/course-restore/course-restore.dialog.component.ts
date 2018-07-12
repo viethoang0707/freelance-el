@@ -54,7 +54,7 @@ export class CourseRestoreDialog extends BaseComponent {
 	onShow: Observable<any> = this.onShowReceiver.asObservable();
 	onHide: Observable<any> = this.onHideReceiver.asObservable();
 
-	constructor(private socketService: WebSocketService, private sanitizer: DomSanitizer, private excelService: ExcelService) {
+	constructor(private sanitizer: DomSanitizer, private excelService: ExcelService) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.syl = new CourseSyllabus();

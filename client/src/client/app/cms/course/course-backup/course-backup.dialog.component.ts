@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
-import { WebSocketService } from '../../../shared/services/socket.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -50,7 +49,7 @@ export class CourseBackupDialog extends BaseComponent {
 	onShow: Observable<any> = this.onShowReceiver.asObservable();
 	onHide: Observable<any> = this.onHideReceiver.asObservable();
 
-	constructor(private socketService: WebSocketService, private sanitizer: DomSanitizer) {
+	constructor(private sanitizer: DomSanitizer) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.syl = new CourseSyllabus();

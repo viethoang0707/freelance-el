@@ -12,10 +12,11 @@ import { QuestionSheetListComponent } from './question/question-sheet-list/quest
 import { ExamEnrollmentListComponent } from './exam/exam-enrollment-list/exam-enrollment-list.component';
 import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/survey-enrollment-list.component';
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
+import { RouterModule } from '@angular/router';
 
 export const AssessmentRoutes: Routes = [
   {
-    path: "assessment",
+    path: '',
     component: AssessmentComponent,
     data: {
       breadcrumb: 'Assessment'
@@ -84,3 +85,9 @@ export const AssessmentRoutes: Routes = [
   }
 
 ]
+
+@NgModule({
+  imports: [RouterModule.forChild(AssessmentRoutes)],
+  exports: [RouterModule]
+})
+export class AssessmentRoutingModule {}

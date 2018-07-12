@@ -5,9 +5,10 @@ import { WorkflowComponent } from './workflow.component'
 import { TicketListComponent } from './ticket-list/ticket-list.component';
 import { TicketDialog } from './ticket-dialog/ticket-dialog.component';
 import { ApprovalTreeComponent } from './approval-tree/approval-tree.component';
+import { WorkflowRoutingModule } from './workflow-routing';
 
 @NgModule({
-    imports: [ErpSharedModule, AuthModule],
+    imports: [WorkflowRoutingModule, ErpSharedModule, AuthModule],
     declarations: [WorkflowComponent, TicketListComponent, TicketDialog, ApprovalTreeComponent],
     providers: [],
     exports: [TicketDialog],
