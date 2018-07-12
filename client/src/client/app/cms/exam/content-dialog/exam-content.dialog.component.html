@@ -13,7 +13,7 @@
                 <button pButton type="button" class="blue-grey-btn" icon="ui-icon-settings" (click)="previewSheet()" label="{{'Preview'|translate}}" *ngIf="sheet && sheet.finalized"></button>
             </div>
         </p-toolbar>
-        <p-table #examQuestionTable [value]="examQuestions" [responsive]="true" styleClass="table-content">
+        <p-table #examQuestionTable [value]="examQuestions" [responsive]="true" styleClass="table-content pb20">
             <ng-template pTemplate="header">
                 <tr>
                     <th>#</th>
