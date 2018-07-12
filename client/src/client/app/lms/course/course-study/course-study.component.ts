@@ -188,9 +188,11 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	unloadCurrentUnit() {
-		let viewContainerRef = this.unitHost.viewContainerRef;
-		if (viewContainerRef)
-			viewContainerRef.clear();
+		if (this.unitHost) {
+			let viewContainerRef = this.unitHost.viewContainerRef;
+			if (viewContainerRef)
+				viewContainerRef.clear();
+		}
 	}
 
 	prevUnit() {
