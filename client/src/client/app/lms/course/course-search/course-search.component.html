@@ -1,4 +1,4 @@
-<div class="card card-w-title ui-g">
+<div class="card card-w-title ui-g lms-search-course">
     <div class="ui-lg-6 ui-md-12 ui-g-12"><h1>{{'Search courses'|translate}}</h1></div>
     <div class="search ui-lg-6 ui-md-12 ui-g-12">
         <div class="ui-inputgroup fRight">
@@ -25,8 +25,9 @@
                     <p-dropdown [options]="competencies" optionLabel="name" dataKey="id" [(ngModel)]="selectedCompetency" placeholder="{{'Select a competency'| translate}}"></p-dropdown>
                 </div>
             </p-panel>
+        </div>
     </div>
-    <div class="col-lg-9 ui-md-12 ui-g-12 ml20" style="width: 75%;" *ngIf="courses && courses.length">
+    <div class="col-lg-9 ui-md-12 ui-g-12" style="width: 75%;" *ngIf="courses && courses.length">
         <p-dataScroller [value]="courses" [rows]="10" styleClass="lms-course-list">
             <ng-template let-course pTemplate="item">
                 <p-card styleClass="lms-course-list-item">
