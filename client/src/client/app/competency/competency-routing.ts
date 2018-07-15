@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 
 export const CompetencyRoutes: Routes = [
   {
-    path: '',
+    path: 'competency',
     component: CompetencyComponent,
     data: {
       breadcrumb: 'Competency'

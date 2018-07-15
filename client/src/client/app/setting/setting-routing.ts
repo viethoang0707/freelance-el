@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 
 export const SettingRoutes: Routes = [
   {
-    path: '',
+    path: 'setting',
     component: SettingComponent,
     canActivate: [AdminGuard],
     data: {

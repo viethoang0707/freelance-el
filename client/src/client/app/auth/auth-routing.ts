@@ -9,7 +9,7 @@ import { ResetPasswordComponent } from './reset/reset-password.component';
     imports: [
         RouterModule.forChild([
             {
-                path: '',
+                path: 'auth',
                 component: AuthComponent,
                 children: [
                     {path: 'login', component: LoginComponent},

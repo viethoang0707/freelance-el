@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 
 export const AnalysisRoutes: Routes = [
   {
-    path: '',
+    path: 'analysis',
     component: AnalysisComponent,
     data: {
       breadcrumb: 'Analysis'

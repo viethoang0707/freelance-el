@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 export const DashboardRoutes: Routes = [
     {
-       path: '',
+       path: 'dashboard',
        component: DashboardComponent,
        data: {
        	breadcrumb:'Dashboard'

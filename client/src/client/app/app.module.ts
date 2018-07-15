@@ -8,24 +8,43 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './auth/auth.module';
 import { HomeModule } from './home/home.module';
 import { ErpSharedModule } from './shared/shared.module';
+import { WorkflowModule } from './workflow/workflow.module';
+import { SettingModule } from './setting/setting.module';
+import { AccountModule } from './account/account.module';
+import { CourseModule } from './course/course.module';
+import { AssessmentModule } from './assessment/assessment.module';
+import { AnalysisModule } from './analysis/analysis.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { CMSModule } from './cms/cms.module';
+import { LMSModule } from './lms/lms.module';
+import { CompetencyModule } from './competency/competency.module';
 import { InterceptHttp } from './shared/helpers/intercept.http';
 import { ServiceLocator } from './service.locator';
 import { AppComponent } from './app.component';
 import { CustomTranslationLoader } from './shared/helpers/translation.loader';
 import { TranslateService } from '@ngx-translate/core';
-import { ProgressBarModule } from 'primeng/primeng';
 
 @NgModule({
     imports: [
-        ProgressBarModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpModule,
-        ErpSharedModule.forRoot(),
-        HomeModule.forRoot(),
         AppRoutingModule,
+        AuthModule,
+        HomeModule.forRoot(),
+        DashboardModule,
+        SettingModule,
+        AccountModule,
+        CourseModule,
+        AssessmentModule,
+        AnalysisModule,
+        WorkflowModule,
+        CMSModule,
+        CompetencyModule,
+        LMSModule,
+        ErpSharedModule.forRoot(),
         TranslateModule.forRoot({
-            loader: { provide: TranslateLoader, useClass: CustomTranslationLoader }
+            loader: {provide: TranslateLoader, useClass: CustomTranslationLoader}
         })
     ],
     declarations: [AppComponent],
@@ -37,7 +56,7 @@ import { ProgressBarModule } from 'primeng/primeng';
         BaseRequestOptions,
         {
             provide: Http,
-            useFactory: (options: BaseRequestOptions, realBackend: XHRBackend) => {
+            useFactory: (options: BaseRequestOptions, realBackend: XHRBackend)=> {
                 return new InterceptHttp(realBackend, options);
             },
             deps: [BaseRequestOptions, XHRBackend]

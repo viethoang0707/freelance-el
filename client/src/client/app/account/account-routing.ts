@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 
 export const AccountRoutes: Routes = [
   {
-    path: '',
+    path: 'account',
     data: {
       breadcrumb: 'Account'
     },

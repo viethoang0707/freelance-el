@@ -21,7 +21,7 @@ import { RouterModule } from '@angular/router';
 
 export const LMSRoutes: Routes = [
     {
-       path: '',
+       path: 'lms',
        component: LMSComponent,
        data: {
          breadcrumb:'LMS'

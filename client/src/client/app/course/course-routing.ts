@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 
 export const CourseRoutes: Routes = [
     {
-       path: '',
+       path: 'course',
        component: CourseComponent,
        data: {
       breadcrumb: 'Syllabus'

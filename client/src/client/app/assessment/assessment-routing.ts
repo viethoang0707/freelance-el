@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
 
 export const AssessmentRoutes: Routes = [
   {
-    path: '',
+    path: 'assessment',
     component: AssessmentComponent,
     data: {
       breadcrumb: 'Assessment'

@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 
 export const WorkflowRoutes: Routes = [
   {
-    path: '',
+    path: 'workflow',
     component: WorkflowComponent,
     data: {
       breadcrumb: 'Workflow'
