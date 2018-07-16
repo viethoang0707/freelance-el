@@ -1,0 +1,16 @@
+.mrg-bt {
+    margin-bottom: 15px;
+}
+
+.formb {
+    display: none;
+}
+
+@media screen and (max-width: 500px) {
+    .forpc {
+        display: none;
+    }
+    .formb {
+        display: block;
+    }
+}

@@ -1,0 +1,6 @@
+<odoo>
+    <data>
+        <function model="etraining.bootstrap" name="install"/>
+    </data>
+
+</odoo>

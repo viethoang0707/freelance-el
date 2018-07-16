@@ -1,0 +1,641 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  position: relative;
+  min-height: 100%;
+}
+
+img.pre-loading {
+  position: absolute;
+  width: 70%;
+  left: 15%;
+}
+
+@media screen and (max-width: 768px) {
+  img.pre-loading {
+    top: 30%;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 94px);
+}
+
+.layout-content {
+  padding-bottom: 65px !important;
+}
+
+.ui-table-tbody td {
+  text-align: center;
+}
+
+body p-schedule .ui-state-highlight {
+  /* background-color: #161e840d; */
+}
+
+.ui-scrollpanel-bar-x {
+  display: none;
+}
+
+.ui-scrollpanel-bar-y{
+  display: none;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+  padding-bottom: 0;
+}
+
+body .language .ui-dropdown .ui-dropdown-trigger {
+  height: 28px;
+  margin-top: 0;
+}
+
+.language .fa {
+  line-height: 30px;
+}
+
+.language .ui-dropdown .ui-dropdown-label {
+  padding-right: 1.5em !important;
+}
+
+.ui-treetable td.group-code {
+  text-align: center;
+}
+
+.ui-table .ui-table-tbody>tr:nth-child(even) {
+  background-color: #fff;
+}
+
+.ui-table .ui-table-tbody>tr:nth-child(even).ui-state-highlight {
+  background-color: #ffef8f;
+}
+
+.layout-wrapper .layout-sidebar .sidebar-logo img {
+  margin-right: 12px;
+}
+
+.fc-toolbar.fc-header-toolbar {
+  margin-top: 14px;
+}
+
+/*dropdown report*/
+
+body .ui-dropdown.report-items {
+  height: 29px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  background-color: #337ab7;
+  margin-top: 0;
+  /*border-color: #2e6da4;*/
+}
+
+.ui-dropdown.report-items:not(.ui-state-disabled):hover {
+  background-color: #337ab7;
+}
+
+.report-items .ui-inputtext {
+  color: #fff;
+}
+
+body .ui-dropdown.report-items .ui-dropdown-trigger {
+  background-color: #337ab7;
+  height: 27px;
+  margin-top: 0;
+}
+
+body .ui-dropdown.report-items .ui-dropdown-trigger .fa {
+  color: #fff;
+  line-height: 30px;
+}
+
+/**/
+
+.layout-wrapper .layout-main .layout-topbar {
+  z-index: 999;
+}
+
+.layout-wrapper .layout-sidebar {
+  z-index: 1000;
+}
+
+.ui-state-default {
+  background-color: #fff;
+}
+
+body .ui-fieldset .ui-fieldset-legend {
+  padding: 9px 14px;
+}
+
+.card h1 {
+  margin: 0 0 16px;
+}
+
+.card h1:first-child {
+  margin-top: 0;
+}
+
+/*.options-question .md-inputfield .ui-inputtext {
+  width: 470px;
+}*/
+
+/* responsive */
+
+.ui-toolbar-group-left {
+  /* float:none !important; */
+}
+
+body .ui-button.purple-btn,
+body .ui-datepicker-buttonpane>button.purple-btn {
+  /* width:100% !important; */
+}
+
+body .ui-button.green-btn,
+body .ui-datepicker-buttonpane>button.green-btn {
+  /* width:100% !important; */
+}
+
+body .ui-button.red-btn,
+body .ui-datepicker-buttonpane>button.red-btn {
+  /* width:100% !important; */
+}
+
+@media screen and (max-width: 1024px) {
+  .footer {
+    width: calc(100% - 32px);
+  }
+}  
+
+.ui-state-default {
+  border: none;
+  background: none;
+}
+
+.language .ui-state-default,
+.drop-report .ui-state-default {
+  background: #d7ebf9;
+}
+
+/*dropdown report exam*/
+
+body .drop-report .ui-dropdown {
+  height: 29px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  margin-top: 0;
+  /*border-color: #2e6da4;*/
+}
+
+body .drop-report .ui-dropdown .ui-dropdown-trigger {
+  height: 27px;
+  margin-top: 0;
+}
+
+body .drop-report .ui-dropdown .ui-dropdown-trigger .fa {
+  line-height: 30px;
+}
+
+/**/
+
+.material-icons,
+.fa {
+  vertical-align: -5px;
+}
+
+.q-content p {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* lms-list */
+
+.cont {
+  margin-top: 10px;
+}
+
+body .cont.ui-accordion .ui-accordion-header>a {
+  padding-left: 14px;
+  color: #2779aa;
+}
+
+body .ui-widget-content .cont .fa {
+  color: #2779aa;
+}
+
+body .cont.ui-accordion .ui-accordion-header {
+  background: none;
+  border: none;
+  color: #2779aa;
+}
+
+body .cont.ui-accordion .ui-accordion-header:not(.ui-state-active):not(.ui-state-disabled):hover {
+  background-color: #dcf0f9;
+}
+
+body .cont.ui-accordion .ui-accordion-header.ui-state-active {
+  background-color: #dcf0f9;
+}
+
+body .dashboard-courses-list .ui-panel .ui-panel-content {
+  height: 110px;
+}
+
+body .dashboard-courses-list .ui-panel .ui-panel-footer {
+  border-top: none;
+}
+
+body .linkPage.ui-paginator {
+  background-color: #fff;
+  border: none;
+}
+
+body .linkPage.ui-paginator>a,
+body .linkPage.ui-paginator .ui-paginator-pages a {
+  color: #283593;
+}
+
+body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
+  background-color: #283593;
+  color: #fff;
+}
+
+body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
+  height: 100px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.dashboard-live-conference .task-box-footer .btn-footer {
+  float: right;
+}
+
+.dashboard-live-conference span.task-status {
+  color: #fff;
+}
+
+.dashboard-live-conference .task-box.task-box-1 .task-box-header,
+.dashboard-live-conference .task-box.task-box-1 .task-box-footer .btn-footer {
+  background-color: #e91e63;
+}
+
+.dashboard-live-conference .task-box.task-box-2 .task-box-header,
+.dashboard-live-conference .task-box.task-box-2 .task-box-footer .btn-footer {
+  background-color: #00bcd4;
+}
+
+.dashboard-live-conference .task-box.task-box-3 .task-box-header,
+.dashboard-live-conference .task-box.task-box-3 .task-box-footer .btn-footer {
+  background-color: #ffc107;
+}
+
+.dashboard-live-conference .task-box.task-box-4 .task-box-header,
+.dashboard-live-conference .task-box.task-box-4 .task-box-footer .btn-footer {
+  /* background-color: #616161;*/
+  background-color: #71a23c;
+}
+
+body .user-dashboard .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler {
+  display: none;
+}
+
+body .user-dashboard .ui-fieldset .ui-fieldset-legend {
+  padding: 0;
+}
+
+body .user-dashboard .ui-fieldset.ui-widget-content {
+  border: none;
+}
+
+.question p {
+  margin: 0;
+}
+
+.workflow table {
+  width: 100%;
+}
+
+.display-button {
+  display: none;
+}
+
+.ui-progress-spinner-svg {
+  width: 50%;
+  height: 50%;
+}
+
+.course-study-tree .ui-tree {
+  width: 100%;
+}
+
+.tree-unit-course-study {
+  width: 100%;
+  height: 530px;
+  overflow: auto;
+}
+
+.tree-unit-course-syllabus {
+  width: 100%;
+  height: 480px;
+  overflow: auto;
+}
+
+.class-list-dialog .ui-scrollpanel-content {
+  width: 100%;
+}
+
+body .ui-fieldset.f-print {
+  border: none;
+  padding: 0;
+  margin-top: -10px;
+}
+
+body .ui-fieldset.f-print .ui-fieldset-legend {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ui-widget-content .scorm-study-mode a {
+  color: #3f51b5;
+}
+
+.profile-dialog {
+  width: 100%;
+  height: 480px;
+  overflow: auto;
+}
+
+/*lms course list*/
+
+/*lms exam list*/
+
+.lms-course-list .ui-datalist-content.ui-widget-content,
+.lms-exam-list .ui-datalist-content.ui-widget-content {
+  border: none;
+  min-height: 300px;
+}
+
+.lms-course-list-item,
+.lms-exam-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all {
+  margin-bottom: 10px;
+}
+
+.lms-course-list-item .ui-card-body,
+.lms-exam-list-item .ui-card-body {
+  padding: 0;
+}
+
+.lms-course-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all:hover,
+.lms-exam-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all:hover {
+  box-shadow: 0 0 11px #03a9f4;
+}
+
+.lms-course-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all,
+.lms-exam-list-item.ui-card.ui-widget.ui-widget-content.ui-corner-all {
+  transition: box-shadow .3s;
+}
+
+.lms-course-detail .ui-card-body,
+.lms-exam-detail .ui-card-body {
+  padding: 5px;
+}
+
+.lms-course-detail.ui-card.ui-widget.ui-widget-content.ui-corner-all,
+.lms-exam-detail.ui-card.ui-widget.ui-widget-content.ui-corner-all {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/*.lms-course-list-item .status-bars .status-bar{
+  position: absolute;
+  left: 200px;
+}
+
+.lms-course-list-item .status-bars ul li span{
+  position: unset;
+}
+
+.lms-course-list-item .status-bars ul li i{
+  position: unset;
+}*/
+
+.lms-course-list-item .status-bars ul li {
+  padding: 5px;
+}
+
+.lms-exam-detail .ui-card-footer {
+  padding-top: 8px !important;
+}
+
+.lms-exam-list-item .ui-card-footer {
+  padding-top: 0;
+}
+
+/*lms-conference-list-item*/
+
+body .lms-conference-list-item .ui-panel .ui-panel-footer {
+  border-top: none;
+}
+
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 60px;
+  width: 60px;
+  margin: 0px auto;
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear;
+  border-left: 6px solid rgba(0, 174, 239, .174);
+  border-right: 6px solid rgba(0, 174, 239, .174);
+  border-bottom: 6px solid rgba(0, 174, 239, .174);
+  border-top: 6px solid rgba(0, 174, 239, .8);
+  border-radius: 100%;
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+
+@-moz-keyframes rotation {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(359deg);
+  }
+}
+
+@-o-keyframes rotation {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(359deg);
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+body .settings-exam .ui-fluid .ui-spinner .ui-spinner-button {
+  margin: 0;
+}
+
+.settings-exam .options-question .md-inputfield .ui-inputtext {
+  width: 100%;
+}
+
+.setting-exam {
+  height: 430px;
+  overflow: auto;
+}
+
+body .course-syllabus-dialog .ui-dialog-content.ui-widget-content,
+body .class-manage .ui-dialog-content.ui-widget-content {
+  height: 100% !important;
+}
+
+.ui-datalist-emptymessage {
+  display: none;
+}
+
+body .ui-progressbar .ui-progressbar-value {
+  height: 0px !important;
+}
+
+.width-tree {
+  width: 100%;
+}
+
+.lecture-transcript p {
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+}
+
+.ui-scrollpanel-content {
+  width: 100%;
+}
+
+.button-add-ques.ui-splitbutton {
+  display: inline;
+}
+
+.mobile-logo {
+  width: 140px;
+  height: 40px !important;
+}
+
+.course-syllabus-dialog .ui-splitbutton {
+  display: inline;
+}
+
+.exam-study .btn-submit-exam {
+  margin-left: 550px;
+    overflow: auto;
+}
+
+.tree-question-dialog{
+  max-height: 380px;
+    display: inline;
+}
+
+body .ui-dialog.course-dialog .ui-dialog-content{
+  height: 85%;
+  overflow: auto;
+}
+
+body .exam-study .ui-dialog-content.ui-widget-content{
+  height: 100% !important;
+}
+
+.ui-fluid .ui-message {
+  display: -webkit-box;
+}
+
+.lms-search-course .lms-course-list.ui-datascroller .ui-datascroller-content{
+  border: none;
+}
+
+@media screen and (max-width: 500px) {
+  .tree-unit-course-study{
+    height: 150px;
+    overflow: auto;}
+
+  .exam-study .btn-submit-exam {
+    margin-left: 0 !important;
+  }
+
+  .layout-wrapper .layout-main .layout-footer {
+    padding: 5px 10px;
+  }
+
+  .layout-wrapper .layout-main .layout-footer .footer-text-left,
+  .layout-wrapper .layout-main .layout-footer .footer-text-right{
+    margin-top: 5px !important;
+  }
+
+  .layout-wrapper .layout-main .layout-footer .footer-text-right,
+  .layout-wrapper .layout-main .layout-footer .footer-text-left{
+    margin-top: 10px;
+    text-align: center;
+    display: block;
+    float: none;
+  }
+  .showformb {
+    display: none !important;
+  }
+  .ui-table .ui-table-tbody>tr>td {
+    border: 0px !important;
+  }
+  .card {
+    padding: 0px !important;
+  }
+  .ui-g-12 {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  body .ui-buttonset>.ui-button:first-child {
+    float: left !important;
+  }
+
+  .lms-course-list-item button{
+    margin-bottom: 5px;
+  }
+
+  .fc .fc-toolbar > * > *{
+    margin-left: .5em;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .project-course-study, .course-material-study{
+    display: none !important;
+  }
+}

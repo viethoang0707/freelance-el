@@ -1,0 +1,19 @@
+<div class="layout-wrapper" (click)="onWrapperClick()" [ngClass]="{'layout-wrapper-static': layoutStatic,
+    'layout-wrapper-active': mobileMenuActive}">
+    <app-menu></app-menu>
+    <div class="layout-main">
+        <app-navbar></app-navbar>
+        <app-breadcrumb></app-breadcrumb>
+        <div class="layout-content">
+            <p-growl ></p-growl>
+            <router-outlet>
+            </router-outlet>
+            <div class="footer">
+                <app-footer></app-footer>
+            </div>
+        </div>
+        <div class="layout-main-mask" *ngIf="mobileMenuActive"></div>
+    </div>
+</div>
+<p-confirmDialog header="{{'Confirmation'|translate}}" width="300"></p-confirmDialog>
+<user-profile-dialog></user-profile-dialog>

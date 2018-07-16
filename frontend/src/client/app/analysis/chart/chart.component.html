@@ -1,0 +1,11 @@
+<div class="card card-w-title">
+  <h1>{{'Charts'|translate}}</h1>
+  <div class="ui-g">
+     <div class="ui-g-3" style="text-align:center">
+        <p-listbox [options]="charts" (onChange)="selectChart()" [(ngModel)]="selectedChart" [style]="{'width':'200px'}"></p-listbox>
+    </div>
+    <div class="ui-g-9" style="text-align:center">
+         <ng-template chart-container></ng-template>
+    </div>
+  </div>
+</div>

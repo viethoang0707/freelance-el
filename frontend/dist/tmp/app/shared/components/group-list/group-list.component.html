@@ -1,0 +1,23 @@
+<div class="card card-w-title">
+  <h1>{{'Groups'|translate}}</h1>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-toolbar>
+        <div class="ui-toolbar-group-left">
+            <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="add()" icon="ui-icon-add"></button>
+            <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="edit()" [disabled]="!selectedNode"></button>
+            <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="delete()" [disabled]="!selectedNode"></button>
+        </div>
+      </p-toolbar>
+      <p-treeTable class="forpc" [value]="tree" selectionMode="single" [(selection)]="selectedNode">
+        <p-column field="name" header="{{'Name'|translate}}"></p-column>
+        <p-column styleClass="group-code" field="code" header="{{'Code'|translate}}"></p-column>
+      </p-treeTable>
+
+      <p-treeTable class="formb" [value]="tree" selectionMode="single" [(selection)]="selectedNode">
+        <p-column field="name" header="{{'Name'|translate}}"></p-column>
+      </p-treeTable>
+      <group-dialog></group-dialog>
+    </div>
+  </div>
+</div>

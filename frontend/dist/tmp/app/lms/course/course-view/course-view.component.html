@@ -1,0 +1,122 @@
+<div class="card card-w-title ui-g">
+    <div class="ui-g-12 ui-lg-12"><h1>{{'Course'|translate}}: {{course.name}} </h1></div>
+    <div class="ui-g-12 ui-lg-12">
+        <p-tabView [style]="{width: '100%', height: '600px'}">
+            <p-tabPanel header="{{'Course info'|translate}}" leftIcon="ui-icon-info">
+                 <div class="ui-g">
+                    <div class="ui-lg-8 ui-g-12">
+                        <div class="ui-lg-4 ui-g-12">
+                            <span class="profile-image-wrapper">
+                              <img [src]='course.logo | imageBase64' [ngClass]="{'display-none' : !course.logo}"  />
+                              <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg">
+                            </span>
+                        </div>
+                        <div class="ui-lg-8 ui-g-12">
+                            <h3 class="heading-course">
+                                <span>{{course.name}}</span>
+                            </h3>
+                            <span class="c-status">
+                                {{CONTENT_STATUS[course.status]|translate}}
+                            </span>
+                            <div class="clearfix"></div>
+                            <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Summary'|translate}}</h4>
+                            <p>{{course.summary}}</p>
+                            <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Description'|translate}}</h4>
+                            <p [innerHTML]="course.description"></p>
+                        </div>
+                    </div>
+                    <div class="ui-lg-4 ui-g-12">
+                        <p-card styleClass="lms-course-detail">
+                            <ul class="list-cmt">
+                                <li class="clearfix">
+                                    <i class="material-icons">toys</i>
+                                    <span class="cmt-title">{{'Code'|translate}}</span>
+                                    <span class="cmt-detail">{{course.code}}</span>
+                                </li>
+                                <li class="clearfix">
+                                    <i class="material-icons">invert_colors</i>
+                                    <span class="cmt-title">{{'Mode'|translate}}</span>
+                                    <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
+                                </li>
+                                <li class="clearfix" >
+                                    <i class="material-icons">school</i>
+                                    <span class="cmt-title">{{'Prequisite'|translate}}</span>
+                                    <span class="cmt-detail">{{course.prequisite_course_name}}</span>
+                                </li>
+                                <li class="clearfix" >
+                                    <i class="material-icons">grade</i>
+                                    <span class="cmt-title">{{'Acquired competency'|translate}}</span>
+                                    <span class="cmt-detail">{{course.competency_name}}</span>
+                                </li>
+                                <li class="clearfix" >
+                                    <i class="material-icons">grade</i>
+                                    <span class="cmt-title">{{'Acquired competency level'|translate}}</span>
+                                    <span class="cmt-detail">{{course.competency_level_name}}</span>
+                                </li>
+                                <li class="clearfix" >
+                                    <i class="material-icons">toc</i>
+                                    <span class="cmt-title">{{'Group'|translate}}</span>
+                                    <span class="cmt-detail">{{course.group_id__DESC__}}</span>
+                                </li>
+                                
+                                 <li class="clearfix" style="border-bottom: none;">
+                                    <i class="material-icons">date_range</i>
+                                    <span class="cmt-title">{{'Create date'|translate}}</span>
+                                    <span class="cmt-detail">{{course.create_date | date : "dd/MM/yyyy"}}</span>
+                                </li>
+                            </ul>
+                        </p-card>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
+                <div class="ui-g-12">
+                    <div class="ui-g-3 course-study-tree">
+                        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
+                    </div>
+                    <div class="ui-g-9" *ngIf="selectedUnit">
+                        <div class="card course-study-unit">
+                            <div class="image-box-content">
+                                <div class="fLeft">
+                                    <h3 class="removeMT mb5">{{selectedUnit.name}}</h3>
+                                    <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type] |translate }}</span>
+                                </div>
+                                <div class="image-box-footer fRight">
+                                    <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
+                                    <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div>
+                                    <ng-template course-unit-container></ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download">
+                <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
+                    <ul class="task-list-container">
+                        <li *ngFor="let material of materials">
+                            <a href="{{material.url}}">
+                  <span class="task-name">{{material.name}}</span>
+                </a>
+                            <i class="material-icons" *ngIf="material.type=='video'">videocam</i>
+                            <i class="material-icons" *ngIf="material.type=='audio'">mic</i>
+                            <i class="material-icons" *ngIf="material.type=='file'">attachment</i>
+                        </li>
+                    </ul>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="{{'Course FAQ'|translate}}" leftIcon="ui-icon-question-answer">
+                <div class="ui-g-12">
+                    <p-accordion>
+                        <p-accordionTab header="{{faq.question}}" [selected]="true" *ngFor="let faq of faqs">
+                            <div [innerHTML]="faq.answer"></div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div align='center'>
+	<div style="width:'50%'">
+		<p-fileUpload name="logo" mode="basic" chooseLabel="{{'Select file'|translate}}'" (onSelect)="changeListner($event)" accept="image/*" maxFileSize="1024*16" showUploadButton="false" >	
+		</p-fileUpload>
+	</div>
+	<img width="100%" height="100%" [src]='src64?sanitizer.bypassSecurityTrustUrl("data:image/png;base64,"+src64):"assets/images/slider/slider-2.png"' library="serenity-layout" >
+	
+</div>

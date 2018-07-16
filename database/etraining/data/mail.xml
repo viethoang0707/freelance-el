@@ -1,0 +1,144 @@
+<odoo>
+    <data noupdate="0">
+         <record id="course_register_template" model="mail.template">
+            <field name="name">E-learning course registration</field>
+            <field name="subject">E-learning course enrollment notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                You have been registered to course ${object.course_id.name} successfully.
+            </div>]]>
+            </field>
+        </record>
+        <record id="course_open_template" model="mail.template">
+            <field name="name">E-learning course open</field>
+            <field name="subject">E-learning course open notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                Course ${object.course_id.name} has been opened.
+            </div>]]>
+            </field>
+        </record>
+        <record id="course_close_template" model="mail.template">
+            <field name="name">E-learning course close</field>
+            <field name="subject">E-learning course close notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                Course ${object.course_id.name} has been closed.
+            </div>]]>
+            </field>
+        </record>
+        <record id="class_register_template" model="mail.template">
+            <field name="name">E-learning class registration</field>
+            <field name="subject">E-learning class enrollment notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                You have been registered to class ${object.class_id.name}.
+            </div>]]>
+            </field>
+        </record>
+        <record id="class_open_template" model="mail.template">
+            <field name="name">E-learning course open</field>
+            <field name="subject">E-learning course open notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                Class ${object.class_id.name} has been opened.
+            </div>]]>
+            </field>
+        </record>
+        <record id="class_close_template" model="mail.template">
+            <field name="name">E-learning class close</field>
+            <field name="subject">E-learning class close notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                Class ${object.course_id.name} has been closed.
+            </div>]]>
+            </field>
+        </record>
+        <record id="exam_register_template" model="mail.template">
+            <field name="name">E-learning exam registration</field>
+            <field name="subject">E-learning exam registration</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_exam_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                You have been registered to exam ${object.exam_id.name} by ${object.supervisor_id.name}.
+            </div>]]>
+            </field>
+        </record>
+        <record id="exam_open_template" model="mail.template">
+            <field name="name">E-learning exam open</field>
+            <field name="subject">E-learning exam open notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_exam_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                Exam ${object.exam_id.name} has been opened.
+            </div>]]>
+            </field>
+        </record>
+        <record id="exam_close_template" model="mail.template">
+            <field name="name">E-learning exam close</field>
+            <field name="subject">E-learning exam close notification</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_exam_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                Exam ${object.course_id.name} has been closed.
+            </div>]]>
+            </field>
+        </record>
+        <record id="survey_invite_template" model="mail.template">
+            <field name="name">E-learning survey invitation</field>
+            <field name="subject">E-learning survey invitation</field>
+            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="model_id" ref="etraining.model_etraining_survey_member" />
+            <field name="auto_delete" eval="True" />
+            <field name="body_html">
+                <![CDATA[
+            <div>
+                You have been invited to survey ${object.survey_id.name} by ${object.supervisor_id.name}. Please click <a href="${object.survey_link}">here</a> to complete your survey.
+            </div>]]>
+            </field>
+        </record>
+    </data>
+</odoo>

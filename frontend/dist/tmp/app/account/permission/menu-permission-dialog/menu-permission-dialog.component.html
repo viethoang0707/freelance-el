@@ -1,0 +1,12 @@
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Menu permission'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
+    	<div class="spinner" [hidden]="!loading"></div>
+        <div class="ui-g ui-fluid form-group">
+            <p-tree [value]="menuTree" selectionMode="checkbox" [(selection)]="selectedMenus" (onNodeSelect)="nodeSelect($event)"></p-tree>
+        </div>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+            <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

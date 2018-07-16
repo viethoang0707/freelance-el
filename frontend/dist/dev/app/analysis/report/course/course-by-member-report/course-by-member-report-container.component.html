@@ -1,0 +1,18 @@
+<div class="ui-g content">
+    <div class="ui-g-12">
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+                <button pButton type="button" label="{{'Select user group'|translate}}" icon="ui-icon-open-in-browser" class="green-btn"
+                    (click)="selectUserGroup()"></button>
+                <button pButton type="button" label="{{'Select individual users'|translate}}" icon="ui-icon-open-in-browser" class="green-btn"
+                    (click)="selectIndividualUsers()"></button>
+            </div>
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" label="{{'Export'|translate}}" class="blue-grey-btn" icon="ui-icon-file-download" (click)="export()"></button>
+            </div>
+        </p-toolbar>
+        <course-by-member-report></course-by-member-report>
+        <select-user-dialog></select-user-dialog>
+        <select-group-dialog [category]="GROUP_CATEGORY.USER"></select-group-dialog>
+    </div>
+</div>

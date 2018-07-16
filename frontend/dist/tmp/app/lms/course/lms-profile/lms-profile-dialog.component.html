@@ -1,0 +1,84 @@
+<form novalidate (ngSubmit)="save()" #f="ngForm" autocomplete="off">
+  <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1000" [responsive]="true" [positionTop]="20"
+    appendTo="body">
+    <div class="spinner" [hidden]="!loading"></div>
+    <p-tabView styleClass="profile-dialog">
+      <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school" [style]="{width: '100%', height: '430px'}">
+        <p-table [value]="courseMembers">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{'Course'|translate}}</th>
+              <th>{{'Register date'|translate}}</th>
+              <th>{{'Enrollment status'|translate}}</th>
+              <th>{{'Certificate'|translate}}</th>
+              <th>
+                <button pButton type="button" label="{{'Export course'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="exportCourse()"></button>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-member>
+            <tr>
+              <td>{{member.course_name}}</td>
+              <td>{{member.date_register}}</td>
+              <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
+              <td>
+                <a style="cursor: pointer; color: seagreen" *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabPanel>
+
+      <p-tabPanel header="{{'Exam history'|translate}}" leftIcon="ui-icon-grade" [style]="{width: '100%', height: '430px'}">
+        <p-table [value]="examMembers">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{'Exam'|translate}}</th>
+              <th>{{'Register date'|translate}}</th>
+              <th>{{'Enrollment status'|translate}}</th>
+              <th>{{'Grade'|translate}}</th>
+              <th>
+                <button pButton type="button" label="{{'Export exam'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="exportExam()"></button>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-member>
+            <tr>
+              <td>{{member.exam_name}}</td>
+              <td>{{member.date_register}}</td>
+              <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
+              <td>{{member.grade?.name}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabPanel>
+
+
+      <p-tabPanel header="{{'Skill'|translate}}" leftIcon="ui-icon-linear-scale" [style]="{width: '100%', height: '430px'}">
+        <p-table [value]="skills">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{'Competency'|translate}}</th>
+              <th>{{'Level'|translate}}</th>
+              <th>{{'Date acquired'|translate}}</th>
+              <th>
+                <button pButton type="button" label="{{'Export skill'|translate}}" class="purple-btn" icon="ui-icon-file-download" (click)="exportSkill()"></button>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-skill>
+            <tr>
+              <td>{{skill.competency_name}}</td>
+              <td>{{skill.competency_level_name}}</td>
+              <td>{{skill.date_acquire}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-tabPanel>
+    </p-tabView>
+    <certificate-print-dialog></certificate-print-dialog>
+    <p-footer>
+      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+  </p-dialog>
+</form>

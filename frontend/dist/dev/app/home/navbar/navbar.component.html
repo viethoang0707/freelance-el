@@ -1,0 +1,72 @@
+<div class="layout-topbar">
+    <img alt="logo" src="assets/images/logo/logo_light.png" class="mobile-logo" />
+    <a class="menu-btn" (click)="eventManager.menuClick()">
+        <i class="material-icons">&#xE5D2;</i>
+    </a>
+    <a class="topbar-menu-btn" (click)="eventManager.topbarMobileMenuClick()">
+        <i class="material-icons">&#xE853;</i>
+    </a>
+    <div class="layout-topbar-menu-wrapper">
+        <ul class="topbar-menu fadeInDown" [ngClass]="{'topbar-menu-active': parent.topbarMenuActive}" (click)="eventManager.topbarMenuClick()">
+            <li #profile class="profile-item" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
+                <a>
+            <span class="profile-image-wrapper">
+                <img [src]='ContextUser.image | imageBase64'/>
+            </span>
+            <span class="topbar-item-name profile-name">{{ContextUser.display_name}}</span>
+        </a>
+                <ul class="fadeInDown">
+                    <li role="menuitem">
+                        <a (click)="eventManager.showProfile()">
+                <i class="material-icons">account_circle</i>
+                <span>{{'User Profile'|translate}}</span>
+            </a>
+                    </li>
+                    <li role="menuitem">
+                        <a (click)="appEvent.userLogout()">
+                <i class="material-icons" >exit_to_app</i>
+                <span>{{'Log out'|translate}}</span>
+            </a>
+                    </li>
+                </ul>
+            </li>
+            <li #languages [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === languages}" (click)="eventManager.topbarRootItemClick( languages)">
+                <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='gb'" (click)="setLang('vn')">
+            <i class="topbar-icon material-icons">language</i>
+            <span class="flag-icon" [ngClass]="'flag-icon-gb'"></span>
+        </a>
+                <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='vn'" (click)="setLang('gb')">
+            <i class="topbar-icon material-icons">language</i>
+            <span class="flag-icon" [ngClass]="'flag-icon-vn'"></span>
+        </a>
+            </li>
+            <li #mode [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === mode}" (click)="eventManager.topbarRootItemClick( mode)" *ngIf="ContextUser.IsAdmin">
+                <a pTooltip="{{'Switch to LMS'|translate}}" *ngIf="viewMode=='admin'" (click)="setViewMode('lms')">
+                    <i class="topbar-icon material-icons">swap_horiz</i>
+                </a>
+                <a pTooltip="{{'Switch to adminnistrator'|translate}}" *ngIf="viewMode=='lms'" (click)="setViewMode('admin')">
+                    <i class="topbar-icon material-icons">swap_horiz</i>
+                </a>
+            </li>
+            <li class="stats-items" #stats [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === stats}" (click)="eventManager.topbarRootItemClick( stats)" *ngIf="ContextUser.IsAdmin">
+                <a> 
+            <i class="topbar-icon material-icons">person_pin_circle</i>
+            <div> {{userCount}} {{'Users'|translate}}</div>
+        </a>
+                <a>
+            <i class="topbar-icon material-icons">school</i>
+            <div> {{courseCount}} {{'Courses'|translate}}</div>
+        </a>
+                <a>
+            <i class="topbar-icon material-icons">people</i>
+            <div> {{studentCount}} {{'Students'|translate}}</div>
+        </a>
+                <a>
+            <i class="topbar-icon material-icons">people</i>
+            <div> {{teacherCount}} {{'Teachers'|translate}}</div>
+        </a>
+            </li>
+        </ul>
+    </div>
+    
+</div>

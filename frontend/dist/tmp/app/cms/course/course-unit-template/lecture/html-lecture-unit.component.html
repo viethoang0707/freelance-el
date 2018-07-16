@@ -1,0 +1,13 @@
+<div *ngIf ="mode=='design'">
+	<div class="ui-g-12 removePdLf removePdRt">
+	  <label for="content">{{'Lecture'|translate}}</label>
+	  <p-editor [(ngModel)]="lecture.content" [style]="{'height':'320px'}" name="content">
+	  </p-editor>
+	</div>
+</div>
+<div *ngIf="mode=='preview'">
+  <div [innerHTML]="lecture.content"></div>
+</div>
+<div *ngIf="mode=='study'">
+  <div [innerHTML]="lecture.content" style="height: 410px; overflow: auto;"></div>
+</div>

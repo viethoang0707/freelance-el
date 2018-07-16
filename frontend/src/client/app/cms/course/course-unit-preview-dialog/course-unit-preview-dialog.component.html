@@ -1,0 +1,19 @@
+<form novalidate (ngSubmit)="save()" #f="ngForm" autocomplete="off">
+  <p-dialog header="{{nameUnit}}" [(visible)]="display" modal="true" [responsive]="true" width="1000" appendTo="body">
+    <div class="spinner" [hidden]="!loading"></div>
+    <p-scrollPanel [style]="{width: '100%'}">
+      <div class="ui-g ui-fluid form-group">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <ng-template course-unit-container></ng-template>
+        </div>
+      </div>
+    </p-scrollPanel>
+    <p-footer>
+      <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}"
+        (click)="prevUnitPreview()"></button>
+      <button pButton type="button" icon="ui-icon-navigate-next" iconPos="right" title="{{'Next'|translate}}" label="{{'Next'|translate}}"
+        (click)="nextUnitPreview()"></button>
+      <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+  </p-dialog>
+</form>

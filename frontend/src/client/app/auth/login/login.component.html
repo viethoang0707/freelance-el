@@ -1,0 +1,59 @@
+<p-growl [sticky]="true" ></p-growl>
+<div class="login-body">
+  <div class="login-panel ui-fluid">
+    <div class="login-panel-header">
+      <img src='assets/images/logo/logo_light.png' style="width: 140px">
+    </div>
+    <div class="login-panel-content">
+      <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate autocomplete="off">
+        <div class="ui-g">
+          <div class=" ui-g-12 ">
+            <h1>{{'Corporate E-learnining System'|translate}}</h1>
+          </div>
+          <div class=" ui-g-12 " [hidden]="buildMode=='prod'">
+            <span class="md-inputfield">
+                <input type="text"  pInputText name="cloudid" [(ngModel)]="cloudid">
+                <label for="cloudid">{{'Cloud ID' | translate}}</label>
+            </span>
+          </div>
+          <div class=" ui-g-12 ">
+            <span class="md-inputfield">
+                <input type="text" pInputText name="username"
+                [(ngModel)]="credential.username" #username="ngModel">
+                <label for="username">{{'Username'|translate}}</label>
+                <div *ngIf="username.invalid && (username.dirty || username.touched)"
+                    class="ui-message ui-messages-error ui-corner-all">
+                    <div *ngIf="username.errors.required">
+                        {{'Username is required' | translate}}
+                    </div>
+                </div>
+            </span>
+          </div>
+          <div class=" ui-g-12 ">
+            <span class="md-inputfield">
+                <input type="password" pInputText autocomplete="off" name="password"
+                [(ngModel)]="credential.password" #password="ngModel"
+                required>
+                <label for="password">{{'Password'|translate}}</label>
+                <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                    class="ui-message ui-messages-error ui-corner-all">
+                    <div *ngIf="password.errors.required">
+                        {{'Password is required' | translate}}
+                    </div>
+                </div>
+            </span>
+          </div>
+          <div class="ui-g-12">
+            <p-checkbox name="remember" binary="true" label="{{'Remember password'|translate}}" [(ngModel)]="remember"></p-checkbox>
+          </div>
+          <div class="ui-g-12">
+            <button pButton type="submit" icon="fa ui-icon-person" label="{{'Log in'|translate}}"></button>
+          </div>
+          <div class="ui-g-12">
+            <a routerLink="/auth/recover-pass">{{'Forgot your password ?'|translate}}</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

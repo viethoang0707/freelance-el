@@ -1,0 +1,18 @@
+<div class="ui-g content">
+    <div class="ui-g-12">
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+                <button pButton type="button" label="{{'Select groups'|translate}}" icon="ui-icon-open-in-browser" class="green-btn"
+                    (click)="selectGroups()"></button>
+                <button pButton type="button" label="{{'Select individual users'|translate}}" icon="ui-icon-open-in-browser" class="green-btn"
+                    (click)="selectCompetency()"></button>
+            </div>
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" label="{{'Export'|translate}}" class="blue-grey-btn" icon="ui-icon-file-download" (click)="export()"></button>
+            </div>
+        </p-toolbar>
+        <competency-by-group-report></competency-by-group-report>
+        <select-multi-group-dialog [category]="GROUP_CATEGORY.USER"></select-multi-group-dialog>
+        <select-competency-dialog></select-competency-dialog>
+    </div>
+</div>

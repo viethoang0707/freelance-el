@@ -1,0 +1,73 @@
+<p-dialog header="{{project.name}}" [(visible)]="display" modal="true" width="960" [responsive]="true" appendTo="body">
+  <div class="spinner" [hidden]="!loading"></div>
+  <div class="ui-g-12 ">
+    <p-toolbar>
+      <div class="ui-toolbar-group-left ">
+        <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="mark()" [disabled]="!selectedMember || getProjectSubmit(selectedMember).IsNew"></button>
+      </div>
+    </p-toolbar>
+    <div>
+      <div class="ui-g-12">
+        <span> {{ 'Status'|translate}} : {{PROJECT_STATUS[project.status]}}</span>
+      </div>
+      <div class="ui-g-6">
+        <span> {{ 'Name'|translate}} : {{project.name}}</span>
+      </div>
+      <div class="ui-g-12">
+        <div>
+          <label>{{'Content'|translate}}</label>
+          <p [innerHTML]="project.content"></p>
+        </div>
+      </div>
+      <div class="ui-g-6">
+        <label>{{'Start'|translate}}</label>
+        {{project.start | date : "dd/MM/yyyy"}}
+      </div>
+      <div class="ui-g-6">
+        <label>{{'End'|translate}}</label>
+        {{project.end | date : "dd/MM/yyyy"}}
+      </div>
+      <div class="ui-g-6">
+        <a href="{{project.file_url}}" target="_blank" *ngIf="project.file_url">{{project.filename}}</a>
+      </div>
+    </div>
+    <p-table #scoreTable [value]="members" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
+      <!--  sortField="role" -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th [pSortableColumn]="'name'">
+            {{'Name'|translate}}
+            <p-sortIcon [field]="'name'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'group_id__DESC__'">
+            {{'Group'|translate}}
+            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'date_submit'">
+            {{'Date of submission'|translate}}
+            <p-sortIcon [field]="'date_submit'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'score'">
+            {{'Score'|translate}}
+            <p-sortIcon [field]="'score'"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-member>
+        <tr [pSelectableRow]="member" *ngVar="getProjectSubmit(member) as projectSubmit">
+          <td>{{member.name}}</td>
+          <td>{{member.group_id__DESC__}}</td>
+           <td class="showformb">{{projectSubmit.date_submit | date : "dd/MM/yyyy, h:mm a"}}</td>
+          <td>{{projectSubmit.score}}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        {{'Total records'|translate}} : {{members?.length}}
+      </ng-template>
+    </p-table>
+  </div>
+  <project-marking-dialog></project-marking-dialog>
+  <p-footer>
+    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+  </p-footer>
+</p-dialog>
