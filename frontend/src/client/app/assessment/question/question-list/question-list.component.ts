@@ -31,7 +31,6 @@ export class QuestionListComponent extends BaseComponent {
     private selectedGroupNodes: TreeNode[];
     private treeUtils: TreeUtils;
     private selectedQuestions: any;
-    private selectMode: string;
 
     @ViewChild(QuestionDialog) questionDialog: QuestionDialog;
     @ViewChild(QuestionImportDialog) questionImportDialog: QuestionImportDialog;
@@ -41,7 +40,6 @@ export class QuestionListComponent extends BaseComponent {
         super();
         this.treeUtils = new TreeUtils();
         this.questions = [];
-        this.selectMode = "single";
         this.items = [
             {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.addQuestion('sc')}},
             {label: this.translateService.instant(QUESTION_TYPE['mc']), command: ()=> { this.addQuestion('mc')}},
@@ -66,8 +64,8 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     editQuestion() {
-        if (this.selectedQuestions && this.selectMode=='single')
-            this.questionDialog.show(this.selectedQuestions);
+        if (this.selectedQuestions && this.selectedQuestions.length==1)
+            this.questionDialog.show(this.selectedQuestions[0]);
     }
 
     deleteMultipleQuestions(){
@@ -76,7 +74,6 @@ export class QuestionListComponent extends BaseComponent {
                 Question.deleteArray(this, this.selectedQuestions).subscribe(() => {
                     this.selectedQuestions = null;
                     this.loadQuestions();
-                    this.selectMode = "single";
                 });
             });
     }

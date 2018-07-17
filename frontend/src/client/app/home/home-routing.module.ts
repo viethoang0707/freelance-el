@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
@@ -27,7 +26,6 @@ import { CompetencyRoutes } from '../competency/competency-routing';
           ...CourseRoutes,
           ...AssessmentRoutes,
           ...AnalysisRoutes,
-          ...LMSRoutes,
           ...WorkflowRoutes,
           ...CompetencyRoutes
         ]

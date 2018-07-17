@@ -1,21 +1,20 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { AuthService } from '../../../shared/services/auth.service';
+import { BaseComponent } from '../../shared/components/base/base.component';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, SURVEY_STATUS } from '../../../shared/models/constants'
-import { Survey } from '../../../shared/models/elearning/survey.model';
-import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
-import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
-import { Group } from '../../../shared/models/elearning/group.model';
-import { SurveySubmission } from '../../../shared/models/elearning/survey-submission.model';
+import { GROUP_CATEGORY, SURVEY_STATUS } from '../../shared/models/constants'
+import { Survey } from '../../shared/models/elearning/survey.model';
+import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
+import { SurveyQuestion } from '../../shared/models/elearning/survey-question.model';
+import { Group } from '../../shared/models/elearning/group.model';
+import { SurveySubmission } from '../../shared/models/elearning/survey-submission.model';
 import { SelectItem } from 'primeng/api';
-import { SurveyContentDialog } from '../../../cms/survey/content-dialog/survey-content.dialog.component';
-import { SurveyStudyDialog } from '../survey-study/survey-study.dialog.component';
-import { ReportUtils } from '../../../shared/helpers/report.utils';
+import { SurveyContentDialog } from '../../cms/survey/content-dialog/survey-content.dialog.component';
+import { SurveyStudyDialog } from '../../lms/survey/survey-study/survey-study.dialog.component';
+import { ReportUtils } from '../../shared/helpers/report.utils';
 import { Route, Router } from '@angular/router';
-import { BaseModel } from '../../../shared/models/base.model';
-import { User } from '../../../shared/models/elearning/user.model';
+import { BaseModel } from '../../shared/models/base.model';
+import { User } from '../../shared/models/elearning/user.model';
 
 
 @Component({

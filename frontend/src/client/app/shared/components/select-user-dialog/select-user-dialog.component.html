@@ -12,6 +12,9 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th>
+                            {{'Login'|translate}}
+                        </th>
+                        <th>
                             {{'Name'|translate}}
                         </th>
                         <th>
@@ -23,6 +26,9 @@
                     <tr [pSelectableRow]="rowData">
                         <td>
                             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                        </td>
+                        <td>
+                            {{rowData.login}}
                         </td>
                         <td>
                             {{rowData.name}}

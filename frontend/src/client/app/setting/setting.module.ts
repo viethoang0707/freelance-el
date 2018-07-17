@@ -5,10 +5,16 @@ import { SettingComponent } from './setting.component';
 import { SettingRoutingModule } from './setting-routing';
 
 @NgModule({
-    imports: [SettingRoutingModule,ErpSharedModule, AuthModule],
-    declarations: [ SettingComponent],
-    exports: [],
-    providers: []
+	imports: [
+		SettingRoutingModule,
+		ErpSharedModule,
+		AuthModule
+	],
+	declarations: [
+		SettingComponent
+	],
+	exports: [],
+	providers: []
 })
 export class SettingModule {
 }

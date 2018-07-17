@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
-import  { AssessmentComponent } from './assessment.component'
+import { AssessmentComponent } from './assessment.component'
 import { ExamDialog } from './exam/exam-dialog/exam-dialog.component';
 import { ExamEnrollDialog } from './exam/enrollment-dialog/enrollment-dialog.component';
 import { ExamEnrollmentListComponent } from './exam/exam-enrollment-list/exam-enrollment-list.component';
@@ -24,15 +24,43 @@ import { SurveySheetPreviewDialog } from './question/survey-sheet-preview/survey
 import { AssessmentRoutingModule } from './assessment-routing';
 
 @NgModule({
-    imports: [AssessmentRoutingModule, ErpSharedModule, AuthModule],
-    declarations: [AssessmentComponent, ExamDialog,QuestionSheetListComponent,QuestionSheetPreviewDialog,
-    				QuestionListComponent, QuestionDialog, QuestionContainerDirective,MultiChoiceQuestionComponent,
-    				SingleChoiceQuestionComponent, OpenEndQuestionComponent, QuestionImportDialog,
-    				SurveySheetListComponent, SurveySheetPreviewDialog, SurveyDialog,ExamEnrollDialog, ExamEnrollmentListComponent,
-    				ExamListComponent, SurveyEnrollDialog, SurveyEnrollmentListComponent, SurveyListComponent ],
-    providers: [],
-    exports: [QuestionContainerDirective, ExamDialog, QuestionSheetPreviewDialog, SurveySheetPreviewDialog, SurveyDialog],
-    entryComponents: [SingleChoiceQuestionComponent, OpenEndQuestionComponent, MultiChoiceQuestionComponent]
+	imports: [
+		AssessmentRoutingModule,
+		ErpSharedModule,
+		AuthModule],
+	declarations: [
+		AssessmentComponent,
+		ExamDialog,
+		QuestionSheetListComponent,
+		QuestionSheetPreviewDialog,
+		QuestionListComponent,
+		QuestionDialog,
+		QuestionContainerDirective,
+		MultiChoiceQuestionComponent,
+		SingleChoiceQuestionComponent,
+		OpenEndQuestionComponent,
+		QuestionImportDialog,
+		SurveySheetListComponent,
+		SurveySheetPreviewDialog,
+		SurveyDialog, ExamEnrollDialog,
+		ExamEnrollmentListComponent,
+		ExamListComponent,
+		SurveyEnrollDialog,
+		SurveyEnrollmentListComponent,
+		SurveyListComponent
+		],
+	providers: [],
+	exports: [
+		QuestionContainerDirective,
+		ExamDialog,
+		QuestionSheetPreviewDialog,
+		SurveySheetPreviewDialog,
+		SurveyDialog],
+	entryComponents: [
+		SingleChoiceQuestionComponent,
+		OpenEndQuestionComponent,
+		MultiChoiceQuestionComponent
+		]
 })
 export class AssessmentModule {
 }

@@ -112,6 +112,37 @@ export class User extends BaseModel {
         return User.count(context, "[('login','!=','admin'),('is_admin','=',True)]");
     }
 
+    static __api__countActive(): SearchCountAPI {
+        return new SearchCountAPI(User.Model, "[('banned','=',False)]");
+    }
+
+    static countActive(context: APIContext): Observable<any> {
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users => {
+                var actives = _.filter(users, (user: User) => {
+                    return !user.banned;
+                });
+                return actives.length;
+            });
+        return User.count(context, "[('banned','=',False)]");
+    }
+
+    static __api__countBanned(): SearchCountAPI {
+        return new SearchCountAPI(User.Model, "[('banned','=',True)]");
+    }
+
+    static countBanned(context: APIContext): Observable<any> {
+        if (Cache.hit(User.Model))
+            return Observable.of(Cache.load(User.Model)).map(users => {
+                var banned = _.filter(users, (user: User) => {
+                    return !user.banned;
+                });
+                return banned.length;
+            });
+        return User.count(context, "[('banned','=',True)]");
+    }
+
+
     static __api__listByGroup(groupId: number): SearchReadAPI {
         return new SearchReadAPI(User.Model, [], "[('group_id','='," + groupId + ")]");
     }

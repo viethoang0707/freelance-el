@@ -16,8 +16,14 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { AccountRoutingModule } from './account-routing';
 
 @NgModule({
-    imports: [AccountRoutingModule, ErpSharedModule, AuthModule, LMSModule],
-    declarations: [UserListComponent,
+    imports: [
+        AccountRoutingModule,
+        ErpSharedModule,
+        AuthModule,
+        LMSModule
+    ],
+    declarations: [
+        UserListComponent,
         UserDialog,
         UserExportDialog,
         UserImportDialog,
@@ -27,7 +33,9 @@ import { AccountRoutingModule } from './account-routing';
         MenuPermissionDialog,
         MemberPermissionDialog,
     ],
-    exports: [UserProfileDialog],
+    exports: [
+        UserProfileDialog
+    ],
     providers: []
 })
 export class AccountModule {

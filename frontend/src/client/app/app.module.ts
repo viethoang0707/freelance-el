@@ -31,6 +31,7 @@ import { TranslateService } from '@ngx-translate/core';
         HttpModule,
         AppRoutingModule,
         AuthModule,
+        LMSModule,
         HomeModule.forRoot(),
         DashboardModule,
         SettingModule,
@@ -41,7 +42,6 @@ import { TranslateService } from '@ngx-translate/core';
         WorkflowModule,
         CMSModule,
         CompetencyModule,
-        LMSModule,
         ErpSharedModule.forRoot(),
         TranslateModule.forRoot({
             loader: {provide: TranslateLoader, useClass: CustomTranslationLoader}

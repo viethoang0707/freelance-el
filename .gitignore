@@ -1,9 +1,9 @@
 npm-debug.log
-client/node_modules/
-client/dist/
-client/src/*.js
-client/src/*.js.map
-src/client/yarn.lock
+frontend/node_modules/
+frontend/dist/
+frontend/src/*.js
+frontend/src/*.js.map
+frontend/client/yarn.lock
 .*
 !/.gitignore
 *.pyc
@@ -20,4 +20,4 @@ app.log
 app1.log
 yarn.lock
 npm-debug.log
-/client/dist/
+frontend/dist/

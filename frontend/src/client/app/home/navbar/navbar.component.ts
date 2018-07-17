@@ -75,7 +75,10 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	setViewMode(mode) {
 		this.viewMode = mode;
 		this.settingService.ViewMode = mode;
-		this.router.navigate(['/dashboard']);
+		if (this.viewMode =='admin') 
+			this.router.navigate(['/dashboard/admin']);
+		else
+			this.router.navigate(['/dashboard/lms']);
 	}
 }
 
