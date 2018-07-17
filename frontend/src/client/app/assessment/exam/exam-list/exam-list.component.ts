@@ -48,21 +48,21 @@ export class ExamListComponent extends BaseComponent {
         });
     }
 
-    editExam() {
-        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
+    editExam(exam:Exam) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
             this.error('You do not have enroll permission for this exam');
             return;
         }
-        this.examDialog.show(this.selectedExam);
+        this.examDialog.show(exam);
     }
 
-    deleteExam() {
-        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
+    deleteExam(exam:Exam) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
             this.error('You do not have enroll permission for this exam');
             return;
         }
         this.confirm('Are you sure to delete ?', () => {
-            this.selectedExam.delete(this).subscribe(() => {
+            exam.delete(this).subscribe(() => {
                 this.loadExams();
                 this.selectedExam = null;
             })
@@ -78,14 +78,14 @@ export class ExamListComponent extends BaseComponent {
         });
     }
 
-    requestReview() {
-        if (this.ContextUser.id != this.selectedExam.supervisor_id) {
+    requestReview(exam:Exam) {
+        if (this.ContextUser.id != exam.supervisor_id) {
             this.error('You do not have submit-review permission for this exam');
             return;
         }
-        this.workflowService.createExamReviewTicket(this, this.selectedExam).subscribe(() => {
+        this.workflowService.createExamReviewTicket(this, exam).subscribe(() => {
             this.success('Request submitted');
-            this.selectedExam.refresh(this).subscribe();
+            exam.refresh(this).subscribe();
         });
     }
 }

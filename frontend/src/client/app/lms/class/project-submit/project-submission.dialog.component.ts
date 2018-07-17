@@ -62,7 +62,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
         }
     }
 
-    changeFile(event: any) {
+    changeFileEvent(event: any) {
         let file = event.files[0];
         this.uploadFile(file);
     }
@@ -81,6 +81,3 @@ export class ProjectSubmissionDialog extends BaseComponent {
     }
 
 }
-
-
-

@@ -9,9 +9,9 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addUser()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editUser()" *ngIf="selectedUsers && selectedUsers.length==1"></button>
-                    <button pButton type="button" label="{{'Deactivate'|translate}}" class="red-btn" icon="ui-icon-lock" (click)="deactivateMultipleUsers()" *ngIf="selectedUsers && selectedUsers.length"></button>
-                    <button pButton type="button" label="{{'Activate'|translate}}" class="blue-btn" icon="ui-icon-lock-open" (click)="activateMultipleUsers()" *ngIf="selectedUsers && selectedUsers.length"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editUser(selectedUsers[0])" [disabled]="!selectedUsers || selectedUsers.length!=1"></button>
+                    <button pButton type="button" label="{{'Deactivate'|translate}}" class="red-btn" icon="ui-icon-lock" (click)="deactivateMultipleUsers(selectedUsers)" [disabled]="!selectedUsers || !selectedUsers.length"></button>
+                    <button pButton type="button" label="{{'Activate'|translate}}" class="blue-btn" icon="ui-icon-lock-open" (click)="activateMultipleUsers(selectedUsers)" [disabled]="!selectedUsers || !selectedUsers.length"></button>
                 </div>
                 <div class="ui-toolbar-group-right" >
                     <button pButton type="button" label="{{'Export'|translate}}" class="blue-grey-btn" icon="ui-icon-file-download" (click)="exportUser()"></button>

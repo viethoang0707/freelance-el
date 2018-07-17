@@ -5,13 +5,13 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addPermission()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editPermission(selectedPermission)" *ngIf="selectedPermission"></button>
-                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deletePermission(selectedPermission)" *ngIf="selectedPermission"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editPermission(selectedPermission)" [disabled]="!selectedPermission"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deletePermission(selectedPermission)" [disabled]="!selectedPermission"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" icon="ui-icon-people" class="secondary-btn" (click)="permissionMember(selectedPermission)" label="{{'Members'|translate}}" *ngIf="selectedPermission"></button>
-                    <button pButton type="button" icon="ui-icon-apps" class="secondary-btn" (click)="permissionMenu(selectedPermission)" label="{{'Menu access'|translate}}" *ngIf="selectedPermission"></button>
-                    <button pButton type="button" icon="ui-icon-cloud" class="secondary-btn" (click)="permissionAccess(selectedPermission)" label="{{'User group access'|translate}}" *ngIf="selectedPermission"></button>
+                    <button pButton type="button" icon="ui-icon-people" class="secondary-btn" (click)="permissionMember(selectedPermission)" label="{{'Members'|translate}}" [disabled]="!selectedPermission"></button>
+                    <button pButton type="button" icon="ui-icon-apps" class="secondary-btn" (click)="permissionMenu(selectedPermission)" label="{{'Menu access'|translate}}" [disabled]="!selectedPermission"></button>
+                    <button pButton type="button" icon="ui-icon-cloud" class="secondary-btn" (click)="permissionAccess(selectedPermission)" label="{{'User group access'|translate}}" [disabled]="!selectedPermission"></button>
                 </div>
             </p-toolbar>
             <p-table #permissionTable [value]="permissions" [(selection)]="selectedPermission" [paginator]="true" [rows]="10" selectionMode="single" [responsive]="true">

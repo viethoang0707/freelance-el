@@ -25,6 +25,7 @@ import { Message } from 'primeng/components/common/api';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
 import { BaseModel } from '../../../shared/models/base.model';
+import * as DetectRTC from 'detectrtc';
 
 declare var $: any;
 
@@ -41,7 +42,6 @@ export class ExamStudyDialog extends BaseComponent {
 	private display: boolean;
 	private exam: Exam;
 	private member: ExamMember;
-	private sheet: QuestionSheet;
 	private qIndex: number;
 	private examQuestions: ExamQuestion[];
 	private answers: Answer[];
@@ -62,14 +62,12 @@ export class ExamStudyDialog extends BaseComponent {
 	@ViewChild(ExamSubmissionDialog) submitDialog: ExamSubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
 
-
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.display = false;
 		this.examQuestions = [];
 		this.answers = [];
 		this.exam = new Exam();
-		this.sheet = new QuestionSheet();
 		this.currentQuestion = new ExamQuestion();
 		this.timeLeft = 0;
 		this.progress = 0;
@@ -84,42 +82,44 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	show(exam: Exam, member: ExamMember) {
-		this.onShowReceiver.next();
 		this.display = true;
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-
 		if (this.exam.sheet_status != 'published') {
 			this.error('Exam content has not been published');
 			return;
 		}
+		navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(() => {
+			DetectRTC.load(()=> {
+				if (!DetectRTC.hasWebcam || DetectRTC.isWebsiteHasWebcamPermissions) {
+					this.error('Your webcam is not installed or not enabled');
+					return;
+				}
+				this.loadExamContent();
+			})
+		});
+	}
 
+	loadExamContent() {
 		Submission.get(this, this.member.submission_id).subscribe((submit: Submission) => {
 			this.submission = submit;
 			this.submission.start = new Date();
-			QuestionSheet.get(this, this.exam.sheet_id).subscribe((sheet:QuestionSheet) => {
-				this.sheet = sheet;
-				if (this.sheet.status != 'published') {
-					this.error('Exam content has not been pubished');
-					return;
-				}
-				BaseModel.bulk_search(this,
-					ExamQuestion.__api__listBySheet(this.sheet.id),
-					Answer.__api__listBySubmit(this.submission.id))
-					.subscribe(jsonArr => {
-						this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
-						this.answers = Answer.toArray(jsonArr[1]);
-						ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
-							var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
-								return examQuestion.question;
-							});
-							Question.populateOptions(this, questions).subscribe(() => {
-								this.startExam();
-							});
+			BaseModel.bulk_search(this,
+				ExamQuestion.__api__listBySheet(this.exam.sheet_id),
+				Answer.__api__listBySubmit(this.submission.id))
+				.subscribe(jsonArr => {
+					this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
+					this.answers = Answer.toArray(jsonArr[1]);
+					ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
+						var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
+							return examQuestion.question;
+						});
+						Question.populateOptions(this, questions).subscribe(() => {
+							this.startExam();
 						});
 					});
-			});
+				});
 		});
 	}
 
@@ -162,8 +162,8 @@ export class ExamStudyDialog extends BaseComponent {
 
 	finishExam() {
 		this.submission.end = new Date();
-		this.submission.save(this).subscribe(()=> {
-			this.member.submitScore(this).subscribe(()=> {
+		this.submission.save(this).subscribe(() => {
+			this.member.submitScore(this).subscribe(() => {
 				this.member.enroll_status = 'completed';
 				ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe();
 				this.hide();
@@ -171,7 +171,7 @@ export class ExamStudyDialog extends BaseComponent {
 		});
 	}
 
-	prepareAnswer(question: ExamQuestion): Observable<any> {
+	prepareAnswer(question: ExamQuestion) {
 		var answer = _.find(this.answers, (ans: Answer) => {
 			return ans.question_id == question.question_id;
 		});
@@ -180,33 +180,28 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
-			return answer.save(this).do(ans => {
-				this.answers.push(answer);
-				this.updateStats();
-			});
+			this.answers.push(answer);
+			this.updateStats();
+			return answer;
 		} else
-			return Observable.of(answer);
+			return answer;
 	}
 
 	displayQuestion(index: number) {
 		this.qIndex = index;
 		this.currentQuestion = this.examQuestions[index];
-		this.prepareAnswer(this.currentQuestion).subscribe(answer => {
-			ExamLog.startAnswer(this, this.member.id, answer.id).subscribe(() => {
-				this.currentAnswer = answer;
-				this.checkAnswer();
-				var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
-				let viewContainerRef = this.questionHost.viewContainerRef;
-				if (detailComponent) {
-					let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-					viewContainerRef.clear();
-					this.componentRef = viewContainerRef.createComponent(componentFactory);
-					(<IQuestion>this.componentRef.instance).mode = 'study';
-					(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
-					this.updateStats();
-				}
-			});
-		});
+		this.currentAnswer = this.prepareAnswer(this.currentQuestion);
+		this.checkAnswer();
+		var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
+		let viewContainerRef = this.questionHost.viewContainerRef;
+		if (detailComponent) {
+			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+			viewContainerRef.clear();
+			this.componentRef = viewContainerRef.createComponent(componentFactory);
+			(<IQuestion>this.componentRef.instance).mode = 'study';
+			(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
+			this.updateStats();
+		}
 	}
 
 	submitAnswer(): Observable<any> {
@@ -215,9 +210,7 @@ export class ExamStudyDialog extends BaseComponent {
 			this.currentAnswer.score = this.currentQuestion.score;
 		} else
 			this.currentAnswer.score = 0;
-		return this.currentAnswer.save(this).do(() => {
-			ExamLog.finishAnswer(this, this.member.id, this.currentAnswer.id).subscribe();
-		});
+		return this.currentAnswer.save(this);
 	}
 
 	next() {

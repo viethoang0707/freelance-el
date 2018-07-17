@@ -117,38 +117,36 @@ export class ClassManageComponent extends BaseComponent {
 				this.course = this.lmsProfileService.courseById(courseId);
 				this.classExams = this.lmsProfileService.examsByClass(classId) || [];
 				this.classSurveys = this.lmsProfileService.surveysByClass(classId) || [];
-				this.lmsProfileService.getClassContent(classId).subscribe(classContent=> {
-					this.projects =  classContent["projects"];
+				this.lmsProfileService.getClassContent(classId).subscribe(classContent => {
+					this.projects = classContent["projects"];
 					BaseModel.bulk_search(this,
-					CourseMember.__api__listByClass(classId),
-					Certificate.__api__listByClass(classId),
-					CourseLog.__api__classActivity(classId))
-					.subscribe(jsonArr => {
-						this.courseMembers = CourseMember.toArray(jsonArr[0]);
-						this.certificates = Certificate.toArray(jsonArr[1]);
-						this.logs = CourseLog.toArray(jsonArr[2]);
-						this.lmsProfileService.getCourseContent( courseId).subscribe(courseContent=> {
-							this.courseUnits = courseContent["units"];
-							this.loadMemberStats(this.logs);
+						CourseMember.__api__listByClass(classId),
+						Certificate.__api__listByClass(classId),
+						CourseLog.__api__classActivity(classId))
+						.subscribe(jsonArr => {
+							this.courseMembers = CourseMember.toArray(jsonArr[0]);
+							this.certificates = Certificate.toArray(jsonArr[1]);
+							this.logs = CourseLog.toArray(jsonArr[2]);
+							this.lmsProfileService.getCourseContent(courseId).subscribe(courseContent => {
+								this.courseUnits = courseContent["units"];
+								this.loadMemberStats(this.logs);
+							});
 						});
-					});
 				});
 			});
 		});
 	}
 
-	viewChart(record) {
-		this.memberActivityChart.show(record);
+	viewChart(member: CourseMember) {
+		this.memberActivityChart.show(member);
 	}
 
-	viewGradebook() {
-		if (this.selectedRecord)
-			this.gradebookDialog.show(this.selectedRecord);
+	viewGradebook(member: CourseMember) {
+		this.gradebookDialog.show(member);
 	}
 
-	viewLMSProfile() {
-		if (this.selectedRecord)
-			this.lmsProfileDialog.show(this.selectedRecord);
+	viewLMSProfile(member: CourseMember) {
+		this.lmsProfileDialog.show(member);
 	}
 
 	loadMemberStats(logs: CourseLog[]) {
@@ -198,30 +196,30 @@ export class ClassManageComponent extends BaseComponent {
 		this.projectContentDialog.show(project);
 		this.projectContentDialog.onCreateComplete.subscribe(() => {
 			this.lmsProfileService.addProject(project);
-			this.lmsProfileService.getClassContent( this.courseClass.id).subscribe(content=> {
+			this.lmsProfileService.getClassContent(this.courseClass.id).subscribe(content => {
 				this.projects = content["projects"];
 			});
 		});
 	}
 
-	editProject() {
-		this.projectContentDialog.show(this.selectedProject);
+	editProject(project: Project) {
+		this.projectContentDialog.show(project);
 	}
 
-	deleteProject() {
-		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-			this.selectedProject.delete(this).subscribe(() => {
-				this.success(this.translateService.instant('Project deleted'));
-				this.lmsProfileService.removeProject(this.selectedProject);
-				this.lmsProfileService.getClassContent( this.courseClass.id).subscribe(content=> {
+	deleteProject(project: Project) {
+		this.confirm('Are you sure to delete?', () => {
+			project.delete(this).subscribe(() => {
+				this.success('Project deleted');
+				this.lmsProfileService.removeProject(project);
+				this.lmsProfileService.getClassContent(this.courseClass.id).subscribe(content => {
 					this.projects = content["projects"];
 				});
 			});
 		});
 	}
 
-	markProject() {
-		this.projectManageDialog.show(this.selectedProject);
+	markProject(project: Project) {
+		this.projectManageDialog.show(project);
 	}
 
 	addExam() {
@@ -231,35 +229,35 @@ export class ClassManageComponent extends BaseComponent {
 		exam.course_class_id = this.courseClass.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.subscribe(() => {
-			this.lmsProfileService.addExam(exam).subscribe(()=> {
+			this.lmsProfileService.addExam(exam).subscribe(() => {
 				this.classExams = this.lmsProfileService.examsByClass(this.courseClass.id) || [];
 			});
-			
+
 		});
 	}
 
-	editExam() {
-		this.examDialog.show(this.selectedClassExam);
+	editExam(exam: Exam) {
+		this.examDialog.show(exam);
 	}
 
-	enrollExam() {
-		this.examEnrollDialog.show(this.selectedClassExam);
+	enrollExam(exam: Exam) {
+		this.examEnrollDialog.show(exam);
 	}
 
-	manageExam() {
-		var supervisor = this.lmsProfileService.getExamMemberByRole('supervisor',this.selectedClassExam.id );
-		var teacher = this.lmsProfileService.getExamMemberByRole('teacher',this.selectedClassExam.id );
+	manageExam(exam: Exam) {
+		var supervisor = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
+		var teacher = this.lmsProfileService.getExamMemberByRole('teacher', exam.id);
 		if (supervisor || teacher)
-			this.router.navigate(['/lms/exams/manage', this.selectedClassExam.id, supervisor.id]);
+			this.router.navigate(['/lms/exams/manage', exam.id, supervisor.id]);
 	}
 
-	editExamContent() {
-		this.examContentDialog.show(this.selectedClassExam);
+	editExamContent(exam: Exam) {
+		this.examContentDialog.show(exam);
 	}
 
 
-	enrollSurvey() {
-		this.enrollDialog.show(this.selectedClassSurvey);
+	enrollSurvey(survey: Survey) {
+		this.enrollDialog.show(survey);
 	}
 
 	addSurvey() {
@@ -269,22 +267,22 @@ export class ClassManageComponent extends BaseComponent {
 		survey.course_class_id = this.courseClass.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.subscribe(() => {
-			this.lmsProfileService.addSurvey(survey).subscribe(()=> {
-				this.classSurveys = this.lmsProfileService.surveysByClass(this.courseClass.id) || [];	
+			this.lmsProfileService.addSurvey(survey).subscribe(() => {
+				this.classSurveys = this.lmsProfileService.surveysByClass(this.courseClass.id) || [];
 			});
 		});
 	}
 
-	editSurvey() {
-		this.surveyDialog.show(this.selectedClassSurvey);
+	editSurvey(survey: Survey) {
+		this.surveyDialog.show(survey);
 	}
 
-	viewReportSurvey() {
-		this.statsDialog.show(this.selectedClassSurvey);
+	viewReportSurvey(survey: Survey) {
+		this.statsDialog.show(survey);
 	}
 
-	editSurveyContent() {
-		this.surveyContentDialog.show(this.selectedClassSurvey);
+	editSurveyContent(survey: Survey) {
+		this.surveyContentDialog.show(survey);
 	}
 
 

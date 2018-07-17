@@ -8,9 +8,9 @@
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollCourse()" *ngIf="selectedCourse && selectedCourse.IsAvailable"></button>
-                    <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="openCourse() " [disabled]=" selectedCourse && selectedCourse.status=='open'"></button>
-                    <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeCourse() " [disabled]=" selectedCourse && selectedCourse.status=='closed'"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollCourse(selectedCourse)" [disabled]="!selectedCourse || !selectedCourse.IsAvailable"></button>
+                    <button pButton type="button " label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="openCourse(selectedCourse) " [disabled]=" selectedCourse && selectedCourse.status=='open'"></button>
+                    <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeCourse(selectedCourse) " [disabled]=" selectedCourse && selectedCourse.status=='closed'"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <span class="md-inputfield search">

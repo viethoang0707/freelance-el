@@ -55,7 +55,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
     @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
     @ViewChild(CoursePublishDialog) publisiDialog: CoursePublishDialog;
-
+    @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
+    
     constructor(private meetingSerivce: MeetingService, private router: Router) {
         super();
         this.conferenceMembers = [];

@@ -42,10 +42,8 @@ export class ClassListDialog extends BaseComponent implements OnInit {
 
     }
 
-    enroll() {
-        if (this.selectedClass) {
-            this.courseEnrollDialog.enrollClass(this.course, this.selectedClass);
-        }
+    enroll(courseClass: CourseClass) {
+        this.courseEnrollDialog.enrollClass(this.course, courseClass);
     }
 
     loadClasses() {
@@ -74,44 +72,45 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         });
     }
 
-    editClass() {
-        this.classDialog.show(this.selectedClass);
+    editClass(courseClass: CourseClass) {
+        this.classDialog.show(courseClass);
     }
 
-    deleteClass() {
-        CourseMember.listByClass(this, this.selectedClass.id).subscribe((members) => {
+    deleteClass(courseClass: CourseClass) {
+        CourseMember.listByClass(this, courseClass.id).subscribe((members) => {
             if (members.length)
                 this.error(this.translateService.instant('You cannot delete class with member inside'));
             else
                 this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                    this.selectedClass.delete(this).subscribe(() => {
+                    courseClass.delete(this).subscribe(() => {
                         this.loadClasses();
+                        this.selectedClass = null;
                     })
                 });
         })
     }
 
-    closeClass() {
-        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedClass.supervisor_id) {
+    closeClass(courseClass: CourseClass) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != courseClass.supervisor_id) {
             this.error('You do not have close permission for this class.  You will not be able to enroll new members after the class is closed');
             return;
         }
         this.confirm('Are you sure to proceed ?', () => {
-            this.selectedClass.close(this).subscribe(() => {
-                this.selectedClass.status = 'closed';
+            courseClass.close(this).subscribe(() => {
+                courseClass.status = 'closed';
                 this.success('Class close');
             });
         });
     }
 
-    openClass() {
-        if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedClass.supervisor_id) {
+    openClass(courseClass: CourseClass) {
+        if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != courseClass.supervisor_id) {
             this.error('You do not have open permission for this class');
             return;
         }
         this.confirm('Are you sure to proceed ?.', () => {
-            this.selectedClass.open(this).subscribe(() => {
-                this.selectedClass.status = 'open';
+            courseClass.open(this).subscribe(() => {
+                courseClass.status = 'open';
                 this.success('Survey open');
             });
         });

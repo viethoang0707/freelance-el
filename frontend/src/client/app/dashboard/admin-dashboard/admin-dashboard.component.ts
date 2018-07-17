@@ -61,11 +61,11 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
               }) ;
             var examEvents =  _.map(this.exams, (exam:Exam)=> {
                 return {
-                    title: exam.name,
-                    start: exam.start,
-                    end: exam.end,
-                    id: Exam.Model+':'+exam.id,
-                    allDay: true
+                        title: exam.name,
+                        start: exam.start,
+                        end: exam.end,
+                        id: Exam.Model+':'+exam.id,
+                        allDay: true
                     }
                 });
             this.classes = _.filter(CourseClass.toArray(jsonArr[1]), (clz:CourseClass)=> {
@@ -73,11 +73,11 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
               }) ;
             var classEvents =  _.map(this.classes, (clazz:CourseClass)=> {
                 return {
-                    title: clazz.name,
-                    start: clazz.start,
-                    end: clazz.end,
-                    id: CourseClass.Model+':'+clazz.id,
-                    allDay: true
+                        title: clazz.name,
+                        start: clazz.start,
+                        end: clazz.end,
+                        id: CourseClass.Model+':'+clazz.id,
+                        allDay: true
                     }
                 });
             this.events = this.events.concat(examEvents).concat(classEvents);

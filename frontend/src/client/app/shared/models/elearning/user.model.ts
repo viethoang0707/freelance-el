@@ -30,6 +30,7 @@ export class User extends BaseModel {
         this.phone = undefined;
         this.is_admin = undefined;
         this.banned = undefined;
+        this.social_id = undefined;
         this.company_id = undefined;
         this.permission_id = undefined;
         this.permission_id__DESC__ = undefined;
@@ -57,6 +58,7 @@ export class User extends BaseModel {
     permission_id__DESC__: string;
     supervisor_id: number;
     supervisor_id__DESC__: string;
+    social_id: string;
 
     get IsAdmin() {
         return this.is_admin || this.login == 'admin';

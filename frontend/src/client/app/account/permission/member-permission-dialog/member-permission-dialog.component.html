@@ -5,7 +5,7 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left ">
                     <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMember() "></button>
-                    <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedUsers) " *ngIf="selectedUsers && selectedUsers.length "></button>
+                    <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedUsers) " [disabled]="!selectedUsers || !selectedUsers.length "</button>
                 </div>
             </p-toolbar>
             <p-table #userTable [value]="users" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers " [responsive]="true " sortField="name">

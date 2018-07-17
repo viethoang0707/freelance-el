@@ -16,6 +16,7 @@ import { Route, Router } from '@angular/router';
 import { BaseModel } from '../../shared/models/base.model';
 import { User } from '../../shared/models/elearning/user.model';
 import { ExamRecord } from '../../shared/models/elearning/exam-record.model';
+import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
-
+    @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
+    
     constructor(private router: Router) {
         super();
         this.exams = [];

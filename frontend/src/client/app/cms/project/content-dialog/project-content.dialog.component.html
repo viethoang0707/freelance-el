@@ -36,7 +36,7 @@
                     </div>
                     <div class="ui-g-12">
                         <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
-                        <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
+                        <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFileEvent($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
                         </p-fileUpload>
                         <a href="{{object.file_url}}" target="_blank" *ngIf="object.file_url">{{object.filename}}</a>
                     </div>

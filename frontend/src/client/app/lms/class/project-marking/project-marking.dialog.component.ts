@@ -24,14 +24,10 @@ import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model
 })
 export class ProjectMarkingDialog extends BaseDialog<ProjectSubmission>  {
 
-
-	
 	constructor() {
 		super();
 		this.display = false;
 
 	}
-
-
 
 }

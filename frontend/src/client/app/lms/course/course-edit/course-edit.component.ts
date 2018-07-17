@@ -58,7 +58,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
 	@ViewChild(CourseBackupDialog) backupDialog: CourseBackupDialog;
-    @ViewChild(CourseRestoreDialog) restoreDialog: CourseRestoreDialog;
+	@ViewChild(CourseRestoreDialog) restoreDialog: CourseRestoreDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -72,15 +72,15 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
 			this.lmsProfileService.init(this).subscribe(() => {
-					this.course = this.lmsProfileService.courseById(courseId);
-					this.lmsProfileService.getCourseContent(courseId).subscribe(content=> {
-						this.syl = content["syllabus"];
-						this.faqs =  content["faqs"];
-						this.materials =  content["materials"];
-						this.units =  content["units"];
-						this.displayCouseSyllabus();
-					});
+				this.course = this.lmsProfileService.courseById(courseId);
+				this.lmsProfileService.getCourseContent(courseId).subscribe(content => {
+					this.syl = content["syllabus"];
+					this.faqs = content["faqs"];
+					this.materials = content["materials"];
+					this.units = content["units"];
+					this.displayCouseSyllabus();
 				});
+			});
 		});
 	}
 
@@ -100,27 +100,25 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.faqDialog.show(faq);
 		this.faqDialog.onCreateComplete.subscribe(() => {
 			this.lmsProfileService.addCourseFaq(faq);
-			this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
-				this.faqs =  content["faqs"];
+			this.lmsProfileService.getCourseContent(this.course.id).subscribe(content => {
+				this.faqs = content["faqs"];
 			});
 		});
 	}
 
-	editFaq() {
-		if (this.selectedFaq)
-			this.faqDialog.show(this.selectedFaq);
+	editFaq(faq: CourseFaq) {
+		this.faqDialog.show(faq);
 	}
 
-	deleteFaq() {
-		if (this.selectedFaq)
-			this.confirm('Are you sure to delete ?', () => {
-				this.selectedFaq.delete(this).subscribe(() => {
-					this.lmsProfileService.removeCourseFaq(this.selectedFaq);
-					this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
-						this.faqs =  content["faqs"];
-					});
-				})
-			});
+	deleteFaq(faq: CourseFaq) {
+		this.confirm('Are you sure to delete ?', () => {
+			faq.delete(this).subscribe(() => {
+				this.lmsProfileService.removeCourseFaq(faq);
+				this.lmsProfileService.getCourseContent(this.course.id).subscribe(content => {
+					this.faqs = content["faqs"];
+				});
+			})
+		});
 	}
 
 	addMaterial() {
@@ -129,27 +127,25 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.materialDialog.show(material);
 		this.materialDialog.onCreateComplete.subscribe(() => {
 			this.lmsProfileService.addCourseMaterial(material);
-			this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
-				this.materials =  content["materials"];
+			this.lmsProfileService.getCourseContent(this.course.id).subscribe(content => {
+				this.materials = content["materials"];
 			});
 		});
 	}
 
-	editMaterial() {
-		if (this.selectedMaterial)
-			this.materialDialog.show(this.selectedMaterial);
+	editMaterial(material: CourseMaterial) {
+		this.materialDialog.show(material);
 	}
 
-	deleteMaterial() {
-		if (this.selectedMaterial)
-			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-				this.selectedMaterial.delete(this).subscribe(() => {
-					this.lmsProfileService.removeCourseMaterial(this.selectedMaterial);
-					this.lmsProfileService.getCourseContent( this.course.id).subscribe(content=> {
-						this.materials =  content["materials"];
-					});
+	deleteMaterial(material: CourseMaterial) {
+		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+			material.delete(this).subscribe(() => {
+				this.lmsProfileService.removeCourseMaterial(material);
+				this.lmsProfileService.getCourseContent(this.course.id).subscribe(content => {
+					this.materials = content["materials"];
 				});
 			});
+		});
 	}
 
 	nodeSelect(event: any) {
@@ -158,19 +154,17 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	previewUnit() {
-		if (this.selectedNode) {
-			this.unitPreviewDialog.show(this.selectedNode.data);
-		}
+	previewUnit(unit: CourseUnit) {
+		this.unitPreviewDialog.show(unit);
 	}
 
-	 backupCourse() {
-            this.backupDialog.show(this.course);
-    }
+	backupCourse() {
+		this.backupDialog.show(this.course);
+	}
 
-    restoreCourse() {
-            this.restoreDialog.show(this.course);
-    }
+	restoreCourse() {
+		this.restoreDialog.show(this.course);
+	}
 
 }
 

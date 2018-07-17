@@ -71,32 +71,28 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    editUser() {
-        if (this.selectedUsers && this.selectedUsers.length == 1)
-            this.userProfileDialog.show(this.selectedUsers[0]);
+    editUser(user:User) {
+        this.userProfileDialog.show(user);
     }
 
-    activateMultipleUsers(){
-        if(this.selectedUsers && this.selectedUsers.length) {
-            _.each(this.selectedUsers, (user:User)=> {
-                user.banned =  true;
-            });
-            User.updateArray(this,this.selectedUsers).subscribe(()=> {
-                this.loadUsers();
-            });
-        }
+    activateMultipleUsers(users:User[]){
+        _.each(users, (user:User)=> {
+            user.banned =  true;
+        });
+        User.updateArray(this,users).subscribe(()=> {
+            this.loadUsers();
+        });
+        
     }
 
 
-    deactivateMultipleUsers(){
-        if(this.selectedUsers && this.selectedUsers.length) {
-            _.each(this.selectedUsers, (user:User)=> {
-                user.banned =  false;
-            });
-            User.updateArray(this,this.selectedUsers).subscribe(()=> {
-                this.loadUsers();
-            });
-        }
+    deactivateMultipleUsers(users: User[]){
+        _.each(users, (user:User)=> {
+            user.banned =  false;
+        });
+        User.updateArray(this,users).subscribe(()=> {
+            this.loadUsers();
+        });
     }
 
     exportUser() {

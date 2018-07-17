@@ -42,7 +42,7 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
         this.conferenceMembers = conferenceMembers;
     }
 
-    joinConference(conference, member) {
+    joinConference(conference:Conference, member:ConferenceMember) {
         if (member.is_active)
             this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
         else

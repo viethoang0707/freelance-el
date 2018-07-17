@@ -41,14 +41,14 @@ export class QuestionListComponent extends BaseComponent {
         this.treeUtils = new TreeUtils();
         this.questions = [];
         this.items = [
-            {label: this.translateService.instant(QUESTION_TYPE['sc']), command: ()=> { this.addQuestion('sc')}},
-            {label: this.translateService.instant(QUESTION_TYPE['mc']), command: ()=> { this.addQuestion('mc')}},
-            {label: this.translateService.instant(QUESTION_TYPE['ext']), command: ()=> { this.addQuestion('ext')}},
+            { label: this.translateService.instant(QUESTION_TYPE['sc']), command: () => { this.addQuestion('sc') } },
+            { label: this.translateService.instant(QUESTION_TYPE['mc']), command: () => { this.addQuestion('mc') } },
+            { label: this.translateService.instant(QUESTION_TYPE['ext']), command: () => { this.addQuestion('ext') } },
         ];
     }
 
     ngOnInit() {
-        Group.listQuestionGroup(this).subscribe(groups=> {
+        Group.listQuestionGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         });
         this.loadQuestions();
@@ -63,19 +63,17 @@ export class QuestionListComponent extends BaseComponent {
         });
     }
 
-    editQuestion() {
-        if (this.selectedQuestions && this.selectedQuestions.length==1)
-            this.questionDialog.show(this.selectedQuestions[0]);
+    editQuestion(question: Question) {
+        this.questionDialog.show(question);
     }
 
-    deleteMultipleQuestions(){
-        if(this.selectedQuestions && this.selectedQuestions.length)
-            this.confirm('Are you sure to delete ?', () => {
-                Question.deleteArray(this, this.selectedQuestions).subscribe(() => {
-                    this.selectedQuestions = null;
-                    this.loadQuestions();
-                });
+    deleteMultipleQuestions(questions: Question[]) {
+        this.confirm('Are you sure to delete ?', () => {
+            Question.deleteArray(this, questions).subscribe(() => {
+                this.selectedQuestions = null;
+                this.loadQuestions();
             });
+        });
     }
 
     loadQuestions() {
@@ -95,13 +93,13 @@ export class QuestionListComponent extends BaseComponent {
     filterQuestion() {
         if (this.selectedGroupNodes.length != 0) {
             this.displayQuestions = _.filter(this.questions, question => {
-                var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
+                var parentGroupNode = _.find(this.selectedGroupNodes, node => {
                     return node.data.id == question.group_id;
                 });
                 return parentGroupNode != null;
             });
         } else {
-            this.displayQuestions =  this.questions;
+            this.displayQuestions = this.questions;
         }
     }
 }

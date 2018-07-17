@@ -173,5 +173,11 @@ export class GradebookDialog extends BaseComponent {
         }) || new ProjectSubmission();
     }
 
+    viewAnswer(exam:Exam) {
+        ExamMember.byExamAndUser(this, exam.id, this.member.user_id).subscribe((member:ExamMember)=> {
+            this.answerSheetDialog.show(exam, member);
+        });
+    }
+
 }
 

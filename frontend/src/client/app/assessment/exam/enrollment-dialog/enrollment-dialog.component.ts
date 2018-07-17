@@ -73,15 +73,14 @@ export class ExamEnrollDialog extends BaseComponent {
         });
     }
 
-    deleteMember(members) {
-        if (members && members.length)
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                ExamMember.deleteArray(this, members).subscribe(() => {
-                    this.selectedCandidates = [];
-                    this.selectedSupervisors = [];
-                    this.loadMembers();
-                });
+    deleteMember(members:ExamMember[]) {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+            ExamMember.deleteArray(this, members).subscribe(() => {
+                this.selectedCandidates = [];
+                this.selectedSupervisors = [];
+                this.loadMembers();
             });
+        });
     }
 
     loadMembers() {

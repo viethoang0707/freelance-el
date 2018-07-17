@@ -54,7 +54,7 @@ export class SurveyListComponent extends BaseComponent {
         });
     }
 
-    editSurvey() {
+    editSurvey(survey:Survey) {
         if (!this.ContextUser.IsSuperAdmin || this.ContextUser.id != this.selectedSurvey.supervisor_id) {
             this.error(this.translateService.instant('You do not have edit permission for this survey'));
             return;
@@ -62,15 +62,15 @@ export class SurveyListComponent extends BaseComponent {
         this.surveyDialog.show(this.selectedSurvey);
     }
 
-    deleteSurvey() {
-        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-            this.error(this.translateService.instant('You do not have delete permission for this survey'));
+    deleteSurvey(survey:Survey) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
+            this.error('You do not have delete permission for this survey');
             return;
         }
-        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-            this.selectedSurvey.delete(this).subscribe(() => {
+        this.confirm('Are you sure to delete?', () => {
+            survey.delete(this).subscribe(() => {
                 this.loadSurveys();
-                this.selectedSurvey = null;
+                survey = null;
             })
         });
     }
@@ -84,14 +84,14 @@ export class SurveyListComponent extends BaseComponent {
         });
     }
 
-    requestReview() {
-        if (this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-            this.error(this.translateService.instant('You do not have submit-review permission for this survey'));
+    requestReview(survey:Survey) {
+        if (this.ContextUser.id != survey.supervisor_id) {
+            this.error('You do not have submit-review permission for this survey');
             return;
         }
-        this.workflowService.createSurveyReviewTicket(this, this.selectedSurvey).subscribe(() => {
-            this.success(this.translateService.instant('Request submitted'));
-            this.selectedSurvey.refresh(this).subscribe();
+        this.workflowService.createSurveyReviewTicket(this, survey).subscribe(() => {
+            this.success('Request submitted');
+            survey.refresh(this).subscribe();
         });
     }
 }

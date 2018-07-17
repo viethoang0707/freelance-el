@@ -49,7 +49,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
         }
     }
 
-    changeFile(event: any) {
+    changeFileEvent(event: any) {
         let file = event.files[0];
         this.uploadFile(file);
     }

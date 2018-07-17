@@ -57,7 +57,6 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
 			}
-			
 		});
 	}
 

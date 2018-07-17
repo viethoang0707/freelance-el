@@ -60,7 +60,7 @@ export class SurveyEnrollDialog extends BaseComponent {
         });
     }
 
-    deleteMember(members) {
+    deleteMember(members:SurveyMember[]) {
         if (members && members.length)
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
                 SurveyMember.deleteArray(this, members).subscribe(() => {

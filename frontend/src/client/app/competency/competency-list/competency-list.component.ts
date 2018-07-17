@@ -39,7 +39,7 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listCompetencyGroup(this).subscribe(groups=> {
+        Group.listCompetencyGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         })
         this.loadCompetencies();
@@ -54,33 +54,31 @@ export class CompetencyListComponent extends BaseComponent {
         });
     }
 
-    editCompetency() {
-        if (this.selectedCompetency)
-            this.competencyDialog.show(this.selectedCompetency);
+    editCompetency(competency: Competency) {
+        this.competencyDialog.show(competency);
         this.competencyDialog.onUpdateComplete.subscribe(() => {
             this.loadCompetencies();
         });
     }
 
-    deleteCompetency(){
-        if(this.selectedCompetency)
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                this.selectedCompetency.delete(this).subscribe(() => {
-                    this.selectedCompetency = null;
-                    this.loadCompetencies();
+    deleteCompetency(competency: Competency) {
+        this.confirm('Are you sure to delete?', () => {
+            competency.delete(this).subscribe(() => {
+                this.selectedCompetency = null;
+                this.loadCompetencies();
 
-                });
             });
+        });
     }
 
     loadCompetencies() {
         Competency.all(this).subscribe(competencies => {
-            CompetencyLevel.all(this).subscribe(levels=> {
-                this.levels =  levels;
+            CompetencyLevel.all(this).subscribe(levels => {
+                this.levels = levels;
                 _.each(competencies, competency => {
-                    competency.levels =  _.filter(this.levels, (level:CompetencyLevel)=> {
-                            return level.competency_id == competency.id;
-                        });
+                    competency.levels = _.filter(this.levels, (level: CompetencyLevel) => {
+                        return level.competency_id == competency.id;
+                    });
                 });
                 this.competencies = competencies;
                 this.displayCompetencies = competencies;

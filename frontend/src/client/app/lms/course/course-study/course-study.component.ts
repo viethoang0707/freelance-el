@@ -231,6 +231,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 	}
 
+	updateScrollPos(e) {
+		console.log(e);
+	}
+
 	computedPrevUnit(currentUnitId: number): CourseUnit {
 		var currentNodeIndex = 0;
 		for (; currentNodeIndex < this.treeList.length; currentNodeIndex++) {

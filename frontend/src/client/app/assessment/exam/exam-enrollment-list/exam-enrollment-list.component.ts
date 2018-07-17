@@ -36,18 +36,16 @@ export class ExamEnrollmentListComponent extends BaseComponent {
         this.header = SCHEDULER_HEADER;
     }
 
-    enrollExam() {
-        if (this.selectedExam ) {
-            if (this.selectedExam.review_state != 'approved') {
-                this.warn('Exam not reviewed yet');
-                return;
-            }
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have enroll permission for this exam');
-                return;
-            }
-            this.examEnrollDialog.enroll(this.selectedExam);
+    enrollExam(exam:Exam) {
+        if (exam.review_state != 'approved') {
+            this.warn('Exam not reviewed yet');
+            return;
         }
+        if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
+            this.error('You do not have enroll permission for this exam');
+            return;
+        }
+        this.examEnrollDialog.enroll(exam);
     }
 
     ngOnInit() {
@@ -56,33 +54,29 @@ export class ExamEnrollmentListComponent extends BaseComponent {
         });
     }
 
-    closeExam() {
-        if (this.selectedExam) {
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have close permission for this exam');
-                return;
-            }
-            this.confirm('Are you sure to proceed ?  You will not be able to enroll students after the exam is closed', ()=> {
-                this.selectedExam.close(this).subscribe(() => {
-                    this.selectedExam.status = 'closed';
-                    this.success('Exam close');
-                });
-            });
+    closeExam(exam:Exam) {
+        if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
+            this.error('You do not have close permission for this exam');
+            return;
         }
+        this.confirm('Are you sure to proceed ?  You will not be able to enroll students after the exam is closed', ()=> {
+            exam.close(this).subscribe(() => {
+                exam.status = 'closed';
+                this.success('Exam close');
+            });
+        });
     }
 
-    openExam() {
-        if (this.selectedExam) {
-            if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-                this.error('You do not have open permission for this exam');
-                return;
-            }
-            this.confirm('Are you sure to proceed ?', ()=> {
-                this.selectedExam.open(this).subscribe(() => {
-                    this.selectedExam.status = 'open';
-                    this.success('Exam open');
-                });
-            });
+    openExam(exam:Exam) {
+        if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
+            this.error('You do not have open permission for this exam');
+            return;
         }
+        this.confirm('Are you sure to proceed ?', ()=> {
+            exam.open(this).subscribe(() => {
+                exam.status = 'open';
+                this.success('Exam open');
+            });
+        });
     }
 }

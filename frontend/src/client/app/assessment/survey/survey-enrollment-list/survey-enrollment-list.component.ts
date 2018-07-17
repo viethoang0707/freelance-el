@@ -40,18 +40,16 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
         };
     }
 
-    enrollSurvey() {
-        if (this.selectedSurvey) {
-            if (this.selectedSurvey.review_state != 'approved') {
-                this.warn(this.translateService.instant('Survey not reviewed yet'));
-                return;
-            }
-            if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error('You do not have enroll permission for this survey');
-                return;
-            }
-            this.surveyEnrollDialog.enroll(this.selectedSurvey);
+    enrollSurvey(survey: Survey) {
+        if (survey.review_state != 'approved') {
+            this.warn('Survey not reviewed yet');
+            return;
         }
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
+            this.error('You do not have enroll permission for this survey');
+            return;
+        }
+        this.surveyEnrollDialog.enroll(survey);
     }
 
     ngOnInit() {
@@ -61,34 +59,30 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     }
 
 
-    closeSurvey() {
-        if (this.selectedSurvey) {
-            if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error('You do not have close permission for this survey');
-                return;
-            }
-            this.confirm('Are you sure to proceed ?', () => {
-                this.selectedSurvey.close(this).subscribe(() => {
-                    this.selectedSurvey.status = 'closed';
-                    this.success('Survey close');
-                });
-            });
+    closeSurvey(survey: Survey) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
+            this.error('You do not have close permission for this survey');
+            return;
         }
+        this.confirm('Are you sure to proceed ?', () => {
+            survey.close(this).subscribe(() => {
+                survey.status = 'closed';
+                this.success('Survey close');
+            });
+        });
     }
 
-    openSurvey() {
-        if (this.selectedSurvey) {
-            if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedSurvey.supervisor_id) {
-                this.error('You do not have open permission for this survey');
-                return;
-            }
-            this.confirm('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened', () => {
-                this.selectedSurvey.open(this).subscribe(() => {
-                    this.selectedSurvey.status = 'open';
-                    this.success('Survey open');
-                });
-            });
-
+    openSurvey(survey: Survey) {
+        if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
+            this.error('You do not have open permission for this survey');
+            return;
         }
+        this.confirm('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened', () => {
+            survey.open(this).subscribe(() => {
+                survey.status = 'open';
+                this.success('Survey open');
+            });
+        });
+
     }
 }
