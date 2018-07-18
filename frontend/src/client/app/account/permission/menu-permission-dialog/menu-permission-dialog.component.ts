@@ -58,7 +58,5 @@ export class MenuPermissionDialog extends BaseDialog<Permission> implements OnIn
 			}));
 		});
 	}
-
-
 }
 

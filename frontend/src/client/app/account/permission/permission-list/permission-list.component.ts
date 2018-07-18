@@ -6,13 +6,13 @@ import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
 import { Permission } from '../../../shared/models/elearning/permission.model';
-import { PermissionDialog} from '../permission-dialog/permission-dialog.component';
+import { PermissionDialog } from '../permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog } from '../menu-permission-dialog/menu-permission-dialog.component';
 import { SelectGroupDialog } from '../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { MemberPermissionDialog} from '../member-permission-dialog/member-permission-dialog.component';
+import { MemberPermissionDialog } from '../member-permission-dialog/member-permission-dialog.component';
 import { User } from '../../../shared/models/elearning/user.model';
 
 @Component({
@@ -31,13 +31,13 @@ export class PermissionListComponent extends BaseComponent {
     @ViewChild(MemberPermissionDialog) memberPermissionDialog: MemberPermissionDialog;
     @ViewChild(SelectGroupDialog) userPermissionDialog: SelectGroupDialog;
 
-    
+
     constructor() {
         super();
     }
 
     ngOnInit() {
-       this.loadPermission();
+        this.loadPermission();
     }
 
     loadPermission() {
@@ -46,50 +46,44 @@ export class PermissionListComponent extends BaseComponent {
         });
     }
 
-    addPermission(){
+    addPermission() {
         this.permissionDialog.show(new Permission());
         this.permissionDialog.onCreateComplete.subscribe(() => {
             this.loadPermission();
         });
     }
 
-    editPermission() {
-        if (this.selectedPermission)
-            this.permissionDialog.show(this.selectedPermission);
+    editPermission(permission: Permission) {
+        this.permissionDialog.show(permission);
     }
 
-    deletePermission() {
-        if (this.selectedPermission) {
-            User.listByPermission(this, this.selectedPermission.id).subscribe(users=> {
-                if (users.length)
-                    this.error(this.translateService.instant('You cannot delete permission assigned to other uers'))
-                else {
-                    this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                        this.selectedPermission.delete(this).subscribe(() => {
-                            this.loadPermission();
-                        })
-                    });
-                }
-            });
-        }
+    deletePermission(permission: Permission) {
+        User.listByPermission(this, permission.id).subscribe(users => {
+            if (users.length)
+                this.error(this.translateService.instant('You cannot delete permission assigned to other uers'))
+            else {
+                this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+                    permission.delete(this).subscribe(() => {
+                        this.loadPermission();
+                    })
+                });
+            }
+        });
     }
 
-    permissionMember(){
-        if (this.selectedPermission)
-            this.memberPermissionDialog.show(this.selectedPermission);
+    permissionMember(permission: Permission) {
+        this.memberPermissionDialog.show(permission);
     }
 
-    permissionMenu(){
-        if (this.selectedPermission)
-            this.menuPermissionDialog.show(this.selectedPermission);
+    permissionMenu(permission: Permission) {
+        this.menuPermissionDialog.show(permission);
     }
 
-    permissionAccess(){
-        if (this.selectedPermission)
-            this.userPermissionDialog.show();
-        this.userPermissionDialog.onSelectGroup.first().subscribe((group:Group)=> {
-            this.selectedPermission.user_group_id = group.id;
-            this.selectedPermission.save(this).subscribe(()=> {
+    permissionAccess(permission: Permission) {
+        this.userPermissionDialog.show();
+        this.userPermissionDialog.onSelectGroup.first().subscribe((group: Group) => {
+            permission.user_group_id = group.id;
+            permission.save(this).subscribe(() => {
                 this.loadPermission();
             });
         });

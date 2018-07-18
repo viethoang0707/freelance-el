@@ -7,7 +7,7 @@
 </p-fieldset>
 </div>
     <div class="ui-g-12">
-      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeListner($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false" >  
+      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeFileListner($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false" >  
     </p-fileUpload>
     <label [hidden]="!fileName">{{fileName}}</label>
     </div>

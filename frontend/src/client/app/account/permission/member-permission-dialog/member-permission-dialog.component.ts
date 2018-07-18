@@ -55,16 +55,15 @@ export class MemberPermissionDialog extends BaseComponent {
         });
     }
 
-    deleteMember() {
-        if (this.selectedUsers && this.selectedUsers.length)
-            this.confirm('Are you sure to remove ?', () => {
-                _.each(this.selectedUsers, (user: User) => {
-                    user.permission_id = null;
-                });
-                User.updateArray(this, this.selectedUsers).subscribe(() => {
-                    this.loadMembers();
-                });
+    deleteMember(users:User[]) {
+        this.confirm('Are you sure to remove ?', () => {
+            _.each(users, (user: User) => {
+                user.permission_id = null;
             });
+            User.updateArray(this, users).subscribe(() => {
+                this.loadMembers();
+            });
+        });
     }
 
     loadMembers() {
