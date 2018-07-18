@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -59,7 +59,7 @@ import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview
 	templateUrl: 'course-study.component.html',
 	styleUrls: ['course-study.component.css'],
 })
-export class CourseStudyComponent extends BaseComponent implements OnInit {
+export class CourseStudyComponent extends BaseComponent implements AfterViewInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	EXAM_STATUS = EXAM_STATUS;
@@ -120,7 +120,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.syl = new CourseSyllabus();
 	}
 
-	ngOnInit() {
+	ngAfterViewInit() {
 		this.route.params.subscribe(params => {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
@@ -174,18 +174,21 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		});
 		if (last_attempt) {
 			this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
+			this.selectedUnit = this.selectedNode.data;
+			this.studyUnit();
 		}
 		if (this.syl.status != 'published')
 			this.warn('Cours syllabus is not published');
 	}
 
 	nodeSelect(event: any) {
+		this.unloadCurrentUnit();
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
 			if (this.studyMode == true) {
 				this.studyMode = false;
 			}
-			this.unloadCurrentUnit();
+			this.studyUnit();
 		}
 	}
 
@@ -199,25 +202,27 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	prevUnit() {
 		if (this.selectedUnit) {
+			this.unloadCurrentUnit();
 			if (this.enableLogging)
 				CourseLog.stopCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
 			this.selectedNode = this.sylUtils.findTreeNode(this.tree, prevUnit.id);
 			this.selectedUnit = this.selectedNode.data;
 			this.studyMode = false;
-			this.unloadCurrentUnit();
+			this.studyUnit();
 		}
 	}
 
 	nextUnit() {
 		if (this.selectedUnit) {
+			this.unloadCurrentUnit();
 			if (this.enableLogging)
 				CourseLog.stopCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
 			this.selectedNode = this.sylUtils.findTreeNode(this.tree, nextUnit.id);
 			this.selectedUnit = this.selectedNode.data;
 			this.studyMode = false;
-			this.unloadCurrentUnit();
+			this.studyUnit();
 		}
 	}
 
@@ -231,9 +236,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	updateScrollPos(e) {
-		console.log(e);
-	}
 
 	computedPrevUnit(currentUnitId: number): CourseUnit {
 		var currentNodeIndex = 0;
@@ -270,7 +272,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	studyUnit() {
-		if (this.selectedUnit) {
+		if (this.selectedUnit && this.selectedUnit.type!='folder') {
 			if (this.course.complete_unit_by_order) {
 				let prevUnit: CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
 				if (prevUnit) {
@@ -279,8 +281,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 						if (this.enableLogging)
 							CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 					}
-					else
-						this.error(this.translateService.instant('You have not completed previous unit'));
 				}
 				else {
 					this.openUnit(this.selectedUnit);
@@ -332,10 +332,4 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		this.projectSubmitDialog.show(project, this.member);
 	}
 
-	previewUnit() {
-		if (this.selectedNode) {
-			this.selectedNode.data.course_id = this.course.id;
-			this.unitPreviewDialog.show(this.selectedNode.data);
-		}
-	}
 }

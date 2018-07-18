@@ -35,7 +35,6 @@ import { CourseViewComponent } from './course/course-view/course-view.component'
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
 import { ClassMemberActivityDialog } from './class/class-member-activity/class-member-activity.dialog.component';
 import { LMSRoutingModule } from './lms-routing';
-import { ScrollTracker } from './course/course-study/scroll-tracker.directive';
 
 
 @NgModule({
@@ -78,7 +77,6 @@ import { ScrollTracker } from './course/course-study/scroll-tracker.directive';
         ClassSurveyEnrollDialog,
         SurveyStatsDialog,
         SurveyStudyDialog,
-        ScrollTracker
     ],
 
     exports: [

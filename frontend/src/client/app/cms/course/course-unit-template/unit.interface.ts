@@ -5,4 +5,5 @@ export interface ICourseUnit {
 	mode: string;
 	render(unit:CourseUnit);
 	saveEditor():Observable<any>;
+	viewCompleted: boolean;
 }

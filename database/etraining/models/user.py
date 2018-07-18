@@ -32,6 +32,12 @@ class User(models.Model):
 	banned = fields.Boolean(default=False, string="Is banned")
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
 
+	@api.model
+	def create(self, vals):
+		vals["login"] = vals["login"].lower()
+		user = super(User, self).create(vals)
+		return user
+
 class Permission(models.Model):
 	_name = 'etraining.permission'
 

@@ -39,6 +39,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	private treeUtils: TreeUtils;
 	private currentAnswer: Answer;
 	private componentRef: any;
+	viewCompleted: boolean;
 
 	@Input() mode;
 	@ViewChild(SelectQuestionsDialog) questionDialog: SelectQuestionsDialog;
@@ -51,6 +52,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		this.currentAnswer = new Answer();
 		this.currentQuestion = new ExerciseQuestion();
 		this.treeUtils = new TreeUtils();
+		this.viewCompleted =  false;
 	}
 
 	ngOnInit() {
@@ -107,7 +109,6 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 					createList.push(exerciseQuestion);
 			});
 			return ExerciseQuestion.createArray(this, createList);
-				
 		});
 	}
 
@@ -156,6 +157,8 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			this.stage = 'question';
 			if (this.componentRef)
 				(<IQuestion>this.componentRef.instance).mode = 'study';
+		} else {
+			this.viewCompleted =  true;
 		}
 	}
 
