@@ -8,13 +8,13 @@
                  <button pButton type="button" icon="ui-icon-restore" title="{{'Restore'| translate}}" label="{{'Restore'|translate}}" class="blue-btn" style="margin-right:4px;" (click)="restoreCourse()"></button> 
             </p-toolbar>
             </div>
-            <div class="ui-g-3">
+            <div class="ui-g-2">
                 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
                 <div class="ui-g-12">
                     <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, member)"></button>
                 </div>
             </div>
-            <div class="ui-g-9" *ngIf="selectedUnit">
+            <div class="ui-g-10" *ngIf="selectedUnit">
                 <div class="card">
                     <div class="image-box-content">
                         <div>

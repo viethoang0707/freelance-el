@@ -24,7 +24,7 @@ import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { CourseLog } from '../../../shared/models/elearning/log.model';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, MenuItem } from 'primeng/api';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
@@ -77,7 +77,6 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
 	private examMembers: ExamMember[];
-	private completedMembers: ExamMember[];
 	private certificate: Certificate;
 	private conference: Conference;
 	private conferenceMember: ConferenceMember;
@@ -86,14 +85,12 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 	private reportUtils: ReportUtils;
 	private projects: Project[];
 	private componentRef: any;
-	private studyMode: boolean;
 	private enableLogging: boolean;
 	private logs: CourseLog[];
-	private surveys: Survey[];
 	private completedUnitIds = [];
 	private projectSubmits: ProjectSubmission[];
-	private exams: Exam[];
-	private examRecords: ExamRecord[];
+	private menuItems: MenuItem[];
+	private activeMenu: string;
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -115,9 +112,13 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 		this.certificate = new Certificate();
 		this.conference = new Conference();
 		this.conferenceMember = new ConferenceMember();
-		this.studyMode = false;
 		this.enableLogging = true;
 		this.syl = new CourseSyllabus();
+		this.menuItems = [
+			{ label: 'Syllabus', icon: 'ui-icon-dehaze', command: () => { this.activeMenu = 'syllabus'; } },
+			{ label: 'FAQ', icon: 'ui-icon-question-answer', command: () => { this.activeMenu = 'faq'; } },
+			{ label: 'Material', icon: 'ui-icon-cloud-download', command: () => { this.activeMenu = 'material'; } }
+		];
 	}
 
 	ngAfterViewInit() {
@@ -152,6 +153,11 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 						}
 					})
 				});
+				if (this.member.class_id) {
+					this.menuItems.push({ label: 'Project', icon: 'ui-icon-assignment', command: () => { this.activeMenu = 'project'; } });
+					this.menuItems.push({ label: 'Exam', icon: 'ui-icon-grade', command: () => { this.activeMenu = 'exam'; } });
+					this.menuItems.push({ label: 'Conference', icon: 'ui-icon-call', command: () => { this.activeMenu = 'conference'; } });
+				}
 			});
 		});
 	}
@@ -179,15 +185,13 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 		}
 		if (this.syl.status != 'published')
 			this.warn('Cours syllabus is not published');
+		this.activeMenu = 'syllabus';
 	}
 
 	nodeSelect(event: any) {
 		this.unloadCurrentUnit();
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
-			if (this.studyMode == true) {
-				this.studyMode = false;
-			}
 			this.studyUnit();
 		}
 	}
@@ -202,40 +206,32 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 
 	prevUnit() {
 		if (this.selectedUnit) {
-			this.unloadCurrentUnit();
 			if (this.enableLogging)
 				CourseLog.stopCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
-			this.selectedNode = this.sylUtils.findTreeNode(this.tree, prevUnit.id);
-			this.selectedUnit = this.selectedNode.data;
-			this.studyMode = false;
-			this.studyUnit();
+			if (prevUnit) {
+				this.unloadCurrentUnit();
+				this.selectedNode = this.sylUtils.findTreeNode(this.tree, prevUnit.id);
+				this.selectedUnit = this.selectedNode.data;
+				this.studyUnit();
+			}
 		}
 	}
 
 	nextUnit() {
 		if (this.selectedUnit) {
-			this.unloadCurrentUnit();
-			if (this.enableLogging)
-				CourseLog.stopCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
-			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
-			this.selectedNode = this.sylUtils.findTreeNode(this.tree, nextUnit.id);
-			this.selectedUnit = this.selectedNode.data;
-			this.studyMode = false;
-			this.studyUnit();
-		}
-	}
-
-	completeUnit() {
-		if (this.selectedUnit) {
 			if (this.enableLogging)
 				CourseLog.completeCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
 			this.completedUnitIds.push(this.selectedUnit.id);
-			this.studyMode = false;
-			this.unloadCurrentUnit();
+			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
+			if (nextUnit) {
+				this.unloadCurrentUnit();
+				this.selectedNode = this.sylUtils.findTreeNode(this.tree, nextUnit.id);
+				this.selectedUnit = this.selectedNode.data;
+				this.studyUnit();
+			}
 		}
 	}
-
 
 	computedPrevUnit(currentUnitId: number): CourseUnit {
 		var currentNodeIndex = 0;
@@ -272,7 +268,7 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 	}
 
 	studyUnit() {
-		if (this.selectedUnit && this.selectedUnit.type!='folder') {
+		if (this.selectedUnit && this.selectedUnit.type != 'folder') {
 			if (this.course.complete_unit_by_order) {
 				let prevUnit: CourseUnit = this.computedPrevUnit(this.selectedUnit.id);
 				if (prevUnit) {
@@ -308,7 +304,6 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
 			(<ICourseUnit>this.componentRef.instance).mode = 'study';
 			(<ICourseUnit>this.componentRef.instance).render(unit);
-			this.studyMode = true;
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;

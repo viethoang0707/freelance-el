@@ -13,10 +13,10 @@
           <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings" (click)="showSetting()" label="{{'Setting'|translate}}"></button>
         </div>
       </p-toolbar>
-      <div class="ui-g-4" style="padding: 10px 10px 0 0">
+      <div class="ui-g-3" style="padding: 10px 10px 0 0">
         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-syllabus"></p-tree>
       </div>
-      <div class="ui-g-8" style="padding: 10px 0 0" *ngIf="selectedUnit">
+      <div class="ui-g-9" style="padding: 10px 0 0" *ngIf="selectedUnit">
         <div class="card course-syllabus-unit">
           <div class="image-box-content">
             <div>
