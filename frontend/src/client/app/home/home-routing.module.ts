@@ -23,6 +23,7 @@ import { CompetencyRoutes } from '../competency/competency-routing';
           ...DashboardRoutes,
           ...SettingRoutes,
           ...AccountRoutes,
+          ...LMSRoutes,
           ...CourseRoutes,
           ...AssessmentRoutes,
           ...AnalysisRoutes,
