@@ -17,6 +17,9 @@ import { Submission } from '../../../shared/models/elearning/submission.model';
 import { CourseLog } from '../../../shared/models/elearning/log.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Course } from '../../../shared/models/elearning/course.model';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
+
+declare var $: any;
 
 @Component({
 	moduleId: module.id,
@@ -25,6 +28,8 @@ import { Course } from '../../../shared/models/elearning/course.model';
 	styleUrls: ['course-unit-study-dialog.component.css'],
 })
 export class CourseUnitStudyDialog extends BaseComponent {
+
+	WINDOW_HEIGHT: any;
 
 	private componentRef: any;
 	private treeUtils: TreeUtils;
@@ -49,6 +54,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
+		this.WINDOW_HEIGHT = $(window).height();
 	}
 
 	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[]) {
