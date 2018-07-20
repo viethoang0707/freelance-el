@@ -1,0 +1,29 @@
+<p-dialog header="{{course.name}}" [(visible)]="display" modal="true" [responsive]="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-unit-study" appendTo="body">
+    <div class="spinner" [hidden]="!loading"></div>
+    <p-scrollPanel [style]="{width: '100%'}" >
+        <div class="ui-lg-3 ui-md-3 ui-g-12 course-study-tree" >
+            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
+        </div>
+        <div class="ui-lg-9 ui-md-9 ui-g-12">
+            <div class="card course-study-unit">
+                <div class="image-box-content">
+                    <div class="fLeft" *ngIf="selectedUnit">
+                        <h3 class="removeMT mb5 mr10 fLeft heading-unit-course">{{selectedUnit.name}}</h3>
+                        <span class="complete-status" *ngIf="completedUnitIds.includes(selectedUnit.id)">{{'Completed'|translate}}</span>
+                        <span class="incomplete-status" *ngIf="!completedUnitIds.includes(selectedUnit.id)">{{'Incompleted'|translate}}</span>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div>
+                        <ng-template course-unit-container></ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-scrollPanel>
+    <p-footer>
+        <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" (click)="prevUnit()" class="course-unit-study-btn"></button>
+        <button pButton type="button" icon="ui-icon-navigate-next" iconPos="right" title="{{'Next'|translate}}" label="{{'Next'|translate}}" (click)="nextUnit()" [disabled]="componentRef && !componentRef.instance.viewCompleted && !completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}" class="course-unit-study-btn"></button>
+    </p-footer>
+</p-dialog>

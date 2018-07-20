@@ -341,8 +341,14 @@ body .user-dashboard .ui-fieldset.ui-widget-content {
 
 .tree-unit-course-study {
   width: 100%;
-  height: 530px;
+  height: 490px;
   overflow: auto;
+  background-color: #f4f4f4 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
 }
 
 .tree-unit-course-syllabus {
@@ -580,6 +586,13 @@ body .exam-study .ui-dialog-content.ui-widget-content{
 
 .lms-search-course .lms-course-list.ui-datascroller .ui-datascroller-content{
   border: none;
+}
+
+.course-unit-study,
+body .ui-dialog.course-unit-study .ui-dialog-titlebar, 
+body .ui-dialog.course-unit-study .ui-dialog-footer,
+.course-unit-study-btn{
+  background-color: #f4f4f4 !important;
 }
 
 @media screen and (max-width: 500px) {

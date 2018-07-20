@@ -35,6 +35,7 @@ import { CourseViewComponent } from './course/course-view/course-view.component'
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
 import { ClassMemberActivityDialog } from './class/class-member-activity/class-member-activity.dialog.component';
 import { LMSRoutingModule } from './lms-routing';
+import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-unit-study-dialog.component';
 
 
 @NgModule({
@@ -77,6 +78,7 @@ import { LMSRoutingModule } from './lms-routing';
         ClassSurveyEnrollDialog,
         SurveyStatsDialog,
         SurveyStudyDialog,
+        CourseUnitStudyDialog,
     ],
 
     exports: [

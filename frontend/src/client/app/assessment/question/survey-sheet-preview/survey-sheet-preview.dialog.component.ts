@@ -43,14 +43,14 @@ export class SurveySheetPreviewDialog extends BaseComponent {
         this.display = true;
         this.surveyQuestions = [];
         this.sheet = sheet;
-        this.startPreview();
+        this.startPreReview();
     }
 
     hide() {
         this.display = false;
     }
 
-    startPreview() {
+    startPreReview() {
         SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions => {
             SurveyQuestion.populateQuestions(this, surveyQuestions).subscribe(()=> {
                 this.surveyQuestions = surveyQuestions;

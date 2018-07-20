@@ -106,7 +106,7 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	previewSheet() {
-		this.previewDialog.show(this.sheet, this.examQuestions);
+		this.previewDialog.show(this.sheet);
 	}
 
 	clearSheet() {
