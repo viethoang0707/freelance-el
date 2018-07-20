@@ -28,7 +28,7 @@
                                 <span>{{course.name}}</span>
                             </h3>
                             <span class="c-status">
-                                {{CONTENT_STATUS[course.status]|translate}}
+                                {{COURSE_STATUS[course.status]|translate}}
                             </span>
                             <div>
                                 <button pButton type="button " label="{{ 'Study'|translate}} " class="blue-grey-btn " icon="ui-icon-play-arrow " (click)="study()" *ngIf="syl.status=='published'"></button>
