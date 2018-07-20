@@ -30,10 +30,9 @@
                             <span class="c-status">
                                 {{COURSE_STATUS[course.status]|translate}}
                             </span>
-                            <div>
-                                <button pButton type="button " label="{{ 'Study'|translate}} " class="blue-grey-btn " icon="ui-icon-play-arrow " (click)="study()" *ngIf="syl.status=='published'"></button>
+                            <div class="clear pt15">
+                                <button pButton type="button " label="{{ 'Study'|translate}} " class="green-btn" icon="ui-icon-play-arrow " (click)="study()" *ngIf="syl.status=='published'"></button>
                             </div>
-                            <div class="clearfix"></div>
                             <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Summary'|translate}}</h4>
                             <p>{{course.summary}}</p>
                             <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Description'|translate}}</h4>
