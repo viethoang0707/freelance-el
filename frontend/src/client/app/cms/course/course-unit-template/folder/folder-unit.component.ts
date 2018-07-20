@@ -21,11 +21,13 @@ import { CourseUnit } from '../../../../shared/models/elearning/course-unit.mode
 })
 export class FolderCourseUnitComponent extends BaseComponent implements ICourseUnit{
 
-	@Input() mode;
+	viewCompleted: boolean;
 	private unit: CourseUnit;
+	@Input() mode;
 
 	constructor() {
 		super();
+		this.viewCompleted =  true;
 	}
 
 	render(unit:CourseUnit) {

@@ -24,15 +24,15 @@ import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.
 })
 export class SCORMLectureCourseUnitComponent extends BaseComponent implements ICourseUnit {
 
-	@Input() mode;
 	private unit: CourseUnit;
 	private lecture: SCORMLecture;
-	private blockedUpload: boolean;
+	viewCompleted: boolean;
+	@Input() mode;
 
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new SCORMLecture();
-		this.blockedUpload =  false;
+		this.viewCompleted = true;
 	}
 
 
@@ -45,6 +45,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				var lecture = new SCORMLecture();
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
+				this.viewCompleted = true;
 			}
 			
 		});
@@ -55,7 +56,6 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
-		this.blockedUpload =  true;
 		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				if (data["result"]) {
@@ -65,14 +65,11 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 						this.fileApiService.unzip(serverFile,  this.authService.LoginToken.cloud_id)
 						.subscribe((data)=> {
 							this.lecture.base_url = data["url"];
-							this.blockedUpload =  false;
 						}, ()=> {
-							this.blockedUpload =  false;
 						});
 					});
 				}
 			}, ()=> {
-				this.blockedUpload =  false;
 			}
 		);
 	}

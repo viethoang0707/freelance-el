@@ -8,7 +8,7 @@
             <div class="ui-toolbar-group-left ">
               <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addCandidate() " name="addCandidate"></button>
               <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedCandidates) "
-                *ngIf="selectedCandidates && selectedCandidates.length "></button>
+                [disabled]="!selectedCandidates || !selectedCandidates.length "></button>
             </div>
           </p-toolbar>
           <p-table #candidateTable [value]="candidates" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedCandidates "

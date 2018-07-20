@@ -23,21 +23,21 @@ import * as RecordRTC from 'recordrtc';
 	type: 'video'
 })
 export class VideoLectureCourseUnitComponent extends BaseComponent implements AfterViewInit, ICourseUnit {
-
-	@Input() mode;
+	
 	private unit: CourseUnit;
 	private lecture: VideoLecture;
 	private uploadInprogress: boolean;
 	private stream: any;
 	private recordRTC: any;
 	private showToolbar: boolean;
-	openFileStatus: boolean = false;
-
-	@ViewChild('camera') video: any
+	viewCompleted: boolean;
+	@ViewChild('camera') video: any;
+	@Input() mode;
 
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new VideoLecture();
+		this.viewCompleted = false;
 	}
 
 	ngAfterViewInit() {
@@ -57,7 +57,6 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
 			}
-			
 		});
 	}
 
@@ -66,14 +65,12 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	}
 
 	uploadFile(file) {
-		this.openFileStatus = true;
 		this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {
 						this.lecture.video_url = data["url"];
-						this.openFileStatus = false;
-					})
+					});
 				}
 			}
 		);
@@ -146,6 +143,9 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 		this.uploadFile(file);
 	}
 
+	videoEnded() {
+		this.viewCompleted =  true;
+	}
 
 }
 

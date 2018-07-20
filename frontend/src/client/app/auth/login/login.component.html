@@ -19,7 +19,7 @@
           <div class=" ui-g-12 ">
             <span class="md-inputfield">
                 <input type="text" pInputText name="username"
-                [(ngModel)]="credential.username" #username="ngModel">
+                [(ngModel)]="credential.username" [(lowercase)]="credential.username" #username="ngModel">
                 <label for="username">{{'Username'|translate}}</label>
                 <div *ngIf="username.invalid && (username.dirty || username.touched)"
                     class="ui-message ui-messages-error ui-corner-all">

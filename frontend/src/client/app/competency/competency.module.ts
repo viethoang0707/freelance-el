@@ -8,10 +8,17 @@ import { CompetencyMatrixComponent } from './competency-matrix/competency-matrix
 import { CompetencyRoutingModule } from './competency-routing';
 
 @NgModule({
-    imports: [CompetencyRoutingModule, ErpSharedModule, AuthModule],
-    declarations: [CompetencyComponent,CompetencyListComponent,CompetencyDialog, CompetencyMatrixComponent],
-    providers: [],
-    exports: [],
+	imports: [
+		CompetencyRoutingModule,
+		ErpSharedModule,
+		AuthModule],
+	declarations: [
+		CompetencyComponent,
+		CompetencyListComponent,
+		CompetencyDialog,
+		CompetencyMatrixComponent],
+	providers: [],
+	exports: [],
 })
 export class CompetencyModule {
 }

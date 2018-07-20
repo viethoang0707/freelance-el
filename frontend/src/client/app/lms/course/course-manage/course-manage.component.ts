@@ -75,7 +75,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 			this.memberId = +params['memberId'];
 			this.course = this.lmsProfileService.courseById(courseId);
 			this.classes = this.lmsProfileService.classByCourseId(courseId);
-			this.lmsProfileService.getCourseContent( courseId).subscribe(content => {
+			this.lmsProfileService.getCourseContent(courseId).subscribe(content => {
 				this.syl = content["syllabus"];
 				this.faqs = content["faqs"];
 				this.materials = content["materials"];
@@ -94,12 +94,12 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 			this.warn('Cours syllabus is not published');
 	}
 
-	manageConference() {
-		this.conferenceDialog.show(this.selectedClass);
+	manageConference(courseClass: CourseClass) {
+		this.conferenceDialog.show(courseClass);
 	}
 
-	manageClass() {
-		this.router.navigate(['/lms/courses/manage/class', this.course.id, this.selectedClass.id, this.memberId]);
+	manageClass(courseClass: CourseClass) {
+		this.router.navigate(['/lms/courses/manage/class', this.course.id, courseClass.id, this.memberId]);
 	}
 
 	nodeSelect(event: any) {
@@ -108,8 +108,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		}
 	}
 
-	broadcastMessage() {
-		CourseMember.listByClass(this, this.selectedClass.id).subscribe(members => {
+	broadcastMessage(courseClass: CourseClass) {
+		CourseMember.listByClass(this, courseClass.id).subscribe(members => {
 			if (members.length) {
 				var emails = _.pluck(members, "email");
 				this.mailDialog.show(emails);
@@ -117,10 +117,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		});
 	}
 
-	previewUnit() {
-		if (this.selectedNode) {
-			this.unitPreviewDialog.show(this.selectedNode.data);
-		}
+	previewUnit(unit: CourseUnit) {
+		this.unitPreviewDialog.show(unit);
 	}
 
 }

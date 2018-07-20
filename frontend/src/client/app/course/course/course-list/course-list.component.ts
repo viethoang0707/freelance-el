@@ -63,35 +63,35 @@ export class CourseListComponent extends BaseComponent {
         });
     }
 
-    editCourse() {
-        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+    editCourse(course: Course) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
             this.error('You do not have edit permission for this course');
             return;
         }
-        this.courseDialog.show(this.selectedCourse);
+        this.courseDialog.show(course);
         this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.checkDuplicate(this.selectedCourse);
+            this.checkDuplicate(course);
         });
     }
 
-    requestReview() {
-        if (this.ContextUser.id != this.selectedCourse.supervisor_id) {
+    requestReview(course: Course) {
+        if (this.ContextUser.id != course.supervisor_id) {
             this.error('You do not have submit-review permission for this course');
             return;
         }
-        this.workflowService.createCourseReviewTicket(this, this.selectedCourse).subscribe(()=> {
+        this.workflowService.createCourseReviewTicket(this, course).subscribe(() => {
             this.success('Request submitted');
-            this.selectedCourse.refresh(this).subscribe();
+            course.refresh(this).subscribe();
         });
     }
 
-    deleteCourse() {
-        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+    deleteCourse(course: Course) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
             this.error('You do not have delete permission for this course');
             return;
         }
         this.confirm('Are you sure to delete ?', () => {
-            this.selectedCourse.delete(this).subscribe(() => {
+            course.delete(this).subscribe(() => {
                 this.loadCourses();
                 this.selectedCourse = null;
             })

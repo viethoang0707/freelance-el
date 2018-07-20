@@ -24,14 +24,15 @@ import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.
 })
 export class SlideLectureCourseUnitComponent extends BaseComponent implements ICourseUnit {
 
-	@Input() mode;
 	private unit: CourseUnit;
 	private lecture: SlideLecture;
-
+	viewCompleted: boolean;
+	@Input() mode;
 
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new SlideLecture();
+		this.viewCompleted = false;
 	}
 
 
@@ -45,6 +46,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 				var lecture = new SlideLecture();
 				lecture.unit_id = this.unit.id;
 				this.lecture = lecture;
+				this.viewCompleted = true;
 			}
 			
 		});

@@ -22,13 +22,16 @@ import { BaseModel } from '../../../../shared/models/base.model';
 })
 export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICourseUnit{
 
-	@Input() mode;
 	private unit: CourseUnit;
 	private lecture: HtmlLecture;
+	viewCompleted: boolean;
+
+	@Input() mode;
 
 	constructor() {
 		super();
 		this.lecture = new HtmlLecture();
+		this.viewCompleted =  false;
 	}
 
 	render(unit:CourseUnit) {
@@ -46,6 +49,11 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 
 	saveEditor():Observable<any> {
 		return Observable.forkJoin(this.unit.save(this), this.lecture.save(this));
+	}
+
+	updateScrollPos(e) {
+		if (e.endReached)
+			this.viewCompleted = true;
 	}
 
 }

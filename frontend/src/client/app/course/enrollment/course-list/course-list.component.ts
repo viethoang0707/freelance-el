@@ -49,15 +49,15 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     }
 
 
-    enrollCourse() {
-        if (this.ContextUser.id != this.selectedCourse.supervisor_id) {
+    enrollCourse(course:Course) {
+        if (this.ContextUser.id != course.supervisor_id) {
             this.error(this.translateService.instant('You do not have enroll permission for this course'));
             return;
         }
-        if (this.selectedCourse.mode == 'self-study')
-            this.courseEnrollDialog.enrollCourse(this.selectedCourse);
-        else if (this.selectedCourse.mode == 'group')
-            this.classListDialog.show(this.selectedCourse);
+        if (course.mode == 'self-study')
+            this.courseEnrollDialog.enrollCourse(course);
+        else if (course.mode == 'group')
+            this.classListDialog.show(course);
     }
 
     loadCourses() {
@@ -83,27 +83,27 @@ export class CourseEnrollmentListComponent extends BaseComponent {
         }
     }
 
-    closeCourse() {
-        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+    closeCourse(course:Course) {
+        if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
             this.error('You do not have close permission for this class');
             return;
         }
         this.confirm('Are you sure to proceed ? You will not be able to add new class after the course is closed', () => {
-            this.selectedCourse.close(this).subscribe(() => {
-                this.selectedCourse.status = 'closed';
+            course.close(this).subscribe(() => {
+                course.status = 'closed';
                 this.success('Class close');
             });
         });
     }
 
-    openCourse() {
-        if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedCourse.supervisor_id) {
+    openCourse(course:Course) {
+        if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
             this.error('You do not have open permission for this class');
             return;
         }
         this.confirm('Are you sure to proceed ?.', () => {
-            this.selectedCourse.open(this).subscribe(() => {
-                this.selectedCourse.status = 'open';
+            course.open(this).subscribe(() => {
+                course.status = 'open';
                 this.success('Class close');
             });
         });

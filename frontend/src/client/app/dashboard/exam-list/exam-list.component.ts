@@ -1,23 +1,22 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
-import { AuthService } from '../../../shared/services/auth.service';
+import { BaseComponent } from '../../shared/components/base/base.component';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
-import { Exam } from '../../../shared/models/elearning/exam.model';
-import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
-import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
-import { Group } from '../../../shared/models/elearning/group.model';
-import { Submission } from '../../../shared/models/elearning/submission.model';
+import { GROUP_CATEGORY, EXAM_STATUS } from '../../shared/models/constants'
+import { Exam } from '../../shared/models/elearning/exam.model';
+import { ExamMember } from '../../shared/models/elearning/exam-member.model';
+import { ExamQuestion } from '../../shared/models/elearning/exam-question.model';
+import { Group } from '../../shared/models/elearning/group.model';
+import { Submission } from '../../shared/models/elearning/submission.model';
 import { SelectItem } from 'primeng/api';
-import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
-import { ExamStudyDialog } from '../exam-study/exam-study.dialog.component';
-import { ReportUtils } from '../../../shared/helpers/report.utils';
+import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
+import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
+import { ReportUtils } from '../../shared/helpers/report.utils';
 import { Route, Router } from '@angular/router';
-import { BaseModel } from '../../../shared/models/base.model';
-import { User } from '../../../shared/models/elearning/user.model';
-import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
+import { BaseModel } from '../../shared/models/base.model';
+import { User } from '../../shared/models/elearning/user.model';
+import { ExamRecord } from '../../shared/models/elearning/exam-record.model';
+import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
 
 
 @Component({
@@ -35,7 +34,8 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
-
+    @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
+    
     constructor(private router: Router) {
         super();
         this.exams = [];

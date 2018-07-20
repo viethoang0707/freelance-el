@@ -8,10 +8,21 @@ import { ApprovalTreeComponent } from './approval-tree/approval-tree.component';
 import { WorkflowRoutingModule } from './workflow-routing';
 
 @NgModule({
-    imports: [WorkflowRoutingModule, ErpSharedModule, AuthModule],
-    declarations: [WorkflowComponent, TicketListComponent, TicketDialog, ApprovalTreeComponent],
-    providers: [],
-    exports: [TicketDialog],
+	imports: [
+		WorkflowRoutingModule,
+		ErpSharedModule,
+		AuthModule
+	],
+	declarations: [
+		WorkflowComponent,
+		TicketListComponent,
+		TicketDialog,
+		ApprovalTreeComponent
+	],
+	providers: [],
+	exports: [
+		TicketDialog
+	],
 })
 export class WorkflowModule {
 }

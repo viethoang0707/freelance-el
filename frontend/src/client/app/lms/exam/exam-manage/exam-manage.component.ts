@@ -82,14 +82,19 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         });
     }
 
+    redoExam() {
+        this.selectedMember.enroll_status != 'registered';
+        this.selectedMember.save(this).susbscribe(()=> {
+            this.error('Action applied');
+        });
+    }
+
 
     viewAnswerSheet() {
-        if (this.selectedMember) {
-            if (this.selectedMember.enroll_status != 'completed')
-                this.info(this.translateService.instant('Student has not completed the exam'));
-            else
-                this.answerSheetDialog.show(this.exam, this.selectedMember);
-        }
+        if (this.selectedMember.enroll_status != 'completed')
+            this.info(this.translateService.instant('Student has not completed the exam'));
+        else
+            this.answerSheetDialog.show(this.exam, this.selectedMember);
     }
 
     loadScores() {

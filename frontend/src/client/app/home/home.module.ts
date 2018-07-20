@@ -14,20 +14,31 @@ import { AccountModule } from '../account/account.module';
 import { WorkflowModule } from '../workflow/workflow.module';
 
 @NgModule({
-  imports: [ HomeRoutingModule, ErpSharedModule, AccountModule,WorkflowModule ],
-  declarations: [ HomeComponent, NavbarComponent, SideMenuComponent, 
-  FooterComponent,SubMenuComponent,BreadcrumbComponent ],
+  imports: [
+    HomeRoutingModule,
+    ErpSharedModule,
+    AccountModule,
+    WorkflowModule
+  ],
+  declarations: [
+    HomeComponent,
+    NavbarComponent,
+    SideMenuComponent,
+    FooterComponent,
+    SubMenuComponent
+    , BreadcrumbComponent
+  ],
   exports: [],
-  providers: [ ]
+  providers: []
 })
 
 export class HomeModule {
-    static forRoot(): ModuleWithProviders {
-        return {
-        	ngModule: HomeModule,
-            providers: [HomeEventManager]
-        }
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: HomeModule,
+      providers: [HomeEventManager]
     }
+  }
 }
 
 

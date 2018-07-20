@@ -8,7 +8,6 @@
   <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
   <div class="ui-g">
     <div class="ui-g-6" align='center'>
-      <p-progressBar [hidden]="!openFileStatus" mode="indeterminate" [style]="{'height': '15px'}"></p-progressBar>
       <div class="ui-g">
         <div style="width: 50%">
           <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFile($event)"
@@ -45,6 +44,6 @@
   <div [innerHTML]="lecture.transcript"></div>
 </div>
 <div *ngIf="mode=='study'">
-  <video id="camera" width="100%" height="410" #camera autoplay poster="assets/images/logo-vietinterview.png" src="{{lecture.video_url}}"></video>
+  <video id="camera" width="100%" height="410" #camera autoplay poster="assets/images/logo-vietinterview.png" src="{{lecture.video_url}}" (ended)="videoEnded()"></video>
   <div [innerHTML]="lecture.transcript" class="lecture-transcript"></div>
 </div>

@@ -1,221 +1,209 @@
-<div class="ui-g card card-w-title">
-  <div class="ui-lg-12 ui-g-12">
-  <h1>{{'Course study'|translate}}: {{course.name}} </h1>
-  </div>
-  <div class="ui-lg-12 ui-g-12">
-  <p-tabView [style]="{width: '100%', height: '100vh'}">
-    <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze" [disabled]="syl.status!='published'">
-      <div class="ui-lg-3 ui-md-3 ui-g-12 course-study-tree">
-        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
-      </div>
-      <div class="ui-lg-9 ui-md-9 ui-g-12" *ngIf="selectedUnit">
-        <div class="card course-study-unit">
-          <div class="image-box-content">
-            <div class="fLeft">
-              <h3 class="removeMT mb5 mr10 fLeft heading-unit-course">{{selectedUnit.name}}</h3>
-              <span class="complete-status" *ngIf="completedUnitIds.includes(selectedUnit.id)">{{'Completed'|translate}}</span>
-              <span class="incomplete-status" *ngIf="!completedUnitIds.includes(selectedUnit.id)">{{'Incompleted'|translate}}</span>
-              <div class="clearfix"></div>
-              <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type] |translate }}</span>
-            </div>
-            <div class="image-box-footer fRight">
-              <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Study'| translate}}" label="{{'Study'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="studyUnit()" *ngIf="selectedUnit.type!='folder' && !studyMode"></button>
-              <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
-              <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="nextUnit()"></button>
-            </div>
-            <div class="clearfix"></div>
-            <div>
-              <ng-template course-unit-container></ng-template>
-              <div style="text-align: center;">
-                <button pButton type="button" icon="ui-icon-open-in-browser" title="{{'Complete'| translate}}" label="{{'Complete'|translate}}" class="cyan-btn mt5" (click)="completeUnit()" [disabled]="completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
-                <button pButton type="button" icon="ui-icon-zoom-in" title="{{'Zoom in'| translate}}" label="{{'Zoom in'|translate}}" class="blue-grey-btn mt5" (click)="previewUnit()" [disabled]="completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit.type!='folder' && studyMode"></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel *ngIf="member.class_id" header="{{'Project'|translate}}" leftIcon="ui-icon-assignment" styleClass="project-course-study" headerStyleClass="project-course-study">
-      <div class="ui-lg-12 ui-g-12">
-        <p-dataList [value]="projects" [paginator]="true" [rows]="5">
-          <ng-template let-project pTemplate="item">
-            <p-card>
-              <p-header>
-                <div class="head-exam">
-                </div>
-              </p-header>
-              <div class="ui-g body-exam">
-                <div class="ui-lg-8 ui-g-12">
-                  <h4 class="title">{{project.name}}</h4>
-                  <span class="e-status">
-                    {{PROJECT_STATUS[project.status] | translate}}
-                  </span>
-                  <div class="clearfix"></div>
-                  <p-accordion styleClass="cont">
-                    <p-accordionTab header="{{'Content' | translate}}">
-                      <p [innerHTML]="project.content"></p>
-                    </p-accordionTab>
-                    <p-accordionTab header="{{'Attachment' | translate}}">
-                      <div class="ui-g-6">
-                        <a href="{{project.file_url}}" target="_blank" *ngIf="project.file_url">{{project.filename}}</a>
-                      </div>
-                    </p-accordionTab>
-                  </p-accordion>
-                </div>
-                <div class="ui-lg-4 ui-g-12">
-                  <p-card>
-                    <ul class="list-cmt">
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'Start date'|translate}}</span>
-                        <span class="cmt-detail">{{project.start | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'End date'|translate}}</span>
-                        <span class="cmt-detail">{{project.end | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix" *ngVar="getProjectSubmit(project) as submit">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'Submit date'|translate}}</span>
-                        <span class="cmt-detail">{{submit.date_submit | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">star</i>
-                        <span class="cmt-title">{{'Score'|translate}}</span>
-                        <span class="cmt-detail">{{project.score}}</span>
-                      </li>
-                    </ul>
-                    <p-footer>
-                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Submit'| translate}}" label="{{'Submit project'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="submitProject(project)" [disabled]="project.submit || !project.IsAvailable"></button>
-                    </p-footer>
-                  </p-card>
-                </div>
-              </div>
-            </p-card>
-          </ng-template>
-        </p-dataList>
-        <project-submission-dialog></project-submission-dialog>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel *ngIf="member.class_id" header="{{'Exam'|translate}}" leftIcon="ui-icon-grade">
-      <div class="ui-lg-12 ui-md-12 ui-g-12">
-        <p-dataList [value]="examMembers" [paginator]="true" [rows]="5">
-          <ng-template let-member pTemplate="item">
-            <p-card>
-              <p-header>
-                <div class="head-exam">
-                </div>
-              </p-header>
-              <div class="ui-g body-exam">
-                <div class="ui-lg-8 ui-md-12 ui-g-12">
-                  <h4 class="title">{{member.exam.name}}</h4>
-                  <span class="e-status">
-                    {{EXAM_STATUS[member.exam.status] | translate}}
-                  </span>
-                  <div class="clearfix"></div>
-                  <p-accordion styleClass="cont">
-                    <p-accordionTab header="{{'Summary' | translate}}">
-                      {{member.exam.summary}}
-                    </p-accordionTab>
-                    <p-accordionTab header="{{'Instruction' | translate}}">
-                      <p [innerHTML]="member.exam.instruction"></p>
-                    </p-accordionTab>
-                  </p-accordion>
-                </div>
-                <div class="ui-lg-4 ui-md-12 ui-g-12">
-                  <p-card>
-                    <ul class="list-cmt">
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'Start date'|translate}}</span>
-                        <span class="cmt-detail">{{member.exam.start | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">date_range</i>
-                        <span class="cmt-title">{{'End date'|translate}}</span>
-                        <span class="cmt-detail">{{member.exam.end | date : "dd/MM/yyyy"}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">alarm</i>
-                        <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
-                        <span class="cmt-detail">{{member.exam.duration}}</span>
-                      </li>
-                      <li class="clearfix">
-                        <i class="material-icons">done</i>
-                        <span class="cmt-title">{{'Number of question'|translate}}</span>
-                        <span class="cmt-detail">{{member.exam.question_count}}</span>
-                      </li>
-                    </ul>
-                    <p-footer>
-                      <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(member.exam, member)" [disabled]="!member.exam.IsAvailable || member.enroll_status=='completed'"></button>
-                    </p-footer>
-                  </p-card>
-                </div>
-              </div>
-              <p-footer>
-              </p-footer>
-            </p-card>
-          </ng-template>
-        </p-dataList>
-        <exam-study-dialog></exam-study-dialog>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel *ngIf="member.class_id" header="{{'Gradebook'|translate}}" leftIcon="ui-icon-book">
-      <div class="ui-lg-12 ui-md-12 ui-g-12">
-        <p-toolbar>
-          <div class="ui-toolbar-group-left">
-            <button pButton type="button " label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
-            <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" ></button>
-          </div>
-        </p-toolbar>
+<div class="ui-g card">
+    <div class="ui-lg-12 ui-g-12">
+        <h1>{{'Course '|translate}}: {{course.name}} </h1>
+    </div>
+    <div class="ui-g-9">
+        <p-tabMenu [model]="menuItems" [activeItem]="menuItems[0]"></p-tabMenu>
+    </div>
+    <div class="ui-g-3" *ngIf="member.class_id">
+        <button pButton type="button " label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
+        <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()"></button>
         <answer-print-dialog></answer-print-dialog>
         <certificate-print-dialog></certificate-print-dialog>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download" styleClass="course-material-study" headerStyleClass="course-material-study">
-      <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
-        <ul class="task-list-container">
-          <li *ngFor="let material of materials">
-            <a href="{{material.url}}">
+    </div>
+    <div class="ui-lg-12 ui-g-12">
+        <div [hidden]="activeMenu !='syllabus'">
+            <div class="ui-lg-2 ui-md-3 ui-g-12 course-study-tree">
+                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
+            </div>
+            <div class="ui-lg-10 ui-md-9 ui-g-12">
+                <div class="card course-study-unit">
+                    <div class="image-box-content">
+                        <div class="fLeft" *ngIf="selectedUnit">
+                            <h3 class="removeMT mb5 mr10 fLeft heading-unit-course">{{selectedUnit.name}}</h3>
+                            <span class="complete-status" *ngIf="completedUnitIds.includes(selectedUnit.id)">{{'Completed'|translate}}</span>
+                            <span class="incomplete-status" *ngIf="!completedUnitIds.includes(selectedUnit.id)">{{'Incompleted'|translate}}</span>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div>
+                            <ng-template course-unit-container></ng-template>
+                            <div style="text-align: center;" *ngIf="selectedUnit">
+                                <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="prevUnit()"></button>
+                                <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="nextUnit()" [disabled]="componentRef && !componentRef.instance.viewCompleted && !completedUnitIds.includes(selectedUnit.id)"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [hidden]="activeMenu !='faq'">
+            <div class="ui-g-12">
+                <p-accordion>
+                    <p-accordionTab header="{{faq.question}}" [selected]="true" *ngFor="let faq of faqs">
+                        <div [innerHTML]="faq.answer"></div>
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+        </div>
+        <div [hidden]="activeMenu !='material'">
+            <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
+                <ul class="task-list-container">
+                    <li *ngFor="let material of materials">
+                        <a href="{{material.url}}">
               <span class="task-name">{{material.name}}</span>
             </a>
-            <i class="material-icons" *ngIf="material.type=='video'">videocam</i>
-            <i class="material-icons" *ngIf="material.type=='audio'">mic</i>
-            <i class="material-icons" *ngIf="material.type=='file'">attachment</i>
-          </li>
-        </ul>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="{{'Course FAQ'|translate}}" leftIcon="ui-icon-question-answer">
-      <div class="ui-g-12">
-        <p-accordion>
-          <p-accordionTab header="{{faq.question}}" [selected]="true" *ngFor="let faq of faqs">
-            <div [innerHTML]="faq.answer"></div>
-          </p-accordionTab>
-        </p-accordion>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel *ngIf="course.mode=='group'" header="{{'Conference'|translate}}" leftIcon="ui-icon-call">
-      <div class="ui-lg-12 ui-md-12 ui-g-12">
-        <div class="ui-lg-4 ui-md-6 ui-g-12">
-          <div class="task-box task-box-1">
-            <div class="task-box-header">
-              <button pButton type="button " label="{{ 'Join'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
+                        <i class="material-icons" *ngIf="material.type=='video'">videocam</i>
+                        <i class="material-icons" *ngIf="material.type=='audio'">mic</i>
+                        <i class="material-icons" *ngIf="material.type=='file'">attachment</i>
+                    </li>
+                </ul>
             </div>
-            <div class="task-box-content">
-              <h3>{{'Live conference'|translate}} : {{conference.name}}</h3>
-              <p>{{'Room password'|translate}} : {{conference.room_pass}}
-              </p>
-            </div>
-            <div class="task-box-footer">
-              <span class="task-status">{{conference.status}}</span>
-            </div>
-          </div>
         </div>
-      </div>
-    </p-tabPanel>
-  </p-tabView>
-  </div>
+        <div [hidden]="activeMenu !='exam'">
+            <div class="ui-lg-12 ui-md-12 ui-g-12">
+                <p-dataList [value]="examMembers" [paginator]="true" [rows]="5">
+                    <ng-template let-member pTemplate="item">
+                        <p-card>
+                            <p-header>
+                                <div class="head-exam">
+                                </div>
+                            </p-header>
+                            <div class="ui-g body-exam">
+                                <div class="ui-lg-8 ui-md-12 ui-g-12">
+                                    <h4 class="title">{{member.exam.name}}</h4>
+                                    <span class="e-status">
+                    {{EXAM_STATUS[member.exam.status] | translate}}
+                  </span>
+                                    <div class="clearfix"></div>
+                                    <p-accordion styleClass="cont">
+                                        <p-accordionTab header="{{'Summary' | translate}}">
+                                            {{member.exam.summary}}
+                                        </p-accordionTab>
+                                        <p-accordionTab header="{{'Instruction' | translate}}">
+                                            <p [innerHTML]="member.exam.instruction"></p>
+                                        </p-accordionTab>
+                                    </p-accordion>
+                                </div>
+                                <div class="ui-lg-4 ui-md-12 ui-g-12">
+                                    <p-card>
+                                        <ul class="list-cmt">
+                                            <li class="clearfix">
+                                                <i class="material-icons">date_range</i>
+                                                <span class="cmt-title">{{'Start date'|translate}}</span>
+                                                <span class="cmt-detail">{{member.exam.start | date : "dd/MM/yyyy"}}</span>
+                                            </li>
+                                            <li class="clearfix">
+                                                <i class="material-icons">date_range</i>
+                                                <span class="cmt-title">{{'End date'|translate}}</span>
+                                                <span class="cmt-detail">{{member.exam.end | date : "dd/MM/yyyy"}}</span>
+                                            </li>
+                                            <li class="clearfix">
+                                                <i class="material-icons">alarm</i>
+                                                <span class="cmt-title">{{'Duration (mintes)'|translate}}</span>
+                                                <span class="cmt-detail">{{member.exam.duration}}</span>
+                                            </li>
+                                            <li class="clearfix">
+                                                <i class="material-icons">done</i>
+                                                <span class="cmt-title">{{'Number of question'|translate}}</span>
+                                                <span class="cmt-detail">{{member.exam.question_count}}</span>
+                                            </li>
+                                        </ul>
+                                        <p-footer>
+                                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(member.exam, member)" [disabled]="!member.exam.IsAvailable || member.enroll_status=='completed'"></button>
+                                        </p-footer>
+                                    </p-card>
+                                </div>
+                            </div>
+                            <p-footer>
+                            </p-footer>
+                        </p-card>
+                    </ng-template>
+                </p-dataList>
+                <exam-study-dialog></exam-study-dialog>
+            </div>
+        </div>
+        <div [hidden]="activeMenu !='project'">
+            <div class="ui-lg-12 ui-g-12">
+                <p-dataList [value]="projects" [paginator]="true" [rows]="5">
+                    <ng-template let-project pTemplate="item">
+                        <p-card>
+                            <p-header>
+                                <div class="head-exam">
+                                </div>
+                            </p-header>
+                            <div class="ui-g body-exam">
+                                <div class="ui-lg-8 ui-g-12">
+                                    <h4 class="title">{{project.name}}</h4>
+                                    <span class="e-status">
+                    {{PROJECT_STATUS[project.status] | translate}}
+                  </span>
+                                    <div class="clearfix"></div>
+                                    <p-accordion styleClass="cont">
+                                        <p-accordionTab header="{{'Content' | translate}}">
+                                            <p [innerHTML]="project.content"></p>
+                                        </p-accordionTab>
+                                        <p-accordionTab header="{{'Attachment' | translate}}">
+                                            <div class="ui-g-6">
+                                                <a href="{{project.file_url}}" target="_blank" *ngIf="project.file_url">{{project.filename}}</a>
+                                            </div>
+                                        </p-accordionTab>
+                                    </p-accordion>
+                                </div>
+                                <div class="ui-lg-4 ui-g-12">
+                                    <p-card>
+                                        <ul class="list-cmt">
+                                            <li class="clearfix">
+                                                <i class="material-icons">date_range</i>
+                                                <span class="cmt-title">{{'Start date'|translate}}</span>
+                                                <span class="cmt-detail">{{project.start | date : "dd/MM/yyyy"}}</span>
+                                            </li>
+                                            <li class="clearfix">
+                                                <i class="material-icons">date_range</i>
+                                                <span class="cmt-title">{{'End date'|translate}}</span>
+                                                <span class="cmt-detail">{{project.end | date : "dd/MM/yyyy"}}</span>
+                                            </li>
+                                            <li class="clearfix" *ngVar="getProjectSubmit(project) as submit">
+                                                <i class="material-icons">date_range</i>
+                                                <span class="cmt-title">{{'Submit date'|translate}}</span>
+                                                <span class="cmt-detail">{{submit.date_submit | date : "dd/MM/yyyy"}}</span>
+                                            </li>
+                                            <li class="clearfix">
+                                                <i class="material-icons">star</i>
+                                                <span class="cmt-title">{{'Score'|translate}}</span>
+                                                <span class="cmt-detail">{{project.score}}</span>
+                                            </li>
+                                        </ul>
+                                        <p-footer>
+                                            <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Submit'| translate}}" label="{{'Submit project'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="submitProject(project)" [disabled]="project.submit || !project.IsAvailable"></button>
+                                        </p-footer>
+                                    </p-card>
+                                </div>
+                            </div>
+                        </p-card>
+                    </ng-template>
+                </p-dataList>
+                <project-submission-dialog></project-submission-dialog>
+            </div>
+        </div>
+        <div [hidden]="activeMenu !='conference'">
+            <div class="ui-lg-12 ui-md-12 ui-g-12">
+                <div class="ui-lg-4 ui-md-6 ui-g-12">
+                    <div class="task-box task-box-1">
+                        <div class="task-box-header">
+                            <button pButton type="button " label="{{ 'Join'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
+                        </div>
+                        <div class="task-box-content">
+                            <h3>{{'Live conference'|translate}} : {{conference.name}}</h3>
+                            <p>{{'Room password'|translate}} : {{conference.room_pass}}
+                            </p>
+                        </div>
+                        <div class="task-box-footer">
+                            <span class="task-status">{{conference.status}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<course-unit-preview-dialog></course-unit-preview-dialog>

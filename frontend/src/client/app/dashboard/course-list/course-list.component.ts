@@ -2,22 +2,20 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, concatAll } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
-import { AuthService } from '../../../shared/services/auth.service';
-import { ReportUtils } from '../../../shared/helpers/report.utils';
+import { BaseComponent } from '../../shared/components/base/base.component';
+import { ReportUtils } from '../../shared/helpers/report.utils';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
-import { Course } from '../../../shared/models/elearning/course.model';
-import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
-import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
-import { CourseMember } from '../../../shared/models/elearning/course-member.model';
-import { Group } from '../../../shared/models/elearning/group.model';
-import { User } from '../../../shared/models/elearning/user.model';
+import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../shared/models/constants'
+import { Course } from '../../shared/models/elearning/course.model';
+import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
+import { CourseSyllabus } from '../../shared/models/elearning/course-syllabus.model';
+import { CourseMember } from '../../shared/models/elearning/course-member.model';
+import { Group } from '../../shared/models/elearning/group.model';
+import { User } from '../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
-import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
-import { BaseModel } from '../../../shared/models/base.model';
-import { CoursePublishDialog } from '../../../cms/course/course-publish/course-publish.dialog.component';
+import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-syllabus.dialog.component';
+import { BaseModel } from '../../shared/models/base.model';
+import { CoursePublishDialog } from '../../cms/course/course-publish/course-publish.dialog.component';
 
 
 @Component({

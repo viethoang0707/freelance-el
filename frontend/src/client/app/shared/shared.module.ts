@@ -29,11 +29,13 @@ import { WindowRef } from './helpers/windonw.ref';
 import { TreeUtils } from './helpers/tree.utils';
 import { SyllabusUtils } from './helpers/syllabus.utils';
 import { ReportUtils } from './helpers/report.utils';
+import { ScrollTracker } from './helpers/scroll-tracker.directive';
 import { VarDirective } from './helpers/ng-var.directive';
 import { MatchInputValidatorDirective } from './validators/match-input.directive';
 import { ValuesPipe } from './pipes/map.pipe';
 import { KeysPipe } from './pipes/map.pipe';
 import { SafePipe } from './pipes/safe.pipe';
+import { LowercasePipe } from './pipes/lowercase.pipe';
 import { GroupsPipe } from './pipes/group.pipe';
 import { TimeConvertPipe, ClockPipe } from './pipes/time.pipe';
 import { ImageBase64Pipe } from './pipes/image-base64.pipe';
@@ -224,7 +226,9 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         ClockPipe,
         SafePipe,
         ImageBase64Pipe,
+        LowercasePipe,
         VarDirective,
+        ScrollTracker,
         ImageBase64Component,
         GroupDialog,
         GroupListComponent,
@@ -256,6 +260,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         TimeConvertPipe,
         ClockPipe,
         VarDirective,
+        ScrollTracker,
+        LowercasePipe,
         MatchInputValidatorDirective,
         ImageBase64Component,
         GroupDialog,

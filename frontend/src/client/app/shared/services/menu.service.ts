@@ -14,7 +14,7 @@ import * as _ from 'underscore';
 export class MenuService {
 
     private ADMIN_MENU = [
-                { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] , code:'DASHBOARD'},
+                { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard/admin'] , code:'DASHBOARD'},
                 { label: '', separator: true, styleClass: 'menu-separator' },
                 {
                     label: 'Course', icon: 'school', code:'SCHOOL',
@@ -75,15 +75,15 @@ export class MenuService {
             ];
 
     private USER_MENU = [
-                { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard'] },
+                { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard/lms'] },
                 { label: '', separator: true, styleClass: 'menu-separator' },
-                { label: 'My courses', icon: 'school', routerLink: ['/lms/courses'] },
-                { label: 'My exams', icon: 'alarm_add', routerLink: ['/lms/exams'] },
-                { label: 'My surveys', icon: 'question_answer', routerLink: ['/lms/surveys'] },
-                { label: 'My conference', icon: 'perm_phone_msg', routerLink: ['/lms/meetings'] },
+                { label: 'My courses', icon: 'school', routerLink: ['/dashboard/courses'] },
+                { label: 'My exams', icon: 'alarm_add', routerLink: ['/dashboard/exams'] },
+                { label: 'My surveys', icon: 'question_answer', routerLink: ['/dashboard/surveys'] },
+                { label: 'My conference', icon: 'perm_phone_msg', routerLink: ['/dashboard/meetings'] },
                  { label: '', separator: true, styleClass: 'menu-separator' },
-                 { label: 'Course search', icon: 'search', routerLink: ['/lms/courses/search'] },
-                 { label: 'Course recommend', icon: 'stars', routerLink: ['/lms/courses/recommend'] },
+                 { label: 'Course search', icon: 'search', routerLink: ['/dashboard/courses/search'] },
+                 { label: 'Course recommend', icon: 'stars', routerLink: ['/dashboard/courses/recommend'] },
             ];
 
 

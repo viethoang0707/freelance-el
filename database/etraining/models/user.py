@@ -7,6 +7,7 @@ class Partner(models.Model):
 	_inherit = 'res.partner'
 
 	position = fields.Char( string="Position")
+	social_id = fields.Char( string="Social ID")
 	dob = fields.Datetime( string="Date of birth")
 	gender = fields.Selection(
 		[('male', 'Male'), ('female', 'Female'), ('other', 'Other')])
@@ -17,6 +18,7 @@ class User(models.Model):
 	_inherit = 'res.users'
 
 	gender = fields.Selection(related='partner_id.gender')
+	social_id = fields.Char(related="partner_id.social_id", string="Social ID")
 	is_admin = fields.Boolean(default=False, string="Is admin")
 	course_member_ids = fields.One2many('etraining.course_member','user_id', string='Course member')
 	group_id = fields.Many2one('res.groups', string='Group')
@@ -29,6 +31,12 @@ class User(models.Model):
 	dob = fields.Datetime(related="partner_id.dob", string="Date of birth")
 	banned = fields.Boolean(default=False, string="Is banned")
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
+
+	@api.model
+	def create(self, vals):
+		vals["login"] = vals["login"].lower()
+		user = super(User, self).create(vals)
+		return user
 
 class Permission(models.Model):
 	_name = 'etraining.permission'

@@ -36,16 +36,16 @@ export class SurveySheetListComponent extends BaseComponent {
         this.loadSurveySheets();
     }
 
-    deleteSheet() {
+    deleteSheet(sheet:SurveySheet) {
         this.confirm('Are you sure to delete ?', () => {
-            this.selectedSheet.delete(this).subscribe(() => {
+            sheet.delete(this).subscribe(() => {
                 this.selectedSheet = null;
                 this.loadSurveySheets();
             });
         });
     }
 
-    previewSheet() {
+    previewSheet(sheet:SurveySheet) {
         this.sheetDialog.show(this.selectedSheet);
     }
 

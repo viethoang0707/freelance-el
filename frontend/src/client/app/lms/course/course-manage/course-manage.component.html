@@ -58,7 +58,7 @@
                             <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
                         </div>
                         <div class="image-box-footer">
-                            <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit()" *ngIf="selectedUnit.type!='folder'"></button>
+                            <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit(selectedUnit)" *ngIf="selectedUnit.type!='folder'"></button>
                         </div>
                     </div>
                 </div>

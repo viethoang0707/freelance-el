@@ -132,7 +132,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-	deleteMembers(members) {
+	deleteMembers(members:CourseMember[]) {
 		if (members && members.length)
 			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				CourseMember.deleteArray(this, members).subscribe(() => {

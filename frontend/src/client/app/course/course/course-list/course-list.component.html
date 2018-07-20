@@ -9,9 +9,9 @@
       <p-toolbar>
         <div class="ui-toolbar-group-left">
           <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addCourse()" icon="ui-icon-add"></button>
-          <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editCourse()" *ngIf="selectedCourse"></button>
-          <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCourse()" *ngIf="selectedCourse && selectedCourse.status!='published'"></button>
-          <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview()" *ngIf="selectedCourse &&  selectedCourse.review_state !='approved'"></button>
+          <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editCourse(selectedCourse)" [disabled]="!selectedCourse"></button>
+          <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCourse(selectedCourse)" [disabled]="!selectedCourse || selectedCourse.status=='open'"></button>
+          <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview(selectedCourse)" [disabled]="!selectedCourse ||  selectedCourse.review_state =='approved'"></button>
         </div>
         <div class="ui-toolbar-group-right">
           <span class="md-inputfield search">

@@ -27,7 +27,6 @@ export class QuestionSheetListComponent extends BaseComponent {
 
     @ViewChild(QuestionSheetPreviewDialog) sheetDialog: QuestionSheetPreviewDialog;
 
-
     constructor() {
         super();
         this.sheets = [];
@@ -37,19 +36,17 @@ export class QuestionSheetListComponent extends BaseComponent {
         this.loadQuestionSheets();
     }
 
-    deleteSheet() {
-        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-            this.selectedSheet.delete(this).subscribe(() => {
+    deleteSheet(sheet:QuestionSheet) {
+        this.confirm('Are you sure to delete?', () => {
+            sheet.delete(this).subscribe(() => {
                 this.selectedSheet = null;
                 this.loadQuestionSheets();
             });
         });
     }
 
-    previewSheet() {
-        ExamQuestion.listBySheet(this, this.selectedSheet.id).subscribe(examQuestion => {
-            this.sheetDialog.show(this.selectedSheet, examQuestion);
-        });
+    previewSheet(sheet:QuestionSheet) {
+        this.sheetDialog.show(sheet);
     }
 
     loadQuestionSheets() {

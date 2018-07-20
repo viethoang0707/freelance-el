@@ -85,7 +85,7 @@ export class QuestionImportDialog extends BaseComponent {
 		});
 	}
 
-	changeListner(event: any) {
+	changeFileListner(event: any) {
 		var file = event.files[0];
 		this.fileName = file.name;
 		this.excelService.importFromExcelFile(file).subscribe(data => {

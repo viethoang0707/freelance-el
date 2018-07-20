@@ -5,8 +5,8 @@
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()" *ngIf="selectedRecord"></button>
-                    <button pButton type="button" label="{{ 'Study history'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewLMSProfile()" *ngIf="selectedRecord"></button>
+                    <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook(selectedRecord)" *ngIf="selectedRecord"></button>
+                    <button pButton type="button" label="{{ 'Study history'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewLMSProfile(selectedRecord)" *ngIf="selectedRecord"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <p-selectButton [options]="viewModes" [(ngModel)]="viewMode"></p-selectButton>
@@ -107,11 +107,11 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addProject()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editProject()" *ngIf="selectedProject"></button>
-                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteProject()" *ngIf="selectedProject"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editProject(selectedProject)" *ngIf="selectedProject"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteProject(selectedProject)" *ngIf="selectedProject"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="markProject()" [disabled]="!selectedProject"></button>
+                    <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="markProject(selectedProject)" [disabled]="!selectedProject"></button>
                 </div>
             </p-toolbar>
             <p-table #examTable [value]="projects" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">
@@ -150,11 +150,11 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addExam()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editExam()" *ngIf="selectedClassExam"></button>
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollExam()" *ngIf="selectedClassExam"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editExam(selectedClassExam)" *ngIf="selectedClassExam"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollExam(selectedClassExam)" *ngIf="selectedClassExam"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage'| translate}}" *ngIf="selectedClassExam" label="{{'Manage'|translate}}" (click)="manageExam()" class="orange-btn">
+                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage'| translate}}" *ngIf="selectedClassExam" label="{{'Manage'|translate}}" (click)="manageExam(selectedClassExam)" class="orange-btn">
                     </button>
                 </div>
             </p-toolbar>
@@ -194,12 +194,12 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addSurvey()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editSurvey()" *ngIf="selectedClassSurvey"></button>
-                    <button pButton type="button" label="{{'Compose'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editSurveyContent()" *ngIf="selectedClassSurvey"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editSurvey(selectedClassSurvey)" *ngIf="selectedClassSurvey"></button>
+                    <button pButton type="button" label="{{'Compose'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editSurveyContent(selectedClassSurvey)" *ngIf="selectedClassSurvey"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollSurvey()" *ngIf="selectedClassSurvey"></button>
-                    <button pButton type="button" icon="ui-icon-data-usage" title="{{'Stats'| translate}}" *ngIf="selectedClassSurvey" label="{{'Statistics'|translate}}" (click)="viewReportSurvey()" class="blue-grey-btn">
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollSurvey(selectedClassSurvey)" *ngIf="selectedClassSurvey"></button>
+                    <button pButton type="button" icon="ui-icon-data-usage" title="{{'Stats'| translate}}" *ngIf="selectedClassSurvey" label="{{'Statistics'|translate}}" (click)="viewReportSurvey(selectedClassSurvey)" class="blue-grey-btn">
                     </button>
                 </div>
             </p-toolbar>

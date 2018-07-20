@@ -22,7 +22,7 @@
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-          <input type="text" pInputText [(ngModel)]="object.login" #login="ngModel" name="login" required>
+          <input type="text" pInputText [(ngModel)]="object.login" #login="ngModel" name="login" [(lowercase)]="object.login" required>
           <label>{{'Login'|translate}}</label>
           <div *ngIf="login.invalid && (login.dirty || login.touched)" class="ui-message ui-messages-error ui-corner-all">
             <div *ngIf="login.errors.required">

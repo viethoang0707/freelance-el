@@ -32,10 +32,11 @@ export class UserListComponent extends BaseComponent {
 
     private tree: TreeNode[];
     private users: User[];
-    private selectedUser: any;
+    private selectedUsers: any;
     private selectedGroupNodes: TreeNode[];
     private treeUtils: TreeUtils;
     private displayUsers: User[];
+
 
     constructor() {
         super();
@@ -43,7 +44,7 @@ export class UserListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listUserGroup(this).subscribe(groups=> {
+        Group.listUserGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         });
         this.loadUsers();
@@ -70,27 +71,28 @@ export class UserListComponent extends BaseComponent {
         });
     }
 
-    editUser() {
-        if (this.selectedUser)
-            this.userProfileDialog.show(this.selectedUser);
+    editUser(user:User) {
+        this.userProfileDialog.show(user);
     }
 
-    activateUser() {
-        if (this.selectedUser) {
-            this.selectedUser.banned = false;
-            this.selectedUser.save(this).subscribe(() => { }, () => {
-                this.error('Permission denied');
-            });
-        }
+    activateMultipleUsers(users:User[]){
+        _.each(users, (user:User)=> {
+            user.banned =  true;
+        });
+        User.updateArray(this,users).subscribe(()=> {
+            this.loadUsers();
+        });
+        
     }
 
-    deactivateUser() {
-        if (this.selectedUser) {
-            this.selectedUser.banned = true;
-            this.selectedUser.save(this).subscribe(() => { }, () => {
-                this.error('Permission denied');
-            });
-        }
+
+    deactivateMultipleUsers(users: User[]){
+        _.each(users, (user:User)=> {
+            user.banned =  false;
+        });
+        User.updateArray(this,users).subscribe(()=> {
+            this.loadUsers();
+        });
     }
 
     exportUser() {
@@ -107,13 +109,13 @@ export class UserListComponent extends BaseComponent {
     filterUser() {
         if (this.selectedGroupNodes.length != 0) {
             this.displayUsers = _.filter(this.users, user => {
-                var parentGroupNode =  _.find(this.selectedGroupNodes, node => {
+                var parentGroupNode = _.find(this.selectedGroupNodes, node => {
                     return node.data.id == user.group_id;
                 });
                 return parentGroupNode != null;
             });
         } else {
-            this.displayUsers =  this.users;
+            this.displayUsers = this.users;
         }
     }
 }

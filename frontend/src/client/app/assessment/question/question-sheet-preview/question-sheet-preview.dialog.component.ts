@@ -42,18 +42,17 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
         this.questions = [];
     }
 
-    show(sheet: QuestionSheet, examQuestions: ExamQuestion[]) {
+    show(sheet: QuestionSheet) {
         this.display = true;
-        this.examQuestions = examQuestions;
         this.sheet = sheet;
-        this.startReview();
+        this.startPreview();
     }
 
     hide() {
         this.display = false;
     }
 
-    startReview() {
+    startPreview() {
         ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
             ExamQuestion.populateQuestions(this, examQuestions).subscribe(() => {

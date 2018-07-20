@@ -105,8 +105,4 @@ export class ExamDialog extends BaseDialog<Exam> {
             }
         });
     }
-
-
 }
-
-
