@@ -1,0 +1,11 @@
+h2.exam-name, .exam-timer h2{
+	font-size: 30px;
+}
+
+.info, .info-study{
+	border: 1px solid #ddd;
+}
+
+.exam-timer{
+	text-align: right;
+}

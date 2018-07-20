@@ -556,9 +556,8 @@ body .ui-progressbar .ui-progressbar-value {
   display: inline;
 }
 
-.exam-study .btn-submit-exam {
-  margin-left: 550px;
-    overflow: auto;
+body .exam-study .ui-widget-content, body .survey-study .ui-widget-content{
+  border: none;
 }
 
 .tree-question-dialog{
