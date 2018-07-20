@@ -10,7 +10,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model'; import {
-	SURVEY_STATUS, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
+	SURVEY_STATUS, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -66,7 +66,7 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 	EXAM_STATUS = EXAM_STATUS;
 	PROJECT_STATUS = PROJECT_STATUS;
 	SURVEY_STATUS = SURVEY_STATUS;
-	CONTENT_STATUS =  CONTENT_STATUS;
+	COURSE_STATUS =  COURSE_STATUS;
 	COURSE_MODE = COURSE_MODE;
 
 	private course: Course;
