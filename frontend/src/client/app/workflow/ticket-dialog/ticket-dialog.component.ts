@@ -2,7 +2,6 @@ import { Component, OnInit, Input,ViewChild} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
 import { WorkflowService } from '../../shared/services/workflow.service';
 import { AuthService } from '../../shared/services/auth.service';
-import { WebSocketService } from '../../shared/services/socket.service';
 import { BaseDialog } from '../../shared/components/base/base.dialog';
 import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { Http, Response } from '@angular/http';

@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { WorkflowService } from '../../shared/services/workflow.service';
-import { WebSocketService } from '../../shared/services/socket.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, TICKET_STATUS } from '../../shared/models/constants'
 import { Ticket } from '../../shared/models/elearning/ticket.model';

@@ -10,7 +10,6 @@ import { Course } from '../models/elearning/course.model';
 import { CourseSyllabus } from '../models/elearning/course-syllabus.model';
 import { Token } from '../models/cloud/token.model';
 import { APIContext } from '../models/context';
-import { WebSocketService } from '../../shared/services/socket.service';
 import { Exam } from '../models/elearning/exam.model';
 import { Survey } from '../models/elearning/survey.model';
 import { ExecuteAPI } from '../../shared/services/api/execute.api';

@@ -18,7 +18,7 @@ export class FileAPIService {
         headers.append('Accept', 'application/json');
         let options = new RequestOptions({ headers: headers });
         this.appEvent.startHttpTransaction();
-        return this.http.post(Config.CLOUD_ENDPOINT +'/file/upload', formData, options)
+        return this.http.post(Config.API_ENDPOINT +'/file/upload', formData, options)
             .map(res => res.json())
             .do(()=> {
                 this.appEvent.finishHttpTransaction();
@@ -33,7 +33,7 @@ export class FileAPIService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         this.appEvent.startHttpTransaction();
-        return this.http.post(Config.CLOUD_ENDPOINT + '/file/unzip', JSON.stringify({cloudid: cloudid, filename:filename }), options)
+        return this.http.post(Config.API_ENDPOINT + '/file/unzip', JSON.stringify({cloudid: cloudid, filename:filename }), options)
             .map(res => res.json())
             .do(()=> {
                 this.appEvent.finishHttpTransaction();
@@ -48,7 +48,7 @@ export class FileAPIService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         this.appEvent.startHttpTransaction();
-        return this.http.post(Config.CLOUD_ENDPOINT + '/file/convert2pdf', JSON.stringify({cloudid: cloudid, filename:filename }), options)
+        return this.http.post(Config.API_ENDPOINT + '/file/convert2pdf', JSON.stringify({cloudid: cloudid, filename:filename }), options)
             .map(res => res.json())
             .do(()=> {
                 this.appEvent.finishHttpTransaction();

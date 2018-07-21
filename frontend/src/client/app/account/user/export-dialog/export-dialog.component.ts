@@ -29,6 +29,7 @@ export class UserExportDialog extends BaseComponent {
 			{ value: 'name', label: this.translateService.instant('Name') },
 			{ value: 'email', label: this.translateService.instant('Email') },
 			{ value: 'login', label: this.translateService.instant('Login') },
+			{ value: 'banned', label: this.translateService.instant('Banned') },
 			{ value: 'group_code', label: this.translateService.instant('Group') }
 		];
 		this.display = false;

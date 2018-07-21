@@ -21,7 +21,7 @@ export class ModelAPIService {
         var params = api.params;
         console.log(params);
         params["token"] = token.code;
-        var endpoint = Config.CLOUD_ENDPOINT + api.Method;
+        var endpoint = Config.API_ENDPOINT + api.Method;
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
             .map((response: Response) => response.json()).do(()=> {

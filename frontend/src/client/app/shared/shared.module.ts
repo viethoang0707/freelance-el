@@ -17,7 +17,6 @@ import { FileAPIService } from './services/api/file-api.service';
 import { AccountAPIService } from './services/api/account-api.service';
 import { AuthService } from './services/auth.service';
 import { WorkflowService } from './services/workflow.service';
-import { WebSocketService } from './services/socket.service';
 import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { LMSProfileService } from './services/lms-profile.service';

@@ -12,7 +12,7 @@ export class AccountAPIService {
     login(username:string, password: string, cloud_code:string):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        var endpoint = Config.CLOUD_ENDPOINT + '/account/login';
+        var endpoint = Config.API_ENDPOINT + '/account/login';
         var params = {username: username, password: password, cloud_code: cloud_code} 
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
@@ -28,7 +28,7 @@ export class AccountAPIService {
     resetPasswordRequest(email:string, cloud_code:string):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        var endpoint = Config.CLOUD_ENDPOINT + '/account/resetpass/request';
+        var endpoint = Config.API_ENDPOINT + '/account/resetpass/request';
         var params = {email: email,  cloud_code: cloud_code} 
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
@@ -44,7 +44,7 @@ export class AccountAPIService {
     resetPasswordExecute(token:string, new_pass:string, cloud_code:string):Observable<any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        var endpoint = Config.CLOUD_ENDPOINT + '/account/resetpass/execute';
+        var endpoint = Config.API_ENDPOINT + '/account/resetpass/execute';
         var params = {new_pass: new_pass, token: token,  cloud_code: cloud_code} 
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
