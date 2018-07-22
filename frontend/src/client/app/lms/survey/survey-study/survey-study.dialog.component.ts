@@ -32,6 +32,7 @@ declare var $: any;
 	moduleId: module.id,
 	selector: 'survey-study-dialog',
 	templateUrl: 'survey-study.dialog.component.html',
+	styleUrls: ['survey-study.dialog.component.css'],
 	providers: [MessageService]
 })
 export class SurveyStudyDialog extends BaseComponent {

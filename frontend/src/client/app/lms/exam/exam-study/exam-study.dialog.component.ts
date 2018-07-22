@@ -33,6 +33,7 @@ declare var $: any;
 	moduleId: module.id,
 	selector: 'exam-study-dialog',
 	templateUrl: 'exam-study.dialog.component.html',
+	styleUrls: ['exam-study.dialog.component.css'],
 	providers: [MessageService]
 })
 export class ExamStudyDialog extends BaseComponent {

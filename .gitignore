@@ -4,6 +4,7 @@ frontend/dist/
 frontend/src/*.js
 frontend/src/*.js.map
 frontend/client/yarn.lock
+frontend/dist.zip
 .*
 !/.gitignore
 *.pyc
