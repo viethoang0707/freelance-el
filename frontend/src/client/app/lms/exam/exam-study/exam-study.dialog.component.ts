@@ -87,14 +87,11 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		if (this.exam.sheet_status != 'published') {
-			this.error('Exam content has not been published');
-			return;
-		}
 		navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(() => {
 			DetectRTC.load(()=> {
 				if (!DetectRTC.hasWebcam || DetectRTC.isWebsiteHasWebcamPermissions) {
 					this.error('Your webcam is not installed or not enabled');
+					this.display = false;
 					return;
 				}
 				this.loadExamContent();

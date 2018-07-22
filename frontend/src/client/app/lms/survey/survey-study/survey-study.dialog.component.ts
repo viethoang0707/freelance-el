@@ -83,11 +83,6 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.survey = survey;
 		this.member = member;
 		this.qIndex = 0;
-
-		if (this.survey.sheet_status != 'published') {
-			this.error('Exam content has not been published');
-			return;
-		}
 		this.loadSurveyContent();
 	}
 
