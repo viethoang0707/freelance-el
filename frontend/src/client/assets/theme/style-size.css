@@ -77,6 +77,7 @@
 .mt19{ margin-top: 19px !important}
 .mt20{ margin-top: 20px !important}
 .mt30{ margin-top: 30px !important}
+.mt40{ margin-top: 40px !important}
 
 /* Margin Bottom */
 .mb1{ margin-bottom: 1px !important}
@@ -165,7 +166,9 @@
 .pt18{ padding-top: 18px !important}
 .pt19{ padding-top: 19px !important}
 .pt20{ padding-top: 20px !important}
+.pt23{ padding-top: 23px !important}
 .pt30{ padding-top: 30px !important}
+.pt40{ padding-top: 40px !important}
 
 /* Margin Bottom */
 .pb1{ padding-bottom: 1px !important}
