@@ -339,18 +339,6 @@ body .user-dashboard .ui-fieldset.ui-widget-content {
   width: 100%;
 }
 
-.tree-unit-course-study {
-  width: 100%;
-  height: 490px;
-  overflow: auto;
-  background-color: #f4f4f4 !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-}
-
 .tree-unit-course-syllabus {
   width: 100%;
   height: 480px;
@@ -594,6 +582,45 @@ body .ui-dialog.course-unit-study .ui-dialog-footer,
 .course-unit-study-btn{
   background-color: #f4f4f4 !important;
 }
+
+body .ui-dialog.course-unit-study .ui-dialog-titlebar .ui-dialog-titlebar-close{
+  position: absolute;
+  right: 15px;
+  top: 1px;
+}
+
+.course-unit-study-btn .fa{
+  color: #757575 !important;
+}
+
+body .ui-dialog.course-unit-study .ui-dialog-footer{
+    display: none !important;
+}
+
+body .ui-dialog.course-unit-study .ui-dialog-titlebar{
+  padding-top: 0;
+}
+
+body .ui-dialog.course-unit-study .ui-dialog-content {
+    padding-top: 0 !important;
+}
+
+body .ui-dialog.course-unit-study .ui-scrollpanel-content{
+  padding-top: 5px;
+}
+
+body .ui-dialog.course-unit-study .tree-unit-course-study {
+  width: 100%;
+  height: 570px;
+  overflow: auto;
+  background-color: #f4f4f4 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
 
 @media screen and (max-width: 500px) {
   .tree-unit-course-study{

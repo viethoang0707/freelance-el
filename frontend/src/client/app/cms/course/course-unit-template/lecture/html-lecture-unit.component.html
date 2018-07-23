@@ -9,5 +9,5 @@
   <div [innerHTML]="lecture.content"></div>
 </div>
 <div *ngIf="mode=='study'">
-  <div [innerHTML]="lecture.content" style="height: 410px; overflow: auto;" scrollTracker (scrolled)="updateScrollPos($event)"></div>
+  <div [innerHTML]="lecture.content" style="height: 530px; overflow: auto;" scrollTracker (scrolled)="updateScrollPos($event)"></div>
 </div>
