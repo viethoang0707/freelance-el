@@ -51,7 +51,7 @@ export class SurveyResultStatsReportContainerComponent extends BaseComponent imp
             this.statsReport.export();
     }
 
-    selectExam() {
+    selectSurvey() {
     	if (this.selectedSurvey) {
             this.statsReport.clear();
             this.statsReport.render(this.selectedSurvey);
