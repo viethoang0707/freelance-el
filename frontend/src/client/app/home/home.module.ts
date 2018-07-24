@@ -10,14 +10,32 @@ import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BreadcrumbComponent } from './breadcumb/breadcrumb.component';
 import { HomeEventManager } from './home-manager.service';
-import { AccountModule } from '../account/account.module';
 import { WorkflowModule } from '../workflow/workflow.module';
+import { SettingModule } from '../setting/setting.module';
+import { AccountModule } from '../account/account.module';
+import { CourseModule } from '../course/course.module';
+import { AssessmentModule } from '../assessment/assessment.module';
+import { AnalysisModule } from '../analysis/analysis.module';
+import { DashboardModule } from '../dashboard/dashboard.module';
+import { CMSModule } from '../cms/cms.module';
+import { LMSModule } from '../lms/lms.module';
+import { CompetencyModule } from '../competency/competency.module';
 
 @NgModule({
   imports: [
     HomeRoutingModule,
     ErpSharedModule,
     AccountModule,
+    LMSModule,
+    DashboardModule,
+    SettingModule,
+    AccountModule,
+    CourseModule,
+    AssessmentModule,
+    AnalysisModule,
+    WorkflowModule,
+    CMSModule,
+    CompetencyModule,
     WorkflowModule
   ],
   declarations: [
@@ -29,16 +47,10 @@ import { WorkflowModule } from '../workflow/workflow.module';
     , BreadcrumbComponent
   ],
   exports: [],
-  providers: []
+  providers: [HomeEventManager]
 })
 
 export class HomeModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: HomeModule,
-      providers: [HomeEventManager]
-    }
-  }
 }
 
 
