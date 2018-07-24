@@ -93,4 +93,8 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         });
     }
 
+    viewAnswer(exam:Exam, member: ExamMember) {
+        this.answerSheetDialog.show(exam, member);
+    }
+
 }

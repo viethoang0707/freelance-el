@@ -182,4 +182,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         exam.sheet_status = 'unpublished';
         exam.save(this).subscribe();
     }
+
+    viewAnswer(exam:Exam, member: ExamMember) {
+        this.answerSheetDialog.show(exam, member);
+    }
 }

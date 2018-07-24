@@ -82,10 +82,11 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         });
     }
 
-    redoExam() {
-        this.selectedMember.enroll_status != 'registered';
-        this.selectedMember.save(this).susbscribe(()=> {
+    redoExam(member:ExamMember) {
+        member.enroll_status = 'registered';
+        member.save(this).subscribe(()=> {
             this.error('Action applied');
+            this.success('Candidate is allowed to redo the exam');
         });
     }
 

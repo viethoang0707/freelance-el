@@ -53,11 +53,17 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
     export() {
         var output = _.map(this.records, (record) => {
             var row = {};
-            row["Qiestion"] = record["title"] +"/" + record["content"];
-            row["Options"] = ""
-            _.each(record["options"], option => {
-                row["Options"] += this.getRatePercentage(option)+";"
-            });
+            row["question"] = record["title"] +"/" + record["content"];
+            if (record["type"]=='mc' || record["type"]=='sc') {
+                row["options"] = ""
+                _.each(record["options"], option => {
+                    row["options"] += this.getRatePercentage(option)+";"
+                });
+            }
+            if (record["type"]=='rate') {
+                row["rate"] = this.getRatePercentage(record)
+                row["options"] += '/' + row["max_rating"];
+            }
             return row;
         });
         this.excelService.exportAsExcelFile(output, 'exam_member_result_report');
@@ -75,7 +81,7 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
                 var statistics = this.statsUtils.surveyAnswerStatistics(answers);
                 this.optionPercentage = statistics['multichoice'];
                 this.ratingPercentage = statistics['rating'];
-                this.openAnswers = statistics['open'];
+                console.log(statistics);
                 SurveyQuestion.listBySheet(this, sheet.id).subscribe(surveyQuestions => {
                     var apiList = _.map(surveyQuestions, (surveyQuestion: SurveyQuestion) => {
                         return QuestionOption.__api__listByQuestion(surveyQuestion.question_id)
@@ -89,6 +95,7 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
                                     return opt.question_id == surveyQuestion.question_id;
                                 });
                             });
+                            console.log(surveyQuestions);
                             this.records = surveyQuestions;
                         });
                 });
@@ -96,16 +103,16 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
         });
     }
 
-    getOpenAnswers(question) {
-        if (this.openAnswers[question.id])
-            return this.openAnswers[question.id]
-        else
-            return [];
-    }
-
     getRatePercentage(question) {
         if (this.ratingPercentage[question.id])
             return this.ratingPercentage[question.id]
+        else
+            return 0;
+    }
+
+    getOptionPercentage(option) {
+        if (this.optionPercentage[option.id])
+            return this.optionPercentage[option.id]
         else
             return 0;
     }

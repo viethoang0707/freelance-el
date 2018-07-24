@@ -77,21 +77,24 @@ export class UserListComponent extends BaseComponent {
 
     activateMultipleUsers(users:User[]){
         _.each(users, (user:User)=> {
-            user.banned =  true;
+            user.banned =  false;
         });
         User.updateArray(this,users).subscribe(()=> {
             this.loadUsers();
+            this.selectedUsers = [];
+            this.success('User activated successfully');
         });
-        
     }
 
 
     deactivateMultipleUsers(users: User[]){
         _.each(users, (user:User)=> {
-            user.banned =  false;
+            user.banned =  true;
         });
         User.updateArray(this,users).subscribe(()=> {
             this.loadUsers();
+            this.selectedUsers = [];
+            this.success('User deactivated successfully');
         });
     }
 

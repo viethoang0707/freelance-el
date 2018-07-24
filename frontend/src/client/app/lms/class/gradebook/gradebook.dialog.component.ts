@@ -175,7 +175,10 @@ export class GradebookDialog extends BaseComponent {
 
     viewAnswer(exam:Exam) {
         ExamMember.byExamAndUser(this, exam.id, this.member.user_id).subscribe((member:ExamMember)=> {
-            this.answerSheetDialog.show(exam, member);
+            if (member)
+                this.answerSheetDialog.show(exam, member);
+            else
+                this.error('You have not been registered for this exam');
         });
     }
 

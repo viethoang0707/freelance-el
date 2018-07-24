@@ -2,7 +2,7 @@
         <div class="ui-g-12">
             <p-table #dataTable [value]="records" [responsive]="true">
             <ng-template pTemplate="caption">
-                {{'Exam answer statistics'|translate}}
+                {{'Survey answer statistics'|translate}}
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
@@ -20,9 +20,23 @@
                 </tr>
                 <tr *ngIf="rowData.type=='rate'">
                     <td>
-                        {{getRatePercentage(rowData)}} / {{rowData.max_rating}}
+                        {{getRatePercentage(rowData)}} 
+                    </td>
+                    <td>
+                        {{rowData.max_rating}}
                     </td>
                 </tr>
+                <ng-container *ngIf="rowData.type=='mc' || rowData.type=='sc'">
+                    <tr *ngFor="let option of rowData.options">
+                        <td>
+                            {{option.content}} 
+                        </td>
+                        <td>
+                            {{getOptionPercentage(option)}}
+                        </td>
+                    </tr>
+                </ng-container>
+                
             </ng-template>
             <ng-template pTemplate="summary">
                 {{'Total records'|translate}} : {{records?.length}}
