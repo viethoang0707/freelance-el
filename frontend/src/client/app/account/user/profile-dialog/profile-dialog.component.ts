@@ -118,22 +118,11 @@ export class UserProfileDialog extends BaseDialog<User> {
             return (member1.exam.create_date < member1.exam.create_date)
         });
         var examIds = _.pluck(this.examMembers, 'exam_id');
-        ExamGrade.listByExams(this, examIds).subscribe(grades => {
-	        _.each(this.examMembers, (member: ExamMember) => {
-	        	var examGrades = _.filter(grades, (grade:ExamGrade)=> {
-						return grade.exam_id == member.exam_id;
-				});
-	            member["submit"] = _.find(submits, (submit: Submission) => {
-	                return submit.member_id == member.id && submit.exam_id == member.exam_id;
-	            });
-	            if (member["submit"]) {
-	                member["score"] = member["submit"].score;
-	                member["grade"] = ExamGrade.gradeScore(examGrades, member["score"]);
-	            }
-	            else
-	                member["score"] = '';
-	        });
-	    });
+        _.each(this.examMembers, (member: ExamMember) => {
+            member["submit"] = _.find(submits, (submit: Submission) => {
+                return submit.member_id == member.id && submit.exam_id == member.exam_id;
+            });
+        });
     }
 
 	printCertificate(certificate) {

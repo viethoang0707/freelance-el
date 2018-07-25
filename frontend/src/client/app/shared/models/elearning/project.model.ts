@@ -43,8 +43,6 @@ export class Project extends BaseModel{
     }
     
     get IsAvailable():boolean {
-        if (this.status !='open')
-            return false;
         var now = new Date();
         if (this.start.getTime() > now.getTime())
             return false;
