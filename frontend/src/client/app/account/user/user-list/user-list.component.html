@@ -48,9 +48,13 @@
                             {{'Department'|translate}}
                             <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
                         </th>
-                        <th [pSortableColumn]="'group_id__DESC__'">
+                        <th [pSortableColumn]="'permission_id__DESC__'">
                             {{'Permission'|translate}}
                             <p-sortIcon [field]="'permission_id__DESC__'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'banned'">
+                            {{'Banned'|translate}}
+                            <p-sortIcon [field]="'banned'"></p-sortIcon>
                         </th>
                     </tr>
                 </ng-template>
@@ -66,6 +70,7 @@
                         <td class="showformb">{{user.phone}}</td>
                         <td class="showformb">{{user.group_id__DESC__}}</td>
                         <td class="showformb">{{user.permission_id__DESC__}}</td>
+                        <td>{{user.banned}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

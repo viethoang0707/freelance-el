@@ -50,7 +50,7 @@ export class Submission extends BaseModel{
     }
 
     static __api__byMemberAndExam(memberId: number, examId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+"),('exam_id','=',"+examId+")]");
+        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
     }
 
     static byMemberAndExam( context:APIContext, memberId: number, examId: number): Observable<any> {

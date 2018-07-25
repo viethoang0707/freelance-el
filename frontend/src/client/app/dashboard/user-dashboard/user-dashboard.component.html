@@ -97,7 +97,7 @@
                                 <div class="user-card-footer">
                                     <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate !=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
                                     <button pButton type="button" icon="ui-icon-timeline" title="{{'View answer'| translate}}" label="{{'View answer'|translate}}" class="blue-grey-btn"  [disabled]="exam.candidate.enroll_status!='completed'"
-                                                style="margin-right:4px;" (click)="viewAnswer(exam,exam.candidate)"></button>
+                                                style="margin-right:4px;" (click)="viewAnswer(exam,exam.candidate)" *ngIf="exam.candidate!=null"></button>
 
                                     <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='published'"></button>
                                     <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 red-btn" (click)="unpublishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='unpublished'"></button>
