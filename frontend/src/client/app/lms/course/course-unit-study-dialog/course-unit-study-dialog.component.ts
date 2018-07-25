@@ -113,7 +113,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	prevUnit() {
 		if (this.selectedUnit) {
 			if (this.enableLogging)
-				CourseLog.stopCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
+				CourseLog.stopCourseUnit(this, this.member, this.selectedUnit).subscribe();
 			var prevUnit = this.computedPrevUnit(this.selectedUnit.id);
 			if (prevUnit) {
 				this.unloadCurrentUnit();
@@ -127,7 +127,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	nextUnit() {
 		if (this.selectedUnit) {
 			if (this.enableLogging)
-				CourseLog.completeCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
+				CourseLog.completeCourseUnit(this, this.member, this.selectedUnit).subscribe();
 			this.completedUnitIds.push(this.selectedUnit.id);
 			var nextUnit = this.computedNextUnit(this.selectedUnit.id);
 			if (nextUnit) {
@@ -181,18 +181,18 @@ export class CourseUnitStudyDialog extends BaseComponent {
 					if (this.completedUnitIds.includes(prevUnit.id)) {
 						this.openUnit(this.selectedUnit);
 						if (this.enableLogging)
-							CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
+							CourseLog.startCourseUnit(this, this.member, this.selectedUnit).subscribe();
 					}
 				}
 				else {
 					this.openUnit(this.selectedUnit);
-					CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
+					CourseLog.startCourseUnit(this, this.member, this.selectedUnit).subscribe();
 				}
 			}
 			else {
 				this.openUnit(this.selectedUnit);
 				if (this.enableLogging)
-					CourseLog.startCourseUnit(this, this.member.id, this.selectedUnit.id).subscribe();
+					CourseLog.startCourseUnit(this, this.member, this.selectedUnit).subscribe();
 			}
 		}
 	}

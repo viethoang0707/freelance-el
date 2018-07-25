@@ -152,7 +152,7 @@ export class ExamStudyDialog extends BaseComponent {
 	startExam() {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
-		ExamLog.startExam(this, this.member.id, this.submission.id).subscribe();
+		ExamLog.startExam(this, this.member, this.submission).subscribe();
 		this.updateStats();
 		this.startTimer();
 		this.displayQuestion(0);
@@ -163,7 +163,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.submission.save(this).subscribe(() => {
 			this.member.submitScore(this).subscribe(() => {
 				this.member.enroll_status = 'completed';
-				ExamLog.finishExam(this, this.member.id, this.submission.id).subscribe();
+				ExamLog.finishExam(this, this.member, this.submission).subscribe();
 				this.hide();
 			});
 		});

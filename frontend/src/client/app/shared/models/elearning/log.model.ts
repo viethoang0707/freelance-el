@@ -95,10 +95,12 @@ export class CourseLog extends BaseModel{
         return CourseLog.search(context,[], "[('class_id','=',"+classId+")]" );
     }
 
-    static startCourseUnit(context:APIContext, memberId:number,  unitId:number):Observable<any> {
+    static startCourseUnit(context:APIContext, member:CourseMember,  unit:CourseUnit):Observable<any> {
         var log = new CourseLog();
-        log.member_id = memberId;
-        log.res_id = unitId;
+        log.member_id = member.id;
+        log.res_id = unit.id;
+        log.course_id = member.course_id;
+        log.class_id = member.class_id;
         log.res_model = CourseUnit.Model;
         log.note = 'Start course unit';
         log.code = "START_COURSE_UNIT";
@@ -106,10 +108,12 @@ export class CourseLog extends BaseModel{
         return log.save(context);
     }
 
-    static stopCourseUnit(context:APIContext, memberId:number,  unitId:number):Observable<any> {
+    static stopCourseUnit(context:APIContext, member:CourseMember,  unit:CourseUnit):Observable<any> {
         var log = new CourseLog();
-        log.member_id = memberId;
-        log.res_id = unitId;
+        log.member_id = member.id;
+        log.res_id = unit.id;
+        log.course_id = member.course_id;
+        log.class_id = member.class_id;
         log.res_model = CourseUnit.Model;
         log.note = 'finish course unit';
         log.code = "FINISH_COURSE_UNIT";
@@ -117,10 +121,12 @@ export class CourseLog extends BaseModel{
         return log.save(context);
     }
 
-    static completeCourseUnit(context:APIContext,  memberId:number,  unitId:number):Observable<any> {
+    static completeCourseUnit(context:APIContext,  member:CourseMember,  unit:CourseUnit):Observable<any> {
         var log = new CourseLog();
-        log.member_id = memberId;
-        log.res_id = unitId;
+        log.member_id = member.id;
+        log.res_id = unit.id;
+        log.course_id = member.course_id;
+        log.class_id = member.class_id;
         log.res_model = CourseUnit.Model;
         log.note = 'finish course unit';
         log.code = "COMPLETE_COURSE_UNIT";
@@ -178,10 +184,11 @@ export class ExamLog extends BaseModel{
     attachment_id: number;
 
 
-    static startExam(context:APIContext, memberId: number, submitId: number):Observable<any> {
+    static startExam(context:APIContext, member: ExamMember, submit: Submission):Observable<any> {
         var log = new ExamLog();
-        log.member_id =  memberId;
-        log.res_id = submitId;
+        log.member_id =  member.id;
+        log.exam_id = member.exam_id;
+        log.res_id = submit.id;
         log.res_model = Submission.Model;
         log.note = 'Start exam';
         log.code = 'START_EXAM';
@@ -189,10 +196,11 @@ export class ExamLog extends BaseModel{
         return log.save(context);
     }
 
-    static finishExam(context:APIContext, memberId: number, submitId:number):Observable<any> {
+    static finishExam(context:APIContext, member: ExamMember, submit: Submission):Observable<any> {
         var log = new ExamLog();
-        log.member_id =  memberId;
-        log.res_id = submitId;
+        log.member_id =  member.id;
+        log.exam_id = member.exam_id;
+        log.res_id = submit.id;
         log.res_model = Submission.Model;
         log.note = 'Finish exam';
         log.code = 'FINISH_EXAM';

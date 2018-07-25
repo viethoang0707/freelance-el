@@ -166,6 +166,7 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	submitAnswer(): Observable<any> {
+		this.currentQuestion["checkAnswer"] =  true;
 		return this.currentAnswer.save(this);
 	}
 
@@ -186,14 +187,15 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	submitSurvey() {
-		this.member.enroll_status = 'completed';
-		this.submission.end = new Date();
-		this.member.save(this).subscribe(() => {
-			this.submission.save(this).subscribe(() => {
-				this.hide();
-			});
-		})
-
+		this.submitAnswer().subscribe(() => {
+			this.member.enroll_status = 'completed';
+				this.submission.end = new Date();
+				this.member.save(this).subscribe(() => {
+					this.submission.save(this).subscribe(() => {
+						this.hide();
+					});
+				});
+		});
 	}
 
 }

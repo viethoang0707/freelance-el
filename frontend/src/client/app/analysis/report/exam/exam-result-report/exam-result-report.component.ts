@@ -86,8 +86,8 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         record["user_login"] = member.login;
         record["user_name"] = member.name;
         record["user_group"] = member.group_id__DESC__;
-            record["score"] = member.score;
-            record["grade"] = member.grade;
+        record["score"] = member.score;
+        record["grade"] = member.grade;
         if (logs && logs.length) {
             var result = this.reportUtils.analyzeExamMemberActivity(logs);
             if (result[0])
