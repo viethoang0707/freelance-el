@@ -36,6 +36,8 @@ export class ExamMember extends BaseModel{
         this.submission_id = undefined;
         this.class_id =  undefined;
         this.exam_review_state =  undefined;
+        this.score =  undefined;
+        this.grade =  undefined;
     }
 
     submission_id: number;
@@ -57,6 +59,8 @@ export class ExamMember extends BaseModel{
     phone: string;
     group_id: number;
     group_id__DESC__: string;
+    score: number;
+    grade: string;
 
     static __api__listByExam(examId: number): SearchReadAPI {
         return new SearchReadAPI(ExamMember.Model, [],"[('exam_id','=',"+examId+")]");

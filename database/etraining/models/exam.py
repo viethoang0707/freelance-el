@@ -121,6 +121,8 @@ class ExamMember(models.Model):
 	course_member_id = fields.Many2one('etraining.course_member', string='Course member')
 	supervisor_id = fields.Many2one('res.users', related="exam_id.supervisor_id", string='Supervisor')
 	exam_record_id = fields.Many2one('etraining.exam_record', string='Exam record')
+	score = fields.Float(string="Score",related="exam_record_id.score")
+	grade = fields.Char(string="Grade",related="exam_record_id.grade")
 	class_id = fields.Many2one('etraining.course_class', related="course_member_id.class_id", readonly=True,string='Exam')
 	
 

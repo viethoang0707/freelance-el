@@ -35,11 +35,11 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-member>
-                <tr [pSelectableRow]="member" *ngVar="getExamRecord(member) as record">
+                <tr [pSelectableRow]="member">
                     <td>{{member.name}}</td>
                     <td>{{member.group_id__DESC__}}</td>
-                    <td>{{record.score}}</td>
-                    <td>{{record.grade}}</td>
+                    <td>{{member.score}}</td>
+                    <td>{{member.grade}}</td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">

@@ -98,7 +98,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		var faq = new CourseFaq();
 		faq.course_id = this.course.id;
 		this.faqDialog.show(faq);
-		this.faqDialog.onCreateComplete.subscribe(() => {
+		this.faqDialog.onCreateComplete.first().subscribe(() => {
 			this.lmsProfileService.addCourseFaq(faq);
 			this.lmsProfileService.getCourseContent(this.course.id).subscribe(content => {
 				this.faqs = content["faqs"];
@@ -125,7 +125,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		var material = new CourseMaterial();
 		material.course_id = this.course.id;
 		this.materialDialog.show(material);
-		this.materialDialog.onCreateComplete.subscribe(() => {
+		this.materialDialog.onCreateComplete.first().subscribe(() => {
 			this.lmsProfileService.addCourseMaterial(material);
 			this.lmsProfileService.getCourseContent(this.course.id).subscribe(content => {
 				this.materials = content["materials"];

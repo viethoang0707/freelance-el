@@ -47,7 +47,6 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     private members: ExamMember[];
     private selectedMember: any;
     private questions: ExamQuestion[];
-    private records: ExamRecord[];
 
     @ViewChild(QuestionMarkingDialog) questionMarkDialog: QuestionMarkingDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
@@ -100,11 +99,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
     loadScores() {
         BaseModel.bulk_search(this,
-            ExamMember.__api__listCandidateByExam(this.exam.id),
-            ExamRecord.__api__listByExam(this.exam.id))
+            ExamMember.__api__listCandidateByExam(this.exam.id))
             .subscribe(jsonArr => {
                 this.members = ExamMember.toArray(jsonArr[0]);
-                this. records = ExamRecord.toArray(jsonArr[1]);
             });
     }
 
@@ -114,11 +111,5 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
     showExamStats() {
         this.statsDialog.show(this.exam);
-    }
-
-    getExamRecord(member: ExamMember) {
-        return _.find(this.records, (record: ExamRecord)=> {
-            return record.member_id == member.id
-        }) || new ExamRecord();
     }
 }
