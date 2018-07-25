@@ -108,7 +108,7 @@
                                             </p-accordionTab>
                                         </p-accordion>
                                     </div>
-                                    <div class="ui-lg-4 ui-g-12">
+                                    <div class="ui-lg-4 ui-g-12"  *ngVar="getProjectSubmit(project) as submit">
                                         <p-card>
                                             <ul class="list-cmt">
                                                 <li class="clearfix">
@@ -121,7 +121,7 @@
                                                     <span class="cmt-title">{{'End date'|translate}}</span>
                                                     <span class="cmt-detail">{{project.end | date : "dd/MM/yyyy"}}</span>
                                                 </li>
-                                                <li class="clearfix" *ngVar="getProjectSubmit(project) as submit">
+                                                <li class="clearfix">
                                                     <i class="material-icons">date_range</i>
                                                     <span class="cmt-title">{{'Submit date'|translate}}</span>
                                                     <span class="cmt-detail">{{submit.date_submit | date : "dd/MM/yyyy"}}</span>
@@ -129,7 +129,7 @@
                                                 <li class="clearfix">
                                                     <i class="material-icons">star</i>
                                                     <span class="cmt-title">{{'Score'|translate}}</span>
-                                                    <span class="cmt-detail">{{project.score}}</span>
+                                                    <span class="cmt-detail">{{submit.score}}</span>
                                                 </li>
                                             </ul>
                                             <p-footer>

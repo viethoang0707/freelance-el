@@ -10,6 +10,7 @@ import { CourseUnit } from './course-unit.model';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import { CourseMember } from './course-member.model';
 
 @Model('etraining.course_log')
 export class CourseLog extends BaseModel{

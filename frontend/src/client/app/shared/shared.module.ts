@@ -357,7 +357,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 export class ErpSharedModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: SharedModule,
+            ngModule: ErpSharedModule,
             providers: [
                 AuthGuard,
                 AdminGuard,

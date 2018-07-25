@@ -55,10 +55,12 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
 		this.WINDOW_HEIGHT = $(window).height();
+		this.enableLogging =  true;
 	}
 
 	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[]) {
 		this.display = true;
+		this.enableLogging = member.enroll_status != 'completed';
 		this.member = member;
 		this.course =  course;
 		this.syl = syl;
