@@ -50,12 +50,12 @@ export class ExamResultStatsReportComponent extends BaseComponent {
     export() {
         var output = _.map(this.records, (record) => {
             var row = {};
-            row["Question"] = this.strip(record["content"]);
-            row["Options"] = "";
-            row["Options Percentages"] = "";
+            row["question"] = this.strip(record["content"]);
+            row["options"] = "";
+            row["option_percentages"] = "";
             _.each(record["options"], (option: any) => {
-                row["Options Percentages"] += Math.round(this.getCheckPercentage(option) * 100) / 100 + "| ";
-                row["Options"] += option.content + "| ";
+                row["option_percentages"] += Math.round(this.getCheckPercentage(option) * 100) / 100 + "| ";
+                row["options"] += option.content + "| ";
             });
             return row;
         });

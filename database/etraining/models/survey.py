@@ -171,7 +171,7 @@ class SurveySubmission(models.Model):
 
 	member_id = fields.Many2one('etraining.survey_member', string='Survey member')
 	user_id = fields.Many2one('res.users', string='User', related="member_id.user_id", readonly=True)
-	survey_id = fields.Many2one('etraining.survey',  readonly=True,string='Survey')
+	survey_id = fields.Many2one('etraining.survey', related="member_id.survey_id", readonly=True,string='Survey')
 	answer_ids = fields.One2many('etraining.survey_answer','submission_id', string="Submission")
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')

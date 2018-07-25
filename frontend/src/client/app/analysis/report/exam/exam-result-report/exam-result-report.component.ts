@@ -61,40 +61,33 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         BaseModel
             .bulk_search(this,
                 ExamMember.__api__listCandidateByExam(exam.id),
-                ExamRecord.__api__listByExam(exam.id),
                 ExamLog.__api__listByExam(exam.id))
             .subscribe(jsonArr => {
                 var members = ExamMember.toArray(jsonArr[0]);
-                var records = ExamRecord.toArray(jsonArr[1]);
-                var logs = ExamLog.toArray(jsonArr[2]);
-                this.records = this.generateReport(exam, records, logs, members);
+                var logs = ExamLog.toArray(jsonArr[1]);
+                this.records = this.generateReport(exam, logs, members);
             })
     }
 
 
-    generateReport(exam: Exam, records: ExamRecord[], logs: ExamLog[], members: ExamMember[]) {
+    generateReport(exam: Exam, logs: ExamLog[], members: ExamMember[]) {
         var rows = [];
         _.each(members, (member: ExamMember) => {
             var userLogs = _.filter(logs, (log: ExamLog) => {
                 return log.user_id == member.user_id;
             });
-            var examRecord = _.find(records, (obj: ExamRecord) => {
-                return obj.member_id == member.id;
-            });
-            rows.push(this.generateReportRow(exam, member, examRecord, userLogs));
+            rows.push(this.generateReportRow(exam, member, userLogs));
         });
         return rows;
     }
 
-    generateReportRow(exam: Exam, member: ExamMember, examRecord: ExamRecord, logs: ExamLog[]): any {
+    generateReportRow(exam: Exam, member: ExamMember, logs: ExamLog[]): any {
         var record = {};
         record["user_login"] = member.login;
         record["user_name"] = member.name;
         record["user_group"] = member.group_id__DESC__;
-        if (examRecord) {
-            record["score"] = examRecord.score;
-            record["grade"] = examRecord.grade;
-        }
+            record["score"] = member.score;
+            record["grade"] = member.grade;
         if (logs && logs.length) {
             var result = this.reportUtils.analyzeExamMemberActivity(logs);
             if (result[0])
