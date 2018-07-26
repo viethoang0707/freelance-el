@@ -56,7 +56,7 @@ export class ProjectConfig extends SeedConfig {
         // Add `local` third-party libraries to be injected/bundled.
         this.APP_ASSETS = [
             { src: `${this.ASSETS_SRC}/theme/theme-generic.css`, inject: true, vendor: false },
-            { src: `${this.APP_SRC}/assets/layout/script/ripple.js`, inject: true, vendor: true },
+            { src: `${this.ASSETS_SRC}/layout/script/ripple.js`, inject: true, vendor: true },
             { src: `${this.ASSETS_SRC}/fonts/flag-icon-css/css/flag-icon.min.css`, inject: true, vendor: true },
             { src: `${this.ASSETS_SRC}/layout/css/layout-bluegrey.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/theme-bluegrey.css`, inject: true, vendor: false },

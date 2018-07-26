@@ -55,19 +55,18 @@ export class ReportUtils {
 		if (first_attempt && last_attempt && startCourseUnitLogs.length && endCourseUnitLogs.length )
 			 timeforunit = last_attempt.start.getTime() - first_attempt.start.getTime();
 
-		var unitCount = 0;
-		var unitLogs = {}
+		var unitIds = [];
 		_.each(logs, (log) => {
 			if (log.code == 'COMPLETE_COURSE_UNIT') {
 				onTime += log.start.getTime();
-				unitLogs[log.id] = unitLogs[log.id] ? unitLogs[log.id] + 1 : 1;
+				unitIds.push(log.unitId);
 			}
-
-			if (unitLogs[log.id] ==1 )
-				unitCount++;
+		});
+		unitIds = _.uniq(unitIds, (id)=> {
+			return id;
 		});
 
-		return [first_attempt.start, last_attempt.start, timeforunit, unitCount];
+		return [first_attempt.start, last_attempt.start, timeforunit, unitIds.length];
 	}
 
 	
