@@ -56,10 +56,10 @@ export class ReportUtils {
 			 timeforunit = last_attempt.start.getTime() - first_attempt.start.getTime();
 
 		var unitIds = [];
-		_.each(logs, (log) => {
+		_.each(logs, (log:CourseLog) => {
 			if (log.code == 'COMPLETE_COURSE_UNIT') {
 				onTime += log.start.getTime();
-				unitIds.push(log.unitId);
+				unitIds.push(log.res_id);
 			}
 		});
 		unitIds = _.uniq(unitIds, (id)=> {

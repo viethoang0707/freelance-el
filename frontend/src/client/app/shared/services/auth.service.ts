@@ -23,7 +23,7 @@ export class AuthService {
    get StoredCredential(): Credential {
         if (localStorage.getItem('credential'))
             return MapUtils.deserialize(Credential, JSON.parse(atob(localStorage.getItem('credential'))));
-        return null;
+        return new Credential();
     }
 
     set StoredCredential(credential: Credential) {
@@ -37,7 +37,7 @@ export class AuthService {
     get UserProfile(): User {
         if (localStorage.getItem('currentUser'))
             return MapUtils.deserialize(User, JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('currentUser'))))));
-        return null;
+        return new UserProfile();
     }
 
     set UserProfile(user: User) {
