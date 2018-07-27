@@ -64,10 +64,10 @@ export class SurveyListComponent extends BaseComponent {
 
     deleteSurvey(survey:Survey) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
-            this.error('You do not have delete permission for this survey');
+            this.error(this.translateService.instant('You do not have delete permission for this survey'));
             return;
         }
-        this.confirm('Are you sure to delete?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             survey.delete(this).subscribe(() => {
                 this.loadSurveys();
                 survey = null;
@@ -86,11 +86,11 @@ export class SurveyListComponent extends BaseComponent {
 
     requestReview(survey:Survey) {
         if (this.ContextUser.id != survey.supervisor_id) {
-            this.error('You do not have submit-review permission for this survey');
+            this.error(this.translateService.instant('You do not have submit-review permission for this survey'));
             return;
         }
         this.workflowService.createSurveyReviewTicket(this, survey).subscribe(() => {
-            this.success('Request submitted');
+            this.success(this.translateService.instant('Request submitted'));
             survey.refresh(this).subscribe();
         });
     }
