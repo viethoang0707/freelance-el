@@ -92,26 +92,26 @@ export class ClassListDialog extends BaseComponent implements OnInit {
 
     closeClass(courseClass: CourseClass) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != courseClass.supervisor_id) {
-            this.error('You do not have close permission for this class.  You will not be able to enroll new members after the class is closed');
+            this.error(this.translateService.instant('You do not have close permission for this class.  You will not be able to enroll new members after the class is closed'));
             return;
         }
-        this.confirm('Are you sure to proceed ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             courseClass.close(this).subscribe(() => {
                 courseClass.status = 'closed';
-                this.success('Class close');
+                this.success(this.translateService.instant('Class close'));
             });
         });
     }
 
     openClass(courseClass: CourseClass) {
         if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != courseClass.supervisor_id) {
-            this.error('You do not have open permission for this class');
+            this.error(this.translateService.instant('You do not have open permission for this class'));
             return;
         }
-        this.confirm('Are you sure to proceed ?.', () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             courseClass.open(this).subscribe(() => {
                 courseClass.status = 'open';
-                this.success('Survey open');
+                this.success(this.translateService.instant('Survey open'));
             });
         });
 

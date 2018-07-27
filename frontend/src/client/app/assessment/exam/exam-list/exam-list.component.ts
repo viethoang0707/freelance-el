@@ -50,7 +50,7 @@ export class ExamListComponent extends BaseComponent {
 
     editExam(exam:Exam) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
-            this.error('You do not have enroll permission for this exam');
+            this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
         this.examDialog.show(exam);
@@ -58,10 +58,10 @@ export class ExamListComponent extends BaseComponent {
 
     deleteExam(exam:Exam) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
-            this.error('You do not have enroll permission for this exam');
+            this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
-        this.confirm('Are you sure to delete ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             exam.delete(this).subscribe(() => {
                 this.loadExams();
                 this.selectedExam = null;
@@ -80,11 +80,11 @@ export class ExamListComponent extends BaseComponent {
 
     requestReview(exam:Exam) {
         if (this.ContextUser.id != exam.supervisor_id) {
-            this.error('You do not have submit-review permission for this exam');
+            this.error(this.translateService.instant('You do not have submit-review permission for this exam'));
             return;
         }
         this.workflowService.createExamReviewTicket(this, exam).subscribe(() => {
-            this.success('Request submitted');
+            this.success(this.translateService.instant('Request submitted'));
             exam.refresh(this).subscribe();
         });
     }

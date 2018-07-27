@@ -62,7 +62,7 @@ export class SurveyEnrollDialog extends BaseComponent {
 
     deleteMember(members:SurveyMember[]) {
         if (members && members.length)
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+            this.confirm(this.translateService.instant(this.translateService.instant('Are you sure to delete?')), () => {
                 SurveyMember.deleteArray(this, members).subscribe(() => {
                     this.selectedMembers = [];
                     this.loadMembers();
