@@ -85,26 +85,26 @@ export class CourseEnrollmentListComponent extends BaseComponent {
 
     closeCourse(course:Course) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
-            this.error('You do not have close permission for this class');
+            this.error(this.translateService.instant('You do not have close permission for this class'));
             return;
         }
-        this.confirm('Are you sure to proceed ? You will not be able to add new class after the course is closed', () => {
+        this.confirm(('Are you sure to proceed ? You will not be able to add new class after the course is closed'), () => {
             course.close(this).subscribe(() => {
                 course.status = 'closed';
-                this.success('Class close');
+                this.success(this.translateService.instant('Class close'));
             });
         });
     }
 
     openCourse(course:Course) {
         if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
-            this.error('You do not have open permission for this class');
+            this.error(this.translateService.instant('You do not have open permission for this class'));
             return;
         }
-        this.confirm('Are you sure to proceed ?.', () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             course.open(this).subscribe(() => {
                 course.status = 'open';
-                this.success('Class close');
+                this.success(this.translateService.instant('Class close'));
             });
         });
 

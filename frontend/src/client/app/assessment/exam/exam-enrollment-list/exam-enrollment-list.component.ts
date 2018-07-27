@@ -42,7 +42,7 @@ export class ExamEnrollmentListComponent extends BaseComponent {
             return;
         }
         if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
-            this.error('You do not have enroll permission for this exam');
+            this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
         this.examEnrollDialog.enroll(exam);
@@ -56,10 +56,10 @@ export class ExamEnrollmentListComponent extends BaseComponent {
 
     closeExam(exam:Exam) {
         if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
-            this.error('You do not have close permission for this exam');
+            this.error(this.translateService.instant('You do not have close permission for this exam'));
             return;
         }
-        this.confirm('Are you sure to proceed ?  You will not be able to enroll students after the exam is closed', ()=> {
+        this.confirm(this.translateService.instant('Are you sure to proceed ?  You will not be able to enroll students after the exam is closed'), ()=> {
             exam.close(this).subscribe(() => {
                 exam.status = 'closed';
                 this.success('Exam close');
@@ -72,10 +72,10 @@ export class ExamEnrollmentListComponent extends BaseComponent {
             this.error('You do not have open permission for this exam');
             return;
         }
-        this.confirm('Are you sure to proceed ?', ()=> {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), ()=> {
             exam.open(this).subscribe(() => {
                 exam.status = 'open';
-                this.success('Exam open');
+                this.success(this.translateService.instant('Exam open'));
             });
         });
     }

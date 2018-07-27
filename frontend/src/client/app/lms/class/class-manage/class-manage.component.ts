@@ -93,8 +93,8 @@ export class ClassManageComponent extends BaseComponent {
 		super();
 		this.reportUtils = new ReportUtils();
 		this.viewModes = [
-			{ value: 'outline', title: 'Outline', icon: 'ui-icon-dehaze' },
-			{ value: 'detail', title: 'Detail', icon: 'ui-icon-apps' },
+			{ value: 'outline', title: this.translateService.instant('Outline'), icon: 'ui-icon-dehaze' },
+			{ value: 'detail', title: this.translateService.instant('Detail'), icon: 'ui-icon-apps' },
 		];
 		this.viewModes = this.viewModes.map(viewMode => {
 			return {
@@ -184,9 +184,9 @@ export class ClassManageComponent extends BaseComponent {
 			return log.res_model == CourseUnit.Model && log.res_id == unit.id && log.code == 'COMPLETE_COURSE_UNIT';
 		});
 		if (log)
-			return 'Finished';
+			return this.translateService.instant('Finished');
 		else
-			return 'Unfinished';
+			return this.translateService.instant('Unfinished');
 	}
 
 	addProject() {
@@ -207,7 +207,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	deleteProject(project: Project) {
-		this.confirm('Are you sure to delete?', () => {
+		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 			project.delete(this).subscribe(() => {
 				this.success('Project deleted');
 				this.lmsProfileService.removeProject(project);

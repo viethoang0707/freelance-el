@@ -621,7 +621,6 @@ body .ui-dialog.course-unit-study .tree-unit-course-study {
     -webkit-border-radius: 2px;
 }
 
-
 @media screen and (max-width: 500px) {
   .tree-unit-course-study{
     height: 150px;

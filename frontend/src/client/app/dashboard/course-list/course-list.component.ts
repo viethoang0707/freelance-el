@@ -70,7 +70,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     withdrawCourse(course: Course, member: CourseMember) {
-        this.confirm('Are you sure to proceed ?', ()=> {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), ()=> {
             member.status = 'withdraw';
             member.save(this).subscribe(()=> {
                 this.lmsProfileService.invalidateAll();

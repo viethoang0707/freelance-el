@@ -42,11 +42,11 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
 
     enrollSurvey(survey: Survey) {
         if (survey.review_state != 'approved') {
-            this.warn('Survey not reviewed yet');
+            this.warn(this.translateService.instant('Survey not reviewed yet'));
             return;
         }
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
-            this.error('You do not have enroll permission for this survey');
+            this.error(this.translateService.instant('You do not have enroll permission for this survey'));
             return;
         }
         this.surveyEnrollDialog.enroll(survey);
@@ -61,26 +61,26 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
 
     closeSurvey(survey: Survey) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
-            this.error('You do not have close permission for this survey');
+            this.error(this.translateService.instant('You do not have close permission for this survey'));
             return;
         }
-        this.confirm('Are you sure to proceed ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             survey.close(this).subscribe(() => {
                 survey.status = 'closed';
-                this.success('Survey close');
+                this.success(this.translateService.instant('Survey close'));
             });
         });
     }
 
     openSurvey(survey: Survey) {
         if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != survey.supervisor_id) {
-            this.error('You do not have open permission for this survey');
+            this.error(this.translateService.instant('You do not have open permission for this survey'));
             return;
         }
-        this.confirm('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened', () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened'), () => {
             survey.open(this).subscribe(() => {
                 survey.status = 'open';
-                this.success('Survey open');
+                this.success(this.translateService.instant('Survey open'));
             });
         });
 
