@@ -6,7 +6,8 @@ import * as _ from 'underscore';
 
 
 export abstract class BaseAPI {
-    params		:	any;
+    params		 :	any;
+    is_restricted: boolean;
 
     constructor() {
     }

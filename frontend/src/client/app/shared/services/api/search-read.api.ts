@@ -7,6 +7,7 @@ export class SearchReadAPI extends BaseAPI{
 
     constructor( model:string, fields:string[], domain:string){
         super();
+        this.is_restricted =  false;
         this.params = { model: model,fields:fields, domain: domain};
 	}
 
@@ -17,6 +18,7 @@ export class SearchAllAPI extends SearchReadAPI{
 
     constructor( model:string){
         super(model, [],"[]");
+        this.is_restricted =  false;
         this.params = { model: model,fields:[], domain: "[]"};
 	}
 

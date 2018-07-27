@@ -165,6 +165,12 @@ export class SeedConfig {
    */
   APP_LOCALE = argv['lang'] || 'en';
 
+  /**
+   * Cloud id used in the dev mode.
+   * @type {string}
+   */
+  CLOUD_ID = argv['cloudid'] ;
+
 
   /**
    * Demo mode

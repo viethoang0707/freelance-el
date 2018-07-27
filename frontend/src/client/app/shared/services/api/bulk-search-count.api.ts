@@ -9,6 +9,7 @@ export class BulkSearchCountAPI extends BaseAPI{
     constructor(){
         super();
         this.params = {stacks:[]};
+        this.is_restricted =  false;
 	}
 
 	add(api: SearchCountAPI) {

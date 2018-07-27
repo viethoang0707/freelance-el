@@ -9,6 +9,7 @@ export class BulkDeleteAPI extends BaseAPI{
     constructor(){
         super();
         this.params = {stacks:[]};
+        this.is_restricted =  true;
 	}
 
 	add(api: DeleteAPI) {

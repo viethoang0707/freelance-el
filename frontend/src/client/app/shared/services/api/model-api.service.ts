@@ -9,18 +9,27 @@ import { Token } from '../../models/cloud/token.model';
 
 @Injectable()
 export class ModelAPIService {
+
+    private buildMode: string = "<%= BUILD_TYPE %>";
+    private cloudId: string = "<%= CLOUD_ID %>";
+
     constructor(private http: Http, private appEvent: AppEventManager) { }
 
     execute(api: BaseAPI,token:Token):Observable<any> {
-        if (!token || !token.IsValid) {
-            this.appEvent.tokenExpired();
-            return Observable.throw('Token expired')
-        }
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         var params = api.params;
         console.log(params);
-        params["token"] = token.code;
+        if (api.is_restricted) {
+            if (!token || !token.IsValid) {
+                this.appEvent.tokenExpired();
+                return Observable.throw('Token expired')
+            }
+            params["token"] = token.code;
+        } else {
+            if (this.buildMode != 'prod')
+                params["cloud_code"] = this.cloudId; 
+        }
         var endpoint = Config.API_ENDPOINT + api.Method;
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)

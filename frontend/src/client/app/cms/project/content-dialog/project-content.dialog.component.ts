@@ -55,7 +55,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
     }
 
     uploadFile(file) {
-        this.fileApiService.upload(file, this.authService.LoginToken.cloud_id).subscribe(
+        this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(()=> {

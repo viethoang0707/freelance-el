@@ -18,10 +18,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     private credential: Credential;
     private returnUrl: string;
-    private buildMode: string = "<%= BUILD_TYPE %>";
 
     @Input() remember: boolean;
-    @Input() cloudid: string;
 
     constructor(private route: ActivatedRoute, private router: Router) {
         super();
@@ -35,7 +33,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
 
     login() {
-        this.authService.login(this.credential, this.cloudid).subscribe(
+        this.authService.login(this.credential).subscribe(
             resp => {
                 let user:User = resp["user"];
                 this.appEvent.userLogin(user);
