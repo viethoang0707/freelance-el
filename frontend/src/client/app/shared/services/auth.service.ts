@@ -37,7 +37,7 @@ export class AuthService {
     get UserProfile(): User {
         if (localStorage.getItem('currentUser'))
             return MapUtils.deserialize(User, JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('currentUser'))))));
-        return new UserProfile();
+        return new User();
     }
 
     set UserProfile(user: User) {
@@ -89,8 +89,8 @@ export class AuthService {
         localStorage.setItem('remember', val.toString());
     }
 
-    login(info: Credential, cloudid?:string): Observable<any> {
-        return this.accountService.login(info.username, info.password,cloudid).map(resp => {
+    login(info: Credential): Observable<any> {
+        return this.accountService.login(info.username, info.password).map(resp => {
             this.UserProfile = MapUtils.deserialize(User, resp["user"]);
             this.LoginToken = MapUtils.deserialize(Token, resp["token"]);
             return {user: this.UserProfile, token: this.LoginToken};
