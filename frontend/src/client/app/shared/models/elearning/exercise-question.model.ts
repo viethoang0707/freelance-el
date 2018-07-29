@@ -30,6 +30,7 @@ export class ExerciseQuestion extends BaseModel{
         this.order = undefined;
         this.sheet_id = undefined;
         this.group_id__DESC__ = undefined;
+        this.option_ids = [];
     }
 
     question_id: number;
@@ -45,26 +46,7 @@ export class ExerciseQuestion extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
     sheet_id: number;
-
-    static __api__listByExercise(exerciseId: number): SearchReadAPI {
-        return new SearchReadAPI(ExerciseQuestion.Model, [],"[('unit_id','=',"+exerciseId+")]");
-    }
-
-    static listByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
-        return ExerciseQuestion.search(context,[],"[('unit_id','=',"+exerciseId+")]");
-    }
-
-    static __api__countByExercise(exerciseId: number): SearchCountAPI {
-        return new SearchCountAPI(ExerciseQuestion.Model,"[('unit_id','=',"+exerciseId+")]");
-    }
-
-    static countByExercise( context:APIContext, exerciseId: number): Observable<any[]> {
-        return ExerciseQuestion.count(context,"[('exercise_id','=',"+exerciseId+")]");
-    }
-
-    __api__populateQuestion(): ListAPI {
-        return new ListAPI(Question.Model, [this.question_id], []);
-    }
+    option_ids: number[];
 
     populateQuestion(context: APIContext): Observable<any> {
         if (!this.question_id)

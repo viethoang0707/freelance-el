@@ -26,7 +26,7 @@ import { BaseModel } from '../../../../shared/models/base.model';
 })
 export class MemberByCourseReportComponent extends BaseComponent {
 
-    GROUP_CATEGORY = GROUP_CATEGORY;
+	GROUP_CATEGORY = GROUP_CATEGORY;
 
 	private records: any;
 	private summary: any;
@@ -40,42 +40,45 @@ export class MemberByCourseReportComponent extends BaseComponent {
 	}
 
 	export() {
-		var output = _.map(this.records, record=> {
+		var output = _.map(this.records, record => {
 			return { 'Course code': record['course_code'], 'Course name': record['course_name'], 'Total': record['total_member'], 'Total registered': record['total_member_registered'], 'Percentage registered': record['percentage_member_registered'], 'Total in-progress': record['total_member_inprogress'], 'Percentage in-progress': record['percentage_member_inprogress'], 'Total completed': record['total_member_completed'], 'Percentage completed': record['percentage_member_inprogress'], 'Time': record['time_spent'] };
 		});
 		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
 	}
 
 
-    clear() {
-        this.records = [];
-        this.summary = {};
-    }
+	clear() {
+		this.records = [];
+		this.summary = {};
+	}
 
-    render(courses:Course[]) {
+	render(courses: Course[]) {
 		this.clear();
 		this.generateReport(courses);
-    }
+	}
 
-    generateReport(courses:Course[]){
-        var apiList = [];
-        for (var i=0;i<courses.length; i++) {
-            apiList.push(CourseMember.__api__listByCourse(courses[i].id));
-            apiList.push(CourseLog.__api__courseActivity(courses[i].id));
-        };
-        BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
-            for (var i=0;i<courses.length; i++) {
-                var members = CourseMember.toArray(jsonArr[2*i]);
-                members = _.filter(members, (member:CourseMember)=> {
-					return member.role =='student';
-				});
-                var logs = CourseLog.toArray(jsonArr[2*i+1]);
-                var record = this.generateReportRow(courses[i], members, logs);
-                this.records.push(record);
-            }
-            this.summary =  this.generateReportFooter(this.records);
-        });
-    }
+	generateReport(courses: Course[]) {
+		var apiMemberList = [];
+		var apiLogList = [];
+		for (var i = 0; i < courses.length; i++) {
+			apiMemberList.push(courses[i].__api__listMembers());
+			apiLogList.push(CourseLog.__api__courseActivity(courses[i].id));
+		};
+		BaseModel.bulk_list(this, ...apiMemberList).subscribe(jsonMemberArr => {
+			BaseModel.bulk_search(this, ...apiLogList).subscribe(jsonLogArr => {
+				for (var i = 0; i < courses.length; i++) {
+					var members = CourseMember.toArray(jsonMemberArr[i]);
+					members = _.filter(members, (member: CourseMember) => {
+						return member.role == 'student';
+					});
+					var logs = CourseLog.toArray(jsonLogArr[i]);
+					var record = this.generateReportRow(courses[i], members, logs);
+					this.records.push(record);
+					this.summary = this.generateReportFooter(this.records);
+				}
+			});
+		});
+	}
 
 	generateReportRow(course: Course, members: CourseMember[], logs: CourseLog[]): any {
 		var record = {};

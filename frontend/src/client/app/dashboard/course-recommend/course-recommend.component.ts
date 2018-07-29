@@ -44,11 +44,11 @@ export class CourseRecommendComponent extends BaseComponent implements OnInit {
     searchRecommendCourse() {
         this.courses = [];
         var domain = "('status','=','published')";
-        Achivement.listByUser(this, this.ContextUser.id).subscribe(skills=> {
+        this.ContextUser.listAchivements(this).subscribe(skills=> {
             var apiList = _.map(skills, (skill:Achivement)=> {
                 return Course.__api__listByCompetency(skill.competency_id);
             });
-            BaseModel.bulk_search(this, ...apiList)
+            BaseModel.bulk_list(this, ...apiList)
             .map(jsonArr=> {
                 return _.flatten(jsonArr);
             })

@@ -27,7 +27,7 @@ import { Achivement } from '../../../../shared/models/elearning/achievement.mode
 
 export class CompetencyByGroupReportComponent extends BaseComponent implements OnInit {
 
-	private records: any;
+		private records: any;
     private reportUtils: ReportUtils;
     private competency: Competency;
     private levels: CompetencyLevel[];
@@ -60,39 +60,38 @@ export class CompetencyByGroupReportComponent extends BaseComponent implements O
 	render(competency: Competency, groups: Group[]) {
 		this.clear();
 		this.competency =  competency;
-		CompetencyLevel.listByCompetency(this, this.competency.id).subscribe(levels=> {
-			this.levels =  levels;
-			this.generateReport(competency, groups);
+		competency.listLevels(this).subscribe(levels=> {
+			this.levels =  competency.levels;
+			this.generateReport(competency, this.levels, groups);
 		});
 		
 	}
 
-	generateReport(competency: Competency, groups: Group[]) {
+	generateReport(competency: Competency, levels: CompetencyLevel[], groups: Group[]) {
 		var apiList = [];
 		for (var i=0;i<groups.length; i++) {
-			apiList.push(Achivement.__api__listByGroup(groups[i].id));
+			apiList.push(Group.__api__listAchivements(groups[i].achivement_ids));
 		};
-		BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
+		var records = [];
+		BaseModel.bulk_list(this, ...apiList).subscribe(jsonArr => {
 			for (var i=0;i<groups.length; i++) {
 				var skills = Achivement.toArray(jsonArr[i])
-				var record = this.generateReportRow(groups[i], skills);
-				this.records.push(record);
+				var record = this.generateReportRow(groups[i], skills,competency,levels);
+				records.push(record);
 			}
+			this.records = records;
 		});
 	}
 
-	generateReportRow(group: Group, achievements: Achivement[]): any {
+	generateReportRow(group: Group, skills: Achivement[],competency: Competency,levels: CompetencyLevel[]): any {
 		var record = {};
 		record["group_name"] = group.name;
 		_.each(this.levels, (level:CompetencyLevel)=> {
 			record[level.id] = 0;
 		});
-		var skillSets = _.groupBy(achievements,'user_id');
-		_.each(skillSets, (skillSet:Achivement[])=> {
-			var skill = _.max(skillSet, (obj:Achivement)=> {
-				return obj.date_acquire.getTime();
-			});
-			record[skill.competency_level_id] +=1;
+		_.each(skills, (skill:Achivement)=> {
+			if (skill.competency_id == competency.id)
+				record[skill.competency_level_id] +=1;
 		});
 		return record;
 	}

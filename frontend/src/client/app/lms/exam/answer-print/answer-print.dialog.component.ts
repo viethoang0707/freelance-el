@@ -62,10 +62,10 @@ export class AnswerPrintDialog extends BaseComponent {
         this.member = member;
 
         BaseModel
-            .bulk_search(this,
-                Submission.__api__byMemberAndExam(this.member.id, this.exam.id),
-                ExamSetting.__api__byExam(this.exam.id),
-                QuestionSheet.__api__byExam(this.exam.id))
+            .bulk_list(this,
+                ExamMember.__api__populateSubmission(this.member.id),
+                Exam.__api__populateSetting(this.exam.id),
+                Exam.__api__populateQuestionSheet(this.exam.id))
             .subscribe(jsonArr => {
                 var submits = Submission.toArray(jsonArr[0]);
                 if (submits.length) {
@@ -86,18 +86,11 @@ export class AnswerPrintDialog extends BaseComponent {
         this.display = false;
     }
 
-    fetchAnswers(): Observable<any> {
-        if (this.submission.id)
-            return Answer.listBySubmit(this, this.submission.id);
-        else
-            return Observable.of([]);
-    }
-
     startReview() {
         BaseModel
-            .bulk_search(this,
-                ExamQuestion.__api__listBySheet(this.sheet.id),
-                Answer.__api__listBySubmit(this.submission.id))
+            .bulk_list(this,
+                QuestionSheet.__api__listQuestions(this.sheet.question_ids),
+                Submission.__api__listAnswers(this.submission.answer_ids))
             .subscribe(jsonArr => {
                 this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
                 this.answers = Answer.toArray(jsonArr[1]);
@@ -105,7 +98,7 @@ export class AnswerPrintDialog extends BaseComponent {
                     var questions = _.map(this.examQuestions, (examQuestion:ExamQuestion)=> {
                         return examQuestion.question;
                     });
-                    Question.populateOptions(this,questions).subscribe(() => {
+                    Question.listOptionsForArray(this,questions).subscribe(() => {
                         var componentHostArr = this.questionsComponents.toArray();
                         for (var i = 0; i < this.examQuestions.length; i++) {
                             var examQuestion = this.examQuestions[i];

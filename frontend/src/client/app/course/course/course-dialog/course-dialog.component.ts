@@ -79,13 +79,13 @@ export class CourseDialog extends BaseDialog<Course> {
 	}
 
 	ngOnInit() {
-		this.onShow.subscribe(object => {
+		this.onShow.subscribe((object:Course) => {
 			if (object.IsNew)  {
 				this.editor = new CourseMember();
 				object.supervisor_id = this.ContextUser.id;
 				object.review_state = this.ContextUser.IsSuperAdmin ?'approved':'initial';
 			} else {
-				CourseMember.courseEditor(this, object.id).subscribe(member=> {
+				object.courseEditor(this).subscribe(member=> {
 					if (!member) {
 						this.editor =  new CourseMember();
 						this.editor.role = 'editor';

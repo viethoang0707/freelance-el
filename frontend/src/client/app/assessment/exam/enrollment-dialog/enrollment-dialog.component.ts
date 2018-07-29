@@ -84,7 +84,7 @@ export class ExamEnrollDialog extends BaseComponent {
     }
 
     loadMembers() {
-        ExamMember.listByExam(this, this.exam.id).subscribe(members => {
+        this.exam.listMembers(this).subscribe(members => {
             this.candidates = _.filter(members, (member) => {
                 return member.role == 'candidate';
             });

@@ -45,7 +45,8 @@ export class CompetencyProgressChartComponent extends BaseComponent {
     }
 
     drawChart(competency: Competency, duration: number) {
-        CompetencyLevel.listByCompetency(this, competency.id).subscribe(levels => {
+        competency.listLevels(this).subscribe(levels => {
+            var levels = competency.levels;
             this.prepareChartData(competency, levels, duration).subscribe(slots => {
                 var labels = [this.translateService.instant('Current')];
                 var datasets = [];

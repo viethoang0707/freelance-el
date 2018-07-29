@@ -76,17 +76,18 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
 
     render(survey: Survey) {
         this.clear();
-        SurveySheet.get(this, survey.sheet_id).subscribe(sheet => {
-            SurveyAnswer.listBySurvey(this, survey.id).subscribe(answers => {
+        survey.populateQuestionSheet(this).subscribe(()=> {
+            var sheet = survey.sheet;
+            survey.listAnswers(this).subscribe(answers=> {
                 var statistics = this.statsUtils.surveyAnswerStatistics(answers);
                 this.optionPercentage = statistics['multichoice'];
                 this.ratingPercentage = statistics['rating'];
                 console.log(statistics);
-                SurveyQuestion.listBySheet(this, sheet.id).subscribe(surveyQuestions => {
+                sheet.listQuestions(this).subscribe(surveyQuestions => {
                     var apiList = _.map(surveyQuestions, (surveyQuestion: SurveyQuestion) => {
-                        return QuestionOption.__api__listByQuestion(surveyQuestion.question_id)
+                        return Question.__api__listOptions(surveyQuestion.option_ids)
                     });
-                    BaseModel.bulk_search(this, ...apiList)
+                    BaseModel.bulk_list(this, ...apiList)
                         .map(jsonArr => _.flatten(jsonArr))
                         .subscribe(jsonArr => {
                             var options = QuestionOption.toArray(jsonArr);
@@ -99,8 +100,8 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
                             this.records = surveyQuestions;
                         });
                 });
-            });
-        });
+            })
+        })
     }
 
     getRatePercentage(question) {

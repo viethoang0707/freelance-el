@@ -58,15 +58,11 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
     render(exam: Exam) {
         this.clear();
-        BaseModel
-            .bulk_search(this,
-                ExamMember.__api__listCandidateByExam(exam.id),
-                ExamLog.__api__listByExam(exam.id))
-            .subscribe(jsonArr => {
-                var members = ExamMember.toArray(jsonArr[0]);
-                var logs = ExamLog.toArray(jsonArr[1]);
+        exam.listCandidates(this).subscribe(members => {
+            ExamLog.listByExam(this, exam.id).subscribe(logs => {
                 this.records = this.generateReport(exam, logs, members);
-            })
+            });
+        });
     }
 
 

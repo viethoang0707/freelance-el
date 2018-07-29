@@ -32,12 +32,4 @@ export class CourseSyllabus extends BaseModel{
     unit_count: number;
     complete_unit_by_order: boolean;
 
-    static __api__listByCourse(courseId: number): SearchReadAPI {
-        return new SearchReadAPI(CourseSyllabus.Model, [],"[('course_id','=',"+courseId+")]");
-    }
-
-    static listByCourse( context:APIContext, courseId: number): Observable<any[]> {
-        return CourseSyllabus.search(context,[],"[('course_id','=',"+courseId+")]");
-    }
-
 }

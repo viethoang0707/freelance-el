@@ -97,13 +97,13 @@ export class LMSProfileService {
     this.context =  context;
     if (this.initialized)
       return Observable.of([]);
-    var userId = context.authService.UserProfile.id;
-    return BaseModel.bulk_search(context,
-      CourseMember.__api__listByUser(userId),
-      ExamMember.__api__listByUser(userId),
-      ConferenceMember.__api__listByUser(userId),
-      SurveyMember.__api__listByUser(userId),
-      Certificate.__api__listByUser(userId)
+    var user = context.authService.UserProfile;
+    return BaseModel.bulk_list(context,
+      User.__api__listCourseMembers(user.course_member_ids),
+      User.__api__listExamMembers(user.exam_member_ids),
+      User.__api__listConferenceMembers(user.conference_member_ids),
+      User.__api__listSurveyMembers(user.survey_member_ids),
+      User.__api__listCertificates(user.certificate_ids)
     )
       .flatMap(jsonArray => {
         this.myCourseMembers = _.filter(CourseMember.toArray(jsonArray[0]), (member: CourseMember) => {
@@ -139,9 +139,9 @@ export class LMSProfileService {
           Exam.__api__get(examIds),
           Conference.__api__get(conferenceIds),
           Survey.__api__get(surveyIds),
-          ExamRecord.__api__listByUser(userId),
-          Submission.__api__listByUser(userId),
-          ProjectSubmission.__api__listByUser(userId)
+          User.__api__listExamRecords(user.exam_record_ids),
+          User.__api__listSubmissions(user.submission_ids),
+          User.__api__listProjectSubmissions(user.project_submission_ids)
         ).flatMap(jsonArr1 => {
           this.myCourses = Course.toArray(jsonArr1[0]);
           _.each(this.myCourseMembers, (member: CourseMember) => {
@@ -315,11 +315,12 @@ export class LMSProfileService {
   getCourseContent(courseId:number):Observable<any> {
     if (this.courseContent[courseId])
       return Observable.of(this.courseContent[courseId]);
+    var course = this.courseById(courseId);
     return BaseModel.bulk_search(this.context,
-      CourseSyllabus.__api__listByCourse(courseId),
-      CourseUnit.__api__listByCourse(courseId),
-      CourseFaq.__api__listByCourse(courseId),
-      CourseMaterial.__api__listByCourse(courseId)
+      Course  .__api__populateSyllabus(course.syllabus_id),
+      Course.__api__listUnits(course.unit_ids),
+      Course.__api__listFaqs(course.faq_ids),
+      Course.__api__listMaterials(course.material_ids)
     )
       .map(jsonArray => {
         var content = {};
@@ -335,15 +336,13 @@ export class LMSProfileService {
   getClassContent(classId:number):Observable<any> {
     if (this.classContent[classId])
       return Observable.of(this.classContent[classId]);
-    return BaseModel.bulk_search(this.context,
-      Project.__api__listByClass(classId),
-    )
-      .map(jsonArray => {
-        var content = {};
-        content["projects"] =  Project.toArray(jsonArray[0]);
+    var clazz = this.classById(classId);
+    return clazz.listProjects(this.context).map(projects => {
+      var content = {};
+        content["projects"] =  projects;
         this.classContent[classId] =  content;
         return content;
-      });
+    });
   }
 
   clearClassContent(classId: number) {
@@ -370,7 +369,7 @@ export class LMSProfileService {
 
   addExam(exam:Exam):Observable<any> {
     this.myExams.push(exam);
-    return ExamMember.listByUser(this.context, this.context.authService.UserProfile.id).do(members=> {
+    return this.context.authService.UserProfile.listExamMembers(this.context).do(members=> {
       this.myExamMembers = _.filter(members, (member: ExamMember) => {
           return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state =='approved';
         });
@@ -380,7 +379,7 @@ export class LMSProfileService {
 
   addSurvey(survey:Survey):Observable<any> {
     this.mySurveys.push(survey);
-    return SurveyMember.listByUser(this.context, this.context.authService.UserProfile.id).do(members=> {
+    return this.context.authService.UserProfile.listSurveyMembers(this.context).do(members=> {
       this.mySurveyMembers = _.filter(members, (member: SurveyMember) => {
           return isFinite(parseInt(member.survey_id + ""))  && member.survey_review_state =='approved';
         });

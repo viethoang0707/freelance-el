@@ -51,13 +51,13 @@ export class SurveySheetPreviewDialog extends BaseComponent {
     }
 
     startPreReview() {
-        SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions => {
+        this.sheet.listQuestions(this).subscribe(surveyQuestions => {
             SurveyQuestion.populateQuestions(this, surveyQuestions).subscribe(()=> {
                 this.surveyQuestions = surveyQuestions;
                 var questions = _.map(surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
                     return surveyQuestion.question;
                 });
-                Question.populateOptions(this,questions).subscribe(()=> {
+                Question.listOptionsForArray(this,questions).subscribe(()=> {
                     var componentHostArr = this.questionsComponents.toArray();
                     for (var i = 0; i < surveyQuestions.length; i++) {
                         var surveyQuestion = surveyQuestions[i];

@@ -40,6 +40,7 @@ export class ProjectManageDialog extends BaseComponent {
     
     private display: boolean;
 	private project: Project;
+    private courseClass: CourseClass;
     private submits: ProjectSubmission[];
     private members: CourseMember[];
     private selectedMember: any;
@@ -49,14 +50,16 @@ export class ProjectManageDialog extends BaseComponent {
 	constructor() {
 		super();
 		this.project = new Project();
+        this.courseClass = new CourseClass();
 	}
 
-	show(project: Project) {
+	show(project: Project, courseClass: CourseClass) {
         this.project = project;
+        this.courseClass =  courseClass;
         this.display = true;
-        BaseModel.bulk_search(this,
-            ProjectSubmission.__api__listByProject(this.project.id),
-            CourseMember.__api__listByClass(this.project.class_id))
+        BaseModel.bulk_list(this,
+            Project.__api__listSubmissios(this.project.submission_ids),
+            CourseClass.__api__listMembers(this.courseClass.member_ids))
             .subscribe(jsonArr => {
                 this.submits = ProjectSubmission.toArray(jsonArr[0]);
                 this.members = CourseMember.toArray(jsonArr[1]);

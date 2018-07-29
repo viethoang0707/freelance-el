@@ -12,6 +12,7 @@ class Conference(models.Model):
 	room_pass = fields.Char(string='Room password')
 	status = fields.Selection(
 		[('open', 'Open'), ('closed', 'Closed'), ('initial', 'Initial')],default="open")
+	member_ids = fields.One2many('etraining.conference_member', 'conference_id', string='Members')
 
 	@api.model
 	def create(self, vals):

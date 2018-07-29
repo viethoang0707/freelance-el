@@ -39,7 +39,7 @@ export class ClassConferenceDialog extends BaseComponent {
 		if (courseClass.status == 'open') {
 			Conference.get(this, courseClass.conference_id).subscribe(confernece => {
 				this.conference = confernece;
-				ConferenceMember.listByConference(this, this.conference.id).subscribe(members=> {
+				this.conference.listMembers(this).subscribe(members=> {
 					this.members =  members;
 				});
 			});
@@ -56,7 +56,7 @@ export class ClassConferenceDialog extends BaseComponent {
 	openConference() {
 		this.conference.open(this).subscribe(() => {
 			this.info(this.translateService.instant('Conference open'));
-			ConferenceMember.listByConference(this, this.conference.id).subscribe(members=> {
+			this.conference.listMembers(this).subscribe(members=> {
 					this.members =  members;
 				});
 		});
@@ -66,7 +66,7 @@ export class ClassConferenceDialog extends BaseComponent {
 	closeConference() {
 		this.conference.close(this).subscribe(() => {
 			this.info(this.translateService.instant('Conference closed'));
-			ConferenceMember.listByConference(this, this.conference.id).subscribe(members=> {
+			this.conference.listMembers(this).subscribe(members=> {
 					this.members =  members;
 				});
 		});

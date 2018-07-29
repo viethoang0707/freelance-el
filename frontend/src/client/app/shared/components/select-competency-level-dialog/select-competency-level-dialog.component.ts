@@ -46,7 +46,7 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.displayLevels =  [];
-			Competency.listByGroup(this,this.selectedNode.data.id).subscribe(competencies => {
+			this.selectedNode.data.listCompetencies(this).subscribe(competencies => {
 				_.each(competencies, (competency:Competency)=> {
 					var levels = _.filter(this.levels, (level:CompetencyLevel)=> {
 						return level.competency_id == competency.id;

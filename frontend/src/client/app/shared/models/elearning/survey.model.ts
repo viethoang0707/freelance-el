@@ -8,6 +8,11 @@ import { ExecuteAPI } from '../../services/api/execute.api';
 import { Cache } from '../../helpers/cache.utils';
 import * as moment from 'moment';
 import { SERVER_DATETIME_FORMAT} from '../constants';
+import { ListAPI } from '../../services/api/list.api';
+import { SurveyAnswer } from './survey-answer.model';
+import { SurveyMember } from './survey-member.model';
+import { CourseClass } from './course-class.model';
+import { SurveySheet } from './survey-sheet.model';
 
 @Model('etraining.survey')
 export class Survey extends BaseModel{
@@ -30,8 +35,15 @@ export class Survey extends BaseModel{
         this.sheet_id =  undefined;
         this.question_count = undefined;
         this.sheet_status = undefined;
+        this.answer_ids = [];
+        this.member_ids = [];
+        this.clazz =  new CourseClass();
+        this.sheet =  new SurveySheet();
+        this.question_ids = [];
 	}
 
+    clazz: CourseClass;
+    sheet: SurveySheet;
     sheet_id: number;
     question_count: number;
     sheet_status: string;
@@ -48,6 +60,9 @@ export class Survey extends BaseModel{
     is_public: boolean;
     supervisor_id: number;
     supervisor_name: string;
+    answer_ids: number[];
+    member_ids: number[];
+    question_ids: number[];
 
     get IsAvailable():boolean {
         if (this.review_state != 'approved')
@@ -86,53 +101,87 @@ export class Survey extends BaseModel{
         return Survey.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
-    static __api__listByClass(classId: number): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model, [],"[('course_class_id','=',"+classId+")]");
-    }
-
-    static listByClass(context:APIContext, classId: number):Observable<any> {
-        if (Cache.hit(Survey.Model))
-            return Observable.of(Cache.load(Survey.Model)).map(surveys=> {
-                return _.filter(surveys, (survey:Survey)=> {
-                    return survey.supervisor_id == classId;
-                });
-            });
-        return Survey.search(context,[],"[('course_class_id','=',"+classId+")]");
-    }
-
-    __api__open(surveyId: number): ExecuteAPI {
+    static __api__open(surveyId: number): ExecuteAPI {
         return new ExecuteAPI(Survey.Model, 'open',{surveyId:surveyId}, null);
     }
 
     open(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__open(this.id), 
+        return context.apiService.execute(Survey.__api__open(this.id), 
             context.authService.LoginToken);
     }
 
-    __api__close(surveyId: number): ExecuteAPI {
+    static __api__close(surveyId: number): ExecuteAPI {
         return new ExecuteAPI(Survey.Model, 'close',{surveyId:surveyId}, null);
     }
 
     close(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__close(this.id), 
+        return context.apiService.execute(Survey.__api__close(this.id), 
             context.authService.LoginToken);
     }
 
-    __api__enroll(surveyId: number, userIds: number[]): SearchReadAPI {
+    static __api__enroll(surveyId: number, userIds: number[]): SearchReadAPI {
         return new ExecuteAPI(Survey.Model, 'enroll',{userIds:userIds, surveyId:surveyId}, null);
     }
 
     enroll(context:APIContext, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll(this.id, userIds), 
+        return context.apiService.execute(Survey.__api__enroll(this.id, userIds), 
             context.authService.LoginToken);
     }
 
-    __api__enroll_supervior(examId: number, userIds: number[]): SearchReadAPI {
+    static __api__enroll_supervior(examId: number, userIds: number[]): SearchReadAPI {
         return new ExecuteAPI(Survey.Model, 'enroll_supervisor',{userIds:userIds, examId:examId}, null);
     }
 
     enrollSupervisor(context:APIContext, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll_supervior(this.id, userIds), 
+        return context.apiService.execute(Survey.__api__enroll_supervior(this.id, userIds), 
             context.authService.LoginToken);
+    }
+
+    static __api__listAnswers(answer_ids: number[]): ListAPI {
+        return new ListAPI(SurveyAnswer.Model, answer_ids,[]);
+    }
+
+    listAnswers( context:APIContext): Observable<any[]> {
+        return SurveyAnswer.array(context,this.answer_ids);
+    }
+
+    static __api__listMembers(member_ids: number[]): ListAPI {
+        return new ListAPI(SurveyMember.Model, member_ids,[]);
+    }
+
+    listMembers( context:APIContext): Observable<any[]> {
+        return SurveyMember.array(context,this.member_ids);
+    }
+
+    __api__populateClass(): ListAPI {
+        return new ListAPI(CourseClass.Model, [this.course_class_id], []);
+    }
+
+    populateClass(context: APIContext): Observable<any> {
+        if (!this.course_class_id)
+            return Observable.of(null);
+        return CourseClass.get(context, this.course_class_id).do(clazz => {
+            this.clazz = clazz;
+        });
+    }
+
+    static __api__surveyEditor(surveyId: number): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model, [],"[('role','=','editor'),('survey_id','='," + surveyId + ")]");
+    }
+
+    surveyEditor(context: APIContext): Observable<any> {
+        return SurveyMember.single(context, [], "[('role','=','editor'),('survey_id','='," + this.id + ")]");
+    }
+
+    static __api__populateQuestionSheet(sheet_id: number): ListAPI {
+        return new ListAPI(SurveySheet.Model, [sheet_id], []);
+    }
+
+    populateQuestionSheet(context: APIContext): Observable<any> {
+        if (!this.sheet_id)
+            return Observable.of(null);
+        return SurveySheet.get(context, this.sheet_id).do(sheet => {
+            this.sheet = sheet;
+        });
     }
 }

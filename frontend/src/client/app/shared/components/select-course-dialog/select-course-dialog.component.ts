@@ -42,7 +42,7 @@ export class SelectCoursesDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			Course.listByGroup(this, this.selectedNode.data.id).subscribe(courses => {
+			this.selectedNode.data.listCourses(this).subscribe(courses => {
 				this.courses = courses;
 			});
 		}

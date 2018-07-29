@@ -21,13 +21,5 @@ export class SlideLecture extends BaseModel{
     slide_url:string;
     unit_id: number;
 
-    static __api__byCourseUnit(unitId:number): SearchReadAPI {
-        return new SearchReadAPI(SlideLecture.Model, [],"[('unit_id','=',"+unitId+")]");
-    }
-    
-    static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
-        return SlideLecture.single(context,[],"[('unit_id','=',"+unitId+")]");
-    }
-
 
 }

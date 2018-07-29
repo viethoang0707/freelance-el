@@ -51,22 +51,19 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 			this.selectorGroups[key]["number"] = 0;
 			this.selectorGroups[key]["score"] = 0;
 			this.selectorGroups[key]["include_sub_group"] = true;
-			this.selectorGroups[key]["group_ids"] = [];
+			this.selectorGroups[key]["groups"] = [];
 			this.selectedNodes[key] = [];
 		});
 		Group.listQuestionGroup(this).subscribe(groups => {
 			_.each(QUESTION_LEVEL, (val, key) => {
 				this.tree[key] = this.treeUtils.buildGroupTree(groups);
-				this.selectedNodes[key] = _.map(this.selectorGroups[key]["group_ids"], (group_id => {
-					return this.treeUtils.findTreeNode(this.tree[key], group_id);
-				}));
 			});
 		});
 	}
 
 	nodeSelect(event: any, level) {
-		this.selectorGroups[level]["group_ids"] = _.map(this.selectedNodes[level], (node => {
-			return node['data']['id'];
+		this.selectorGroups[level]["groups"] = _.map(this.selectedNodes[level], (node => {
+			return node['data'];
 		}));
 	}
 
@@ -85,9 +82,9 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	generateQuestion() {
 		var subscriptions = [];
 		_.each(QUESTION_LEVEL, (val, key)=> {
-			var groupIds = this.selectorGroups[key]["group_ids"]
-			if (groupIds.length > 0 && this.selectorGroups[key]["number"])
-				subscriptions.push(Question.listByGroups(this, groupIds).do(questions => {
+			var groups = this.selectorGroups[key]["groups"]
+			if (groups.length > 0 && this.selectorGroups[key]["number"])
+				subscriptions.push(Question.listByGroups(this, groups).do(questions => {
 					questions = _.shuffle(questions);
 					questions = _.filter(questions, (obj:Question)=> {
 						return obj.level == key;

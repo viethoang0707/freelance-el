@@ -72,13 +72,13 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     delete() {
         var subscription = null;
         if(this.category == "course")
-            subscription =  Course.listByGroup(this, this.selectedNode.data.id);
+            subscription =  this.selectedNode.data.listCourses(this);
         if(this.category == "organization")
-            subscription =  User.listByGroup(this, this.selectedNode.data.id)
+            subscription =  this.selectedNode.data.listUsers(this);
         if(this.category == "question")
-            subscription =  Question.listByGroup(this, this.selectedNode.data.id);
+            subscription =  this.selectedNode.data.listQuestions(this);
         if(this.category == "competency")
-            subscription =  Competency.listByGroup(this, this.selectedNode.data.id);
+            subscription =  this.selectedNode.data.listCompetencies(this);
         if(subscription)
         {
             subscription.subscribe(items => {

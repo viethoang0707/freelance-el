@@ -32,28 +32,16 @@ export class CompetencyProfileChartComponent extends BaseComponent {
         this.cacheData = {};
     }
 
-    prepareChartData(competency: Competency, levels: CompetencyLevel[]): Observable<any> {
-        if (this.cacheData[competency.id])
-            return Observable.of(this.cacheData[competency.id]);
-        return this.statsUtils.competencyStatistic(this, competency, levels).do(profile => {
-            this.cacheData[competency.id] = profile;
-        });
-    }
-
     drawChart(competency: Competency) {
-        CompetencyLevel.listByCompetency(this, competency.id).subscribe(levels => {
+        competency.listLevels(this).subscribe(levels => {
             User.countAll(this).subscribe(totalUserCount => {
-                this.prepareChartData(competency, levels).subscribe(profile => {
                     var totalWithSkill = 0;
                     var labels = [];
                     var data = [];
-                    _.each(profile, (count: number, levelId) => {
-                        totalWithSkill += count;
-                        let level: CompetencyLevel = _.find(levels, (obj: CompetencyLevel) => {
-                            return obj.id == levelId;
-                        });
+                    _.each(levels, (level:CompetencyLevel) => {
+                        totalWithSkill += level.achivement_ids.length;
                         labels.push(level.name);
-                        data.push(count);
+                        data.push(level.achivement_ids.length);
                     });
                     labels.push('Unknwon');
                     data.push(totalUserCount - totalWithSkill);
@@ -68,7 +56,6 @@ export class CompetencyProfileChartComponent extends BaseComponent {
                     };
                 });
             });
-        });
     }
 
 }

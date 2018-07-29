@@ -3,6 +3,8 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { ListAPI } from '../../services/api/list.api';
+import { SurveyQuestion } from './survey-question.model';
 
 @Model('etraining.survey_sheet')
 export class SurveySheet extends BaseModel{
@@ -17,6 +19,7 @@ export class SurveySheet extends BaseModel{
         this.finalized = undefined;
         this.status =  undefined;
         this.question_count =  undefined;
+        this.question_ids = [];
 	}
 
     question_count: number;
@@ -25,6 +28,7 @@ export class SurveySheet extends BaseModel{
     seed:number;
     finalized:boolean;
     status: string;
+    question_ids: number[];
     
     clone() {
         var sheet = new SurveySheet();
@@ -41,5 +45,13 @@ export class SurveySheet extends BaseModel{
 
     static listTemplate( context:APIContext): Observable<any> {
         return SurveySheet.search(context,[],"[('survey_id','=',False)]");
+    }
+
+    static __api__listQuestions(question_ids: number[]): ListAPI {
+        return new ListAPI(SurveyQuestion.Model, question_ids,[]);
+    }
+
+    listQuestions( context:APIContext): Observable<any[]> {
+        return SurveyQuestion.array(context,this.question_ids);
     }
 }

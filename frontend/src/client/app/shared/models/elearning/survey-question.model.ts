@@ -25,6 +25,7 @@ export class SurveyQuestion extends BaseModel {
         this.sheet_id = undefined;
         this.order = undefined;
         this.group_id__DESC__ = undefined;
+        this.option_ids = [];
 	}
 
     question_id: number;
@@ -37,6 +38,7 @@ export class SurveyQuestion extends BaseModel {
     type: string;
     group_id: number;
     group_id__DESC__: string;
+    option_ids: number[];
 
     clone() {
         var question = new SurveyQuestion();

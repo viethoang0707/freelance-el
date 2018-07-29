@@ -87,12 +87,12 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	loadSurveyContent() {
-		SurveySubmission.get(this, this.member.submission_id).subscribe((submit: SurveySubmission) => {
-			this.submission = submit;
+		this.member.populateSubmission(this).subscribe(()=> {
+			this.submission = this.member.submit;
 			this.submission.start = new Date();
-			BaseModel.bulk_search(this,
-				SurveyQuestion.__api__listBySheet(this.survey.sheet_id),
-				SurveyAnswer.__api__listBySubmit(this.submission.id))
+			BaseModel.bulk_list(this,
+				SurveySheet.__api__listQuestions(this.survey.question_ids),
+				this.submission.__api__listAnswers())
 				.subscribe(jsonArr => {
 					this.surveyQuestions = SurveyQuestion.toArray(jsonArr[0]);
 					this.answers = SurveyAnswer.toArray(jsonArr[1]);
@@ -101,7 +101,7 @@ export class SurveyStudyDialog extends BaseComponent {
 						var questions = _.map(this.surveyQuestions, (surveyQuestion: SurveyQuestion) => {
 							return surveyQuestion.question
 						});
-						Question.populateOptions(this, questions).subscribe(() => {
+						Question.listOptionsForArray(this, questions).subscribe(() => {
 							this.startSurvey();
 						});
 					});

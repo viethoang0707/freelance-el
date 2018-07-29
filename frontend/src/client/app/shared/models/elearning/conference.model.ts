@@ -5,9 +5,11 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
+import { ListAPI } from '../../services/api/list.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import { ConferenceMember } from './conference-member.model';
 
 @Model('etraining.conference')
 export class Conference extends BaseModel{
@@ -19,6 +21,7 @@ export class Conference extends BaseModel{
         this.name = undefined;
         this.status = undefined;
         this.room_pass = undefined;
+        this.member_ids = [];
     }
 
     class_id: number;
@@ -26,30 +29,31 @@ export class Conference extends BaseModel{
     room_pass: string;
     status: string;
     name: string;
+    member_ids: number[];
 
-    static __api__listOpenConference(classId: number): SearchReadAPI {
-        return new SearchReadAPI(Conference.Model, [],"[('status','=','open')]");
+    static __api__listMembers(member_ids: number[]): ListAPI {
+        return new ListAPI(ConferenceMember.Model, member_ids,[]);
     }
 
-    static listOpenConference(context:APIContext):Observable<any> {
-        return Conference.search(context,[],"[('status','=','open')]");
+    listMembers( context:APIContext): Observable<any[]> {
+        return ConferenceMember.array(context,this.member_ids);
     }
 
-    __api__open(conferenceId: number): ExecuteAPI {
+    static __api__open(conferenceId: number): ExecuteAPI {
         return new ExecuteAPI(Conference.Model, 'open',{conferenceId:conferenceId}, null);
     }
 
     open(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__open(this.id), 
+        return context.apiService.execute(Conference.__api__open(this.id), 
             context.authService.LoginToken);
     }
 
-    __api__close(conferenceId: number): ExecuteAPI {
+    static __api__close(conferenceId: number): ExecuteAPI {
         return new ExecuteAPI(Conference.Model, 'close',{conferenceId:conferenceId}, null);
     }
 
     close(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__close(this.id), 
+        return context.apiService.execute(Conference.__api__close(this.id), 
             context.authService.LoginToken);
     }
 }

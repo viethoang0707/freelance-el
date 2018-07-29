@@ -7,6 +7,12 @@ import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import * as _ from 'underscore';
+import { ExerciseQuestion } from './exercise-question.model';
+import { ListAPI } from '../../services/api/list.api';
+import { HtmlLecture } from './lecture-html.model';
+import { SCORMLecture } from './lecture-scorm.model';
+import { SlideLecture } from './lecture-slide.model';
+import { VideoLecture } from './lecture-video.model';
 
 @Model('etraining.course_unit')
 export class CourseUnit extends BaseModel{
@@ -23,7 +29,16 @@ export class CourseUnit extends BaseModel{
         this.syllabus_id = undefined;
         this.icon = undefined;
         this.status = undefined;
+        this.exercise_question_ids = [];
         this.course_id =  undefined;
+        this.html_lecture_id =  undefined;
+        this.slide_lecture_id =  undefined;
+        this.video_lecture_id =  undefined;
+        this.scorm_lecture_id =  undefined;
+        this.htmlLecture =  new HtmlLecture();
+        this.videoLecture =  new VideoLecture();
+        this.scormLecture =  new SCORMLecture();
+        this.slideLecture =  new SlideLecture();
 	}
 
     name:string;
@@ -35,37 +50,70 @@ export class CourseUnit extends BaseModel{
     lecture: string;
     type: string;
     status: string;
+    exercise_question_ids: number[];
+    html_lecture_id: number;
+    video_lecture_id: number;
+    scorm_lecture_id: number;
+    slide_lecture_id: number;
+    htmlLecture: HtmlLecture;
+    videoLecture: VideoLecture;
+    scormLecture: SCORMLecture;
+    slideLecture: SlideLecture;
 
-    static __api__listBySyllabus(sylId: number): SearchReadAPI {
-        return new SearchReadAPI(CourseUnit.Model, [],"[('syllabus_id','=',"+sylId+")]");
+    static __api__listExerciseQuestions(exercise_question_ids: number[]): SearchReadAPI {
+        return new ListAPI(ExerciseQuestion.Model, exercise_question_ids, []);
     }
 
-    static listBySyllabus(context:APIContext, sylId:number):Observable<any> {
-        return CourseUnit.search(context,[], "[('syllabus_id','=',"+sylId+")]");
+    listExerciseQuestions(context: APIContext): Observable<any[]> {
+        return ExerciseQuestion.array(context, this.exercise_question_ids);
     }
 
-    static __api__listByCourse(courseId: number): SearchReadAPI {
-        return new SearchReadAPI(CourseUnit.Model, [],"[('course_id','=',"+courseId+")]");
+    static __api__populateHtmlLecture(html_lecture_id: number): ListAPI {
+        return new ListAPI(HtmlLecture.Model, [html_lecture_id], []);
     }
 
-    static listByCourse(context:APIContext, courseId:number):Observable<any> {
-        return CourseUnit.search(context,[], "[('course_id','=',"+courseId+")]");
-    }
-
-    static __api__countBySyllabus(sylId: number): SearchCountAPI {
-        return new SearchCountAPI(CourseUnit.Model, "[('syllabus_id','=',"+sylId+"),('type','!=','folder')]");
-    }
-
-    static countBySyllabus(context:APIContext, sylId:number):Observable<any> {
-        return CourseUnit.count(context, "[('syllabus_id','=',"+sylId+"),('type','!=','folder')]");
-    }
-
-    static countBySyllabusArray(context:APIContext, sylIds: number[]):Observable<any> {
-        var apiList = _.map(sylIds, sylId=> {
-            return this.__api__countBySyllabus(sylId);
-        })
-        return BaseModel.bulk_count(context, ...apiList).map(jsonArr=> {
-            return  _.flatten(jsonArr);
+    populateHtmlLecture(context: APIContext): Observable<any> {
+        if (!this.html_lecture_id)
+            return Observable.of(null);
+        return HtmlLecture.get(context, this.html_lecture_id).do(lecture => {
+            this.htmlLecture = lecture;
         });
     }
+
+    static __api__populateScormLecture(scorm_lecture_id: number): ListAPI {
+        return new ListAPI(SCORMLecture.Model, [scorm_lecture_id], []);
+    }
+
+    populateScormLecture(context: APIContext): Observable<any> {
+        if (!this.scorm_lecture_id)
+            return Observable.of(null);
+        return SCORMLecture.get(context, this.scorm_lecture_id).do(lecture => {
+            this.scormLecture = lecture;
+        });
+    }
+
+    static __api__populateVideoLecture(video_lecture_id: number): ListAPI {
+        return new ListAPI(VideoLecture.Model, [video_lecture_id], []);
+    }
+
+    populateVideoLecture(context: APIContext): Observable<any> {
+        if (!this.video_lecture_id)
+            return Observable.of(null);
+        return VideoLecture.get(context, this.video_lecture_id).do(lecture => {
+            this.videoLecture = lecture;
+        });
+    }
+
+    static __api__populateSlideLecture(slide_lecture_id: number): ListAPI {
+        return new ListAPI(SlideLecture.Model, [slide_lecture_id], []);
+    }
+
+    populateSlideLecture(context: APIContext): Observable<any> {
+        if (!this.slide_lecture_id)
+            return Observable.of(null);
+        return SlideLecture.get(context, this.slide_lecture_id).do(lecture => {
+            this.slideLecture = lecture;
+        });
+    }
+
 }

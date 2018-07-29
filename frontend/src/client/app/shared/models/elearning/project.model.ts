@@ -7,6 +7,8 @@ import { Exam } from './exam.model';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import { ListAPI } from '../../services/api/list.api';
+import { ProjectSubmission } from './project-submission.model';
 
 @Model('etraining.project')
 export class Project extends BaseModel{
@@ -24,6 +26,7 @@ export class Project extends BaseModel{
         this.file_url = undefined;
         this.start = undefined;
         this.end = undefined;
+        this.submission_ids = [];
 	}
 
     name:string;
@@ -37,10 +40,8 @@ export class Project extends BaseModel{
     start: Date;
     @FieldProperty<Date>()
     end: Date;
+    submission_ids: number[];
 
-    static __api__listByClass(classId: number): SearchReadAPI {
-        return new SearchReadAPI(Project.Model, [],"[('class_id','=',"+classId+")]");
-    }
     
     get IsAvailable():boolean {
         var now = new Date();
@@ -51,10 +52,12 @@ export class Project extends BaseModel{
         return true;
     }
 
+    static __api__listSubmissios(submission_ids: number[]): ListAPI {
+        return new ListAPI(ProjectSubmission.Model, submission_ids,[]);
+    }
 
-
-    static listByClass(context:APIContext, classId):Observable<any> {
-        return Project.search(context,[], "[('class_id','=',"+classId+")]");
+    listSubmissions( context:APIContext): Observable<any[]> {
+        return ProjectSubmission.array(context,this.submission_ids);
     }
 
 }

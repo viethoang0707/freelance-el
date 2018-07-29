@@ -35,20 +35,4 @@ export class Answer extends BaseModel{
     question_level: string;
     question_type: string;
 
-    static __api__listBySubmit(submitId: number): SearchReadAPI {
-        return new SearchReadAPI(Answer.Model, [],"[('submission_id','=',"+submitId+")]");
-    }
-
-    static __api__listByExam(examId: number): SearchReadAPI {
-        return new SearchReadAPI(Answer.Model, [],"[('exam_id','=',"+examId+")]");
-    }
-
-    static listBySubmit( context:APIContext, submitId: number): Observable<any[]> {
-        return Answer.search(context,[],"[('submission_id','=',"+submitId+")]");
-    }
-
-    static listByExam( context:APIContext, examId: number): Observable<any[]> {
-        return Answer.search(context,[],"[('exam_id','=',"+examId+")]");
-    }
-
 }

@@ -36,15 +36,9 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 
 	render(unit:CourseUnit) {
 		this.unit = unit;
-		HtmlLecture.byCourseUnit(this, unit.id).subscribe((lecture:HtmlLecture) => {
-			if (lecture)
-				this.lecture = lecture;
-			else {
-				var lecture = new HtmlLecture();
-				lecture.unit_id = this.unit.id;
-				this.lecture =  lecture;
-			}
-		});
+		this.unit.populateHtmlLecture(this).subscribe(()=> {
+			this.lecture = this.unit.htmlLecture;
+		})
 	}
 
 	saveEditor():Observable<any> {

@@ -21,12 +21,4 @@ export class QuestionOption extends BaseModel{
     content: string;
     question_id: number;
 
-    static __api__listByQuestion(questionId: number): SearchReadAPI {
-        return new SearchReadAPI(QuestionOption.Model, [],"[('question_id','=',"+questionId+")]");
-    }
-
-    static listByQuestion(context:APIContext, questionId):Observable<any> {
-        return QuestionOption.search(context,[], "[('question_id','=',"+questionId+")]");
-    }
-
 }

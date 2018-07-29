@@ -4,6 +4,8 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { ListAPI } from '../../services/api/list.api';
+import { Answer } from './answer.model';
 
 @Model('etraining.submission')
 export class Submission extends BaseModel{
@@ -18,10 +20,9 @@ export class Submission extends BaseModel{
         this.end = undefined;
         this.start = undefined;
         this.score = undefined;
-	    this.survey_id =  undefined;
+        this.answer_ids = [];
     }
     
-    survey_id: number;
     exam_id: number;
     user_id: number;
     member_id: number;
@@ -31,30 +32,15 @@ export class Submission extends BaseModel{
     @FieldProperty<Date>()
     start: Date;
     score: number;
-
+    answer_ids: number[];
     
-    static __api__listByUser(userId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('user_id','=',"+userId+")]");
+
+    static __api__listAnswers(answer_ids: number[]): ListAPI {
+        return new ListAPI(Answer.Model, answer_ids,[]);
     }
 
-    static listByUser( context:APIContext, userId: number): Observable<any> {
-        return Submission.search(context,[],"[('user_id','=',"+userId+")]");
-    }
-
-    static __api__listByExam(examId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('exam_id','=',"+examId+"),('exam_id','=',"+examId+")]");
-    }
-
-    static listByExam( context:APIContext, examId: number): Observable<any> {
-        return Submission.search(context,[],"[('exam_id','=',"+examId+")]");
-    }
-
-    static __api__byMemberAndExam(memberId: number, examId: number): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model, [],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
-    }
-
-    static byMemberAndExam( context:APIContext, memberId: number, examId: number): Observable<any> {
-        return Submission.single(context,[],"[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
+    listAnswers( context:APIContext): Observable<any[]> {
+        return Answer.array(context,this.answer_ids);
     }
 
 }
