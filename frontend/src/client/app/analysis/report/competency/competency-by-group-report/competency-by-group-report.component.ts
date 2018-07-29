@@ -61,7 +61,7 @@ export class CompetencyByGroupReportComponent extends BaseComponent implements O
 		this.clear();
 		this.competency =  competency;
 		competency.listLevels(this).subscribe(levels=> {
-			this.levels =  competency.levels;
+			this.levels =  levels;
 			this.generateReport(competency, this.levels, groups);
 		});
 		

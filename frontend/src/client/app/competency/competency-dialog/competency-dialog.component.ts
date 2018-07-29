@@ -48,7 +48,7 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
             });
             if (this.object.id)
                 object.listLevels(this).subscribe(levels=> {
-                    this.levels = object.levels;
+                    this.levels = levels;
                 });
 		});
 	}

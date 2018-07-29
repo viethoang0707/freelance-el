@@ -65,10 +65,10 @@ export class UserProfileDialog extends BaseDialog<User> {
 			BaseModel
 			.bulk_list(this,
 				Group.__api__listUserGroup(),
-				object.__api__listCourseMembers(),
-				object.__api__listCertificates(),
-				object.__api__listAchivements(),
-				object.__api__listExamMembers())
+				User.__api__listCourseMembers(object.course_member_ids),
+				User.__api__listCertificates(object.certificate_ids),
+				User.__api__listAchivements(object.achivement_ids),
+				User.__api__listExamMembers(object.exam_member_ids))
 			.subscribe((jsonArr)=> {
 				this.groups = Group.toArray(jsonArr[0]);
 				this.courseMembers =  CourseMember.toArray(jsonArr[1]);

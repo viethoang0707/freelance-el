@@ -155,7 +155,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	}
 
 	previewUnit(unit: CourseUnit) {
-		this.unitPreviewDialog.show(unit);
+		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
 	}
 
 	backupCourse() {

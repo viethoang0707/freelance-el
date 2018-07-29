@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
@@ -13,13 +13,14 @@ import { CourseUnitContainerDirective } from '../course-unit-template/unit-conta
 import { ICourseUnit } from '../course-unit-template/unit.interface';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
+import { Course } from '../../../shared/models/elearning/course.model';
 
 @Component({
 	moduleId: module.id,
 	selector: 'course-unit-preview-dialog',
 	templateUrl: 'course-unit-preview-dialog.component.html',
 })
-export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
+export class CourseUnitPreviewDialog extends BaseComponent {
 
 	private componentRef: any;
 	private treeUtils: TreeUtils;
@@ -28,6 +29,10 @@ export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
 	private nameUnit: string;
+	private display: boolean;
+	private course: Course;
+	private syl: CourseSyllabus;
+	private units: CourseUnit[];
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
@@ -37,41 +42,38 @@ export class CourseUnitPreviewDialog extends BaseDialog<CourseUnit> {
 		this.sylUtils = new SyllabusUtils();
 	}
 
-	ngOnInit() {
-		this.onShow.subscribe(object => {
-			var detailComponent = CourseUnitRegister.Instance.lookup(object.type);
-			let viewContainerRef = this.unitHost.viewContainerRef;
-			this.nameUnit = object.name;
-
-			// Get treelist
-			CourseSyllabus.get(this, object.syllabus_id).subscribe(syl => {
-				CourseUnit.listBySyllabus(this, syl.id).subscribe(units => {
-					this.tree = this.sylUtils.buildGroupTree(units);
-					this.treeList = this.sylUtils.flattenTree(this.tree);
-				});
-			});
-			this.selectedUnit = object;
-			// End get treelist
-
-			if (detailComponent) {
-				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-				viewContainerRef.clear();
-				this.componentRef = viewContainerRef.createComponent(componentFactory);
-				(<ICourseUnit>this.componentRef.instance).mode = 'preview';
-				(<ICourseUnit>this.componentRef.instance).render(object);
-			} else {
-				viewContainerRef.clear();
-				this.componentRef = null;
-			}
-
-		});
-
-		this.onHide.subscribe(() => {
-			let viewContainerRef = this.unitHost.viewContainerRef;
-			if (viewContainerRef)
-				viewContainerRef.clear();
-		});
+	show(unit: CourseUnit, course: Course, syl: CourseSyllabus, units: CourseUnit[]) {
+		this.display = true;
+		this.course = course;
+		this.syl = syl;
+		this.units = units;
+		this.selectedUnit = unit;
+		var detailComponent = CourseUnitRegister.Instance.lookup(unit.type);
+		let viewContainerRef = this.unitHost.viewContainerRef;
+		this.nameUnit = unit.name;
+		this.tree = this.sylUtils.buildGroupTree(units);
+		this.treeList = this.sylUtils.flattenTree(this.tree);
+		if (detailComponent) {
+			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+			viewContainerRef.clear();
+			this.componentRef = viewContainerRef.createComponent(componentFactory);
+			(<ICourseUnit>this.componentRef.instance).mode = 'preview';
+			(<ICourseUnit>this.componentRef.instance).render(unit);
+		} else {
+			viewContainerRef.clear();
+			this.componentRef = null;
+		}
 	}
+
+	hide() {
+		this.display = false;
+		let viewContainerRef = this.unitHost.viewContainerRef;
+		if (viewContainerRef)
+			viewContainerRef.clear();
+	}
+
+
+
 
 	nextUnitPreview() {
 		let viewContainerRef = this.unitHost.viewContainerRef;

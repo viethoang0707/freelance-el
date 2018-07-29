@@ -120,8 +120,8 @@ export class ClassManageComponent extends BaseComponent {
 				this.lmsProfileService.getClassContent(classId).subscribe(classContent => {
 					this.projects = classContent["projects"];
 					BaseModel.bulk_list(this,
-						this.courseClass.__api__listMembers(),
-						this.courseClass.__api__listCertificates(),
+						CourseClass.__api__listMembers(this.courseClass.member_ids),
+						CourseClass.__api__listCertificates(this.courseClass.certificate_ids),
 						CourseLog.__api__classActivity(classId))
 						.subscribe(jsonArr => {
 							this.courseMembers = CourseMember.toArray(jsonArr[0]);

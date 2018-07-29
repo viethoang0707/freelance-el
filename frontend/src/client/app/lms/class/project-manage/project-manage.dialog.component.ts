@@ -25,7 +25,6 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Http, Response } from '@angular/http';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { BaseModel } from '../../../shared/models/base.model';
-import { ProjectRecord } from '../../../shared/models/elearning/project-record.model';
 
 
 @Component({

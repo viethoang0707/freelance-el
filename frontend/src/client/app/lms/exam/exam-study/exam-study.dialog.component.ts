@@ -105,7 +105,7 @@ export class ExamStudyDialog extends BaseComponent {
 			this.submission.start = new Date();
 			BaseModel.bulk_list(this,
 				QuestionSheet.__api__listQuestions(this.exam.question_ids),
-				this.submission.__api__listAnswers())
+				Submission.__api__listAnswers(this.submission.answer_ids))
 				.subscribe(jsonArr => {
 					this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
 					this.answers = Answer.toArray(jsonArr[1]);

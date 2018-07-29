@@ -61,7 +61,7 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		var apiMemberList = [];
 		var apiLogList = [];
 		for (var i = 0; i < courses.length; i++) {
-			apiMemberList.push(courses[i].__api__listMembers());
+			apiMemberList.push(Course.__api__listMembers(courses[i].member_ids));
 			apiLogList.push(CourseLog.__api__courseActivity(courses[i].id));
 		};
 		BaseModel.bulk_list(this, ...apiMemberList).subscribe(jsonMemberArr => {
