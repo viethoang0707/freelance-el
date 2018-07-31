@@ -53,7 +53,8 @@ export class QuestionDialog extends BaseDialog<Question>  {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 				}
 			});
-			object.listOptions(this).subscribe(()=> {
+			object.listOptions(this).subscribe((options)=> {
+				object.options =  options;
 				var detailComponent = QuestionRegister.Instance.lookup(object.type);
 				let viewContainerRef = this.questionHost.viewContainerRef;
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
