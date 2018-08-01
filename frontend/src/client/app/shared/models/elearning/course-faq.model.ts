@@ -21,11 +21,4 @@ export class CourseFaq extends BaseModel{
     course_id: number;
     answer:string;
 
-    static __api__listByCourse(courseId: number): SearchReadAPI {
-        return new SearchReadAPI(CourseFaq.Model, [],"[('course_id','=',"+courseId+")]");
-    }
-
-    static listByCourse(context:APIContext, courseId):Observable<any> {
-        return CourseFaq.search(context,[], "[('course_id','=',"+courseId+")]");
-    }
 }

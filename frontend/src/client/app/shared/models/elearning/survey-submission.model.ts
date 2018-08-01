@@ -3,6 +3,8 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from '../decorator';
 import { APIContext } from '../context';
+import { ListAPI } from '../../services/api/list.api';
+import { SurveyAnswer } from './survey-answer.model';
 
 @Model('etraining.survey_submission')
 export class SurveySubmission extends BaseModel{
@@ -15,6 +17,7 @@ export class SurveySubmission extends BaseModel{
         this.end = undefined;
         this.start = undefined;
 	    this.survey_id =  undefined;
+        this.answer_ids = [];
     }
     
     survey_id: number;
@@ -24,38 +27,14 @@ export class SurveySubmission extends BaseModel{
     end: Date;
     @FieldProperty<Date>()
     start: Date;
+    answer_ids: number[];
 
 
-    static __api__byMemberAndSurvey(member_id: number, surveyId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveySubmission.Model, [], "[('member_id','='," + member_id + "),('survey_id','='," + surveyId + ")]");
+    __api__listAnswers(): ListAPI {
+        return new ListAPI(SurveyAnswer.Model, this.answer_ids,[]);
     }
 
-    static byMemberAndSurvey( context:APIContext, member_id: number, surveyId: number): Observable<any> {
-        return SurveySubmission.single(context,[],"[('member_id','=',"+member_id+"),('survey_id','=',"+surveyId+")]");
-    }
-    
-    static __api__listByUser(userId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveySubmission.Model, [], "[('user_id','='," + userId + ")]");
-    }
-
-    static listByUser( context:APIContext, userId: number): Observable<any> {
-        return SurveySubmission.search(context,[],"[('user_id','=',"+userId+")]");
-    }
-
-    static __api__listBySurvey(surveyId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveySubmission.Model, [], "[('survey_id','='," + surveyId + ")]");
-    }
-
-
-    static listBySurvey( context:APIContext, surveyId: number): Observable<any> {
-        return SurveySubmission.search(context,[],"[('survey_id','=',"+surveyId+")]");
-    }
-
-    static __api__listByMemer(memberId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveySubmission.Model, [], "[('member_id','='," + memberId + ")]");
-    }
-
-    static listByMember( context:APIContext, memberId: number): Observable<any> {
-        return SurveySubmission.search(context,[],"[('member_id','=',"+memberId+")]");
+    listAnswers( context:APIContext): Observable<any[]> {
+        return SurveyAnswer.array(context,this.answer_ids);
     }
 }

@@ -24,7 +24,9 @@ class Survey(models.Model):
 	review_state = fields.Selection(
 		[('initial', 'initial'), ('rejected', 'Rejected'), ('pending' ,'Pending'),  ('approved', 'Approved')], default="initial")
 	course_class_id = fields.Many2one('etraining.course_class', string='Course class')
-	
+	member_ids = fields.One2many('etraining.survey_member','survey_id', string='Survey members')
+	answer_ids = fields.One2many('etraining.survey_answer', 'survey_id', string='Answers')
+
 	@api.model
 	def create(self, vals):
 		survey = super(Survey, self).create(vals)
@@ -175,3 +177,6 @@ class SurveySubmission(models.Model):
 	answer_ids = fields.One2many('etraining.survey_answer','submission_id', string="Submission")
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
+
+	answer_ids = fields.One2many('etraining.survey_answer', 'submission_id', string='Answers')
+

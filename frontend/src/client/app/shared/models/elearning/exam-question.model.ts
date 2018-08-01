@@ -30,6 +30,7 @@ export class ExamQuestion extends BaseModel{
         this.order = undefined;
         this.question =  new Question();
         this.group_id__DESC__ = undefined;
+        this.option_ids = [];
 	}
 
     question_id: number;
@@ -45,6 +46,7 @@ export class ExamQuestion extends BaseModel{
     type: string;
     group_id: number;
     group_id__DESC__: string;
+    option_ids: number[];
 
     static __api__listBySheet(sheetId: number): SearchReadAPI {
         return new SearchReadAPI(ExamQuestion.Model, [],"[('sheet_id','=',"+sheetId+")]");
@@ -70,22 +72,6 @@ export class ExamQuestion extends BaseModel{
 
     static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
         return ExamQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
-    }
-
-    static __api__countBySheet(sheetId: number): SearchCountAPI {
-        return new SearchCountAPI(ExamQuestion.Model, "[('sheet_id','=',"+sheetId+")]");
-    }
-
-    static countBySheet( context:APIContext, sheetId: number): Observable<any> {
-        return ExamQuestion.count(context,"[('sheet_id','=',"+sheetId+")]");
-    }
-
-    static __api__countByExam(examId: number): SearchCountAPI {
-        return new SearchCountAPI(ExamQuestion.Model, "[('exam_id','=',"+examId+")]");
-    }
-
-    static countByExam( context:APIContext, examId: number): Observable<any> {
-        return ExamQuestion.count(context,"[('exam_id','=',"+examId+")]");
     }
 
     __api__populateQuestion(): ListAPI {

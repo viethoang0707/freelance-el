@@ -29,17 +29,21 @@ class Exam(models.Model):
 	review_state = fields.Selection(
 		[('initial', 'initial'), ('rejected', 'Rejected'), ('pending', 'Pending'),  ('approved', 'Approved')], default="initial")
 	course_class_id = fields.Many2one('etraining.course_class', string='Course class')
+	member_ids = fields.One2many('etraining.exam_member','exam_id', string='Exam members')
+	answer_ids = fields.One2many('etraining.answer', 'exam_id', string='Answers')
+	grade_ids = fields.One2many('etraining.exam_grade', 'exam_id', string='Grades')
+	setting_id = fields.Many2one('etraining.exam_setting', string='Exam setting')
 
 	@api.model
 	def create(self, vals):
 		exam = super(Exam, self).create(vals)
 		sheet = self.env['etraining.question_sheet'].create({'exam_id':exam.id, 'name': exam.name})
-		self.env['etraining.exam_setting'].create({'exam_id':exam.id})
+		setting = self.env['etraining.exam_setting'].create({'exam_id':exam.id})
 		supervisor = self.env['etraining.exam_member'].create({'exam_id':exam.id, 'user_id': exam.supervisor_id.id,'role':'supervisor'})
 		if "course_class_id" in vals:
 			for course_member in self.env['etraining.course_member'].search([('user_id','=',exam.supervisor_id.id),('class_id','=',vals["course_class_id"])]):
 				supervisor.write({'course_member_id':course_member.id})
-		exam.write({"sheet_id": sheet.id})
+		exam.write({"sheet_id": sheet.id, 'setting_id': setting.id})
 		return exam
 
 
@@ -243,3 +247,5 @@ class Submission(models.Model):
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
 	picture = fields.Binary(string='Picture')
+
+	answer_ids = fields.One2many('etraining.answer', 'submission_id', string='Answers')

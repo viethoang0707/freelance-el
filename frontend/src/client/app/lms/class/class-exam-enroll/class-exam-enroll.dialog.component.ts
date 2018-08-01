@@ -22,6 +22,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 
 	private display: boolean;
 	private exam: Exam;
+	private courseClass: CourseClass;
 	private selectedMember: ExamMember;
 	private examMembers: ExamMember[];
 	private courseMembers: CourseMember[];
@@ -32,23 +33,23 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.examMembers = [];
 		this.courseMembers = [];
 		this.exam =  new Exam();
+		this.courseClass =  new CourseClass();
 	}
 
-	show(exam: Exam) {
+	show(exam: Exam, courseClass: CourseClass) {
 		this.display = true;
 		this.examMembers = [];
 		this.courseMembers = [];
 		this.exam = exam;
-		BaseModel
-			.bulk_search(this, CourseMember.__api__listByClass(exam.course_class_id), ExamMember.__api__listByExam(exam.id))
-			.subscribe(jsonArr => {
-				var courseMembers = CourseMember.toArray(jsonArr[0]);
-				this.courseMembers = _.filter(courseMembers, (member:CourseMember)=> {
-					return member.role =='student';
-				});
-				var examMembers = ExamMember.toArray(jsonArr[1]);
-				this.examMembers = _.filter(examMembers, (member:ExamMember)=> {
+		this.courseClass =  courseClass;
+		this.exam.listMembers(this).subscribe((members)=> {
+			this.examMembers = _.filter(members, (member:ExamMember)=> {
 					return member.role =='candidate';
+				});
+		})
+			this.courseClass.listMembers(this).subscribe(members=> {
+				this.courseMembers = _.filter(members, (member:CourseMember)=> {
+					return member.role =='student';
 				});
 			});
 	}
@@ -60,7 +61,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	enrollAll() {
 		var userIds = _.pluck(this.courseMembers,'user_id');
 		this.exam.enroll(this, userIds).subscribe(() => {
-			ExamMember.listByExam(this, this.exam.id).subscribe(members=> {
+			this.exam.listMembers(this).subscribe(members=> {
 					this.examMembers = members;
 				})
 			this.info('Register all successfully');

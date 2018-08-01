@@ -42,7 +42,7 @@ export class SelectCompetencyDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			Competency.listByGroup(this,this.selectedNode.data.id).subscribe(competencies => {
+			this.selectedNode.data.listCompetencies(this).subscribe(competencies => {
 				this.competencies = competencies;
 			});
 		}

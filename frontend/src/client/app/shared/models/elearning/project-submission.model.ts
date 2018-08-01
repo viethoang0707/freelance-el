@@ -39,36 +39,4 @@ export class ProjectSubmission extends BaseModel{
     @FieldProperty<Date>()
     start: Date;
     score: number;
-
-    static __api__byMemberAndProject(member_id: number, projectId: number): SearchReadAPI {
-        return new SearchReadAPI(ProjectSubmission.Model, [],"[('member_id','=',"+member_id+"),('project_id','=',"+projectId+")]");
-    }
-
-    static byMemberAndProject( context:APIContext, member_id: number, projectId: number): Observable<any> {
-        return ProjectSubmission.single(context,[],"[('member_id','=',"+member_id+"),('project_id','=',"+projectId+")]");
-    }
-
-    static __api__listByUser(userId: number): SearchReadAPI {
-        return new SearchReadAPI(ProjectSubmission.Model, [],"[('user_id','=',"+userId+")]");
-    }
-
-    static listByUser( context:APIContext, userId: number): Observable<any> {
-        return ProjectSubmission.search(context,[],"[('user_id','=',"+userId+")]");
-    }
-
-    static __api__listByProject(projectId: number): SearchReadAPI {
-        return new SearchReadAPI(ProjectSubmission.Model, [],"[('project_id','=',"+projectId+")]");
-    }
-
-    static listByProject( context:APIContext, projectId: number): Observable<any> {
-        return ProjectSubmission.search(context,[],"[('project_id','=',"+projectId+")]");
-    }
-
-    static __api__listByMember(memberId: number): SearchReadAPI {
-        return new SearchReadAPI(ProjectSubmission.Model, [],"[('member_id','=',"+memberId+")]");
-    }
-
-    static listByMember( context:APIContext, memberId: number): Observable<any> {
-        return ProjectSubmission.search(context,[],"[('member_id','=',"+memberId+")]");
-    }
 }

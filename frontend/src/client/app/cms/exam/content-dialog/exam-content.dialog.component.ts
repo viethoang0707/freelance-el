@@ -89,6 +89,7 @@ export class ExamContentDialog extends BaseComponent {
 			});
 			ExamQuestion.createArray(this, newExamQuestions).subscribe(() => {
 				ExamQuestion.updateArray(this, existExamQuestions).subscribe(() => {
+					this.exam.question_count =  this.sheet.question_count = this.examQuestions.length;
 					this.hide();
 					this.success(this.translateService.instant('Content saved successfully.'));
 				});

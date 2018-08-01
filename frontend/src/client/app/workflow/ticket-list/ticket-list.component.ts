@@ -8,6 +8,7 @@ import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { TicketDialog } from '../ticket-dialog/ticket-dialog.component';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../shared/models/base.model';
+import { User } from '../../shared/models/elearning/user.model';
 
 @Component({
     moduleId: module.id,
@@ -31,9 +32,9 @@ export class TicketListComponent extends BaseComponent {
 
     ngOnInit() {
         BaseModel
-        .bulk_search(this,
-            Ticket.__api__listBySubmitUser(this.ContextUser.id),
-            Ticket.__api__listByApproveUser(this.ContextUser.id))
+        .bulk_list(this,
+            User.__api__listSubmitTickets(this.ContextUser.submit_ticket_ids),
+            User.__api__listReviewTickets(this.ContextUser.review_ticket_ids))
         .subscribe(jsonArr=> {
             this.submitTickets =  Ticket.toArray(jsonArr[0]);
             this.approvalTickets =  Ticket.toArray(jsonArr[1]);

@@ -7,6 +7,23 @@ import { Permission } from './permission.model';
 import { Cache } from '../../helpers/cache.utils';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { SearchCountAPI } from '../../services/api/search-count.api';
+import { ListAPI } from '../../services/api/list.api';
+import { Achivement } from './achievement.model';
+import { CourseMember } from './course-member.model';
+import { ExamMember } from './exam-member.model';
+import { Certificate } from './course-certificate.model';
+import { SurveyMember } from './survey-member.model';
+import { ConferenceMember } from './conference-member.model';
+import { ExamRecord } from './exam-record.model';
+import { Submission } from './submission.model';
+import { ProjectSubmission } from './project-submission.model';
+import { Course } from './course.model';
+import { CourseClass } from './course-class.model';
+import { Exam } from './exam.model';
+import { Survey } from './survey.model';
+import { Ticket } from './ticket.model';
+import {SERVER_DATETIME_FORMAT} from '../constants';
+import * as moment from 'moment';
 import * as _ from 'underscore';
 
 @Model('res.users')
@@ -36,6 +53,21 @@ export class User extends BaseModel {
         this.permission_id__DESC__ = undefined;
         this.supervisor_id = undefined;
         this.supervisor_id__DESC__ = undefined;
+        this.achivement_ids = [];
+        this.course_member_ids = [];
+        this.exam_member_ids = [];
+        this.certificate_ids = [];
+        this.survey_member_ids = [];
+        this.conference_member_ids = [];
+        this.exam_record_ids = [];
+        this.submission_ids = [];
+        this.project_submission_ids = [];
+        this.manage_course_ids = [];
+        this.manage_class_ids = [];
+        this.manage_exam_ids = [];
+        this.manage_survey_ids = [];
+        this.submit_ticket_ids = [];
+        this.review_ticket_ids = [];
     }
 
     image: string;
@@ -60,6 +92,22 @@ export class User extends BaseModel {
     supervisor_id__DESC__: string;
     social_id: string;
 
+    achivement_ids: number[];
+    course_member_ids: number[];
+    exam_member_ids: number[];
+    survey_member_ids: number[];
+    conference_member_ids: number[];
+    certificate_ids: number[];
+    exam_record_ids: number[];
+    submission_ids: number[];
+    project_submission_ids: number[];
+    manage_course_ids: number[];
+    manage_class_ids: number[];
+    manage_exam_ids: number[];
+    manage_survey_ids: number[];
+    submit_ticket_ids: number[];
+    review_ticket_ids: number[];
+
     get IsAdmin() {
         return this.is_admin || this.login == 'admin';
     }
@@ -67,7 +115,6 @@ export class User extends BaseModel {
     get IsSuperAdmin() {
         return this.login == 'admin' || (this.is_admin && !this.supervisor_id);
     }
-
 
     getPermission(context: APIContext): Observable<any> {
         if (this.permission_id)
@@ -187,6 +234,167 @@ export class User extends BaseModel {
                 return records.length;
             });
         return User.count(context, "[('permission_id','='," + permissionId + ")]");
+    }
+
+    static __api__listAchivements(achivement_ids: number[]): ListAPI {
+        return new ListAPI(Achivement.Model, achivement_ids,[]);
+    }
+
+    listAchivements( context:APIContext): Observable<any[]> {
+        return Achivement.array(context,this.achivement_ids);
+    }
+
+    static __api__listCourseMembers(course_member_ids: number[]): ListAPI {
+        return new ListAPI(CourseMember.Model, course_member_ids,[]);
+    }
+
+    listCourseMembers( context:APIContext): Observable<any[]> {
+        return CourseMember.array(context,this.course_member_ids);
+    }
+
+    static __api__listCertificates(certificate_ids: number[]): ListAPI {
+        return new ListAPI(Certificate.Model, certificate_ids,[]);
+    }
+
+    listCertificates( context:APIContext): Observable<any[]> {
+        return Certificate.array(context,this.certificate_ids);
+    }
+
+    static __api__listExamMembers(exam_member_ids: number[]): ListAPI {
+        return new ListAPI(ExamMember.Model, exam_member_ids,[]);
+    }
+
+    listExamMembers( context:APIContext): Observable<any[]> {
+        return ExamMember.array(context,this.exam_member_ids);
+    }
+
+    static __api__listSurveyMembers(survey_member_ids: number[]): ListAPI {
+        return new ListAPI(SurveyMember.Model, survey_member_ids,[]);
+    }
+
+    listSurveyMembers( context:APIContext): Observable<any[]> {
+        return SurveyMember.array(context,this.survey_member_ids);
+    }
+
+    static __api__listConferenceMembers(conference_member_ids: number[]): ListAPI {
+        return new ListAPI(ConferenceMember.Model, conference_member_ids,[]);
+    }
+
+    listConferenceMembers( context:APIContext): Observable<any[]> {
+        return ConferenceMember.array(context,this.conference_member_ids);
+    }
+
+    static __api__listExamRecords(exam_record_ids: number[]): ListAPI {
+        return new ListAPI(ExamRecord.Model, exam_record_ids,[]);
+    }
+
+    listExamRecords( context:APIContext): Observable<any[]> {
+        return ExamRecord.array(context,this.exam_record_ids);
+    }
+
+    static __api__listSubmissions(submission_ids: number[]): ListAPI {
+        return new ListAPI(Submission.Model, submission_ids,[]);
+    }
+
+    listSubmissions( context:APIContext): Observable<any[]> {
+        return Submission.array(context,this.submission_ids);
+    }
+
+    static __api__listProjectSubmissions(project_submission_ids: number[]): ListAPI {
+        return new ListAPI(ProjectSubmission.Model, project_submission_ids,[]);
+    }
+
+    listProjectSubmissions( context:APIContext): Observable<any[]> {
+        return ProjectSubmission.array(context,this.project_submission_ids);
+    }
+
+    static __api__listManageCourses(manage_course_ids: number[]): ListAPI {
+        return new ListAPI(Course.Model, manage_course_ids,[]);
+    }
+
+    listManageCourses( context:APIContext): Observable<any[]> {
+        return Course.array(context,this.manage_course_ids);
+    }
+
+    static __api__listManageCourseClasses(manage_class_ids: number[]): ListAPI {
+        return new ListAPI(CourseClass.Model, manage_class_ids,[]);
+    }
+
+    listManageCourseClasses( context:APIContext): Observable<any[]> {
+        return CourseClass.array(context,this.manage_class_ids);
+    }
+
+    static __api__listManageExams(manage_exam_ids: number[]): ListAPI {
+        return new ListAPI(Exam.Model, manage_exam_ids,[]);
+    }
+
+    listManageExams( context:APIContext): Observable<any[]> {
+        return Exam.array(context,this.manage_exam_ids);
+    }
+
+    static __api__searchManageExamsByDate(userId, start:Date, end:Date): ListAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Exam.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+userId+")]");
+    }
+
+    searchManageExamsByDate( context:APIContext,start:Date, end:Date): Observable<any[]> {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return Exam.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+this.id+")]");
+    }
+
+    static __api__searchManageClassesByDate(userId: number,start:Date, end:Date): ListAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(CourseClass.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+userId+")]");
+    }
+
+    searchManageClassesByDate( context:APIContext,start:Date, end:Date): Observable<any[]> {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return CourseClass.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+this.id+")]");
+    }
+
+
+    static __api__listManageSurveys(manage_survey_ids: number[]): ListAPI {
+        return new ListAPI(Survey.Model, manage_survey_ids,[]);
+    }
+
+    listManageSurveys( context:APIContext): Observable<any[]> {
+        return Survey.array(context,this.manage_survey_ids);
+    }
+
+    static __api__listReviewTickets(review_ticket_ids: number[]): ListAPI {
+        return new ListAPI(Ticket.Model, review_ticket_ids,[]);
+    }
+
+    listReviewTickets( context:APIContext): Observable<any[]> {
+        return Ticket.array(context,this.review_ticket_ids);
+    }
+
+    static __api__listSubmitTickets(submit_ticket_ids: number[]): ListAPI {
+        return new ListAPI(Ticket.Model, submit_ticket_ids,[]);
+    }
+
+    listSubmitTickets( context:APIContext): Observable<any[]> {
+        return Ticket.array(context,this.submit_ticket_ids);
+    }
+
+    static __api__searchPendingReviewTickets(userId): ListAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('approve_user_id','=',"+userId+"),('status','=','pending')]");
+    }
+
+    searchPendingReviewTickets( context:APIContext): Observable<any[]> {
+        return Ticket.search(context,[], "[('approve_user_id','=',"+this.id+"),('status','=','pending')]");
+    }
+
+    static __api__searchPendingSubmitTickets(userId): ListAPI {
+        return new SearchReadAPI(Ticket.Model, [],"[('submit_user_id','=',"+userId+"),('status','=','pending')]");
+    }
+
+    searchPendingSubmitTickets( context:APIContext): Observable<any[]> {
+        return Ticket.search(context,[], "[('submit_user_id','=',"+this.id+"),('status','=','pending')]");
     }
 
 }

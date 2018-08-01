@@ -92,14 +92,6 @@ export class ProjectConfig extends SeedConfig {
                 path: 'node_modules/detectrtc/DetectRTC.min.js'
             },
             {
-                name: 'screenfull',
-                path: 'node_modules/screenfull/dist/screenfull.js'
-            },
-            {
-                name: 'socket.io-client',
-                path: 'node_modules/socket.io-client/dist/socket.io.js'
-            },
-            {
                 name: 'moment',
                 path: 'node_modules/moment/min/moment.min.js'
             },

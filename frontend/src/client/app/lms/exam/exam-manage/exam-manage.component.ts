@@ -98,11 +98,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     loadScores() {
-        BaseModel.bulk_search(this,
-            ExamMember.__api__listCandidateByExam(this.exam.id))
-            .subscribe(jsonArr => {
-                this.members = ExamMember.toArray(jsonArr[0]);
-            });
+        this.exam.listCandidates(this).subscribe(members=> {
+            this.members = members;
+        })
     }
 
     showExamReport() {

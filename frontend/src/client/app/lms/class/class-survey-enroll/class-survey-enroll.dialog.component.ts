@@ -23,6 +23,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 
 	private display: boolean;
 	private survey: Survey;
+	private courseClass: CourseClass;
 	private selectedMember: SurveyMember;
 	private surveyMembers: SurveyMember[];
 	private courseMembers: CourseMember[];
@@ -33,23 +34,24 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.surveyMembers = [];
 		this.courseMembers = [];
 		this.survey = new Survey();
+		this.courseClass =  new CourseClass();
 	}
 
-	show(survey: Survey) {
+	show(survey: Survey, courseClass: CourseClass) {
 		this.display = true;
 		this.surveyMembers = [];
 		this.courseMembers = [];
 		this.survey = survey;
-		BaseModel
-			.bulk_search(this, CourseMember.__api__listByClass(survey.course_class_id), SurveyMember.__api__listBySurvey(survey.id))
-			.subscribe(jsonArr => {
-				var courseMembers = CourseMember.toArray(jsonArr[0]);
-				this.courseMembers = _.filter(courseMembers, (member: CourseMember) => {
-					return member.role == 'student';
-				});
-				var surveyMembers = SurveyMember.toArray(jsonArr[1]);
-				this.surveyMembers = _.filter(surveyMembers, (member: SurveyMember) => {
+		this.courseClass = courseClass;
+
+		this.survey.listMembers(this).subscribe((members)=> {
+			this.surveyMembers = _.filter(members, (member: SurveyMember) => {
 					return member.role == 'candidate';
+				});
+		})
+			this.courseClass.listMembers(this).subscribe(members=> {
+				this.courseMembers = _.filter(members, (member:CourseMember)=> {
+					return member.role =='student';
 				});
 			});
 	}
@@ -62,7 +64,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.survey.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
-			SurveyMember.listBySurvey(this, this.survey.id).subscribe(members=> {
+			this.survey.listMembers(this).subscribe(members=> {
 				this.surveyMembers = members;
 			});
 		});

@@ -35,7 +35,9 @@ class Course(models.Model):
 	syllabus_status = fields.Selection( related='syllabus_id.status', string='Syllabus status', readonly=True)
 	complete_unit_by_order = fields.Boolean( related='syllabus_id.complete_unit_by_order', string='Complete unit by order')
 	unit_count = fields.Integer(related='syllabus_id.unit_count', string='Course unit count', readonly=True)
-	
+	member_ids = fields.One2many('etraining.course_member','course_id', string='Course members')
+	class_ids = fields.One2many('etraining.course_class','course_id', string='Course classes')
+
 	@api.model
 	def create(self, vals):
 		course = super(Course, self).create(vals)
@@ -156,7 +158,28 @@ class CourseUnit(models.Model):
 		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="draft")
 	type = fields.Selection(
 		[('folder', 'Folder'), ('html', 'HTML'), ('slide', 'Slide'), ('scorm', 'SCORM'),('exercise', 'Exercise'), ('video', 'Video')])
+	exercise_question_ids = fields.One2many('etraining.exercise_question','unit_id', string="Exercise questions", readonly=True)
+	slide_lecture_id = fields.Many2one('etraining.slide_lecture', string='Slide lecture')
+	html_lecture_id = fields.Many2one('etraining.html_lecture', string='HTML lecture')
+	video_lecture_id = fields.Many2one('etraining.video_lecture', string='Video lecture')
+	scorm_lecture_id = fields.Many2one('etraining.scorm_lecture', string='SCORM lecture')
 
+	@api.model
+	def create(self, vals):
+		unit = super(CourseUnit, self).create(vals)
+		if unit.type == 'html':
+			html_lecture = self.env['etraining.html_lecture'].create({'unit_id': unit.id})
+			unit.write({'html_lecture_id': html_lecture.id})
+		if unit.type == 'slide':
+			slide_lecture = self.env['etraining.slide_lecture'].create({'unit_id': unit.id})
+			unit.write({'slide_lecture_id': slide_lecture.id})
+		if unit.type == 'video':
+			video_lecture = self.env['etraining.video_lecture'].create({'unit_id': unit.id})
+			unit.write({'video_lecture_id': video_lecture.id})
+		if unit.type == 'scorm':
+			scorm_lecture = self.env['etraining.scorm_lecture'].create({'unit_id': unit.id})
+			unit.write({'scorm_lecture_id': scorm_lecture.id})
+		return unit
 
 class SlideLecture(models.Model):
 	_name = 'etraining.slide_lecture'
@@ -212,6 +235,7 @@ class Project(models.Model):
 	course_id = fields.Many2one('etraining.course', string='Course')
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
+	submission_ids = fields.One2many('etraining.project_submission','project_id', string='Project Submission members')
 	status = fields.Selection(
 		[('draft', 'Draft'), ('open', 'Open'), ('closed', 'Closed')], default="draft")
 
@@ -243,6 +267,10 @@ class CourseClass(models.Model):
 	name = fields.Char(string='Name', required=True)
 	status = fields.Selection(
 		[('open', 'Open'), ('closed', 'Closed'), ('initial', 'Initial')], default="initial")
+	certificate_ids = fields.One2many('etraining.course_certificate', 'class_id', string='Certiicates')
+	project_ids = fields.One2many('etraining.project','class_id', string='Course members')
+	exam_ids = fields.One2many('etraining.exam','course_class_id', string='Course exams')
+	survey_ids = fields.One2many('etraining.survey','course_class_id', string='Course surveys')
 
 	@api.model
 	def create(self, vals):
@@ -353,6 +381,11 @@ class CourseMember(models.Model):
 	enroll_status = fields.Selection(
 		[('in-study', 'In-study'), ('completed', 'Completed'), ('registered', 'Registered')], default="registered")
 	date_register = fields.Datetime('Register date')
+	exam_record_ids = fields.One2many('etraining.exam_record','course_member_id', string='Exam records')
+	project_submission_ids = fields.One2many('etraining.project_submission','member_id', string='Project Submission')
+	exam_member_ids = fields.One2many('etraining.exam_member','course_member_id', string='Exam members')
+	survey_member_ids = fields.One2many('etraining.survey_member','course_member_id', string='Survey members')
+
 
 	@api.multi
 	def unlink(self):

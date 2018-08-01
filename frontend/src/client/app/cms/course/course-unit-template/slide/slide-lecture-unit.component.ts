@@ -38,17 +38,8 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		
-		SlideLecture.byCourseUnit(this, unit.id).subscribe((lecture: SlideLecture) => {
-			if (lecture)
-				this.lecture = lecture;
-			else {
-				var lecture = new SlideLecture();
-				lecture.unit_id = this.unit.id;
-				this.lecture = lecture;
-				this.viewCompleted = true;
-			}
-			
+		this.unit.populateSlideLecture(this).subscribe(()=> {
+			this.lecture = this.unit.slideLecture;
 		});
 	}
 

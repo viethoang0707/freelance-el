@@ -84,12 +84,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	buildCourseTree() {
-		if (this.syl) {
-			CourseUnit.listBySyllabus(this, this.syl.id).subscribe(units => {
+			this.course.listUnits(this).subscribe(units => {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
 			});
-		}
 	}
 
 	showSetting() {
@@ -172,7 +170,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	previewUnit(unit: CourseUnit) {
-		this.unitPreviewDialog.show(unit);
+		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
 	}
 
 }

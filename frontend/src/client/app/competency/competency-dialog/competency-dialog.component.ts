@@ -38,7 +38,7 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 	}
 
 	ngOnInit() {
-		this.onShow.subscribe(object => {
+		this.onShow.subscribe((object:Competency) => {
             this.levels = [];
             Group.listCompetencyGroup(this).subscribe(groups=> {
                 this.tree = this.treeUtils.buildGroupTree(groups);
@@ -47,7 +47,7 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
                 }
             });
             if (this.object.id)
-                CompetencyLevel.listByCompetency(this, this.object.id).subscribe(levels=> {
+                object.listLevels(this).subscribe(levels=> {
                     this.levels = levels;
                 });
 		});

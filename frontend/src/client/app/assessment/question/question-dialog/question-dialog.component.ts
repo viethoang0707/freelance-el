@@ -46,14 +46,15 @@ export class QuestionDialog extends BaseDialog<Question>  {
 	}
 
 	ngOnInit() {
-		this.onShow.subscribe(object => {
+		this.onShow.subscribe((object:Question) => {
 			Group.listQuestionGroup(this).subscribe(groups => {
 				this.tree = this.treeUtils.buildGroupTree(groups);
 				if (object.group_id) {
 					this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
 				}
 			});
-			object.populateOption(this).subscribe(()=> {
+			object.listOptions(this).subscribe((options)=> {
+				object.options =  options;
 				var detailComponent = QuestionRegister.Instance.lookup(object.type);
 				let viewContainerRef = this.questionHost.viewContainerRef;
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);

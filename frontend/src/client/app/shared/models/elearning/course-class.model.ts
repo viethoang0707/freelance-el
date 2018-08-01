@@ -9,6 +9,12 @@ import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
 import { ExecuteAPI } from '../../services/api/execute.api';
 import * as _ from 'underscore';
+import { ListAPI } from '../../services/api/list.api';
+import { Certificate } from './course-certificate.model';
+import { CourseMember } from './course-member.model';
+import { Project } from './project.model';
+import { Exam } from './exam.model';
+import { Survey } from './survey.model';
 
 @Model('etraining.course_class')
 export class CourseClass extends BaseModel{
@@ -26,6 +32,12 @@ export class CourseClass extends BaseModel{
         this.conference_id =  undefined;
         this.end = undefined;
         this.status = undefined;
+        this.certificate_ids = [];
+        this.member_ids = [];
+        this.project_ids = [];
+        this.exam_ids = [];
+        this.survey_ids = [];
+
 	}
 
     name:string;
@@ -35,7 +47,12 @@ export class CourseClass extends BaseModel{
     conference_id: number;
     supervisor_id: number;
     status: string;
-
+    certificate_ids: number[];
+    member_ids: number[];
+    project_ids: number[];
+    exam_ids: number[];
+    survey_ids: number[];
+    
     @FieldProperty<Date>()
     start: Date;
     @FieldProperty<Date>()
@@ -52,82 +69,84 @@ export class CourseClass extends BaseModel{
         return true;
     }
 
-    static __api__listByCourse(courseId: number): SearchReadAPI {
-        return new SearchReadAPI(CourseClass.Model, [],"[('course_id','=',"+courseId+")]");
-    }
-
-    static listByCourse(context:APIContext, courseId:number):Observable<any> {
-        return CourseClass.search(context,[], "[('course_id','=',"+courseId+")]");
-    }
-
-    __api__enroll(classId: number, userIds: number[]): ExecuteAPI {
+    static __api__enroll(classId: number, userIds: number[]): ExecuteAPI {
         return new ExecuteAPI(CourseClass.Model, 'enroll',{classId:classId,userIds:userIds}, null);
     }
 
     enroll(context:APIContext, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll(this.id, userIds), 
+        return context.apiService.execute(CourseClass.__api__enroll(this.id, userIds), 
             context.authService.LoginToken);
 
     }
 
-    __api__enroll_staff(classId: number, userIds: number[]): ExecuteAPI {
+    static __api__enroll_staff(classId: number, userIds: number[]): ExecuteAPI {
         return new ExecuteAPI(CourseClass.Model, 'enroll_staff',{classId:classId,userIds:userIds}, null);
     }
 
     enrollStaff(context:APIContext, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll_staff(this.id, userIds), 
+        return context.apiService.execute(CourseClass.__api__enroll_staff(this.id, userIds), 
             context.authService.LoginToken);
 
     }
 
-    static __api__listBySupervisor(supervisorId: number): SearchReadAPI {
-        return new SearchReadAPI(CourseClass.Model, [],"[('supervisor_id','=',"+supervisorId+")]");
-    }
-
-    static listBySupervisor(context:APIContext, supervisorId: number):Observable<any> {
-        if (Cache.hit(CourseClass.Model))
-            return Observable.of(Cache.load(CourseClass.Model)).map(classList=> {
-                return _.filter(classList, (clazz:CourseClass)=> {
-                    return clazz.supervisor_id == supervisorId;
-                });
-            });
-        return CourseClass.search(context,[],"[('supervisor_id','=',"+supervisorId+")]");
-    }
-
-    static __api__listBySupervisorAndDate(supervisorId: number, start:Date, end:Date): SearchReadAPI {
-        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
-        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-        return new SearchReadAPI(CourseClass.Model, [],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
-    }
-
-    static listBySupervisorAndDate(context:APIContext, supervisorId: number, start:Date, end:Date):Observable<any> {
-        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
-        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-        if (Cache.hit(CourseClass.Model))
-            return Observable.of(Cache.load(CourseClass.Model)).map(classList=> {
-                return _.filter(classList, (clazz:CourseClass)=> {
-                    return clazz.start.getTime() >=  start.getTime() && clazz.start.getTime() <= end.getTime() && clazz.supervisor_id == supervisorId;
-                });
-            });
-        return CourseClass.search(context,[],"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+supervisorId+")]");
-    }
-
-    __api__open(classId: number): ExecuteAPI {
+    static __api__open(classId: number): ExecuteAPI {
         return new ExecuteAPI(CourseClass.Model, 'open',{classId:classId}, null);
     }
 
     open(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__open(this.id), 
+        return context.apiService.execute(CourseClass.__api__open(this.id), 
             context.authService.LoginToken);
     }
 
-    __api__close(classId: number): ExecuteAPI {
+    static __api__close(classId: number): ExecuteAPI {
         return new ExecuteAPI(CourseClass.Model, 'close',{classId:classId}, null);
     }
 
     close(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__close(this.id), 
+        return context.apiService.execute(CourseClass.__api__close(this.id), 
             context.authService.LoginToken);
     }
+
+    static __api__listCertificates(certificate_ids: number[]): ListAPI {
+        return new ListAPI(Certificate.Model, certificate_ids,[]);
+    }
+
+    listCertificates( context:APIContext): Observable<any[]> {
+        return Certificate.array(context,this.certificate_ids);
+    }
+
+    static __api__listMembers(member_ids: number[]): ListAPI {
+        return new ListAPI(CourseMember.Model, member_ids,[]);
+    }
+
+    listMembers( context:APIContext): Observable<any[]> {
+        return CourseMember.array(context,this.member_ids);
+    }
+
+    static __api__listProjects(project_ids: number[]): ListAPI {
+        return new ListAPI(Project.Model, project_ids,[]);
+    }
+
+    listProjects( context:APIContext): Observable<any[]> {
+        return Project.array(context,this.project_ids);
+    }
+
+    static __api__listExams(exam_ids: number[]): ListAPI {
+        return new ListAPI(Exam.Model, exam_ids,[]);
+    }
+
+    listExams( context:APIContext): Observable<any[]> {
+        return Exam.array(context,this.exam_ids);
+    }
+
+
+    static __api__listSurveys(survey_ids: number[]): ListAPI {
+        return new ListAPI(Survey.Model, survey_ids,[]);
+    }
+
+    listSurveys( context:APIContext): Observable<any[]> {
+        return Survey.array(context,this.survey_ids);
+    }
+
 
 }

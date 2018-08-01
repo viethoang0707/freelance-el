@@ -35,13 +35,13 @@ export class SurveyDialog extends BaseDialog<Survey> {
     }
 
     ngOnInit() {
-        this.onShow.subscribe(object => {
+        this.onShow.subscribe((object:Survey) => {
             if (object.IsNew)  {
                 this.editor =  new SurveyMember();
                 object.supervisor_id = this.ContextUser.id;
                 object.review_state = this.ContextUser.IsSuperAdmin ?'approved':'initial';
             } else {
-                SurveyMember.surveyEditor(this, object.id).subscribe(member=> {
+                object.surveyEditor(this).subscribe(member=> {
                     if (!member) {
                         this.editor =  new SurveyMember();
                         this.editor.role = 'editor';

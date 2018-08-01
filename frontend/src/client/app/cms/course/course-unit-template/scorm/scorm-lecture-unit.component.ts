@@ -38,16 +38,8 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		SCORMLecture.byCourseUnit(this, unit.id).subscribe((lecture: SCORMLecture) => {
-			if (lecture)
-				this.lecture = lecture;
-			else {
-				var lecture = new SCORMLecture();
-				lecture.unit_id = this.unit.id;
-				this.lecture = lecture;
-				this.viewCompleted = true;
-			}
-			
+		this.unit.populateScormLecture(this).subscribe(()=> {
+			this.lecture = this.unit.scormLecture;
 		});
 	}
 

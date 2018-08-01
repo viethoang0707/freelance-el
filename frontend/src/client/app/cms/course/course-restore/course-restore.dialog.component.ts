@@ -77,9 +77,9 @@ export class CourseRestoreDialog extends BaseComponent {
 	}
 
 	buildCourseTree() {
-		CourseSyllabus.get(this, this.course.syllabus_id).subscribe(syl=> {
-			this.syl = syl;
-			CourseUnit.listByCourse(this, this.syl.id).subscribe(units => {
+		this.course.populateSyllabus(this).subscribe(()=> {
+			this.syl = this.course.syl;
+			this.course.listUnits(this).subscribe(units => {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.output = '"course-syllabus"', this.sylUtils.buildGroupTree(units);

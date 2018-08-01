@@ -53,13 +53,13 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
     }
 
     startPreview() {
-        ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
+        this.sheet.listQuestions(this).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
             ExamQuestion.populateQuestions(this, examQuestions).subscribe(() => {
                 var questions = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
                     return examQuestion.question;
                 });
-                Question.populateOptions(this, questions).subscribe(()=> {
+                Question.listOptionsForArray(this, questions).subscribe(()=> {
                     var componentHostArr = this.questionsComponents.toArray();
                     for (var i = 0; i < examQuestions.length; i++) {
                         var examQuestion = examQuestions[i];

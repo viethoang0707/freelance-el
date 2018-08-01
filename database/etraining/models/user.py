@@ -32,6 +32,22 @@ class User(models.Model):
 	banned = fields.Boolean(default=False, string="Is banned")
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
 
+	achivement_ids = fields.One2many('etraining.achivement', 'user_id', string='Achivements')
+	course_member_ids = fields.One2many('etraining.course_member', 'user_id', string='Course members')
+	exam_member_ids = fields.One2many('etraining.exam_member', 'user_id', string='Exam members')
+	survey_member_ids = fields.One2many('etraining.survey_member', 'user_id', string='Survey members')
+	conference_member_ids = fields.One2many('etraining.conference_member', 'user_id', string='Conference members')
+	certificate_ids = fields.One2many('etraining.course_certificate', 'user_id', string='Certiicates')
+	exam_record_ids = fields.One2many('etraining.exam_record', 'user_id', string='Exam record')
+	submission_ids = fields.One2many('etraining.submission', 'user_id', string='Exam submission')
+	project_submission_ids = fields.One2many('etraining.project_submission', 'user_id', string='Project submission')
+	manage_course_ids = fields.One2many('etraining.course', 'supervisor_id', string='Supervised courses ')
+	manage_class_ids = fields.One2many('etraining.course_class', 'supervisor_id', string='Supervised classes ')
+	manage_exam_ids = fields.One2many('etraining.exam', 'supervisor_id', string='Supervised exams ')
+	manage_survey_ids = fields.One2many('etraining.survey', 'supervisor_id', string='Supervised surveys ')
+	review_tickets_ids = fields.One2many('etraining.ticket', 'approve_user_id', string='Pending review tickets')
+	submit_ticket_ids = fields.One2many('etraining.ticket', 'submit_user_id', string='Pending submit tickets')
+
 	@api.model
 	def create(self, vals):
 		vals["login"] = vals["login"].lower()

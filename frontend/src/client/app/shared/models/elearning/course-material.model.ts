@@ -25,11 +25,4 @@ export class CourseMaterial extends BaseModel{
     type:string;
     url:string;
 
-    static __api__listByCourse(courseId: number): SearchReadAPI {
-        return new SearchReadAPI(CourseMaterial.Model, [],"[('course_id','=',"+courseId+")]");
-    }
-
-    static listByCourse(context:APIContext, courseId):Observable<any> {
-        return CourseMaterial.search(context,[], "[('course_id','=',"+courseId+")]");
-    }
 }

@@ -47,6 +47,7 @@ export class GradebookDialog extends BaseComponent {
     private course: Course;
     private exams: Exam[];
     private examRecords: ExamRecord[];
+    private examMembers: ExamMember[];
     private projects: Project[];
     private projectSubmits: ProjectSubmission[];
     private certificate: Certificate;
@@ -122,23 +123,25 @@ export class GradebookDialog extends BaseComponent {
         this.lmsProfileService.init(this).subscribe(() => {
             this.course = this.lmsProfileService.courseById(member.course_id);
             this.exams = this.lmsProfileService.examsByClass(this.member.class_id);
-            this.lmsProfileService.getClassContent(this.member.class_id).subscribe(content=> {
+            this.lmsProfileService.getClassContent(this.member.class_id).subscribe(content => {
                 this.projects = content["projects"];
-                BaseModel.bulk_search(this,
-                Certificate.__api__listByMember(this.member.id),
-                ProjectSubmission.__api__listByMember(this.member.id),
-                ExamRecord.__api__listByCourseMember(this.member.id))
-                .subscribe(jsonArr => {
-                    var certificates = Certificate.toArray(jsonArr[0]);
-                    if (certificates.length)
-                        this.certificate = certificates[0];
-                    this.projectSubmits = ProjectSubmission.toArray(jsonArr[1]);
-                    this.examRecords = ExamRecord.toArray(jsonArr[2]);
-                    CourseLog.memberStudyActivity(this, this.member.id, this.member.course_id)
-                        .subscribe(logs => {
-                            this.computeCourseStats(logs);
-                        });
-                });
+                BaseModel.bulk_list(this,
+                    CourseMember.__api__populateCertificate(member.certificate_id),
+                    CourseMember.__api__listProjectSubmissions(member.project_submission_ids),
+                    CourseMember.__api__listExamRecords(member.exam_record_ids),
+                    CourseMember.__api__listExamMembers(member.exam_member_ids))
+                    .subscribe(jsonArr => {
+                        var certificates = Certificate.toArray(jsonArr[0]);
+                        if (certificates.length)
+                            this.certificate = certificates[0];
+                        this.projectSubmits = ProjectSubmission.toArray(jsonArr[1]);
+                        this.examRecords = ExamRecord.toArray(jsonArr[2]);
+                        this.examMembers = ExamMember.toArray(jsonArr[3]);
+                        CourseLog.memberStudyActivity(this, this.member.id, this.member.course_id)
+                            .subscribe(logs => {
+                                this.computeCourseStats(logs);
+                            });
+                    });
             });
         });
     }
@@ -173,13 +176,14 @@ export class GradebookDialog extends BaseComponent {
         }) || new ProjectSubmission();
     }
 
-    viewAnswer(exam:Exam) {
-        ExamMember.byExamAndUser(this, exam.id, this.member.user_id).subscribe((member:ExamMember)=> {
-            if (member)
-                this.answerSheetDialog.show(exam, member);
-            else
-                this.error('You have not been registered for this exam');
+    viewAnswer(exam: Exam) {
+        var member = _.find(this.examMembers, (member: ExamMember) => {
+            return member.exam_id = exam.id;
         });
+        if (member)
+            this.answerSheetDialog.show(exam, member);
+        else
+            this.error('You have not been registered for this exam');
     }
 
 }

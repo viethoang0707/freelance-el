@@ -42,7 +42,7 @@ export class ExamSettingDialog extends BaseComponent {
         this.exam = exam;
         this.grades = [];
         this.deletedGrades = [];
-        ExamGrade.listByExam(this, exam.id).subscribe(grades => {
+        exam.listGrades(this).subscribe(grades => {
             this.grades = grades;
         })
         ExamSetting.byExam(this, exam.id).subscribe((setting: ExamSetting) => {

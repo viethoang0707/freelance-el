@@ -40,7 +40,7 @@ export class SelectAdminDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			User.listByGroup(this,this.selectedNode.data.id).subscribe(users => {
+			this.selectedNode.data.listUsers(this).subscribe(users => {
 				this.users = _.filter(users, (user=> {
 					return user.is_admin;
 				}));

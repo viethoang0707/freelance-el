@@ -8,6 +8,10 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { ListAPI } from '../../services/api/list.api';
+import { User } from './user.model';
+import { BulkListAPI } from '../../services/api/bulk-list.api';
+import { ExecuteAPI } from '../../services/api/execute.api';
+import { SurveySubmission } from './survey-submission.model';
 
 @Model('etraining.survey_member')
 export class SurveyMember extends BaseModel{
@@ -30,8 +34,11 @@ export class SurveyMember extends BaseModel{
         this.survey =  new Survey();
         this.submission_id = undefined;
         this.survey_review_state =  undefined;
+        this.user = new User();
+        this.submit =  new SurveySubmission();
     }
 
+    user: User;
     submission_id:number;
     course_member_id: number;
     role: string;
@@ -48,10 +55,7 @@ export class SurveyMember extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
     enroll_status: string;
-
-    static __api__listByUser(userId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyMember.Model, [],"[('user_id','=',"+userId+")]");
-    }
+    submit: SurveySubmission;
 
     static __api__listBySurvey(surveyId: number): SearchReadAPI {
         return new SearchReadAPI(SurveyMember.Model, [],"[('survey_id','=',"+surveyId+")]");
@@ -66,10 +70,6 @@ export class SurveyMember extends BaseModel{
         return SurveyMember.search(context,[],"[('survey_id','=',"+surveyId+")]");
     }
 
-
-    static listByUser( context:APIContext, userId: number): Observable<any[]> {
-        return SurveyMember.search(context,[],"[('user_id','=',"+userId+")]");
-    }
 
     static bySurveyAndUser( context:APIContext, userId: number, surveyId: number): Observable<any> {
         return SurveyMember.single(context,[],"[('user_id','=',"+userId+"),('survey_id','=',"+surveyId+")]");
@@ -109,13 +109,28 @@ export class SurveyMember extends BaseModel{
         return SurveyMember.single(context, [], "[('role','=','editor'),('survey_id','='," + surveyId + ")]");
     }
 
-    static __api__surveySupervisor(surveyId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyMember.Model, [],"[('role','=','supervisor'),('survey_id','='," + surveyId + ")]");
+
+    static __api__populateUser(user_id: number): ListAPI {
+        return new ListAPI(User.Model, [user_id], []);
     }
 
-    static surveySupervisor(context: APIContext, surveyId: number): Observable<any> {
-        return SurveyMember.single(context, [], "[('role','=','supervisor'),('survey_id','='," + surveyId + ")]");
+    populateUser(context: APIContext): Observable<any> {
+        if (!this.user_id)
+            return Observable.of(null);
+        return User.get(context, this.user_id).do(user => {
+            this.user = user;
+        });
     }
 
+    static __api__populateSubmission(submission_id: number): ListAPI {
+        return new ListAPI(SurveySubmission.Model, [submission_id], []);
+    }
 
+    populateSubmission(context: APIContext): Observable<any> {
+        if (!this.user_id)
+            return Observable.of(null);
+        return SurveySubmission.get(context, this.submission_id).do(submit => {
+            this.submit = submit;
+        });
+    }
 }

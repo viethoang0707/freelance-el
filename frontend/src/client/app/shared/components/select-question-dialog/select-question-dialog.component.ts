@@ -43,11 +43,10 @@ export class SelectQuestionsDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedGroupNodes) {
-			var groupNodes = [];
-			this.selectedGroupNodes.forEach(node => {
-				groupNodes.push(node.data.id);
+			var groups = _.map(this.selectedGroupNodes, node=> {
+				return node.data;
 			});
-			Question.listByGroups(this, groupNodes).subscribe(questions => {
+			Question.listByGroups(this, groups).subscribe(questions => {
 				this.questions = questions;
 			});
 		}

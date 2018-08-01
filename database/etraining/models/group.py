@@ -12,3 +12,9 @@ class OrderGroup(models.Model):
 	code = fields.Char(string="Code")
 	category = fields.Selection(
 		[('organization', 'Organization'),('competency', 'Competency'),  ('question', 'Question'), ('course', 'Course'),  ('syllabus', 'Syllabus')])
+
+	achivement_ids = fields.One2many('etraining.achivement', 'user_group_id', string='Achivements')
+	user_ids = fields.One2many('res.users', 'group_id', string='Users')
+	competency_ids = fields.One2many('etraining.competency', 'group_id', string='Competencies')
+	question_ids = fields.One2many('etraining.question', 'group_id', string='Questions')
+	course_ids = fields.One2many('etraining.course', 'group_id', string='Courses')

@@ -19,6 +19,7 @@ export class CompetencyLevel extends BaseModel{
         this.competency_name = undefined;
         this.competency_group_id = undefined;
         this.competency_group_name = undefined;
+        this.achivement_ids = [];
 	}
 
     name:string;
@@ -28,19 +29,7 @@ export class CompetencyLevel extends BaseModel{
     competency_group_id: number;
     competency_group_name: string;
 
-    static __api__listByCompetency(competencyId: number): SearchReadAPI {
-        return new SearchReadAPI(CompetencyLevel.Model, [],"[('competency_id','=',"+competencyId+")]");
-    }
+    achivement_ids: number[];
 
-    static listByCompetency(context:APIContext, competencyId:number):Observable<any> {
-        if (Cache.hit(CompetencyLevel.Model)) {
-            var levels = Cache.load(CompetencyLevel.Model);
-            levels =  _.filter(levels, (level:CompetencyLevel)=> {
-                return level.competency_id ==  competencyId;
-            });
-            return Observable.of(levels);
-        }
-        return CompetencyLevel.search(context,[], "[('competency_id','=',"+competencyId+")]");
-    }
 
 }

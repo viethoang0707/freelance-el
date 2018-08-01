@@ -61,13 +61,13 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	render(unit: CourseUnit) {
 		this.unit = unit;
 		if (this.unit.id) {
-			ExerciseQuestion.listByExercise(this, unit.id).subscribe(exerciseQuestions => {
+			this.unit.listExerciseQuestions(this).subscribe(exerciseQuestions => {
 				this.exerciseQuestions = exerciseQuestions;
 				ExerciseQuestion.populateQuestions(this, this.exerciseQuestions).subscribe(() => {
 					var questions = _.map(exerciseQuestions, (exerviseQuestion:ExerciseQuestion)=> {
                     return exerviseQuestion.question;
                 });
-                Question.populateOptions(this, questions).subscribe(()=> {
+                Question.listOptionsForArray(this, questions).subscribe(()=> {
                 	if (this.mode == 'preview')
 						setTimeout(() => {
 							var componentHostArr = this.questionsComponents.toArray();

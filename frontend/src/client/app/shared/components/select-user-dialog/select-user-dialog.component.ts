@@ -42,7 +42,7 @@ export class SelectUsersDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			User.listByGroup(this,this.selectedNode.data.id).subscribe(users => {
+			this.selectedNode.data.listUsers(this).subscribe(users => {
 				this.users = users;
 			});
 		}

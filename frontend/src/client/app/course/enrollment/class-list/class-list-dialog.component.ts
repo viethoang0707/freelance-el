@@ -47,7 +47,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     loadClasses() {
-        CourseClass.listByCourse(this, this.course.id).subscribe(classes => {
+        this.course.listClasses(this).subscribe(classes => {
             this.classes = classes;
         });
     }
@@ -77,7 +77,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     deleteClass(courseClass: CourseClass) {
-        CourseMember.listByClass(this, courseClass.id).subscribe((members) => {
+        courseClass.listMembers(this).subscribe((members) => {
             if (members.length)
                 this.error(this.translateService.instant('You cannot delete class with member inside'));
             else

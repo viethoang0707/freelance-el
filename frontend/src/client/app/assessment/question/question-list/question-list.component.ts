@@ -65,12 +65,13 @@ export class QuestionListComponent extends BaseComponent {
 
     editQuestion(question: Question) {
         this.questionDialog.show(question);
+        this.selectedQuestions = [];
     }
 
     deleteMultipleQuestions(questions: Question[]) {
         this.confirm('Are you sure to delete ?', () => {
             Question.deleteArray(this, questions).subscribe(() => {
-                this.selectedQuestions = null;
+                this.selectedQuestions = [];
                 this.loadQuestions();
             });
         });
@@ -80,6 +81,7 @@ export class QuestionListComponent extends BaseComponent {
         Question.all(this).subscribe(questions => {
             this.questions = questions;
             this.displayQuestions = questions;
+            this.selectedQuestions = [];
         });
     }
 

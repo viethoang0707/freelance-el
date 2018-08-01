@@ -19,23 +19,6 @@ export class StatsUtils {
 	constructor() {
 	}
 
-	competencyStatistic(context: APIContext, competency: Competency, levels: CompetencyLevel[]): Observable<any> {
-		return Achivement.listByCompetency(context, competency.id).map(skills => {
-			var skillsByGroup = _.groupBy(skills, 'user_id');
-			var profile = {};
-			_.each(levels, (level: CompetencyLevel) => {
-				profile[level.id] = 0;
-			});
-			_.each(skillsByGroup, skillList => {
-				let skill: Achivement = _.max(skillList, (obj: Achivement) => {
-					return obj.date_acquire.getTime();
-				});
-				profile[skill.competency_level_id] += 1;
-			})
-			return profile;
-		});
-	}
-
 	competencyStatisticByDate(context: APIContext, competency: Competency, levels: CompetencyLevel[], startDate: Date, endDate: Date): Observable<any> {
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
@@ -46,11 +29,7 @@ export class StatsUtils {
 			var endTimeMills = endDate.getTime();
 			for (var i = 0; starTimeMillis + i * monthLengthMills < endTimeMills; i++)
 				slots.push(0);
-			var skillsByGroup = _.groupBy(skills, 'user_id');
-			_.each(skillsByGroup, (skillList: Achivement[]) => {
-				let skill: Achivement = _.max(skillList, (obj: Achivement) => {
-					return obj.date_acquire.getTime();
-				});
+			_.each(skills, (skill: Achivement) => {
 				var dateAcquire = new Date(skill.date_acquire);
 				var index = Math.floor((dateAcquire.getTime() - starTimeMillis) / monthLengthMills);
 				var profile = slots[index];

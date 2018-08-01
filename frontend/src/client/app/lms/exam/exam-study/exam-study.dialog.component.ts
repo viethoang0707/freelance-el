@@ -100,12 +100,12 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	loadExamContent() {
-		Submission.get(this, this.member.submission_id).subscribe((submit: Submission) => {
-			this.submission = submit;
+		this.member.populateSubmission(this).subscribe(() => {
+			this.submission = this.member.submit;
 			this.submission.start = new Date();
-			BaseModel.bulk_search(this,
-				ExamQuestion.__api__listBySheet(this.exam.sheet_id),
-				Answer.__api__listBySubmit(this.submission.id))
+			BaseModel.bulk_list(this,
+				QuestionSheet.__api__listQuestions(this.exam.question_ids),
+				Submission.__api__listAnswers(this.submission.answer_ids))
 				.subscribe(jsonArr => {
 					this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
 					this.answers = Answer.toArray(jsonArr[1]);
@@ -113,7 +113,7 @@ export class ExamStudyDialog extends BaseComponent {
 						var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
 							return examQuestion.question;
 						});
-						Question.populateOptions(this, questions).subscribe(() => {
+						Question.listOptionsForArray(this, questions).subscribe(() => {
 							this.startExam();
 						});
 					});

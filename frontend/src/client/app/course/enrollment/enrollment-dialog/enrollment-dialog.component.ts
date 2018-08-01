@@ -145,7 +145,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	loadMembers() {
 		if (this.course && !this.courseClass) {
-			CourseMember.listByCourse(this, this.course.id).subscribe(members => {
+			this.course.listMembers(this).subscribe(members => {
 				this.students = _.filter(members, (member) => {
 					return member.role == 'student';
 				});
@@ -157,7 +157,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			});
 		}
 		if (this.courseClass && this.courseClass) {
-			CourseMember.listByClass(this, this.courseClass.id).subscribe(members => {
+			this.courseClass.listMembers(this).subscribe(members => {
 				this.students = _.filter(members, (member) => {
 					return member.role == 'student';
 				});

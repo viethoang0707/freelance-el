@@ -58,26 +58,24 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	ngOnInit() {
-		this.onShow.subscribe(object => {
+		this.onShow.subscribe((object:User) => {
 			this.courseMembers = [];
 			this.skills = [];
 			this.examMembers = [];
 			BaseModel
-			.bulk_search(this,
+			.bulk_list(this,
 				Group.__api__listUserGroup(),
-				CourseMember.__api__listByUser(object.id),
-				Certificate.__api__listByUser(object.id),
-				Achivement.__api__listByUser(object.id),
-				ExamMember.__api__listByUser(this.ContextUser.id),
-	            Submission.__api__listByUser(this.ContextUser.id))
+				User.__api__listCourseMembers(object.course_member_ids),
+				User.__api__listCertificates(object.certificate_ids),
+				User.__api__listAchivements(object.achivement_ids),
+				User.__api__listExamMembers(object.exam_member_ids))
 			.subscribe((jsonArr)=> {
 				this.groups = Group.toArray(jsonArr[0]);
 				this.courseMembers =  CourseMember.toArray(jsonArr[1]);
 				this.certificates =  Certificate.toArray(jsonArr[2]);
 				this.skills =  Achivement.toArray(jsonArr[3]);
 				this.examMembers = ExamMember.toArray(jsonArr[4]);
-                var submits = Submission.toArray(jsonArr[5]);
-                this.displayExams(submits);
+        this.displayExams();
 				this.displayGroupTree();
 				this.displayCourseHistory();
 				this.displaySkills();
@@ -110,18 +108,12 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 
-	displayExams(submits: Submission[]) {
+	displayExams() {
         this.examMembers = _.filter(this.examMembers , (member: ExamMember) => {
             return (member.exam_id && member.status == 'active' && member.role == 'candidate');
         });
         this.examMembers.sort((member1, member2): any => {
             return (member1.exam.create_date < member1.exam.create_date)
-        });
-        var examIds = _.pluck(this.examMembers, 'exam_id');
-        _.each(this.examMembers, (member: ExamMember) => {
-            member["submit"] = _.find(submits, (submit: Submission) => {
-                return submit.member_id == member.id && submit.exam_id == member.exam_id;
-            });
         });
     }
 

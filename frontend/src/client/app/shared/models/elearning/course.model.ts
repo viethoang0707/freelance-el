@@ -8,6 +8,14 @@ import { ExecuteAPI } from '../../services/api/execute.api';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
 import * as _ from 'underscore';
+import { CourseMember } from './course-member.model';
+import { ListAPI } from '../../services/api/list.api';
+import { CourseClass } from './course-class.model';
+import { CourseFaq } from './course-faq.model';
+import { CourseMaterial } from './course-material.model';
+import { CourseUnit } from './course-unit.model';
+import { CourseSyllabus } from './course-syllabus.model';
+
 
 @Model('etraining.course')
 export class Course extends BaseModel{
@@ -44,6 +52,12 @@ export class Course extends BaseModel{
         this.syllabus_id = undefined;
         this.unit_count = undefined;
         this.syllabus_status = undefined;
+        this.member_ids = [];
+        this.class_ids = [];
+        this.faq_ids = [];
+        this.material_ids = [];
+        this.unit_ids = [];
+        this.syl =  new CourseSyllabus();
 	}
 
     complete_unit_by_order: boolean;
@@ -71,6 +85,12 @@ export class Course extends BaseModel{
     status: string;
     mode: string;
     logo: string;
+    member_ids: number[];
+    class_ids: number[];
+    faq_ids: number[];
+    material_ids: number[];
+    unit_ids: number[];
+    syl: CourseSyllabus;
 
     get IsAvailable():boolean {
         if (this.review_state != 'approved')
@@ -78,20 +98,6 @@ export class Course extends BaseModel{
         if (this.status !='open')
             return false;
         return true;
-    }
-
-    static __api__listByGroup(groupId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('group_id','=',"+groupId+")]");
-    }
-
-    static listByGroup(context:APIContext, groupId):Observable<any> {
-        if (Cache.hit(Course.Model))
-            return Observable.of(Cache.load(Course.Model)).map(courses=> {
-                return _.filter(courses, (course:Course)=> {
-                    return course.group_id == groupId;
-                });
-            });
-        return Course.search(context,[],"[('group_id','=',"+groupId+")]");
     }
 
     static __api__allForEnroll(): SearchReadAPI {
@@ -122,87 +128,101 @@ export class Course extends BaseModel{
         return Course.search(context,[],"[('competency_id','=',"+competencyId+")]");
     }
 
-    static __api__listBySupervisor(supervisorId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('supervisor_id','=',"+supervisorId+")]");
-    }
-
-    static listBySupervisor(context:APIContext, supervisorId: number):Observable<any> {
-        if (Cache.hit(Course.Model))
-            return Observable.of(Cache.load(Course.Model)).map(courses=> {
-                return _.filter(courses, (course:Course)=> {
-                    return course.supervisor_id == supervisorId;
-                });
-            });
-        return Course.search(context,[],"[('supervisor_id','=',"+supervisorId+")]");
-    }
-
-    static __api__listByGroupAndMode(groupId: number, mode:string): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
-    }
-
-    static listByGroupAndMode(context:APIContext, groupId, mode:string):Observable<any> {
-        if (Cache.hit(Course.Model))
-            return Observable.of(Cache.load(Course.Model)).map(courses=> {
-                return _.filter(courses, (course:Course)=> {
-                    return course.group_id == groupId && course.mode == mode;
-                });
-            });
-        return Course.search(context,[],"[('group_id','=',"+groupId+"),('mode','=','"+mode+"')]");
-    }
-
-    static __api__searchByDate(start:Date, end:Date): SearchReadAPI {
-        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
-        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-        return new SearchReadAPI(Course.Model, [],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
-    }
-
-    static searchByDate(context:APIContext, start:Date, end:Date):Observable<any> {
-        if (Cache.hit(Course.Model))
-            return Observable.of(Cache.load(Course.Model)).map(courses=> {
-                return _.filter(courses, (course:Course)=> {
-                    return course.create_date.getTime() >=  start.getTime() && course.create_date.getTime() <= end.getTime();
-                });
-            });
-        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
-        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-        return Course.search(context,[],"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
-    }
-
-    __api__enroll(courseId: number, userIds: number[]): ExecuteAPI {
+    static __api__enroll(courseId: number, userIds: number[]): ExecuteAPI {
         return new ExecuteAPI(Course.Model, 'enroll',{courseId:courseId,userIds:userIds}, null);
     }
 
     enroll(context:APIContext, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll(this.id, userIds), 
+        return context.apiService.execute(Course.__api__enroll(this.id, userIds), 
             context.authService.LoginToken);
     }
 
-    __api__enroll_staff(courseId: number, userIds: number[]): ExecuteAPI {
+    static __api__enroll_staff(courseId: number, userIds: number[]): ExecuteAPI {
         return new ExecuteAPI(Course.Model, 'enroll_staff',{courseId: courseId,userIds:userIds}, null);
     }
 
     enrollStaff(context:APIContext, userIds: number[]):Observable<any> {
-        return context.apiService.execute(this.__api__enroll_staff(this.id, userIds), 
+        return context.apiService.execute(Course.__api__enroll_staff(this.id, userIds), 
             context.authService.LoginToken);
 
     }
 
-    __api__open(courseId: number): ExecuteAPI {
+    static __api__open(courseId: number): ExecuteAPI {
         return new ExecuteAPI(Course.Model, 'open',{courseId:courseId}, null);
     }
 
     open(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__open(this.id), 
+        return context.apiService.execute(Course.__api__open(this.id), 
             context.authService.LoginToken);
     }
 
-    __api__close(courseId: number): ExecuteAPI {
+    static __api__close(courseId: number): ExecuteAPI {
         return new ExecuteAPI(Course.Model, 'close',{courseId:courseId}, null);
     }
 
     close(context:APIContext):Observable<any> {
-        return context.apiService.execute(this.__api__close(this.id), 
+        return context.apiService.execute(Course.__api__close(this.id), 
             context.authService.LoginToken);
+    }
+
+    static __api__listMembers(member_ids): ListAPI {
+        return new ListAPI(CourseMember.Model, member_ids,[]);
+    }
+
+    listMembers( context:APIContext): Observable<any[]> {
+        return CourseMember.array(context,this.member_ids);
+    }
+
+    static __api__listClasses(class_ids: number[]): ListAPI {
+        return new ListAPI(CourseClass.Model, class_ids,[]);
+    }
+
+    listClasses( context:APIContext): Observable<any[]> {
+        return CourseClass.array(context,this.class_ids);
+    }
+
+    static __api__listFaqs(faq_ids: number[]): ListAPI {
+        return new ListAPI(CourseFaq.Model, faq_ids,[]);
+    }
+
+    listFaqs( context:APIContext): Observable<any[]> {
+        return CourseFaq.array(context,this.faq_ids);
+    }
+
+    static __api__listMaterials(material_ids: number[]): ListAPI {
+        return new ListAPI(CourseMaterial.Model, material_ids,[]);
+    }
+
+    listMaterials( context:APIContext): Observable<any[]> {
+        return CourseMaterial.array(context,this.class_ids);
+    }
+
+    static __api__listUnits(unit_ids: number[]): ListAPI {
+        return new ListAPI(CourseUnit.Model, unit_ids,[]);
+    }
+
+    listUnits( context:APIContext): Observable<any[]> {
+        return CourseUnit.array(context,this.unit_ids);
+    }
+
+    static __api__populateSyllabus(syllabus_id: number): ListAPI {
+        return new ListAPI(CourseSyllabus.Model, [syllabus_id], []);
+    }
+
+    populateSyllabus(context: APIContext): Observable<any> {
+        if (!this.syllabus_id)
+            return Observable.of(null);
+        return CourseSyllabus.get(context, this.syllabus_id).do(syl => {
+            this.syl = syl;
+        });
+    }
+
+    static __api__courseEditor(course_id: number): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, [],"[('role','=','editor'),('course_id','='," + course_id + ")]");
+    }
+
+    courseEditor(context: APIContext): Observable<any> {
+        return CourseMember.single(context, [], "[('role','=','editor'),('course_id','='," + this.id + ")]");
     }
 
 }

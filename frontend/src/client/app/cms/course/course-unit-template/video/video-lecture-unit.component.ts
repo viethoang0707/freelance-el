@@ -49,14 +49,8 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		VideoLecture.byCourseUnit(this, unit.id).subscribe((lecture: VideoLecture) => {
-			if (lecture)
-				this.lecture = lecture;
-			else {
-				var lecture = new VideoLecture();
-				lecture.unit_id = this.unit.id;
-				this.lecture = lecture;
-			}
+		this.unit.populateVideoLecture(this).subscribe(()=> {
+			this.lecture = this.unit.videoLecture;
 		});
 	}
 

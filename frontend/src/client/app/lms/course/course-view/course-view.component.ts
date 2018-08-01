@@ -10,7 +10,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model'; import {
-	SURVEY_STATUS, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
+	SURVEY_STATUS, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -58,7 +58,7 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 export class CourseViewComponent extends BaseComponent implements OnInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
-	CONTENT_STATUS = CONTENT_STATUS;
+	COURSE_STATUS = COURSE_STATUS;
 	COURSE_MODE = COURSE_MODE;
 
 	private course: Course;
@@ -89,6 +89,7 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
 			this.lmsProfileService.init(this).subscribe(() => {
+				this.course = this.lmsProfileService.courseById(courseId);
 				this.lmsProfileService.getCourseContent( courseId).subscribe(content => {
 					this.syl = content["syllabus"];
 					this.faqs = content["faqs"];

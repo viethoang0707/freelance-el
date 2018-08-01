@@ -23,11 +23,4 @@ export class VideoLecture extends BaseModel{
     video_url: string;
     unit_id: number;
 
-    static __api__byCourseUnit(unitId:number): SearchReadAPI {
-        return new SearchReadAPI(VideoLecture.Model, [],"[('unit_id','=',"+unitId+")]");
-    }
-    
-    static byCourseUnit(context:APIContext, unitId: number):Observable<any> {
-        return VideoLecture.single(context,[],"[('unit_id','=',"+unitId+")]");
-    }
 }

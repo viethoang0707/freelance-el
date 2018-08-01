@@ -109,7 +109,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	broadcastMessage(courseClass: CourseClass) {
-		CourseMember.listByClass(this, courseClass.id).subscribe(members => {
+		courseClass.listMembers(this).subscribe(members => {
 			if (members.length) {
 				var emails = _.pluck(members, "email");
 				this.mailDialog.show(emails);
@@ -118,7 +118,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	previewUnit(unit: CourseUnit) {
-		this.unitPreviewDialog.show(unit);
+		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
 	}
 
 }

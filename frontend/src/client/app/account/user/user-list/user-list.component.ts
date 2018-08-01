@@ -54,6 +54,7 @@ export class UserListComponent extends BaseComponent {
         User.all(this).subscribe(users => {
             this.users = users;
             this.displayUsers = users;
+            this.selectedUsers = [];
         });
     }
 
@@ -73,6 +74,7 @@ export class UserListComponent extends BaseComponent {
 
     editUser(user:User) {
         this.userProfileDialog.show(user);
+        this.selectedUsers = [];
     }
 
     activateMultipleUsers(users:User[]){
@@ -81,7 +83,6 @@ export class UserListComponent extends BaseComponent {
         });
         User.updateArray(this,users).subscribe(()=> {
             this.loadUsers();
-            this.selectedUsers = [];
             this.success('User activated successfully');
         });
     }
@@ -93,7 +94,6 @@ export class UserListComponent extends BaseComponent {
         });
         User.updateArray(this,users).subscribe(()=> {
             this.loadUsers();
-            this.selectedUsers = [];
             this.success('User deactivated successfully');
         });
     }

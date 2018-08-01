@@ -47,28 +47,29 @@ export class LMSProfileDialog extends BaseDialog<User> {
 
 
 	ngOnInit() {
-		this.onShow.subscribe(object => {
+		this.onShow.subscribe((object:CourseMember) => {
 			this.courseMembers = [];
 			this.skills = [];
 			this.examMembers = [];
-
-			BaseModel
-				.bulk_search(this,
-					CourseMember.__api__listByUser(object.user_id),
-					Certificate.__api__listByUser(object.user_id),
-					Achivement.__api__listByUser(object.user_id),
-					ExamMember.__api__listByUser(object.user_id),
-					Submission.__api__listByUser(object.user_id))
+			object.populateUser(this).subscribe(()=> {
+				let user:User = object.user;
+				BaseModel
+				.bulk_list(this,
+					User.__api__listCourseMembers(user.course_member_ids),
+					User.__api__listCertificates(user.certificate_ids),
+					User.__api__listAchivements(user.achivement_ids),
+					User.__api__listExamMembers(user.exam_member_ids))
 				.subscribe((jsonArr) => {
 					this.courseMembers = CourseMember.toArray(jsonArr[0]);
 					this.certificates = Certificate.toArray(jsonArr[1]);
 					this.skills = Achivement.toArray(jsonArr[2]);
 					this.examMembers = ExamMember.toArray(jsonArr[3]);
-					var submits = Submission.toArray(jsonArr[4]);
-					this.displayExams(submits);
+					this.displayExams();
 					this.displayCourseHistory();
 					this.displaySkills();
 				});
+			});
+			
 		});
 	}
 
@@ -90,18 +91,12 @@ export class LMSProfileDialog extends BaseDialog<User> {
 	}
 
 
-	displayExams(submits: Submission[]) {
+	displayExams() {
 		this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
 			return (member.exam_id && member.status == 'active' && member.role == 'candidate');
 		});
 		this.examMembers.sort((member1, member2): any => {
 			return (member1.exam.create_date < member1.exam.create_date)
-		});
-		var examIds = _.pluck(this.examMembers, 'exam_id');
-		_.each(this.examMembers, (member: ExamMember) => {
-			member["submit"] = _.find(submits, (submit: Submission) => {
-				return submit.member_id == member.id && submit.exam_id == member.exam_id;
-			});
 		});
 	}
 

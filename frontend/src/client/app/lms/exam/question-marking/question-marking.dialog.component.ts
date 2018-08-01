@@ -47,9 +47,9 @@ export class QuestionMarkingDialog extends BaseComponent {
 		this.member = member;
 		this.submit = submit;
 
-		BaseModel.bulk_search(this,
+		BaseModel.bulk_list(this,
 			QuestionSheet.__api__byExam(this.submit.exam_id),
-			Answer.__api__listBySubmit(this.submit.id))
+			Submission.__api__listAnswers(this.submit.answer_ids))
 			.subscribe(jsonArr => {
 				var sheetList = QuestionSheet.toArray(jsonArr[0]);
 				this.answers = Answer.toArray(jsonArr[1]);

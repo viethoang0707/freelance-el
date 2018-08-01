@@ -4,6 +4,8 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { Cache } from '../../helpers/cache.utils';
+import { ListAPI } from '../../services/api/list.api';
+import { ExamQuestion } from './exam-question.model';
 
 @Model('etraining.question_sheet')
 export class QuestionSheet extends BaseModel{
@@ -19,6 +21,7 @@ export class QuestionSheet extends BaseModel{
         this.name = undefined;
         this.status =  undefined;
         this.question_count =  undefined;
+        this.question_ids = [];
 	}
 
     name: string;
@@ -28,6 +31,7 @@ export class QuestionSheet extends BaseModel{
     seed:number;
     finalized:boolean;
     status: string;
+    question_ids: number[];
 
     static __api__byExam(examId: number): SearchReadAPI {
         return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',"+examId+")]");
@@ -49,5 +53,13 @@ export class QuestionSheet extends BaseModel{
 
     static listTemplate( context:APIContext): Observable<any> {
         return QuestionSheet.search(context,[],"[('exam_id','=',False)]");
+    }
+
+    static __api__listQuestions(question_ids: number[]): ListAPI {
+        return new ListAPI(ExamQuestion.Model, question_ids,[]);
+    }
+
+    listQuestions( context:APIContext): Observable<any[]> {
+        return ExamQuestion.array(context,this.question_ids);
     }
 }

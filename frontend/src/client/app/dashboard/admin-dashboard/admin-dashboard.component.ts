@@ -52,9 +52,9 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         this.approvalTickets = [];
         BaseModel
         .bulk_search(this,
-            Exam.__api__listBySupervisorAndDate(this.ContextUser.id,this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
-            CourseClass.__api__listBySupervisorAndDate(this.ContextUser.id,this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
-            Ticket.__api__listPendingByApproveUser(this.ContextUser.id))
+            User.__api__searchManageExamsByDate(this.ContextUser.id, this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
+            User.__api__searchManageClassesByDate(this.ContextUser.id, this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
+            User.__api__searchPendingReviewTickets(this.ContextUser.id))
         .subscribe(jsonArr=> {
             this.exams = _.filter(Exam.toArray(jsonArr[0]), (exam:Exam)=> {
                 return exam.IsAvailable;

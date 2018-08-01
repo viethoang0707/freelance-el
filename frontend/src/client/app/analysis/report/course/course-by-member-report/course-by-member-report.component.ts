@@ -29,12 +29,12 @@ import { BaseModel } from '../../../../shared/models/base.model';
 export class CourseByMemberReportComponent extends BaseComponent implements OnInit {
 
 	GROUP_CATEGORY = GROUP_CATEGORY;
-    COURSE_MODE = COURSE_MODE;
-    COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
+	COURSE_MODE = COURSE_MODE;
+	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
 	private records: any;
 	private rowGroupMetadata: any;
-    private reportUtils: ReportUtils;
+	private reportUtils: ReportUtils;
 
 	constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -49,7 +49,7 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 	}
 
 	export() {
-		var output = _.map(this.records, record=> {
+		var output = _.map(this.records, record => {
 			return { 'User login': record['user_login'], 'User name': record['user_name'], 'Course name': record['course_name'], 'Course mode': record['course_mode'], 'Course code': record['course_code'], 'Enroll status': record['enroll_status'], 'Date register': record['date_register'], 'First attempt': record['first_attempt'], 'Last attempt': record['last_attempt'], 'Time spent': '' };
 		})
 		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
@@ -62,36 +62,42 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 	}
 
 	generateReport(users: User[]) {
-		var apiList = [];
-		for (var i=0;i<users.length; i++) {
-			apiList.push(CourseMember.__api__listByUser(users[i].id));
-			apiList.push(CourseLog.__api__userStudyActivity(users[i].id,null));
+		var apiMemberList = [];
+		var apiLogList = [];
+		for (var i = 0; i < users.length; i++) {
+			apiMemberList.push(User.__api__listCourseMembers(users[i].course_member_ids));
+			apiLogList.push(CourseLog.__api__userStudyActivity(users[i].id, null));
 		};
 		var records = [];
-		BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
-			for (var i=0;i<users.length; i++) {
-				var members = CourseMember.toArray(jsonArr[2*i]);
-				members = _.filter(members, (member:CourseMember)=> {
-					return member.role =='student';
-				});
-				var logs = CourseLog.toArray(jsonArr[2*i+1]);
-				var memberRecords = _.map(members, (member: CourseMember) => {
-					var courseLogs = _.filter(logs, (log: CourseLog) => {
-						return log.course_id == member.course_id;
+		BaseModel.bulk_list(this, ...apiMemberList).subscribe(jsonMemberArr => {
+			BaseModel.bulk_search(this, ...apiLogList).subscribe(jsonLogArr => {
+				for (var i = 0; i < users.length; i++) {
+					var members = CourseMember.toArray(jsonMemberArr[i]);
+					members = _.filter(members, (member: CourseMember) => {
+						return member.role == 'student';
 					});
-					return this.generateReportRow(member, courseLogs);
-				});
-				memberRecords = memberRecords.filter((memberRecord: any) => {
-					return memberRecord.course_code !== '' && memberRecord.course_mode !== '' && memberRecord.course_name !== '';
-				});
-				records = records.concat(memberRecords);
-			}
-			this.rowGroupMetadata =  this.reportUtils.createRowGroupMetaData(records,"user_login");
+
+					var logs = CourseLog.toArray(jsonLogArr[i]);
+					var memberRecords = _.map(members, (member: CourseMember) => {
+						var courseLogs = _.filter(logs, (log: CourseLog) => {
+							return log.course_id == member.course_id;
+						});
+						return this.generateReportRow(member, courseLogs);
+					});
+					memberRecords = memberRecords.filter((memberRecord: any) => {
+						return memberRecord.course_code !== '' && memberRecord.course_mode !== '' && memberRecord.course_name !== '';
+					});
+					records = records.concat(memberRecords);
+				}
+
+			});
+
+			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(records, "user_login");
 			_.each(records, record => {
 				record["index"] = this.rowGroupMetadata[record["user_login"]].index;
 				record["size"] = this.rowGroupMetadata[record["user_login"]].size;
 			});
-			this.records  = _.sortBy(records ,record=> {
+			this.records = _.sortBy(records, record => {
 				return +record["index"];
 			});
 		});
@@ -110,15 +116,15 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 		if (result[0] != Infinity)
 			record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
 		else
-			record["first_attempt"]='';
+			record["first_attempt"] = '';
 		if (result[1] != Infinity)
 			record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATE_FORMAT);
 		else
-			record["last_attempt"] ='';
+			record["last_attempt"] = '';
 		if (!Number.isNaN(result[2]))
 			record["time_spent"] = this.timePipe.transform(+(result[2]), 'min');
 		else
-			record["time_spent"] =0;
+			record["time_spent"] = 0;
 		return record;
 	}
 

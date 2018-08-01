@@ -73,9 +73,9 @@ export class CourseBackupDialog extends BaseComponent {
 	}
 
 	buildCourseTree() {
-		CourseSyllabus.get(this, this.course.syllabus_id).subscribe(syl=> {
-			this.syl = syl;
-			CourseUnit.listByCourse(this, this.syl.id).subscribe(units => {
+		this.course.populateSyllabus(this).subscribe(()=> {
+			this.syl = this.course.syl;
+			this.course.listUnits(this).subscribe(units => {
 				this.units = units;
 				this.tree = this.sylUtils.buildGroupTree(units);
 				this.output = '"course-syllabus"', this.sylUtils.buildGroupTree(units);
@@ -89,15 +89,13 @@ export class CourseBackupDialog extends BaseComponent {
 	}
 
 	getCourseMaterial() {
-		CourseMaterial.listByCourse(this, this.course.id)
-			.subscribe(materials => {
+		this.course.listMaterials(this).subscribe(materials => {
 				this.materials = materials;
 			});
 	}
 
 	getCourseFaq() {
-		CourseFaq.listByCourse(this, this.course.id)
-			.subscribe(faqs => {
+		this.course.listFaqs(this).subscribe(faqs => {
 				this.faqs = faqs;
 			});
 	}
