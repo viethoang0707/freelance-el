@@ -79,6 +79,9 @@ export class QuestionListComponent extends BaseComponent {
 
     loadQuestions() {
         Question.all(this).subscribe(questions => {
+            questions  = _.sortBy(questions,(question:Question)=> {
+                return question.create_date;
+            });
             this.questions = questions;
             this.displayQuestions = questions;
             this.selectedQuestions = [];

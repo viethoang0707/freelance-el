@@ -316,7 +316,7 @@ export class LMSProfileService {
     if (this.courseContent[courseId])
       return Observable.of(this.courseContent[courseId]);
     var course = this.courseById(courseId);
-    return BaseModel.bulk_search(this.context,
+    return BaseModel.bulk_list(this.context,
       Course  .__api__populateSyllabus(course.syllabus_id),
       Course.__api__listUnits(course.unit_ids),
       Course.__api__listFaqs(course.faq_ids),
@@ -349,7 +349,7 @@ export class LMSProfileService {
     delete this.classContent[classId];
   }
 
-  clearCourseContent(courseId: number) {
+  invalidateCourseContent(courseId: number) {
     delete this.courseContent[courseId];
   }
 

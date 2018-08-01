@@ -111,7 +111,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             courseClass.open(this).subscribe(() => {
                 courseClass.status = 'open';
-                this.success(this.translateService.instant('Survey open'));
+                this.success(this.translateService.instant('Class open'));
             });
         });
 

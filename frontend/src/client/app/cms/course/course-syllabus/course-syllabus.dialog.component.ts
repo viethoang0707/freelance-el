@@ -99,6 +99,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 			this.error(this.translateService.instant('You need to select a folder.'));
 			return;
 		}
+		if (type == 'folder' && this.selectedNode && this.selectedNode.data.type != 'folder') {
+			this.error(this.translateService.instant('You cannot add folder to a unit.'));
+			return;
+		}
 		var maxOrder = this.selectedNode ? this.selectedNode.children.length : this.tree.length;
 		var unit = new CourseUnit();
 		unit.syllabus_id = this.syl.id;
@@ -108,19 +112,22 @@ export class CourseSyllabusDialog extends BaseComponent {
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
 		unit.order = maxOrder;
 		unit.save(this).subscribe(() => {
+			this.success('Action completed');
 			if (this.selectedNode)
 				this.sylUtils.addChildNode(this.selectedNode, unit);
 			else
 				this.sylUtils.addRootNode(this.tree, unit);
-			this.lmsProfileService.clearCourseContent(this.course.id);
+			this.units.push(unit);
+			this.tree = this.sylUtils.buildGroupTree(this.units);
+			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 
 	editNode(node: TreeNode) {
 		this.unitDialog.show(node.data);
 		this.unitDialog.onUpdateComplete.subscribe(() => {
-			this.buildCourseTree();
-			this.lmsProfileService.clearCourseContent(this.course.id);
+			this.success('Action completed');
+			this.tree = this.sylUtils.buildGroupTree(this.units);
 		});
 	}
 
@@ -133,7 +140,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 			node.data.delete(this).subscribe(() => {
 				this.buildCourseTree();
 				this.selectedNode = null;
-				this.lmsProfileService.clearCourseContent(this.course.id);
+				this.units = _.reject(this.units, (unit:CourseUnit)=> {
+					return unit.id == node.data.id
+				});
+				this.tree = this.sylUtils.buildGroupTree(this.units);
+				this.lmsProfileService.invalidateCourseContent(this.course.id);
 			})
 		});
 	}
@@ -147,7 +158,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.sylUtils.moveUp(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
 			this.success('Move sucessfully');
-			this.lmsProfileService.clearCourseContent(this.course.id);
+			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 
@@ -155,7 +166,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.sylUtils.moveDown(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
 			this.success('Move sucessfully');
-			this.lmsProfileService.clearCourseContent(this.course.id);
+			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 

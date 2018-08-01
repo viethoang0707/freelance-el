@@ -65,7 +65,7 @@ export class FileAPIService {
             return Observable.throw('Token expired')
         }
         params['token'] = token.code;
-        return this.http.post(Config.API_ENDPOINT + '/file/convert2pdf', JSON.stringify({token: token.code }), options)
+        return this.http.post(Config.API_ENDPOINT + '/file/convert2pdf', JSON.stringify({token: token.code,filename:filename }), options)
             .map(res => res.json())
             .do(()=> {
                 this.appEvent.finishHttpTransaction();

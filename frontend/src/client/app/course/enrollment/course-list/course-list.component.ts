@@ -91,7 +91,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
         this.confirm(('Are you sure to proceed ? You will not be able to add new class after the course is closed'), () => {
             course.close(this).subscribe(() => {
                 course.status = 'closed';
-                this.success(this.translateService.instant('Class close'));
+                this.success(this.translateService.instant('Course close'));
             });
         });
     }
@@ -104,7 +104,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
         this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             course.open(this).subscribe(() => {
                 course.status = 'open';
-                this.success(this.translateService.instant('Class close'));
+                this.success(this.translateService.instant('Course opem'));
             });
         });
 
