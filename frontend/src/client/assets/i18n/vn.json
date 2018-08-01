@@ -505,24 +505,21 @@
 	"Advance search": "Tìm kiếm nâng cao",
 	"Course info": "Thông tin khóa học",
 	"Class close": "Đóng lớp học",
-	"You do not have close permission for this class.  You will not be able to enroll new members after the class is closed":
-	"Bạn không có quyền đóng lớp học này. Bạn sẽ không thể ghi danh thành viên mới sau khi lớp học bị đóng",
+	"You do not have close permission for this class.  You will not be able to enroll new members after the class is closed": "Bạn không có quyền đóng lớp học này. Bạn sẽ không thể ghi danh thành viên mới sau khi lớp học bị đóng",
 	"You do not have open permission for this class": "Bạn không có quyền mở lớp học này",
-	"Survey open":"Mở khảo sát",
+	"Survey open": "Mở khảo sát",
 	"You do not have close permission for this class": "Bạn không có quyền đóng lớp học này",
-	"Are you sure to proceed ? You will not be able to add new class after the course is closed": 
-	"Bạn có chắc chắn sẽ tiếp tục không? Bạn sẽ không thể thêm lớp mới sau khi khóa học bị đóng.",
+	"Are you sure to proceed ? You will not be able to add new class after the course is closed": "Bạn có chắc chắn sẽ tiếp tục không? Bạn sẽ không thể thêm lớp mới sau khi khóa học bị đóng.",
 	"You do not have enroll permission for this exam": "Bạn không có quyền ghi danh cho kỳ thi này",
 	"You do not have close permission for this exam": "Bạn không có quyền đóng kỳ thi này",
 	"You do not have open permission for this exam": "Bạn không có quyền mở kỳ thi này",
-	"Are you sure to proceed ?  You will not be able to enroll students after the exam is closed": 
-	"Bạn có chắc chắn sẽ tiếp tục? Bạn sẽ không thể ghi danh học viên sau khi kỳ thi đóng",
+	"Are you sure to proceed ?  You will not be able to enroll students after the exam is closed": "Bạn có chắc chắn sẽ tiếp tục? Bạn sẽ không thể ghi danh học viên sau khi kỳ thi đóng",
 	"Exam open": "Mở kỳ thi",
 	"Request submitted": "Đã gửi yêu cầu",
 	"Survey not reviewed yet": "Khảo sát chưa được đánh giá",
-	"Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened": 
-	"Bạn có chắc chắn muốn tiếp tục? Bạn sẽ không thể ghi danh học viên mới sau khi khảo sát được mở",
-	"Admin": "Quản trị viên"
+	"Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened": "Bạn có chắc chắn muốn tiếp tục? Bạn sẽ không thể ghi danh học viên mới sau khi khảo sát được mở",
+	"Admin": "Quản trị viên",
+	"Position": "Vị trí"
 
 
 
