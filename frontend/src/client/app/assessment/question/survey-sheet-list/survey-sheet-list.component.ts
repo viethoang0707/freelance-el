@@ -24,7 +24,7 @@ export class SurveySheetListComponent extends BaseComponent {
 
     @ViewChild(SurveySheetPreviewDialog) sheetDialog: SurveySheetPreviewDialog;
 
-    private sheets: Question[];
+    private sheets: SurveySheet[];
     private selectedSheet: any;
 
     constructor() {

@@ -45,7 +45,6 @@ export class ConferenceMember extends BaseModel{
     @UnserializeProperty()
     conference: Conference;
     conference_status: string;
-    group_name: string;
 
     static __api__populateConference(conf_id: number,fields?:string[]): ListAPI {
         return new ListAPI(Conference.Model, [conf_id],fields);

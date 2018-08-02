@@ -44,18 +44,13 @@ export class CourseMember extends BaseModel {
         this.image = undefined;
         this.group_id = undefined;
         this.group_name = undefined;
-        @UnserializeProperty()
         this.course = new Course();
-        @UnserializeProperty()
         this.clazz =  new CourseClass();
-        @UnserializeProperty()
         this.certificate =  new Certificate();
         this.certificate_id = undefined;
         this.conference_member_id = undefined;
-        @UnserializeProperty()
         this.conference_member =  new ConferenceMember();
         this.course_review_state =  undefined;
-        @UnserializeProperty()
         this.user = new User();
         this.exam_record_ids = [];
         this.project_submission_ids = [];
@@ -63,14 +58,18 @@ export class CourseMember extends BaseModel {
         this.survey_member_ids = [];
     }
 
+    @UnserializeProperty()
     user: User;
     course_id: number;
     course_review_state: string;
     conference_member_id: number;
+    @UnserializeProperty()
     conference_member: ConferenceMember;
     course; Course;
+    @UnserializeProperty()
     clazz: CourseClass;
     certificate_id: number;
+    @UnserializeProperty()
     certificate: Certificate;
     user_id: number;
     class_id: number;

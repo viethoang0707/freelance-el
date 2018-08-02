@@ -22,7 +22,7 @@ import { Question } from '../../../shared/models/elearning/question.model';
 })
 export class QuestionSheetListComponent extends BaseComponent {
 
-    private sheets: Question[];
+    private sheets: QuestionSheet[];
     private selectedSheet: any;
 
     @ViewChild(QuestionSheetPreviewDialog) sheetDialog: QuestionSheetPreviewDialog;

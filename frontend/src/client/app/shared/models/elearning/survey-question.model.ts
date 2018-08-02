@@ -49,7 +49,7 @@ export class SurveyQuestion extends BaseModel {
         question.content = this.content;
         question.type = this.type;
         question.group_id = this.group_id;
-        question.group_id__DESC__ = this.group_id__DESC__;
+        question.group_name = this.group_name;
         return question;
     }
 
