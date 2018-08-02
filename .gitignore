@@ -21,3 +21,4 @@ app1.log
 yarn.lock
 npm-debug.log
 frontend/dist/
+script/
