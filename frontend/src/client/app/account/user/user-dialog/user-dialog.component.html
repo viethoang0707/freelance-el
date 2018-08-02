@@ -44,12 +44,15 @@
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-          <input type="text" pInputText [(ngModel)]="object.email" #email="ngModel" name="email" required>
+          <input type="text" pInputText [(ngModel)]="object.email" #email="ngModel" [email]="true" name="email" required>
           <label>{{'Email'|translate}}</label>
           <div *ngIf="email.invalid && (email.dirty || email.touched)" class="ui-message ui-messages-error ui-corner-all">
             <div *ngIf="email.errors.required">
               {{'Email is required' | translate}}
             </div>
+          </div>
+          <div *ngIf="email.errors.email">
+            {{'Email form' | translate}}
           </div>
         </span>
       </div>
