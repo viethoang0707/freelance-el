@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -42,7 +42,9 @@ export class Survey extends BaseModel{
         this.question_ids = [];
 	}
 
+    @UnserializeProperty()
     clazz: CourseClass;
+    @UnserializeProperty()
     sheet: SurveySheet;
     sheet_id: number;
     question_count: number;

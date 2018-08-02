@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty ,UnserializeProperty} from '../decorator';
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
@@ -58,8 +58,11 @@ export class Exam extends BaseModel{
         this.question_ids = [];
 	}
 
+    @UnserializeProperty()
     clazz: CourseClass;
+    @UnserializeProperty()
     setting: ExamSetting;
+    @UnserializeProperty()
     sheet: QuestionSheet;
     setting_id: number;
     sheet_id: number;

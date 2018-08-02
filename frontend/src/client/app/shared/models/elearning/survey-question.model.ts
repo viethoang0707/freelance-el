@@ -1,7 +1,7 @@
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model,UnserializeProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import { ListAPI } from '../../services/api/list.api';
@@ -29,6 +29,7 @@ export class SurveyQuestion extends BaseModel {
 	}
 
     question_id: number;
+    @UnserializeProperty()
     question: Question;
     survey_id: number;
     sheet_id: number;

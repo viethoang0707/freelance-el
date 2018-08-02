@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model,UnserializeProperty } from '../decorator';
 import { APIContext } from '../context';
 import { CourseLog } from './log.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -55,9 +55,13 @@ export class CourseUnit extends BaseModel{
     video_lecture_id: number;
     scorm_lecture_id: number;
     slide_lecture_id: number;
+    @UnserializeProperty()
     htmlLecture: HtmlLecture;
+    @UnserializeProperty()
     videoLecture: VideoLecture;
+    @UnserializeProperty()
     scormLecture: SCORMLecture;
+    @UnserializeProperty()
     slideLecture: SlideLecture;
 
     static __api__listExerciseQuestions(exercise_question_ids: number[],fields?:string[]): SearchReadAPI {

@@ -4,7 +4,7 @@ import { Submission } from './submission.model';
 import { ExamGrade } from './exam-grade.model';
 import { Exam } from './exam.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 
@@ -45,12 +45,15 @@ export class ExamMember extends BaseModel{
         this.group_name =  undefined;
     }
 
+    @UnserializeProperty()
     user: User;
+    @UnserializeProperty()
     submit: Submission;
     submission_id: number;
     exam_id: number;
     course_member_id: number;
     exam_name: string;
+    @UnserializeProperty()
     exam: Exam;
     user_id: number;
     class_id: number;
