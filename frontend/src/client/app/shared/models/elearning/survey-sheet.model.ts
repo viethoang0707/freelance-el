@@ -39,19 +39,19 @@ export class SurveySheet extends BaseModel{
     }
 
 
-    static __api__listTemplate(): SearchReadAPI {
-        return new SearchReadAPI(SurveySheet.Model, [],"[('survey_id','=',False)]");
+    static __api__listTemplate(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveySheet.Model, fields,"[('survey_id','=',False)]");
     }
 
-    static listTemplate( context:APIContext): Observable<any> {
-        return SurveySheet.search(context,[],"[('survey_id','=',False)]");
+    static listTemplate( context:APIContext,fields?:string[]): Observable<any> {
+        return SurveySheet.search(context,fields,"[('survey_id','=',False)]");
     }
 
-    static __api__listQuestions(question_ids: number[]): ListAPI {
-        return new ListAPI(SurveyQuestion.Model, question_ids,[]);
+    static __api__listQuestions(question_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(SurveyQuestion.Model, question_ids,fields);
     }
 
-    listQuestions( context:APIContext): Observable<any[]> {
-        return SurveyQuestion.array(context,this.question_ids);
+    listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
+        return SurveyQuestion.array(context,this.question_ids,fields);
     }
 }

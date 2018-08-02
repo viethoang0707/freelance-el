@@ -52,56 +52,29 @@ export class SurveyQuestion extends BaseModel {
         return question;
     }
 
-
-    static __api__listBySheet(sheetId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyQuestion.Model, [], "[('sheet_id','='," + sheetId + ")]");
+    static __api__populateQuestion(question_id: number, fields?:string[]): ListAPI {
+        return new ListAPI(Question.Model, [question_id], fields);
     }
 
-    static __api__countBySheet(sheetId: number): SearchCountAPI {
-        return new SearchCountAPI(SurveyQuestion.Model, "[('sheet_id','='," + sheetId + ")]");
-    }
-
-    static __api__countBySurvey(surveyId: number): SearchCountAPI {
-        return new SearchCountAPI(SurveyQuestion.Model, "[('survey_id','='," + surveyId + ")]");
-    }
-
-    static countBySurvey(context: APIContext, surveyId: number): Observable<any> {
-        return SurveyQuestion.count(context, "[('survey_id','='," + surveyId + ")]");
-    }
-
-
-    static __api__byQuestion(questionId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyQuestion.Model, [], "[('question_id','='," + questionId + ")]");
-    }
-
-
-    static listBySheet(context: APIContext, sheetId: number): Observable<any[]> {
-        return SurveyQuestion.search(context, [], "[('sheet_id','='," + sheetId + ")]");
-    }
-
-
-    static countBySheet(context: APIContext, sheetId: number): Observable<any> {
-        return SurveyQuestion.count(context, "[('sheet_id','='," + sheetId + ")]");
-    }
-
-    __api__populateQuestion(): ListAPI {
-        return new ListAPI(Question.Model, [this.question_id], []);
-    }
-
-    populateQuestion(context: APIContext): Observable<any> {
+    populateQuestion(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.question_id)
             return Observable.of(null);
-        return Question.get(context, this.question_id).do(question => {
+        if (!this.question.IsNew)
+            return Observable.of(this);
+        return Question.get(context, this.question_id,fields).do(question => {
             this.question = question;
         });
     }
 
-    static populateQuestions(context: APIContext, surveyQuestions: SurveyQuestion[]): Observable<any> {
+    static populateQuestions(context: APIContext, surveyQuestions: SurveyQuestion[],fields?:string[]): Observable<any> {
+        surveyQuestions = _.filter(surveyQuestions, (q:SurveyQuestion)=> {
+            return q.question.IsNew;
+        });
         var questionIds = _.pluck(surveyQuestions, 'question_id');
         questionIds = _.filter(questionIds, id => {
             return id;
         });
-        return Question.array(context, questionIds).do(questions => {
+        return Question.array(context, questionIds,fields).do(questions => {
             _.each(surveyQuestions, (surveyQuestion: SurveyQuestion) => {
                 surveyQuestion.question = _.find(questions, (question: Question) => {
                     return surveyQuestion.question_id == question.id;

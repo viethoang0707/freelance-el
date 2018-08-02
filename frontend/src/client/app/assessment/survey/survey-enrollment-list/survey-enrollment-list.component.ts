@@ -12,6 +12,8 @@ import { SurveyEnrollDialog } from '../enrollment-dialog/enrollment-dialog.compo
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
+const SURVEY_FIELDS = ['status', 'name', 'summary', 'start', 'end', 'create_date', 'write_date', 'review_state', 'supervisor_id'];
+
 @Component({
     moduleId: module.id,
     selector: 'survey-enrollment-list',
@@ -53,7 +55,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Survey.allForEnrollPublic(this).subscribe(surveys => {
+        Survey.allForEnrollPublic(this,SURVEY_FIELDS).subscribe(surveys => {
             this.surveys = surveys;
         })
     }

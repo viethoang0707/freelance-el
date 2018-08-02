@@ -17,7 +17,6 @@ import { BulkSearchCountAPI } from '../services/api/bulk-search-count.api';
 import { SearchReadAPI, SearchAllAPI } from '../services/api/search-read.api';
 import { BulkSearchReadAPI } from '../services/api/bulk-search-read.api';
 import { ExecuteAPI } from '../services/api/execute.api';
-import { Cache } from '../helpers/cache.utils';
 
 
 export abstract class BaseModel {
@@ -43,6 +42,21 @@ export abstract class BaseModel {
         this.write_uid__DESC__ = undefined;
     }
 
+    static fields(model:string):string[] {
+        var fieldArr = []; 
+        let obj:any = ModelRegister.Instance.instantiateObject(model);
+        Object.keys(obj).forEach((key) => {
+            if (MapUtils.isDate(obj[key]))
+                fieldArr.push(key);
+            else {
+                if (!obj[key] || !(obj[key] instanceof Object))
+                    fieldArr.push(key);
+                }
+
+        });
+        return fieldArr;
+    }
+
 
     get IsNew() {
         return this.id == null;
@@ -56,14 +70,14 @@ export abstract class BaseModel {
         return Reflect.getMetadata(MODEL_METADATA_KEY, this.constructor);
     }
 
-    __api__create():CreateAPI {
+    __api__create(fields?:string[]):CreateAPI {
         var model = this.Model;
-        return new CreateAPI(model, MapUtils.serialize(this));
+        return new CreateAPI(model, MapUtils.serialize(this,fields));
     }
 
-    __api__update():UpdateAPI {
+    __api__update(fields?:string[]):UpdateAPI {
         var model = this.Model;
-        return new UpdateAPI(model, this.id, MapUtils.serialize(this));
+        return new UpdateAPI(model, this.id, MapUtils.serialize(this,fields));
     }
 
     __api__delete():DeleteAPI {
@@ -71,9 +85,9 @@ export abstract class BaseModel {
         return new DeleteAPI(model, this.id);
     }
 
-    static __api__get(ids: any[]):ListAPI {
+    static __api__get(ids: any[], fields?:string[]):ListAPI {
         var model = this.Model;
-        return new ListAPI(model,ids, []);
+        return new ListAPI(model,ids,fields);
     }
 
 
@@ -87,9 +101,9 @@ export abstract class BaseModel {
         return new SearchReadAPI(model, fields, domain);
     }
 
-    static __api__all():SearchReadAPI {
+    static __api__all(fields?:string[]):SearchReadAPI {
         var model = this.Model;
-        return new SearchAllAPI(model);
+        return new SearchAllAPI(model,fields);
     }
 
     static __api__excute(method: string, paramsList: string[], paramsDict: any):ExecuteAPI {
@@ -161,7 +175,6 @@ export abstract class BaseModel {
                 var api = apiList[i];
                 var object =  MapUtils.deserializeModel(api.params["model"], resp[i]["record"]);
                 objects.push(object);
-                Cache.objectCreate(object);
             }
             return objects;
         });
@@ -175,7 +188,6 @@ export abstract class BaseModel {
             for(var i=0;i<apiList.length;i++) {
                 var api = apiList[i];
                 var object =  MapUtils.deserializeModel(api.params["model"], api.params["values"]);
-                Cache.objectUpdate(object);
             }
         });
     }
@@ -187,7 +199,6 @@ export abstract class BaseModel {
         return context.apiService.execute(this.__api__bulk_delete(apiList), token).do(()=> {
             for(var i=0;i<apiList.length;i++) {
                 var api = apiList[i];
-                Cache.objectDelete(api.params["model"], api.params["id"]);
             }
         });
     }
@@ -203,7 +214,6 @@ export abstract class BaseModel {
                 var model = api.params["model"];
                 _.each(objArr, jsonObj=> {
                     var object =  MapUtils.deserializeModel(model, jsonObj);
-                    Cache.objectUpdate(object);
                 });
             }
         });
@@ -229,7 +239,6 @@ export abstract class BaseModel {
                     var objects = _.map(objArr, jsonObj=> {
                         return MapUtils.deserializeModel(model, jsonObj);
                     });
-                    Cache.save(model,objects);
                 }
                 
             }
@@ -238,39 +247,32 @@ export abstract class BaseModel {
 
     static countAll(context:APIContext):Observable<any> {
         var model = this.Model;
-        if (Cache.hit(model))
-            return Observable.of(Cache.load(model)).map(records=> {
-                return records.length;
-            });
         return this.count(context, "[]");
     }
 
-    refresh(context: APIContext): Observable<any> {
+    populate(context: APIContext): Observable<any> {
         if (this.id) {
-            var getApi = new ListAPI(this.Model, [this.id], []);
+            var getApi = new ListAPI(this.Model, [this.id]);
             return context.apiService.execute(getApi, 
                 context.authService.LoginToken).do(items=> {
                 var object = MapUtils.deserializeModel(this.Model, items[0]);
                 Object.assign(this, object);
-                Cache.objectUpdate(this);
             });
         } else
             return Observable.of(this)
 
     }
 
-    save(context: APIContext): Observable<any> {
+    save(context: APIContext, fields?:string[]): Observable<any> {
         var token = context.authService.LoginToken;
         if (!this.id) {
-            return context.apiService.execute(this.__api__create(), token).map(data => {
+            return context.apiService.execute(this.__api__create(fields), token).map(data => {
                 var object = MapUtils.deserializeModel(this.Model, data.record);
                 Object.assign(this, object);
-                Cache.objectCreate(this);
                 return this;
             });
         } else {
-            return context.apiService.execute(this.__api__update(),token).do(() => {
-                Cache.objectUpdate(this);
+            return context.apiService.execute(this.__api__update(fields),token).do(() => {
             });
         }
     }  
@@ -278,7 +280,6 @@ export abstract class BaseModel {
     delete(context: APIContext): Observable<any> {
         var token = context.authService.LoginToken;
         return context.apiService.execute(this.__api__delete(), token).do(() => {
-            Cache.objectDelete(this.Model, this.id);
         });
     }
 
@@ -299,9 +300,9 @@ export abstract class BaseModel {
         return BaseModel.bulk_create(context, ...apiList);
     }
 
-    static updateArray(context: APIContext,objects:any): Observable<any> {
+    static updateArray(context: APIContext,objects:any,fields?:string[]): Observable<any> {
         var apiList = _.map(objects, (object:BaseModel) => {
-            return object.__api__update();
+            return object.__api__update(fields);
         });
         return BaseModel.bulk_update(context, ...apiList);
     }
@@ -335,44 +336,31 @@ export abstract class BaseModel {
         });
     }
 
-    static all(context: APIContext): Observable<any[]> {
+    static all(context: APIContext,fields?: string[]): Observable<any[]> {
         var model = this.Model;
-        if (Cache.hit(model))
-            return Observable.of(Cache.load(model))
-        return this.search(context, [], '[]').do(records=> {
-            Cache.save(model,records);
-        });
+        return this.search(context, fields, '[]');
     }
 
-    static get(context: APIContext, id: number): Observable<any> {
+    static get(context: APIContext, id: number,fields?: string[]): Observable<any> {
         if (!id)
             return Observable.of(null);
         var model = this.Model;
-        if (Cache.hit(model)) {
-            var records = Cache.load(model);
-            var record = _.find(records, obj=> {
-                return obj["id"]==id;
-            });
-            if (record)
-                return Observable.of(record);
-        }
-        return this.array(context,[id]).map(items => {
+        return this.array(context,[id],fields).map(items => {
             items = this.toArray(items);
             if (items && items.length) {
                 var record = items[0];
-                Cache.objectUpdate(items);
                 return record;
             } else
                 return null;
         });
     }
 
-    static array(context: APIContext, ids: number[]): Observable<any[]> {
+    static array(context: APIContext, ids: number[],fields?: string[]): Observable<any[]> {
         if (ids.length == 0)
             return Observable.of([]);
         var model = this.Model;
         var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__get(ids), token).map(objects => {
+        return context.apiService.execute(this.__api__get(ids,fields), token).map(objects => {
             return this.toArray(objects);
         });
     }

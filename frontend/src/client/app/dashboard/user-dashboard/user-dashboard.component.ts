@@ -45,6 +45,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     EXAM_STATUS = EXAM_STATUS;
 
     private conferenceMembers: ConferenceMember[];
+    private courseMembers: CourseMember[];
+    private examMembers: ExamMember[];
     private courses: Course[];
     private exams: Exam[];
     private header: any;
@@ -56,7 +58,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
     @ViewChild(CoursePublishDialog) publisiDialog: CoursePublishDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
-    
+
     constructor(private meetingSerivce: MeetingService, private router: Router) {
         super();
         this.conferenceMembers = [];
@@ -66,40 +68,48 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.header = SCHEDULER_HEADER;
     }
 
-    displayCourses(courses:Course[]) {
-        _.each(courses, (course:Course)=> {
-            course['student'] =  this.lmsProfileService.getCourseMemberByRole('student', course.id);
-            course['teacher'] =  this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
-            course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
-            course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
+    displayCourses(courses: Course[]) {
+        _.each(courses, (course: Course) => {
+            course['student'] = this.lmsProfileService.getCourseMemberByRole('student', course.id);
+            course['teacher'] = this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
+            course['editor'] = this.lmsProfileService.getCourseMemberByRole('editor', course.id);
+            course['supervisor'] = this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
             if (course['supervisor'])
-                course['teacher'] =  course['editor'] =  course['supervisor'];
+                course['teacher'] = course['editor'] = course['supervisor'];
         });
-        this.courses =  _.sortBy(courses, (course: Course) => {
+        this.courses = _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);
         });
-        var classList = this.lmsProfileService.MyClasses;
-        _.each(classList, (clazz:CourseClass)=> {
-            if (clazz.IsAvailable)
-                this.events.push({
-                    title: clazz.name,
-                    start: clazz.start,
-                    end: clazz.end,
-                    id: clazz.id,
-                    allDay: true
-                });
-        })
+        CourseMember.populateCourses(this, this.courseMembers).subscribe(() => {
+            var classList = _.map(this.courseMembers, (member: CourseMember) => {
+                return member.clazz;
+            });
+            classList = _.uniq(classList, (clazz: CourseClass) => {
+                return clazz.id;
+            });
+            _.each(classList, (clazz: CourseClass) => {
+                if (clazz.IsAvailable)
+                    this.events.push({
+                        title: clazz.name,
+                        start: clazz.start,
+                        end: clazz.end,
+                        id: clazz.id,
+                        allDay: true
+                    });
+            })
+        });
+
     }
 
     displayExams(exams: Exam[]) {
-        _.each(exams, (exam:Exam)=> {
-            exam['candidate'] =  this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
-            exam['editor'] =  this.lmsProfileService.getExamMemberByRole('editor', exam.id);
-            exam['supervisor'] =  this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
+        _.each(exams, (exam: Exam) => {
+            exam['candidate'] = this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
+            exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
+            exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
             if (exam['supervisor'])
-                exam['editor'] =  exam['supervisor'];
+                exam['editor'] = exam['supervisor'];
             if (exam.IsAvailable)
-                this.events.push( {
+                this.events.push({
                     title: exam.name,
                     start: exam.start,
                     end: exam.end,
@@ -123,12 +133,30 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            var courses = this.lmsProfileService.MyCourses;
-            var exams = this.lmsProfileService.MyExams;
+            this.courseMembers = this.lmsProfileService.MyCourseMembers;
+            CourseMember.populateCourses(this, this.courseMembers).subscribe(() => {
+                var courses = _.map(this.courseMembers, (member: CourseMember) => {
+                    return member.course;
+                });
+                courses = _.uniq(courses, (course: Course) => {
+                    return course.id;
+                })
+                this.displayCourses(courses);
+            });
+            this.examMembers = this.lmsProfileService.MyExamMembers;
+            ExamMember.populateExams(this, this.examMembers).subscribe(() => {
+                var exams = _.map(this.examMembers, (member: ExamMember) => {
+                    return member.exam;
+                });
+                exams = _.uniq(exams, (exam: Exam) => {
+                    return exam.id;
+                })
+                this.displayExams(exams);
+            });
             var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
-            this.displayCourses(courses);
-            this.displayExams(exams);
-            this.displayConferences(conferenceMembers);
+            ConferenceMember.populateConferences(this, conferenceMembers).subscribe(() => {
+                this.displayConferences(conferenceMembers);
+            });
         });
     }
 
@@ -173,17 +201,17 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         });
     }
 
-    publishExam(exam:Exam) {
+    publishExam(exam: Exam) {
         exam.sheet_status = 'published';
         exam.save(this).subscribe();
     }
 
-    unpublishExam(exam:Exam) {
+    unpublishExam(exam: Exam) {
         exam.sheet_status = 'unpublished';
         exam.save(this).subscribe();
     }
 
-    viewAnswer(exam:Exam, member: ExamMember) {
+    viewAnswer(exam: Exam, member: ExamMember) {
         this.answerSheetDialog.show(exam, member);
     }
 }

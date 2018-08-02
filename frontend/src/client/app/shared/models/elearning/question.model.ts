@@ -4,7 +4,7 @@ import { Model } from '../decorator';
 import { QuestionOption } from './option.model';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
-import { Cache } from '../../helpers/cache.utils';
+
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { CreateAPI } from '../../services/api/create.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
@@ -43,10 +43,10 @@ export class Question extends BaseModel{
     options: QuestionOption[];
     option_ids: number[];
 
-    static listByGroups(context:APIContext, groups:Group[]):Observable<any> {
+    static listByGroups(context:APIContext, groups:Group[],fields?:string[]):Observable<any> {
         var api = new BulkListAPI();
         _.each(groups, (group:Group)=> {
-            var subApi = Group.__api__listQuestions(group.question_ids)
+            var subApi = Group.__api__listQuestions(group.question_ids,fields)
             api.add(subApi);
         });
         return context.apiService.execute(api, context.authService.LoginToken).map(questionArrs => {
@@ -56,9 +56,9 @@ export class Question extends BaseModel{
             });
         });
     }
-    static listOptionsForArray(context:APIContext, questions: Question[]):Observable<any> {
+    static listOptionsForArray(context:APIContext, questions: Question[],fields?:string[]):Observable<any> {
         var apiList = _.map(questions,(question:Question)=> {
-            return Question.__api__listOptions(question.option_ids);
+            return Question.__api__listOptions(question.option_ids,fields);
         });
         return BaseModel.bulk_list(context, ...apiList)
         .map(jsonArr => {
@@ -84,12 +84,12 @@ export class Question extends BaseModel{
 
     }
 
-    static __api__listOptions(option_ids: number[]): ListAPI {
-        return new ListAPI(QuestionOption.Model, option_ids,[]);
+    static __api__listOptions(option_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(QuestionOption.Model, option_ids,fields);
     }
 
-    listOptions( context:APIContext): Observable<any[]> {
-        return QuestionOption.array(context,this.option_ids);
+    listOptions( context:APIContext,fields?:string[]): Observable<any[]> {
+        return QuestionOption.array(context,this.option_ids,fields);
     }
 
 }

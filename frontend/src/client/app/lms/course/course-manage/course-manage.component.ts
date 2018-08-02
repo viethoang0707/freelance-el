@@ -40,7 +40,8 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
 	private course: Course;
-	private members: CourseMember[];
+	private courseMember: CourseMember;
+	private classMembers: CourseMember[];
 	private selectedClass: CourseClass;
 	private classes: CourseClass[];
 	private faqs: CourseFaq[];
@@ -51,7 +52,6 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
-	private memberId: number;
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -72,16 +72,26 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
-			this.memberId = +params['memberId'];
-			this.course = this.lmsProfileService.courseById(courseId);
-			this.classes = this.lmsProfileService.classByCourseId(courseId);
-			this.lmsProfileService.getCourseContent(courseId).subscribe(content => {
-				this.syl = content["syllabus"];
-				this.faqs = content["faqs"];
-				this.materials = content["materials"];
-				this.units = content["units"];
-				this.displayCouseSyllabus();
-			});
+			var memberId = +params['memberId'];
+			this.courseMember = this.lmsProfileService.courseMemberById(courseId);
+			this.classMembers = this.lmsProfileService.classMembersByCourseId(courseId);
+			this.courseMember.populateCourse(this).subscribe(() => {
+				this.course = this.courseMember.course;
+				CourseMember.populateClasses(this, this.classMembers).subscribe(() => {
+					this.classes = _.map(this.classMembers, (member: CourseMember) => {
+						return member.clazz;
+					});
+					this.lmsProfileService.getCourseContent(this.course).subscribe(content => {
+						this.syl = content["syllabus"];
+						this.faqs = content["faqs"];
+						this.materials = content["materials"];
+						this.units = content["units"];
+						this.displayCouseSyllabus();
+					});
+				});
+			})
+
+
 		});
 	}
 
@@ -99,7 +109,10 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	manageClass(courseClass: CourseClass) {
-		this.router.navigate(['/lms/courses/manage/class', this.course.id, courseClass.id, this.memberId]);
+		var member = _.find(this.classMembers, (obj: CourseMember)=> {
+			return obj.class_id == courseClass.id && (obj.role == 'supervisor' || obj.role == 'teacher');
+		});
+		this.router.navigate(['/lms/courses/manage/class', this.course.id, courseClass.id, member.id]);
 	}
 
 	nodeSelect(event: any) {

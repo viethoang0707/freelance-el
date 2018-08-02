@@ -51,9 +51,8 @@ export class ExamSubmissionDialog extends BaseComponent {
         this.display = true;
         this.exam = exam;
         this.submission = submission;
-        ExamSetting.byExam(this,exam.id).subscribe(setting => {
-            if (setting)
-                this.setting = setting;
+        exam.populateSetting(this).subscribe(() => {
+            this.setting = exam.setting;
         });
     }
 
@@ -70,12 +69,12 @@ export class ExamSubmissionDialog extends BaseComponent {
         }
     }
 
-   handleImage(webcamImage: WebcamImage): void {
-    console.info(this.translateService.instant('received webcam image'), webcamImage);
-    this.submission.picture = webcamImage.imageAsBase64;
-    this.onConfirmReceiver.next();
-    this.hide();
-  }
+    handleImage(webcamImage: WebcamImage): void {
+        console.info(this.translateService.instant('received webcam image'), webcamImage);
+        this.submission.picture = webcamImage.imageAsBase64;
+        this.onConfirmReceiver.next();
+        this.hide();
+    }
 
     get triggerObservable(): Observable<void> {
         return this.trigger.asObservable();

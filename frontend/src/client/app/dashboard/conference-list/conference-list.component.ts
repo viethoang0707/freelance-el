@@ -31,15 +31,16 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
-            this.displayConferences(conferenceMembers);
+            ConferenceMember.populateConferences(this, conferenceMembers ).subscribe(()=> {
+                this.displayConferences(conferenceMembers);
+            })
         });
     }
 
     displayConferences(conferenceMembers: ConferenceMember[]) {
-        conferenceMembers = _.sortBy(conferenceMembers, (member: ConferenceMember) => {
+        this.conferenceMembers = _.sortBy(conferenceMembers, (member: ConferenceMember) => {
             return -this.lmsProfileService.getLastConferenceTimestamp(member);
         });
-        this.conferenceMembers = conferenceMembers;
     }
 
     joinConference(conference:Conference, member:ConferenceMember) {

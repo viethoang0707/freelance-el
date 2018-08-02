@@ -131,6 +131,7 @@ class SurveyMember(models.Model):
 	email = fields.Char(related='user_id.email', string='Email', readonly=True)
 	phone = fields.Char(related='user_id.phone', string='Phone', readonly=True)
 	group_id = fields.Many2one('res.groups',related='user_id.group_id', readonly=True)
+	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	date_register = fields.Datetime('Register date')
 	role = fields.Selection(
 		[('candidate', 'Candidate'), ('editor', 'Editor'),  ('supervisor', 'Supervisor')])
@@ -141,6 +142,7 @@ class SurveyMember(models.Model):
 	survey_link = fields.Text(string="Survey link")
 	survey_token = fields.Char(string="Token")
 	submission_id = fields.Many2one('etraining.survey_submission', string='Submission')
+	class_id = fields.Many2one('etraining.course_class', related="course_member_id.class_id", string='Class')
 
 	@api.model
 	def create(self, vals):

@@ -40,7 +40,12 @@
     <p-fieldset legend="{{'Options'|translate}}">
       <ul class="options-question">
         <li *ngFor="let option of options">
+          <div>
           <p-checkbox  binary="true" name="option_answer" [(ngModel)]="option.is_selected"></p-checkbox>
+          <span class="md-inputfield">
+            <input type="text" pInputText [(ngModel)]="option.content" name="option_content">
+          </span>
+        </div>
         </li>
       </ul>
     </p-fieldset>

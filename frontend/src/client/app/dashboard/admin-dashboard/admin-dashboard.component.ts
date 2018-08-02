@@ -19,6 +19,10 @@ import { CourseClass } from '../../shared/models/elearning/course-class.model';
 import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { WorkflowService } from '../../shared/services/workflow.service';
 
+const EXAM_FIELDS = ['name','start','end'];
+const CLASS_FIELDS = ['name','start','end'];
+
+
 @Component({
     moduleId: module.id,
     selector: 'admin-dashboard',
@@ -52,8 +56,8 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
         this.approvalTickets = [];
         BaseModel
         .bulk_search(this,
-            User.__api__searchManageExamsByDate(this.ContextUser.id, this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
-            User.__api__searchManageClassesByDate(this.ContextUser.id, this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now)),
+            User.__api__searchManageExamsByDate(this.ContextUser.id, this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now), EXAM_FIELDS),
+            User.__api__searchManageClassesByDate(this.ContextUser.id, this.dateUtils.firstDateOfMonth(now),this.dateUtils.lastDateOfMonth(now), CLASS_FIELDS),
             User.__api__searchPendingReviewTickets(this.ContextUser.id))
         .subscribe(jsonArr=> {
             this.exams = _.filter(Exam.toArray(jsonArr[0]), (exam:Exam)=> {

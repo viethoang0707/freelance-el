@@ -65,15 +65,18 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
             var memberId = +params['memberId'];
             var examId = +params['examId'];
             this.lmsProfileService.init(this).subscribe(()=> {
-                this.exam = this.lmsProfileService.examById(examId);
                 this.member = this.lmsProfileService.examMemberById(memberId);
-                this.loadScores();
+                this.member.populateExam(this).subscribe(()=> {
+                    this.exam = this.member.exam;
+                    this.loadScores();
+                });
             });
         });
     }
 
     showQuestionSheet() {
-        QuestionSheet.get(this, this.exam.sheet_id).subscribe((sheet: QuestionSheet) => {
+        this.exam.populateQuestionSheet(this).subscribe(() => {
+            var sheet = this.exam.sheet;
             if (!sheet || !sheet.finalized)
                 this.error(this.translateService.instant('The exam questions has not been set up'));
             else

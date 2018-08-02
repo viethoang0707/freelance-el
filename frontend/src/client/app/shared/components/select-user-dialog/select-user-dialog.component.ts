@@ -11,6 +11,9 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
+const USER_FIELDS = ['name', 'group_name', 'login'];
+
+
 @Component({
 	moduleId: module.id,
 	selector: 'select-user-dialog',
@@ -42,7 +45,7 @@ export class SelectUsersDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.selectedNode.data.listUsers(this).subscribe(users => {
+			this.selectedNode.data.listUsers(this, USER_FIELDS).subscribe(users => {
 				this.users = users;
 			});
 		}

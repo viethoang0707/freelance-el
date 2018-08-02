@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
-import { Cache } from '../../helpers/cache.utils';
+
 import { ListAPI } from '../../services/api/list.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
@@ -42,6 +42,7 @@ export class ExamMember extends BaseModel{
         this.grade =  undefined;
         this.user =  new User();
         this.submit =  new Submission();
+        this.group_name =  undefined;
     }
 
     user: User;
@@ -67,25 +68,31 @@ export class ExamMember extends BaseModel{
     group_id__DESC__: string;
     score: number;
     grade: string;
+    group_name: string;
 
-    static __api__populateExam(exam_id: number): ListAPI {
-        return new ListAPI(Exam.Model, [exam_id], []);
+    static __api__populateExam(exam_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(Exam.Model, [exam_id], fields);
     }
 
-    populateExam(context: APIContext): Observable<any> {
+    populateExam(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.exam_id)
             return Observable.of(null);
-        return Exam.get(context, this.exam_id).do(exam => {
+        if (!this.exam.IsNew)
+            return Observable.of(this);
+        return Exam.get(context, this.exam_id,fields).do(exam => {
             this.exam = exam;
         });
     }
 
-    static populateExams(context: APIContext, members: ExamMember[]): Observable<any> {
+    static populateExams(context: APIContext, members: ExamMember[],fields?:string[]): Observable<any> {
+        members = _.filter(members, (member:ExamMember)=> {
+            return member.exam.IsNew;
+        });
         var examIds = _.pluck(members,'exam_id');
         examIds = _.filter(examIds, id=> {
             return id;
         });
-        return Exam.array(context, examIds).do(exams=> {
+        return Exam.array(context, examIds,fields).do(exams=> {
             _.each(members, (member:ExamMember)=> {
                 member.exam =  _.find(exams, (exam:Exam)=> {
                     return member.exam_id == exam.id;
@@ -103,26 +110,30 @@ export class ExamMember extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__populateUser(user_id: number): ListAPI {
-        return new ListAPI(User.Model, [user_id], []);
+    static __api__populateUser(user_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(User.Model, [user_id], fields);
     }
 
-    populateUser(context: APIContext): Observable<any> {
+    populateUser(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        return User.get(context, this.user_id).do(user => {
+        if (!this.user.IsNew)
+            return Observable.of(this);
+        return User.get(context, this.user_id,fields).do(user => {
             this.user = user;
         });
     }
 
-    static __api__populateSubmission(submission_id: number): ListAPI {
-        return new ListAPI(Submission.Model, [submission_id], []);
+    static __api__populateSubmission(submission_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(Submission.Model, [submission_id], fields);
     }
 
-    populateSubmission(context: APIContext): Observable<any> {
+    populateSubmission(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        return Submission.get(context, this.submission_id).do(submit => {
+        if (!this.submit.IsNew)
+            return Observable.of(this);
+        return Submission.get(context, this.submission_id,fields).do(submit => {
             this.submit = submit;
         });
     }

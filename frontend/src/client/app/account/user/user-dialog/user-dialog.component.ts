@@ -20,15 +20,11 @@ export class UserDialog extends BaseDialog<User> {
 
 	private tree: TreeNode[];
 	private selectedNode: any;
-	private treeUtils: TreeUtils;
-	startDate: Date;
-	endDate: Date;
+	private treeUtils: TreeUtils;te;
 
 	constructor() {
 		super();
 		this.treeUtils = new TreeUtils();
-		this.startDate = new Date('1900-01-01');
-		this.endDate = new Date('2018-01-01');
 	}
 
 	nodeSelect(event: any) {

@@ -23,10 +23,10 @@ import { Competency } from '../../../shared/models/elearning/competency.model';
 export class GroupListComponent extends BaseComponent implements OnInit {
 
     @ViewChild(GroupDialog) groupDialog: GroupDialog;
-    private actionItems: MenuItem[]; 
+    private actionItems: MenuItem[];
     private treeUtils: TreeUtils;
 
-    constructor( private route: ActivatedRoute) {
+    constructor(private route: ActivatedRoute) {
         super();
         this.treeUtils = new TreeUtils();
     }
@@ -40,16 +40,16 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         this.category = this.route.snapshot.data['category']
         this.loadGroups();
         this.actionItems = [
-            {label: this.translateService.instant('Edit'), icon: 'ui-icon-mode-edit', command: (event) => this.edit()},
-            {label: this.translateService.instant('Delete'), icon: 'ui-icon-delete', command: (event) => this.delete()}
+            { label: this.translateService.instant('Edit'), icon: 'ui-icon-mode-edit', command: (event) => this.edit() },
+            { label: this.translateService.instant('Delete'), icon: 'ui-icon-delete', command: (event) => this.delete() }
         ];
     }
 
     add() {
-        var group =  new Group();
+        var group = new Group();
         group.category = this.category;
         this.groupDialog.show(group);
-        this.groupDialog.onCreateComplete.subscribe(()=> {
+        this.groupDialog.onCreateComplete.subscribe(() => {
             this.loadGroups();
         })
     }
@@ -61,52 +61,48 @@ export class GroupListComponent extends BaseComponent implements OnInit {
 
     confirmDelete() {
         this.confirm('Are you sure to delete ?', () => {
-            this.selectedNode.data.delete(this).subscribe(()=> {
+            this.selectedNode.data.delete(this).subscribe(() => {
                 this.loadGroups();
-            }, ()=> {
+            }, () => {
                 this.error('Permission denied');
             });
         });
     }
 
     delete() {
-        var subscription = null;
-        if(this.category == "course")
-            subscription =  this.selectedNode.data.listCourses(this);
-        if(this.category == "organization")
-            subscription =  this.selectedNode.data.listUsers(this);
-        if(this.category == "question")
-            subscription =  this.selectedNode.data.listQuestions(this);
-        if(this.category == "competency")
-            subscription =  this.selectedNode.data.listCompetencies(this);
-        if(subscription)
-        {
-            subscription.subscribe(items => {
-                if(items && items.length > 0){
-                    this.warn('The group is used by another content.');
-                }
-                else{
-                    this.confirmDelete();
-                }
-            });
+        var sub_item = 0;
+        if (this.category == "course")
+            sub_item = this.selectedNode.data.course_count;
+        if (this.category == "organization")
+            sub_item = this.selectedNode.data.user_count;
+        if (this.category == "question")
+            sub_item = this.selectedNode.data.question_count;
+        if (this.category == "competency")
+            sub_item = this.selectedNode.data.competency_count;
+        if (sub_item) {
+            this.error('The group is used by another content.');
         }
+        else {
+            this.confirmDelete();
+        }
+
     }
 
     loadGroups() {
         var subscription = null;
-        if(this.category == "course")
-            subscription =  Group.listCourseGroup(this);
-        if(this.category == "organization")
-            subscription =  Group.listUserGroup(this);
-        if(this.category == "question")
-            subscription =  Group.listQuestionGroup(this);
-        if(this.category == "competency")
-            subscription =  Group.listCompetencyGroup(this);
-        if (subscription)  
+        if (this.category == "course")
+            subscription = Group.listCourseGroup(this);
+        if (this.category == "organization")
+            subscription = Group.listUserGroup(this);
+        if (this.category == "question")
+            subscription = Group.listQuestionGroup(this);
+        if (this.category == "competency")
+            subscription = Group.listCompetencyGroup(this);
+        if (subscription)
             subscription.subscribe(groups => {
                 this.groups = groups;
                 this.tree = this.treeUtils.buildGroupTree(groups);
             });
     }
-    
+
 }

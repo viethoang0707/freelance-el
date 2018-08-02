@@ -272,6 +272,12 @@ class CourseClass(models.Model):
 	exam_ids = fields.One2many('etraining.exam','course_class_id', string='Course exams')
 	survey_ids = fields.One2many('etraining.survey','course_class_id', string='Course surveys')
 
+	member_count = fields.Integer( compute='_compute_member_count', string='Member count')
+
+	def _compute_member_count(self):
+		for clazz in self:
+			clazz.member_count =  len(clazz.member_ids)
+
 	@api.model
 	def create(self, vals):
 		course_class = super(CourseClass, self).create(vals)
@@ -385,6 +391,7 @@ class CourseMember(models.Model):
 	project_submission_ids = fields.One2many('etraining.project_submission','member_id', string='Project Submission')
 	exam_member_ids = fields.One2many('etraining.exam_member','course_member_id', string='Exam members')
 	survey_member_ids = fields.One2many('etraining.survey_member','course_member_id', string='Survey members')
+
 
 
 	@api.multi

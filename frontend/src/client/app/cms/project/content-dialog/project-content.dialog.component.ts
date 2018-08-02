@@ -64,8 +64,6 @@ export class ProjectContentDialog extends BaseDialog<Project> {
                     });
                 }
             },
-            () => {
-            }
         );
     }
 

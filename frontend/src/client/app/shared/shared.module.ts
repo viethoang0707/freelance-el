@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { CourseGuard } from './guards/course.guard';
+import { ClassGuard } from './guards/class.guard';
 import { ExamGuard } from './guards/exam.guard';
 import { SurveyGuard } from './guards/survey.guard';
 import { SyllabusGuard } from './guards/syllabus.guard';
@@ -362,6 +363,7 @@ export class ErpSharedModule {
                 AuthGuard,
                 AdminGuard,
                 CourseGuard,
+                ClassGuard,
                 ExamGuard,
                 SurveyGuard,
                 SyllabusGuard,

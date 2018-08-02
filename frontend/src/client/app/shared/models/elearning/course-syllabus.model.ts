@@ -1,4 +1,4 @@
-import { Cache } from '../../helpers/cache.utils';
+
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';

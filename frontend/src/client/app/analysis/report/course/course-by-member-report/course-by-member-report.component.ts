@@ -19,6 +19,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BaseModel } from '../../../../shared/models/base.model';
 
+const COURSE_MEMBER_FIELDS = ['role','course_id','course_code', 'course_name','name', 'login', 'course_mode', 'enroll_status', 'date_register'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'course-by-member-report',
@@ -65,7 +67,7 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 		var apiMemberList = [];
 		var apiLogList = [];
 		for (var i = 0; i < users.length; i++) {
-			apiMemberList.push(User.__api__listCourseMembers(users[i].course_member_ids));
+			apiMemberList.push(User.__api__listCourseMembers(users[i].course_member_ids,COURSE_MEMBER_FIELDS));
 			apiLogList.push(CourseLog.__api__userStudyActivity(users[i].id, null));
 		};
 		var records = [];

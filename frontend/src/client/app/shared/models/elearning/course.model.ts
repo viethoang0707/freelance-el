@@ -2,7 +2,7 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
 import { APIContext } from '../context';
-import { Cache } from '../../helpers/cache.utils';
+
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
 import * as moment from 'moment';
@@ -100,32 +100,20 @@ export class Course extends BaseModel{
         return true;
     }
 
-    static __api__allForEnroll(): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('review_state','=','approved')]");
+    static __api__allForEnroll(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, fields,"[('review_state','=','approved')]");
     }
 
-    static allForEnroll(context:APIContext):Observable<any> {
-        if (Cache.hit(Course.Model))
-            return Observable.of(Cache.load(Course.Model)).map(courses=> {
-                return _.filter(courses, (course:Course)=> {
-                    return course.review_state == 'approved' ;
-                });
-            });
-        return Course.search(context,[],"[('review_state','=','approved')]");
+    static allForEnroll(context:APIContext,fields?:string[]):Observable<any> {
+        return Course.search(context,fields,"[('review_state','=','approved')]");
     }
 
-    static __api__listByCompetency(competencyId: number): SearchReadAPI {
-        return new SearchReadAPI(Course.Model, [],"[('competency_id','=',"+competencyId+")]");
+    static __api__listByCompetency(competencyId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Course.Model, fields,"[('competency_id','=',"+competencyId+")]");
     }
 
-    static listByCompetency(context:APIContext, competencyId):Observable<any> {
-        if (Cache.hit(Course.Model))
-            return Observable.of(Cache.load(Course.Model)).map(courses=> {
-                return _.filter(courses, (course:Course)=> {
-                    return course.competency_id == competencyId;
-                });
-            });
-        return Course.search(context,[],"[('competency_id','=',"+competencyId+")]");
+    static listByCompetency(context:APIContext, competencyId,fields?:string[]):Observable<any> {
+        return Course.search(context,fields,"[('competency_id','=',"+competencyId+")]");
     }
 
     static __api__enroll(courseId: number, userIds: number[]): ExecuteAPI {
@@ -165,64 +153,66 @@ export class Course extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__listMembers(member_ids): ListAPI {
-        return new ListAPI(CourseMember.Model, member_ids,[]);
+    static __api__listMembers(member_ids,fields?:string[]): ListAPI {
+        return new ListAPI(CourseMember.Model, member_ids,fields);
     }
 
-    listMembers( context:APIContext): Observable<any[]> {
-        return CourseMember.array(context,this.member_ids);
+    listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return CourseMember.array(context,this.member_ids,fields);
     }
 
-    static __api__listClasses(class_ids: number[]): ListAPI {
-        return new ListAPI(CourseClass.Model, class_ids,[]);
+    static __api__listClasses(class_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(CourseClass.Model, class_ids,fields);
     }
 
-    listClasses( context:APIContext): Observable<any[]> {
-        return CourseClass.array(context,this.class_ids);
+    listClasses( context:APIContext,fields?:string[]): Observable<any[]> {
+        return CourseClass.array(context,this.class_ids,fields);
     }
 
-    static __api__listFaqs(faq_ids: number[]): ListAPI {
-        return new ListAPI(CourseFaq.Model, faq_ids,[]);
+    static __api__listFaqs(faq_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(CourseFaq.Model, faq_ids,fields);
     }
 
-    listFaqs( context:APIContext): Observable<any[]> {
-        return CourseFaq.array(context,this.faq_ids);
+    listFaqs( context:APIContext,fields?:string[]): Observable<any[]> {
+        return CourseFaq.array(context,this.faq_ids,fields);
     }
 
-    static __api__listMaterials(material_ids: number[]): ListAPI {
-        return new ListAPI(CourseMaterial.Model, material_ids,[]);
+    static __api__listMaterials(material_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(CourseMaterial.Model, material_ids,fields);
     }
 
-    listMaterials( context:APIContext): Observable<any[]> {
-        return CourseMaterial.array(context,this.class_ids);
+    listMaterials( context:APIContext,fields?:string[]): Observable<any[]> {
+        return CourseMaterial.array(context,this.class_ids,fields);
     }
 
-    static __api__listUnits(unit_ids: number[]): ListAPI {
-        return new ListAPI(CourseUnit.Model, unit_ids,[]);
+    static __api__listUnits(unit_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(CourseUnit.Model, unit_ids,fields);
     }
 
-    listUnits( context:APIContext): Observable<any[]> {
-        return CourseUnit.array(context,this.unit_ids);
+    listUnits( context:APIContext,fields?:string[]): Observable<any[]> {
+        return CourseUnit.array(context,this.unit_ids,fields);
     }
 
-    static __api__populateSyllabus(syllabus_id: number): ListAPI {
-        return new ListAPI(CourseSyllabus.Model, [syllabus_id], []);
+    static __api__populateSyllabus(syllabus_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(CourseSyllabus.Model, [syllabus_id], fields);
     }
 
-    populateSyllabus(context: APIContext): Observable<any> {
+    populateSyllabus(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.syllabus_id)
             return Observable.of(null);
-        return CourseSyllabus.get(context, this.syllabus_id).do(syl => {
+        if (!this.syl.IsNew)
+            return Observable.of(this);
+        return CourseSyllabus.get(context, this.syllabus_id,fields).do(syl => {
             this.syl = syl;
         });
     }
 
-    static __api__courseEditor(course_id: number): SearchReadAPI {
-        return new SearchReadAPI(CourseMember.Model, [],"[('role','=','editor'),('course_id','='," + course_id + ")]");
+    static __api__courseEditor(course_id: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model, fields,"[('role','=','editor'),('course_id','='," + course_id + ")]");
     }
 
-    courseEditor(context: APIContext): Observable<any> {
-        return CourseMember.single(context, [], "[('role','=','editor'),('course_id','='," + this.id + ")]");
+    courseEditor(context: APIContext,fields?:string[]): Observable<any> {
+        return CourseMember.single(context, fields, "[('role','=','editor'),('course_id','='," + this.id + ")]");
     }
 
 }

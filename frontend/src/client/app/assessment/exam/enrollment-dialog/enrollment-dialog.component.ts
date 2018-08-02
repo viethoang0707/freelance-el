@@ -15,6 +15,8 @@ import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 
+const EXAM_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 'status'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'exam-enrollment-dialog',
@@ -84,7 +86,7 @@ export class ExamEnrollDialog extends BaseComponent {
     }
 
     loadMembers() {
-        this.exam.listMembers(this).subscribe(members => {
+        this.exam.listMembers(this,EXAM_MEMBER_FIELDS).subscribe(members => {
             this.candidates = _.filter(members, (member) => {
                 return member.role == 'candidate';
             });

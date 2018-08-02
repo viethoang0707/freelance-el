@@ -4,7 +4,7 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
-import { Cache } from '../../helpers/cache.utils';
+
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
@@ -108,18 +108,12 @@ export class Exam extends BaseModel{
     }
 
 
-    static __api__allForEnrollPublic(): SearchReadAPI {
-        return new SearchReadAPI(Exam.Model, [],"[('review_state','=','approved'),('is_public','=',True)]");
+    static __api__allForEnrollPublic(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model, fields,"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
-    static allForEnrollPublic(context:APIContext):Observable<any> {
-        if (Cache.hit(Exam.Model))
-            return Observable.of(Cache.load(Exam.Model)).map(exams=> {
-                return _.filter(exams, (exam:Exam)=> {
-                    return exam.review_state == 'approved'  && exam.is_public;
-                });
-            });
-        return Exam.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]");
+    static allForEnrollPublic(context:APIContext,fields?:string[]):Observable<any> {
+        return Exam.search(context,fields,"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
     static __api__enroll(examId: number, userIds: number[]): SearchReadAPI {
@@ -131,12 +125,12 @@ export class Exam extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__listPublicExam(): SearchReadAPI {
-        return new SearchReadAPI(Exam.Model, [],"[('is_public','=',True)");
+    static __api__listPublicExam(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model, fields,"[('is_public','=',True)");
     }
 
-    static listPublicExam(context:APIContext):Observable<any> {
-        return Exam.search(context,[],"[('is_public','=',True)]");
+    static listPublicExam(context:APIContext,fields?:string[]):Observable<any> {
+        return Exam.search(context,fields,"[('is_public','=',True)]");
     }
 
     static __api__open(examId: number): ExecuteAPI {
@@ -166,80 +160,86 @@ export class Exam extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__listAnswers(answer_ids: number[]): ListAPI {
-        return new ListAPI(Answer.Model, answer_ids,[]);
+    static __api__listAnswers(answer_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Answer.Model, answer_ids,fields);
     }
 
-    listAnswers( context:APIContext): Observable<any[]> {
-        return Answer.array(context,this.answer_ids);
+    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Answer.array(context,this.answer_ids,fields);
     }
 
-    static __api__populateClass(course_class_id: number): ListAPI {
-        return new ListAPI(CourseClass.Model, [course_class_id], []);
+    static __api__populateClass(course_class_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(CourseClass.Model, [course_class_id], fields);
     }
 
-    populateClass(context: APIContext): Observable<any> {
+    populateClass(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.course_class_id)
             return Observable.of(null);
-        return CourseClass.get(context, this.course_class_id).do(clazz => {
+        if (!this.clazz.IsNew)
+            return Observable.of(this);
+        return CourseClass.get(context, this.course_class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
     }
 
-    static __api__populateSetting(setting_id: number): ListAPI {
-        return new ListAPI(ExamSetting.Model, [setting_id], []);
+    static __api__populateSetting(setting_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(ExamSetting.Model, [setting_id], fields);
     }
 
-    populateSetting(context: APIContext): Observable<any> {
+    populateSetting(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.setting_id)
             return Observable.of(null);
-        return ExamSetting.get(context, this.setting_id).do(setting => {
+        if (!this.setting.IsNew)
+            return Observable.of(this);
+        return ExamSetting.get(context, this.setting_id,fields).do(setting => {
             this.setting = setting;
         });
     }
 
-    static __api__populateQuestionSheet(sheet_id: number): ListAPI {
-        return new ListAPI(QuestionSheet.Model, [sheet_id], []);
+    static __api__populateQuestionSheet(sheet_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(QuestionSheet.Model, [sheet_id], fields);
     }
 
-    populateQuestionSheet(context: APIContext): Observable<any> {
+    populateQuestionSheet(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.sheet_id)
             return Observable.of(null);
-        return QuestionSheet.get(context, this.sheet_id).do(sheet => {
+        if (!this.sheet.IsNew)
+            return Observable.of(this);
+        return QuestionSheet.get(context, this.sheet_id,fields).do(sheet => {
             this.sheet = sheet;
         });
     }
 
-    static __api__listMembers(member_ids: number[]): ListAPI {
-        return new ListAPI(ExamMember.Model, member_ids,[]);
+    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(ExamMember.Model, member_ids,fields);
     }
 
-    listMembers( context:APIContext): Observable<any[]> {
-        return ExamMember.array(context,this.member_ids);
+    listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return ExamMember.array(context,this.member_ids,fields);
     }
 
-    static __api__listGrades(grade_ids: number[]): ListAPI {
-        return new ListAPI(ExamGrade.Model, grade_ids,[]);
+    static __api__listGrades(grade_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(ExamGrade.Model, grade_ids,fields);
     }
 
-    listGrades( context:APIContext): Observable<any[]> {
-        return ExamGrade.array(context,this.grade_ids);
+    listGrades( context:APIContext,fields?:string[]): Observable<any[]> {
+        return ExamGrade.array(context,this.grade_ids,fields);
     }
 
-    static __api__listCandidates(examId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamMember.Model, [],"[('exam_id','=',"+examId+"),('role','=','candidate')]");
+    static __api__listCandidates(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, fields,"[('exam_id','=',"+examId+"),('role','=','candidate')]");
     }
 
-    listCandidates( context:APIContext): Observable<any[]> {
-        return ExamMember.search(context,[],"[('exam_id','=',"+this.id+"),('role','=','candidate')]");
+    listCandidates( context:APIContext,fields?:string[]): Observable<any[]> {
+        return ExamMember.search(context,fields,"[('exam_id','=',"+this.id+"),('role','=','candidate')]");
     }
 
-    static __api__examEditor(examId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamMember.Model, [],"[('role','=','editor'),('exam_id','='," + examId + ")]");
+    static __api__examEditor(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, fields,"[('role','=','editor'),('exam_id','='," + examId + ")]");
     }
 
-    examEditor(context: APIContext): Observable<any> {
-        return ExamMember.single(context, [], "[('role','=','editor'),('exam_id','='," + this.id + ")]");
+    examEditor(context: APIContext,fields?:string[]): Observable<any> {
+        return ExamMember.single(context, fields, "[('role','=','editor'),('exam_id','='," + this.id + ")]");
     }
 
 

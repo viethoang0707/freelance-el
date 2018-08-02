@@ -66,7 +66,7 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 	EXAM_STATUS = EXAM_STATUS;
 	PROJECT_STATUS = PROJECT_STATUS;
 	SURVEY_STATUS = SURVEY_STATUS;
-	COURSE_STATUS =  COURSE_STATUS;
+	COURSE_STATUS = COURSE_STATUS;
 	COURSE_MODE = COURSE_MODE;
 
 	private course: Course;
@@ -109,28 +109,33 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
 			this.lmsProfileService.init(this).subscribe(() => {
-				this.course = this.lmsProfileService.courseById(courseId);
-				if (this.course.syllabus_status != 'published') {
-					this.error('Syllabus has not been published');
-					return;
-				}
 				this.member = this.lmsProfileService.courseMemberById(memberId);
 				this.certificate = this.lmsProfileService.certificateByMember(memberId);
-				this.lmsProfileService.getCourseContent(courseId).subscribe(content => {
-					this.syl = content["syllabus"];
-					this.faqs = content["faqs"];
-					this.materials = content["materials"];
-					this.units = content["units"];
+				this.member.populateCourse(this).subscribe(() => {
+					this.course = this.member.course;
+					if (this.course.syllabus_status != 'published') {
+						this.error('Syllabus has not been published');
+						return;
+					}
+					this.lmsProfileService.getCourseContent(this.course).subscribe(content => {
+						this.syl = content["syllabus"];
+						this.faqs = content["faqs"];
+						this.materials = content["materials"];
+						this.units = content["units"];
 						if (this.member.class_id) {
 							this.examMembers = this.lmsProfileService.examMembersByClassId(this.member.class_id);
-							this.conferenceMember = this.lmsProfileService.conferenceMemberByClass(this.member.class_id);
+							this.conferenceMember = this.lmsProfileService.conferenceMemberByClassId(this.member.class_id);
 							if (this.conferenceMember)
 								this.conference = this.conferenceMember.conference;
 							this.projectSubmits = this.lmsProfileService.projectSubmitsByMember(this.member.id);
-							this.lmsProfileService.getClassContent(this.member.class_id).subscribe(content => {
-								this.projects = content["projects"];
-							});
+							this.member.populateClass(this).subscribe(() => {
+								this.lmsProfileService.getClassContent(this.member.clazz).subscribe(content => {
+									this.projects = content["projects"];
+								});
+							})
+
 						}
+					});
 				});
 			});
 		});

@@ -12,6 +12,8 @@ import { ExamEnrollDialog } from '../enrollment-dialog/enrollment-dialog.compone
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
+const EXAM_FIELDS = ['status', 'name', 'supervisor_name', 'start', 'end', 'create_date', 'write_date', 'review_state', 'supervisor_id'];
+
 @Component({
     moduleId: module.id,
     selector: 'exam-enrollment-list',
@@ -49,7 +51,7 @@ export class ExamEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Exam.allForEnrollPublic(this).subscribe(exams=> {
+        Exam.allForEnrollPublic(this, EXAM_FIELDS).subscribe(exams=> {
             this.exams =  exams;
         });
     }

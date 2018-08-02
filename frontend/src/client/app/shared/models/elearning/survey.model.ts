@@ -5,7 +5,7 @@ import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
-import { Cache } from '../../helpers/cache.utils';
+
 import * as moment from 'moment';
 import { SERVER_DATETIME_FORMAT} from '../constants';
 import { ListAPI } from '../../services/api/list.api';
@@ -31,7 +31,7 @@ export class Survey extends BaseModel{
         this.supervisor_name = undefined;
         this.is_public =  undefined;
         this.review_state = undefined;
-        this.course_class_id = undefined;
+        this.class_id = undefined;
         this.sheet_id =  undefined;
         this.question_count = undefined;
         this.sheet_status = undefined;
@@ -47,7 +47,7 @@ export class Survey extends BaseModel{
     sheet_id: number;
     question_count: number;
     sheet_status: string;
-    course_class_id: number;
+    class_id: number;
     review_state:string;
     name:string;
     summary: string;
@@ -79,26 +79,20 @@ export class Survey extends BaseModel{
         return true;
     }
 
-    static __api__listPublicSurvey(): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model, [],"[('is_public','=',True)");
+    static __api__listPublicSurvey(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model, fields,"[('is_public','=',True)");
     }
 
-    static listPublicSurvey(context:APIContext):Observable<any> {
-        return Survey.search(context,[],"[('is_public','=',True)]");
+    static listPublicSurvey(context:APIContext,fields?:string[]):Observable<any> {
+        return Survey.search(context,fields,"[('is_public','=',True)]");
     }
 
-    static __api__allForEnrollPublic(): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model, [],"[('review_state','=','approved'),('is_public','=',True)]");
+    static __api__allForEnrollPublic(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model, fields,"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
-    static allForEnrollPublic(context:APIContext):Observable<any> {
-        if (Cache.hit(Survey.Model))
-            return Observable.of(Cache.load(Survey.Model)).map(surveys=> {
-                return _.filter(surveys, (survey:Survey)=> {
-                    return survey.review_state == 'approved' && survey.is_public;
-                });
-            });
-        return Survey.search(context,[],"[('review_state','=','approved'),('is_public','=',True)]");
+    static allForEnrollPublic(context:APIContext,fields?:string[]):Observable<any> {
+        return Survey.search(context,fields,"[('review_state','=','approved'),('is_public','=',True)]");
     }
 
     static __api__open(surveyId: number): ExecuteAPI {
@@ -137,50 +131,54 @@ export class Survey extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__listAnswers(answer_ids: number[]): ListAPI {
-        return new ListAPI(SurveyAnswer.Model, answer_ids,[]);
+    static __api__listAnswers(answer_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(SurveyAnswer.Model, answer_ids,fields);
     }
 
-    listAnswers( context:APIContext): Observable<any[]> {
-        return SurveyAnswer.array(context,this.answer_ids);
+    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return SurveyAnswer.array(context,this.answer_ids,fields);
     }
 
-    static __api__listMembers(member_ids: number[]): ListAPI {
-        return new ListAPI(SurveyMember.Model, member_ids,[]);
+    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(SurveyMember.Model, member_ids,fields);
     }
 
-    listMembers( context:APIContext): Observable<any[]> {
-        return SurveyMember.array(context,this.member_ids);
+    listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return SurveyMember.array(context,this.member_ids,fields);
     }
 
-    __api__populateClass(): ListAPI {
-        return new ListAPI(CourseClass.Model, [this.course_class_id], []);
+    static __api__populateClass(class_id:number,fields?:string[]): ListAPI {
+        return new ListAPI(CourseClass.Model, [class_id], fields);
     }
 
-    populateClass(context: APIContext): Observable<any> {
-        if (!this.course_class_id)
+    populateClass(context: APIContext,fields?:string[]): Observable<any> {
+        if (!this.class_id)
             return Observable.of(null);
-        return CourseClass.get(context, this.course_class_id).do(clazz => {
+        if (!this.clazz.IsNew)
+            return Observable.of(this);
+        return CourseClass.get(context, this.class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
     }
 
-    static __api__surveyEditor(surveyId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyMember.Model, [],"[('role','=','editor'),('survey_id','='," + surveyId + ")]");
+    static __api__surveyEditor(surveyId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model, fields,"[('role','=','editor'),('survey_id','='," + surveyId + ")]");
     }
 
-    surveyEditor(context: APIContext): Observable<any> {
-        return SurveyMember.single(context, [], "[('role','=','editor'),('survey_id','='," + this.id + ")]");
+    surveyEditor(context: APIContext,fields?:string[]): Observable<any> {
+        return SurveyMember.single(context, fields, "[('role','=','editor'),('survey_id','='," + this.id + ")]");
     }
 
-    static __api__populateQuestionSheet(sheet_id: number): ListAPI {
-        return new ListAPI(SurveySheet.Model, [sheet_id], []);
+    static __api__populateQuestionSheet(sheet_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(SurveySheet.Model, [sheet_id], fields);
     }
 
-    populateQuestionSheet(context: APIContext): Observable<any> {
+    populateQuestionSheet(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.sheet_id)
             return Observable.of(null);
-        return SurveySheet.get(context, this.sheet_id).do(sheet => {
+        if (!this.sheet.IsNew)
+            return Observable.of(this);
+        return SurveySheet.get(context, this.sheet_id,fields).do(sheet => {
             this.sheet = sheet;
         });
     }

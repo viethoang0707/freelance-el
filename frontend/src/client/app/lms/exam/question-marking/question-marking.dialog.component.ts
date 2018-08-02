@@ -48,24 +48,22 @@ export class QuestionMarkingDialog extends BaseComponent {
 		this.submit = submit;
 
 		BaseModel.bulk_list(this,
-			QuestionSheet.__api__byExam(this.submit.exam_id),
+			Exam.__api__populateQuestionSheet(this.submit.exam_id),
 			Submission.__api__listAnswers(this.submit.answer_ids))
 			.subscribe(jsonArr => {
-				var sheetList = QuestionSheet.toArray(jsonArr[0]);
+				var sheet = QuestionSheet.toArray(jsonArr[0])[0];
 				this.answers = Answer.toArray(jsonArr[1]);
-				if (sheetList.length) {
-					ExamQuestion.listBySheet(this, sheetList[0].id).subscribe(examQuestions => {
-						_.each(examQuestions, (question: ExamQuestion) => {
-							this.questions[question.question_id] = question;
-						});
-						this.markAnswers = _.filter(this.answers, (ans: Answer) => {
-							var question = _.find(examQuestions, (q: ExamQuestion) => {
-								return ans.question_id == q.question_id;
-							});
-							return question && question.type == 'ext';
-						});
+				sheet.listQuestions(this).subscribe(examQuestions => {
+					_.each(examQuestions, (question: ExamQuestion) => {
+						this.questions[question.question_id] = question;
 					});
-				}
+					this.markAnswers = _.filter(this.answers, (ans: Answer) => {
+						var question = _.find(examQuestions, (q: ExamQuestion) => {
+							return ans.question_id == q.question_id;
+						});
+						return question && question.type == 'ext';
+					});
+				});
 			});
 	}
 

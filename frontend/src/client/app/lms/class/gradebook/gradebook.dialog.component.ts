@@ -121,27 +121,32 @@ export class GradebookDialog extends BaseComponent {
         this.stats = [];
         this.member = member;
         this.lmsProfileService.init(this).subscribe(() => {
-            this.course = this.lmsProfileService.courseById(member.course_id);
-            this.exams = this.lmsProfileService.examsByClass(this.member.class_id);
-            this.lmsProfileService.getClassContent(this.member.class_id).subscribe(content => {
-                this.projects = content["projects"];
-                BaseModel.bulk_list(this,
-                    CourseMember.__api__populateCertificate(member.certificate_id),
-                    CourseMember.__api__listProjectSubmissions(member.project_submission_ids),
-                    CourseMember.__api__listExamRecords(member.exam_record_ids),
-                    CourseMember.__api__listExamMembers(member.exam_member_ids))
-                    .subscribe(jsonArr => {
-                        var certificates = Certificate.toArray(jsonArr[0]);
-                        if (certificates.length)
-                            this.certificate = certificates[0];
-                        this.projectSubmits = ProjectSubmission.toArray(jsonArr[1]);
-                        this.examRecords = ExamRecord.toArray(jsonArr[2]);
-                        this.examMembers = ExamMember.toArray(jsonArr[3]);
-                        CourseLog.memberStudyActivity(this, this.member.id, this.member.course_id)
-                            .subscribe(logs => {
-                                this.computeCourseStats(logs);
+            this.member.populateCourse(this).subscribe(() => {
+                this.member.populateClass(this).subscribe(() => {
+                    this.course = this.member.course;
+                    this.lmsProfileService.getClassContent(this.member.clazz).subscribe(content => {
+                        this.projects = content["projects"];
+                        this.exams = content["exams"];
+                        BaseModel.bulk_list(this,
+                            CourseMember.__api__populateCertificate(member.certificate_id),
+                            CourseMember.__api__listProjectSubmissions(member.project_submission_ids),
+                            CourseMember.__api__listExamRecords(member.exam_record_ids),
+                            CourseMember.__api__listExamMembers(member.exam_member_ids))
+                            .subscribe(jsonArr => {
+                                var certificates = Certificate.toArray(jsonArr[0]);
+                                if (certificates.length)
+                                    this.certificate = certificates[0];
+                                this.projectSubmits = ProjectSubmission.toArray(jsonArr[1]);
+                                this.examRecords = ExamRecord.toArray(jsonArr[2]);
+                                this.examMembers = ExamMember.toArray(jsonArr[3]);
+                                CourseLog.memberStudyActivity(this, this.member.id, this.member.course_id)
+                                    .subscribe(logs => {
+                                        this.computeCourseStats(logs);
+                                    });
                             });
                     });
+                });
+
             });
         });
     }

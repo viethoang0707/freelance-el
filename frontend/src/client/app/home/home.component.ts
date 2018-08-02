@@ -61,7 +61,6 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.router.navigate(['/dashboard/admin']);
         else
             this.router.navigate(['/dashboard/lms']);
-        BaseModel.bulk_search(this,Group.__api__all()).subscribe();
     }
 
     onWrapperClick() {

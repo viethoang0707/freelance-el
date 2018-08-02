@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-import { Cache } from '../../helpers/cache.utils';
+
 import { ListAPI } from '../../services/api/list.api';
 import { ExamQuestion } from './exam-question.model';
 
@@ -33,9 +33,6 @@ export class QuestionSheet extends BaseModel{
     status: string;
     question_ids: number[];
 
-    static __api__byExam(examId: number): SearchReadAPI {
-        return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',"+examId+")]");
-    }
     
     clone():QuestionSheet {
         var sheet = new QuestionSheet();
@@ -47,19 +44,19 @@ export class QuestionSheet extends BaseModel{
         return sheet;
     }
     
-    static __api__listTemplate(): SearchReadAPI {
-        return new SearchReadAPI(QuestionSheet.Model, [],"[('exam_id','=',False)]");
+    static __api__listTemplate(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(QuestionSheet.Model, fields,"[('exam_id','=',False)]");
     }
 
-    static listTemplate( context:APIContext): Observable<any> {
-        return QuestionSheet.search(context,[],"[('exam_id','=',False)]");
+    static listTemplate( context:APIContext,fields?:string[]): Observable<any> {
+        return QuestionSheet.search(context,fields,"[('exam_id','=',False)]");
     }
 
-    static __api__listQuestions(question_ids: number[]): ListAPI {
-        return new ListAPI(ExamQuestion.Model, question_ids,[]);
+    static __api__listQuestions(question_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(ExamQuestion.Model, question_ids,fields);
     }
 
-    listQuestions( context:APIContext): Observable<any[]> {
-        return ExamQuestion.array(context,this.question_ids);
+    listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
+        return ExamQuestion.array(context,this.question_ids,fields);
     }
 }

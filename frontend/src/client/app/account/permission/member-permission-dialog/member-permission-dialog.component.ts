@@ -13,6 +13,8 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 import { Subscription } from 'rxjs/Subscription';
 import { BaseModel } from '../../../shared/models/base.model';
 
+const USER_FIELDS = ['name','email','login','position','permission_id', 'gender', 'dob', 'group_id']
+
 @Component({
 	moduleId: module.id,
 	selector: 'member-permission-dialog',
@@ -47,7 +49,7 @@ export class MemberPermissionDialog extends BaseComponent {
         this.usersDialog.onSelectUsers.first().subscribe(users => {
             var updateApi = _.map(users, (user: User) => {
                 user.permission_id = this.permission.id;
-                return user.__api__update();
+                return user.__api__update(USER_FIELDS);
             });
             BaseModel.bulk_update(this, ...updateApi).subscribe(() => {
                 this.loadMembers();
@@ -60,14 +62,14 @@ export class MemberPermissionDialog extends BaseComponent {
             _.each(users, (user: User) => {
                 user.permission_id = null;
             });
-            User.updateArray(this, users).subscribe(() => {
+            User.updateArray(this, users,USER_FIELDS).subscribe(() => {
                 this.loadMembers();
             });
         });
     }
 
     loadMembers() {
-        User.listByPermission(this, this.permission.id).subscribe(users => {
+        User.listByPermission(this, this.permission.id,USER_FIELDS).subscribe(users => {
             this.users = users;
         });
     }

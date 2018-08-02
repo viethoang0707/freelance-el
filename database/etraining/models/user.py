@@ -22,8 +22,10 @@ class User(models.Model):
 	is_admin = fields.Boolean(default=False, string="Is admin")
 	course_member_ids = fields.One2many('etraining.course_member','user_id', string='Course member')
 	group_id = fields.Many2one('res.groups', string='Group')
+	group_name = fields.Char(related="group_id.name", string="Group Name")
 	group_code = fields.Char(related="group_id.code", string="Code")
 	permission_id = fields.Many2one('etraining.permission', string='Permission')
+	permission_name = fields.Char(related="permission_id.name", string="Permission Name")
 	name = fields.Char(related="partner_id.name", string="Name")
 	email = fields.Char(related="partner_id.email", string="Email")
 	phone = fields.Char(related="partner_id.phone", string="Phone")
@@ -61,4 +63,8 @@ class Permission(models.Model):
 	menu_access = fields.Text( string="Menu access")
 	user_ids = fields.One2many('res.users', 'permission_id',string='Users')
 	user_group_id = fields.Many2one('res.groups', string='Group')
+	user_count = fields.Integer( compute='_compute_user_count', string='User count')
 
+	def _compute_user_count(self):
+		for perm in self:
+			perm.user_count =  len(perm.user_ids)

@@ -12,7 +12,7 @@
         </p-toolbar>
         <p-organizationChart [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="onNodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)" styleClass="mt20 workflow">
             <ng-template let-node pTemplate="person">
-                <div class="node-header ui-corner-top">{{node.data.group_id__DESC__}}</div>
+                <div class="node-header ui-corner-top">{{node.data.group_name}}</div>
                 <div class="node-content">
                     <span class="profile-image-wrapper" *ngIf="viewMode=='detail'">
                         <img [src]='node.data.image | imageBase64' width="32" height="32" />

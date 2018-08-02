@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 import { ListAPI } from '../../services/api/list.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-import { Cache } from '../../helpers/cache.utils';
+
 import { ConferenceMember } from './conference-member.model';
 
 @Model('etraining.conference')
@@ -31,12 +31,12 @@ export class Conference extends BaseModel{
     name: string;
     member_ids: number[];
 
-    static __api__listMembers(member_ids: number[]): ListAPI {
-        return new ListAPI(ConferenceMember.Model, member_ids,[]);
+    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(ConferenceMember.Model, member_ids,fields);
     }
 
-    listMembers( context:APIContext): Observable<any[]> {
-        return ConferenceMember.array(context,this.member_ids);
+    listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return ConferenceMember.array(context,this.member_ids,fields);
     }
 
     static __api__open(conferenceId: number): ExecuteAPI {

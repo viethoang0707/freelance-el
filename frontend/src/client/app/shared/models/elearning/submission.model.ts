@@ -1,4 +1,4 @@
-import { Cache } from '../../helpers/cache.utils';
+
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model, FieldProperty } from '../decorator';
@@ -35,12 +35,12 @@ export class Submission extends BaseModel{
     answer_ids: number[];
     
 
-    static __api__listAnswers(answer_ids: number[]): ListAPI {
-        return new ListAPI(Answer.Model, answer_ids,[]);
+    static __api__listAnswers(answer_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Answer.Model, answer_ids,fields);
     }
 
-    listAnswers( context:APIContext): Observable<any[]> {
-        return Answer.array(context,this.answer_ids);
+    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Answer.array(context,this.answer_ids,fields);
     }
 
 }

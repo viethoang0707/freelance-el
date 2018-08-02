@@ -4,7 +4,7 @@ import { Model, FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ConferenceMember } from './conference-member.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-import { Cache } from '../../helpers/cache.utils';
+
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import { Course } from './course.model';
 import { Certificate } from './course-certificate.model';
@@ -105,36 +105,43 @@ export class CourseMember extends BaseModel {
         return CourseMember.count(context, "[('role','=','student')]")
     }
 
-    static __api__populateCertificate(certificate_id: number): ListAPI {
-        return new ListAPI(Certificate.Model, [certificate_id], []);
+    static __api__populateCertificate(certificate_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(Certificate.Model, [certificate_id],fields);
     }
 
-    populateCertificate(context: APIContext): Observable<any> {
+    populateCertificate(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.certificate_id)
             return Observable.of(null);
-        return Certificate.get(context, this.certificate_id).do(certificate => {
+        if (!this.certificate.IsNew)
+            return Observable.of(this);
+        return Certificate.get(context, this.certificate_id,fields).do(certificate => {
             this.certificate = certificate;
         });
     }
 
-    static __api__populateCourse(course_id: number): ListAPI {
-        return new ListAPI(Course.Model, [course_id], []);
+    static __api__populateCourse(course_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(Course.Model, [course_id],fields);
     }
 
-    populateCourse(context: APIContext): Observable<any> {
+    populateCourse(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.course_id)
             return Observable.of(null);
-        return Course.get(context, this.course_id).do(course => {
+        if (!this.course.IsNew)
+            return Observable.of(this);
+        return Course.get(context, this.course_id,fields).do(course => {
             this.course = course;
         });
     }
 
-    static populateCourses(context: APIContext, members: CourseMember[]): Observable<any> {
+    static populateCourses(context: APIContext, members: CourseMember[],fields?:string[]): Observable<any> {
+        members = _.filter(members, (member:CourseMember)=> {
+            return member.course.IsNew;
+        });
         var courseIds = _.pluck(members,'course_id');
         courseIds = _.filter(courseIds, id=> {
             return id;
         });
-        return Course.array(context, courseIds).do(courses=> {
+        return Course.array(context, courseIds,fields).do(courses=> {
             _.each(members, (member:CourseMember)=> {
                 member.course =  _.find(courses, (course:Course)=> {
                     return member.course_id == course.id;
@@ -143,34 +150,39 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static __api__complete_course(memberId: number, certificateId: number): ExecuteAPI {
+    static __api__complete_course(memberId: number, certificateId: number,fields?:string[]): ExecuteAPI {
         return new ExecuteAPI(CourseMember.Model, 'complete_course',{memberId:memberId, certificateId:certificateId}, null);
     }
 
-    completeCourse(context:APIContext, certificateId: number):Observable<any> {
+    completeCourse(context:APIContext, certificateId: number,fields?:string[]):Observable<any> {
         return context.apiService.execute(CourseMember.__api__complete_course(this.id, certificateId), 
             context.authService.LoginToken);
     }
 
 
-    static __api__populateClass(class_id: number): ListAPI {
-        return new ListAPI(CourseClass.Model, [class_id], []);
+    static __api__populateClass(class_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(CourseClass.Model, [class_id],fields);
     }
 
-    populateClass(context: APIContext): Observable<any> {
-        if (!this.course_id)
+    populateClass(context: APIContext,fields?:string[]): Observable<any> {
+        if (!this.class_id)
             return Observable.of(null);
-        return CourseClass.get(context, this.class_id).do(clazz => {
+        if (!this.clazz.IsNew)
+            return Observable.of(this);
+        return CourseClass.get(context, this.class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
     }
 
-    static populateClasses(context: APIContext, members: CourseMember[]): Observable<any> {
+    static populateClasses(context: APIContext, members: CourseMember[],fields?:string[]): Observable<any> {
+        members = _.filter(members, (member:CourseMember)=> {
+            return member.clazz.IsNew;
+        });
         var classIds = _.pluck(members,'class_id');
         classIds = _.filter(classIds, id=> {
             return id;
         });
-        return CourseClass.array(context, classIds).do(classList=> {
+        return CourseClass.array(context, classIds,fields).do(classList=> {
             _.each(members, (member:CourseMember)=> {
                 member.clazz =  _.find(classList, (clazz:CourseClass)=> {
                     return member.class_id == clazz.id;
@@ -179,24 +191,24 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static __api__populateConferenceMember(conference_member_id: number): ListAPI {
-        return new ListAPI(ConferenceMember.Model, [conference_member_id], []);
+    static __api__populateConferenceMember(conference_member_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(ConferenceMember.Model, [conference_member_id],fields);
     }
 
-    populateConferenceMember(context: APIContext): Observable<any> {
+    populateConferenceMember(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.conference_member_id)
             return Observable.of(null);
-        return ConferenceMember.get(context, this.conference_member_id).do(member => {
+        return ConferenceMember.get(context, this.conference_member_id,fields).do(member => {
             this.conference_member = member;
         });
     }
 
-    static populateConferenceMembers(context: APIContext, members: CourseMember[]): Observable<any> {
+    static populateConferenceMembers(context: APIContext, members: CourseMember[],fields?:string[]): Observable<any> {
         var memberIds = _.pluck(members,'conference_member_id');
         memberIds = _.filter(memberIds, id=> {
             return id;
         });
-        return ConferenceMember.array(context, memberIds).do(memberList=> {
+        return ConferenceMember.array(context, memberIds,fields).do(memberList=> {
             _.each(members, (member:CourseMember)=> {
                 member.conference_member =  _.find(memberList, (confMember:ConferenceMember)=> {
                     return member.conference_member_id == confMember.id;
@@ -205,48 +217,50 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static __api__populateUser(user_id: number): ListAPI {
-        return new ListAPI(User.Model, [user_id], []);
+    static __api__populateUser(user_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(User.Model, [user_id],fields);
     }
 
-    populateUser(context: APIContext): Observable<any> {
+    populateUser(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        return User.get(context, this.user_id).do(user => {
+        if (!this.user.IsNew)
+            return Observable.of(this);
+        return User.get(context, this.user_id,fields).do(user => {
             this.user = user;
         });
     }
 
-    static __api__listProjectSubmissions(project_submission_ids: number[]): SearchReadAPI {
-        return new ListAPI(ProjectSubmission.Model, project_submission_ids, []);
+    static __api__listProjectSubmissions(project_submission_ids: number[],fields?:string[]): SearchReadAPI {
+        return new ListAPI(ProjectSubmission.Model, project_submission_ids,fields);
     }
 
-    listProjectSubmissions(context: APIContext): Observable<any[]> {
-        return ProjectSubmission.array(context, this.project_submission_ids);
+    listProjectSubmissions(context: APIContext,fields?:string[]): Observable<any[]> {
+        return ProjectSubmission.array(context, this.project_submission_ids,fields);
     }
 
-    static __api__listExamRecords(exam_record_ids: number[]): SearchReadAPI {
-        return new ListAPI(ExamRecord.Model, exam_record_ids, []);
+    static __api__listExamRecords(exam_record_ids: number[],fields?:string[]): SearchReadAPI {
+        return new ListAPI(ExamRecord.Model, exam_record_ids,fields);
     }
 
-    listExamRecords(context: APIContext): Observable<any[]> {
-        return ExamRecord.array(context, this.exam_record_ids);
+    listExamRecords(context: APIContext,fields?:string[]): Observable<any[]> {
+        return ExamRecord.array(context, this.exam_record_ids,fields);
     }
 
-    static __api__listExamMembers(exam_member_ids: number[]): SearchReadAPI {
-        return new ListAPI(ExamMember.Model, exam_member_ids, []);
+    static __api__listExamMembers(exam_member_ids: number[],fields?:string[]): SearchReadAPI {
+        return new ListAPI(ExamMember.Model, exam_member_ids,fields);
     }
 
-    listExamMembers(context: APIContext): Observable<any[]> {
-        return ExamMember.array(context, this.exam_member_ids);
+    listExamMembers(context: APIContext,fields?:string[]): Observable<any[]> {
+        return ExamMember.array(context, this.exam_member_ids,fields);
     }
 
-    static __api__listSurveyMembers(survey_member_ids: number[]): SearchReadAPI {
-        return new ListAPI(SurveyMember.Model, survey_member_ids, []);
+    static __api__listSurveyMembers(survey_member_ids: number[],fields?:string[]): SearchReadAPI {
+        return new ListAPI(SurveyMember.Model, survey_member_ids,fields);
     }
 
-    listSurveyMembers(context: APIContext): Observable<any[]> {
-        return SurveyMember.array(context, this.survey_member_ids);
+    listSurveyMembers(context: APIContext,fields?:string[]): Observable<any[]> {
+        return SurveyMember.array(context, this.survey_member_ids,fields);
     }
 
 }

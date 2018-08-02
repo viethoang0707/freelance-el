@@ -92,7 +92,7 @@ export class SurveyStudyDialog extends BaseComponent {
 			this.submission.start = new Date();
 			BaseModel.bulk_list(this,
 				SurveySheet.__api__listQuestions(this.survey.question_ids),
-				this.submission.__api__listAnswers())
+				SurveySubmission.__api__listAnswers(this.submission.answer_ids))
 				.subscribe(jsonArr => {
 					this.surveyQuestions = SurveyQuestion.toArray(jsonArr[0]);
 					this.answers = SurveyAnswer.toArray(jsonArr[1]);

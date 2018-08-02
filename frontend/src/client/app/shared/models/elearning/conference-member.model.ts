@@ -5,7 +5,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-import { Cache } from '../../helpers/cache.utils';
 import { DeleteAPI } from '../../services/api/delete.api';
 import { BulkDeleteAPI } from '../../services/api/bulk-delete.api';
 import { ListAPI } from '../../services/api/list.api';
@@ -46,6 +45,37 @@ export class ConferenceMember extends BaseModel{
     conference: Conference;
     conference_status: string;
     group_id__DESC__: string;
+
+    static __api__populateConference(conf_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(Conference.Model, [conf_id],fields);
+    }
+
+    populateConference(context: APIContext,fields?:string[]): Observable<any> {
+        if (!this.conference_id)
+            return Observable.of(null);
+        if (!this.conference.IsNew)
+            return Observable.of(this);
+        return Conference.get(context, this.conference_id,fields).do(conf => {
+            this.conference = conf;
+        });
+    }
+
+    static populateConferences(context: APIContext, members: ConferenceMember[],fields?:string[]): Observable<any> {
+        members = _.filter(members, (member:ConferenceMember)=> {
+            return member.conference.IsNew;
+        });
+        var confIds = _.pluck(members,'conference_id');
+        confIds = _.filter(confIds, id=> {
+            return id;
+        });
+        return Conference.array(context, confIds,fields).do(conferences=> {
+            _.each(members, (member:ConferenceMember)=> {
+                member.conference =  _.find(conferences, (conference:Conference)=> {
+                    return member.conference_id == conference.id;
+                });
+            });
+        });
+    }
 
 
 }

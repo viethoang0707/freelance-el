@@ -44,7 +44,8 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 					});
 					if (selected)
 						option["is_selected"] = true;
-					option["is_selected"] = false;
+					else
+						option["is_selected"] = false;
 				}));
 			}
 		}

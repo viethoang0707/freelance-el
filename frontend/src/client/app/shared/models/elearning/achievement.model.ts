@@ -8,7 +8,6 @@ import { SERVER_DATETIME_FORMAT } from '../constants';
 import { Token } from '../cloud/token.model';
 import { MapUtils } from '../../helpers/map.utils';
 import * as _ from 'underscore';
-import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.achivement')
 export class Achivement extends BaseModel {
@@ -43,22 +42,16 @@ export class Achivement extends BaseModel {
 	competency_level_id: number;
 	competency_level_name: string;
 
-	static __api__searchByDateAndCompetency(competencyId: number, start: Date, end: Date): SearchReadAPI {
+	static __api__searchByDateAndCompetency(competencyId: number, start: Date, end: Date,fields?:string[]): SearchReadAPI {
 		var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-		return new SearchReadAPI(Achivement.Model, [], "[('date_acquire','>=','" + startDateStr + "'),('date_acquire','<=','" + endDateStr + "'),('competency_id','<='," + competencyId + ")]");
+		return new SearchReadAPI(Achivement.Model, fields, "[('date_acquire','>=','" + startDateStr + "'),('date_acquire','<=','" + endDateStr + "'),('competency_id','<='," + competencyId + ")]");
 	}
 
-	static searchByDateAndCompetency(context: APIContext, competencyId: number, start: Date, end: Date): Observable<any> {
-		if (Cache.hit(Achivement.Model))
-			return Observable.of(Cache.load(Achivement.Model)).map(skills => {
-				return _.filter(skills, (skill: Achivement) => {
-					return skill.date_acquire.getTime() >= start.getTime() && skill.date_acquire.getTime() <= end.getTime() && skill.competency_id == competencyId;
-				});
-			});
+	static searchByDateAndCompetency(context: APIContext, competencyId: number, start: Date, end: Date,fields?:string[]): Observable<any> {
 		var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
-		return Achivement.search(context, [], "[('date_acquire','>=','" + startDateStr + "'),('date_acquire','<=','" + endDateStr + "'),('competency_id','<='," + competencyId + ")]");
+		return Achivement.search(context, fields, "[('date_acquire','>=','" + startDateStr + "'),('date_acquire','<=','" + endDateStr + "'),('competency_id','<='," + competencyId + ")]");
 	}
 
 

@@ -12,6 +12,8 @@ import { TreeNode, SelectItem } from 'primeng/api';
 import { Group } from '../../shared/models/elearning/group.model';
 import { User } from '../../shared/models/elearning/user.model';
 
+const USER_FIELDS = ['name', 'group_name', 'image', 'is_admin', 'supervisor_id'];
+
 @Component({
     moduleId: module.id,
     selector: 'approval-tree',
@@ -62,7 +64,7 @@ export class ApprovalTreeComponent extends BaseComponent {
     }
 
     buildEscalationTree() {
-        User.listAllAdmin(this).subscribe(users => {
+        User.listAllAdmin(this, USER_FIELDS).subscribe(users => {
             this.tree = this.treeUtils.buildApprovalTree(users);
             this.selectedUser = null;
         });
@@ -71,7 +73,7 @@ export class ApprovalTreeComponent extends BaseComponent {
     clearSupervisor() {
         if (this.selectedUser) {
             this.selectedUser.supervisor_id = null;
-            this.selectedUser.save(this).subscribe(() => {
+            this.selectedUser.save(this,USER_FIELDS).subscribe(() => {
                 this.buildEscalationTree();
             });
         }
@@ -82,7 +84,7 @@ export class ApprovalTreeComponent extends BaseComponent {
             this.adminDialog.show();
         this.adminDialog.onSelectUsers.first().subscribe((admin: User) => {
             this.selectedUser.supervisor_id = admin.id;
-            this.selectedUser.save(this).subscribe(() => {
+            this.selectedUser.save(this, USER_FIELDS).subscribe(() => {
                 this.buildEscalationTree();
             });
         });

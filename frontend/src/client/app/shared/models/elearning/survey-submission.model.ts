@@ -30,11 +30,11 @@ export class SurveySubmission extends BaseModel{
     answer_ids: number[];
 
 
-    __api__listAnswers(): ListAPI {
-        return new ListAPI(SurveyAnswer.Model, this.answer_ids,[]);
+    static __api__listAnswers(answer_ids:number[], fields?:string[]): ListAPI {
+        return new ListAPI(SurveyAnswer.Model, answer_ids,[]);
     }
 
-    listAnswers( context:APIContext): Observable<any[]> {
+    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
         return SurveyAnswer.array(context,this.answer_ids);
     }
 }

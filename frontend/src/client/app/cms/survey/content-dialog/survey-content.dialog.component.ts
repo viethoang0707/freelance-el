@@ -53,7 +53,7 @@ export class SurveyContentDialog extends BaseComponent {
 		SurveySheet.get(this, this.survey.sheet_id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
-				SurveyQuestion.listBySheet(this, this.sheet.id).subscribe(surveyQuestions => {
+				this.sheet.listQuestions(this).subscribe(surveyQuestions => {
 					this.surveyQuestions = surveyQuestions;
 				});
 			}
@@ -107,7 +107,7 @@ export class SurveyContentDialog extends BaseComponent {
 		if (this.surveyQuestions.length == 0)
 			this.selectSheetDialog.show();
 		this.selectSheetDialog.onSelectSheet.first().subscribe((sheetTempl: SurveySheet) => {
-			SurveyQuestion.listBySheet(this, sheetTempl.id).subscribe(surveyQuestions => {
+			sheetTempl.listQuestions(this).subscribe(surveyQuestions => {
 				this.surveyQuestions = _.map(surveyQuestions, surveyQuestion => {
 					var newSurveyQuestion = surveyQuestion.clone();
 					newSurveyQuestion.sheet_id = this.sheet.id;

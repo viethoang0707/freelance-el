@@ -16,6 +16,8 @@ import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { BaseModel } from '../../../shared/models/base.model';
 
+const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position', 'phone', 'group_name', 'permission_name'];
+
 @Component({
     moduleId: module.id,
     selector: 'user-list',
@@ -51,7 +53,7 @@ export class UserListComponent extends BaseComponent {
     }
 
     loadUsers() {
-        User.all(this).subscribe(users => {
+        User.all(this,USER_FIELDS).subscribe(users => {
             this.users = users;
             this.displayUsers = users;
             this.selectedUsers = [];

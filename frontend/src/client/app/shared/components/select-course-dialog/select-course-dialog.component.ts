@@ -11,6 +11,8 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
+const COURSE_FIELDS = ['name', 'code'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'select-course-dialog',
@@ -42,7 +44,7 @@ export class SelectCoursesDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.selectedNode.data.listCourses(this).subscribe(courses => {
+			this.selectedNode.data.listCourses(this,COURSE_FIELDS).subscribe(courses => {
 				this.courses = courses;
 			});
 		}

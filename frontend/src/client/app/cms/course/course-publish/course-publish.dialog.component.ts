@@ -56,10 +56,10 @@ export class CoursePublishDialog extends BaseComponent {
 	show(course: Course) {
 		this.display = true;
 		this.course = course;
-		CourseSyllabus.get(this, course.syllabus_id).subscribe((syl) => {
-			this.syl = syl;
+		this.course.populateSyllabus(this).subscribe(()=> {
+			this.syl = this.course.syl;
 			this.buildCourseTree();
-		});
+		})
 	}
 
 	clearSelection() {

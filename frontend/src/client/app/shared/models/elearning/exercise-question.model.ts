@@ -1,4 +1,4 @@
-import { Cache } from '../../helpers/cache.utils';
+
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
@@ -48,20 +48,25 @@ export class ExerciseQuestion extends BaseModel{
     sheet_id: number;
     option_ids: number[];
 
-    populateQuestion(context: APIContext): Observable<any> {
+    populateQuestion(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.question_id)
             return Observable.of(null);
-        return Question.get(context, this.question_id).do(question => {
+        if (!this.question.IsNew)
+            return Observable.of(this);
+        return Question.get(context, this.question_id,fields).do(question => {
             this.question = question;
         });
     }
 
-    static populateQuestions(context: APIContext, exerciseQuestions: ExerciseQuestion[]): Observable<any> {
+    static populateQuestions(context: APIContext, exerciseQuestions: ExerciseQuestion[],fields?:string[]): Observable<any> {
+        exerciseQuestions = _.filter(exerciseQuestions, (q:ExerciseQuestion)=> {
+            return q.question.IsNew;
+        });
         var questionIds = _.pluck(exerciseQuestions,'question_id');
         questionIds = _.filter(questionIds, id=> {
             return id;
         });
-        return Question.array(context, questionIds).do(questions=> {
+        return Question.array(context, questionIds,fields).do(questions=> {
             _.each(exerciseQuestions, (exerciseQuestion:ExerciseQuestion)=> {
                 exerciseQuestion.question =  _.find(questions, (question:ExerciseQuestion)=> {
                     return exerciseQuestion.question_id == question.id;

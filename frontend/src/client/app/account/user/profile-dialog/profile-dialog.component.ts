@@ -19,6 +19,8 @@ import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 
+const COURSE_MEMBER_FIELDS = ['course_name', 'role', 'enroll_status', 'date_register'];
+const EXAM_MEMBER_FIELDS = ['exam_name', 'grade', 'enroll_status', 'date_register', 'status', 'exam_id', 'role'];
 
 @Component({
 	moduleId: module.id,
@@ -58,28 +60,28 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	ngOnInit() {
-		this.onShow.subscribe((object:User) => {
+		this.onShow.subscribe((object: User) => {
 			this.courseMembers = [];
 			this.skills = [];
 			this.examMembers = [];
 			BaseModel
-			.bulk_list(this,
-				Group.__api__listUserGroup(),
-				User.__api__listCourseMembers(object.course_member_ids),
-				User.__api__listCertificates(object.certificate_ids),
-				User.__api__listAchivements(object.achivement_ids),
-				User.__api__listExamMembers(object.exam_member_ids))
-			.subscribe((jsonArr)=> {
-				this.groups = Group.toArray(jsonArr[0]);
-				this.courseMembers =  CourseMember.toArray(jsonArr[1]);
-				this.certificates =  Certificate.toArray(jsonArr[2]);
-				this.skills =  Achivement.toArray(jsonArr[3]);
-				this.examMembers = ExamMember.toArray(jsonArr[4]);
-        this.displayExams();
-				this.displayGroupTree();
-				this.displayCourseHistory();
-				this.displaySkills();
-			});
+				.bulk_list(this,
+					Group.__api__listUserGroup(),
+					User.__api__listCourseMembers(object.course_member_ids, COURSE_MEMBER_FIELDS),
+					User.__api__listCertificates(object.certificate_ids),
+					User.__api__listAchivements(object.achivement_ids),
+					User.__api__listExamMembers(object.exam_member_ids, EXAM_MEMBER_FIELDS))
+				.subscribe((jsonArr) => {
+					this.groups = Group.toArray(jsonArr[0]);
+					this.courseMembers = CourseMember.toArray(jsonArr[1]);
+					this.certificates = Certificate.toArray(jsonArr[2]);
+					this.skills = Achivement.toArray(jsonArr[3]);
+					this.examMembers = ExamMember.toArray(jsonArr[4]);
+					this.displayExams();
+					this.displayGroupTree();
+					this.displayCourseHistory();
+					this.displaySkills();
+				});
 		});
 	}
 
@@ -91,31 +93,31 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	displayCourseHistory() {
-		this.courseMembers =  _.filter(this.courseMembers, (member: CourseMember) => {
+		this.courseMembers = _.filter(this.courseMembers, (member: CourseMember) => {
 			return member.role == 'student';
 		});
 		_.each(this.courseMembers, (member: CourseMember) => {
-			member["certificate"] = _.find(this.certificates, (cert:Certificate) => {
+			member["certificate"] = _.find(this.certificates, (cert: Certificate) => {
 				return cert.member_id == member.id;
 			});
 		});
 	}
 
 	displaySkills() {
-		this.skills.sort((s1:Achivement,s2:Achivement)=> {
-			return s1.date_acquire.getTime() - s2.date_acquire.getTime();
+		this.skills = _.sortBy(this.skills, (skill: Achivement) => {
+			return skill.date_acquire.getTime()
 		});
 	}
 
 
 	displayExams() {
-        this.examMembers = _.filter(this.examMembers , (member: ExamMember) => {
-            return (member.exam_id && member.status == 'active' && member.role == 'candidate');
-        });
-        this.examMembers.sort((member1, member2): any => {
-            return (member1.exam.create_date < member1.exam.create_date)
-        });
-    }
+		this.examMembers = _.filter(this.examMembers, (member: ExamMember) => {
+			return (member.exam_id && member.status == 'active' && member.role == 'candidate');
+		});
+		this.examMembers = _.sortBy(this.examMembers, (member: ExamMember) => {
+			return member.date_register.getTime()
+		});
+	}
 
 	printCertificate(certificate) {
 		this.certPrintDialog.show(certificate);

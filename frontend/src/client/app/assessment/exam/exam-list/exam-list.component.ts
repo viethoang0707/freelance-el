@@ -12,6 +12,9 @@ import { ExamEnrollDialog } from '../enrollment-dialog/enrollment-dialog.compone
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
+const EXAM_FIELDS = ['is_public', 'name', 'supervisor_name', 'start', 'end', 'supervisor_id', 'create_date', 'write_date', 'review_state'];
+
+
 @Component({
     moduleId: module.id,
     selector: 'exam-list',
@@ -70,10 +73,9 @@ export class ExamListComponent extends BaseComponent {
     }
 
     loadExams() {
-        Exam.listPublicExam(this).subscribe(exams => {
-            this.exams = exams;
-            this.exams.sort((exam1, exam2): any => {
-                return exam1.id - exam2.id;
+        Exam.listPublicExam(this, EXAM_FIELDS).subscribe(exams => {
+            this.exams = _.sortBy(exams, (exam:Exam) => {
+                return exam.id
             });
         });
     }
@@ -85,7 +87,7 @@ export class ExamListComponent extends BaseComponent {
         }
         this.workflowService.createExamReviewTicket(this, exam).subscribe(() => {
             this.success(this.translateService.instant('Request submitted'));
-            exam.refresh(this).subscribe();
+            exam.populate(this).subscribe();
         });
     }
 }

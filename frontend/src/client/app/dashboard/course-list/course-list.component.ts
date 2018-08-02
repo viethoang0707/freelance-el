@@ -46,8 +46,16 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            var courses = this.lmsProfileService.MyCourses;
-            this.displayCourses(courses);
+            this.courseMembers =  this.lmsProfileService.MyCourseMembers;
+            CourseMember.populateCourses(this, this.courseMembers).subscribe(()=> {
+                var courses = _.map(this.courseMembers, (member:CourseMember)=> {
+                    return member.course;
+                });
+                courses = _.uniq(courses, (course:Course)=> {
+                    return course.id;
+                })
+                this.displayCourses(courses);
+            });
         })
     }
 

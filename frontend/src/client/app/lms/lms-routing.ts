@@ -12,6 +12,7 @@ import { ExamGuard } from '../shared/guards/exam.guard';
 import { SyllabusGuard } from '../shared/guards/syllabus.guard';
 import { SurveyGuard } from '../shared/guards/survey.guard';
 import { RouterModule } from '@angular/router';
+import { ClassGuard } from '../shared/guards/class.guard';
 
 export const LMSRoutes: Routes = [
     {
@@ -52,7 +53,7 @@ export const LMSRoutes: Routes = [
                data: {
                  breadcrumb:'Manage class student'
                },
-               canActivate:[CourseGuard]
+               canActivate:[ClassGuard]
             },
             {
                path: "courses/view/:courseId",

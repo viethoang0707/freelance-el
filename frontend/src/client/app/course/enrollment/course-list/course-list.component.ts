@@ -14,6 +14,9 @@ import { TreeNode } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
 
+const COURSE_FIELDS = ['name','group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
+
+
 @Component({
     moduleId: module.id,
     selector: 'course-enrollment-list',
@@ -42,7 +45,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listCourseGroup(this).subscribe(groups => {
+        Group.listCourseGroup(this, COURSE_FIELDS).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         })
         this.loadCourses();
@@ -63,9 +66,8 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     loadCourses() {
         Course.allForEnroll(this).subscribe(courses => {
             this.courses = courses;
-            this.displayCourses = courses;
-            this.displayCourses.sort((course1, course2): any => {
-                return (course2.id - course1.id)
+            this.displayCourses = _.sortBy(courses, (course:Course)=> {
+                return course.id;
             });
         });
     }

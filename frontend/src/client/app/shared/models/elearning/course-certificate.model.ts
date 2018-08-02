@@ -3,7 +3,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-import { Cache } from '../../helpers/cache.utils';
 
 @Model('etraining.course_certificate')
 export class Certificate extends BaseModel{

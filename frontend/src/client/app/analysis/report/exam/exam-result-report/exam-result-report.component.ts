@@ -21,6 +21,7 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 import { BaseModel } from '../../../../shared/models/base.model';
 import { ExamRecord } from '../../../../shared/models/elearning/exam-record.model';
 
+const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'grade', 'score']
 
 @Component({
     moduleId: module.id,
@@ -58,7 +59,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
     render(exam: Exam) {
         this.clear();
-        exam.listCandidates(this).subscribe(members => {
+        exam.listCandidates(this, EXAM_MEMBER_FIELDS).subscribe(members => {
             ExamLog.listByExam(this, exam.id).subscribe(logs => {
                 this.records = this.generateReport(exam, logs, members);
             });
@@ -81,7 +82,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         var record = {};
         record["user_login"] = member.login;
         record["user_name"] = member.name;
-        record["user_group"] = member.group_id__DESC__;
+        record["user_group"] = member.group_name;
         record["score"] = member.score;
         record["grade"] = member.grade;
         if (logs && logs.length) {

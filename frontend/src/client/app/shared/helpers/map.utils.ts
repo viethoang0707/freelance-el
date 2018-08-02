@@ -119,18 +119,19 @@ export class MapUtils {
         return obj;
     }
 
-    static serialize(object:any):any {
+    static serialize(object:any,fields?:string[]):any {
         if (object === undefined) return {};
         let jsonObject:any = {};
         Object.keys(object).forEach((key) => {
-            if (MapUtils.isDate(object[key]))
-                jsonObject[key] = moment(object[key]).format(SERVER_DATETIME_FORMAT);
-            else {
-                jsonObject[key] = object[key];
-                if (jsonObject[key] && jsonObject[key] instanceof Object)
-                    jsonObject[key] = null;
+            if (!fields || key in fields) {
+                if (MapUtils.isDate(object[key]))
+                    jsonObject[key] = moment(object[key]).format(SERVER_DATETIME_FORMAT);
+                else {
+                    jsonObject[key] = object[key];
+                    if (jsonObject[key] && jsonObject[key] instanceof Object)
+                        jsonObject[key] = null;
+                }
             }
-
         });
         return jsonObject;
     }

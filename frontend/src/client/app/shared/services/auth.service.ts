@@ -8,7 +8,6 @@ import { Token } from '../models/cloud/token.model';
 import { MapUtils } from '../helpers/map.utils';
 import { ModelAPIService } from './api/model-api.service';
 import { AccountAPIService } from './api/account-api.service';
-import { Cache } from '../helpers/cache.utils';
 
 
 declare function escape(s:string): string;
@@ -98,7 +97,6 @@ export class AuthService {
     }
 
     logout() {
-        Cache.invalidateAll();
         this.clearUserProfile();
         this.clearToken();
         this.clearUserPermission();

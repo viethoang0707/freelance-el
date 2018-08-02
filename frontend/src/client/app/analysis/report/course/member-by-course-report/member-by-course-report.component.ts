@@ -18,6 +18,8 @@ import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { BaseModel } from '../../../../shared/models/base.model';
 
+const COURSE_MEMBER_FIELDS = ['role', 'enroll_status', 'date_register'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'member-by-course-report',
@@ -61,7 +63,7 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		var apiMemberList = [];
 		var apiLogList = [];
 		for (var i = 0; i < courses.length; i++) {
-			apiMemberList.push(Course.__api__listMembers(courses[i].member_ids));
+			apiMemberList.push(Course.__api__listMembers(courses[i].member_ids,COURSE_MEMBER_FIELDS));
 			apiLogList.push(CourseLog.__api__courseActivity(courses[i].id));
 		};
 		BaseModel.bulk_list(this, ...apiMemberList).subscribe(jsonMemberArr => {

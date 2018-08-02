@@ -36,6 +36,8 @@ export class SurveyMember extends BaseModel{
         this.survey_review_state =  undefined;
         this.user = new User();
         this.submit =  new SurveySubmission();
+        this.group_name = undefined;
+        this.class_id = undefined;
     }
 
     user: User;
@@ -56,43 +58,32 @@ export class SurveyMember extends BaseModel{
     group_id__DESC__: string;
     enroll_status: string;
     submit: SurveySubmission;
-
-    static __api__listBySurvey(surveyId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyMember.Model, [],"[('survey_id','=',"+surveyId+")]");
-    }
-
-    static __api__bySurveyAndUser(surveyId: number,userId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyMember.Model, [],"[('user_id','=',"+userId+"),('survey_id','=',"+surveyId+")]");
-    }
-
-
-    static listBySurvey( context:APIContext, surveyId: number): Observable<any[]> {
-        return SurveyMember.search(context,[],"[('survey_id','=',"+surveyId+")]");
-    }
-
-
-    static bySurveyAndUser( context:APIContext, userId: number, surveyId: number): Observable<any> {
-        return SurveyMember.single(context,[],"[('user_id','=',"+userId+"),('survey_id','=',"+surveyId+")]");
-    }
+    group_name: string;
+    class_id: number;
     
-    __api__populateSurvey(): ListAPI {
-        return new ListAPI(Survey.Model, [this.survey_id], []);
+    static __api__populateSurvey(survey_id: number, fields?:string[]): ListAPI {
+        return new ListAPI(Survey.Model, [survey_id], fields);
     }
 
-    populateSurvey(context: APIContext): Observable<any> {
+    populateSurvey(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.survey_id)
             return Observable.of(null);
-        return Survey.get(context, this.survey_id).do(survey => {
+        if (!this.survey.IsNew)
+            return Observable.of(this);
+        return Survey.get(context, this.survey_id,fields).do(survey => {
             this.survey = survey;
         });
     }
 
-    static populateSurveys(context: APIContext, members: SurveyMember[]): Observable<any> {
+    static populateSurveys(context: APIContext, members: SurveyMember[],fields?:string[]): Observable<any> {
+        members = _.filter(members, (member:SurveyMember)=> {
+            return member.survey.IsNew;
+        });
         var surveyIds = _.pluck(members,'survey_id');
         surveyIds = _.filter(surveyIds, id=> {
             return id;
         });
-        return Survey.array(context, surveyIds).do(surveys=> {
+        return Survey.array(context, surveyIds,fields).do(surveys=> {
             _.each(members, (member:SurveyMember)=> {
                 member.survey =  _.find(surveys, (survey:Survey)=> {
                     return member.survey_id == survey.id;
@@ -101,35 +92,30 @@ export class SurveyMember extends BaseModel{
         });
     }
 
-    static __api__surveyEditor(surveyId: number): SearchReadAPI {
-        return new SearchReadAPI(SurveyMember.Model, [],"[('role','=','editor'),('survey_id','='," + surveyId + ")]");
+    static __api__populateUser(user_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(User.Model, [user_id], fields);
     }
 
-    static surveyEditor(context: APIContext, surveyId: number): Observable<any> {
-        return SurveyMember.single(context, [], "[('role','=','editor'),('survey_id','='," + surveyId + ")]");
-    }
-
-
-    static __api__populateUser(user_id: number): ListAPI {
-        return new ListAPI(User.Model, [user_id], []);
-    }
-
-    populateUser(context: APIContext): Observable<any> {
+    populateUser(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        return User.get(context, this.user_id).do(user => {
+        if (!this.user.IsNew)
+            return Observable.of(this);
+        return User.get(context, this.user_id,fields).do(user => {
             this.user = user;
         });
     }
 
-    static __api__populateSubmission(submission_id: number): ListAPI {
-        return new ListAPI(SurveySubmission.Model, [submission_id], []);
+    static __api__populateSubmission(submission_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(SurveySubmission.Model, [submission_id], fields);
     }
 
-    populateSubmission(context: APIContext): Observable<any> {
+    populateSubmission(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        return SurveySubmission.get(context, this.submission_id).do(submit => {
+        if (!this.submit.IsNew)
+            return Observable.of(this);
+        return SurveySubmission.get(context, this.submission_id,fields).do(submit => {
             this.submit = submit;
         });
     }

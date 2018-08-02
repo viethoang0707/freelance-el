@@ -15,6 +15,9 @@ import * as _ from 'underscore';
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 
+const SURVEY_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 'status'];
+
+
 @Component({
 	moduleId: module.id,
 	selector: 'survey-enrollment-dialog',
@@ -71,7 +74,7 @@ export class SurveyEnrollDialog extends BaseComponent {
     }
 
     loadMembers() {
-        this.survey.listMembers(this).subscribe(members => {
+        this.survey.listMembers(this,SURVEY_MEMBER_FIELDS).subscribe(members => {
             this.members = members;
         });
     }

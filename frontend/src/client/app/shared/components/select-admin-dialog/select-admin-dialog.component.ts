@@ -11,6 +11,8 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
+const USER_FIELDS = ['name', 'group_name', 'is_admin'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'select-admin-dialog',
@@ -21,12 +23,12 @@ export class SelectAdminDialog extends BaseComponent {
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	private selectedAdmin: User;
-	private users:User[];
+	private users: User[];
 	private display: boolean;
 	private treeUtils: TreeUtils;
 
 	private onSelectUsersReceiver: Subject<any> = new Subject();
-    onSelectUsers:Observable<any> =  this.onSelectUsersReceiver.asObservable();
+	onSelectUsers: Observable<any> = this.onSelectUsersReceiver.asObservable();
 
 	constructor() {
 		super();
@@ -40,8 +42,8 @@ export class SelectAdminDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.selectedNode.data.listUsers(this).subscribe(users => {
-				this.users = _.filter(users, (user=> {
+			this.selectedNode.data.listUsers(this,USER_FIELDS).subscribe(users => {
+				this.users = _.filter(users, (user => {
 					return user.is_admin;
 				}));
 			});

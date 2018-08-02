@@ -60,7 +60,7 @@ export class ExamContentDialog extends BaseComponent {
 		QuestionSheet.get(this, this.exam.sheet_id).subscribe(sheet => {
 			if (sheet) {
 				this.sheet = sheet;
-				ExamQuestion.listBySheet(this, this.sheet.id).subscribe(examQuestions => {
+				this.sheet.listQuestions(this).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
 				});
@@ -126,7 +126,7 @@ export class ExamContentDialog extends BaseComponent {
 		if (this.sheet && !this.sheet.finalized)
 			this.selectSheetDialog.show();
 		this.selectSheetDialog.onSelectSheet.first().subscribe((sheetTempl: QuestionSheet) => {
-			ExamQuestion.listBySheet(this, sheetTempl.id).subscribe(examQuestions => {
+			sheetTempl.listQuestions(this).subscribe(examQuestions => {
 				this.examQuestions = _.map(examQuestions, examQuestion => {
 					return examQuestion.clone();
 				});

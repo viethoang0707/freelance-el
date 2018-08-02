@@ -6,7 +6,7 @@ import { ExamQuestion } from './exam-question.model';
 import { Exam } from './exam.model';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-import { Cache } from '../../helpers/cache.utils';
+
 import { ListAPI } from '../../services/api/list.api';
 import { ProjectSubmission } from './project-submission.model';
 
@@ -52,12 +52,12 @@ export class Project extends BaseModel{
         return true;
     }
 
-    static __api__listSubmissios(submission_ids: number[]): ListAPI {
-        return new ListAPI(ProjectSubmission.Model, submission_ids,[]);
+    static __api__listSubmissios(submission_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(ProjectSubmission.Model, submission_ids,fields);
     }
 
-    listSubmissions( context:APIContext): Observable<any[]> {
-        return ProjectSubmission.array(context,this.submission_ids);
+    listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
+        return ProjectSubmission.array(context,this.submission_ids,fields);
     }
 
 }

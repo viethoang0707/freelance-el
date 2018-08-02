@@ -12,6 +12,9 @@ import { SurveyEnrollDialog } from '../enrollment-dialog/enrollment-dialog.compo
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
+const SURVEY_FIELDS = ['status', 'name', 'summary', 'start', 'end', 'create_date', 'write_date', 'review_state', 'supervisor_id'];
+
+
 @Component({
     moduleId: module.id,
     selector: 'survey-list',
@@ -76,10 +79,9 @@ export class SurveyListComponent extends BaseComponent {
     }
 
     loadSurveys() {
-        Survey.listPublicSurvey(this).subscribe(surveys => {
-            this.surveys = surveys;
-            this.surveys.sort((s1, s2): any => {
-                return (s1.id < s2.id);
+        Survey.listPublicSurvey(this,SURVEY_FIELDS).subscribe(surveys => {
+            this.surveys = _.sortBy(surveys, (survey:Survey)=> {
+                return survey.id;
             });
         });
     }
@@ -91,7 +93,7 @@ export class SurveyListComponent extends BaseComponent {
         }
         this.workflowService.createSurveyReviewTicket(this, survey).subscribe(() => {
             this.success(this.translateService.instant('Request submitted'));
-            survey.refresh(this).subscribe();
+            survey.populate(this).subscribe();
         });
     }
 }

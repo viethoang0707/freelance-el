@@ -44,13 +44,13 @@
                             {{'Phone'|translate}}
                             <p-sortIcon [field]="'phone'"></p-sortIcon>
                         </th>
-                        <th [pSortableColumn]="'group_id__DESC__'">
+                        <th [pSortableColumn]="'group_name'">
                             {{'Department'|translate}}
-                            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                            <p-sortIcon [field]="'group_name'"></p-sortIcon>
                         </th>
-                        <th [pSortableColumn]="'permission_id__DESC__'">
+                        <th [pSortableColumn]="'permission_name'">
                             {{'Permission'|translate}}
-                            <p-sortIcon [field]="'permission_id__DESC__'"></p-sortIcon>
+                            <p-sortIcon [field]="'permission_name'"></p-sortIcon>
                         </th>
                         <th [pSortableColumn]="'banned'">
                             {{'Banned'|translate}}
@@ -68,8 +68,8 @@
                         <td class="showformb" style="text-align: left;">{{user.email}}</td>
                         <td class="showformb">{{user.position}}</td>
                         <td class="showformb">{{user.phone}}</td>
-                        <td class="showformb">{{user.group_id__DESC__}}</td>
-                        <td class="showformb">{{user.permission_id__DESC__}}</td>
+                        <td class="showformb">{{user.group_name}}</td>
+                        <td class="showformb">{{user.permission_name}}</td>
                         <td>{{user.banned}}</td>
                     </tr>
                 </ng-template>

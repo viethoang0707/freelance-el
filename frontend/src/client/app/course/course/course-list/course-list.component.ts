@@ -13,6 +13,8 @@ import { TreeNode } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
 
+const COURSE_FIELDS = ['name','group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
+
 @Component({
     moduleId: module.id,
     selector: 'course-list',
@@ -72,6 +74,7 @@ export class CourseListComponent extends BaseComponent {
         this.courseDialog.onUpdateComplete.subscribe(() => {
             this.checkDuplicate(course);
         });
+
     }
 
     requestReview(course: Course) {
@@ -81,7 +84,7 @@ export class CourseListComponent extends BaseComponent {
         }
         this.workflowService.createCourseReviewTicket(this, course).subscribe(() => {
             this.success('Request submitted');
-            course.refresh(this).subscribe();
+            course.populate(this).subscribe();
         });
     }
 
@@ -99,13 +102,11 @@ export class CourseListComponent extends BaseComponent {
     }
 
     loadCourses() {
-        Course.all(this).subscribe(courses => {
-            this.courses = courses;
-            this.displayCourses = courses;
-            this.displayCourses.sort((course1, course2): any => {
-                return (course2.id - course1.id)
-            });
-
+        Course.all(this, COURSE_FIELDS).subscribe(courses => {
+            courses = _.sortBy(courses, (course: Course) => {
+                return -course.id
+            })
+            this.courses = this.displayCourses = courses;
         });
     }
 

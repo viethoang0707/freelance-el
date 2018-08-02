@@ -59,11 +59,6 @@ export class LMSProfileService {
   private myExamRecords: ExamRecord[];
   private myProjectSubmits: ProjectSubmission[];
   private myExamSubmits: Submission[];
-  private myCourses: Course[];
-  private myExams: Exam[];
-  private myCourseClasses: CourseClass[];
-  private mySurveys: Survey[];
-  private myConferences: Conference[];
   private myCertificates: Certificate[];
   private courseContent: any;
   private classContent: any;
@@ -94,7 +89,7 @@ export class LMSProfileService {
 
 
   init(context: APIContext): Observable<any> {
-    this.context =  context;
+    this.context = context;
     if (this.initialized)
       return Observable.of([]);
     var user = context.authService.UserProfile;
@@ -103,83 +98,32 @@ export class LMSProfileService {
       User.__api__listExamMembers(user.exam_member_ids),
       User.__api__listConferenceMembers(user.conference_member_ids),
       User.__api__listSurveyMembers(user.survey_member_ids),
-      User.__api__listCertificates(user.certificate_ids)
-    )
-      .flatMap(jsonArray => {
-        this.myCourseMembers = _.filter(CourseMember.toArray(jsonArray[0]), (member: CourseMember) => {
-          return isFinite(parseInt(member.course_id + "")) && member.status == 'active' && member.course_review_state =='approved';
-        });
-        this.myClassMembers = _.filter(this.myCourseMembers, (member: CourseMember) => {
-          return isFinite(parseInt(member.class_id + ""));
-        });
-        this.myExamMembers = _.filter(ExamMember.toArray(jsonArray[1]), (member: ExamMember) => {
-          return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state =='approved';
-        });
-        this.myConferenceMembers = _.filter(ConferenceMember.toArray(jsonArray[2]), (member: ConferenceMember) => {
-          return isFinite(parseInt(member.conference_id + "")) && member.conference_status == 'open' && member.is_active;
-        });
-        this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
-          return isFinite(parseInt(member.survey_id + ""))  && member.survey_review_state =='approved';
-        });
-        this.myCertificates = Certificate.toArray(jsonArray[4]);
-        if (this.myCourseMembers.length == 0 && this.myExamMembers.length == 0
-          && this.myConferenceMembers.length == 0 && this.mySurveyMembers.length == 0 
-          && this.myCertificates.length == 0) {
-          this.initialized = true;
-          return Observable.of([]);
-        }
-        var classIds = _.pluck(this.myClassMembers, 'class_id');
-        var courseIds = _.pluck(this.myCourseMembers, 'course_id');
-        var examIds = _.pluck(this.myExamMembers, 'exam_id');
-        var surveyIds = _.pluck(this.mySurveyMembers, 'survey_id');
-        var conferenceIds = _.pluck(this.myConferenceMembers, 'conference_id');
-        return BaseModel.bulk_list(context,
-          Course.__api__get(courseIds),
-          CourseClass.__api__get(classIds),
-          Exam.__api__get(examIds),
-          Conference.__api__get(conferenceIds),
-          Survey.__api__get(surveyIds),
-          User.__api__listExamRecords(user.exam_record_ids),
-          User.__api__listSubmissions(user.submission_ids),
-          User.__api__listProjectSubmissions(user.project_submission_ids)
-        ).flatMap(jsonArr1 => {
-          this.myCourses = Course.toArray(jsonArr1[0]);
-          _.each(this.myCourseMembers, (member: CourseMember) => {
-            member.course = _.find(this.myCourses, (course: Course) => {
-              return member.course_id == course.id;
-            });
-          });
-          this.myCourseClasses = CourseClass.toArray(jsonArr1[1]);
-          _.each(this.myClassMembers, (member: CourseMember) => {
-            member.clazz = _.find(this.myCourseClasses, (clazz: CourseClass) => {
-              return member.class_id == clazz.id;
-            });
-          });
-          this.myExams = Exam.toArray(jsonArr1[2]);
-          _.each(this.myExamMembers, (member: ExamMember) => {
-            member.exam = _.find(this.myExams, (exam: Exam) => {
-              return member.exam_id == exam.id;
-            });
-          });
-          this.myConferences = Conference.toArray(jsonArr1[3]);
-          _.each(this.myConferenceMembers, (member: ConferenceMember) => {
-            member.conference = _.find(this.myConferences, (conf: Conference) => {
-              return member.conference_id == conf.id;
-            });
-          });
-          this.mySurveys = Survey.toArray(jsonArr1[4]);
-          _.each(this.mySurveyMembers, (member: SurveyMember) => {
-            member.survey = _.find(this.mySurveys, (survey: Survey) => {
-              return member.survey_id == survey.id;
-            });
-          });
-          this.myExamRecords = ExamRecord.toArray(jsonArr1[5]);
-          this.myExamSubmits = Submission.toArray(jsonArr1[6]);
-          this.myProjectSubmits = ProjectSubmission.toArray(jsonArr1[7]);
-          this.initialized = true;
-          return Observable.of(null);
-        });
+      User.__api__listCertificates(user.certificate_ids),
+      User.__api__listExamRecords(user.exam_record_ids),
+      User.__api__listSubmissions(user.submission_ids),
+      User.__api__listProjectSubmissions(user.project_submission_ids)
+    ).map(jsonArray => {
+      this.myCourseMembers = _.filter(CourseMember.toArray(jsonArray[0]), (member: CourseMember) => {
+        return isFinite(parseInt(member.course_id + "")) && member.status == 'active' && member.course_review_state == 'approved';
       });
+      this.myClassMembers = _.filter(this.myCourseMembers, (member: CourseMember) => {
+        return isFinite(parseInt(member.class_id + ""));
+      });
+      this.myExamMembers = _.filter(ExamMember.toArray(jsonArray[1]), (member: ExamMember) => {
+        return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state == 'approved';
+      });
+      this.myConferenceMembers = _.filter(ConferenceMember.toArray(jsonArray[2]), (member: ConferenceMember) => {
+        return isFinite(parseInt(member.conference_id + "")) && member.conference_status == 'open' && member.is_active;
+      });
+      this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
+        return isFinite(parseInt(member.survey_id + "")) && member.survey_review_state == 'approved';
+      });
+      this.myCertificates = Certificate.toArray(jsonArray[4]);
+      this.myExamRecords = ExamRecord.toArray(jsonArray[5]);
+      this.myExamSubmits = Submission.toArray(jsonArray[6]);
+      this.myProjectSubmits = ProjectSubmission.toArray(jsonArray[7]);
+      this.initialized = true;
+    });
   }
 
   get MyCourseMembers() {
@@ -198,154 +142,116 @@ export class LMSProfileService {
     return this.myConferenceMembers;
   }
 
-  get MyCourses() {
-    return this.myCourses;
-  }
-
-  get MyClasses() {
-    return this.myCourseClasses;
-  }
-
-  get MyExams() {
-    return this.myExams;
-  }
-
-  get MySurveys() {
-    return this.mySurveys;
-  }
 
   get MyExamRecords() {
     return this.myExamRecords;
   }
 
-  get MyConferences() {
-    return this.myConferences;
-  }
-
-  courseById(id:number) {
-    return _.find(this.myCourses, (course:Course)=> {
-      return course.id ==  id;
+  courseMemberById(id: number) {
+    return _.find(this.myCourseMembers, (member: CourseMember) => {
+      return member.id == id;
     });
   }
 
-  classById(id:number) {
-    return _.find(this.myCourseClasses, (courseClass:CourseClass)=> {
-      return courseClass.id == id;
+  examMemberById(id: number) {
+    return _.find(this.myExamMembers, (member: ExamMember) => {
+      return member.id == id;
     });
   }
 
-  examById(id:number) {
-    return _.find(this.myExams, (exam:Exam)=> {
-      return exam.id ==  id;
+  classMembersByCourseId(courseId: number) {
+    return _.filter(this.myClassMembers, (member: CourseMember) => {
+      return member.course_id == courseId;
     });
   }
 
-  classByCourseId(courseId:number) {
-    return _.filter(this.myCourseClasses, (courseClass:CourseClass)=> {
-      return courseClass.course_id == courseId;
+  surveyMembersByClassId(classId: number) {
+    return _.filter(this.mySurveyMembers, (member: SurveyMember) => {
+      return member.class_id == classId;
     });
   }
 
-  courseMemberById(id:number) {
-    return _.find(this.myCourseMembers, (member:CourseMember)=> {
-      return member.id ==  id;
+  surveyMemberById(id: number) {
+    return _.find(this.mySurveyMembers, (member: SurveyMember) => {
+      return member.id == id;
     });
   }
 
-  examMemberById(id:number) {
-    return _.find(this.myExamMembers, (member:ExamMember)=> {
-      return member.id ==  id;
+  examMembersByClassId(classId: number) {
+    return _.filter(this.myExamMembers, (member: ExamMember) => {
+      return member.class_id == classId;
     });
   }
 
-  surveyMemberById(id:number) {
-    return _.find(this.mySurveyMembers, (member:SurveyMember)=> {
-      return member.id ==  id;
-    });
-  }
-
-  examMembersByClassId(classId:number) {
-    return _.filter(this.myExamMembers, (member:ExamMember)=> {
-      return member.class_id ==  classId;
-    });
-  }
-
-  conferenceMemberByClass(classId:number) {
-    return _.find(this.myConferenceMembers, (member:ConferenceMember)=> {
-      return member.class_id ==  classId;
-    });
-  }
-
-  examsByClass(classId: number) {
-    return _.filter(this.myExams, (exam: Exam)=> {
-      return exam.course_class_id == classId;
-    });
-  }
-
-  surveysByClass(classId: number) {
-    return _.filter(this.mySurveys, (survey: Survey)=> {
-      return survey.course_class_id == classId;
+  conferenceMemberByClassId(classId: number) {
+    return _.find(this.myConferenceMembers, (member: ConferenceMember) => {
+      return member.class_id == classId;
     });
   }
 
   examRecordsByMember(memberId: number) {
-    return _.filter(this.myExamRecords, (record: ExamRecord)=> {
+    return _.filter(this.myExamRecords, (record: ExamRecord) => {
       return record.member_id == memberId;
     });
   }
 
   projectSubmitsByMember(memberId: number) {
-    return _.filter(this.myProjectSubmits, (submit: ProjectSubmission)=> {
+    return _.filter(this.myProjectSubmits, (submit: ProjectSubmission) => {
       return submit.member_id == memberId;
     });
   }
 
   examSubmitsByMember(memberId: number) {
-    return _.filter(this.myExamSubmits, (submit: Submission)=> {
+    return _.filter(this.myExamSubmits, (submit: Submission) => {
       return submit.member_id == memberId;
     });
   }
 
   certificateByMember(memberId: number) {
-    return _.find(this.myCertificates, (cert: Certificate)=> {
+    return _.find(this.myCertificates, (cert: Certificate) => {
       return cert.member_id == memberId;
     });
   }
 
-  getCourseContent(courseId:number):Observable<any> {
-    if (this.courseContent[courseId])
-      return Observable.of(this.courseContent[courseId]);
-    var course = this.courseById(courseId);
+  getCourseContent(course: Course): Observable<any> {
+    if (this.courseContent[course.id])
+      return Observable.of(this.courseContent[course.id]);
     return BaseModel.bulk_list(this.context,
-      Course  .__api__populateSyllabus(course.syllabus_id),
+      Course.__api__populateSyllabus(course.syllabus_id),
       Course.__api__listUnits(course.unit_ids),
       Course.__api__listFaqs(course.faq_ids),
       Course.__api__listMaterials(course.material_ids)
     )
       .map(jsonArray => {
         var content = {};
-        content["syllabus"] =  CourseSyllabus.toArray(jsonArray[0])[0];
-        content["units"] =  CourseUnit.toArray(jsonArray[1]);
-        content["faqs"] =  CourseFaq.toArray(jsonArray[2]);
-        content["materials"] =  CourseMaterial.toArray(jsonArray[3]);
-        this.courseContent[courseId] =  content;
+        content["syllabus"] = CourseSyllabus.toArray(jsonArray[0])[0];
+        content["units"] = CourseUnit.toArray(jsonArray[1]);
+        content["faqs"] = CourseFaq.toArray(jsonArray[2]);
+        content["materials"] = CourseMaterial.toArray(jsonArray[3]);
+        this.courseContent[course.id] = content;
         return content;
       });
   }
 
-  getClassContent(classId:number):Observable<any> {
-    if (this.classContent[classId])
-      return Observable.of(this.classContent[classId]);
-    var clazz = this.classById(classId);
-    return clazz.listProjects(this.context).map(projects => {
-      var content = {};
-        content["projects"] =  projects;
-        this.classContent[classId] =  content;
+  getClassContent(clazz: CourseClass): Observable<any> {
+    if (this.classContent[clazz.id])
+      return Observable.of(this.classContent[clazz.id]);
+    return BaseModel.bulk_list(this.context,
+      CourseClass.__api__listProjects(clazz.project_ids),
+      CourseClass.__api__listExams(clazz.exam_ids),
+      CourseClass.__api__listSurveys(clazz.survey_ids)
+    )
+      .map(jsonArray => {
+        var content = {};
+        content["projects"] = Project.toArray(jsonArray[0])[0];
+        content["exams"] = Exam.toArray(jsonArray[1]);
+        content["surveys"] = Survey.toArray(jsonArray[2]);
+        this.classContent[clazz.id] = content;
         return content;
-    });
+      });
   }
 
-  clearClassContent(classId: number) {
+  invalidateClassContent(classId: number) {
     delete this.classContent[classId];
   }
 
@@ -353,93 +259,6 @@ export class LMSProfileService {
     delete this.courseContent[courseId];
   }
 
-  addProject(project:Project) {
-    var content = this.classContent[project.class_id];
-    if (content)
-      content["projects"].push(project);
-  }
-
-  removeProject(project:Project) {
-    var content = this.classContent[project.class_id];
-    if (content)
-      content["projects"] = _.reject(content["projects"], (obj:Project)=> {
-      return obj.id == project.id;
-    });
-  }
-
-  addExam(exam:Exam):Observable<any> {
-    this.myExams.push(exam);
-    return this.context.authService.UserProfile.listExamMembers(this.context).do(members=> {
-      this.myExamMembers = _.filter(members, (member: ExamMember) => {
-          return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state =='approved';
-        });
-    });
-    
-  }
-
-  addSurvey(survey:Survey):Observable<any> {
-    this.mySurveys.push(survey);
-    return this.context.authService.UserProfile.listSurveyMembers(this.context).do(members=> {
-      this.mySurveyMembers = _.filter(members, (member: SurveyMember) => {
-          return isFinite(parseInt(member.survey_id + ""))  && member.survey_review_state =='approved';
-        });
-    });
-  }
-
-  addCourseFaq(faq:CourseFaq) {
-    var content = this.courseContent[faq.course_id];
-    if (content)
-      content["faqs"].push(faq);
-  }
-
-  addCourseMaterial(material:CourseMaterial) {
-    var content = this.courseContent[material.course_id];
-    if (content)
-      content["materials"].push(material);
-  }
-
-  addUnit(unit:CourseUnit) {
-    var content = this.courseContent[unit.course_id];
-    if (content)
-      content["units"].push(unit);
-  }
-  
-
-  removeExam(exam:Exam) {
-    this.myExams = _.reject(this.myExams, (obj:Exam)=> {
-      return obj.id == exam.id;
-    });
-  }
-
-  removeSurvey(survey:Survey) {
-    this.mySurveys = _.reject(this.mySurveys, (obj:Survey)=> {
-      return obj.id == survey.id;
-    });
-  }
-
-  removeCourseFaq(faq:CourseFaq) {
-    var content = this.courseContent[faq.course_id];
-    if (content)
-      content["faqs"] = _.reject(content["faqs"], (obj:CourseFaq)=> {
-      return obj.id == faq.id;
-    });
-  }
-
-  removeCourseMaterial(material:CourseMaterial) {
-    var content = this.courseContent[material.course_id];
-    if (content)
-      content["materials"] = _.reject(content["materials"], (obj:CourseMaterial)=> {
-      return obj.id == material.id;
-    });
-  }
-
-  removeUnit(unit:CourseUnit) {
-    var content = this.courseContent[unit.course_id];
-    if (content)
-      content["units"] = _.reject(content["units"], (obj:CourseUnit)=> {
-        return obj.id == unit.id;
-      });
-  }
 
   getLastCourseTimestamp(course: Course) {
     var timestamp = course.create_date.getTime();
@@ -458,9 +277,15 @@ export class LMSProfileService {
     return timestamp;
   }
 
-  getCourseMemberByRole(role:string, courseId: number) {
-    return _.find(this.myCourseMembers, (member:CourseMember)=> {
+  getCourseMemberByRole(role: string, courseId: number) {
+    return _.find(this.myCourseMembers, (member: CourseMember) => {
       return member.role == role && member.course_id == courseId;
+    });
+  }
+
+  getClassMemberByRole(role: string, classId: number) {
+    return _.find(this.myClassMembers, (member: CourseMember) => {
+      return member.role == role && member.class_id == classId;
     });
   }
 
@@ -479,8 +304,8 @@ export class LMSProfileService {
     return timestamp;
   }
 
-  getExamMemberByRole(role:string, examId: number) {
-    return _.find(this.myExamMembers, (member:ExamMember)=> {
+  getExamMemberByRole(role: string, examId: number) {
+    return _.find(this.myExamMembers, (member: ExamMember) => {
       return member.role == role && member.exam_id == examId;
     });
   }
@@ -489,7 +314,7 @@ export class LMSProfileService {
     var timestamp = survey.create_date.getTime();
     var editorRole = this.getSurveyMemberByRole('editor', survey.id);
     var candidateRole = this.getSurveyMemberByRole('candidate', survey.id);
-    var supervisorRole = this.getSurveyMemberByRole('supervisor', survey.id); 
+    var supervisorRole = this.getSurveyMemberByRole('supervisor', survey.id);
     if (candidateRole && candidateRole.create_date.getTime() < timestamp)
       timestamp = candidateRole.create_date.getTime();
     if (editorRole && editorRole.create_date.getTime() < timestamp)
@@ -499,8 +324,8 @@ export class LMSProfileService {
     return timestamp;
   }
 
-  getSurveyMemberByRole(role:string, surveyId: number) {
-    return _.find(this.mySurveyMembers, (member:SurveyMember)=> {
+  getSurveyMemberByRole(role: string, surveyId: number) {
+    return _.find(this.mySurveyMembers, (member: SurveyMember) => {
       return member.role == role && member.survey_id == surveyId;
     });
   }

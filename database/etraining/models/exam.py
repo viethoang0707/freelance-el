@@ -114,6 +114,7 @@ class ExamMember(models.Model):
 	email = fields.Char(related='user_id.email', string='Email', readonly=True)
 	phone = fields.Char(related='user_id.phone', string='Phone', readonly=True)
 	group_id = fields.Many2one('res.groups',related='user_id.group_id', readonly=True)
+	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	status = fields.Selection(
 		[('active', 'Active'), ('withdraw', 'Withdraw'), ('suspend', 'Suspend')], default='active')
 	role = fields.Selection(

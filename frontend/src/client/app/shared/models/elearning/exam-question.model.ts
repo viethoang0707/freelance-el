@@ -1,4 +1,4 @@
-import { Cache } from '../../helpers/cache.utils';
+
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model } from '../decorator';
@@ -47,10 +47,6 @@ export class ExamQuestion extends BaseModel{
     group_id: number;
     group_id__DESC__: string;
     option_ids: number[];
-
-    static __api__listBySheet(sheetId: number): SearchReadAPI {
-        return new SearchReadAPI(ExamQuestion.Model, [],"[('sheet_id','=',"+sheetId+")]");
-    }
     
     clone():ExamQuestion {
         var q = new ExamQuestion();
@@ -69,29 +65,29 @@ export class ExamQuestion extends BaseModel{
         return q;
     }
 
-
-    static listBySheet( context:APIContext, sheetId: number): Observable<any[]> {
-        return ExamQuestion.search(context,[],"[('sheet_id','=',"+sheetId+")]");
+    __api__populateQuestion(fields?:string[]): ListAPI {
+        return new ListAPI(Question.Model, [this.question_id], fields);
     }
 
-    __api__populateQuestion(): ListAPI {
-        return new ListAPI(Question.Model, [this.question_id], []);
-    }
-
-    populateQuestion(context: APIContext): Observable<any> {
+    populateQuestion(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.question_id)
             return Observable.of(null);
-        return Question.get(context, this.question_id).do(question => {
+        if (!this.question.IsNew)
+            return Observable.of(this);
+        return Question.get(context, this.question_id,fields).do(question => {
             this.question = question;
         });
     }
 
-    static populateQuestions(context: APIContext, examQuestions: ExamQuestion[]): Observable<any> {
+    static populateQuestions(context: APIContext, examQuestions: ExamQuestion[],fields?:string[]): Observable<any> {
+        examQuestions = _.filter(examQuestions, (q:ExamQuestion)=> {
+            return q.question.IsNew;
+        });
         var questionIds = _.pluck(examQuestions,'question_id');
         questionIds = _.filter(questionIds, id=> {
             return id;
         });
-        return Question.array(context, questionIds).do(questions=> {
+        return Question.array(context, questionIds,fields).do(questions=> {
             _.each(examQuestions, (examQuestion:ExamQuestion)=> {
                 examQuestion.question =  _.find(questions, (question:Question)=> {
                     return examQuestion.question_id == question.id;

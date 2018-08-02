@@ -15,6 +15,7 @@ import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { BaseModel } from '../../shared/models/base.model';
 
+const COURSE_FIELDS = ['name', 'code', 'mode','summary' ,'logo', 'status','description', 'author_name', 'group_name', 'unit_count'];
 
 @Component({
     moduleId: module.id,
@@ -46,7 +47,7 @@ export class CourseRecommendComponent extends BaseComponent implements OnInit {
         var domain = "('status','=','published')";
         this.ContextUser.listAchivements(this).subscribe(skills=> {
             var apiList = _.map(skills, (skill:Achivement)=> {
-                return Course.__api__listByCompetency(skill.competency_id);
+                return Course.__api__listByCompetency(skill.competency_id,COURSE_FIELDS);
             });
             BaseModel.bulk_list(this, ...apiList)
             .map(jsonArr=> {

@@ -15,6 +15,7 @@ import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { BaseModel } from '../../shared/models/base.model';
 
+const COURSE_FIELDS = ['name', 'code', 'mode','summary' ,'logo', 'status','description', 'author_name', 'group_name', 'unit_count'];
 
 @Component({
     moduleId: module.id,
@@ -61,7 +62,7 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
         if (this.selfStudyMode && this.groupStudyMode)
             domain += ",'|',('mode','=','self-study'),('mode','=','group')";
         domain = "[" + domain +"]";
-        Course.search(this, [],domain).subscribe(courses=> {
+        Course.search(this, COURSE_FIELDS,domain).subscribe(courses=> {
             if (this.keyword!= null && this.keyword!="")
                 courses = _.filter(courses, (course:Course)=> {
                     return course.name.includes(this.keyword) 

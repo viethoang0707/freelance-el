@@ -4,7 +4,7 @@ import { Model } from '../decorator';
 import { APIContext } from '../context';
 import { CourseUnit } from './course-unit.model';
 import * as _ from 'underscore';
-import { Cache } from '../../helpers/cache.utils';
+
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ListAPI } from '../../services/api/list.api';
 import { Achivement } from './achievement.model';
@@ -30,6 +30,10 @@ export class Group extends BaseModel{
         this.competency_ids = [];
         this.course_ids = [];
         this.question_ids = [];
+        this.user_count = undefined;
+        this.question_count = undefined;
+        this.course_count = undefined;
+        this.competency_count = undefined;
 	}
 
     name:string;
@@ -42,101 +46,81 @@ export class Group extends BaseModel{
     competency_ids: number[];
     course_ids: number[];
     question_ids: number[];
+    user_count: number;
+    question_count: number;
+    course_count: number;
+    competency_count: number;
 
-    static __api__listUserGroup(): SearchReadAPI {
-        return new SearchReadAPI(Group.Model, [],"[('category','=','organization')]");
+    static __api__listUserGroup(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, fields,"[('category','=','organization')]");
     }
 
-    static listUserGroup(context:APIContext):Observable<any> {
-        if (Cache.hit(Group.Model))
-            return Observable.of(Cache.load(Group.Model)).map(groups=> {
-                return _.filter(groups, (group:Group)=> {
-                    return group.category == 'organization';
-                });
-            });
-        return Group.search(context,[],"[('category','=','organization')]");
+    static listUserGroup(context:APIContext,fields?:string[]):Observable<any> {
+        return Group.search(context,fields,"[('category','=','organization')]");
     }
 
-    static __api__listQuestionGroup(): SearchReadAPI {
-        return new SearchReadAPI(Group.Model, [],"[('category','=','question')]");
+    static __api__listQuestionGroup(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, fields,"[('category','=','question')]");
     }
 
-    static listQuestionGroup(context:APIContext):Observable<any> {
-        if (Cache.hit(Group.Model))
-            return Observable.of(Cache.load(Group.Model)).map(groups=> {
-                return _.filter(groups, (group:Group)=> {
-                    return group.category == 'question';
-                });
-            });
-        return Group.search(context,[],"[('category','=','question')]");
+    static listQuestionGroup(context:APIContext,fields?:string[]):Observable<any> {
+        return Group.search(context,fields,"[('category','=','question')]");
     }
 
-    static __api__listCourseGroup(): SearchReadAPI {
-        return new SearchReadAPI(Group.Model, [],"[('category','=','course')]");
+    static __api__listCourseGroup(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, fields,"[('category','=','course')]");
     }
 
-    static listCourseGroup(context:APIContext):Observable<any> {
-        if (Cache.hit(Group.Model))
-            return Observable.of(Cache.load(Group.Model)).map(groups=> {
-                return _.filter(groups, (group:Group)=> {
-                    return group.category == 'course';
-                });
-            });
-        return Group.search(context,[],"[('category','=','course')]");
+    static listCourseGroup(context:APIContext,fields?:string[]):Observable<any> {
+        return Group.search(context,fields,"[('category','=','course')]");
     }
 
-    static __api__listCompetencyGroup(): SearchReadAPI {
-        return new SearchReadAPI(Group.Model, [],"[('category','=','competency')]");
+    static __api__listCompetencyGroup(fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Group.Model, fields,"[('category','=','competency')]");
     }
 
-    static listCompetencyGroup(context:APIContext):Observable<any> {
-        if (Cache.hit(Group.Model))
-            return Observable.of(Cache.load(Group.Model)).map(groups=> {
-                return _.filter(groups, (group:Group)=> {
-                    return group.category == 'competency';
-                });
-            });
-        return Group.search(context,[],"[('category','=','competency')]");
+    static listCompetencyGroup(context:APIContext,fields?:string[]):Observable<any> {
+        return Group.search(context,fields,"[('category','=','competency')]");
     }
 
-    static __api__listAchivements(achivement_ids:number[]): ListAPI {
-        return new ListAPI(Achivement.Model, achivement_ids,[]);
+    static __api__listAchivements(achivement_ids:number[],fields?:string[]): ListAPI {
+        return new ListAPI(Achivement.Model, achivement_ids,fields);
     }
 
-    listAchivements( context:APIContext): Observable<any[]> {
-        return Achivement.array(context,this.achivement_ids);
+    listAchivements( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Achivement.array(context,this.achivement_ids,fields);
     }
 
-    static __api__listUsers(user_ids: number[]): ListAPI {
-        return new ListAPI(User.Model, user_ids,[]);
+    static __api__listUsers(user_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(User.Model, user_ids,fields);
     }
 
-    listUsers( context:APIContext): Observable<any[]> {
-        return User.array(context,this.user_ids);
+    listUsers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return User.array(context,this.user_ids,fields);
     }
 
-    static __api__listCourses(course_ids: number[]): ListAPI {
-        return new ListAPI(Course.Model, course_ids,[]);
+    static __api__listCourses(course_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Course.Model, course_ids,fields);
     }
 
-    listCourses( context:APIContext): Observable<any[]> {
-        return Course.array(context,this.course_ids);
+    listCourses( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Course.array(context,this.course_ids,fields);
     }
 
-    static __api__listQuestions(question_ids: number[]): ListAPI {
-        return new ListAPI(Question.Model, question_ids,[]);
+    static __api__listQuestions(question_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Question.Model, question_ids,fields);
     }
 
-    listQuestions( context:APIContext): Observable<any[]> {
-        return Question.array(context,this.question_ids);
+    listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Question.array(context,this.question_ids,fields);
     }
 
-    static __api__listCompetencies(competency_ids: number[]): ListAPI {
-        return new ListAPI(Competency.Model, competency_ids,[]);
+    static __api__listCompetencies(competency_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Competency.Model, competency_ids,fields);
     }
 
-    listCompetencies( context:APIContext): Observable<any[]> {
-        return Competency.array(context,this.competency_ids);
+    listCompetencies( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Competency.array(context,this.competency_ids,fields);
     }
 
 

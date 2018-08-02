@@ -28,11 +28,14 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
 
 
     show(object: any) {
-        this.object = object;
-        this.originalObject = {};
-        Object.assign(this.originalObject, this.object);
-        this.display = true;
-        this.onShowReceiver.next(object);
+        // populate all object fields
+        object.populate(this).susbscribe(()=> {
+            this.object = object;
+            this.originalObject = {};
+            Object.assign(this.originalObject, this.object);
+            this.display = true;
+            this.onShowReceiver.next(object);
+        });
     }
 
     cancel() {

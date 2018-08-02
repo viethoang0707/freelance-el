@@ -4,7 +4,6 @@ import { Model,FieldProperty } from '../decorator';
 import { APIContext } from '../context';
 import { Conference } from './conference.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-import { Cache } from '../../helpers/cache.utils';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
 import { ExecuteAPI } from '../../services/api/execute.api';
@@ -37,7 +36,7 @@ export class CourseClass extends BaseModel{
         this.project_ids = [];
         this.exam_ids = [];
         this.survey_ids = [];
-
+        this.member_count = undefined;
 	}
 
     name:string;
@@ -52,6 +51,7 @@ export class CourseClass extends BaseModel{
     project_ids: number[];
     exam_ids: number[];
     survey_ids: number[];
+    member_count: number;
     
     @FieldProperty<Date>()
     start: Date;
@@ -107,45 +107,45 @@ export class CourseClass extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__listCertificates(certificate_ids: number[]): ListAPI {
-        return new ListAPI(Certificate.Model, certificate_ids,[]);
+    static __api__listCertificates(certificate_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Certificate.Model, certificate_ids,fields);
     }
 
-    listCertificates( context:APIContext): Observable<any[]> {
-        return Certificate.array(context,this.certificate_ids);
+    listCertificates( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Certificate.array(context,this.certificate_ids,fields);
     }
 
-    static __api__listMembers(member_ids: number[]): ListAPI {
-        return new ListAPI(CourseMember.Model, member_ids,[]);
+    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(CourseMember.Model, member_ids,fields);
     }
 
-    listMembers( context:APIContext): Observable<any[]> {
-        return CourseMember.array(context,this.member_ids);
+    listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return CourseMember.array(context,this.member_ids,fields);
     }
 
-    static __api__listProjects(project_ids: number[]): ListAPI {
-        return new ListAPI(Project.Model, project_ids,[]);
+    static __api__listProjects(project_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Project.Model, project_ids,fields);
     }
 
-    listProjects( context:APIContext): Observable<any[]> {
-        return Project.array(context,this.project_ids);
+    listProjects( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Project.array(context,this.project_ids,fields);
     }
 
-    static __api__listExams(exam_ids: number[]): ListAPI {
-        return new ListAPI(Exam.Model, exam_ids,[]);
+    static __api__listExams(exam_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Exam.Model, exam_ids,fields);
     }
 
-    listExams( context:APIContext): Observable<any[]> {
-        return Exam.array(context,this.exam_ids);
+    listExams( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Exam.array(context,this.exam_ids,fields);
     }
 
 
-    static __api__listSurveys(survey_ids: number[]): ListAPI {
-        return new ListAPI(Survey.Model, survey_ids,[]);
+    static __api__listSurveys(survey_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Survey.Model, survey_ids,fields);
     }
 
-    listSurveys( context:APIContext): Observable<any[]> {
-        return Survey.array(context,this.survey_ids);
+    listSurveys( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Survey.array(context,this.survey_ids,fields);
     }
 
 
