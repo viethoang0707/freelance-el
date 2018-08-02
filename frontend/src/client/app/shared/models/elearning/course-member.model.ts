@@ -43,7 +43,7 @@ export class CourseMember extends BaseModel {
         this.login = undefined;
         this.image = undefined;
         this.group_id = undefined;
-        this.group_id__DESC__ = undefined;
+        this.group_name = undefined;
         @UnserializeProperty()
         this.course = new Course();
         @UnserializeProperty()
@@ -90,7 +90,7 @@ export class CourseMember extends BaseModel {
     group_id: number;
     project_submission_ids: number[];
     exam_record_ids: number[];
-    group_id__DESC__: string;
+    group_name: string;
     exam_member_ids:number[];
     survey_member_ids:number[];
 

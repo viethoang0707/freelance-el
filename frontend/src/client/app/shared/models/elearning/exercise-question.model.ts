@@ -29,10 +29,11 @@ export class ExerciseQuestion extends BaseModel{
         this.score = undefined;
         this.order = undefined;
         this.sheet_id = undefined;
-        this.group_id__DESC__ = undefined;
         this.option_ids = [];
+        this.group_name =  undefined;
     }
 
+    group_name: string;
     question_id: number;
     @UnserializeProperty()
     question: Question;
@@ -45,7 +46,6 @@ export class ExerciseQuestion extends BaseModel{
     explanation: string;
     type: string;
     group_id: number;
-    group_id__DESC__: string;
     sheet_id: number;
     option_ids: number[];
 

@@ -28,7 +28,6 @@ export class SurveyMember extends BaseModel{
         this.phone = undefined;
         this.user_id = undefined;
         this.group_id = undefined;
-        this.group_id__DESC__ = undefined;
         this.enroll_status = undefined;
         this.role = undefined;
         this.survey =  new Survey();
@@ -57,7 +56,6 @@ export class SurveyMember extends BaseModel{
     email: string;
     phone: string;
     group_id: number;
-    group_id__DESC__: string;
     enroll_status: string;
     @UnserializeProperty()
     submit: SurveySubmission;

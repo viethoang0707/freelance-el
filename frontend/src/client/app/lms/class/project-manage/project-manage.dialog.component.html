@@ -39,9 +39,9 @@
             {{'Name'|translate}}
             <p-sortIcon [field]="'name'"></p-sortIcon>
           </th>
-          <th [pSortableColumn]="'group_id__DESC__'">
+          <th [pSortableColumn]="'group_name'">
             {{'Group'|translate}}
-            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+            <p-sortIcon [field]="'group_name'"></p-sortIcon>
           </th>
           <th [pSortableColumn]="'date_submit'">
             {{'Date of submission'|translate}}
@@ -56,7 +56,7 @@
       <ng-template pTemplate="body" let-member>
         <tr [pSelectableRow]="member" *ngVar="getProjectSubmit(member) as projectSubmit">
           <td>{{member.name}}</td>
-          <td>{{member.group_id__DESC__}}</td>
+          <td>{{member.group_name}}</td>
            <td class="showformb">{{projectSubmit.date_submit | date : "dd/MM/yyyy, h:mm a"}}</td>
           <td>{{projectSubmit.score}}</td>
         </tr>

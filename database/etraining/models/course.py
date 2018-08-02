@@ -209,6 +209,7 @@ class ExerciseQuestion(models.Model):
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 	order = fields.Integer(string='Order')
 	group_id = fields.Many2one('res.groups', related="question_id.group_id", string='Group', readonly=True)
+	group_name = fields.Char(related="group_id.name", string="Group Name")
 	option_ids = fields.One2many('etraining.option','question_id', related="question_id.option_ids", string="Options", readonly=True)
 	content = fields.Html(string="Content",related="question_id.content", readonly=True)
 	title = fields.Text(string="Title",related="question_id.title", readonly=True)

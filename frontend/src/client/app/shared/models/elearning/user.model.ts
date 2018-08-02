@@ -42,7 +42,7 @@ export class User extends BaseModel {
         this.email = undefined;
         this.group_id = undefined;
         this.group_code = undefined;
-        this.group_id__DESC__ = undefined;
+        this.group_name = undefined;
         this.login = undefined;
         this.phone = undefined;
         this.is_admin = undefined;
@@ -68,7 +68,6 @@ export class User extends BaseModel {
         this.manage_survey_ids = [];
         this.submit_ticket_ids = [];
         this.review_ticket_ids = [];
-        this.group_name = undefined;
         this.permission_name = undefined;
     }
 
@@ -82,7 +81,6 @@ export class User extends BaseModel {
     email: string;
     group_id: number;
     group_name: string;
-    group_id__DESC__: string;
     login: string;
     phone: string;
     is_admin: boolean;

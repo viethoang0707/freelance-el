@@ -23,9 +23,9 @@
                             <p-sortIcon [field]="'email'"></p-sortIcon>
                         </th>
                         <th>{{'Phone'|translate}}</th>
-                        <th [pSortableColumn]="'group_id__DESC__'">
+                        <th [pSortableColumn]="'group_name'">
                             {{'Group'|translate}}
-                            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                            <p-sortIcon [field]="'group_name'"></p-sortIcon>
                         </th>
                         <th>{{'Suspend/Activate'|translate}}</th>
                     </tr>
@@ -35,7 +35,7 @@
                         <td>{{member.name}}</td>
                         <td>{{member.email}}</td>
                         <td>{{member.phone}}</td>
-                        <td>{{member.group_id__DESC__}}</td>
+                        <td>{{member.group_name}}</td>
                         <td>
                             <button pButton type="button " label="{{ 'Activate'|translate}} " class="green-btn " (click)="activateMember(member) " *ngIf="member.status=='suspend'"></button>
                             <button pButton type="button " label="{{ 'Suspend'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="suspendMember(member) " *ngIf="member.status=='active'"></button>

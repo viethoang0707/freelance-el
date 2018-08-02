@@ -74,7 +74,7 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 			examQuestion.score = score;
 			examQuestion.title = question.title;
 			examQuestion.group_id = question.group_id;
-			examQuestion.group_id__DESC__ = question.group_id__DESC__;
+			examQuestion.group_name = question.group_name;
 			return examQuestion;
 		});
 	}

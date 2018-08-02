@@ -39,9 +39,9 @@
                             <p-sortIcon [field]="'dob'"></p-sortIcon>
                         </th>
                         <th>{{'Phone'|translate}}</th>
-                        <th [pSortableColumn]="'group_id__DESC__'">
+                        <th [pSortableColumn]="'group_name'">
                             {{'Department'|translate}}
-                            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                            <p-sortIcon [field]="'group_name'"></p-sortIcon>
                         </th>
                     </tr>
                 </ng-template>
@@ -57,7 +57,7 @@
                         <td class="showformb">{{user.gender}}</td>
                         <td class="showformb">{{user.dob | date : "dd/MM/yyyy "}}}</td>
                         <td class="showformb">{{user.phone}}</td>
-                        <td class="showformb">{{user.group_id__DESC__}}</td>
+                        <td class="showformb">{{user.group_name}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

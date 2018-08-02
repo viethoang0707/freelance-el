@@ -13,7 +13,7 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 import { Subscription } from 'rxjs/Subscription';
 import { BaseModel } from '../../../shared/models/base.model';
 
-const USER_FIELDS = ['name','email','login','position','permission_id', 'gender', 'dob', 'group_id']
+const USER_FIELDS = ['name','email','login','position','permission_id', 'gender', 'dob', 'group_id', 'group_name']
 
 @Component({
 	moduleId: module.id,

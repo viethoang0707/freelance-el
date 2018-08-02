@@ -29,10 +29,11 @@ export class ExamQuestion extends BaseModel{
         this.score = undefined;
         this.order = undefined;
         this.question =  new Question();
-        this.group_id__DESC__ = undefined;
         this.option_ids = [];
+        this.group_name = undefined;
 	}
 
+    group_name: string;
     question_id: number;
     question: Question;
     exam_id: number;
@@ -45,7 +46,6 @@ export class ExamQuestion extends BaseModel{
     explanation: string;
     type: string;
     group_id: number;
-    group_id__DESC__: string;
     option_ids: number[];
     
     clone():ExamQuestion {
@@ -61,7 +61,7 @@ export class ExamQuestion extends BaseModel{
         q.explanation = this.explanation;
         q.type = this.type;
         q.group_id = this.group_id;
-        q.group_id__DESC__ = this.group_id__DESC__;
+        q.group_name = this.group_name;
         return q;
     }
 

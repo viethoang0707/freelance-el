@@ -134,7 +134,7 @@ export class SurveyContentDialog extends BaseComponent {
 					newSurveyQuestion.type =  question.type;
 					newSurveyQuestion.survey_id	 = this.survey.id;
 					newSurveyQuestion.group_id =  question.group_id;
-					newSurveyQuestion.group_id__DESC__ =  question.group_id__DESC__;
+					newSurveyQuestion.group_name =  question.group_name;
 					newSurveyQuestion.content =  question.content;
 					return newSurveyQuestion;
 				});

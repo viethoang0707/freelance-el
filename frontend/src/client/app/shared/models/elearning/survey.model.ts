@@ -65,6 +65,7 @@ export class Survey extends BaseModel{
     answer_ids: number[];
     member_ids: number[];
     question_ids: number[];
+    
 
     get IsAvailable():boolean {
         if (this.review_state != 'approved')

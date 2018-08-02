@@ -20,9 +20,9 @@
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
                         </th>
-                        <th [pSortableColumn]="'group_id__DESC__'">
+                        <th [pSortableColumn]="'group_name'">
                             {{'Group'|translate}}
-                            <p-sortIcon [field]="'group_id__DESC__'"></p-sortIcon>
+                            <p-sortIcon [field]="'group_name'"></p-sortIcon>
                         </th>
                         <th>
                             {{'Level'|translate}}
@@ -40,7 +40,7 @@
                 <ng-template pTemplate="body" let-competency let-i="rowIndex">
                     <tr [pSelectableRow]="competency">
                         <td style="text-align: center;"> {{competency.name}}</td>
-                        <td style="text-align: center;">{{competency.group_id__DESC__}}</td>
+                        <td style="text-align: center;">{{competency.group_name}}</td>
                         <td>
                             {{competency.level_summary()}}
                         </td>

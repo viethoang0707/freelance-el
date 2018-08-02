@@ -33,7 +33,7 @@ export class CompetencyDialog extends BaseDialog<Competency>  {
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.object.group_id = this.selectedNode.data.id;
-			this.object.group_id__DESC__ = this.selectedNode.data.name;
+			this.object.group_name = this.selectedNode.data.name;
 		}
 	}
 

@@ -15,15 +15,14 @@ export class Permission extends BaseModel{
         super();
 		this.name = undefined;
 		this.user_group_id = undefined;
-		this.user_group_id__DESC__ = undefined;
 		this.menu_access = undefined;
         this.user_count =  undefined;
+        this.user_group_name =  undefined;
 	}
 
     name: string;
     user_group_id: number;
-    user_group_id__DESC__: string;
     menu_access: string;
     user_count: number;
-    
+    user_group_name: string;
 }

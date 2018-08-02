@@ -24,7 +24,7 @@ export class ConferenceMember extends BaseModel{
         this.conference_id = undefined;
         this.room_member_ref = undefined;
         this.group_id = undefined;
-        this.group_id__DESC__ = undefined;
+        this.group_name = undefined;
         this.is_active =  undefined;
         this.class_id = undefined;
         this.conference_status = undefined;
@@ -45,7 +45,7 @@ export class ConferenceMember extends BaseModel{
     @UnserializeProperty()
     conference: Conference;
     conference_status: string;
-    group_id__DESC__: string;
+    group_name: string;
 
     static __api__populateConference(conf_id: number,fields?:string[]): ListAPI {
         return new ListAPI(Conference.Model, [conf_id],fields);
