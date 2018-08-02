@@ -1,0 +1,113 @@
+.login-body {
+    background-image: none;
+}
+
+.login-panel-header{
+	background-image: url('assets/images/login/bg-login.jpg');
+	background-size: cover;
+	background-color: #b7b7b7;
+}
+
+.login-body .login-panel .login-panel-content {
+    padding: 50px 25px !important;
+}
+
+.login-body .login-panel{
+	width: 50%;
+	height: 450px;
+	left: 25%;
+	margin-left: 0;
+	border-radius: 15px;
+}
+
+.login-body .login-panel .login-panel-header{
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	text-align: right;
+	color: #fff;
+	padding: 0;
+}
+
+.login-body .login-panel .login-panel-header .content{
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	text-align: right;
+	color: #fff;
+	padding: 75px 30px 62px 10px;
+    background-color: #ea1336e0;
+
+}
+
+.login-body .login-panel .login-panel-header img{
+	width: 100px;
+	margin-bottom: 44px;
+}
+
+.login-body .login-panel .login-panel-header p{
+	margin-top: 60px;
+}
+
+.login-body .login-panel .login-panel-header h1{
+	margin-top: 10px;
+}
+
+.login-body .login-panel .login-panel-header h2{
+	font-size: 24px;
+	margin-bottom: 0;
+}
+
+.login-panel-content{
+	color: #586f79;
+}
+
+.login-panel-content p.title{
+	line-height: 22px;
+}
+
+.ui-fluid .ui-inputgroup .ui-inputtext{
+	border: none;
+}
+
+.ui-inputgroup{
+	border: 1px solid #ddd;
+	border-radius: 25px;
+	padding: 8px 20px;
+	box-shadow: 0 0 5px #daeaf1;
+}
+
+.ui-inputtext.ui-state-focus, .ui-inputtext:focus{
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.ui-inputgroup:hover, .ui-inputgroup:focus, .ui-inputgroup:active{
+	border-color: #c81934;
+}
+
+.btn-login{
+	background-color: #3d3d3d;
+    border-radius: 25px;
+    padding: 2px 20px;
+    height: auto;
+    width: auto;
+}
+
+.forgot-pass a{
+	color: #586f79 !important;
+}
+
+.forgot-pass a:hover, .forgot-pass a:focus, .forgot-pass a:active{
+	color: #c81934;
+}
+
+.forgot-pass{
+	text-align: left !important;
+}
+
+.footer{
+	text-align: center;
+    width: 100%;
+    bottom: 5%;
+    color: #586f79;
+}

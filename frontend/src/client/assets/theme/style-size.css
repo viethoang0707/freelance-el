@@ -2,6 +2,8 @@
 .removePd{ padding: 0px !important}
 .removePdLf { padding-left: 0px !important; }
 .removePdRt { padding-right: 0px !important; }
+.pt-0 { padding-top: 0px !important; }
+.pb-0 { padding-bottom: 0px !important; }
 
 /* Remove margin */
 .removeM{ margin: 0px !important}
