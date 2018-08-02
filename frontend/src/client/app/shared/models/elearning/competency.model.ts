@@ -17,7 +17,6 @@ export class Competency extends BaseModel {
 		this.name = undefined;
 		this.group_id = undefined;
 		this.category = undefined;
-        this.group_id__DESC__ = undefined;
         this.group_name = undefined;
         this.achivement_ids = [];
         this.level_ids = [];
@@ -29,7 +28,6 @@ export class Competency extends BaseModel {
     group_name: string;
     group_id: number;
     category: string;
-    group_id__DESC__: string;
     level_ids: number[];
     achivement_ids: number[];
     level_summary: string;

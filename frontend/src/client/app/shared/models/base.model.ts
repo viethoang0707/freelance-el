@@ -2,7 +2,7 @@ import  '../helpers/reflect';
 import { APIContext } from './context';
 import { MapUtils } from '../helpers/map.utils';
 import { Observable, Subject } from 'rxjs/Rx';
-import { MODEL_METADATA_KEY, ModelRegister, FieldProperty } from './decorator';
+import { MODEL_METADATA_KEY, UNSERIALIZE_METADATA_KEY,ModelRegister, FieldProperty } from './decorator';
 import * as _ from 'underscore';
 import { CreateAPI } from '../services/api/create.api';
 import { UpdateAPI } from '../services/api/update.api';
@@ -49,7 +49,8 @@ export abstract class BaseModel {
             if (MapUtils.isDate(obj[key]))
                 fieldArr.push(key);
             else {
-                if (!obj[key] || !(obj[key] instanceof Object))
+                let unserializeMetadata = Reflect.getMetadata(UNSERIALIZE_METADATA_KEY, obj, key);
+                if (!unserializeMetadata)
                     fieldArr.push(key);
                 }
 
