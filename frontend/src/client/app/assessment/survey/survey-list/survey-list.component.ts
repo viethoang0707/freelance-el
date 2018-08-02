@@ -53,7 +53,7 @@ export class SurveyListComponent extends BaseComponent {
         survey.is_public = true;
         this.surveyDialog.show(survey);
         this.surveyDialog.onCreateComplete.subscribe(() => {
-            this.loadSurveys();
+            this.surveys.unshift(survey);
             this.success('Add survey successfully');
         });
     }
@@ -75,6 +75,9 @@ export class SurveyListComponent extends BaseComponent {
             survey.delete(this).subscribe(() => {
                 this.loadSurveys();
                 this.selectedSurvey = null;
+                this.surveys = _.reject(this.surveys, (obj:Survey)=> {
+                    return survey.id == obj.id;
+                });
                 this.success('Delete survey successfully');
             })
         });

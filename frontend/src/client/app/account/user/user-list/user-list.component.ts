@@ -70,7 +70,10 @@ export class UserListComponent extends BaseComponent {
         var user = new User();
         this.userDialog.show(user);
         this.userDialog.onCreateComplete.subscribe(() => {
-            this.loadUsers();
+            this.users.unshift(user);
+            this.displayUsers = this.users;
+            this.selectedUsers = [];
+            this.selectedGroupNodes = [];
             this.success('Add user successfully');
         });
     }
@@ -85,7 +88,6 @@ export class UserListComponent extends BaseComponent {
             user.banned =  false;
         });
         User.updateArray(this,users).subscribe(()=> {
-            this.loadUsers();
             this.success('User activated successfully');
         });
     }
@@ -96,7 +98,6 @@ export class UserListComponent extends BaseComponent {
             user.banned =  true;
         });
         User.updateArray(this,users).subscribe(()=> {
-            this.loadUsers();
             this.success('User deactivated successfully');
         });
     }

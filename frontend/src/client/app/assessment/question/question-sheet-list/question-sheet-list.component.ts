@@ -40,7 +40,9 @@ export class QuestionSheetListComponent extends BaseComponent {
         this.confirm('Are you sure to delete?', () => {
             sheet.delete(this).subscribe(() => {
                 this.selectedSheet = null;
-                this.loadQuestionSheets();
+                this.sheets = _.reject(this.sheets, (obj:QuestionSheet)=> {
+                    return sheet.id == obj.id;
+                });
                 this.success('Delete sheet successfully');
             });
         });

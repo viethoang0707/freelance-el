@@ -61,7 +61,9 @@ export class CourseListComponent extends BaseComponent {
         this.courseDialog.show(course);
         this.courseDialog.onCreateComplete.subscribe(() => {
             this.checkDuplicate(course);
-            this.loadCourses();
+            this.courses.unshift(course);
+            this.displayCourses =  this.courses;
+            this.selectedGroupNodes = [];
             this.success('Add course successfully');
         });
     }
@@ -96,8 +98,10 @@ export class CourseListComponent extends BaseComponent {
         }
         this.confirm('Are you sure to delete ?', () => {
             course.delete(this).subscribe(() => {
-                this.loadCourses();
                 this.selectedCourse = null;
+                this.courses = _.reject(this.courses, (obj:Course)=> {
+                    return course.id == obj.id;
+                });
                 this.success('Delete course successfully');
             })
         });

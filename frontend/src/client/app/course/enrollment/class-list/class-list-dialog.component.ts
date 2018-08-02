@@ -12,7 +12,7 @@ import { GROUP_CATEGORY, CLASS_STATUS, COURSE_MODE } from '../../../shared/model
 import { CourseEnrollDialog } from '../enrollment-dialog/enrollment-dialog.component';
 import { CourseClassDialog } from '../class-dialog/class-dialog.component';
 
-const CLASS_FIELDS = ['name','member_count', 'status', 'course_name', 'supervisor_id', 'start','end'];
+const CLASS_FIELDS = ['name', 'member_count', 'status', 'course_name', 'supervisor_id', 'start', 'end'];
 
 @Component({
     moduleId: module.id,
@@ -49,7 +49,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     loadClasses() {
-        this.course.listClasses(this,CLASS_FIELDS).subscribe(classes => {
+        this.course.listClasses(this, CLASS_FIELDS).subscribe(classes => {
             this.classes = classes;
         });
     }
@@ -70,7 +70,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         clazz.course_name = this.course.name;
         this.classDialog.show(clazz);
         this.classDialog.onCreateComplete.subscribe(() => {
-            this.loadClasses();
+            this.classes.unshift(clazz);
             this.success('Add class successfully');
         });
     }
@@ -85,8 +85,10 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         else
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
                 courseClass.delete(this).subscribe(() => {
-                    this.loadClasses();
                     this.selectedClass = null;
+                    this.classes = _.reject(this.classes, (obj: CourseClass) => {
+                        return courseClass.id == obj.id;
+                    });
                     this.success('Delete class successfully');
                 })
             });

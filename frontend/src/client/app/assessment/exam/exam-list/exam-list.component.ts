@@ -47,7 +47,7 @@ export class ExamListComponent extends BaseComponent {
         exam.is_public = true;
         this.examDialog.show(exam);
         this.examDialog.onCreateComplete.subscribe(() => {
-            this.loadExams();
+            this.exams.unshift(exam);
             this.success('Add exam successfully');
         });
     }
@@ -67,7 +67,9 @@ export class ExamListComponent extends BaseComponent {
         }
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             exam.delete(this).subscribe(() => {
-                this.loadExams();
+                this.exams = _.reject(this.exams, (obj:Exam)=> {
+                    return exam.id == obj.id;
+                });
                 this.selectedExam = null;
                 this.success('Delete exam successfully');
             })
