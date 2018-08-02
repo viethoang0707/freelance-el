@@ -11,7 +11,8 @@ import { User } from '../../shared/models/elearning/user.model';
 @Component({
     moduleId: module.id,
     selector: 'login',
-    templateUrl: 'login.component.html'
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.css']
 })
 
 export class LoginComponent extends BaseComponent implements OnInit {

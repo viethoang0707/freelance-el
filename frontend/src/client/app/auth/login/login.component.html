@@ -1,53 +1,61 @@
 <p-growl [sticky]="true" ></p-growl>
 <div class="login-body">
-  <div class="login-panel ui-fluid">
-    <div class="login-panel-header">
-      <img src='assets/images/logo/logo_light.png' style="width: 140px">
+  <div class="login-panel ui-fluid ui-g">
+    <div class="ui-g-6 login-panel-header">
+      <div class="content">
+        <img src='assets/images/logo/nissan-logo.png'>
+        <h2>{{'System'|translate}}</h2>
+        <h1>{{'Corporate E-learnining'|translate}}</h1>
+        <p>Support@vietinterview.com</p>
+      </div>
     </div>
-    <div class="login-panel-content">
+    <div class="ui-g-6 login-panel-content">
       <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate autocomplete="off">
         <div class="ui-g">
           <div class=" ui-g-12 ">
-            <h1>{{'Corporate E-learnining System'|translate}}</h1>
+            <p class="title removeMB">Xin hãy nhập tài khoản và mật khẩu của bạn để đăng nhập.</p>
           </div>
-          <div class=" ui-g-12 ">
-            <span class="md-inputfield">
-                <input type="text" pInputText name="username"
-                [(ngModel)]="credential.username" [(lowercase)]="credential.username" #username="ngModel">
-                <label for="username">{{'Username'|translate}}</label>
-                <div *ngIf="username.invalid && (username.dirty || username.touched)"
-                    class="ui-message ui-messages-error ui-corner-all">
-                    <div *ngIf="username.errors.required">
-                        {{'Username is required' | translate}}
-                    </div>
+          <div class=" ui-g-12 pb8">
+            <div class="ui-inputgroup">
+              <i class="material-icons">account_circle</i>
+              <input type="text" pInputText name="username"
+                [(ngModel)]="credential.username" [(lowercase)]="credential.username" #username="ngModel" placeholder="Username" required>
+            </div>
+            <div *ngIf="username.invalid && (username.dirty || username.touched)"
+                class="ui-message ui-messages-error ui-corner-all">
+                <div *ngIf="username.errors.required">
+                    {{'Username is required' | translate}}
                 </div>
-            </span>
+            </div>
           </div>
-          <div class=" ui-g-12 ">
-            <span class="md-inputfield">
-                <input type="password" pInputText autocomplete="off" name="password"
+          <div class=" ui-g-12 pt8 pb8">
+            <div class="ui-inputgroup">
+              <i class="material-icons">lock</i>
+              <input type="password" pInputText autocomplete="off" name="password"
                 [(ngModel)]="credential.password" #password="ngModel"
-                required>
-                <label for="password">{{'Password'|translate}}</label>
-                <div *ngIf="password.invalid && (password.dirty || password.touched)"
-                    class="ui-message ui-messages-error ui-corner-all">
-                    <div *ngIf="password.errors.required">
-                        {{'Password is required' | translate}}
-                    </div>
+                required placeholder="Password" icon="ui-icon-lock">
+            </div>
+            <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                class="ui-message ui-messages-error ui-corner-all">
+                <div *ngIf="password.errors.required">
+                    {{'Password is required' | translate}}
                 </div>
-            </span>
+            </div>
           </div>
-          <div class="ui-g-12">
+          <div class="ui-g-12 pl20">
             <p-checkbox name="remember" binary="true" label="{{'Remember password'|translate}}" [(ngModel)]="remember"></p-checkbox>
           </div>
           <div class="ui-g-12">
-            <button pButton type="submit" icon="fa ui-icon-person" label="{{'Log in'|translate}}"></button>
+            <button pButton type="submit" icon="fa ui-icon-chevron-right" iconPos="right" class="btn-login" label="{{'Log in'|translate}}"></button>
           </div>
-          <div class="ui-g-12">
+          <div class="ui-g-12 forgot-pass">
             <a routerLink="/auth/recover-pass">{{'Forgot your password ?'|translate}}</a>
           </div>
         </div>
       </form>
     </div>
+  </div>
+  <div class="footer">
+    <p>© Copyright Thanh Cong A Chau, All Rights Reserved</p>
   </div>
 </div>
