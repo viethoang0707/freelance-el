@@ -49,27 +49,18 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
     }
 
     save() {
-        
         if (!this.object.id) {
             this.object.save(this).subscribe(() => {
                 this.hide();
                 this.onCreateCompleteReceiver.next(this.object);
-                this.success('Object created successfully.');
-                
-            },()=> {
-                this.error('Permission denied');
-                
+            },()=> {                
             });
         }
         else {
             this.object.save(this).subscribe(() => {
-                this.onUpdateCompleteReceiver.next(this.object);
-                this.success('Object saved successfully.') ;
-                
+                this.onUpdateCompleteReceiver.next(this.object);                
                 this.hide();
-            },()=> {
-                this.error('Permission denied');
-                
+            },()=> {                
             });
         }
     }
