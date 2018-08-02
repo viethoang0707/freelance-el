@@ -17,10 +17,10 @@ import { GROUP_CATEGORY } from '../../../shared/models/constants';
 })
 export class UserExportDialog extends BaseComponent {
 
-	private users: User[];
+	private userIds: number[];
 	private fields: SelectItem[];
 	private selectedFields: string[];
-	private display:boolean;
+	private display: boolean;
 
 	constructor(private excelService: ExcelService) {
 		super();
@@ -35,26 +35,29 @@ export class UserExportDialog extends BaseComponent {
 		this.display = false;
 	}
 
-	show(users:any) {
+	show(userIds: number[]) {
 		this.selectedFields = [];
-        this.users = users;
-        this.display = true;
-    }
+		this.userIds = userIds;
+		this.display = true;
+	}
 
-    hide() {
-        this.display = false;
-    }
+	hide() {
+		this.display = false;
+	}
 
 	export() {
-		var data = _.map(this.users, (user)=> {
-			var userData = {};
-			_.each(this.selectedFields, (field) => {
-				userData[field] = user[field];
+		User.array(this, this.userIds, this.selectedFields).subscribe(users => {
+			var data = _.map(this.users, (user) => {
+				var userData = {};
+				_.each(this.selectedFields, (field) => {
+					userData[field] = user[field];
+				});
+				return userData;
 			});
-			return userData;
-		});
-		this.excelService.exportAsExcelFile(data, 'user_export');
-		this.hide();
+			this.excelService.exportAsExcelFile(data, 'user_export');
+			this.hide();
+	});
+
 	}
 
 }

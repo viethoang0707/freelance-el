@@ -103,7 +103,8 @@ export class UserListComponent extends BaseComponent {
     }
 
     exportUser() {
-        this.userExportDialog.show(this.users);
+        var userIds = _.pluck(this.displayUsers, 'id');
+        this.userExportDialog.show(userIds);
     }
 
     importUser() {
