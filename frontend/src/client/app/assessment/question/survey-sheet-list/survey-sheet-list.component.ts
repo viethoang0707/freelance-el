@@ -42,6 +42,7 @@ export class SurveySheetListComponent extends BaseComponent {
                 this.selectedSheet = null;
                 this.loadSurveySheets();
             });
+            this.success('Delete sheet successfully');
         });
     }
 

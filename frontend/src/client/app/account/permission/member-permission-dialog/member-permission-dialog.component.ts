@@ -53,6 +53,7 @@ export class MemberPermissionDialog extends BaseComponent {
             });
             BaseModel.bulk_update(this, ...updateApi).subscribe(() => {
                 this.loadMembers();
+                this.success('Add member successfully');
             });
         });
     }
@@ -64,6 +65,7 @@ export class MemberPermissionDialog extends BaseComponent {
             });
             User.updateArray(this, users,USER_FIELDS).subscribe(() => {
                 this.loadMembers();
+                this.success('Delete member successfully');
             });
         });
     }

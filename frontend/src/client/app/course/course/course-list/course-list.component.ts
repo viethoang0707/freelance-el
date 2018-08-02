@@ -62,6 +62,7 @@ export class CourseListComponent extends BaseComponent {
         this.courseDialog.onCreateComplete.subscribe(() => {
             this.checkDuplicate(course);
             this.loadCourses();
+            this.success('Add course successfully');
         });
     }
 
@@ -97,6 +98,7 @@ export class CourseListComponent extends BaseComponent {
             course.delete(this).subscribe(() => {
                 this.loadCourses();
                 this.selectedCourse = null;
+                this.success('Delete course successfully');
             })
         });
     }

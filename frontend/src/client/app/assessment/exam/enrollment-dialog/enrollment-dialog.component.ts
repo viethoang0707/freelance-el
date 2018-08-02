@@ -61,6 +61,7 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
+                this.success('Add candidate successfully');
             });
         });
     }
@@ -71,6 +72,7 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enrollSupervisor(this, userIds).subscribe(() => {
                 this.loadMembers();
+                this.success('Add supervisor successfully');
             });
         });
     }
@@ -81,12 +83,14 @@ export class ExamEnrollDialog extends BaseComponent {
                 this.selectedCandidates = [];
                 this.selectedSupervisors = [];
                 this.loadMembers();
+                this.success('Delete member successfully');
             });
         });
     }
 
     loadMembers() {
-        this.exam.listMembers(this,EXAM_MEMBER_FIELDS).subscribe(members => {
+        this.exam.populate(this).subscribe(()=> {
+            this.exam.listMembers(this,EXAM_MEMBER_FIELDS).subscribe(members => {
             this.candidates = _.filter(members, (member) => {
                 return member.role == 'candidate';
             });
@@ -94,6 +98,8 @@ export class ExamEnrollDialog extends BaseComponent {
                 return member.role == 'supervisor';
             });
         });
+        })
+        
     }
 }
 

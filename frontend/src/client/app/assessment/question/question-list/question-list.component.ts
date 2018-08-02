@@ -60,6 +60,7 @@ export class QuestionListComponent extends BaseComponent {
         this.questionDialog.show(question);
         this.questionDialog.onCreateComplete.subscribe(() => {
             this.loadQuestions();
+            this.success('Add question successfully');
         });
     }
 
@@ -73,6 +74,7 @@ export class QuestionListComponent extends BaseComponent {
             Question.deleteArray(this, questions).subscribe(() => {
                 this.selectedQuestions = [];
                 this.loadQuestions();
+                this.success('Delete question successfully');
             });
         });
     }

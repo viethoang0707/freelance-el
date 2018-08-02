@@ -71,6 +71,7 @@ export class UserListComponent extends BaseComponent {
         this.userDialog.show(user);
         this.userDialog.onCreateComplete.subscribe(() => {
             this.loadUsers();
+            this.success('Add user successfully');
         });
     }
 

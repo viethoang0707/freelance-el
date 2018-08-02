@@ -80,6 +80,7 @@ export class QuestionImportDialog extends BaseComponent {
 			}
 			Question.importQuestion(this,questionList, optionList).subscribe(()=> {
 				this.onImportCompleteReceiver.next();
+				this.success('Import question successfully');
 				this.hide();
 			})
 		});

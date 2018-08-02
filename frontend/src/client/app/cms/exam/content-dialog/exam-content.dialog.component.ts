@@ -78,15 +78,17 @@ export class ExamContentDialog extends BaseComponent {
 	save() {
 		this.sheet.finalized = true;
 		this.sheet.save(this).subscribe(() => {
-			_.each(this.examQuestions, (examQyestion: ExamQuestion) => {
-				examQyestion.sheet_id = this.sheet.id;
+			_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
+				examQuestion.sheet_id = this.sheet.id;
 			});
-			var newExamQuestions = _.filter(this.examQuestions, (examQyestion: ExamQuestion) => {
-				return examQyestion.id == null;
+			console.log(this.examQuestions);
+			var newExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
+				return examQuestion.IsNew;
 			});
-			var existExamQuestions = _.filter(this.examQuestions, (examQyestion: ExamQuestion) => {
-				return examQyestion.id != null;
+			var existExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
+				return !examQuestion.IsNew;
 			});
+			console.log(newExamQuestions);
 			ExamQuestion.createArray(this, newExamQuestions).subscribe(() => {
 				ExamQuestion.updateArray(this, existExamQuestions).subscribe(() => {
 					this.exam.question_count =  this.sheet.question_count = this.examQuestions.length;
@@ -130,9 +132,6 @@ export class ExamContentDialog extends BaseComponent {
 				this.examQuestions = _.map(examQuestions, examQuestion => {
 					return examQuestion.clone();
 				});
-				_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
-					examQuestion.sheet_id = this.sheet.id;
-				});
 				this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
 			});
 		});
@@ -148,9 +147,6 @@ export class ExamContentDialog extends BaseComponent {
 		if (this.sheet && !this.sheet.finalized) {
 			this.editorDialog.show();
 			this.editorDialog.onSave.subscribe(examQuestions => {
-				_.each(examQuestions, (examQuestion: ExamQuestion) => {
-					examQuestion.sheet_id = this.sheet.id;
-				});
 				this.examQuestions = examQuestions;
 			});
 		}

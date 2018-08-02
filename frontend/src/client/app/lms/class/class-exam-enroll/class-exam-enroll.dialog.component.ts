@@ -32,8 +32,8 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.display = false;
 		this.examMembers = [];
 		this.courseMembers = [];
-		this.exam =  new Exam();
-		this.courseClass =  new CourseClass();
+		this.exam = new Exam();
+		this.courseClass = new CourseClass();
 	}
 
 	show(exam: Exam, courseClass: CourseClass) {
@@ -41,17 +41,17 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.examMembers = [];
 		this.courseMembers = [];
 		this.exam = exam;
-		this.courseClass =  courseClass;
-		this.exam.listMembers(this).subscribe((members)=> {
-			this.examMembers = _.filter(members, (member:ExamMember)=> {
-					return member.role =='candidate';
-				});
-		})
-			this.courseClass.listMembers(this).subscribe(members=> {
-				this.courseMembers = _.filter(members, (member:CourseMember)=> {
-					return member.role =='student';
-				});
+		this.courseClass = courseClass;
+		this.exam.listMembers(this).subscribe((members) => {
+			this.examMembers = _.filter(members, (member: ExamMember) => {
+				return member.role == 'candidate';
 			});
+		})
+		this.courseClass.listMembers(this).subscribe(members => {
+			this.courseMembers = _.filter(members, (member: CourseMember) => {
+				return member.role == 'student';
+			});
+		});
 	}
 
 	hide() {
@@ -59,41 +59,45 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	}
 
 	enrollAll() {
-		var userIds = _.pluck(this.courseMembers,'user_id');
+		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.exam.enroll(this, userIds).subscribe(() => {
-			this.exam.listMembers(this).subscribe(members=> {
-					this.examMembers = members;
-				})
-			this.info('Register all successfully');
+			this.exam.listMembers(this).subscribe(members => {
+				this.examMembers = members;
+			})
+			this.success('Register all successfully');
 		});
 	}
 
-	activateMember(member:ExamMember) {
+	activateMember(member: ExamMember) {
 		member.status = 'active';
-		member.save(this).subscribe();
+		member.save(this).subscribe(()=> {
+			this.success('Action completed');
+		});
 	}
 
 
-	suspendMember(member:ExamMember) {
+	suspendMember(member: ExamMember) {
 		member.status = 'suspend';
-		member.save(this).subscribe();
+		member.save(this).subscribe(()=> {
+			this.success('Action completed');
+		});
 	}
 
 	closeExam() {
-        this.confirm('Are you sure to proceed ?', ()=> {
-            this.exam.close(this).subscribe(() => {
-            	this.exam.status =  'closed';
-                this.success('Exam close');
-            });
-        });
-    }
+		this.confirm('Are you sure to proceed ?', () => {
+			this.exam.close(this).subscribe(() => {
+				this.exam.status = 'closed';
+				this.success('Exam close');
+			});
+		});
+	}
 
-    openExam() {
-        this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', ()=> {
-            this.exam.open(this).subscribe(() => {
-            	this.exam.status =  'open';
-                this.success('Exam open');
-            });
-        });
-    }
+	openExam() {
+		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', () => {
+			this.exam.open(this).subscribe(() => {
+				this.exam.status = 'open';
+				this.success('Exam open');
+			});
+		});
+	}
 }

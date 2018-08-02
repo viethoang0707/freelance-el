@@ -87,7 +87,7 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	loadSurveyContent() {
-		this.member.populateSubmission(this).subscribe(()=> {
+		this.member.populateSubmission(this).subscribe(() => {
 			this.submission = this.member.submit;
 			this.submission.start = new Date();
 			BaseModel.bulk_list(this,
@@ -133,7 +133,7 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.displayQuestion(0);
 	}
 
-	prepareAnswer(question: SurveyQuestion)  {
+	prepareAnswer(question: SurveyQuestion) {
 		var answer = _.find(this.answers, (ans: SurveyAnswer) => {
 			return ans.question_id == question.question_id;
 		});
@@ -166,7 +166,7 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	submitAnswer(): Observable<any> {
-		this.currentQuestion["checkAnswer"] =  true;
+		this.currentQuestion["checkAnswer"] = true;
 		return this.currentAnswer.save(this);
 	}
 
@@ -189,12 +189,12 @@ export class SurveyStudyDialog extends BaseComponent {
 	submitSurvey() {
 		this.submitAnswer().subscribe(() => {
 			this.member.enroll_status = 'completed';
-				this.submission.end = new Date();
-				this.member.save(this).subscribe(() => {
-					this.submission.save(this).subscribe(() => {
-						this.hide();
-					});
+			this.submission.end = new Date();
+			this.member.save(this).subscribe(() => {
+				this.submission.save(this).subscribe(() => {
+					this.hide();
 				});
+			});
 		});
 	}
 

@@ -46,14 +46,9 @@ export abstract class BaseModel {
         var fieldArr = []; 
         let obj:any = ModelRegister.Instance.instantiateObject(model);
         Object.keys(obj).forEach((key) => {
-            if (MapUtils.isDate(obj[key]))
+            let unserializeMetadata = Reflect.getMetadata(UNSERIALIZE_METADATA_KEY, obj, key);
+            if (!unserializeMetadata)
                 fieldArr.push(key);
-            else {
-                let unserializeMetadata = Reflect.getMetadata(UNSERIALIZE_METADATA_KEY, obj, key);
-                if (!unserializeMetadata)
-                    fieldArr.push(key);
-                }
-
         });
         return fieldArr;
     }

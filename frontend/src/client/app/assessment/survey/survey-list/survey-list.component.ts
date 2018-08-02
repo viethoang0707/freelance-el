@@ -54,6 +54,7 @@ export class SurveyListComponent extends BaseComponent {
         this.surveyDialog.show(survey);
         this.surveyDialog.onCreateComplete.subscribe(() => {
             this.loadSurveys();
+            this.success('Add survey successfully');
         });
     }
 
@@ -73,7 +74,8 @@ export class SurveyListComponent extends BaseComponent {
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             survey.delete(this).subscribe(() => {
                 this.loadSurveys();
-                survey = null;
+                this.selectedSurvey = null;
+                this.success('Delete survey successfully');
             })
         });
     }

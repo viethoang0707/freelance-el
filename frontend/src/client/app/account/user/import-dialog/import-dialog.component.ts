@@ -56,6 +56,7 @@ export class UserImportDialog extends BaseComponent {
 			});
 			User.createArray(this, users).subscribe(() => {
 				this.onImportCompleteReceiver.next();
+				this.success('Import users successfully');
 				this.hide();
 			});
 		});

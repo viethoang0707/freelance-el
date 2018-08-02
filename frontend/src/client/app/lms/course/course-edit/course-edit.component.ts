@@ -107,6 +107,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.faqDialog.onCreateComplete.first().subscribe(() => {
 			this.lmsProfileService.invalidateCourseContent(this.course.id);
 			this.faqs.push(faq);
+			this.success('Add course FAQ successfully');
 		});
 	}
 
@@ -121,6 +122,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 				this.faqs = _.reject(this.faqs, (obj: CourseFaq) => {
 					return faq.id == obj.id;
 				});
+				this.success('Delete course FAQ successfully');
 			})
 		});
 	}
@@ -132,6 +134,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.materialDialog.onCreateComplete.first().subscribe(() => {
 			this.lmsProfileService.invalidateCourseContent(this.course.id);
 			this.materials.push(material);
+			this.success('Add course material successfully');
 		});
 	}
 
@@ -146,6 +149,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 				this.materials = _.reject(this.materials, (obj: CourseMaterial) => {
 					return material.id == obj.id;
 				});
+				this.success('Delete course material successfully');
 			});
 		});
 	}

@@ -51,6 +51,7 @@ export class CompetencyListComponent extends BaseComponent {
         this.competencyDialog.show(competency);
         this.competencyDialog.onCreateComplete.subscribe(() => {
             this.loadCompetencies();
+            this.success('Add competency successfully');
         });
     }
 
@@ -66,7 +67,7 @@ export class CompetencyListComponent extends BaseComponent {
             competency.delete(this).subscribe(() => {
                 this.selectedCompetency = null;
                 this.loadCompetencies();
-
+                this.success('Delete competency successfully');
             });
         });
     }

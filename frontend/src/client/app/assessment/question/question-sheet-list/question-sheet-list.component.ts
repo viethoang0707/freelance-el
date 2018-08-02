@@ -41,6 +41,7 @@ export class QuestionSheetListComponent extends BaseComponent {
             sheet.delete(this).subscribe(() => {
                 this.selectedSheet = null;
                 this.loadQuestionSheets();
+                this.success('Delete sheet successfully');
             });
         });
     }

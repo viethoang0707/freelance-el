@@ -127,9 +127,8 @@ export class MapUtils {
                 if (MapUtils.isDate(object[key]))
                     jsonObject[key] = moment(object[key]).format(SERVER_DATETIME_FORMAT);
                 else {
-                    jsonObject[key] = object[key];
-                    if (jsonObject[key] && jsonObject[key] instanceof Object)
-                        jsonObject[key] = null;
+                    if (!(object[key] && object[key] instanceof Object))
+                        jsonObject[key] = object[key];
                 }
             }
         });

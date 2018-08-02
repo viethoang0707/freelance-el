@@ -48,6 +48,7 @@ export class ExamListComponent extends BaseComponent {
         this.examDialog.show(exam);
         this.examDialog.onCreateComplete.subscribe(() => {
             this.loadExams();
+            this.success('Add exam successfully');
         });
     }
 
@@ -68,6 +69,7 @@ export class ExamListComponent extends BaseComponent {
             exam.delete(this).subscribe(() => {
                 this.loadExams();
                 this.selectedExam = null;
+                this.success('Delete exam successfully');
             })
         });
     }

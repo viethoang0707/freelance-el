@@ -71,6 +71,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         this.classDialog.show(clazz);
         this.classDialog.onCreateComplete.subscribe(() => {
             this.loadClasses();
+            this.success('Add class successfully');
         });
     }
 
@@ -86,6 +87,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
                 courseClass.delete(this).subscribe(() => {
                     this.loadClasses();
                     this.selectedClass = null;
+                    this.success('Delete class successfully');
                 })
             });
     }

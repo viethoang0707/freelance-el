@@ -110,7 +110,6 @@ export class SurveyContentDialog extends BaseComponent {
 			sheetTempl.listQuestions(this).subscribe(surveyQuestions => {
 				this.surveyQuestions = _.map(surveyQuestions, surveyQuestion => {
 					var newSurveyQuestion = surveyQuestion.clone();
-					newSurveyQuestion.sheet_id = this.sheet.id;
 					return newSurveyQuestion;
 				});
 			});
