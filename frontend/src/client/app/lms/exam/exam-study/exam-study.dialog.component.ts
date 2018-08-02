@@ -164,6 +164,7 @@ export class ExamStudyDialog extends BaseComponent {
 			this.member.submitScore(this).subscribe(() => {
 				this.member.enroll_status = 'completed';
 				ExamLog.finishExam(this, this.member, this.submission).subscribe();
+				this.timer.next();
 				this.hide();
 			});
 		});
@@ -238,6 +239,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	startTimer() {
 		var now = new Date();
+		this.timer = new Subject();
 		var elapse = Math.floor((now.getTime() - this.submission.start.getTime()));
 		this.timeLeft = this.exam.duration * 60 * 1000 - elapse;
 		if (this.timeLeft <= 0)
@@ -245,13 +247,14 @@ export class ExamStudyDialog extends BaseComponent {
 		else {
 			this.timer = Observable.timer(0, 1000);
 			this.timer
-				.takeUntil(new Subject())
+				.takeUntil(this.timer)
 				.subscribe(() => {
 					this.timeLeft -= 1000;
 					if (this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)
 						this.warn(this.translateService.instant('A little minutes remaining!'));
-					if (this.timeLeft <= 0)
+					if (this.timeLeft <= 0) {
 						this.finishExam();
+					}
 				});
 		}
 	}
