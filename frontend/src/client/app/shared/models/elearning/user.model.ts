@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty, UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
@@ -93,20 +93,35 @@ export class User extends BaseModel {
     supervisor_id__DESC__: string;
     social_id: string;
     permission_name: string;
+    @ReadOnlyProperty()
     achivement_ids: number[];
+    @ReadOnlyProperty()
     course_member_ids: number[];
+    @ReadOnlyProperty()
     exam_member_ids: number[];
+    @ReadOnlyProperty()
     survey_member_ids: number[];
+    @ReadOnlyProperty()
     conference_member_ids: number[];
+    @ReadOnlyProperty()
     certificate_ids: number[];
+    @ReadOnlyProperty()
     exam_record_ids: number[];
+    @ReadOnlyProperty()
     submission_ids: number[];
+    @ReadOnlyProperty()
     project_submission_ids: number[];
+    @ReadOnlyProperty()
     manage_course_ids: number[];
+    @ReadOnlyProperty()
     manage_class_ids: number[];
+    @ReadOnlyProperty()
     manage_exam_ids: number[];
+    @ReadOnlyProperty()
     manage_survey_ids: number[];
+    @ReadOnlyProperty()
     submit_ticket_ids: number[];
+    @ReadOnlyProperty()
     review_ticket_ids: number[];
 
     get IsAdmin() {

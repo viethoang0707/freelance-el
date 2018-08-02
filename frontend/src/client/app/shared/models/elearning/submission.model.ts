@@ -1,7 +1,7 @@
 
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model, FieldProperty } from '../decorator';
+import { Model, FieldProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ListAPI } from '../../services/api/list.api';
@@ -32,6 +32,7 @@ export class Submission extends BaseModel{
     @FieldProperty<Date>()
     start: Date;
     score: number;
+    @ReadOnlyProperty()
     answer_ids: number[];
     
 

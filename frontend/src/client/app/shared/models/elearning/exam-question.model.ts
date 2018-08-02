@@ -1,7 +1,7 @@
 
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,UnserializeProperty } from '../decorator';
+import { Model,ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { SearchCountAPI } from '../../services/api/search-count.api';
@@ -46,6 +46,7 @@ export class ExamQuestion extends BaseModel{
     explanation: string;
     type: string;
     group_id: number;
+    @ReadOnlyProperty()
     option_ids: number[];
     
     clone():ExamQuestion {

@@ -4,7 +4,7 @@ import { Submission } from './submission.model';
 import { ExamGrade } from './exam-grade.model';
 import { Survey } from './survey.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty,UnserializeProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { ListAPI } from '../../services/api/list.api';

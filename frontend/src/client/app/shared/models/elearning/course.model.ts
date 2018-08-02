@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,UnserializeProperty } from '../decorator';
+import { Model,UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -55,7 +55,6 @@ export class Course extends BaseModel{
         this.faq_ids = [];
         this.material_ids = [];
         this.unit_ids = [];
-        @UnserializeProperty()
         this.syl =  new CourseSyllabus();
 	}
 
@@ -82,11 +81,17 @@ export class Course extends BaseModel{
     status: string;
     mode: string;
     logo: string;
+    @ReadOnlyProperty()
     member_ids: number[];
+    @ReadOnlyProperty()
     class_ids: number[];
+    @ReadOnlyProperty()
     faq_ids: number[];
+    @ReadOnlyProperty()
     material_ids: number[];
+    @ReadOnlyProperty()
     unit_ids: number[];
+    @UnserializeProperty()
     syl: CourseSyllabus;
 
     get IsAvailable():boolean {

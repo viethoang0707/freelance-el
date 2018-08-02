@@ -2,7 +2,7 @@ import { BaseModel } from '../base.model';
 import { Submission } from './submission.model';
 import { Answer } from './answer.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { ListAPI } from '../../services/api/list.api';
@@ -29,6 +29,7 @@ export class Conference extends BaseModel{
     room_pass: string;
     status: string;
     name: string;
+    @ReadOnlyProperty()
     member_ids: number[];
 
     static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {

@@ -1,7 +1,7 @@
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,UnserializeProperty } from '../decorator';
+import { Model,UnserializeProperty ,ReadOnlyProperty} from '../decorator';
 import { APIContext } from '../context';
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import { ListAPI } from '../../services/api/list.api';
@@ -39,6 +39,7 @@ export class SurveyQuestion extends BaseModel {
     content: string;
     type: string;
     group_id: number;
+    @ReadOnlyProperty()
     option_ids: number[];
 
     clone() {

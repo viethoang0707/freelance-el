@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model, FieldProperty,UnserializeProperty } from '../decorator';
+import { Model, FieldProperty,UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ConferenceMember } from './conference-member.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -87,10 +87,14 @@ export class CourseMember extends BaseModel {
     email: string;
     phone: string;
     group_id: number;
+    @ReadOnlyProperty()
     project_submission_ids: number[];
+    @ReadOnlyProperty()
     exam_record_ids: number[];
     group_name: string;
+    @ReadOnlyProperty()
     exam_member_ids:number[];
+    @ReadOnlyProperty()
     survey_member_ids:number[];
 
     static __api__countTeacher(): SearchCountAPI {

@@ -26,9 +26,7 @@ export abstract class BaseModel {
     @FieldProperty<Date>()
     write_date: Date;
     create_uid: number;
-    create_uid__DESC__: string;
     write_uid: number;
-    write_uid__DESC__: string;
     active: boolean;
 
     constructor() {
@@ -36,10 +34,8 @@ export abstract class BaseModel {
         this.active = undefined;
         this.create_date = undefined;
         this.create_uid = undefined;
-        this.create_uid__DESC__ = undefined;
         this.write_date = undefined;
         this.write_uid = undefined;
-        this.write_uid__DESC__ = undefined;
     }
 
     static fields(model:string):string[] {

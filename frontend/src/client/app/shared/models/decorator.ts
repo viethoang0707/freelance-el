@@ -87,6 +87,25 @@ export function UnserializeProperty(metadata?:IUnserializeMetaData|string): any 
     }
 }
 
+/* Field decorator */
+export interface IReadOnlyMetaData {
+    name?: string,
+}
+
+export const READONLY_METADATA_KEY = "readOnlyProperty";
+
+export function ReadOnlyProperty(metadata?:IReadOnlyMetaData|string): any {
+    if (metadata instanceof String || typeof metadata === "string"){
+        return Reflect.metadata(READONLY_METADATA_KEY, {
+            name: metadata,
+        });
+    } else {
+        let metadataObj = <IReadOnlyMetaData>metadata;
+        return Reflect.metadata(READONLY_METADATA_KEY, {
+            name: metadataObj ? metadataObj.name : undefined,
+        });
+    }
+}
 
 
 

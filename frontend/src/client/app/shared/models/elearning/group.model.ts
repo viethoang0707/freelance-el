@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model, UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { CourseUnit } from './course-unit.model';
 import * as _ from 'underscore';
@@ -41,10 +41,15 @@ export class Group extends BaseModel{
     code: string;
     order: string;
     parent_id: number;
+    @ReadOnlyProperty()
     achivement_ids: number[];
+    @ReadOnlyProperty()
     user_ids: number[];
+    @ReadOnlyProperty()
     competency_ids: number[];
+    @ReadOnlyProperty()
     course_ids: number[];
+    @ReadOnlyProperty()
     question_ids: number[];
     user_count: number;
     question_count: number;

@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty,UnserializeProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty ,ReadOnlyProperty} from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -62,8 +62,11 @@ export class Survey extends BaseModel{
     is_public: boolean;
     supervisor_id: number;
     supervisor_name: string;
+    @ReadOnlyProperty()
     answer_ids: number[];
+    @ReadOnlyProperty()
     member_ids: number[];
+    @ReadOnlyProperty()
     question_ids: number[];
     
 

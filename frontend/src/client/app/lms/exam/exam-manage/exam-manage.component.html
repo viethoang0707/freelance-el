@@ -32,6 +32,10 @@
                         {{'Grade'|translate}}
                         <p-sortIcon [field]="'grade'"></p-sortIcon>
                     </th>
+                    <th [pSortableColumn]="'enroll_status'">
+                        {{'Enroll status'|translate}}
+                        <p-sortIcon [field]="'enroll_status'"></p-sortIcon>
+                    </th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-member>
@@ -40,6 +44,7 @@
                     <td>{{member.group_name}}</td>
                     <td>{{member.score}}</td>
                     <td>{{member.grade}}</td>
+                    <td>{{member.enroll_status}}</td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">

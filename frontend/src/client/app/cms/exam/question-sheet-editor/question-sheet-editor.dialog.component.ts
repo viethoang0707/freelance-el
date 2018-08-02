@@ -54,11 +54,7 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 			this.selectorGroups[key]["groups"] = [];
 			this.selectedNodes[key] = [];
 		});
-		Group.listQuestionGroup(this).subscribe(groups => {
-			_.each(QUESTION_LEVEL, (val, key) => {
-				this.tree[key] = this.treeUtils.buildGroupTree(groups);
-			});
-		});
+		
 	}
 
 	nodeSelect(event: any, level) {
@@ -100,7 +96,11 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	show() {
 		this.display = true;
 		this.examQuestions = [];
-		
+		Group.listQuestionGroup(this).subscribe(groups => {
+			_.each(QUESTION_LEVEL, (val, key) => {
+				this.tree[key] = this.treeUtils.buildGroupTree(groups);
+			});
+		});
 	}
 
 

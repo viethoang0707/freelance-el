@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,UnserializeProperty } from '../decorator';
+import { Model,UnserializeProperty,ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { CourseLog } from './log.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -50,6 +50,7 @@ export class CourseUnit extends BaseModel{
     lecture: string;
     type: string;
     status: string;
+    @ReadOnlyProperty()
     exercise_question_ids: number[];
     html_lecture_id: number;
     video_lecture_id: number;

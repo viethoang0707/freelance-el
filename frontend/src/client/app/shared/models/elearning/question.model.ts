@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model ,UnserializeProperty} from '../decorator';
+import { Model ,UnserializeProperty, ReadOnlyProperty} from '../decorator';
 import { QuestionOption } from './option.model';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
@@ -41,6 +41,7 @@ export class Question extends BaseModel{
     max_rating: number;
     @UnserializeProperty()
     options: QuestionOption[];
+    @ReadOnlyProperty()
     option_ids: number[];
     group_name: string;
 

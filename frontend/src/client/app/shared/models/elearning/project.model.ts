@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import { Exam } from './exam.model';
@@ -40,6 +40,7 @@ export class Project extends BaseModel{
     start: Date;
     @FieldProperty<Date>()
     end: Date;
+    @ReadOnlyProperty()
     submission_ids: number[];
 
     

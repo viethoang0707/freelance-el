@@ -1,7 +1,7 @@
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model, FieldProperty } from '../decorator';
+import { Model, FieldProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { ListAPI } from '../../services/api/list.api';
 import { SurveyAnswer } from './survey-answer.model';
@@ -27,6 +27,7 @@ export class SurveySubmission extends BaseModel{
     end: Date;
     @FieldProperty<Date>()
     start: Date;
+    @ReadOnlyProperty()
     answer_ids: number[];
 
 
