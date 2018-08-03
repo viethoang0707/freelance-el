@@ -62,6 +62,7 @@ export class QuestionListComponent extends BaseComponent {
             this.questions.unshift(question);
             this.displayQuestions = this.questions;
             this.selectedQuestions = [];
+            this.selectedGroupNodes = [];
             this.success('Add question successfully');
         });
     }
