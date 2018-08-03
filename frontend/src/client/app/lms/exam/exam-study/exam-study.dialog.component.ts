@@ -90,6 +90,8 @@ export class ExamStudyDialog extends BaseComponent {
 		this.qIndex = 0;
 		navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(() => {
 			DetectRTC.load(()=> {
+				console.log('Webcam available', DetectRTC.hasWebCam);
+				console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
 				if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
 					this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
 					this.display = false;

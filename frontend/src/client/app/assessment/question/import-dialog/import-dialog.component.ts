@@ -60,7 +60,7 @@ export class QuestionImportDialog extends BaseComponent {
 					question.type = type;
 					var options = [];
 					var optionLength = 1;
-					while (i + optionLength < this.records.length && !this.records[i + optionLength]["group_code"]) 
+					while (i + optionLength < this.records.length && !this.records[i + optionLength]["group_code"])
 						optionLength++;
 					if ((type == "sc" || type == "mc") && optionLength) {
 						for (var j = 0; j < optionLength && i < this.records.length; j++) {
@@ -70,7 +70,7 @@ export class QuestionImportDialog extends BaseComponent {
 							option.content = optionRecord["option"];
 							options.push(option);
 						}
-						optionList.push( _.shuffle(options));
+						optionList.push(_.shuffle(options));
 					} else
 						optionList.push([])
 					i += optionLength;
@@ -78,10 +78,12 @@ export class QuestionImportDialog extends BaseComponent {
 					i++;
 				questionList.push(question);
 			}
-			Question.importQuestion(this,questionList, optionList).subscribe(()=> {
+			Question.importQuestion(this, questionList, optionList).subscribe(() => {
 				this.onImportCompleteReceiver.next();
 				this.success('Import question successfully');
 				this.hide();
+			}, () => {
+				this.error('Import error. Please check data format again!')
 			})
 		});
 	}

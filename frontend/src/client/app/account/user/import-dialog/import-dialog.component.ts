@@ -7,7 +7,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../shared/models/constants';
-import { TreeNode,SelectItem } from 'primeng/api';
+import { TreeNode, SelectItem } from 'primeng/api';
 import { ExcelService } from '../../../shared/services/excel.service';
 
 
@@ -29,7 +29,7 @@ export class UserImportDialog extends BaseComponent {
 	private step: number;
 	private columnMappings: any;
 	private fields: SelectItem[];
-	private statusMessages:string[];
+	private statusMessages: string[];
 
 	constructor(private excelService: ExcelService) {
 		super();
@@ -49,7 +49,7 @@ export class UserImportDialog extends BaseComponent {
 			{ value: 'position', label: this.translateService.instant('Position') }
 		];
 		this.columnMappings = {};
-		for (var i=0;i< this.fields.length; i++)
+		for (var i = 0; i < this.fields.length; i++)
 			this.columnMappings[i] = this.fields[i];
 	}
 
@@ -66,10 +66,10 @@ export class UserImportDialog extends BaseComponent {
 	import() {
 		Group.listUserGroup(this).subscribe(groups => {
 			this.step = 3;
-			var users  =[];
+			var users = [];
 			_.each(this.records, (record, index) => {
 				var user = new User();
-				for (var i=0, keys = Object.keys(record); i< keys.length; i++) {
+				for (var i = 0, keys = Object.keys(record); i < keys.length; i++) {
 					var key = keys[i];
 					if (i < this.fields.length)
 						user[this.columnMappings[i].value] = record[key];
@@ -89,6 +89,8 @@ export class UserImportDialog extends BaseComponent {
 				this.onImportCompleteReceiver.next();
 				if (users.length)
 					this.success(`Import ${users.length} users successfully`);
+			}, () => {
+				this.error('Import error. Please check data format again!')
 			});
 		});
 	}

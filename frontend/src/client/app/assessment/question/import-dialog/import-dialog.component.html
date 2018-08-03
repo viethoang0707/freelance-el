@@ -1,5 +1,6 @@
 <p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display"  #importDialog modal="true" width="300" [responsive]="true">
   <div class="spinner" [hidden]="!loading"></div>
+  <p-growl ></p-growl>
   <div class="ui-g">
     <div class="ui-g-12">
     <p-fieldset legend="{{'Download import template'|translate}}">
