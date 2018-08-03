@@ -99,18 +99,16 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		this.syllabusDialog.show(this.course);
 		this.syllabusDialog.onEditComplete.first().subscribe(() => {
 			this.lmsProfileService.init(this).subscribe(() => {
-				this.member.populateCourse(this).subscribe(() => {
-					this.course = this.member.course;
+				this.course.populate(this).subscribe(() => {
 					this.lmsProfileService.getCourseContent(this.member.course).subscribe(content => {
 						this.syl = content["syllabus"];
-						this.faqs = content["faqs"];
-						this.materials = content["materials"];
 						this.units = content["units"];
 						this.displayCouseSyllabus();
 					});
 				});
 			});
 		}
+	}
 
 
 	addFaq() {

@@ -375,6 +375,7 @@ class CourseMember(models.Model):
 	email = fields.Char(related='user_id.email', string='Email', readonly=True)
 	phone = fields.Char(related='user_id.phone', string='Phone', readonly=True)
 	group_id = fields.Many2one('res.groups',related='user_id.group_id', string='Training group', readonly=True)
+	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	name = fields.Char(related='user_id.name', string='User name', readonly=True)
 	image = fields.Binary(related='user_id.image', string='Image', readonly=True)
 	login = fields.Char(related='user_id.login', string='User login', readonly=True)

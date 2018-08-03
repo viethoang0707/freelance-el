@@ -76,10 +76,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.display = true;
 		this.display = true;
 		this.course = course;
-		CourseSyllabus.get(this, course.syllabus_id).subscribe((syl) => {
-			this.syl = syl;
+		course.populateSyllabus(this).subscribe(()=> {
+			this.syl = course.syl;
 			this.buildCourseTree();
-		});
+		})
 	}
 
 	clearSelection() {
