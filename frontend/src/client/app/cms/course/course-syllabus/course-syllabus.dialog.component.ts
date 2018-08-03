@@ -125,7 +125,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	editNode(node: TreeNode) {
 		this.unitDialog.show(node.data);
-		this.unitDialog.onUpdateComplete.subscribe(() => {
+		this.unitDialog.onUpdateComplete.first().subscribe(() => {
 			this.success('Action completed');
 			this.tree = this.sylUtils.buildGroupTree(this.units);
 		});
