@@ -43,9 +43,9 @@ export class UserImportDialog extends BaseComponent {
 			{ value: 'login', label: this.translateService.instant('Login') },
 			{ value: 'social_id', label: this.translateService.instant('Social ID') },
 			{ value: 'group_code', label: this.translateService.instant('Group') },
-			{ value: 'phone', label: this.translateService.instant('Phone') }
-			{ value: 'dob', label: this.translateService.instant('Date of birth') }
-			{ value: 'gender', label: this.translateService.instant('Gender') }
+			{ value: 'phone', label: this.translateService.instant('Phone') },
+			{ value: 'dob', label: this.translateService.instant('Date of birth') },
+			{ value: 'gender', label: this.translateService.instant('Gender') },
 			{ value: 'position', label: this.translateService.instant('Position') }
 		];
 		this.columnMappings = {};

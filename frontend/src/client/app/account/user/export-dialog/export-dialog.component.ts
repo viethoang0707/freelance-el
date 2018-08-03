@@ -21,6 +21,7 @@ export class UserExportDialog extends BaseComponent {
 	private fields: SelectItem[];
 	private selectedFields: string[];
 	private display: boolean;
+	private users;
 
 	constructor(private excelService: ExcelService) {
 		super();
