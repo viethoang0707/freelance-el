@@ -38,6 +38,7 @@ export class ModelAPIService {
             })
             .catch( (e) => {
                 console.log(e);
+                this.appEvent.finishHttpTransaction();
                 if (e["status"]==401)
                     this.appEvent.accessDenied();
                 return Observable.throw(e.json());

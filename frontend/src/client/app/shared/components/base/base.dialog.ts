@@ -53,14 +53,16 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
             this.object.save(this).subscribe(() => {
                 this.hide();
                 this.onCreateCompleteReceiver.next(this.object);
-            },()=> {                
+            },(e)=> {  
+                this.error('Operation failed');        
             });
         }
         else {
             this.object.save(this).subscribe(() => {
                 this.onUpdateCompleteReceiver.next(this.object);                
                 this.hide();
-            },()=> {                
+            },(e)=> {   
+                this.error('Operation failed');            
             });
         }
     }
