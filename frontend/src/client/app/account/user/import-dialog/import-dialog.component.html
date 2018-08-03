@@ -1,19 +1,34 @@
-<p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display"  #importDialog modal="true" width="300" [responsive]="true">
-  <div class="spinner" [hidden]="!loading"></div>
-  <div class="ui-g">
-    <div class="ui-g-12">
-    <p-fieldset legend="{{'Download template'|translate}}">
-    <a href="/assets/templates/user_import.xls" target="_blank">user_import.xls</a>
-</p-fieldset>
-</div>
-    <div class="ui-g-12">
-      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeFileListner($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false" >  
-    </p-fileUpload>
-    <label [hidden]="!fileName">{{fileName}}</label>
+<p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display" #importDialog modal="true" [responsive]="true">
+    <div class="spinner" [hidden]="!loading"></div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-fieldset legend="{{'Download template'|translate}}">
+                <a href="/assets/templates/user_import.xls" target="_blank">user_import.xls</a>
+            </p-fieldset>
+        </div>
+        <div class="ui-g-12">
+            <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeFileListner($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false">
+            </p-fileUpload>
+            <label [hidden]="!fileName">{{fileName}}</label>
+        </div>
+        <div class="ui-g-12" [hidden]='step!=2'>
+            <ul>
+                <li *ngFor="let field of USER_FIELDS;let i =index">
+                    <p>Column {{i+1}}</p>
+                    <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label"></p-dropdown>
+                </li>
+            </ul>
+        </div>
+        <div class="ui-g-12" [hidden]='step!=3'>
+            <ul>
+                <li *ngFor="let msg of statusMessages;let i =index">
+                    <p> {{msg}} </p>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
-  <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="!records.length"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="!records.length"></button>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
 </p-dialog>
