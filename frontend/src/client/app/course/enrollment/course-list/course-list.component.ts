@@ -45,7 +45,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listCourseGroup(this, COURSE_FIELDS).subscribe(groups => {
+        Group.listCourseGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         })
         this.loadCourses();
@@ -64,7 +64,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     }
 
     loadCourses() {
-        Course.allForEnroll(this).subscribe(courses => {
+        Course.allForEnroll(this,COURSE_FIELDS).subscribe(courses => {
             this.courses = courses;
             this.displayCourses = _.sortBy(courses, (course:Course)=> {
                 return course.id;
