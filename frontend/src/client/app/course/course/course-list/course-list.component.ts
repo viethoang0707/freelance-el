@@ -62,7 +62,7 @@ export class CourseListComponent extends BaseComponent {
         this.courseDialog.onCreateComplete.subscribe(() => {
             this.checkDuplicate(course);
             this.courses.unshift(course);
-            this.displayCourses =  this.courses;
+            this.displayCourses =  [...this.courses];
             this.selectedGroupNodes = [];
             this.success('Add course successfully');
         });

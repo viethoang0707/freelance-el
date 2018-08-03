@@ -47,7 +47,7 @@ export class ExamListComponent extends BaseComponent {
         exam.is_public = true;
         this.examDialog.show(exam);
         this.examDialog.onCreateComplete.subscribe(() => {
-            this.exams.unshift(exam);
+            this.exams = [exam, ...this.exams];
             this.success('Add exam successfully');
         });
     }

@@ -60,7 +60,7 @@ export class QuestionListComponent extends BaseComponent {
         this.questionDialog.show(question);
         this.questionDialog.onCreateComplete.subscribe(() => {
             this.questions.unshift(question);
-            this.displayQuestions = this.questions;
+            this.displayQuestions = [...this.questions];
             this.selectedQuestions = [];
             this.selectedGroupNodes = [];
             this.success('Add question successfully');
