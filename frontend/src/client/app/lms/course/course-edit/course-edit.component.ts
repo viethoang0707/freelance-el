@@ -97,80 +97,93 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 
 	editSyllabus() {
 		this.syllabusDialog.show(this.course);
-	}
+		this.syllabusDialog.onEditComplete.first().subscribe(() => {
+			this.lmsProfileService.init(this).subscribe(() => {
+				this.member.populateCourse(this).subscribe(() => {
+					this.course = this.member.course;
+					this.lmsProfileService.getCourseContent(this.member.course).subscribe(content => {
+						this.syl = content["syllabus"];
+						this.faqs = content["faqs"];
+						this.materials = content["materials"];
+						this.units = content["units"];
+						this.displayCouseSyllabus();
+					});
+				});
+			});
+		}
 
 
 	addFaq() {
-		var faq = new CourseFaq();
-		faq.course_id = this.course.id;
-		this.faqDialog.show(faq);
-		this.faqDialog.onCreateComplete.first().subscribe(() => {
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
-			this.faqs.push(faq);
-			this.success('Add course FAQ successfully');
-		});
-	}
+				var faq = new CourseFaq();
+				faq.course_id = this.course.id;
+				this.faqDialog.show(faq);
+				this.faqDialog.onCreateComplete.first().subscribe(() => {
+					this.lmsProfileService.invalidateCourseContent(this.course.id);
+					this.faqs.push(faq);
+					this.success('Add course FAQ successfully');
+				});
+			}
 
 	editFaq(faq: CourseFaq) {
-		this.faqDialog.show(faq);
-	}
+				this.faqDialog.show(faq);
+			}
 
 	deleteFaq(faq: CourseFaq) {
-		this.confirm('Are you sure to delete ?', () => {
-			faq.delete(this).subscribe(() => {
-				this.lmsProfileService.invalidateCourseContent(this.course.id);
-				this.faqs = _.reject(this.faqs, (obj: CourseFaq) => {
-					return faq.id == obj.id;
+				this.confirm('Are you sure to delete ?', () => {
+					faq.delete(this).subscribe(() => {
+						this.lmsProfileService.invalidateCourseContent(this.course.id);
+						this.faqs = _.reject(this.faqs, (obj: CourseFaq) => {
+							return faq.id == obj.id;
+						});
+						this.success('Delete course FAQ successfully');
+					})
 				});
-				this.success('Delete course FAQ successfully');
-			})
-		});
-	}
+			}
 
 	addMaterial() {
-		var material = new CourseMaterial();
-		material.course_id = this.course.id;
-		this.materialDialog.show(material);
-		this.materialDialog.onCreateComplete.first().subscribe(() => {
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
-			this.materials.push(material);
-			this.success('Add course material successfully');
-		});
-	}
+				var material = new CourseMaterial();
+				material.course_id = this.course.id;
+				this.materialDialog.show(material);
+				this.materialDialog.onCreateComplete.first().subscribe(() => {
+					this.lmsProfileService.invalidateCourseContent(this.course.id);
+					this.materials.push(material);
+					this.success('Add course material successfully');
+				});
+			}
 
 	editMaterial(material: CourseMaterial) {
-		this.materialDialog.show(material);
-	}
+				this.materialDialog.show(material);
+			}
 
 	deleteMaterial(material: CourseMaterial) {
-		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-			material.delete(this).subscribe(() => {
-				this.lmsProfileService.invalidateCourseContent(this.course.id);
-				this.materials = _.reject(this.materials, (obj: CourseMaterial) => {
-					return material.id == obj.id;
+				this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+					material.delete(this).subscribe(() => {
+						this.lmsProfileService.invalidateCourseContent(this.course.id);
+						this.materials = _.reject(this.materials, (obj: CourseMaterial) => {
+							return material.id == obj.id;
+						});
+						this.success('Delete course material successfully');
+					});
 				});
-				this.success('Delete course material successfully');
-			});
-		});
-	}
+			}
 
 	nodeSelect(event: any) {
-		if (this.selectedNode) {
-			this.selectedUnit = this.selectedNode.data;
-		}
-	}
+				if(this.selectedNode) {
+					this.selectedUnit = this.selectedNode.data;
+				}
+			}
 
 	previewUnit(unit: CourseUnit) {
-		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
-	}
+				this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
+			}
 
 	backupCourse() {
-		this.backupDialog.show(this.course);
-	}
+				this.backupDialog.show(this.course);
+			}
 
 	restoreCourse() {
-		this.restoreDialog.show(this.course);
-	}
+				this.restoreDialog.show(this.course);
+			}
 
 }
 

@@ -20,6 +20,7 @@ class Course(models.Model):
 		[('initial', 'initial'), ('rejected', 'Rejected'), ('pending','Pending'), ('approved', 'Approved')], default="initial")
 	logo = fields.Binary(string='Logo')
 	group_id = fields.Many2one('res.groups', string='Group')
+	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	faq_ids = fields.One2many('etraining.course_faq','course_id', string='FAQ list')
 	material_ids = fields.One2many('etraining.course_material','course_id', string='Material list')
 	unit_ids = fields.One2many('etraining.course_unit','course_id', string='Unit list')
