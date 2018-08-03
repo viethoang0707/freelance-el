@@ -22,11 +22,7 @@
           <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)" class="remove-btn"></button>
         </li>
         <div *ngIf="!options.length" class="ui-message ui-messages-error ui-corner-all">
-            {{'Add options is required' | translate}}</div>
-        <div *ngFor="let option of options">
-          <div *ngIf="!(option.is_correct == true)" class="ui-message ui-messages-error ui-corner-all">
-            {{'Select the correct answer is required' | translate}}</div>
-        </div>     
+            {{'Add options is required' | translate}}</div>    
       </ul>
     </p-panel>
   </div>
