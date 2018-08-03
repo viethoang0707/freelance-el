@@ -43,9 +43,9 @@ export class UserImportDialog extends BaseComponent {
 			{ value: 'login', label: this.translateService.instant('Login') },
 			{ value: 'social_id', label: this.translateService.instant('Social ID') },
 			{ value: 'group_code', label: this.translateService.instant('Group') },
-			{ value: 'phone', label: this.translateService.instant('Phone') }
-			{ value: 'dob', label: this.translateService.instant('Date of birth') }
-			{ value: 'gender', label: this.translateService.instant('Gender') }
+			{ value: 'phone', label: this.translateService.instant('Phone') },
+			{ value: 'dob', label: this.translateService.instant('Date of birth') },
+			{ value: 'gender', label: this.translateService.instant('Gender') },
 			{ value: 'position', label: this.translateService.instant('Position') }
 		];
 		this.columnMappings = {};
@@ -69,11 +69,11 @@ export class UserImportDialog extends BaseComponent {
 			var users  =[];
 			_.each(this.records, (record, index) => {
 				var user = new User();
-				_.each(record, (field, value, fieldIndex)=> {
-					if (fieldIndex < this.fields.length) {
-						user[this.columnMappings[fieldIndex].value] = value;
-					}
-				});
+				for (var i=0, keys = Object.keys(record); i< keys.length; i++) {
+					var key = keys[i];
+					if (i < this.fields.length)
+						user[this.columnMappings[i].value] = record[key];
+				}
 				user["password"] = DEFAULT_PASSWORD;
 				var group = _.find(groups, (obj: Group) => {
 					return obj.code == record["group_code"];
