@@ -107,7 +107,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 					});
 				});
 			});
-		}
+		});
 	}
 
 

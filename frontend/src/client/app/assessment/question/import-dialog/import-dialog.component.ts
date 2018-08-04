@@ -21,7 +21,7 @@ export class QuestionImportDialog extends BaseComponent {
 
 	private statusMessages: string[];
 	private questionList: Question[];
-	private optionList: QuestionOption[];
+	private optionList: any;
 	private step: number;
 	private display: boolean;
 	private fileName: string;
@@ -38,7 +38,6 @@ export class QuestionImportDialog extends BaseComponent {
 	show() {
 		this.display = true;
 		this.step = 1;
-		this.percent = 0;
 		this.statusMessages = [];
 	}
 
@@ -68,13 +67,13 @@ export class QuestionImportDialog extends BaseComponent {
 				return obj.code == record["group_code"];
 			});
 			if (!group)
-				this.statusMessages.push(`Record ${index}: Group ${record["group_code"]} is not defined`);
+				this.statusMessages.push(`Record ${i}: Group ${record["group_code"]} is not defined`);
 			var type = record["type"];
 			if (!type || !QUESTION_TYPE[type])
-				this.statusMessages.push(`Record ${index}: Type ${record["type"]} is not defined`);
+				this.statusMessages.push(`Record ${i}: Type ${record["type"]} is not defined`);
 			var level = record["level"];
 			if (!level || !QUESTION_LEVEL[level])
-				this.statusMessages.push(`Record ${index}: Type ${record["level"]} is not defined`);
+				this.statusMessages.push(`Record ${i}: Type ${record["level"]} is not defined`);
 			if (group && type) {
 				question.group_id = group.id;
 				question.type = type;

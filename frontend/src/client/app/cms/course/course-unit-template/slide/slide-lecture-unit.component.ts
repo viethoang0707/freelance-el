@@ -26,6 +26,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 
 	private unit: CourseUnit;
 	private lecture: SlideLecture;
+	private percentage: number;
 	viewCompleted: boolean;
 	@Input() mode;
 

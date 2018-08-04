@@ -18,6 +18,7 @@ import { User } from '../../shared/models/elearning/user.model';
 import { ExamRecord } from '../../shared/models/elearning/exam-record.model';
 import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
 
+const EXAM_FIELDS = ['status','review_state', 'name', 'write_date','create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count','sheet_status'];
 
 @Component({
     moduleId: module.id,
@@ -46,16 +47,13 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.examMembers =  this.lmsProfileService.MyExamMembers;
-            ExamMember.populateExams(this, this.examMembers).subscribe(()=> {
-                var exams = _.map(this.examMembers, (member:ExamMember)=> {
-                    return member.exam;
-                });
-                exams = _.uniq(exams, (exam:Exam)=> {
-                    return exam.id;
-                })
+            var examIds = _.pluck(this.examMembers, 'exam_id');
+            examIds = _.uniq(examIds, id=> {
+                    return id;
+            });
+            Exam.array(this, examIds, EXAM_FIELDS).subscribe(exams=> {
                 this.displayExams(exams);
             });
-
         });
     }
 
@@ -67,8 +65,8 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             if (exam['supervisor'])
                 exam['editor'] =  exam['supervisor'];
         });
-        exams.sort((exam1: Exam, exam2: Exam): any => {
-            return this.lmsProfileService.getLastExamTimestamp(exam2) - this.lmsProfileService.getLastExamTimestamp(exam1);
+        exams = _.sortBy(exams, (exam:Exam) => {
+            return -this.lmsProfileService.getLastExamTimestamp(exam) ;
         });
         this.exams = exams;
     }

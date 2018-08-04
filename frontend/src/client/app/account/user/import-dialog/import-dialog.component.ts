@@ -38,7 +38,6 @@ export class UserImportDialog extends BaseComponent {
 		super();
 		this.display = false;
 		this.records = [];
-		this.total = 0;
 		this.percent = 0;
 		this.statusMessages = [];
 		this.fields = [
@@ -106,7 +105,7 @@ export class UserImportDialog extends BaseComponent {
 	}
 
 	uploadData() {
-		var saveActions = _.map(this.uses, (user: User) => {
+		var saveActions = _.map(this.users, (user: User) => {
 			return user.save(this);
 		});
 		var successRow = 0;

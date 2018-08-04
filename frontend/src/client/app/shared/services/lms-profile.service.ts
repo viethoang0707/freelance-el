@@ -273,7 +273,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 
@@ -300,7 +300,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 
@@ -320,7 +320,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 

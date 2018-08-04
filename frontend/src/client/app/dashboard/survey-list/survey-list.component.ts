@@ -16,6 +16,8 @@ import { Route, Router } from '@angular/router';
 import { BaseModel } from '../../shared/models/base.model';
 import { User } from '../../shared/models/elearning/user.model';
 
+const SURVEY_FIELDS = ['status','review_state', 'name', 'create_date', 'write_date','supervisor_id', 'summary', 'instruction', 'start', 'end', 'question_count','sheet_status'];
+
 
 @Component({
     moduleId: module.id,
@@ -44,13 +46,11 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.surveyMembers =  this.lmsProfileService.MySurveyMembers;
-            SurveyMember.populateSurveys(this, this.surveyMembers).subscribe(()=> {
-                var surveys = _.map(this.surveyMembers, (member:SurveyMember)=> {
-                    return member.survey;
-                });
-                surveys = _.uniq(surveys, (survey:Survey)=> {
-                    return survey.id;
-                })
+            var surveyIds = _.pluck(this.surveyMembers, 'survey_id');
+            surveyIds = _.uniq(surveyIds, id=> {
+                    return id;
+            });
+            Survey.array(this, surveyIds, SURVEY_FIELDS).subscribe(surveys=> {
                 this.displaySurveys(surveys);
             });
         });
