@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, concatAll } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { ReportUtils } from '../../shared/helpers/report.utils';
