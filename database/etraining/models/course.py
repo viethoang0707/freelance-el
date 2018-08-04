@@ -406,8 +406,7 @@ class CourseMember(models.Model):
 	@api.model
 	def create(self, vals):
 		members = []
-		if vals:
-			raise Exception(str(vals))
+		print 'Odoo', vals
 		if 'user_id' in vals and vals['user_id']:
 			if 'class_id' in vals and vals['class_id']:
 				members = self.env['etraining.course_member'].search([('user_id','=',vals['user_id']),('role','=',"'"+vals['role']+"'"),('course_id','=',vals['course_id']),('class_id','=',vals['class_id'])])
