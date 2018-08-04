@@ -673,3 +673,7 @@ body .ui-dialog.course-unit-study .tree-unit-course-study {
     display: none !important;
   }
 }
+
+ .ui-table-tbody> tr> td {
+    word-wrap: break-word;
+;}

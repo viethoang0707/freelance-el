@@ -57,12 +57,10 @@ export class CourseEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this course'));
             return;
         }
-        course.populate(this).subscribe(() => {
-            if (course.mode == 'self-study')
-                this.courseEnrollDialog.enrollCourse(course);
-            else if (course.mode == 'group')
-                this.classListDialog.show(course);
-        });
+        if (course.mode == 'self-study')
+            this.courseEnrollDialog.enrollCourse(course);
+        else if (course.mode == 'group')
+            this.classListDialog.show(course);
     }
 
     loadCourses() {

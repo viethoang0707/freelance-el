@@ -25,7 +25,7 @@ export class Certificate extends BaseModel{
         this.member_name = undefined;
         this.member_login = undefined;
         this.member_image = undefined;
-
+        this.issue_member_id = undefined;
     }
     
     name:string;
@@ -43,5 +43,5 @@ export class Certificate extends BaseModel{
     course_name: string;
     course_mode: string;
     course_code: string;
-
+    issue_member_id: number;
 }

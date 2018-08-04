@@ -63,8 +63,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             course['teacher'] =  this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
             course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
             course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
-            if (course['supervisor'])
-                course['editor'] =  course['supervisor'];
         });
         this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);

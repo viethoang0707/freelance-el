@@ -77,8 +77,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             course['teacher'] = this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
             course['editor'] = this.lmsProfileService.getCourseMemberByRole('editor', course.id);
             course['supervisor'] = this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
-            if (course['supervisor'])
-                course['teacher'] = course['editor'] = course['supervisor'];
         });
         this.courses = _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);
@@ -109,8 +107,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             exam['candidate'] = this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
             exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
             exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
-            if (exam['supervisor'])
-                exam['editor'] = exam['supervisor'];
             if (exam.IsAvailable)
                 this.events.push({
                     title: exam.name,

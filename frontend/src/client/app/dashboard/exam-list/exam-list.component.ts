@@ -62,8 +62,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             exam['candidate'] = this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
             exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
             exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
-            if (exam['supervisor'])
-                exam['editor'] = exam['supervisor'];
         });
         exams = _.sortBy(exams, (exam: Exam) => {
             return -this.lmsProfileService.getLastExamTimestamp(exam);

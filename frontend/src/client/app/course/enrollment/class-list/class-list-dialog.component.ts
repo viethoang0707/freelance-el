@@ -45,15 +45,16 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     enroll(courseClass: CourseClass) {
-        courseClass.populate(this).subscribe(()=> {
-            this.courseEnrollDialog.enrollClass(this.course, courseClass);
-        });
+        this.courseEnrollDialog.enrollClass(this.course, courseClass);
     }
 
     loadClasses() {
-        this.course.listClasses(this, CLASS_FIELDS).subscribe(classes => {
-            this.classes = classes;
+        this.course.populate(this).subscribe(() => {
+            this.course.listClasses(this, CLASS_FIELDS).subscribe(classes => {
+                this.classes = classes;
+            });
         });
+
     }
 
     hide() {
@@ -78,7 +79,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     editClass(courseClass: CourseClass) {
-        courseClass.populate(this).subscribe(()=> {
+        courseClass.populate(this).subscribe(() => {
             this.classDialog.show(courseClass);
         });
     }

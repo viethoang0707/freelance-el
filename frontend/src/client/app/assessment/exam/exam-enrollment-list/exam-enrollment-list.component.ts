@@ -47,9 +47,7 @@ export class ExamEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
-        exam.populate(this).subscribe(()=> {
-            this.examEnrollDialog.enroll(exam);
-        });
+        this.examEnrollDialog.enroll(exam);
     }
 
     ngOnInit() {

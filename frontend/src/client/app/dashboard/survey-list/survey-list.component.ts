@@ -61,8 +61,6 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
             survey['candidate'] =  this.lmsProfileService.getSurveyMemberByRole('candidate', survey.id);
             survey['editor'] =  this.lmsProfileService.getSurveyMemberByRole('editor', survey.id);
             survey['supervisor'] =  this.lmsProfileService.getSurveyMemberByRole('supervisor', survey.id);
-            if (survey['supervisor'])
-                 survey['editor'] =  survey['supervisor'];
         });
         surveys.sort((survey1: Survey, survey2: Survey): any => {
             return this.lmsProfileService.getLastSurveyTimestamp(survey2) - this.lmsProfileService.getLastSurveyTimestamp(survey1);
