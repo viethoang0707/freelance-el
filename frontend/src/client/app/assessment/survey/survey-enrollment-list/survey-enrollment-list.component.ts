@@ -51,7 +51,9 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this survey'));
             return;
         }
-        this.surveyEnrollDialog.enroll(survey);
+        survey.populate(this).subscribe(()=> {
+            this.surveyEnrollDialog.enroll(survey);
+        });
     }
 
     ngOnInit() {

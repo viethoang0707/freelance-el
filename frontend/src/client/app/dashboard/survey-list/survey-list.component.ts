@@ -71,14 +71,19 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     }
 
     editContent(survey: Survey) {
-        this.surveyContentDialog.show(survey);
+        survey.populate(this).subscribe(()=> {
+            this.surveyContentDialog.show(survey);
+        });
     }
 
     startSurvey(survey: Survey, member: SurveyMember) {
         this.confirmationService.confirm({
             message: this.translateService.instant('Are you sure to start?'),
             accept: () => {
-                this.surveyStudyDialog.show(survey, member);
+                survey.populate(this).subscribe(()=> {
+                    this.surveyStudyDialog.show(survey, member);
+                });
+                
             }
         });
     }

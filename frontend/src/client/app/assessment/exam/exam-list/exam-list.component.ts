@@ -57,7 +57,9 @@ export class ExamListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
-        this.examDialog.show(exam);
+        exam.populate(this).subscribe(()=> {
+            this.examDialog.show(exam);
+        });
     }
 
     deleteExam(exam:Exam) {

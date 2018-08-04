@@ -63,7 +63,10 @@ export class SurveyListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have edit permission for this survey'));
             return;
         }
-        this.surveyDialog.show(this.selectedSurvey);
+        survey.populate(this).subscribe(()=> {
+            this.surveyDialog.show(survey);
+        });
+        
     }
 
     deleteSurvey(survey:Survey) {

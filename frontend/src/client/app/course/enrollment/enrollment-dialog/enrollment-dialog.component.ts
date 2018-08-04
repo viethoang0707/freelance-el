@@ -148,33 +148,28 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	loadMembers() {
 		if (this.course && !this.courseClass) {
-			this.course.populate(this).subscribe(() => {
-				this.course.listMembers(this).subscribe(members => {
-					this.students = _.filter(members, (member) => {
-						return member.role == 'student';
-					});
-					this.selectedStudents = [];
-					this.teachers = _.filter(members, (member) => {
-						return member.role == 'teacher';
-					});
-					this.selectedTeachers = [];
+			this.course.listMembers(this).subscribe(members => {
+				this.students = _.filter(members, (member) => {
+					return member.role == 'student';
 				});
-			})
-
+				this.selectedStudents = [];
+				this.teachers = _.filter(members, (member) => {
+					return member.role == 'teacher';
+				});
+				this.selectedTeachers = [];
+			});
 		}
 		if (this.courseClass && this.courseClass) {
-			this.courseClass.populate(this).subscribe(() => {
-				this.courseClass.listMembers(this).subscribe(members => {
-					this.students = _.filter(members, (member) => {
-						return member.role == 'student';
-					});
-					this.selectedStudents = [];
-					this.teachers = _.filter(members, (member) => {
-						return member.role == 'teacher';
-					});
-					this.selectedTeachers = [];
+			this.courseClass.listMembers(this).subscribe(members => {
+				this.students = _.filter(members, (member) => {
+					return member.role == 'student';
 				});
-			})
+				this.selectedStudents = [];
+				this.teachers = _.filter(members, (member) => {
+					return member.role == 'teacher';
+				});
+				this.selectedTeachers = [];
+			});
 
 		}
 	}

@@ -45,7 +45,9 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     enroll(courseClass: CourseClass) {
-        this.courseEnrollDialog.enrollClass(this.course, courseClass);
+        courseClass.populate(this).subscribe(()=> {
+            this.courseEnrollDialog.enrollClass(this.course, courseClass);
+        });
     }
 
     loadClasses() {
@@ -76,7 +78,9 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     }
 
     editClass(courseClass: CourseClass) {
-        this.classDialog.show(courseClass);
+        courseClass.populate(this).subscribe(()=> {
+            this.classDialog.show(courseClass);
+        });
     }
 
     deleteClass(courseClass: CourseClass) {

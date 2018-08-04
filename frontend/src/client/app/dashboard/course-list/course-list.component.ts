@@ -93,7 +93,9 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     publishCourse(course: Course) {
-        this.publisiDialog.show(course);
+        course.populate(this).subscribe(()=> {
+            this.publisiDialog.show(course);
+        });
     }
 
     manageCourse(course: Course, member: CourseMember) {

@@ -73,11 +73,12 @@ export class CourseListComponent extends BaseComponent {
             this.error('You do not have edit permission for this course');
             return;
         }
-        this.courseDialog.show(course);
-        this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.checkDuplicate(course);
+        course.populate(this).subscribe(() => {
+            this.courseDialog.show(course);
+            this.courseDialog.onUpdateComplete.subscribe(() => {
+                this.checkDuplicate(course);
+            });
         });
-
     }
 
     requestReview(course: Course) {

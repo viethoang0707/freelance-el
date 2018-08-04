@@ -179,7 +179,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     publishCourse(course: Course) {
-        this.publisiDialog.show(course);
+        course.populate(this).subscribe(()=> {
+            this.publisiDialog.show(course);
+        });
+        
     }
 
     manageCourse(course: Course, member: CourseMember) {
@@ -191,12 +194,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editExamContent(exam: Exam) {
-        this.examContentDialog.show(exam);
+        exam.populate(this).subscribe(()=> {
+            this.examContentDialog.show(exam);
+        });
+        
     }
 
     startExam(exam: Exam, member: ExamMember) {
         this.confirm('Are you sure to start ?', () => {
-            this.examStudyDialog.show(exam, member);
+            exam.populate(this).subscribe(()=> {
+                this.examStudyDialog.show(exam, member);
+            });
+            
         });
     }
 
@@ -211,6 +220,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     viewAnswer(exam: Exam, member: ExamMember) {
-        this.answerSheetDialog.show(exam, member);
+        exam.populate(this).subscribe(()=> {
+            this.answerSheetDialog.show(exam, member);
+        });
     }
 }

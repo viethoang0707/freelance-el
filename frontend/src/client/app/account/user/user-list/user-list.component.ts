@@ -79,8 +79,10 @@ export class UserListComponent extends BaseComponent {
     }
 
     editUser(user:User) {
-        this.userProfileDialog.show(user);
-        this.selectedUsers = [];
+        user.populate(this).subscribe(()=> {
+            this.userProfileDialog.show(user);
+            this.selectedUsers = [];
+        });
     }
 
     activateMultipleUsers(users:User[]){
