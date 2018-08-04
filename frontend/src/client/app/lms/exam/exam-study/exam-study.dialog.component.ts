@@ -88,7 +88,8 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(() => {
+		navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+		.then(() => {
 			DetectRTC.load(()=> {
 				console.log('Webcam available', DetectRTC.hasWebCam);
 				console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
@@ -99,7 +100,12 @@ export class ExamStudyDialog extends BaseComponent {
 				}
 				this.loadExamContent();
 			})
-		});
+		})
+		.catch((e)=> {
+			console.log('Get media error', e);
+			this.error('Webcam device not found');
+			this.display = false;
+		})
 	}
 
 	loadExamContent() {
