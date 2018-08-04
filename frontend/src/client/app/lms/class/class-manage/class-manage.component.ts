@@ -148,7 +148,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	viewGradebook(student: CourseMember) {
-		this.gradebookDialog.show(this.member,member);
+		this.gradebookDialog.show(this.member,student);
 	}
 
 	viewLMSProfile(member: CourseMember) {

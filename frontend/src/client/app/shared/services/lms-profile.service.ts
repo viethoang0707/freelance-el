@@ -66,6 +66,9 @@ export class LMSProfileService {
   private context: APIContext;
 
   constructor(private settingService: SettingService, private appEvent: AppEventManager) {
+    this.settingService.viewModeEvents.subscribe(()=> {
+      this.invalidateAll();
+    });
     this.appEvent.onLogin.subscribe(() => {
       this.invalidateAll();
     });

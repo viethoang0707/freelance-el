@@ -135,7 +135,7 @@ class ExamMember(models.Model):
 	def create(self, vals):
 		members = []
 		if 'user_id' in vals and vals['user_id']:
-			members = self.env['etraining.exam_member'].search([('user_id','=',vals['user_id']),('role','=',"'"+vals["role"]+"'"),('exam_id','=',vals['exam_id'])])
+			members = self.env['etraining.exam_member'].search([('user_id','=',vals['user_id']),('role','=',vals["role"]),('exam_id','=',vals['exam_id'])])
 		if len(members) > 0:
 			m =  members[0]
 		else:
