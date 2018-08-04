@@ -50,13 +50,13 @@ export class QuestionImportDialog extends BaseComponent {
 		Group.listQuestionGroup(this).subscribe(groups => {
 			this.step = 2;
 			this.parseData(groups).subscribe(success => {
-				if (success && this.questions.length)
+				if (success && this.questionList.length)
 					this.uploadData();
 			});
 		});
 	}
 
-	parseData(groups: Group[]) {
+	parseData(groups: Group[]):Observable<any> {
 		this.questionList = [];
 		this.optionList = [];
 		this.statusMessages = [];

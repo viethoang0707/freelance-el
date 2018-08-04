@@ -23,6 +23,7 @@ export class ProjectContentDialog extends BaseDialog<Project> {
     private locale:any;
     private projectStatus: SelectItem[];
     private rangeDates: Date[]; 
+    private percentage: number;
 
     constructor(private http: Http, private ngZone: NgZone) {
         super();
@@ -55,12 +56,17 @@ export class ProjectContentDialog extends BaseDialog<Project> {
     }
 
     uploadFile(file) {
+        this.percentage = 0;
         this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(()=> {
                         this.object.file_url = data["url"];
                         this.object.filename = data["filename"];
+                    });
+                } else {
+                    this.ngZone.run(()=> {
+                        this.percentage = +data;
                     });
                 }
             },
