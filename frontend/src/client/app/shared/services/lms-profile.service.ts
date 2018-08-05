@@ -246,7 +246,7 @@ export class LMSProfileService {
     )
       .map(jsonArray => {
         var content = {};
-        content["projects"] = Project.toArray(jsonArray[0])[0];
+        content["projects"] = Project.toArray(jsonArray[0]);
         content["exams"] = Exam.toArray(jsonArray[1]);
         content["surveys"] = Survey.toArray(jsonArray[2]);
         this.classContent[clazz.id] = content;
