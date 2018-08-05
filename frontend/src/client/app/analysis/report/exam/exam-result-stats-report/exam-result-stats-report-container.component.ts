@@ -20,8 +20,6 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { ExamResultStatsReportComponent } from './exam-result-stats-report.component';
 
-const EXAM_FIELDS = ['name'];
-
 @Component({
     moduleId: module.id,
     selector: 'exam-result-stats-report-container',
@@ -42,7 +40,7 @@ export class ExamResultStatsReportContainerComponent extends BaseComponent imple
     }
 
     ngOnInit() {
-    	Exam.all(this, EXAM_FIELDS).subscribe(exams => {
+    	Exam.all(this).subscribe(exams => {
     		this.exams = exams;
     	});
     }
