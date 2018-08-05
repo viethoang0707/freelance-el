@@ -174,6 +174,7 @@ export class ExamStudyDialog extends BaseComponent {
 				this.member.enroll_status = 'completed';
 				ExamLog.finishExam(this, this.member, this.submission).subscribe();
 				this.timeoutSubscription.next();
+				this.lmsProfileService.invalidateAll();
 				this.hide();
 			});
 		});

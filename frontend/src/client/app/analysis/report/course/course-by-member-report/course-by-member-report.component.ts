@@ -19,7 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BaseModel } from '../../../../shared/models/base.model';
 
-const COURSE_MEMBER_FIELDS = ['role','course_id','course_code', 'course_name','name', 'login', 'course_mode', 'enroll_status', 'date_register'];
+const COURSE_MEMBER_FIELDS = ['role', 'course_id', 'course_code', 'course_name', 'name', 'login', 'course_mode', 'enroll_status', 'date_register'];
 
 @Component({
 	moduleId: module.id,
@@ -67,7 +67,7 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 		var apiMemberList = [];
 		var apiLogList = [];
 		for (var i = 0; i < users.length; i++) {
-			apiMemberList.push(User.__api__listCourseMembers(users[i].course_member_ids,COURSE_MEMBER_FIELDS));
+			apiMemberList.push(User.__api__listCourseMembers(users[i].course_member_ids, COURSE_MEMBER_FIELDS));
 			apiLogList.push(CourseLog.__api__userStudyActivity(users[i].id, null));
 		};
 		var records = [];
@@ -91,17 +91,17 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 					});
 					records = records.concat(memberRecords);
 				}
-
+				this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(records, "user_login");
+				_.each(records, record => {
+					record["index"] = this.rowGroupMetadata[record["user_login"]].index;
+					record["size"] = this.rowGroupMetadata[record["user_login"]].size;
+				});
+				this.records = _.sortBy(records, record => {
+					return +record["index"];
+				});
 			});
 
-			this.rowGroupMetadata = this.reportUtils.createRowGroupMetaData(records, "user_login");
-			_.each(records, record => {
-				record["index"] = this.rowGroupMetadata[record["user_login"]].index;
-				record["size"] = this.rowGroupMetadata[record["user_login"]].size;
-			});
-			this.records = _.sortBy(records, record => {
-				return +record["index"];
-			});
+
 		});
 	}
 
