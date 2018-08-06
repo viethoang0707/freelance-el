@@ -116,7 +116,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
 		unit.order = maxOrder;
 		unit.save(this).subscribe(() => {
-			this.success(this.translateService.instant('Action completed');
+			this.success(this.translateService.instant('Action completed'));
 			if (this.selectedNode)
 				this.sylUtils.addChildNode(this.selectedNode, unit);
 			else
