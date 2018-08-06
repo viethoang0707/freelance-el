@@ -106,7 +106,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
         this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             course.open(this).subscribe(() => {
                 course.status = 'open';
-                this.success(this.translateService.instant('Course opem'));
+                this.success(this.translateService.instant('Course open'));
             });
         });
 
