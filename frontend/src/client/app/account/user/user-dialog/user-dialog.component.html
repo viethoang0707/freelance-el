@@ -58,7 +58,7 @@
       </div>
       <div class="ui-g-6">
         <span class="md-inputfield">
-          <input type="text" pInputText [(ngModel)]="object.phone" #phone="ngModel" name="phone" required pattern="^[0-9]$">
+          <input type="text" pInputText [(ngModel)]="object.phone" #phone="ngModel" name="phone" required pattern="^[0-9]*$">
           <label>{{'Phone'|translate}}</label>
           <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="ui-message ui-messages-error ui-corner-all">
             <div *ngIf="phone.errors.required">
