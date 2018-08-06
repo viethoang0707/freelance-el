@@ -56,6 +56,7 @@ export class Course extends BaseModel{
         this.material_ids = [];
         this.unit_ids = [];
         this.syl =  new CourseSyllabus();
+        this.group_name = undefined;
 	}
 
     complete_unit_by_order: boolean;
@@ -73,6 +74,7 @@ export class Course extends BaseModel{
     prequisite_course_name: string;
     name:string;
     group_id:number;
+    group_name: string;
     supervisor_id: number;
     supervisor_name: string;
     summary: string;

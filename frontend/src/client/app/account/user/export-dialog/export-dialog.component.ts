@@ -21,10 +21,11 @@ export class UserExportDialog extends BaseComponent {
 	private fields: SelectItem[];
 	private selectedFields: string[];
 	private display: boolean;
+	private users;
 
 	constructor(private excelService: ExcelService) {
 		super();
-		this.users = [];
+		this.userIds = [];
 		this.fields = [
 			{ value: 'name', label: this.translateService.instant('Name') },
 			{ value: 'email', label: this.translateService.instant('Email') },
@@ -47,7 +48,7 @@ export class UserExportDialog extends BaseComponent {
 
 	export() {
 		User.array(this, this.userIds, this.selectedFields).subscribe(users => {
-			var data = _.map(this.users, (user) => {
+			var data = _.map(users, (user) => {
 				var userData = {};
 				_.each(this.selectedFields, (field) => {
 					userData[field] = user[field];

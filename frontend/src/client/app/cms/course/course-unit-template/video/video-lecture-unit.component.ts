@@ -26,7 +26,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	
 	private unit: CourseUnit;
 	private lecture: VideoLecture;
-	private uploadInprogress: boolean;
+	private percentage: number;
 	private stream: any;
 	private recordRTC: any;
 	private showToolbar: boolean;
@@ -59,11 +59,16 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	}
 
 	uploadFile(file) {
+		this.percentage = 0;
 		this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {
 						this.lecture.video_url = data["url"];
+					});
+				} else {
+					this.ngZone.run(() => { 
+						this.percentage = +data;
 					});
 				}
 			}

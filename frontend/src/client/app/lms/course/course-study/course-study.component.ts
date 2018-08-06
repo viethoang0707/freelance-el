@@ -142,7 +142,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	viewGradebook() {
-		this.gradebookDialog.show(this.member);
+		this.gradebookDialog.show(this.member,this.member);
 	}
 
 	study() {

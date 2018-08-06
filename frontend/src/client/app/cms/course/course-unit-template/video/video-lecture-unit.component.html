@@ -1,17 +1,11 @@
-<style>
-  body .ui-progressbar .ui-progressbar-value {
-    height: 0px !important;
-  }
-</style>
-
 <div *ngIf="mode=='design'">
-  <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
+  <p-progressBar [value]="percentage" *ngIf="loading"></p-progressBar>
   <div class="ui-g">
     <div class="ui-g-6" align='center'>
       <div class="ui-g">
         <div style="width: 50%">
           <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFile($event)"
-            accept="*" maxFileSize="1024*512" showUploadButton="false">
+            accept="*" maxFileSize="1024*1024*512" showUploadButton="false">
           </p-fileUpload>
         </div>
         <div style="width: 50%">

@@ -62,7 +62,7 @@ export class CourseListComponent extends BaseComponent {
         this.courseDialog.onCreateComplete.subscribe(() => {
             this.checkDuplicate(course);
             this.courses.unshift(course);
-            this.displayCourses =  this.courses;
+            this.displayCourses =  [...this.courses];
             this.selectedGroupNodes = [];
             this.success('Add course successfully');
         });
@@ -73,11 +73,12 @@ export class CourseListComponent extends BaseComponent {
             this.error('You do not have edit permission for this course');
             return;
         }
-        this.courseDialog.show(course);
-        this.courseDialog.onUpdateComplete.subscribe(() => {
-            this.checkDuplicate(course);
+        course.populate(this).subscribe(() => {
+            this.courseDialog.show(course);
+            this.courseDialog.onUpdateComplete.subscribe(() => {
+                this.checkDuplicate(course);
+            });
         });
-
     }
 
     requestReview(course: Course) {

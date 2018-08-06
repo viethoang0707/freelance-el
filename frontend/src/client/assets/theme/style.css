@@ -524,10 +524,6 @@ body .class-manage .ui-dialog-content.ui-widget-content {
   display: none;
 }
 
-body .ui-progressbar .ui-progressbar-value {
-  height: 0px !important;
-}
-
 .width-tree {
   width: 100%;
 }
@@ -729,3 +725,7 @@ body .ui-dialog.course-unit-study .pdfViewer .textLayer {
     display: none !important;
   }
 }
+
+ .ui-table-tbody> tr> td {
+    word-wrap: break-word;
+;}

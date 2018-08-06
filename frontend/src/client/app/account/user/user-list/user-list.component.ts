@@ -71,7 +71,7 @@ export class UserListComponent extends BaseComponent {
         this.userDialog.show(user);
         this.userDialog.onCreateComplete.subscribe(() => {
             this.users.unshift(user);
-            this.displayUsers = this.users;
+            this.displayUsers = [...this.users];
             this.selectedUsers = [];
             this.selectedGroupNodes = [];
             this.success('Add user successfully');
@@ -79,8 +79,10 @@ export class UserListComponent extends BaseComponent {
     }
 
     editUser(user:User) {
-        this.userProfileDialog.show(user);
-        this.selectedUsers = [];
+        user.populate(this).subscribe(()=> {
+            this.userProfileDialog.show(user);
+            this.selectedUsers = [];
+        });
     }
 
     activateMultipleUsers(users:User[]){

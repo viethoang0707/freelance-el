@@ -1,13 +1,14 @@
 <p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display" #importDialog modal="true" [responsive]="true">
     <div class="spinner" [hidden]="!loading"></div>
+    <p-growl ></p-growl>
     <div class="ui-g">
         <div class="ui-g-12">
             <p-fieldset legend="{{'Download template'|translate}}">
-                <a href="/assets/templates/user_import.xls" target="_blank">user_import.xls</a>
+                <a href="/assets/templates/user_import.xlsx" target="_blank">user_import.xlsx</a>
             </p-fieldset>
         </div>
         <div class="ui-g-12">
-            <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeFileListner($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false">
+            <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="selectFile($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false">
             </p-fileUpload>
             <label [hidden]="!fileName">{{fileName}}</label>
         </div>
@@ -20,6 +21,7 @@
             </ul>
         </div>
         <div class="ui-g-12" [hidden]='step!=3'>
+          <p-progressBar value="percent" *ngIf="loading"></p-progressBar>
             <ul>
                 <li *ngFor="let msg of statusMessages;let i =index">
                     <p> {{msg}} </p>

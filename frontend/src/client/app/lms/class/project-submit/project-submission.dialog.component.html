@@ -1,7 +1,7 @@
 <p-dialog header="{{'Project submission'|translate}}" [(visible)]="display" modal="true" width="320" height="100%" [responsive]="true" appendTo="body">
 	<div class="spinner" [hidden]="!loading"></div>
   	<div class="ui-g-6">
-      <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
+      <p-progressBar [value]="percentage" *ngIf="loading"></p-progressBar>
           <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFileEvent($event)" accept="*" maxFileSize="1024*8" showUploadButton="false">
           </p-fileUpload>
           <a href="{{submit.file_url}}" target="_blank" *ngIf="submit.file_url">{{submit.filename}}</a>

@@ -79,7 +79,12 @@ export class QuestionDialog extends BaseDialog<Question>  {
 	}
 
 	save() {
+		var isNew = this.object.IsNew;
 		(<IQuestion>this.componentRef.instance).saveEditor().subscribe(()=> {
+			if (isNew)
+				this.onCreateCompleteReceiver.next();
+			else
+				this.onUpdateCompleteReceiver.next();
 			this.hide();
 		});
 	}

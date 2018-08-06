@@ -88,8 +88,11 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(() => {
+		navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+		.then(() => {
 			DetectRTC.load(()=> {
+				console.log('Webcam available', DetectRTC.hasWebCam);
+				console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
 				if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
 					this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
 					this.display = false;
@@ -97,7 +100,12 @@ export class ExamStudyDialog extends BaseComponent {
 				}
 				this.loadExamContent();
 			})
-		});
+		})
+		.catch((e)=> {
+			console.log('Get media error', e);
+			this.error('Webcam device not found');
+			this.display = false;
+		})
 	}
 
 	loadExamContent() {
@@ -166,6 +174,7 @@ export class ExamStudyDialog extends BaseComponent {
 				this.member.enroll_status = 'completed';
 				ExamLog.finishExam(this, this.member, this.submission).subscribe();
 				this.timeoutSubscription.next();
+				this.lmsProfileService.invalidateAll();
 				this.hide();
 			});
 		});

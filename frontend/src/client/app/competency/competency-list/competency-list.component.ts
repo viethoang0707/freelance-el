@@ -51,7 +51,7 @@ export class CompetencyListComponent extends BaseComponent {
         this.competencyDialog.show(competency);
         this.competencyDialog.onCreateComplete.subscribe(() => {
             this.competencies.unshift(competency);
-            this.displayCompetencies = this.competencies;
+            this.displayCompetencies = [...this.competencies];
             this.success('Add competency successfully');
         });
     }

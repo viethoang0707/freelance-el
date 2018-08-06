@@ -12,7 +12,7 @@ import { ExamEnrollDialog } from '../enrollment-dialog/enrollment-dialog.compone
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
-const EXAM_FIELDS = ['status', 'name', 'member_ids', 'supervisor_name', 'start', 'end', 'create_date', 'write_date', 'review_state', 'supervisor_id'];
+const EXAM_FIELDS = ['status', 'name', 'supervisor_name', 'start', 'end', 'create_date', 'write_date', 'review_state', 'supervisor_id'];
 
 @Component({
     moduleId: module.id,

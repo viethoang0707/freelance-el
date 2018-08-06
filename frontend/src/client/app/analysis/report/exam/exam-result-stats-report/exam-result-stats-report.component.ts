@@ -71,7 +71,7 @@ export class ExamResultStatsReportComponent extends BaseComponent {
         this.clear();
         BaseModel
             .bulk_list(this,
-                Exam.__api__populateQuestionSheet(exam.id),
+                Exam.__api__populateQuestionSheet(exam.sheet_id),
                 Exam.__api__listAnswers(exam.answer_ids))
             .subscribe(jsonArr => {
                 var sheet = QuestionSheet.toArray(jsonArr[0])[0];

@@ -28,6 +28,7 @@ declare var $: any;
 export class CourseSyllabusDialog extends BaseComponent {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
+	WINDOW_HEIGHT: any;
 
 	private display: boolean;
 	private tree: TreeNode[];
@@ -39,7 +40,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private sylUtils: SyllabusUtils;
 	private course: Course;
 	private courseStatus: SelectItem[];
-	WINDOW_HEIGHT: any;
+
+  protected onEditCompleteReceiver: Subject<any> = new Subject();
+  onEditComplete: Observable<any> = this.onEditCompleteReceiver.asObservable();
+	
 
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
@@ -72,10 +76,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.display = true;
 		this.display = true;
 		this.course = course;
-		CourseSyllabus.get(this, course.syllabus_id).subscribe((syl) => {
-			this.syl = syl;
+		course.populateSyllabus(this).subscribe(()=> {
+			this.syl = course.syl;
 			this.buildCourseTree();
-		});
+		})
 	}
 
 	clearSelection() {
@@ -125,7 +129,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	editNode(node: TreeNode) {
 		this.unitDialog.show(node.data);
-		this.unitDialog.onUpdateComplete.subscribe(() => {
+		this.unitDialog.onUpdateComplete.first().subscribe(() => {
 			this.success('Action completed');
 			this.tree = this.sylUtils.buildGroupTree(this.units);
 		});
@@ -152,6 +156,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	hide() {
 		this.clearSelection();
 		this.display = false;
+		this.onEditCompleteReceiver.next();
 	}
 
 	moveUp(node: TreeNode) {

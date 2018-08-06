@@ -33,7 +33,7 @@ class User(models.Model):
 	dob = fields.Datetime(related="partner_id.dob", string="Date of birth")
 	banned = fields.Boolean(default=False, string="Is banned")
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
-
+	supervisor_name = fields.Char(related="supervisor_id.name", string="Supervisor Name")
 	achivement_ids = fields.One2many('etraining.achivement', 'user_id', string='Achivements')
 	course_member_ids = fields.One2many('etraining.course_member', 'user_id', string='Course members')
 	exam_member_ids = fields.One2many('etraining.exam_member', 'user_id', string='Exam members')

@@ -66,6 +66,9 @@ export class LMSProfileService {
   private context: APIContext;
 
   constructor(private settingService: SettingService, private appEvent: AppEventManager) {
+    this.settingService.viewModeEvents.subscribe(()=> {
+      this.invalidateAll();
+    });
     this.appEvent.onLogin.subscribe(() => {
       this.invalidateAll();
     });
@@ -243,7 +246,7 @@ export class LMSProfileService {
     )
       .map(jsonArray => {
         var content = {};
-        content["projects"] = Project.toArray(jsonArray[0])[0];
+        content["projects"] = Project.toArray(jsonArray[0]);
         content["exams"] = Exam.toArray(jsonArray[1]);
         content["surveys"] = Survey.toArray(jsonArray[2]);
         this.classContent[clazz.id] = content;
@@ -273,7 +276,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 
@@ -300,7 +303,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 
@@ -320,7 +323,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 

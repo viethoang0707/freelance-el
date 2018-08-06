@@ -1,5 +1,6 @@
 <p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display"  #importDialog modal="true" width="300" [responsive]="true">
   <div class="spinner" [hidden]="!loading"></div>
+  <p-growl ></p-growl>
   <div class="ui-g">
     <div class="ui-g-12">
     <p-fieldset legend="{{'Download import template'|translate}}">
@@ -7,10 +8,18 @@
 </p-fieldset>
 </div>
     <div class="ui-g-12">
-      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeFileListner($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false" >  
+      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="selectFile($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false" >  
     </p-fileUpload>
     <label [hidden]="!fileName">{{fileName}}</label>
     </div>
+    <div class="ui-g-12" [hidden]='step!=2'>
+          <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
+            <ul>
+                <li *ngFor="let msg of statusMessages;let i =index">
+                    <p> {{msg}} </p>
+                </li>
+            </ul>
+        </div>
   </div>
   <p-footer>
     <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="!records.length"></button>

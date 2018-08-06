@@ -50,7 +50,7 @@ export class PermissionListComponent extends BaseComponent {
         var permission = new Permission();
         this.permissionDialog.show(permission);
         this.permissionDialog.onCreateComplete.subscribe(() => {
-            this.permissions.unshift(permission);
+            this.permissions = [permission, ...this.permissions];
             this.success('Add permission successfully');
         });
     }

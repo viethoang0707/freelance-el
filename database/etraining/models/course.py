@@ -20,6 +20,7 @@ class Course(models.Model):
 		[('initial', 'initial'), ('rejected', 'Rejected'), ('pending','Pending'), ('approved', 'Approved')], default="initial")
 	logo = fields.Binary(string='Logo')
 	group_id = fields.Many2one('res.groups', string='Group')
+	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	faq_ids = fields.One2many('etraining.course_faq','course_id', string='FAQ list')
 	material_ids = fields.One2many('etraining.course_material','course_id', string='Material list')
 	unit_ids = fields.One2many('etraining.course_unit','course_id', string='Unit list')
@@ -374,6 +375,7 @@ class CourseMember(models.Model):
 	email = fields.Char(related='user_id.email', string='Email', readonly=True)
 	phone = fields.Char(related='user_id.phone', string='Phone', readonly=True)
 	group_id = fields.Many2one('res.groups',related='user_id.group_id', string='Training group', readonly=True)
+	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	name = fields.Char(related='user_id.name', string='User name', readonly=True)
 	image = fields.Binary(related='user_id.image', string='Image', readonly=True)
 	login = fields.Char(related='user_id.login', string='User login', readonly=True)
@@ -406,9 +408,9 @@ class CourseMember(models.Model):
 		members = []
 		if 'user_id' in vals and vals['user_id']:
 			if 'class_id' in vals and vals['class_id']:
-				members = self.env['etraining.course_member'].search([('user_id','=',vals['user_id']),('role','=',"'"+vals['role']+"'"),('course_id','=',vals['course_id']),('class_id','=',vals['class_id'])])
+				members = self.env['etraining.course_member'].search([('user_id','=',vals['user_id']),('role','=',vals['role']),('course_id','=',vals['course_id']),('class_id','=',vals['class_id'])])
 			else:
-				members = self.env['etraining.course_member'].search([('user_id','=',vals['user_id']),('role','=',"'"+vals['role']+"'"),('course_id','=',vals['course_id'])])
+				members = self.env['etraining.course_member'].search([('user_id','=',vals['user_id']),('role','=',vals['role']),('course_id','=',vals['course_id'])])
 		if len(members) > 0:
 			m =  members[0]
 		else:
@@ -447,6 +449,7 @@ class Certificate(models.Model):
 	qualification = fields.Char( string='Qualification')
 	summary = fields.Text( string='Summary')
 	name = fields.Char(string='Name')
+	issue_member_id = fields.Many2one('etraining.course_member', string='Issuer')
 	member_name = fields.Char(related='member_id.name', string='User name', readonly=True)
 	member_image = fields.Binary(related='member_id.image', string='Image', readonly=True)
 	member_login = fields.Char(related='member_id.login', string='User login', readonly=True)

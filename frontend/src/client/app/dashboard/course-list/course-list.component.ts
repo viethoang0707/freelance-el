@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, concatAll } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { ReportUtils } from '../../shared/helpers/report.utils';
@@ -17,6 +16,7 @@ import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-sy
 import { BaseModel } from '../../shared/models/base.model';
 import { CoursePublishDialog } from '../../cms/course/course-publish/course-publish.dialog.component';
 
+const COURSE_FIELDS = ['status','review_state','name', 'write_date','create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name'];
 
 @Component({
     moduleId: module.id,
@@ -24,7 +24,6 @@ import { CoursePublishDialog } from '../../cms/course/course-publish/course-publ
     templateUrl: 'course-list.component.html',
     styleUrls: ['course-list.component.css'],
 })
-
 export class CourseListComponent extends BaseComponent implements OnInit {
 
     COURSE_STATUS = COURSE_STATUS;
@@ -47,16 +46,14 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.courseMembers =  this.lmsProfileService.MyCourseMembers;
-            CourseMember.populateCourses(this, this.courseMembers).subscribe(()=> {
-                var courses = _.map(this.courseMembers, (member:CourseMember)=> {
-                    return member.course;
-                });
-                courses = _.uniq(courses, (course:Course)=> {
-                    return course.id;
-                })
+            var courseIds = _.pluck(this.courseMembers, 'course_id');
+            courseIds = _.uniq(courseIds, id=> {
+                    return id;
+            });
+            Course.array(this, courseIds, COURSE_FIELDS).subscribe(courses=> {
                 this.displayCourses(courses);
             });
-        })
+        });
     }
 
     displayCourses(courses:Course[]) {
@@ -65,8 +62,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
             course['teacher'] =  this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
             course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
             course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
-            if (course['supervisor'])
-                course['editor'] =  course['supervisor'];
         });
         this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);
@@ -95,7 +90,9 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     publishCourse(course: Course) {
-        this.publisiDialog.show(course);
+        course.populate(this).subscribe(()=> {
+            this.publisiDialog.show(course);
+        });
     }
 
     manageCourse(course: Course, member: CourseMember) {

@@ -28,14 +28,11 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
 
 
     show(object: any) {
-        // populate all object fields
-        object.populate(this).subscribe(()=> {
-            this.object = object;
-            this.originalObject = {};
-            Object.assign(this.originalObject, this.object);
-            this.display = true;
-            this.onShowReceiver.next(object);
-        });
+        this.object = object;
+        this.originalObject = {};
+        Object.assign(this.originalObject, this.object);
+        this.display = true;
+        this.onShowReceiver.next(object);
     }
 
     cancel() {
@@ -53,14 +50,16 @@ export abstract class BaseDialog<T extends BaseModel> extends BaseComponent {
             this.object.save(this).subscribe(() => {
                 this.hide();
                 this.onCreateCompleteReceiver.next(this.object);
-            },()=> {                
+            },(e)=> {  
+                this.error('Operation failed');        
             });
         }
         else {
             this.object.save(this).subscribe(() => {
                 this.onUpdateCompleteReceiver.next(this.object);                
                 this.hide();
-            },()=> {                
+            },(e)=> {   
+                this.error('Operation failed');            
             });
         }
     }

@@ -77,7 +77,7 @@ export class ExamEnrollDialog extends BaseComponent {
         });
     }
 
-    deleteMember(members:ExamMember[]) {
+    deleteMember(members: ExamMember[]) {
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             ExamMember.deleteArray(this, members).subscribe(() => {
                 this.selectedCandidates = [];
@@ -89,17 +89,17 @@ export class ExamEnrollDialog extends BaseComponent {
     }
 
     loadMembers() {
-        this.exam.populate(this).subscribe(()=> {
-            this.exam.listMembers(this,EXAM_MEMBER_FIELDS).subscribe(members => {
-            this.candidates = _.filter(members, (member) => {
-                return member.role == 'candidate';
+        this.exam.populate(this).subscribe(() => {
+            this.exam.listMembers(this, EXAM_MEMBER_FIELDS).subscribe(members => {
+                this.candidates = _.filter(members, (member) => {
+                    return member.role == 'candidate';
+                });
+                this.supervisors = _.filter(members, (member) => {
+                    return member.role == 'supervisor';
+                });
             });
-            this.supervisors = _.filter(members, (member) => {
-                return member.role == 'supervisor';
-            });
-        });
         })
-        
+
     }
 }
 

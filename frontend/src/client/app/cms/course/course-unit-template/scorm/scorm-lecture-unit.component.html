@@ -1,7 +1,7 @@
 <div *ngIf="mode=='design'">
     <div class="ui-g">
         <div class="ui-g-6">
-            <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
+            <p-progressBar [value]="percentage" *ngIf="loading"></p-progressBar>
             <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)" accept="*" maxFileSize="1024*512" showUploadButton="false">
             </p-fileUpload>
             <a href="{{lecture.package_url}}" target="_blank" *ngIf="lecture.package_url">{{'Download SCORM package file'|translate}}</a>

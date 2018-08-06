@@ -149,7 +149,7 @@ class SurveyMember(models.Model):
 	def create(self, vals):
 		members = []
 		if 'user_id' in vals and vals['user_id']:
-			members = self.env['etraining.survey_member'].search([('user_id','=',vals['user_id']),('role','=',"'"+vals["role"]+"'"),('survey_id','=',vals['survey_id'])])
+			members = self.env['etraining.survey_member'].search([('user_id','=',vals['user_id']),('role','=',vals["role"]),('survey_id','=',vals['survey_id'])])
 		if len(members) > 0:
 			m =  members[0]
 		else:

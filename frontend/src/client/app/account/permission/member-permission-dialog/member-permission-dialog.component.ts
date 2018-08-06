@@ -72,7 +72,7 @@ export class MemberPermissionDialog extends BaseComponent {
 
     loadMembers() {
         User.listByPermission(this, this.permission.id,USER_FIELDS).subscribe(users => {
-            this.users = users;
+            this.users = [...users];
         });
     }
 }
