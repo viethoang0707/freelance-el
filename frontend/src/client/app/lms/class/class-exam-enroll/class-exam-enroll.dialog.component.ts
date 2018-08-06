@@ -71,7 +71,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	activateMember(member: ExamMember) {
 		member.status = 'active';
 		member.save(this).subscribe(()=> {
-			this.success('Action completed');
+			this.success(this.translateService.instant('Action completed'));
 		});
 	}
 
@@ -79,7 +79,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	suspendMember(member: ExamMember) {
 		member.status = 'suspend';
 		member.save(this).subscribe(()=> {
-			this.success('Action completed');
+			this.success(this.translateService.instant('Action completed'));
 		});
 	}
 
