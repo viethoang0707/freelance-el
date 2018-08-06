@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 export interface IQuestion {
 	mode: any;
+	isValid(): boolean;
 	render(question:Question, answer?:any);
 	saveEditor():Observable<any>;
 	concludeAnswer();

@@ -34,7 +34,7 @@ const SURVEY_FIELDS = ['name'];
 export class SurveyResultStatsReportContainerComponent extends BaseComponent implements OnInit{
 
     private surveys: Survey[];
-    private selectedSurvey: any;
+    private selectedSurvey: Survey;
     @ViewChild(SurveyResultStatsReportComponent) statsReport: SurveyResultStatsReportComponent;
 
     constructor() {
@@ -55,7 +55,9 @@ export class SurveyResultStatsReportContainerComponent extends BaseComponent imp
     selectSurvey() {
     	if (this.selectedSurvey) {
             this.statsReport.clear();
-            this.statsReport.render(this.selectedSurvey);
+            this.selectedSurvey.populate(this).subscribe(()=> {
+                this.statsReport.render(this.selectedSurvey);
+            });
     	}
     }
 

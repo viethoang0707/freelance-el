@@ -41,5 +41,9 @@ export class RateQuestionComponent extends BaseComponent implements IQuestion {
 	concludeAnswer() {
 	}
 
+	isValid():boolean {
+		return this.question.max_rating > 0;
+	}
+
 }
 

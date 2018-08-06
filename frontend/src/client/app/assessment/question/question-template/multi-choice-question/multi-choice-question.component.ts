@@ -51,6 +51,10 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 		}
 	}
 
+	isValid():boolean {
+		return this.options.length > 0;
+	}
+
 	saveEditor(): Observable<any> {
 		return this.question.save(this).flatMap(() => {
 			_.each(this.options, (option: QuestionOption) => {

@@ -186,7 +186,7 @@ export class Course extends BaseModel{
     }
 
     listMaterials( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseMaterial.array(context,this.class_ids,fields);
+        return CourseMaterial.array(context,this.material_ids,fields);
     }
 
     static __api__listUnits(unit_ids: number[],fields?:string[]): ListAPI {

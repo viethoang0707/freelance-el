@@ -60,8 +60,8 @@ export class AnswerPrintDialog extends BaseComponent {
         this.answers = [];
         this.exam = exam;
         this.member = member;
-
-        BaseModel
+        this.lmsProfileService.init(this).subscribe(()=> {
+            BaseModel
             .bulk_list(this,
                 ExamMember.__api__populateSubmission(this.member.submission_id),
                 Exam.__api__populateSetting(this.exam.setting_id),
@@ -80,6 +80,7 @@ export class AnswerPrintDialog extends BaseComponent {
                     }
                 }
             });
+        });
     }
 
     hide() {
