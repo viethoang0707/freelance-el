@@ -28,8 +28,11 @@ import { Survey } from '../../shared/models/elearning/survey.model';
 import { SurveyStudyDialog } from '../../lms/survey/survey-study/survey-study.dialog.component';
 import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
 import { CoursePublishDialog } from '../../cms/course/course-publish/course-publish.dialog.component';
-
 import * as _ from 'underscore';
+
+const COURSE_FIELDS = ['status','review_state','name','write_date','create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name'];
+const EXAM_FIELDS = ['status','review_state', 'name', 'write_date','create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count','sheet_status'];
+const CLASS_FIELDS = ['start', 'end', 'name'];
 
 @Component({
     moduleId: module.id,
@@ -74,19 +77,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             course['teacher'] = this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
             course['editor'] = this.lmsProfileService.getCourseMemberByRole('editor', course.id);
             course['supervisor'] = this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
-            if (course['supervisor'])
-                course['teacher'] = course['editor'] = course['supervisor'];
         });
         this.courses = _.sortBy(courses, (course: Course) => {
             return -this.lmsProfileService.getLastCourseTimestamp(course);
         });
-        CourseMember.populateCourses(this, this.courseMembers).subscribe(() => {
-            var classList = _.map(this.courseMembers, (member: CourseMember) => {
-                return member.clazz;
-            });
-            classList = _.uniq(classList, (clazz: CourseClass) => {
-                return clazz.id;
-            });
+        var classIds = _.pluck(this.courseMembers, 'class_id');
+        classIds = _.filter(classIds, id=> {
+                return id;
+        });
+        classIds = _.uniq(classIds, id=> {
+                return id;
+        });
+        CourseClass.array(this, classIds, CLASS_FIELDS).subscribe(classList=> {
             _.each(classList, (clazz: CourseClass) => {
                 if (clazz.IsAvailable)
                     this.events.push({
@@ -98,7 +100,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     });
             })
         });
-
     }
 
     displayExams(exams: Exam[]) {
@@ -106,8 +107,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             exam['candidate'] = this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
             exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
             exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
-            if (exam['supervisor'])
-                exam['editor'] = exam['supervisor'];
             if (exam.IsAvailable)
                 this.events.push({
                     title: exam.name,
@@ -134,23 +133,19 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.courseMembers = this.lmsProfileService.MyCourseMembers;
-            CourseMember.populateCourses(this, this.courseMembers).subscribe(() => {
-                var courses = _.map(this.courseMembers, (member: CourseMember) => {
-                    return member.course;
-                });
-                courses = _.uniq(courses, (course: Course) => {
-                    return course.id;
-                })
+            var courseIds = _.pluck(this.courseMembers, 'course_id');
+            courseIds = _.uniq(courseIds, id=> {
+                    return id;
+            });
+            Course.array(this, courseIds, COURSE_FIELDS).subscribe(courses=> {
                 this.displayCourses(courses);
             });
             this.examMembers = this.lmsProfileService.MyExamMembers;
-            ExamMember.populateExams(this, this.examMembers).subscribe(() => {
-                var exams = _.map(this.examMembers, (member: ExamMember) => {
-                    return member.exam;
-                });
-                exams = _.uniq(exams, (exam: Exam) => {
-                    return exam.id;
-                })
+            var examIds = _.pluck(this.examMembers, 'exam_id');
+            examIds = _.uniq(examIds, id=> {
+                    return id;
+            });
+            Exam.array(this, examIds, EXAM_FIELDS).subscribe(exams=> {
                 this.displayExams(exams);
             });
             var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
@@ -180,7 +175,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     publishCourse(course: Course) {
-        this.publisiDialog.show(course);
+        course.populate(this).subscribe(()=> {
+            this.publisiDialog.show(course);
+        });
+        
     }
 
     manageCourse(course: Course, member: CourseMember) {
@@ -192,12 +190,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editExamContent(exam: Exam) {
-        this.examContentDialog.show(exam);
+        exam.populate(this).subscribe(()=> {
+            this.examContentDialog.show(exam);
+        });
+        
     }
 
     startExam(exam: Exam, member: ExamMember) {
         this.confirm('Are you sure to start ?', () => {
-            this.examStudyDialog.show(exam, member);
+            exam.populate(this).subscribe(()=> {
+                this.examStudyDialog.show(exam, member);
+            });
+            
         });
     }
 
@@ -212,6 +216,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     viewAnswer(exam: Exam, member: ExamMember) {
-        this.answerSheetDialog.show(exam, member);
+        exam.populate(this).subscribe(()=> {
+            this.answerSheetDialog.show(exam, member);
+        });
     }
 }

@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ListAPI } from '../../services/api/list.api';
@@ -28,6 +28,7 @@ export class SurveySheet extends BaseModel{
     seed:number;
     finalized:boolean;
     status: string;
+    @ReadOnlyProperty()
     question_ids: number[];
     
     clone() {

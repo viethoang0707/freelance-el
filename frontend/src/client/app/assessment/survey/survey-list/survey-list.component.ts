@@ -53,7 +53,8 @@ export class SurveyListComponent extends BaseComponent {
         survey.is_public = true;
         this.surveyDialog.show(survey);
         this.surveyDialog.onCreateComplete.subscribe(() => {
-            this.loadSurveys();
+            this.surveys = [ survey ,...this.surveys];
+            this.success('Add survey successfully');
         });
     }
 
@@ -62,7 +63,10 @@ export class SurveyListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have edit permission for this survey'));
             return;
         }
-        this.surveyDialog.show(this.selectedSurvey);
+        survey.populate(this).subscribe(()=> {
+            this.surveyDialog.show(survey);
+        });
+        
     }
 
     deleteSurvey(survey:Survey) {
@@ -73,7 +77,11 @@ export class SurveyListComponent extends BaseComponent {
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             survey.delete(this).subscribe(() => {
                 this.loadSurveys();
-                survey = null;
+                this.selectedSurvey = null;
+                this.surveys = _.reject(this.surveys, (obj:Survey)=> {
+                    return survey.id == obj.id;
+                });
+                this.success('Delete survey successfully');
             })
         });
     }

@@ -43,7 +43,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 export class GradebookDialog extends BaseComponent {
 
     private display: boolean;
-    private member: CourseMember;
+    private student: CourseMember;
     private course: Course;
     private exams: Exam[];
     private examRecords: ExamRecord[];
@@ -53,6 +53,7 @@ export class GradebookDialog extends BaseComponent {
     private certificate: Certificate;
     private stats: any;
     private reportUtils: ReportUtils;
+    private viewer: CourseMember;
 
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
     @ViewChild(CourseCertificateDialog) certDialog: CourseCertificateDialog;
@@ -64,7 +65,8 @@ export class GradebookDialog extends BaseComponent {
         this.projects = [];
         this.stats = [];
         this.reportUtils = new ReportUtils();
-        this.member = new CourseMember();
+        this.student = new CourseMember();
+        this.viewer =  new CourseMember();
     }
 
     ngOnInit() {
@@ -96,42 +98,44 @@ export class GradebookDialog extends BaseComponent {
     }
 
     issueCertificate() {
-        if (this.member.enroll_status == 'completed') {
+        if (this.student.enroll_status == 'completed') {
             this.error('This member already completed the course');
             return;
         }
         var certificate = new Certificate();
         certificate.date_issue = new Date();
-        certificate.course_id = this.member.course_id;
-        certificate.member_id = this.member.id;
+        certificate.course_id = this.student.course_id;
+        certificate.member_id = this.student.id;
+        certificate.issue_member_id =  this.viewer.id;
         this.certDialog.show(certificate);
         this.certDialog.onCreateComplete.subscribe((obj: Certificate) => {
             this.certificate = obj;
-            this.member.completeCourse(this, certificate.id).subscribe(() => {
-                this.member.enroll_status = 'completed';
+            this.student.completeCourse(this, certificate.id).subscribe(() => {
+                this.student.enroll_status = 'completed';
                 this.success('Congratulations! You have completed the course.');
             })
         });
     }
 
-    show(member: CourseMember) {
+    show(viewer: CourseMember,student: CourseMember) {
         this.display = true;
         this.exams = [];
         this.projects = [];
         this.stats = [];
-        this.member = member;
+        this.viewer =  viewer;
+        this.student = student;
         this.lmsProfileService.init(this).subscribe(() => {
-            this.member.populateCourse(this).subscribe(() => {
-                this.member.populateClass(this).subscribe(() => {
-                    this.course = this.member.course;
-                    this.lmsProfileService.getClassContent(this.member.clazz).subscribe(content => {
+            this.student.populateCourse(this).subscribe(() => {
+                this.student.populateClass(this).subscribe(() => {
+                    this.course = this.student.course;
+                    this.lmsProfileService.getClassContent(this.student.clazz).subscribe(content => {
                         this.projects = content["projects"];
                         this.exams = content["exams"];
                         BaseModel.bulk_list(this,
-                            CourseMember.__api__populateCertificate(member.certificate_id),
-                            CourseMember.__api__listProjectSubmissions(member.project_submission_ids),
-                            CourseMember.__api__listExamRecords(member.exam_record_ids),
-                            CourseMember.__api__listExamMembers(member.exam_member_ids))
+                            CourseMember.__api__populateCertificate(student.certificate_id),
+                            CourseMember.__api__listProjectSubmissions(student.project_submission_ids),
+                            CourseMember.__api__listExamRecords(student.exam_record_ids),
+                            CourseMember.__api__listExamMembers(student.exam_member_ids))
                             .subscribe(jsonArr => {
                                 var certificates = Certificate.toArray(jsonArr[0]);
                                 if (certificates.length)
@@ -139,7 +143,7 @@ export class GradebookDialog extends BaseComponent {
                                 this.projectSubmits = ProjectSubmission.toArray(jsonArr[1]);
                                 this.examRecords = ExamRecord.toArray(jsonArr[2]);
                                 this.examMembers = ExamMember.toArray(jsonArr[3]);
-                                CourseLog.memberStudyActivity(this, this.member.id, this.member.course_id)
+                                CourseLog.memberStudyActivity(this, this.student.id, this.student.course_id)
                                     .subscribe(logs => {
                                         this.computeCourseStats(logs);
                                     });

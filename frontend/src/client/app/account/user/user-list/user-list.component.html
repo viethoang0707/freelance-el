@@ -70,7 +70,7 @@
                         <td class="showformb">{{user.phone}}</td>
                         <td class="showformb">{{user.group_name}}</td>
                         <td class="showformb">{{user.permission_name}}</td>
-                        <td>{{user.banned}}</td>
+                        <td><i class="material-icons" *ngIf="user.banned">check</i></td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

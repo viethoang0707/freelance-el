@@ -65,6 +65,7 @@ export class ExamSubmissionDialog extends BaseComponent {
             this.trigger.next();
         else {
             this.onConfirmReceiver.next();
+            this.success('Answer submitted successfully');
             this.hide();
         }
     }

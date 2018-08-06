@@ -135,7 +135,7 @@ class ExamMember(models.Model):
 	def create(self, vals):
 		members = []
 		if 'user_id' in vals and vals['user_id']:
-			members = self.env['etraining.exam_member'].search([('user_id','=',vals['user_id']),('role','=',"'"+vals["role"]+"'"),('exam_id','=',vals['exam_id'])])
+			members = self.env['etraining.exam_member'].search([('user_id','=',vals['user_id']),('role','=',vals["role"]),('exam_id','=',vals['exam_id'])])
 		if len(members) > 0:
 			m =  members[0]
 		else:
@@ -195,6 +195,7 @@ class ExamQuestion(models.Model):
 	score = fields.Float(string='Score')
 	order = fields.Integer(string='Order')
 	group_id = fields.Many2one('res.groups', related="question_id.group_id", string='Group', readonly=True)
+	group_name = fields.Char(related="group_id.name", string="Group Name")
 	option_ids = fields.One2many('etraining.option','question_id', related="question_id.option_ids", string="Options", readonly=True)
 	content = fields.Html(string="Content",related="question_id.content", readonly=True)
 	title = fields.Text(string="Title",related="question_id.title", readonly=True)

@@ -60,23 +60,28 @@ export class SurveyEnrollDialog extends BaseComponent {
             this.survey.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
             });
+            this.success('Add survey member successfully');
         });
     }
 
-    deleteMember(members:SurveyMember[]) {
+    deleteMember(members: SurveyMember[]) {
         if (members && members.length)
             this.confirm(this.translateService.instant(this.translateService.instant('Are you sure to delete?')), () => {
                 SurveyMember.deleteArray(this, members).subscribe(() => {
                     this.selectedMembers = [];
                     this.loadMembers();
+                    this.success('Delete survey member successfully');
                 });
             });
     }
 
     loadMembers() {
-        this.survey.listMembers(this,SURVEY_MEMBER_FIELDS).subscribe(members => {
-            this.members = members;
+        this.survey.populate(this).subscribe(() => {
+            this.survey.listMembers(this, SURVEY_MEMBER_FIELDS).subscribe(members => {
+                this.members = members;
+            });
         });
+
     }
 }
 

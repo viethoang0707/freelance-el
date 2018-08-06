@@ -4,7 +4,7 @@ import { Submission } from './submission.model';
 import { ExamGrade } from './exam-grade.model';
 import { Exam } from './exam.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 
@@ -32,7 +32,7 @@ export class ExamMember extends BaseModel{
         this.phone = undefined;
         this.user_id = undefined;
         this.group_id = undefined;
-        this.group_id__DESC__ = undefined;
+        this.group_name = undefined;
         this.course_member_id =  undefined;
         this.exam =  new Exam();
         this.submission_id = undefined;
@@ -42,15 +42,17 @@ export class ExamMember extends BaseModel{
         this.grade =  undefined;
         this.user =  new User();
         this.submit =  new Submission();
-        this.group_name =  undefined;
     }
 
+    @UnserializeProperty()
     user: User;
+    @UnserializeProperty()
     submit: Submission;
     submission_id: number;
     exam_id: number;
     course_member_id: number;
     exam_name: string;
+    @UnserializeProperty()
     exam: Exam;
     user_id: number;
     class_id: number;
@@ -65,10 +67,9 @@ export class ExamMember extends BaseModel{
     email: string;
     phone: string;
     group_id: number;
-    group_id__DESC__: string;
+    group_name: string;
     score: number;
     grade: string;
-    group_name: string;
 
     static __api__populateExam(exam_id: number,fields?:string[]): ListAPI {
         return new ListAPI(Exam.Model, [exam_id], fields);

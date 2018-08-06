@@ -1,5 +1,5 @@
 import './reflect';
-import { FIELD_METADATA_KEY, FieldProperty, IFieldMetaData } from '../models/decorator'
+import { FIELD_METADATA_KEY, UNSERIALIZE_METADATA_KEY, READONLY_METADATA_KEY, FieldProperty, IFieldMetaData } from '../models/decorator'
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../models/constants';
 import { ModelRegister } from '../models/decorator';
@@ -127,9 +127,9 @@ export class MapUtils {
                 if (MapUtils.isDate(object[key]))
                     jsonObject[key] = moment(object[key]).format(SERVER_DATETIME_FORMAT);
                 else {
-                    jsonObject[key] = object[key];
-                    if (jsonObject[key] && jsonObject[key] instanceof Object)
-                        jsonObject[key] = null;
+                    let readOnlyMetadata = Reflect.getMetadata(READONLY_METADATA_KEY, object, key);
+                    if (!readOnlyMetadata && (!(object[key] && object[key] instanceof Object)))
+                        jsonObject[key] = object[key];
                 }
             }
         });

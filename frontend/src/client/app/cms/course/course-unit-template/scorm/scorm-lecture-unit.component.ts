@@ -27,6 +27,8 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	private unit: CourseUnit;
 	private lecture: SCORMLecture;
 	viewCompleted: boolean;
+	private percentage: number;
+
 	@Input() mode;
 
 	constructor(private ngZone: NgZone) {
@@ -38,7 +40,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		this.unit.populateScormLecture(this).subscribe(()=> {
+		this.unit.populateScormLecture(this).subscribe(() => {
 			this.lecture = this.unit.scormLecture;
 		});
 	}
@@ -48,20 +50,26 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
+		this.percentage = 0;
 		this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
-					this.ngZone.run(()=> {
+					this.ngZone.run(() => {
 						this.lecture.package_url = data["url"];
 						var serverFile = data["filename"]
-						this.fileApiService.unzip(serverFile,  this.authService.LoginToken)
-						.subscribe((data)=> {
-							this.lecture.base_url = data["url"];
-						}, ()=> {
-						});
+						this.fileApiService.unzip(serverFile, this.authService.LoginToken)
+							.subscribe((data) => {
+								this.lecture.base_url = data["url"];
+							}, () => {
+							});
+					});
+				} else {
+					this.ngZone.run(() => {
+						this.percentage = +data;
 					});
 				}
-			}, ()=> {
+
+			}, () => {
 			}
 		);
 	}

@@ -24,7 +24,7 @@ export class SurveySheetListComponent extends BaseComponent {
 
     @ViewChild(SurveySheetPreviewDialog) sheetDialog: SurveySheetPreviewDialog;
 
-    private sheets: Question[];
+    private sheets: SurveySheet[];
     private selectedSheet: any;
 
     constructor() {
@@ -40,8 +40,11 @@ export class SurveySheetListComponent extends BaseComponent {
         this.confirm('Are you sure to delete ?', () => {
             sheet.delete(this).subscribe(() => {
                 this.selectedSheet = null;
-                this.loadSurveySheets();
+                this.sheets = _.reject(this.sheets, (obj:SurveySheet)=> {
+                    return sheet.id == obj.id;
+                });
             });
+            this.success('Delete sheet successfully');
         });
     }
 

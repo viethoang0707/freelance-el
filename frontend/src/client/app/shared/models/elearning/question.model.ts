@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model ,UnserializeProperty, ReadOnlyProperty} from '../decorator';
 import { QuestionOption } from './option.model';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
@@ -26,10 +26,10 @@ export class Question extends BaseModel{
 		this.type = undefined;
         this.level = undefined;
         this.group_id = undefined;
-        this.group_id__DESC__ = undefined;
         this.max_rating =  undefined;
         this.options = [];
         this.option_ids = [];
+        this.group_name = undefined;
 	}
 
     title:string;
@@ -38,10 +38,12 @@ export class Question extends BaseModel{
     type: string;
     level: string;
     group_id: number;
-    group_id__DESC__: string;
     max_rating: number;
+    @UnserializeProperty()
     options: QuestionOption[];
+    @ReadOnlyProperty()
     option_ids: number[];
+    group_name: string;
 
     static listByGroups(context:APIContext, groups:Group[],fields?:string[]):Observable<any> {
         var api = new BulkListAPI();

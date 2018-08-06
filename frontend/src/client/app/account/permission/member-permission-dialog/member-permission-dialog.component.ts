@@ -13,7 +13,7 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 import { Subscription } from 'rxjs/Subscription';
 import { BaseModel } from '../../../shared/models/base.model';
 
-const USER_FIELDS = ['name','email','login','position','permission_id', 'gender', 'dob', 'group_id']
+const USER_FIELDS = ['name','email','login','position','permission_id', 'gender', 'dob', 'group_id', 'group_name']
 
 @Component({
 	moduleId: module.id,
@@ -53,6 +53,7 @@ export class MemberPermissionDialog extends BaseComponent {
             });
             BaseModel.bulk_update(this, ...updateApi).subscribe(() => {
                 this.loadMembers();
+                this.success('Add member successfully');
             });
         });
     }
@@ -64,13 +65,14 @@ export class MemberPermissionDialog extends BaseComponent {
             });
             User.updateArray(this, users,USER_FIELDS).subscribe(() => {
                 this.loadMembers();
+                this.success('Delete member successfully');
             });
         });
     }
 
     loadMembers() {
         User.listByPermission(this, this.permission.id,USER_FIELDS).subscribe(users => {
-            this.users = users;
+            this.users = [...users];
         });
     }
 }

@@ -14,7 +14,7 @@ import { TreeNode } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
 
-const COURSE_FIELDS = ['name','group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
+const COURSE_FIELDS = ['name', 'group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
 
 
 @Component({
@@ -45,14 +45,14 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listCourseGroup(this, COURSE_FIELDS).subscribe(groups => {
+        Group.listCourseGroup(this).subscribe(groups => {
             this.tree = this.treeUtils.buildGroupTree(groups);
         })
         this.loadCourses();
     }
 
 
-    enrollCourse(course:Course) {
+    enrollCourse(course: Course) {
         if (this.ContextUser.id != course.supervisor_id) {
             this.error(this.translateService.instant('You do not have enroll permission for this course'));
             return;
@@ -64,9 +64,9 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     }
 
     loadCourses() {
-        Course.allForEnroll(this).subscribe(courses => {
+        Course.allForEnroll(this, COURSE_FIELDS).subscribe(courses => {
             this.courses = courses;
-            this.displayCourses = _.sortBy(courses, (course:Course)=> {
+            this.displayCourses = _.sortBy(courses, (course: Course) => {
                 return course.id;
             });
         });
@@ -85,7 +85,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
         }
     }
 
-    closeCourse(course:Course) {
+    closeCourse(course: Course) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
             this.error(this.translateService.instant('You do not have close permission for this class'));
             return;
@@ -98,7 +98,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
         });
     }
 
-    openCourse(course:Course) {
+    openCourse(course: Course) {
         if (this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
             this.error(this.translateService.instant('You do not have open permission for this class'));
             return;

@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model,UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -33,7 +33,6 @@ export class Course extends BaseModel{
         this.logo = undefined;
         this.group_id = undefined;
         this.syllabus_id = undefined;
-        this.group_id__DESC__ = undefined;
         this.supervisor_id =  undefined;
         this.supervisor_name = undefined;
         this.competency_id = undefined;
@@ -43,7 +42,6 @@ export class Course extends BaseModel{
         this.competency_level_id =  undefined;
         this.competency_level_name =  undefined;
         this.prequisite_course_id = undefined;
-        this.prequisite_course_id__DESC__ = undefined;
         this.prequisite_course_name= undefined;
         this.complete_unit_by_order = undefined;
         this.competency_group_id = undefined;
@@ -58,6 +56,7 @@ export class Course extends BaseModel{
         this.material_ids = [];
         this.unit_ids = [];
         this.syl =  new CourseSyllabus();
+        this.group_name = undefined;
 	}
 
     complete_unit_by_order: boolean;
@@ -73,23 +72,28 @@ export class Course extends BaseModel{
     competency_level_name: string;
     prequisite_course_id:number;
     prequisite_course_name: string;
-    prequisite_course_id__DESC__:string;
     name:string;
     group_id:number;
+    group_name: string;
     supervisor_id: number;
     supervisor_name: string;
-    group_id__DESC__: string;
     summary: string;
     code: string;
     description: string;
     status: string;
     mode: string;
     logo: string;
+    @ReadOnlyProperty()
     member_ids: number[];
+    @ReadOnlyProperty()
     class_ids: number[];
+    @ReadOnlyProperty()
     faq_ids: number[];
+    @ReadOnlyProperty()
     material_ids: number[];
+    @ReadOnlyProperty()
     unit_ids: number[];
+    @UnserializeProperty()
     syl: CourseSyllabus;
 
     get IsAvailable():boolean {

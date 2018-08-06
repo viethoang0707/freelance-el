@@ -47,9 +47,11 @@ export class PermissionListComponent extends BaseComponent {
     }
 
     addPermission() {
-        this.permissionDialog.show(new Permission());
+        var permission = new Permission();
+        this.permissionDialog.show(permission);
         this.permissionDialog.onCreateComplete.subscribe(() => {
-            this.loadPermission();
+            this.permissions = [permission, ...this.permissions];
+            this.success('Add permission successfully');
         });
     }
 
@@ -63,7 +65,11 @@ export class PermissionListComponent extends BaseComponent {
         else {
             this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
                 permission.delete(this).subscribe(() => {
-                    this.loadPermission();
+                    this.permissions = _.reject(this.permissions, (perm:Permission)=> {
+                        return perm.id == permission.id;
+                    });
+                    this.selectedPermission =  null;
+                    this.success('Delete permission successfully');
                 })
             });
         }
@@ -83,6 +89,7 @@ export class PermissionListComponent extends BaseComponent {
             permission.user_group_id = group.id;
             permission.save(this).subscribe(() => {
                 this.loadPermission();
+                this.success('Set group permission successfully');
             });
         });
     }

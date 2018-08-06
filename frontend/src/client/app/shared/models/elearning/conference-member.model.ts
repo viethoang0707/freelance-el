@@ -2,7 +2,7 @@ import { BaseModel } from '../base.model';
 import { Submission } from './submission.model';
 import { Conference } from './conference.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { DeleteAPI } from '../../services/api/delete.api';
@@ -24,7 +24,7 @@ export class ConferenceMember extends BaseModel{
         this.conference_id = undefined;
         this.room_member_ref = undefined;
         this.group_id = undefined;
-        this.group_id__DESC__ = undefined;
+        this.group_name = undefined;
         this.is_active =  undefined;
         this.class_id = undefined;
         this.conference_status = undefined;
@@ -42,9 +42,9 @@ export class ConferenceMember extends BaseModel{
     group_id: number;
     user_id: number;
     conference_id: number;
+    @UnserializeProperty()
     conference: Conference;
     conference_status: string;
-    group_id__DESC__: string;
 
     static __api__populateConference(conf_id: number,fields?:string[]): ListAPI {
         return new ListAPI(Conference.Model, [conf_id],fields);

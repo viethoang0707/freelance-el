@@ -110,7 +110,6 @@ export class SurveyContentDialog extends BaseComponent {
 			sheetTempl.listQuestions(this).subscribe(surveyQuestions => {
 				this.surveyQuestions = _.map(surveyQuestions, surveyQuestion => {
 					var newSurveyQuestion = surveyQuestion.clone();
-					newSurveyQuestion.sheet_id = this.sheet.id;
 					return newSurveyQuestion;
 				});
 			});
@@ -134,7 +133,7 @@ export class SurveyContentDialog extends BaseComponent {
 					newSurveyQuestion.type =  question.type;
 					newSurveyQuestion.survey_id	 = this.survey.id;
 					newSurveyQuestion.group_id =  question.group_id;
-					newSurveyQuestion.group_id__DESC__ =  question.group_id__DESC__;
+					newSurveyQuestion.group_name =  question.group_name;
 					newSurveyQuestion.content =  question.content;
 					return newSurveyQuestion;
 				});

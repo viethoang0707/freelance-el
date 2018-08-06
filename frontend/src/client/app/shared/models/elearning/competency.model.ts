@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model, UnserializeProperty,ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -17,7 +17,6 @@ export class Competency extends BaseModel {
 		this.name = undefined;
 		this.group_id = undefined;
 		this.category = undefined;
-        this.group_id__DESC__ = undefined;
         this.group_name = undefined;
         this.achivement_ids = [];
         this.level_ids = [];
@@ -29,10 +28,12 @@ export class Competency extends BaseModel {
     group_name: string;
     group_id: number;
     category: string;
-    group_id__DESC__: string;
+    @ReadOnlyProperty()
     level_ids: number[];
+    @ReadOnlyProperty()
     achivement_ids: number[];
     level_summary: string;
+    @ReadOnlyProperty()
     course_ids: number[];
 
     static __api__listLevels(level_ids: number[],fields?:string[]): SearchReadAPI {

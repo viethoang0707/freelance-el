@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model, UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import * as _ from 'underscore';
@@ -27,7 +27,7 @@ export class CompetencyLevel extends BaseModel{
     competency_name: string;
     competency_group_id: number;
     competency_group_name: string;
-
+    @ReadOnlyProperty()
     achivement_ids: number[];
 
 

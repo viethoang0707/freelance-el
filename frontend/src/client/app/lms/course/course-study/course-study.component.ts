@@ -60,7 +60,7 @@ import { CourseUnitStudyDialog } from '../course-unit-study-dialog/course-unit-s
 	templateUrl: 'course-study.component.html',
 	styleUrls: ['course-study.component.css'],
 })
-export class CourseStudyComponent extends BaseComponent implements AfterViewInit {
+export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 	EXAM_STATUS = EXAM_STATUS;
@@ -104,7 +104,7 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 		this.syl = new CourseSyllabus();
 	}
 
-	ngAfterViewInit() {
+	ngOnInit() {
 		this.route.params.subscribe(params => {
 			var memberId = +params['memberId'];
 			var courseId = +params['courseId'];
@@ -142,7 +142,7 @@ export class CourseStudyComponent extends BaseComponent implements AfterViewInit
 	}
 
 	viewGradebook() {
-		this.gradebookDialog.show(this.member);
+		this.gradebookDialog.show(this.member,this.member);
 	}
 
 	study() {

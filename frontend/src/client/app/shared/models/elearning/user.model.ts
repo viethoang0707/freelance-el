@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty, UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
@@ -42,7 +42,7 @@ export class User extends BaseModel {
         this.email = undefined;
         this.group_id = undefined;
         this.group_code = undefined;
-        this.group_id__DESC__ = undefined;
+        this.group_name = undefined;
         this.login = undefined;
         this.phone = undefined;
         this.is_admin = undefined;
@@ -68,7 +68,6 @@ export class User extends BaseModel {
         this.manage_survey_ids = [];
         this.submit_ticket_ids = [];
         this.review_ticket_ids = [];
-        this.group_name = undefined;
         this.permission_name = undefined;
     }
 
@@ -82,7 +81,6 @@ export class User extends BaseModel {
     email: string;
     group_id: number;
     group_name: string;
-    group_id__DESC__: string;
     login: string;
     phone: string;
     is_admin: boolean;
@@ -95,20 +93,35 @@ export class User extends BaseModel {
     supervisor_id__DESC__: string;
     social_id: string;
     permission_name: string;
+    @ReadOnlyProperty()
     achivement_ids: number[];
+    @ReadOnlyProperty()
     course_member_ids: number[];
+    @ReadOnlyProperty()
     exam_member_ids: number[];
+    @ReadOnlyProperty()
     survey_member_ids: number[];
+    @ReadOnlyProperty()
     conference_member_ids: number[];
+    @ReadOnlyProperty()
     certificate_ids: number[];
+    @ReadOnlyProperty()
     exam_record_ids: number[];
+    @ReadOnlyProperty()
     submission_ids: number[];
+    @ReadOnlyProperty()
     project_submission_ids: number[];
+    @ReadOnlyProperty()
     manage_course_ids: number[];
+    @ReadOnlyProperty()
     manage_class_ids: number[];
+    @ReadOnlyProperty()
     manage_exam_ids: number[];
+    @ReadOnlyProperty()
     manage_survey_ids: number[];
+    @ReadOnlyProperty()
     submit_ticket_ids: number[];
+    @ReadOnlyProperty()
     review_ticket_ids: number[];
 
     get IsAdmin() {

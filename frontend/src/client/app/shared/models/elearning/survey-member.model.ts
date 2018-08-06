@@ -4,7 +4,7 @@ import { Submission } from './submission.model';
 import { ExamGrade } from './exam-grade.model';
 import { Survey } from './survey.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { ListAPI } from '../../services/api/list.api';
@@ -28,7 +28,6 @@ export class SurveyMember extends BaseModel{
         this.phone = undefined;
         this.user_id = undefined;
         this.group_id = undefined;
-        this.group_id__DESC__ = undefined;
         this.enroll_status = undefined;
         this.role = undefined;
         this.survey =  new Survey();
@@ -40,12 +39,14 @@ export class SurveyMember extends BaseModel{
         this.class_id = undefined;
     }
 
+    @UnserializeProperty()
     user: User;
     submission_id:number;
     course_member_id: number;
     role: string;
     survey_id: number;
     survey_review_state: string;
+    @UnserializeProperty()
     survey: Survey;
     user_id: number;
     login: string;
@@ -55,8 +56,8 @@ export class SurveyMember extends BaseModel{
     email: string;
     phone: string;
     group_id: number;
-    group_id__DESC__: string;
     enroll_status: string;
+    @UnserializeProperty()
     submit: SurveySubmission;
     group_name: string;
     class_id: number;

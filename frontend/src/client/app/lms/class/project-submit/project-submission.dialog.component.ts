@@ -29,6 +29,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
 
     private display: boolean;
     private submit: ProjectSubmission;
+    private percentage: number;
     private onConfirmReceiver: Subject<any> = new Subject();
     onConfirm: Observable<any> = this.onConfirmReceiver.asObservable();
 
@@ -57,6 +58,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
             this.submit.date_submit = new Date();
             this.submit.save(this).subscribe(() => {
                 this.onConfirmReceiver.next();
+                this.success('Action completed');
                 this.hide();
             });
         }
@@ -68,12 +70,17 @@ export class ProjectSubmissionDialog extends BaseComponent {
     }
 
     uploadFile(file) {
+        this.percentage = 0;
         this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {
                         this.submit.file_url = data["url"];
                         this.submit.filename = file.name;
+                    });
+                } else {
+                    this.ngZone.run(() => {
+                        this.percentage = +data;
                     });
                 }
             }

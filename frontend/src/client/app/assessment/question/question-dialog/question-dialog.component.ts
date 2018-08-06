@@ -41,7 +41,7 @@ export class QuestionDialog extends BaseDialog<Question>  {
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
 			this.object.group_id = this.selectedNode.data.id;
-			this.object.group_id__DESC__ = this.selectedNode.data.group_id__DESC__;
+			this.object.group_name = this.selectedNode.data.name;
 		}
 	}
 
@@ -79,7 +79,12 @@ export class QuestionDialog extends BaseDialog<Question>  {
 	}
 
 	save() {
+		var isNew = this.object.IsNew;
 		(<IQuestion>this.componentRef.instance).saveEditor().subscribe(()=> {
+			if (isNew)
+				this.onCreateCompleteReceiver.next();
+			else
+				this.onUpdateCompleteReceiver.next();
 			this.hide();
 		});
 	}

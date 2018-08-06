@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty ,UnserializeProperty, ReadOnlyProperty} from '../decorator';
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
@@ -30,7 +30,6 @@ export class Exam extends BaseModel{
 		this.instruction = undefined;
         this.start = undefined;
         this.end = undefined;
-        this.selector_id = undefined;
         this.status = undefined;
         this.duration = undefined;
         this.publish_score = undefined;
@@ -58,8 +57,11 @@ export class Exam extends BaseModel{
         this.question_ids = [];
 	}
 
+    @UnserializeProperty()
     clazz: CourseClass;
+    @UnserializeProperty()
     setting: ExamSetting;
+    @UnserializeProperty()
     sheet: QuestionSheet;
     setting_id: number;
     sheet_id: number;
@@ -81,15 +83,18 @@ export class Exam extends BaseModel{
     start: Date;
     @FieldProperty<Date>()
     end: Date;
-    selector_id: number;
     status: string;
     duration: number;
     publish_score: boolean;
     supervisor_id: number;
     supervisor_name: string;
+    @ReadOnlyProperty()
     answer_ids: number[];
+    @ReadOnlyProperty()
     member_ids: number[];
+    @ReadOnlyProperty()
     grade_ids: number[];
+    @ReadOnlyProperty()
     question_ids: number[];
 
     get IsAvailable():boolean {

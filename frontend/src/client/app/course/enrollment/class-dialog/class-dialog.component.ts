@@ -41,7 +41,9 @@ export class CourseClassDialog extends BaseDialog<CourseClass> implements OnInit
 	}
 
 	ngOnInit() {
-		this.onShow.subscribe(object => {
+		this.onShow.subscribe((object:CourseClass) => {
+			if (object.IsNew)
+				this.rangeDates = [];
 			if (object.start && object.end) {
 				this.rangeDates = [object.start,object.end];
 			}

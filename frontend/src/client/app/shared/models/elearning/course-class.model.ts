@@ -1,6 +1,6 @@
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty } from '../decorator';
+import { Model,FieldProperty, UnserializeProperty,ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { Conference } from './conference.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
@@ -46,10 +46,15 @@ export class CourseClass extends BaseModel{
     conference_id: number;
     supervisor_id: number;
     status: string;
+    @ReadOnlyProperty()
     certificate_ids: number[];
+    @ReadOnlyProperty()
     member_ids: number[];
+    @ReadOnlyProperty()
     project_ids: number[];
+    @ReadOnlyProperty()
     exam_ids: number[];
+    @ReadOnlyProperty()
     survey_ids: number[];
     member_count: number;
     

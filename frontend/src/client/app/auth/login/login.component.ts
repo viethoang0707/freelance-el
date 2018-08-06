@@ -11,7 +11,8 @@ import { User } from '../../shared/models/elearning/user.model';
 @Component({
     moduleId: module.id,
     selector: 'login',
-    templateUrl: 'login.component.html'
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.css']
 })
 
 export class LoginComponent extends BaseComponent implements OnInit {
@@ -36,6 +37,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.authService.login(this.credential).subscribe(
             resp => {
                 let user:User = resp["user"];
+                if (user.banned) {
+                    this.error('Your account has been banned');
+                    return;
+                }
                 this.appEvent.userLogin(user);
                 this.authService.Remember = this.remember;
                 if (this.remember)

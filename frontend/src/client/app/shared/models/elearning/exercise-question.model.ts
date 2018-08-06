@@ -1,7 +1,7 @@
 
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model,ReadOnlyProperty, UnserializeProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { SearchCountAPI } from '../../services/api/search-count.api';
@@ -29,11 +29,13 @@ export class ExerciseQuestion extends BaseModel{
         this.score = undefined;
         this.order = undefined;
         this.sheet_id = undefined;
-        this.group_id__DESC__ = undefined;
         this.option_ids = [];
+        this.group_name =  undefined;
     }
 
+    group_name: string;
     question_id: number;
+    @UnserializeProperty()
     question: Question;
     unit_id: number;
     score: number;
@@ -44,8 +46,8 @@ export class ExerciseQuestion extends BaseModel{
     explanation: string;
     type: string;
     group_id: number;
-    group_id__DESC__: string;
     sheet_id: number;
+    @ReadOnlyProperty()
     option_ids: number[];
 
     populateQuestion(context: APIContext,fields?:string[]): Observable<any> {

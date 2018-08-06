@@ -59,7 +59,11 @@ export class QuestionListComponent extends BaseComponent {
         question.type = type;
         this.questionDialog.show(question);
         this.questionDialog.onCreateComplete.subscribe(() => {
-            this.loadQuestions();
+            this.questions.unshift(question);
+            this.displayQuestions = [...this.questions];
+            this.selectedQuestions = [];
+            this.selectedGroupNodes = [];
+            this.success('Add question successfully');
         });
     }
 
@@ -72,7 +76,12 @@ export class QuestionListComponent extends BaseComponent {
         this.confirm('Are you sure to delete ?', () => {
             Question.deleteArray(this, questions).subscribe(() => {
                 this.selectedQuestions = [];
-                this.loadQuestions();
+                var qIds = _.pluck(questions,'id');
+                this.questions = _.reject(this.questions, (obj:Question)=> {
+                    return qIds.includes(obj.id);
+                });
+                this.displayQuestions = this.questions;
+                this.success('Delete question successfully');
             });
         });
     }

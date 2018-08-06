@@ -2,7 +2,7 @@ import  '../helpers/reflect';
 import { APIContext } from './context';
 import { MapUtils } from '../helpers/map.utils';
 import { Observable, Subject } from 'rxjs/Rx';
-import { MODEL_METADATA_KEY, ModelRegister, FieldProperty } from './decorator';
+import { MODEL_METADATA_KEY, UNSERIALIZE_METADATA_KEY,ModelRegister, FieldProperty } from './decorator';
 import * as _ from 'underscore';
 import { CreateAPI } from '../services/api/create.api';
 import { UpdateAPI } from '../services/api/update.api';
@@ -26,9 +26,7 @@ export abstract class BaseModel {
     @FieldProperty<Date>()
     write_date: Date;
     create_uid: number;
-    create_uid__DESC__: string;
     write_uid: number;
-    write_uid__DESC__: string;
     active: boolean;
 
     constructor() {
@@ -36,23 +34,17 @@ export abstract class BaseModel {
         this.active = undefined;
         this.create_date = undefined;
         this.create_uid = undefined;
-        this.create_uid__DESC__ = undefined;
         this.write_date = undefined;
         this.write_uid = undefined;
-        this.write_uid__DESC__ = undefined;
     }
 
     static fields(model:string):string[] {
         var fieldArr = []; 
         let obj:any = ModelRegister.Instance.instantiateObject(model);
         Object.keys(obj).forEach((key) => {
-            if (MapUtils.isDate(obj[key]))
+            let unserializeMetadata = Reflect.getMetadata(UNSERIALIZE_METADATA_KEY, obj, key);
+            if (!unserializeMetadata)
                 fieldArr.push(key);
-            else {
-                if (!obj[key] || !(obj[key] instanceof Object))
-                    fieldArr.push(key);
-                }
-
         });
         return fieldArr;
     }

@@ -1,7 +1,7 @@
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model,UnserializeProperty ,ReadOnlyProperty} from '../decorator';
 import { APIContext } from '../context';
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import { ListAPI } from '../../services/api/list.api';
@@ -24,11 +24,13 @@ export class SurveyQuestion extends BaseModel {
         this.survey_id = undefined;
         this.sheet_id = undefined;
         this.order = undefined;
-        this.group_id__DESC__ = undefined;
         this.option_ids = [];
+        this.group_name = undefined;
 	}
 
+    group_name: string;
     question_id: number;
+    @UnserializeProperty()
     question: Question;
     survey_id: number;
     sheet_id: number;
@@ -37,7 +39,7 @@ export class SurveyQuestion extends BaseModel {
     content: string;
     type: string;
     group_id: number;
-    group_id__DESC__: string;
+    @ReadOnlyProperty()
     option_ids: number[];
 
     clone() {
@@ -48,7 +50,7 @@ export class SurveyQuestion extends BaseModel {
         question.content = this.content;
         question.type = this.type;
         question.group_id = this.group_id;
-        question.group_id__DESC__ = this.group_id__DESC__;
+        question.group_name = this.group_name;
         return question;
     }
 

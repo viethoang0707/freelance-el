@@ -23,9 +23,9 @@
                             <p-sortIcon [field]="'email'"></p-sortIcon>
                         </th>
                         <th>{{'Phone'|translate}}</th>
-                        <th [pSortableColumn]="'etraining_group_id__DESC__'">
+                        <th [pSortableColumn]="'group_name'">
                             {{'Group'|translate}}
-                            <p-sortIcon [field]="'etraining_group_id__DESC__'"></p-sortIcon>
+                            <p-sortIcon [field]="'group_name'"></p-sortIcon>
                         </th>
                         <th [pSortableColumn]="'status'">
                           {{'Status'|translate}}
@@ -41,7 +41,7 @@
                         <td style="text-align: left;">{{member.name}}</td>
                         <td style="text-align: left;" width="250px">{{member.email}}</td>
                         <td>{{member.phone}}</td>
-                        <td>{{member.group_id__DESC__}}</td>
+                        <td>{{member.group_name}}</td>
                         <td>{{SURVEY_MEMBER_ENROLL_STATUS[member.enroll_status]}}</td>
                     </tr>
                 </ng-template>

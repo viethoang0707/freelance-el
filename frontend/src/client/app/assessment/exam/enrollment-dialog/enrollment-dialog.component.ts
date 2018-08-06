@@ -61,6 +61,7 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
+                this.success('Add candidate successfully');
             });
         });
     }
@@ -71,29 +72,34 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enrollSupervisor(this, userIds).subscribe(() => {
                 this.loadMembers();
+                this.success('Add supervisor successfully');
             });
         });
     }
 
-    deleteMember(members:ExamMember[]) {
+    deleteMember(members: ExamMember[]) {
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             ExamMember.deleteArray(this, members).subscribe(() => {
                 this.selectedCandidates = [];
                 this.selectedSupervisors = [];
                 this.loadMembers();
+                this.success('Delete member successfully');
             });
         });
     }
 
     loadMembers() {
-        this.exam.listMembers(this,EXAM_MEMBER_FIELDS).subscribe(members => {
-            this.candidates = _.filter(members, (member) => {
-                return member.role == 'candidate';
+        this.exam.populate(this).subscribe(() => {
+            this.exam.listMembers(this, EXAM_MEMBER_FIELDS).subscribe(members => {
+                this.candidates = _.filter(members, (member) => {
+                    return member.role == 'candidate';
+                });
+                this.supervisors = _.filter(members, (member) => {
+                    return member.role == 'supervisor';
+                });
             });
-            this.supervisors = _.filter(members, (member) => {
-                return member.role == 'supervisor';
-            });
-        });
+        })
+
     }
 }
 

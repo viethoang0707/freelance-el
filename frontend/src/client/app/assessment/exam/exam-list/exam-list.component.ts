@@ -47,7 +47,8 @@ export class ExamListComponent extends BaseComponent {
         exam.is_public = true;
         this.examDialog.show(exam);
         this.examDialog.onCreateComplete.subscribe(() => {
-            this.loadExams();
+            this.exams = [exam, ...this.exams];
+            this.success('Add exam successfully');
         });
     }
 
@@ -56,7 +57,9 @@ export class ExamListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
-        this.examDialog.show(exam);
+        exam.populate(this).subscribe(()=> {
+            this.examDialog.show(exam);
+        });
     }
 
     deleteExam(exam:Exam) {
@@ -66,8 +69,11 @@ export class ExamListComponent extends BaseComponent {
         }
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             exam.delete(this).subscribe(() => {
-                this.loadExams();
+                this.exams = _.reject(this.exams, (obj:Exam)=> {
+                    return exam.id == obj.id;
+                });
                 this.selectedExam = null;
+                this.success('Delete exam successfully');
             })
         });
     }

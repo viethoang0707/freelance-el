@@ -48,6 +48,7 @@ export class ExamStudyDialog extends BaseComponent {
 	private answers: Answer[];
 	private submission: Submission;
 	private timer: any;
+	private timeoutSubscription: any;
 	private currentAnswer: Answer;
 	private currentQuestion: ExamQuestion;
 	private timeLeft: number;
@@ -87,8 +88,11 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(() => {
+		navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+		.then(() => {
 			DetectRTC.load(()=> {
+				console.log('Webcam available', DetectRTC.hasWebCam);
+				console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
 				if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
 					this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
 					this.display = false;
@@ -96,7 +100,12 @@ export class ExamStudyDialog extends BaseComponent {
 				}
 				this.loadExamContent();
 			})
-		});
+		})
+		.catch((e)=> {
+			console.log('Get media error', e);
+			this.error('Webcam device not found');
+			this.display = false;
+		})
 	}
 
 	loadExamContent() {
@@ -164,7 +173,8 @@ export class ExamStudyDialog extends BaseComponent {
 			this.member.submitScore(this).subscribe(() => {
 				this.member.enroll_status = 'completed';
 				ExamLog.finishExam(this, this.member, this.submission).subscribe();
-				this.timer.next();
+				this.timeoutSubscription.next();
+				this.lmsProfileService.invalidateAll();
 				this.hide();
 			});
 		});
@@ -239,7 +249,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	startTimer() {
 		var now = new Date();
-		this.timer = new Subject();
+		this.timeoutSubscription = new Subject();
 		var elapse = Math.floor((now.getTime() - this.submission.start.getTime()));
 		this.timeLeft = this.exam.duration * 60 * 1000 - elapse;
 		if (this.timeLeft <= 0)
@@ -247,7 +257,7 @@ export class ExamStudyDialog extends BaseComponent {
 		else {
 			this.timer = Observable.timer(0, 1000);
 			this.timer
-				.takeUntil(this.timer)
+				.takeUntil(this.timeoutSubscription)
 				.subscribe(() => {
 					this.timeLeft -= 1000;
 					if (this.timeLeft <= EXAM_TIME_WARNING && this.timeLeft > EXAM_TIME_WARNING - 1000)

@@ -33,7 +33,7 @@ class User(models.Model):
 	dob = fields.Datetime(related="partner_id.dob", string="Date of birth")
 	banned = fields.Boolean(default=False, string="Is banned")
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
-
+	supervisor_name = fields.Char(related="supervisor_id.name", string="Supervisor Name")
 	achivement_ids = fields.One2many('etraining.achivement', 'user_id', string='Achivements')
 	course_member_ids = fields.One2many('etraining.course_member', 'user_id', string='Course members')
 	exam_member_ids = fields.One2many('etraining.exam_member', 'user_id', string='Exam members')
@@ -63,6 +63,7 @@ class Permission(models.Model):
 	menu_access = fields.Text( string="Menu access")
 	user_ids = fields.One2many('res.users', 'permission_id',string='Users')
 	user_group_id = fields.Many2one('res.groups', string='Group')
+	user_group_name = fields.Char(related="user_group_id.name", string="Group Name")
 	user_count = fields.Integer( compute='_compute_user_count', string='User count')
 
 	def _compute_user_count(self):

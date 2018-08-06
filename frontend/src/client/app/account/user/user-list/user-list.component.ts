@@ -70,13 +70,19 @@ export class UserListComponent extends BaseComponent {
         var user = new User();
         this.userDialog.show(user);
         this.userDialog.onCreateComplete.subscribe(() => {
-            this.loadUsers();
+            this.users.unshift(user);
+            this.displayUsers = [...this.users];
+            this.selectedUsers = [];
+            this.selectedGroupNodes = [];
+            this.success('Add user successfully');
         });
     }
 
     editUser(user:User) {
-        this.userProfileDialog.show(user);
-        this.selectedUsers = [];
+        user.populate(this).subscribe(()=> {
+            this.userProfileDialog.show(user);
+            this.selectedUsers = [];
+        });
     }
 
     activateMultipleUsers(users:User[]){
@@ -84,7 +90,6 @@ export class UserListComponent extends BaseComponent {
             user.banned =  false;
         });
         User.updateArray(this,users).subscribe(()=> {
-            this.loadUsers();
             this.success('User activated successfully');
         });
     }
@@ -95,13 +100,13 @@ export class UserListComponent extends BaseComponent {
             user.banned =  true;
         });
         User.updateArray(this,users).subscribe(()=> {
-            this.loadUsers();
             this.success('User deactivated successfully');
         });
     }
 
     exportUser() {
-        this.userExportDialog.show(this.users);
+        var userIds = _.pluck(this.displayUsers, 'id');
+        this.userExportDialog.show(userIds);
     }
 
     importUser() {

@@ -46,7 +46,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		super();
 		this.items = [
 			{ label: this.translateService.instant('Student'), value: 'student', command: () => { this.addStudent() } },
-			{ label: this.translateService.instant('Teacher'), value: 'teacher', command: () => { this.addTeacher()} },
+			{ label: this.translateService.instant('Teacher'), value: 'teacher', command: () => { this.addTeacher() } },
 		]
 		this.course = new Course();
 	}
@@ -78,8 +78,9 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			var userIds = _.pluck(users, 'id');
-			if (this.course.mode =='group')
+			if (this.course.mode == 'group')
 				this.courseClass.enroll(this, userIds).subscribe((result) => {
+					this.success('Enroll student successfully');
 					this.loadMembers();
 					var failList = result['failList'];
 					_.each(failList, userId => {
@@ -89,7 +90,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 						this.warn(`User ${user.name} does not meet course requirement`);
 					});
 				});
-			if (this.course.mode =='self-study')
+			if (this.course.mode == 'self-study')
 				this.course.enroll(this, userIds).subscribe((result) => {
 					this.loadMembers();
 					var failList = result['failList'];
@@ -107,8 +108,9 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			var userIds = _.pluck(users, 'id');
-			if (this.course.mode =='group')
+			if (this.course.mode == 'group')
 				this.courseClass.enrollStaff(this, userIds).subscribe((result) => {
+					this.success('Add teacher successfully');
 					this.loadMembers();
 					var failList = result['failList'];
 					_.each(failList, userId => {
@@ -118,7 +120,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 						this.warn(`User ${user.name} does not meet course requirement`);
 					});
 				});
-			if (this.course.mode =='self-study')
+			if (this.course.mode == 'self-study')
 				this.course.enrollStaff(this, userIds).subscribe((result) => {
 					this.loadMembers();
 					var failList = result['failList'];
@@ -132,10 +134,11 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		});
 	}
 
-	deleteMembers(members:CourseMember[]) {
+	deleteMembers(members: CourseMember[]) {
 		if (members && members.length)
 			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				CourseMember.deleteArray(this, members).subscribe(() => {
+					this.success('Delete member successfully');
 					this.selectedStudents = [];
 					this.selectedTeachers = [];
 					this.loadMembers();
@@ -145,27 +148,33 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 
 	loadMembers() {
 		if (this.course && !this.courseClass) {
-			this.course.listMembers(this).subscribe(members => {
-				this.students = _.filter(members, (member) => {
-					return member.role == 'student';
+			this.course.populate(this).subscribe(() => {
+				this.course.listMembers(this).subscribe(members => {
+					this.students = _.filter(members, (member) => {
+						return member.role == 'student';
+					});
+					this.selectedStudents = [];
+					this.teachers = _.filter(members, (member) => {
+						return member.role == 'teacher';
+					});
+					this.selectedTeachers = [];
 				});
-				this.selectedStudents = [];
-				this.teachers = _.filter(members, (member) => {
-					return member.role == 'teacher';
-				});
-				this.selectedTeachers = [];
 			});
 		}
-		if (this.courseClass && this.courseClass) {
-			this.courseClass.listMembers(this).subscribe(members => {
-				this.students = _.filter(members, (member) => {
-					return member.role == 'student';
+		if (this.course && this.courseClass) {
+			this.course.populate(this).subscribe(() => {
+				this.courseClass.populate(this).subscribe(() => {
+					this.courseClass.listMembers(this).subscribe(members => {
+						this.students = _.filter(members, (member) => {
+							return member.role == 'student';
+						});
+						this.selectedStudents = [];
+						this.teachers = _.filter(members, (member) => {
+							return member.role == 'teacher';
+						});
+						this.selectedTeachers = [];
+					});
 				});
-				this.selectedStudents = [];
-				this.teachers = _.filter(members, (member) => {
-					return member.role == 'teacher';
-				});
-				this.selectedTeachers = [];
 			});
 		}
 	}

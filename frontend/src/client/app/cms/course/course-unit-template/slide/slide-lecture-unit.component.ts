@@ -26,6 +26,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 
 	private unit: CourseUnit;
 	private lecture: SlideLecture;
+	private percentage: number;
 	viewCompleted: boolean;
 	@Input() mode;
 
@@ -48,7 +49,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	uploadFile(file) {
-		
+		this.percentage = 0;
 		this.lecture.filename = file.name;
 		this.fileApiService.upload(file,  this.authService.LoginToken).subscribe(
 			data => {
@@ -63,6 +64,11 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 							});
 						}
 					});
+				} else {
+					this.ngZone.run(()=> {
+						this.percentage = +data;
+					});
+					
 				}
 			}
 		);

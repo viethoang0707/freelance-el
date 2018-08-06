@@ -15,6 +15,12 @@ class Competency(models.Model):
 	level_summary = fields.Text( compute='_compute_level_summary', string='Group name')
 	course_ids = fields.One2many('etraining.course', 'competency_id', string='Courses')
 
+	achivement_count = fields.Integer( compute='_compute_achivement_count', string='Achivement count')
+
+	def _compute_achivement_count(self):
+		for competency in self:
+			competency.achivement_count =  len(competency.achivement_ids)
+
 	def _compute_level_summary(self):
 		for competency in self:
 			competency.level_summary =  ','.join([level.name for level in competency.level_ids])
@@ -30,6 +36,11 @@ class CompetencyLevel(models.Model):
 	competency_group_name = fields.Char( related='competency_id.group_name', string='Group name', readonly=True)
 
 	achivement_ids = fields.One2many('etraining.achivement', 'competency_level_id', string='Achivements')
+	achivement_count = fields.Integer( compute='_compute_achivement_count', string='Achivement count')
+
+	def _compute_achivement_count(self):
+		for level in self:
+			level.achivement_count =  len(level.achivement_ids)
 
 class Achivement(models.Model):
 	_name = 'etraining.achivement'

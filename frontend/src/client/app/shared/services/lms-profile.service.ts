@@ -66,7 +66,7 @@ export class LMSProfileService {
   private context: APIContext;
 
   constructor(private settingService: SettingService, private appEvent: AppEventManager) {
-    this.settingService.viewModeEvents.subscribe(() => {
+    this.settingService.viewModeEvents.subscribe(()=> {
       this.invalidateAll();
     });
     this.appEvent.onLogin.subscribe(() => {
@@ -93,37 +93,40 @@ export class LMSProfileService {
     if (this.initialized)
       return Observable.of([]);
     var user = context.authService.UserProfile;
-    return BaseModel.bulk_list(context,
-      User.__api__listCourseMembers(user.course_member_ids),
-      User.__api__listExamMembers(user.exam_member_ids),
-      User.__api__listConferenceMembers(user.conference_member_ids),
-      User.__api__listSurveyMembers(user.survey_member_ids),
-      User.__api__listCertificates(user.certificate_ids),
-      User.__api__listExamRecords(user.exam_record_ids),
-      User.__api__listSubmissions(user.submission_ids),
-      User.__api__listProjectSubmissions(user.project_submission_ids)
-    ).map(jsonArray => {
-      this.myCourseMembers = _.filter(CourseMember.toArray(jsonArray[0]), (member: CourseMember) => {
-        return isFinite(parseInt(member.course_id + "")) && member.status == 'active' && member.course_review_state == 'approved';
+    return user.populate(context).flatMap(() => {
+      return BaseModel.bulk_list(context,
+        User.__api__listCourseMembers(user.course_member_ids),
+        User.__api__listExamMembers(user.exam_member_ids),
+        User.__api__listConferenceMembers(user.conference_member_ids),
+        User.__api__listSurveyMembers(user.survey_member_ids),
+        User.__api__listCertificates(user.certificate_ids),
+        User.__api__listExamRecords(user.exam_record_ids),
+        User.__api__listSubmissions(user.submission_ids),
+        User.__api__listProjectSubmissions(user.project_submission_ids)
+      ).map(jsonArray => {
+        this.myCourseMembers = _.filter(CourseMember.toArray(jsonArray[0]), (member: CourseMember) => {
+          return isFinite(parseInt(member.course_id + "")) && member.status == 'active' && member.course_review_state == 'approved';
+        });
+        this.myClassMembers = _.filter(this.myCourseMembers, (member: CourseMember) => {
+          return isFinite(parseInt(member.class_id + ""));
+        });
+        this.myExamMembers = _.filter(ExamMember.toArray(jsonArray[1]), (member: ExamMember) => {
+          return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state == 'approved';
+        });
+        this.myConferenceMembers = _.filter(ConferenceMember.toArray(jsonArray[2]), (member: ConferenceMember) => {
+          return isFinite(parseInt(member.conference_id + "")) && member.conference_status == 'open' && member.is_active;
+        });
+        this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
+          return isFinite(parseInt(member.survey_id + "")) && member.survey_review_state == 'approved';
+        });
+        this.myCertificates = Certificate.toArray(jsonArray[4]);
+        this.myExamRecords = ExamRecord.toArray(jsonArray[5]);
+        this.myExamSubmits = Submission.toArray(jsonArray[6]);
+        this.myProjectSubmits = ProjectSubmission.toArray(jsonArray[7]);
+        this.initialized = true;
       });
-      this.myClassMembers = _.filter(this.myCourseMembers, (member: CourseMember) => {
-        return isFinite(parseInt(member.class_id + ""));
-      });
-      this.myExamMembers = _.filter(ExamMember.toArray(jsonArray[1]), (member: ExamMember) => {
-        return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state == 'approved';
-      });
-      this.myConferenceMembers = _.filter(ConferenceMember.toArray(jsonArray[2]), (member: ConferenceMember) => {
-        return isFinite(parseInt(member.conference_id + "")) && member.conference_status == 'open' && member.is_active;
-      });
-      this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
-        return isFinite(parseInt(member.survey_id + "")) && member.survey_review_state == 'approved';
-      });
-      this.myCertificates = Certificate.toArray(jsonArray[4]);
-      this.myExamRecords = ExamRecord.toArray(jsonArray[5]);
-      this.myExamSubmits = Submission.toArray(jsonArray[6]);
-      this.myProjectSubmits = ProjectSubmission.toArray(jsonArray[7]);
-      this.initialized = true;
-    });
+    })
+
   }
 
   get MyCourseMembers() {
@@ -243,7 +246,7 @@ export class LMSProfileService {
     )
       .map(jsonArray => {
         var content = {};
-        content["projects"] = Project.toArray(jsonArray[0])[0];
+        content["projects"] = Project.toArray(jsonArray[0]);
         content["exams"] = Exam.toArray(jsonArray[1]);
         content["surveys"] = Survey.toArray(jsonArray[2]);
         this.classContent[clazz.id] = content;
@@ -273,7 +276,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 
@@ -300,7 +303,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 
@@ -320,7 +323,7 @@ export class LMSProfileService {
     if (editorRole && editorRole.create_date.getTime() < timestamp)
       timestamp = editorRole.create_date.getTime();
     if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.create_date.getTime();
+      timestamp = supervisorRole.write_date.getTime();
     return timestamp;
   }
 

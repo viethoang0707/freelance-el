@@ -63,9 +63,9 @@ export class AnswerPrintDialog extends BaseComponent {
 
         BaseModel
             .bulk_list(this,
-                ExamMember.__api__populateSubmission(this.member.id),
-                Exam.__api__populateSetting(this.exam.id),
-                Exam.__api__populateQuestionSheet(this.exam.id))
+                ExamMember.__api__populateSubmission(this.member.submission_id),
+                Exam.__api__populateSetting(this.exam.setting_id),
+                Exam.__api__populateQuestionSheet(this.exam.sheet_id))
             .subscribe(jsonArr => {
                 var submits = Submission.toArray(jsonArr[0]);
                 if (submits.length) {
