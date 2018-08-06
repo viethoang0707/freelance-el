@@ -95,14 +95,12 @@
                                     </div>
                                 </div>
                                 <div class="user-card-footer">
-                                    <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate !=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
-                                    <button pButton type="button" icon="ui-icon-timeline" title="{{'View answer'| translate}}" label="{{'View answer'|translate}}" class="blue-grey-btn"  [disabled]="exam.candidate.enroll_status!='completed'"
-                                                style="margin-right:4px;" (click)="viewAnswer(exam,exam.candidate)" *ngIf="exam.candidate!=null"></button>
-
-                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='published'"></button>
-                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 red-btn" (click)="unpublishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='unpublished'"></button>
-                                    <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="blue-grey-btn mr4" (click)="editExamContent(exam)" *ngIf="exam.editor != null"></button>
-                                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor !=null"></button>
+                                    <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class="green-btn mr4 mb4" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate !=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
+                                    <button pButton type="button" icon="ui-icon-timeline" title="{{'View answer'| translate}}" label="{{'View answer'|translate}}" class="blue-grey-btn mr4 mb4"  [disabled]="exam.candidate.enroll_status!='completed'" style="margin-right:4px;" (click)="viewAnswer(exam,exam.candidate)" *ngIf="exam.candidate!=null"></button>
+                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 mb4 blue-grey-btn" (click)="publishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='published'"></button>
+                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 mb4 red-btn" (click)="unpublishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='unpublished'"></button>
+                                    <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit'|translate}}" class="blue-grey-btn mr4 mb4" (click)="editExamContent(exam)" *ngIf="exam.editor != null"></button>
+                                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage'|translate}}" class="orange-btn mr4 mb4" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor !=null"></button>
                                 </div>
                             </div>
                         </div>

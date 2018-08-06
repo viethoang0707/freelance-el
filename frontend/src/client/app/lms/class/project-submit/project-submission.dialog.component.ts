@@ -58,7 +58,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
             this.submit.date_submit = new Date();
             this.submit.save(this).subscribe(() => {
                 this.onConfirmReceiver.next();
-                this.success('Action completed');
+                this.success(this.translateService.instant('Action completed'));
                 this.hide();
             });
         }

@@ -1,11 +1,8 @@
-.image-box-footer{
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .course-study-unit{
-	height: 570px;
+	height: 580px;
 	margin: 0 !important;
+	/*background-color: #b7b7b7;*/
+	position: relative;
 }
 
 @media screen and (max-width: 500px) {
@@ -114,13 +111,68 @@ h4.summary{
 }
 
 .btn-link-unit{
-	text-align: right;
 	padding: 0 40px 0 0;
 }
 
 button.course-unit-study-btn {
-    color: #757575 !important;
+    background-color: transparent !important;
     font-size: 15px !important;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+
+.btn-error{
+	border-radius: 25px;
+	border: 1px solid #fff;
+}
+
+.card-footer{
+	padding: 10px;
+	color: #fff;
+	background-color: #000;
+	height: 53px;
+}
+
+.auto-next span, .auto-next button{
+	vertical-align: 1px;
+}
+
+.head{
+	height: 60px;
+    background: -webkit-linear-gradient(bottom,#0000 0,#0000 2%,#000c 100%);
+    padding-top: 14px;
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.course-study-unit:hover .head, .course-study-unit:focus .head, .course-study-unit:active .head{
+	display: block !important;
+	z-index: 50;
+}
+
+ul.material-items{
+	padding-left: 0;
+}
+
+ul.material-items li{
+	list-style-type: none;
+	padding: 15px 10px;
+}
+
+ul.material-items li a.material-item{
+	vertical-align: -webkit-baseline-middle;
+}
+
+ul.material-items li i{
+	margin-right: 10px;
+	color: #32de4e;
+}
+
+ul.material-items li button{
+	float: right;
+    width: 2em;
+    height: 2em;
+    background-color: #ababab;
 }

@@ -13,7 +13,7 @@ import { TreeNode } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
 
-const COURSE_FIELDS = ['name','group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
+const COURSE_FIELDS = ['name', 'group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
 
 @Component({
     moduleId: module.id,
@@ -62,9 +62,9 @@ export class CourseListComponent extends BaseComponent {
         this.courseDialog.onCreateComplete.subscribe(() => {
             this.checkDuplicate(course);
             this.courses.unshift(course);
-            this.displayCourses =  [...this.courses];
+            this.displayCourses = [...this.courses];
             this.selectedGroupNodes = [];
-            this.success('Add course successfully');
+            this.success(this.translateService.instant('Add course successfully'));
         });
     }
 
@@ -100,7 +100,7 @@ export class CourseListComponent extends BaseComponent {
         this.confirm('Are you sure to delete ?', () => {
             course.delete(this).subscribe(() => {
                 this.selectedCourse = null;
-                this.courses = _.reject(this.courses, (obj:Course)=> {
+                this.courses = _.reject(this.courses, (obj: Course) => {
                     return course.id == obj.id;
                 });
                 this.success('Delete course successfully');

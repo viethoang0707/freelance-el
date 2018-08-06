@@ -69,3 +69,7 @@ h4.title{
     text-overflow: ellipsis;
     margin: 5px 10px 0 15px;
 }
+
+.border{
+	border-bottom: 1px solid #dbdbdb;
+}

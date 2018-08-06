@@ -35,6 +35,7 @@
 	color: #fff;
 	padding: 75px 30px 62px 10px;
     background-color: #ea1336e0;
+    height: 450px;
 
 }
 
@@ -110,4 +111,14 @@
     width: 100%;
     bottom: 5%;
     color: #586f79;
+}
+
+.ui-fluid .ui-message {
+    margin: 10px 0px 0px;
+    display: block;
+    border-radius: 25px !important;
+    padding: 5px 15px;
+    background: #ea1336e0;
+    color: #fff;
+    border: none;
 }

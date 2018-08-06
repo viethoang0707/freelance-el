@@ -519,7 +519,16 @@
 	"Survey not reviewed yet": "Khảo sát chưa được đánh giá",
 	"Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened": "Bạn có chắc chắn muốn tiếp tục? Bạn sẽ không thể ghi danh học viên mới sau khi khảo sát được mở",
 	"Admin": "Quản trị viên",
-	"Position": "Vị trí"
+	"Position": "Vị trí",
+	"Please log in with your account and password.": "Xin hãy nhập tài khoản và mật khẩu của bạn để đăng nhập.",
+	"Add course successfully": "Thêm mới khóa học thành công",
+	"Course close": "Khóa học đã được đóng",
+	"Course open": "Khóa học đã được mở",
+	"Action completed": "Thao tác thành công",
+	"Class open": "Mở lớp học thành công",
+	"Operation failed": "Lỗi hệ thống",
+	"Email is invalid": "Email định dạng sai",
+	"Phone is invalid": "Số điện thoại sai định dạng"
 
 
 
