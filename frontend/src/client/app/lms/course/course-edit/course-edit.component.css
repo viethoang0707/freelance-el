@@ -7,3 +7,7 @@
   	white-space: nowrap; 
   	text-overflow: ellipsis;
 }
+
+.course-unit-edit .card{
+	height: 429px;
+}
