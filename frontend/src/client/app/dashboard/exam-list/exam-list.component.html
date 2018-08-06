@@ -7,22 +7,32 @@
                 <p-card styleClass="lms-exam-list-item">
                     <div class="ui-g">
                         <div class="ui-lg-8 ui-md-12 ui-g-12">
-                            <div class="mt5">
-                                <h4 class="title">{{exam.name}}</h4>
-                                <span class="e-status">
-                {{exam.status}}
-              </span>
+                            <div class="ui-lg-12 ui-g-12 border">
+                                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate!=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
+                                <button pButton type="button" icon="ui-icon-timeline" title="{{'View answer'| translate}}" label="{{'View answer'|translate}}" class="blue-grey-btn" [disabled]="exam.candidate.enroll_status!='completed'" *ngIf="exam.candidate!=null" style="margin-right:4px;" (click)="viewAnswer(exam,exam.candidate)"></button>
+                                <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status=='published'"></button>
+                                <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 red-btn" (click)="unpublishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='unpublished'"></button>
+                                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="editContent(exam)" *ngIf="exam.editor != null"></button>
+                                <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage exam'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor != null"></button>
                             </div>
-                            <div class="clearfix"></div>
-                            <p-accordion styleClass="cont">
-                                <p-accordionTab header="{{'Summary' | translate}}">
-                                    {{exam.summary}}
-                                </p-accordionTab>
-                                <p-accordionTab header="{{'Instruction' | translate}}">
-                                    <p [innerHTML]="exam.instruction"></p>
-                                </p-accordionTab>
-                            </p-accordion>
-                            <!-- </div> -->
+                            <div class="ui-lg-12 ui-md-12 ui-g-12">
+                                <div class="mt5">
+                                    <h4 class="title">{{exam.name}}</h4>
+                                    <span class="e-status">
+                                        {{exam.status}}
+                                    </span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <p-accordion styleClass="cont">
+                                    <p-accordionTab header="{{'Summary' | translate}}">
+                                        {{exam.summary}}
+                                    </p-accordionTab>
+                                    <p-accordionTab header="{{'Instruction' | translate}}">
+                                        <p [innerHTML]="exam.instruction"></p>
+                                    </p-accordionTab>
+                                </p-accordion>
+                                <!-- </div> -->
+                            </div>
                         </div>
                         <div class="ui-lg-4 ui-md-12 ui-g-12">
                             <p-card styleClass="lms-exam-detail">
@@ -52,14 +62,6 @@
                                         <span class="cmt-detail">{{exam.question_count}}</span>
                                     </li>
                                 </ul>
-                                <p-footer>
-                                    <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate!=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
-                                    <button pButton type="button" icon="ui-icon-timeline" title="{{'View answer'| translate}}" label="{{'View answer'|translate}}" class="blue-grey-btn" [disabled]="exam.candidate.enroll_status!='completed'" *ngIf="exam.candidate!=null" style="margin-right:4px;" (click)="viewAnswer(exam,exam.candidate)"></button>
-                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status=='published'"></button>
-                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 red-btn" (click)="unpublishExam(exam)" *ngIf="exam.supervisor!=null && exam.sheet_status!='unpublished'"></button>
-                                    <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="editContent(exam)" *ngIf="exam.editor != null"></button>
-                                    <button pButton type="button" icon="ui-icon-star" title="{{'Manage exam'| translate}}" label="{{'Manage exam'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="manageExam(exam, exam.supervisor)" *ngIf="exam.supervisor != null"></button>
-                                </p-footer>
                             </p-card>
                         </div>
                     </div>
