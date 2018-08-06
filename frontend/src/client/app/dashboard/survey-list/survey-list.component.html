@@ -7,21 +7,29 @@
                 <p-card styleClass="lms-exam-list-item">
                     <div class="ui-g">
                         <div class="ui-lg-8 ui-md-12 ui-g-12">
-                            <div class="mt5">
-                                <h4 class="title">{{survey.name}}</h4>
-                                <span class="e-status">
-                  {{survey.status}}
-                </span>
+                            <div class="ui-g-12 ui-md-12 ui-lg-12 border">
+                                <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(survey, survey.candidate)" [disabled]="!survey.IsAvailable || survey.candidate.enroll_status=='completed'" *ngIf="survey.candidate!=null"></button>
+                                <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishSurvey(survey)" *ngIf="survey.supervisor!=null && survey.sheet_status!='published'"></button>
+                                <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 red-btn" (click)="unpublishSurvey(survey)" *ngIf="survey.supervisor!=null && survey.sheet_status!='unpublished'"></button>
+                                <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="editContent(survey)" *ngIf="survey.editor!=null"></button>
                             </div>
-                            <div class="clearfix"></div>
-                            <p-accordion styleClass="cont">
-                                <p-accordionTab header="{{'Summary' | translate}}">
-                                    {{survey.summary}}
-                                </p-accordionTab>
-                                <p-accordionTab header="{{'Instruction' | translate}}">
-                                    <p [innerHTML]="survey.instruction"></p>
-                                </p-accordionTab>
-                            </p-accordion>
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <div class="mt5">
+                                    <h4 class="title">{{survey.name}}</h4>
+                                    <span class="e-status">
+                                        {{survey.status}}
+                                    </span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <p-accordion styleClass="cont">
+                                    <p-accordionTab header="{{'Summary' | translate}}">
+                                        {{survey.summary}}
+                                    </p-accordionTab>
+                                    <p-accordionTab header="{{'Instruction' | translate}}">
+                                        <p [innerHTML]="survey.instruction"></p>
+                                    </p-accordionTab>
+                                </p-accordion>
+                            </div>
                         </div>
                         <div class="ui-lg-4 ui-md-12 ui-g-12">
                             <p-card styleClass="lms-exam-detail">
@@ -46,12 +54,6 @@
                                         <span class="cmt-detail">{{survey.question_count}}</span>
                                     </li>
                                 </ul>
-                                <p-footer>
-                                    <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Join'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="startSurvey(survey, survey.candidate)" [disabled]="!survey.IsAvailable || survey.candidate.enroll_status=='completed'" *ngIf="survey.candidate!=null"></button>
-                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Publish'| translate}}" label="{{'Publish'|translate}}" class="mr4 blue-grey-btn" (click)="publishSurvey(survey)" *ngIf="survey.supervisor!=null && survey.sheet_status!='published'"></button>
-                                    <button pButton type="button" icon="ui-icon-publish" title="{{'Unpublish'| translate}}" label="{{'Unpublish'|translate}}" class="mr4 red-btn" (click)="unpublishSurvey(survey)" *ngIf="survey.supervisor!=null && survey.sheet_status!='unpublished'"></button>
-                                    <button pButton type="button" icon="ui-icon-edit" title="{{'Edit content'| translate}}" label="{{'Edit content'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="editContent(survey)" *ngIf="survey.editor!=null"></button>
-                                </p-footer>
                             </p-card>
                         </div>
                     </div>
