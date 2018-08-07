@@ -14,24 +14,16 @@
         </div>
         <div class="ui-g-12" [hidden]='step!=2'>
             <ul class="select-columns">
-                <li *ngFor="let field of USER_FIELDS;let i =index">
-                    <div class="ui-g-4" *ngIf="i%3==1">
-                    <p class="txtBold">Column {{i+1}}</p>
-                    <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label"></p-dropdown>
-                    </div>
-                    <div class="ui-g-4" *ngIf="i%3==2">
-                    <p class="txtBold">Column {{i+1}}</p>
-                    <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label"></p-dropdown>
-                    </div>
-                    <div class="ui-g-4" *ngIf="i%3==0">
-                    <p class="txtBold">Column {{i+1}}</p>
+                <li *ngFor="let i of columnMappings | keys">
+                    <div class="ui-g-4" >
+                    <p class="txtBold">Column {{i}}</p>
                     <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label"></p-dropdown>
                     </div>
                 </li>
             </ul>
         </div>
         <div class="ui-g-12" [hidden]='step!=3'>
-          <p-progressBar value="percent" *ngIf="loading"></p-progressBar>
+          <p-progressBar mode="indetermine" *ngIf="loading"></p-progressBar>
             <ul>
                 <li *ngFor="let msg of statusMessages;let i =index">
                     <p> {{msg}} </p>

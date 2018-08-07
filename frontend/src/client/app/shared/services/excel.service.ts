@@ -34,7 +34,7 @@ export class ExcelService {
         var workbook = XLSX.read(data, { type: 'array' });
         var sheetName = workbook.SheetNames[0];
         var sheet = workbook.Sheets[sheetName];
-        observer.next(XLSX.utils.sheet_to_json(sheet));
+        observer.next(XLSX.utils.sheet_to_json(sheet, {defval:''}));
         observer.complete();
       };
       reader.readAsArrayBuffer(file);

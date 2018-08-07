@@ -81,6 +81,9 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 					this.classes = _.map(this.classMembers, (member: CourseMember) => {
 						return member.clazz;
 					});
+					this.classes = _.uniq(this.classes, (courseClass:CourseClass)=> {
+						return courseClass.id;
+					});
 					this.lmsProfileService.getCourseContent(this.course).subscribe(content => {
 						this.syl = content["syllabus"];
 						this.faqs = content["faqs"];

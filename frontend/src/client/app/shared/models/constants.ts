@@ -3,6 +3,7 @@ export const USER_STATUS = { 'true': 'Active', 'false': 'Suspended' };
 export const GENDER = { 'male': 'Male', 'female': 'Female', 'other': 'Other' };
 export const GROUP_CATEGORY = { USER: 'organization', QUESTION: 'question', COURSE: 'course', COMPETENCY: 'competency' };
 export const SERVER_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+export const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
 export const DEFAULT_DATE_LOCALE = {
     firstDayOfWeek: 0,
     dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],

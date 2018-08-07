@@ -86,7 +86,6 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
-	@ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 	@ViewChild(ProjectSubmissionDialog) projectSubmitDialog: ProjectSubmissionDialog;

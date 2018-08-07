@@ -73,7 +73,7 @@ export class User extends BaseModel {
     image: string;
     name: string;
     group_code: string;
-    gender: boolean;
+    gender: string;
     @FieldProperty<Date>()
     dob: Date;
     position: string;

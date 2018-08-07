@@ -45,7 +45,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     private exam: Exam;
     private member: ExamMember;
     private members: ExamMember[];
-    private selectedMember: any;
+    private selectedMember: ExamMember;
     private questions: ExamQuestion[];
 
     @ViewChild(QuestionMarkingDialog) questionMarkDialog: QuestionMarkingDialog;
@@ -95,8 +95,11 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     viewAnswerSheet() {
         if (this.selectedMember.enroll_status != 'completed')
             this.info(this.translateService.instant('Student has not completed the exam'));
-        else
-            this.answerSheetDialog.show(this.exam, this.selectedMember);
+        else {
+            this.selectedMember.populate(this).subscribe(()=> {
+                this.answerSheetDialog.show(this.exam, this.selectedMember);
+            });
+        }
     }
 
     loadScores() {

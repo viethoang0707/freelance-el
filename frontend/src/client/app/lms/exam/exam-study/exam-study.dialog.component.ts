@@ -89,23 +89,23 @@ export class ExamStudyDialog extends BaseComponent {
 		this.member = member;
 		this.qIndex = 0;
 		navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-		.then(() => {
-			DetectRTC.load(()=> {
-				console.log('Webcam available', DetectRTC.hasWebCam);
-				console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
-				if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
-					this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
-					this.display = false;
-					return;
-				}
-				this.loadExamContent();
+			.then(() => {
+				DetectRTC.load(() => {
+					console.log('Webcam available', DetectRTC.hasWebCam);
+					console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
+					if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
+						this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
+						this.display = false;
+						return;
+					}
+					this.loadExamContent();
+				})
 			})
-		})
-		.catch((e)=> {
-			console.log('Get media error', e);
-			this.error('Webcam device not found');
-			this.display = false;
-		})
+			.catch((e) => {
+				console.log('Get media error', e);
+				this.error('Webcam device not found');
+				this.display = false;
+			})
 	}
 
 	loadExamContent() {
@@ -213,11 +213,13 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	submitAnswer(): Observable<any> {
-		(<IQuestion>this.componentRef.instance).concludeAnswer();
-		if (this.currentAnswer.is_correct) {
-			this.currentAnswer.score = this.currentQuestion.score;
-		} else
-			this.currentAnswer.score = 0;
+		if (this.componentRef) {
+			(<IQuestion>this.componentRef.instance).concludeAnswer();
+			if (this.currentAnswer.is_correct) {
+				this.currentAnswer.score = this.currentQuestion.score;
+			} else
+				this.currentAnswer.score = 0;
+		}
 		return this.currentAnswer.save(this);
 	}
 

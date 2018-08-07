@@ -217,7 +217,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     viewAnswer(exam: Exam, member: ExamMember) {
         exam.populate(this).subscribe(()=> {
-            this.answerSheetDialog.show(exam, member);
+            member.populate(this).subscribe(()=> {
+                this.answerSheetDialog.show(exam, member);
+            });
         });
     }
 }

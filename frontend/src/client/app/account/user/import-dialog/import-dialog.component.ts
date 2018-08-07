@@ -6,9 +6,10 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
 import * as _ from 'underscore';
-import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../shared/models/constants';
+import { DEFAULT_PASSWORD, GROUP_CATEGORY, SERVER_DATE_FORMAT, GENDER } from '../../../shared/models/constants';
 import { TreeNode, SelectItem } from 'primeng/api';
 import { ExcelService } from '../../../shared/services/excel.service';
+import * as moment from 'moment';
 
 
 @Component({
@@ -24,22 +25,19 @@ export class UserImportDialog extends BaseComponent {
 	private display: boolean;
 	private fileName: string;
 	private records: any[];
-	private onImportCompleteReceiver: Subject<any> = new Subject();
-	onImportComplete: Observable<any> = this.onImportCompleteReceiver.asObservable();
-
 	private columnMappings: any;
 	private fields: SelectItem[];
 	private statusMessages: string[];
 	private users: User[];
-
 	private step: number;
-	private percent: number;
+
+	private onImportCompleteReceiver: Subject<any> = new Subject();
+	onImportComplete: Observable<any> = this.onImportCompleteReceiver.asObservable();
 
 	constructor(private excelService: ExcelService) {
 		super();
 		this.display = false;
 		this.records = [];
-		this.percent = 0;
 		this.statusMessages = [];
 		this.fields = [
 			{ value: 'login', label: this.translateService.instant('Login') },
@@ -55,14 +53,11 @@ export class UserImportDialog extends BaseComponent {
 
 		];
 		this.columnMappings = {};
-		for (var i = 0; i < this.fields.length; i++)
-			this.columnMappings[i] = this.fields[i];
 	}
 
 	show() {
 		this.display = true;
 		this.step = 1;
-		this.percent = 0;
 		this.statusMessages = [];
 	}
 
@@ -84,45 +79,49 @@ export class UserImportDialog extends BaseComponent {
 		this.users = [];
 		this.statusMessages = [];
 		_.each(this.records, (record, index) => {
+			var isValid = true;
+			var userFields = [];
 			var user = new User();
 			for (var i = 0, keys = Object.keys(record); i < keys.length; i++) {
 				var key = keys[i];
-				if (i < this.fields.length)
-					user[this.columnMappings[i].value] = record[key];
+				user[this.columnMappings[i].value] = record[key];
+				userFields.push(this.columnMappings[i].value);
 			}
 			user["password"] = DEFAULT_PASSWORD;
 			var group = _.find(groups, (obj: Group) => {
-				return obj.code == record["group_code"];
+				return obj.code == user["group_code"];
 			});
 			if (group) {
 				user.group_id = group.id;
-				this.users.push(user);
 			} else {
+				isValid = false;
 				this.statusMessages.push(`Record ${index}: Group ${record["group_code"]} is not defined`);
 			}
+			if (userFields.includes('dob')) {
+				if (user.dob && moment(user.dob, SERVER_DATE_FORMAT)["_isValid"])
+					user.dob = moment(user.dob, SERVER_DATE_FORMAT).toDate();
+				else {
+					isValid = false;
+					this.statusMessages.push(`Record ${index}: Invalid date of birth format. Require ${SERVER_DATE_FORMAT}`);
+				}
+			}
+			if (userFields.includes('gender')) {
+				isValid = user['gender'] in GENDER;
+			}
+			if (isValid)
+				this.users.push(user);
 		});
 		if (this.statusMessages.length)
-			return Observable.of(false);
+			return Observable.of(true);
 		else
 			return Observable.of(true);
 	}
 
 	uploadData() {
-		var saveActions = _.map(this.users, (user: User) => {
-			return user.save(this);
+		User.createArray(this, this.users).subscribe(() => {
+			this.onImportCompleteReceiver.next();
+			this.success(`Import ${this.users.length} users successfully`);
 		});
-		var successRow = 0;
-		var failedRow = 0;
-		Observable.concat(saveActions).subscribe(
-			() => {
-				successRow += 1;
-				this.percent = Math.floor(successRow * 100 / this.users.length);
-			}, () => {
-				failedRow += 1;
-			}, () => {
-				this.onImportCompleteReceiver.next();
-				this.success(`Import ${successRow} users successfully`);
-			});
 
 	}
 
@@ -131,6 +130,9 @@ export class UserImportDialog extends BaseComponent {
 		this.fileName = file.name;
 		this.excelService.importFromExcelFile(file).subscribe(data => {
 			this.records = data;
+			this.columnMappings = {};
+			for (var i = 0; i < Object.keys(this.records[0]).length; i++)
+				this.columnMappings[i] = this.fields[i % (this.fields.length)];
 			this.step = 2;
 		});
 	}
