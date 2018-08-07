@@ -131,6 +131,25 @@ button.course-unit-study-btn {
 	color: #fff;
 	background-color: #000;
 	height: 53px;
+	border-right: 1px solid #4a4a4a;
+}
+
+.footer{
+	padding: 10px;
+    color: #fff;
+    background-color: #000;
+    height: 53px;
+    text-align: right;
+    width: 100%;
+    position: unset;
+}
+
+.footer button{
+	background-color: transparent;
+}
+
+.footer button:hover{
+	background-color: #9e9e9e;
 }
 
 .auto-next span, .auto-next button{
