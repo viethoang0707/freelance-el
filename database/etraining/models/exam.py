@@ -95,9 +95,10 @@ class Exam(models.Model):
 	def close(self, params):
 		examId = +params["examId"]
 		for exam in self.env["etraining.exam"].browse(examId):
-			grades = self.env["etraining.exam_grade"].search([('exam_id','=',exam.id)])
 			for candidate in self.env['etraining.exam_member'].search([('exam_id','=',exam.id),('role','=','candidate')]):
 				if not candidate.exam_record_id:
+					candidate.computeExamRecord()
+				if candidate.exam_record_id:
 					candidate.computeExamRecord()
 			exam.write({'status':'closed'})
 		return True
