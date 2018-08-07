@@ -47,11 +47,10 @@ export class MemberPermissionDialog extends BaseComponent {
     addMember() {
         this.usersDialog.show();
         this.usersDialog.onSelectUsers.first().subscribe(users => {
-            var updateApi = _.map(users, (user: User) => {
+            _.each(users, (user: User) => {
                 user.permission_id = this.permission.id;
-                return user.__api__update(USER_FIELDS);
             });
-            BaseModel.bulk_update(this, ...updateApi).subscribe(() => {
+            User.updateArray(this, users,USER_FIELDS).subscribe(() => {
                 this.loadMembers();
                 this.success('Add member successfully');
             });
@@ -71,7 +70,7 @@ export class MemberPermissionDialog extends BaseComponent {
     }
 
     loadMembers() {
-        User.listByPermission(this, this.permission.id,USER_FIELDS).subscribe(users => {
+        this.permission.listUsers(this,USER_FIELDS).subscribe(users => {
             this.users = [...users];
         });
     }

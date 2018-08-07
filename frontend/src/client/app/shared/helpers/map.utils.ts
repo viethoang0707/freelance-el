@@ -123,7 +123,7 @@ export class MapUtils {
         if (object === undefined) return {};
         let jsonObject:any = {};
         Object.keys(object).forEach((key) => {
-            if (!fields || key in fields) {
+            if (!fields || fields.includes(key)) {
                 if (MapUtils.isDate(object[key]))
                     jsonObject[key] = moment(object[key]).format(SERVER_DATETIME_FORMAT);
                 else {

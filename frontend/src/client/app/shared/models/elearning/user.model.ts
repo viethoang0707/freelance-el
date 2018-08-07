@@ -4,7 +4,6 @@ import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
 import { Company } from './company.model';
 import { Permission } from './permission.model';
-
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import { ListAPI } from '../../services/api/list.api';
@@ -180,22 +179,6 @@ export class User extends BaseModel {
         return User.count(context, "[('banned','=',True)]");
     }
 
-
-    static __api__listByPermission(permissionId: number,fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(User.Model, fields, "[('permission_id','='," + permissionId + ")]");
-    }
-
-    static listByPermission(context: APIContext, permissionId: number,fields?:string[]): Observable<any> {
-        return User.search(context, fields, "[('permission_id','='," + permissionId + ")]");
-    }
-
-    static __api__countByPermission(permissionId: number): SearchCountAPI {
-        return new SearchCountAPI(User.Model, "[('permission_id','='," + permissionId + ")]");
-    }
-
-    static countByPermission(context: APIContext, permissionId: number): Observable<any> {
-        return User.count(context, "[('permission_id','='," + permissionId + ")]");
-    }
 
     static __api__listAchivements(achivement_ids: number[],fields?:string[]): ListAPI {
         return new ListAPI(Achivement.Model, achivement_ids,fields);

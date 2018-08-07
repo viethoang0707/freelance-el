@@ -47,7 +47,7 @@ export class UserImportDialog extends BaseComponent {
 			{ value: 'social_id', label: this.translateService.instant('Social ID') },
 			{ value: 'group_name', label: this.translateService.instant('Group') },
 			{ value: 'group_code', label: this.translateService.instant('Group code ') },
-			{ value: 'position', label: this.translateService.instant('Position') }
+			{ value: 'position', label: this.translateService.instant('Position') },
 			{ value: 'dob', label: this.translateService.instant('Date of birth') },
 			{ value: 'gender', label: this.translateService.instant('Gender') },
 			{ value: 'phone', label: this.translateService.instant('Phone') },

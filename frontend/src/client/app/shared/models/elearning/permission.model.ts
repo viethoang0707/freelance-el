@@ -1,9 +1,8 @@
-
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model } from '../decorator';
+import { Model,ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
-import { Company } from './company.model';
+import { User } from './user.model';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 
@@ -18,6 +17,7 @@ export class Permission extends BaseModel{
 		this.menu_access = undefined;
         this.user_count =  undefined;
         this.user_group_name =  undefined;
+        this.user_ids = [];
 	}
 
     name: string;
@@ -25,4 +25,14 @@ export class Permission extends BaseModel{
     menu_access: string;
     user_count: number;
     user_group_name: string;
+    @ReadOnlyProperty()
+    user_ids: number[];
+
+    static __api__listUsers(permissionId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(User.Model, fields, "[('permission_id','='," + permissionId + ")]");
+    }
+
+    listUsers(context: APIContext,fields?:string[]): Observable<any> {
+        return User.search(context, fields, "[('permission_id','='," + this.id + ")]");
+    }
 }
