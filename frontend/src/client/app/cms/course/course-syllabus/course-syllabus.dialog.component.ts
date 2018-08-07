@@ -132,6 +132,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.unitDialog.onUpdateComplete.first().subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 			this.tree = this.sylUtils.buildGroupTree(this.units);
+			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 

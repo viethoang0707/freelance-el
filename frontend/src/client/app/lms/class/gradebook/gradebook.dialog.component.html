@@ -37,11 +37,11 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-record>
                     <tr [pSelectableRow]="record">
-                        <td>{{stats.total_unit}}</td>
-                        <td>{{stats.complete_unit}}</td>
-                        <td>{{record.complete_percent}}</td>
-                        <td>{{record.first_attempt}} %</td>
-                        <td>{{record.last_attempt}} %</td>
+                        <td>{{record.total_unit}}</td>
+                        <td>{{record.complete_unit}}</td>
+                        <td>{{record.complete_percent}} %</td>
+                        <td>{{record.first_attempt}}</td>
+                        <td>{{record.last_attempt}}</td>
                         <td>{{record.time_spent}} {{'minute'|translate}}</td>
                     </tr>
                 </ng-template>

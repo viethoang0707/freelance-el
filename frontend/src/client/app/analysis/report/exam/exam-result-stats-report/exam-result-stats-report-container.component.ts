@@ -20,6 +20,8 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { ExamResultStatsReportComponent } from './exam-result-stats-report.component';
 
+const EXAM_FIELDS = ['name'];
+
 @Component({
     moduleId: module.id,
     selector: 'exam-result-stats-report-container',
@@ -32,7 +34,7 @@ import { ExamResultStatsReportComponent } from './exam-result-stats-report.compo
 export class ExamResultStatsReportContainerComponent extends BaseComponent implements OnInit{
 
     private exams: Exam[];
-    private selectedExam: any;
+    private selectedExam: Exam;
     @ViewChild(ExamResultStatsReportComponent) statsReport: ExamResultStatsReportComponent;
 
     constructor() {
@@ -40,7 +42,7 @@ export class ExamResultStatsReportContainerComponent extends BaseComponent imple
     }
 
     ngOnInit() {
-    	Exam.all(this).subscribe(exams => {
+    	Exam.all(this,EXAM_FIELDS).subscribe(exams => {
     		this.exams = exams;
     	});
     }
@@ -53,7 +55,10 @@ export class ExamResultStatsReportContainerComponent extends BaseComponent imple
     selectExam() {
     	if (this.selectedExam) {
             this.statsReport.clear();
-            this.statsReport.render(this.selectedExam);
+            this.selectedExam.populate(this).subscribe(()=> {
+                this.statsReport.render(this.selectedExam);
+            });
+            
     	}
     }
 

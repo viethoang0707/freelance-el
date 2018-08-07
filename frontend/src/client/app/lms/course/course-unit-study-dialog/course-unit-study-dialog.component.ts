@@ -18,6 +18,8 @@ import { CourseLog } from '../../../shared/models/elearning/log.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
+import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
+import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
 
 declare var $: any;
 
@@ -46,25 +48,31 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	private logs: CourseLog[];
 	private completedUnitIds = [];
 	private display: boolean;
+	private faqs: CourseFaq[];
+	private materials: CourseMaterial[];
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver,private winRef: WindowRef) {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
 		this.WINDOW_HEIGHT = $(window).height();
 		this.enableLogging =  true;
+		this.faqs = [];
+		this.materials = [];
 	}
 
-	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[]) {
+	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[], faqs: CourseFaq[], materials:CourseMaterial[]) {
 		this.display = true;
 		this.enableLogging = member.enroll_status != 'completed';
 		this.member = member;
 		this.course =  course;
 		this.syl = syl;
 		this.units = units;
+		this.faqs = faqs;
+		this.materials = materials;
 		CourseLog.memberStudyActivity(this, member.id, course.id).subscribe(logs => {
 			this.logs = logs;
 			this.displayCouseSyllabus();
@@ -217,6 +225,10 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	hide() {
 		this.unloadCurrentUnit();
 		this.display = false;
+	}
+
+	downloadMaterial(material:CourseMaterial) {
+		this.winRef.getNativeWindow().open(material.url, "_blank");
 	}
 
 }

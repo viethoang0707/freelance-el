@@ -73,7 +73,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			var courseId = +params['courseId'];
 			var memberId = +params['memberId'];
-			this.courseMember = this.lmsProfileService.courseMemberById(courseId);
+			this.courseMember = this.lmsProfileService.courseMemberById(memberId);
 			this.classMembers = this.lmsProfileService.classMembersByCourseId(courseId);
 			this.courseMember.populateCourse(this).subscribe(() => {
 				this.course = this.courseMember.course;

@@ -9,7 +9,7 @@
   <div class="ui-g">
     <div class="ui-g-6">
       <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}'" (onSelect)="changeFile($event)"
-        accept="*" maxFileSize="1024*512" showUploadButton="false">
+        accept=".ppt,application/vnd.ms-powerpoint,.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation" maxFileSize="1024*512" showUploadButton="false">
       </p-fileUpload>
       <a href="{{lecture.slide_url}}" target="_blank" *ngIf="lecture.slide_url">{{lecture.filename}}</a>
     </div>
@@ -21,6 +21,6 @@
   </pdf-viewer>
 </div>
 <div *ngIf="mode=='study'">
-   <pdf-viewer [stick-to-page]="true" [fit-to-page]="true" [src]="lecture.slide_url" [show-all]="true" [render-text]="true" style="display: block; height: 530px; overflow: auto;">
+   <pdf-viewer [stick-to-page]="true" [fit-to-page]="true" [src]="lecture.slide_url" [show-all]="true" [render-text]="true" style="display: block; height: 580px; overflow: auto;">
   </pdf-viewer> 
 </div>

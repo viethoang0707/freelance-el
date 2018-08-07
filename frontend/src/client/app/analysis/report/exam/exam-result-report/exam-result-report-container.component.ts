@@ -34,7 +34,7 @@ const EXAM_FIELDS = ['name'];
 export class ExamResultReportContainerComponent extends BaseComponent implements OnInit{
 
     private exams: Exam[];
-    private selectedExam: any;
+    private selectedExam: Exam;
     @ViewChild(ExamResultReportComponent) examReport: ExamResultReportComponent;
 
     constructor() {
@@ -55,7 +55,9 @@ export class ExamResultReportContainerComponent extends BaseComponent implements
     selectExam() {
     	if (this.selectedExam) {
             this.examReport.clear();
-            this.examReport.render(this.selectedExam);
+            this.selectedExam.populate(this).subscribe(()=> {
+                this.examReport.render(this.selectedExam);
+            });
     	}
     }
 

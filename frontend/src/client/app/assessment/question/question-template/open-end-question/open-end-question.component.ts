@@ -42,5 +42,9 @@ export class OpenEndQuestionComponent extends BaseComponent implements IQuestion
 		return;
 	}
 
+	isValid():boolean {
+		return true;
+	}
+
 }
 

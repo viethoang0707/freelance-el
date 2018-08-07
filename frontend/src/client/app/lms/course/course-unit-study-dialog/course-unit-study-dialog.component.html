@@ -1,20 +1,16 @@
-<p-dialog [(visible)]="display" modal="true" [responsive]="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-unit-study scroll-y" appendTo="body">
-    <p-header>
-        <div class="ui-lg-6 ui-md-6 ui-g-12 removePd">
-            <h3 class="removeM">{{course.name}}</h3>
-        </div>
-        <div class="ui-lg-6 ui-md-6 ui-g-12 btn-link-unit">
-            <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" (click)="prevUnit()" class="course-unit-study-btn"></button>
-            <button pButton type="button" icon="ui-icon-navigate-next" iconPos="right" title="{{'Next'|translate}}" label="{{'Next'|translate}}" (click)="nextUnit()" [disabled]="componentRef && !componentRef.instance.viewCompleted && !completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
-        </div>
-    </p-header>
+<p-dialog [(visible)]="display" modal="true" [responsive]="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-unit-study scroll-y removePd" appendTo="body">
     <div class="spinner" [hidden]="!loading"></div>
-    <p-scrollPanel [style]="{width: '100%'}" >
-        <div class="ui-lg-3 ui-md-3 ui-g-12 course-study-tree" >
-            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
-        </div>
-        <div class="ui-lg-9 ui-md-9 ui-g-12">
-            <div class="card course-study-unit">
+    <div class="ui-g">
+        <div class="ui-lg-9 ui-md-9 ui-g-12 removePd">
+            <div class="card course-study-unit removePd">
+                <div class="head">
+                    <div class="btn-link-unit fLeft">
+                        <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" (click)="prevUnit()" class="course-unit-study-btn"></button>
+                    </div>
+                    <div class="btn-link-unit fRight">
+                        <button pButton type="button" icon="ui-icon-warning" title="{{'Error'|translate}}" label="{{'Error'|translate}}" class="course-unit-study-btn btn-error"></button>
+                    </div>
+                </div>
                 <div class="image-box-content">
                     <!-- <div class="fLeft" *ngIf="selectedUnit">
                         <h3 class="removeMT mb5 mr10 fLeft heading-unit-course">{{selectedUnit.name}}</h3>
@@ -28,8 +24,48 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <div class="fLeft auto-next pt8">
+                    <p-inputSwitch [(ngModel)]="checked2"></p-inputSwitch>
+                    <span>{{'Auto next'|translate}}</span>
+                    <!-- <button pButton type="button" icon="ui-icon-info-outline" title="{{'Info'|translate}}" class="course-unit-study-btn"></button> ( show "lecture.transcript") -->
+                </div>
+                <div class="fRight">
+                    <button pButton type="button" icon="ui-icon-navigate-next" iconPos="right" title="{{'Next'|translate}}" label="{{'Next'|translate}}" (click)="nextUnit()" [disabled]="componentRef && !componentRef.instance.viewCompleted && !completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
+                </div>
+            </div>
         </div>
-    </p-scrollPanel>
-    <p-footer>
-    </p-footer>
+        <div class="ui-lg-3 ui-md-3 ui-g-12 side-bar removePd" >
+            <div class="ui-g">
+                <div class="ui-g-12 removePd">
+                    <p-tabView>
+                        <p-tabPanel header="{{'Syllabus'|translate}}" leftIcon="ui-icon-collections-bookmark">
+                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
+                        </p-tabPanel>
+                        <p-tabPanel header="{{'Material'|translate}}" leftIcon="ui-icon-cloud-download">
+                            <ul class="material-items">
+                                <li *ngFor="let material of materials">
+                                    <a href="" class="material-item">
+                                        <i class="material-icons">insert_drive_file</i>
+                                        <span>{{material.name}}</span>
+                                    </a>
+                                        <button type="button" pButton title="{{'Dowload'|translate}}" icon="ui-icon-file-download" (click)="downloadMaterial(material)"></button>
+                                </li>
+                                
+                            </ul>
+                        </p-tabPanel>
+                        <p-tabPanel header="{{'FAQ'|translate}}" leftIcon="ui-icon-question-answer">
+                            <p-dataList [value]="faqs">
+                                <ng-template let-faq pTemplate="item">
+                                    <span> [innerHTML]="faq.question"</span>
+                                        <br>
+                                    <span> [innerHTML]="faq.answer"</span>
+                                </ng-template>
+                            </p-dataList>
+                        </p-tabPanel>
+                    </p-tabView>
+                </div>
+            </div>
+        </div>
+    </div>
 </p-dialog>

@@ -146,7 +146,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	study() {
-		this.unitStudyDialog.show(this.member, this.course, this.syl, this.units);
+		this.unitStudyDialog.show(this.member, this.course, this.syl, this.units, this.faqs, this.materials);
 	}
 
 	getProjectSubmit(project: Project) {
