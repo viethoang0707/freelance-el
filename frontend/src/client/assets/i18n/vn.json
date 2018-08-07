@@ -533,8 +533,11 @@
 	"Delete exam successfully": "Xóa kỳ thi thành công",
 	"Answer submitted successfully": "Bài thi được nộp thành công",
 	"Add survey member successfully": "Ghi danh khảo sát thành công",
-	"Delete survey member successfully": "Xóa ghi danh khảo sát thành công"
-
+	"Delete survey member successfully": "Xóa ghi danh khảo sát thành công",
+	"Prequisite": "Điều kiện học",
+	"Acquired competency": "Năng lực đạt được",
+	"Acquired competency level": "Mức năng lực thu được",
+	"Create date": "Ngày tạo"
 
 
 
