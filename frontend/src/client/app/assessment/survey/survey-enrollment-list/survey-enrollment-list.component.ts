@@ -66,7 +66,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have close permission for this survey'));
             return;
         }
-        this.confirm(this.translateService.instant('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened'), () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed ?. You will not be able to enroll new members after the survey is closed'), () => {
             survey.close(this).subscribe(() => {
                 survey.status = 'closed';
                 this.success(this.translateService.instant('Survey close'));
