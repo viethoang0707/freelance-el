@@ -107,6 +107,8 @@ export class UserImportDialog extends BaseComponent {
 			}
 			if (userFields.includes('gender')) {
 				isValid = user['gender'] in GENDER;
+				if (!isValid)
+					this.statusMessages.push(`Record ${index}: Invalid gender. Valid values: ${GENDER}`);
 			}
 			if (isValid)
 				this.users.push(user);
