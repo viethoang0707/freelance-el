@@ -679,6 +679,14 @@ body .ui-dialog.course-unit-study .pdfViewer .textLayer {
   overflow: auto; 
 }
 
+body .question-sheet-preview .ui-widget-content{
+  border: none;
+}
+
+body .question-sheet-template .ui-scrollpanel-content {
+  height: 100%;
+}
+
 @media screen and (max-width: 500px) {
   .tree-unit-course-study{
     height: 150px;

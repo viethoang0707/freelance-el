@@ -57,9 +57,9 @@
                         <p-tabPanel header="{{'FAQ'|translate}}" leftIcon="ui-icon-question-answer">
                             <p-dataList [value]="faqs">
                                 <ng-template let-faq pTemplate="item">
-                                    <span> [innerHTML]="faq.question"</span>
+                                    <span [innerHTML]="faq.question"></span>
                                         <br>
-                                    <span> [innerHTML]="faq.answer"</span>
+                                    <span [innerHTML]="faq.answer"></span>
                                 </ng-template>
                             </p-dataList>
                         </p-tabPanel>
