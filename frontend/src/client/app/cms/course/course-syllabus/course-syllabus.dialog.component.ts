@@ -143,7 +143,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 		}
 		this.confirm('Are you sure to delete?', () => {
 			node.data.delete(this).subscribe(() => {
-				this.buildCourseTree();
 				this.selectedNode = null;
 				this.units = _.reject(this.units, (unit:CourseUnit)=> {
 					return unit.id == node.data.id

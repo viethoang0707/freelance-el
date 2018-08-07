@@ -60,8 +60,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.answers = [];
         this.exam = exam;
         this.member = member;
-        this.lmsProfileService.init(this).subscribe(()=> {
-            BaseModel
+        BaseModel
             .bulk_list(this,
                 ExamMember.__api__populateSubmission(this.member.submission_id),
                 Exam.__api__populateSetting(this.exam.setting_id),
@@ -80,7 +79,6 @@ export class AnswerPrintDialog extends BaseComponent {
                     }
                 }
             });
-        });
     }
 
     hide() {
@@ -96,22 +94,22 @@ export class AnswerPrintDialog extends BaseComponent {
                 this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
                 this.answers = Answer.toArray(jsonArr[1]);
                 ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
-                    var questions = _.map(this.examQuestions, (examQuestion:ExamQuestion)=> {
+                    var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
                         return examQuestion.question;
                     });
-                    Question.listOptionsForArray(this,questions).subscribe(() => {
+                    Question.listOptionsForArray(this, questions).subscribe(() => {
                         var componentHostArr = this.questionsComponents.toArray();
                         for (var i = 0; i < this.examQuestions.length; i++) {
                             var examQuestion = this.examQuestions[i];
                             var componentHost = componentHostArr[i];
                             this.displayQuestion(examQuestion, componentHost);
                         }
-                    },);
+                    });
                 });
             });
     }
 
-    prepareAnswer(question: ExamQuestion){
+    prepareAnswer(question: ExamQuestion) {
         var answer = _.find(this.answers, (ans: Answer) => {
             return ans.question_id == question.question_id;
         });

@@ -55,7 +55,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Survey.allForEnrollPublic(this,SURVEY_FIELDS).subscribe(surveys => {
+        Survey.allForEnrollPublic(this, SURVEY_FIELDS).subscribe(surveys => {
             this.surveys = surveys;
         })
     }
@@ -66,7 +66,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have close permission for this survey'));
             return;
         }
-        this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened'), () => {
             survey.close(this).subscribe(() => {
                 survey.status = 'closed';
                 this.success(this.translateService.instant('Survey close'));
@@ -79,7 +79,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have open permission for this survey'));
             return;
         }
-        this.confirm(this.translateService.instant('Are you sure to proceed ?. You will not be able to enroll new members after the survey is opened'), () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             survey.open(this).subscribe(() => {
                 survey.status = 'open';
                 this.success(this.translateService.instant('Survey open'));

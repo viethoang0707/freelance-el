@@ -19,7 +19,7 @@ import { ExcelService } from '../../../shared/services/excel.service';
 })
 export class UserImportDialog extends BaseComponent {
 
-	USER_FIELDS = ['login', 'name', 'social_id', 'group_code', 'position', 'dob', 'gender', 'phone', 'email']
+	USER_FIELDS = ['login', 'name', 'social_id', 'group_name', 'group_code', 'position', 'dob', 'gender', 'phone', 'email']
 
 	private display: boolean;
 	private fileName: string;
@@ -42,15 +42,17 @@ export class UserImportDialog extends BaseComponent {
 		this.percent = 0;
 		this.statusMessages = [];
 		this.fields = [
-			{ value: 'name', label: this.translateService.instant('Name') },
-			{ value: 'email', label: this.translateService.instant('Email') },
 			{ value: 'login', label: this.translateService.instant('Login') },
+			{ value: 'name', label: this.translateService.instant('Name') },
 			{ value: 'social_id', label: this.translateService.instant('Social ID') },
-			{ value: 'group_code', label: this.translateService.instant('Group') },
-			{ value: 'phone', label: this.translateService.instant('Phone') },
+			{ value: 'group_name', label: this.translateService.instant('Group') },
+			{ value: 'group_code', label: this.translateService.instant('Group code ') },
+			{ value: 'position', label: this.translateService.instant('Position') }
 			{ value: 'dob', label: this.translateService.instant('Date of birth') },
 			{ value: 'gender', label: this.translateService.instant('Gender') },
-			{ value: 'position', label: this.translateService.instant('Position') }
+			{ value: 'phone', label: this.translateService.instant('Phone') },
+			{ value: 'email', label: this.translateService.instant('Email') },
+
 		];
 		this.columnMappings = {};
 		for (var i = 0; i < this.fields.length; i++)

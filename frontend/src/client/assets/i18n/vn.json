@@ -528,7 +528,12 @@
 	"Class open": "Mở lớp học thành công",
 	"Operation failed": "Lỗi hệ thống",
 	"Email is invalid": "Email định dạng sai",
-	"Phone is invalid": "Số điện thoại sai định dạng"
+	"Phone is invalid": "Số điện thoại sai định dạng",
+	"Add exam successfully": "Thêm mới kỳ thi thành công",
+	"Delete exam successfully": "Xóa kỳ thi thành công",
+	"Answer submitted successfully": "Bài thi được nộp thành công",
+	"Add survey member successfully": "Ghi danh khảo sát thành công",
+	"Delete survey member successfully": "Xóa ghi danh khảo sát thành công"
 
 
 

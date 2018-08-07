@@ -12,7 +12,7 @@ import { SurveyEnrollDialog } from '../enrollment-dialog/enrollment-dialog.compo
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
-const SURVEY_FIELDS = ['status', 'name', 'summary', 'start', 'end', 'create_date', 'write_date', 'review_state', 'supervisor_id'];
+const SURVEY_FIELDS = ['status', 'name', 'summary', 'start', 'end', 'create_date', 'write_date', 'review_state', 'status', 'supervisor_id'];
 
 
 @Component({

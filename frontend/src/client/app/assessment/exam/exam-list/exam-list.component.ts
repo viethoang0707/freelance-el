@@ -12,7 +12,7 @@ import { ExamEnrollDialog } from '../enrollment-dialog/enrollment-dialog.compone
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
-const EXAM_FIELDS = ['is_public', 'name', 'supervisor_name', 'start', 'end', 'supervisor_id', 'create_date', 'write_date', 'review_state'];
+const EXAM_FIELDS = ['is_public', 'name', 'supervisor_name', 'start', 'end', 'supervisor_id', 'create_date', 'write_date', 'status', 'review_state'];
 
 
 @Component({
@@ -48,45 +48,45 @@ export class ExamListComponent extends BaseComponent {
         this.examDialog.show(exam);
         this.examDialog.onCreateComplete.subscribe(() => {
             this.exams = [exam, ...this.exams];
-            this.success('Add exam successfully');
+            this.success(this.translateService.instant('Add exam successfully'));
         });
     }
 
-    editExam(exam:Exam) {
+    editExam(exam: Exam) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
             this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
-        exam.populate(this).subscribe(()=> {
+        exam.populate(this).subscribe(() => {
             this.examDialog.show(exam);
         });
     }
 
-    deleteExam(exam:Exam) {
+    deleteExam(exam: Exam) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
             this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             exam.delete(this).subscribe(() => {
-                this.exams = _.reject(this.exams, (obj:Exam)=> {
+                this.exams = _.reject(this.exams, (obj: Exam) => {
                     return exam.id == obj.id;
                 });
                 this.selectedExam = null;
-                this.success('Delete exam successfully');
+                this.success(this.translateService.instant('Delete exam successfully'));
             })
         });
     }
 
     loadExams() {
         Exam.listPublicExam(this, EXAM_FIELDS).subscribe(exams => {
-            this.exams = _.sortBy(exams, (exam:Exam) => {
+            this.exams = _.sortBy(exams, (exam: Exam) => {
                 return exam.id
             });
         });
     }
 
-    requestReview(exam:Exam) {
+    requestReview(exam: Exam) {
         if (this.ContextUser.id != exam.supervisor_id) {
             this.error(this.translateService.instant('You do not have submit-review permission for this exam'));
             return;
