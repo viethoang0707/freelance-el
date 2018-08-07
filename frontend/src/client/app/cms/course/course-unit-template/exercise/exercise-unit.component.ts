@@ -52,7 +52,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		this.currentAnswer = new Answer();
 		this.currentQuestion = new ExerciseQuestion();
 		this.treeUtils = new TreeUtils();
-		this.viewCompleted =  false;
+		this.viewCompleted = false;
 	}
 
 	ngOnInit() {
@@ -60,15 +60,14 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		if (this.unit.id) {
-			this.unit.listExerciseQuestions(this).subscribe(exerciseQuestions => {
-				this.exerciseQuestions = exerciseQuestions;
-				ExerciseQuestion.populateQuestions(this, this.exerciseQuestions).subscribe(() => {
-					var questions = _.map(exerciseQuestions, (exerviseQuestion:ExerciseQuestion)=> {
-                    return exerviseQuestion.question;
-                });
-                Question.listOptionsForArray(this, questions).subscribe(()=> {
-                	if (this.mode == 'preview')
+		this.unit.listExerciseQuestions(this).subscribe(exerciseQuestions => {
+			this.exerciseQuestions = exerciseQuestions;
+			ExerciseQuestion.populateQuestions(this, this.exerciseQuestions).subscribe(() => {
+				var questions = _.map(exerciseQuestions, (exerviseQuestion: ExerciseQuestion) => {
+					return exerviseQuestion.question;
+				});
+				Question.listOptionsForArray(this, questions).subscribe(() => {
+					if (this.mode == 'preview')
 						setTimeout(() => {
 							var componentHostArr = this.questionsComponents.toArray();
 							for (var i = 0; i < exerciseQuestions.length; i++) {
@@ -82,12 +81,9 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 						this.qIndex = 0;
 						this.displayQuestion(this.qIndex);
 					}
-                });
-
-					
 				});
-			})
-		}
+			});
+		})
 	}
 
 	previewQuestion(exerciseQuestion: ExerciseQuestion, componentHost: any) {
@@ -108,7 +104,9 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				if (!exerciseQuestion.id)
 					createList.push(exerciseQuestion);
 			});
-			return ExerciseQuestion.createArray(this, createList);
+			return ExerciseQuestion.createArray(this, createList).do(() => {
+				this.unit.exercise_question_ids = _.pluck(this.exerciseQuestions, 'id');
+			});
 		});
 	}
 
@@ -122,7 +120,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				exerciseQuestion.title = question.title;
 				return exerciseQuestion;
 			});
-			ExerciseQuestion.populateQuestions(this, exerciseQuestions).subscribe(()=> {
+			ExerciseQuestion.populateQuestions(this, exerciseQuestions).subscribe(() => {
 				this.exerciseQuestions = this.exerciseQuestions.concat(exerciseQuestions);
 			})
 		});
@@ -140,15 +138,15 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		this.qIndex = index;
 		this.stage = 'question';
 		this.currentQuestion = this.exerciseQuestions[index];
-			var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
-			let viewContainerRef = this.studyQuestionComponent.viewContainerRef;
-			if (detailComponent) {
-				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-				viewContainerRef.clear();
-				this.componentRef = viewContainerRef.createComponent(componentFactory);
-				(<IQuestion>this.componentRef.instance).mode = 'study';
-				(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
-			}
+		var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
+		let viewContainerRef = this.studyQuestionComponent.viewContainerRef;
+		if (detailComponent) {
+			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+			viewContainerRef.clear();
+			this.componentRef = viewContainerRef.createComponent(componentFactory);
+			(<IQuestion>this.componentRef.instance).mode = 'study';
+			(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
+		}
 	}
 
 	next() {
@@ -158,7 +156,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			if (this.componentRef)
 				(<IQuestion>this.componentRef.instance).mode = 'study';
 		} else {
-			this.viewCompleted =  true;
+			this.viewCompleted = true;
 		}
 	}
 
@@ -174,9 +172,9 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	delete(exerciseQuestions) {
 		if (exerciseQuestions && exerciseQuestions.length)
 			this.confirm('Are you sure to delete ?', () => {
-				ExerciseQuestion.deleteArray(this, exerciseQuestions).subscribe(()=> {
+				ExerciseQuestion.deleteArray(this, exerciseQuestions).subscribe(() => {
 					var questionIds = _.pluck(exerciseQuestions, 'question_id');
-					this.exerciseQuestions = _.reject(this.exerciseQuestions, (exerciseQuestion:ExerciseQuestion)=> {
+					this.exerciseQuestions = _.reject(this.exerciseQuestions, (exerciseQuestion: ExerciseQuestion) => {
 						return _.contains(questionIds, exerciseQuestion.question_id);
 					});
 				});
