@@ -15,6 +15,7 @@ import { ExcelService } from '../../../shared/services/excel.service';
 	moduleId: module.id,
 	selector: 'user-import-dialog',
 	templateUrl: 'import-dialog.component.html',
+	styleUrls: ['import-dialog.component.css']
 })
 export class UserImportDialog extends BaseComponent {
 

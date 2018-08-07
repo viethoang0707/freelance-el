@@ -19,9 +19,9 @@ const SURVEY_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 's
 
 
 @Component({
-	moduleId: module.id,
-	selector: 'survey-enrollment-dialog',
-	templateUrl: 'enrollment-dialog.component.html',
+    moduleId: module.id,
+    selector: 'survey-enrollment-dialog',
+    templateUrl: 'enrollment-dialog.component.html',
 })
 export class SurveyEnrollDialog extends BaseComponent {
 
@@ -29,27 +29,27 @@ export class SurveyEnrollDialog extends BaseComponent {
     SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
 
     private display: boolean;
-	private survey: Survey;
+    private survey: Survey;
     private members: SurveyMember[];
     private selectedMembers: any;
 
 
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
-	constructor() {
-		super();
-	}
+    constructor() {
+        super();
+    }
 
-	enroll(survey: Survey) {
-		this.display = true;
-		this.survey = survey;
+    enroll(survey: Survey) {
+        this.display = true;
+        this.survey = survey;
         this.selectedMembers = [];
-		this.loadMembers();
-	}
+        this.loadMembers();
+    }
 
-	hide() {
-		this.display = false;
-	}
+    hide() {
+        this.display = false;
+    }
 
 
 
@@ -60,7 +60,7 @@ export class SurveyEnrollDialog extends BaseComponent {
             this.survey.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
             });
-            this.success('Add survey member successfully');
+            this.success(this.translateService.instant('Add survey member successfully'));
         });
     }
 
@@ -70,7 +70,7 @@ export class SurveyEnrollDialog extends BaseComponent {
                 SurveyMember.deleteArray(this, members).subscribe(() => {
                     this.selectedMembers = [];
                     this.loadMembers();
-                    this.success('Delete survey member successfully');
+                    this.success(this.translateService.instant('Delete survey member successfully'));
                 });
             });
     }

@@ -674,6 +674,11 @@ body .ui-dialog.course-unit-study .pdfViewer .textLayer {
   width: 100% !important;
 }
 
+.import-excel{
+  max-height: 590px;
+  overflow: auto; 
+}
+
 @media screen and (max-width: 500px) {
   .tree-unit-course-study{
     height: 150px;
