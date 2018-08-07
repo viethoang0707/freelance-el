@@ -14,7 +14,7 @@
       <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addOption()" pTooltip="{{'Add option'|translate}}"></button>
       <ul class="options-question">
         <li *ngFor="let option of options">
-          <p-checkbox  binary="true" name="option_is_correct" [(ngModel)]="option.is_correct"></p-checkbox>
+          <div class="ui-g-12 pt5 pb5"><p-checkbox  binary="true" name="option_is_correct" [(ngModel)]="option.is_correct"></p-checkbox></div>
           <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="option.content" name="option_content">
             <label>{{'Content'|translate}}</label>
@@ -37,8 +37,8 @@
       <ul class="options-question">
         <li *ngFor="let option of options">
           <div>
-          <p-checkbox  binary="true" name="option_answer" label="{{option.content}}" [(ngModel)]="option.is_selected"></p-checkbox>
-        </div>
+            <div class="ui-g-12 pt5 pb5"><p-checkbox  binary="true" name="option_answer" label="{{option.content}}" [(ngModel)]="option.is_selected"></p-checkbox></div>
+          </div>
         </li>
       </ul>
     </p-fieldset>
@@ -53,8 +53,7 @@
     <p-fieldset legend="{{'Options'|translate}}">
       <ul class="options-question">
         <li *ngFor="let option of options">
-          <p-checkbox  binary="true" name="option_answer" label="{{option.content}}" [(ngModel)]="option.is_selected"></p-checkbox>
-
+          <div class="ui-g-12 pt5 pb5"><p-checkbox  binary="true" name="option_answer" label="{{option.content}}" [(ngModel)]="option.is_selected"></p-checkbox></div>
         </li>
       </ul>
     </p-fieldset>
@@ -65,10 +64,10 @@
     <p class="question" [innerHTML]="question.content"></p>
   </div>
   <div class="ui-g-12">
-    <p-fieldset styleClass="f-print">
+    <p-fieldset styleClass="f-print" legend="{{'Options'|translate}}">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-checkbox  binary="true" [disabled]="true" label="{{option.content}}" name="option_answer" [(ngModel)]="option.is_selected"></p-checkbox>
+          <div class="ui-g-12 pt5 pb5"><p-checkbox  binary="true" [disabled]="true" label="{{option.content}}" name="option_answer" [(ngModel)]="option.is_selected"></p-checkbox></div>
         </li>
       </ul>
       <i class="material-icons" *ngIf="answer.is_correct">done</i>
@@ -80,10 +79,10 @@
     <p class="question" [innerHTML]="question.content"></p>
   </div>
   <div class="ui-g-12">
-    <p-fieldset styleClass="f-print">
+    <p-fieldset styleClass="f-print" legend="{{'Options'|translate}}">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-checkbox  binary="true" [disabled]="true" label="{{option.content}}" name="option_answer" [(ngModel)]="option.is_selected"></p-checkbox>
+          <div class="ui-g-12 pt5 pb5"><p-checkbox  binary="true" [disabled]="true" label="{{option.content}}" name="option_answer" [(ngModel)]="option.is_selected"></p-checkbox></div>
         </li>
       </ul>
     </p-fieldset>
