@@ -54,7 +54,10 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     selectIndividualCourses() {
 		this.courseDialog.show();
     	this.courseDialog.onSelectCourses.first().subscribe((courses:Course[]) => {
-			this.memberReport.render(courses);
+			var courseIds = _.pluck(courses,'id');
+            Course.array(this,courseIds).subscribe( courses => {
+                this.memberReport.render(courses);
+            });
 		});
     }
 }
