@@ -188,4 +188,12 @@ export class Survey extends BaseModel{
             this.sheet = sheet;
         });
     }
+
+    static __api__listCandidates(surveyId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model, fields,"[('survey_id','=',"+surveyId+"),('role','=','candidate')]");
+    }
+
+    listCandidates( context:APIContext,fields?:string[]): Observable<any[]> {
+        return SurveyMember.search(context,fields,"[('survey_id','=',"+this.id+"),('role','=','candidate')]");
+    }
 }

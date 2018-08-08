@@ -4,7 +4,7 @@
       <p-progressBar [value]="percentage" *ngIf="loading"></p-progressBar>
           <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFileEvent($event)" accept="*" maxFileSize="1024*8" showUploadButton="false">
           </p-fileUpload>
-          <a href="{{submit.file_url}}" target="_blank" *ngIf="submit.file_url">{{submit.filename}}</a>
+          <span class="file-upload"><a href="{{submit.file_url}}" target="_blank" *ngIf="submit.file_url">{{submit.filename}}</a></span>
         </div>
   <p-footer>
     <button type="button" pButton icon="ui-icon-check" (click)="confirm()" label="{{'Confirm'|translate}}"></button>

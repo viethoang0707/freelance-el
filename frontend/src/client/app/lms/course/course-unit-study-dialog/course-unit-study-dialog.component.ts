@@ -53,22 +53,22 @@ export class CourseUnitStudyDialog extends BaseComponent {
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,private winRef: WindowRef) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver, private winRef: WindowRef) {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
 		this.WINDOW_HEIGHT = $(window).height();
-		this.enableLogging =  true;
+		this.enableLogging = true;
 		this.faqs = [];
 		this.materials = [];
 	}
 
-	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[], faqs: CourseFaq[], materials:CourseMaterial[]) {
+	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[], faqs: CourseFaq[], materials: CourseMaterial[]) {
 		this.display = true;
 		this.enableLogging = member.enroll_status != 'completed';
 		this.member = member;
-		this.course =  course;
+		this.course = course;
 		this.syl = syl;
 		this.units = units;
 		this.faqs = faqs;
@@ -92,13 +92,15 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		});
 		this.tree = this.sylUtils.buildGroupTree(this.units);
 		this.treeList = this.sylUtils.flattenTree(this.tree);
-		var last_attempt = _.max(this.logs, (log: CourseLog) => {
-			return log.start.getTime();
-		});
-		if (last_attempt) {
-			this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
-			this.selectedUnit = this.selectedNode.data;
-			this.studyUnit();
+		if (this.logs.length) {
+			var last_attempt = _.max(this.logs, (log: CourseLog) => {
+				return log.start.getTime();
+			});
+			if (last_attempt)) {
+				this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
+				this.selectedUnit = this.selectedNode.data;
+				this.studyUnit();
+			}
 		}
 		if (this.syl.status != 'published')
 			this.warn('Cours syllabus is not published');
@@ -227,7 +229,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		this.display = false;
 	}
 
-	downloadMaterial(material:CourseMaterial) {
+	downloadMaterial(material: CourseMaterial) {
 		this.winRef.getNativeWindow().open(material.url, "_blank");
 	}
 

@@ -145,17 +145,12 @@ export class ExamStudyDialog extends BaseComponent {
 
 	updateStats() {
 		this.stats.total = this.examQuestions.length;
-		var validAnswers = _.filter(this.answers, (ans: any) => {
-			return ans["attempted"];
+		var attemptQuestions = _.filter(this.examQuestions, (q: any) => {
+			return q["attempted"];
 		});
-		if (validAnswers.length > 0) {
-			this.validAnswer = validAnswers.length;
-		} else {
-			this.validAnswer = 0;
-		}
-		this.stats.attempt = this.validAnswer;
+		this.stats.attempt = attemptQuestions.length;
 		this.stats.unattempt = this.stats.total - this.stats.attempt;
-		this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
+		this.progress = Math.floor(attemptQuestions.length / this.examQuestions.length * 100)
 	}
 
 	startExam() {
@@ -199,7 +194,6 @@ export class ExamStudyDialog extends BaseComponent {
 		this.qIndex = index;
 		this.currentQuestion = this.examQuestions[index];
 		this.currentAnswer = this.prepareAnswer(this.currentQuestion);
-		this.checkAnswer();
 		var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
 		let viewContainerRef = this.questionHost.viewContainerRef;
 		if (detailComponent) {
@@ -219,7 +213,7 @@ export class ExamStudyDialog extends BaseComponent {
 				this.currentAnswer.score = this.currentQuestion.score;
 			} else
 				this.currentAnswer.score = 0;
-			this.currentAnswer["attempted"] = true;
+			this.currentQuestion["attempted"] = true;
 		}
 		return this.currentAnswer.save(this);
 	}

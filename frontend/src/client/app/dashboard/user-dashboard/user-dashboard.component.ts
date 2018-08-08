@@ -152,6 +152,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             ConferenceMember.populateConferences(this, conferenceMembers).subscribe(() => {
                 this.displayConferences(conferenceMembers);
             });
+            this.ContextUser.lastCourseUnitAttempt(this).subscribe(log => {
+                console.log(log);
+            })
         });
     }
 

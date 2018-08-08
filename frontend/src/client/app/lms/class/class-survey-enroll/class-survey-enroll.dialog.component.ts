@@ -65,7 +65,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.survey.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
 			this.survey.populate(this).subscribe(() => {
-				this.survey.listMembers(this).subscribe(members => {
+				this.survey.listCandidates(this).subscribe(members => {
 					this.surveyMembers = members;
 				});
 			});

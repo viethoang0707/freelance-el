@@ -6,10 +6,10 @@ import { BaseModel } from '../../models/base.model';
 @Method('/api/search_read')
 export class SearchReadAPI extends BaseAPI{
 
-    constructor( model:string, fields:string[], domain:string){
+    constructor( model:string, fields:string[], domain:string,limit?:any, offset?:any, order?:any){
         super();
         this.is_restricted =  false;
-        this.params = { model: model,fields:fields, domain: domain};
+        this.params = { model: model,fields:fields, domain: domain, limit: limit, offset: offset, order: order};
 	}
 
 }

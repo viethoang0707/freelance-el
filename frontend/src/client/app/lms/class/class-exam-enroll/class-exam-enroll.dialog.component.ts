@@ -62,7 +62,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.exam.enroll(this, userIds).subscribe(() => {
 			this.exam.populate(this).subscribe(() => {
-				this.exam.listMembers(this).subscribe(members => {
+				this.exam.listCandidates(this).subscribe(members => {
 					this.examMembers = members;
 				});
 				this.success('Register all successfully');

@@ -752,3 +752,8 @@ body .ui-dialog.course-unit-study .side-bar .ui-accordion-header .fa{
  .ui-table-tbody> tr> td {
     word-wrap: break-word;
 ;}
+
+
+span.file-upload {
+  color: blue;
+}

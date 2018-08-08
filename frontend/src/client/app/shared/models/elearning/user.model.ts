@@ -20,6 +20,7 @@ import { Course } from './course.model';
 import { CourseClass } from './course-class.model';
 import { Exam } from './exam.model';
 import { Survey } from './survey.model';
+import { CourseLog } from './log.model';
 import { Ticket } from './ticket.model';
 import {SERVER_DATETIME_FORMAT} from '../constants';
 import * as moment from 'moment';
@@ -46,12 +47,13 @@ export class User extends BaseModel {
         this.phone = undefined;
         this.is_admin = undefined;
         this.banned = undefined;
+        this.ban_date =  undefined;
         this.social_id = undefined;
         this.company_id = undefined;
         this.permission_id = undefined;
-        this.permission_id__DESC__ = undefined;
+        this.permission_name = undefined;
         this.supervisor_id = undefined;
-        this.supervisor_id__DESC__ = undefined;
+        this.supervisor_name = undefined;
         this.achivement_ids = [];
         this.course_member_ids = [];
         this.exam_member_ids = [];
@@ -78,6 +80,8 @@ export class User extends BaseModel {
     gender: string;
     @FieldProperty<Date>()
     dob: Date;
+    @FieldProperty<Date>()
+    ban_date: Date;
     position: string;
     email: string;
     group_id: number;
@@ -89,9 +93,9 @@ export class User extends BaseModel {
     display_name: string;
     company_id: number;
     permission_id: number;
-    permission_id__DESC__: string;
+    permission_id__name: string;
     supervisor_id: number;
-    supervisor_id__DESC__: string;
+    supervisor_name: string;
     social_id: string;
     permission_name: string;
     @ReadOnlyProperty()
@@ -341,6 +345,10 @@ export class User extends BaseModel {
 
     searchPendingSubmitTickets( context:APIContext,fields?:string[]): Observable<any[]> {
         return Ticket.search(context,fields, "[('submit_user_id','=',"+this.id+"),('status','=','pending')]");
+    }
+
+    lastCourseUnitAttempt(context: APIContext):Observable<any> {
+        return CourseLog.search(context,[],"[('user_id','=',"+this.id+ ")]",1,null,'id desc');
     }
 
 }

@@ -40,7 +40,12 @@
                 <div class="ui-g-12 removePd">
                     <p-tabView>
                         <p-tabPanel header="{{'Syllabus'|translate}}" leftIcon="ui-icon-collections-bookmark">
-                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
+                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)">
+                                <ng-template let-node  pTemplate="default">
+                                    <span>{{node.label}}</span>
+                                    <span [hidden]="!node.data || !node.data.id || !completedUnitIds.includes(node.data.id)"><i class="material-icons" >check</i></span>
+                                </ng-template>
+                            </p-tree>
                         </p-tabPanel>
                         <p-tabPanel header="{{'Material'|translate}}" leftIcon="ui-icon-cloud-download">
                             <ul class="material-items">

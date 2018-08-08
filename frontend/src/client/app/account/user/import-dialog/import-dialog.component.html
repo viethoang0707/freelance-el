@@ -10,7 +10,7 @@
         <div class="ui-g-12">
             <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="selectFile($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false">
             </p-fileUpload>
-            <label [hidden]="!fileName">{{fileName}}</label>
+            <span class="file-upload"><label [hidden]="!fileName">{{fileName}}</label></span>
         </div>
         <div class="ui-g-12" [hidden]='step!=2'>
             <ul class="select-columns">

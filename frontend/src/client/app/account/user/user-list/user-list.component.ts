@@ -98,6 +98,7 @@ export class UserListComponent extends BaseComponent {
     deactivateMultipleUsers(users: User[]){
         _.each(users, (user:User)=> {
             user.banned =  true;
+            user.ban_date =  new Date();
         });
         User.updateArray(this,users).subscribe(()=> {
             this.success('User deactivated successfully');
