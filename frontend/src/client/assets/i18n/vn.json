@@ -538,7 +538,17 @@
 	"Prequisite": "Điều kiện học",
 	"Acquired competency": "Năng lực đạt được",
 	"Acquired competency level": "Mức năng lực thu được",
-	"Create date": "Ngày tạo"
+	"Create date": "Ngày tạo",
+	"Add candidate successfully": "Thêm mới thí sinh thành công",
+	"Add user successfully": "Thêm mới người dùng thành công",
+	"User activated successfully": "Kích hoạt người dùng thành công",
+	"User deactivated successfully": "Hủy kích hoạt người dùng thành công",
+	"Import question successfully": "Nhập câu hỏi thành công",
+	"Import error. Please check data format again!": "Nhập câu hỏi lỗi. Mời kiểm tra lại dữ liệu",
+	"Add teacher successfully": "Thêm mới giáo viên thành công",
+	"Delete member successfully": "Xóa thành viên thành công",
+	"Gender": "Giới tính",
+	"Date of birth": "Ngày sinh"
 
 
 

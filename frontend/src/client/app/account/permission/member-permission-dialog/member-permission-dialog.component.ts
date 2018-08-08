@@ -64,7 +64,7 @@ export class MemberPermissionDialog extends BaseComponent {
             });
             User.updateArray(this, users,USER_FIELDS).subscribe(() => {
                 this.loadMembers();
-                this.success('Delete member successfully');
+                this.success(this.translateService.instant('Delete member successfully'));
             });
         });
     }

@@ -74,7 +74,7 @@ export class UserListComponent extends BaseComponent {
             this.displayUsers = [...this.users];
             this.selectedUsers = [];
             this.selectedGroupNodes = [];
-            this.success('Add user successfully');
+            this.success(this.translateService.instant('Add user successfully'));
         });
     }
 
@@ -90,7 +90,7 @@ export class UserListComponent extends BaseComponent {
             user.banned =  false;
         });
         User.updateArray(this,users).subscribe(()=> {
-            this.success('User activated successfully');
+            this.success(this.translateService.instant('User activated successfully'));
         });
     }
 
@@ -101,7 +101,7 @@ export class UserListComponent extends BaseComponent {
             user.ban_date =  new Date();
         });
         User.updateArray(this,users).subscribe(()=> {
-            this.success('User deactivated successfully');
+            this.success(this.translateService.instant('User deactivated successfully'));
         });
     }
 
