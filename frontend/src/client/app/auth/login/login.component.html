@@ -13,18 +13,16 @@
       <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate autocomplete="off">
         <div class="ui-g">
           <div class=" ui-g-12 ">
-            <li #languages class="language pb16" (click)="eventManager.topbarRootItemClick( languages)">
+            <li #languages class="language pb14" (click)="eventManager.topbarRootItemClick( languages)">
               <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='gb'" (click)="setLang('vn')">
                 <i class="topbar-icon material-icons">language</i>
-                <span class="flag-icon" [ngClass]="'flag-icon-gb'">
-                  <p>{{'English' | translate}}</p>
-                </span>
+                <span class="flag-icon lh21" [ngClass]="'flag-icon-gb'"></span>
+                <span>{{'English' | translate}}</span>
               </a>
               <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='vn'" (click)="setLang('gb')">
                 <i class="topbar-icon material-icons">language</i>
-                <span class="flag-icon" [ngClass]="'flag-icon-vn'">
-                  <p>{{'Vietnamese' | translate}}</p>
-                </span>
+                <span class="flag-icon lh21" [ngClass]="'flag-icon-vn'"></span>
+                <span>{{'Vietnamese' | translate}}</span>
               </a>
             </li>
             <p class="title removeMB">{{'Please log in with your account and password.' | translate}}</p>
