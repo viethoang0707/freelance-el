@@ -13,7 +13,7 @@ import { ConferenceMember } from '../../shared/models/elearning/conference-membe
 import { Conference } from '../../shared/models/elearning/conference.model';
 import { MeetingService } from '../../shared/services/meeting.service';
 import { User } from '../../shared/models/elearning/user.model';
-import { GROUP_CATEGORY, CONFERENCE_STATUS, COURSE_MODE, EXAM_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants'
+import { GROUP_CATEGORY, CONFERENCE_STATUS, COURSE_MODE, COURSE_STATUS, EXAM_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants'
 import { CourseSyllabus } from '../../shared/models/elearning/course-syllabus.model';
 import { SelectItem } from 'primeng/api';
 import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-syllabus.dialog.component';
@@ -45,6 +45,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
 
     CONFERENCE_STATUS = CONFERENCE_STATUS;
     COURSE_MODE = COURSE_MODE;
+    COURSE_STATUS = COURSE_STATUS;
     EXAM_STATUS = EXAM_STATUS;
 
     private conferenceMembers: ConferenceMember[];
