@@ -638,28 +638,37 @@ body .ui-dialog.course-unit-study .btn-link-unit .fa{
   color: #fff !important;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview.ui-tabview-top > .ui-tabview-nav{
+body .ui-dialog.course-unit-study .side-bar .ui-tabview.ui-tabview-top > .ui-tabview-nav,
+body .dashboard .ui-tabview.ui-tabview-top > .ui-tabview-nav{
   padding-left: 10px;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview-nav li {
+body .ui-dialog.course-unit-study .side-bar .ui-tabview-nav li,
+body .dashboard .ui-tabview-nav li {
   border: none !important;
   margin: 10px 5px;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-default a{
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-default a,
+body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-default a{
   font-weight: 500;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active a {
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active a,
+body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
   color: #fff;
-  background-color: #ababab;
+  /*background-color: #ababab;*/
   border-radius: 25px;
   font-weight: 500;
   padding: 6px 15px;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-left-icon{
+body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
+  background-color: #7cb342;
+}
+
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-left-icon,
+body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-left-icon{
   color: #fff;
 }
 
@@ -690,6 +699,28 @@ body .question-sheet-template .ui-scrollpanel-content {
 
 body .ui-dialog.course-unit-study .side-bar .ui-accordion-header .fa{
   color: #fff;
+}
+
+body .user-dashboard .schedule-dashboard .fc-event{
+  border-radius: 25px;
+  background: -webkit-linear-gradient(left,#607d8b 0,#607d8ba1 100%);
+  color: #ffffff;
+  padding: 5px 15px;
+  margin: 5px;
+}
+
+body .user-dashboard .schedule-dashboard.fc-ltr .fc-h-event.fc-not-end, .fc-rtl .fc-h-event.fc-not-start {
+    margin-right: 0;
+    border-right-width: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+body .user-dashboard .schedule-dashboard.fc-ltr .fc-h-event.fc-not-start, .fc-rtl .fc-h-event.fc-not-end {
+    margin-left: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 @media screen and (max-width: 500px) {
