@@ -55,7 +55,7 @@ export class QuestionImportDialog extends BaseComponent {
 		});
 	}
 
-	parseData(groups: Group[]):Observable<any> {
+	parseData(groups: Group[]): Observable<any> {
 		this.questionList = [];
 		this.optionList = [];
 		this.statusMessages = [];
@@ -106,10 +106,10 @@ export class QuestionImportDialog extends BaseComponent {
 	uploadData() {
 		Question.importQuestion(this, this.questionList, this.optionList).subscribe(() => {
 			this.onImportCompleteReceiver.next();
-			this.success('Import question successfully');
+			this.success(this.translateService.instant('Import question successfully'));
 			this.hide();
 		}, () => {
-			this.error('Import error. Please check data format again!')
+			this.error(this.translateService.instant('Import error. Please check data format again!'))
 		})
 	}
 
