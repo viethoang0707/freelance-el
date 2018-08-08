@@ -71,6 +71,7 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 	}
 
 	concludeAnswer() {
+		this.answer.is_correct = true;
 		var selectedOptions = _.filter(this.options, option => {
 			return option["is_selected"];
 		});

@@ -68,8 +68,10 @@ export class User extends BaseModel {
         this.submit_ticket_ids = [];
         this.review_ticket_ids = [];
         this.permission_name = undefined;
+        this.permission_group_id = undefined;
     }
 
+    permission_group_id: number;
     image: string;
     name: string;
     group_code: string;

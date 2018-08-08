@@ -31,7 +31,7 @@ export class Survey extends BaseModel{
         this.supervisor_name = undefined;
         this.is_public =  undefined;
         this.review_state = undefined;
-        this.class_id = undefined;
+        this.course_class_id = undefined;
         this.sheet_id =  undefined;
         this.question_count = undefined;
         this.sheet_status = undefined;
@@ -49,7 +49,7 @@ export class Survey extends BaseModel{
     sheet_id: number;
     question_count: number;
     sheet_status: string;
-    class_id: number;
+    course_class_id: number;
     review_state:string;
     name:string;
     summary: string;
@@ -158,11 +158,11 @@ export class Survey extends BaseModel{
     }
 
     populateClass(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.class_id)
+        if (!this.course_class_id)
             return Observable.of(null);
         if (!this.clazz.IsNew)
             return Observable.of(this);
-        return CourseClass.get(context, this.class_id,fields).do(clazz => {
+        return CourseClass.get(context, this.course_class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
     }

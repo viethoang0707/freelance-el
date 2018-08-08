@@ -25,12 +25,12 @@ export class SelectUsersDialog extends BaseComponent {
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	private selectedUsers: User[];
-	private users:User[];
+	private users: User[];
 	private display: boolean;
 	private treeUtils: TreeUtils;
 
 	private onSelectUsersReceiver: Subject<any> = new Subject();
-    onSelectUsers:Observable<any> =  this.onSelectUsersReceiver.asObservable();
+	onSelectUsers: Observable<any> = this.onSelectUsersReceiver.asObservable();
 
 	constructor() {
 		super();
@@ -56,13 +56,21 @@ export class SelectUsersDialog extends BaseComponent {
 		this.selectedUsers = [];
 		// , GROUP_CATEGORY.USER
 		Group.listUserGroup(this).subscribe(groups => {
-			this.tree = this.treeUtils.buildGroupTree(groups);
+			var treeNodes = this.treeUtils.buildGroupTree(groups);
+			if (this.ContextUser.IsAdmin) {
+				this.tree = treeNodes
+			} else {
+				if (this.ContextUser.permission_group_id) {
+					this.tree = [this.treeUtils.findTreeNode(treeNodes, this.ContextUser.permission_group_id)];
+				} else
+					this.tree = [];
+			}
 		});
 	}
 
 	select() {
 		this.onSelectUsersReceiver.next(this.selectedUsers);
-		this.selectedUsers=[];
+		this.selectedUsers = [];
 		this.hide();
 	}
 

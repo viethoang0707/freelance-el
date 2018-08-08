@@ -132,7 +132,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 									this.projects = content["projects"];
 								});
 							})
-
+							ExamMember.populateExams(this, this.examMembers).subscribe();
 						}
 					});
 				});

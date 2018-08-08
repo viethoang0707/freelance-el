@@ -42,7 +42,7 @@ export class SelectAdminDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.selectedNode.data.listUsers(this,USER_FIELDS).subscribe(users => {
+			this.selectedNode.data.listUsers(this, USER_FIELDS).subscribe(users => {
 				this.users = _.filter(users, (user => {
 					return user.is_admin;
 				}));
@@ -56,7 +56,15 @@ export class SelectAdminDialog extends BaseComponent {
 		this.selectedAdmin = null;
 		//, GROUP_CATEGORY.USER
 		Group.listUserGroup(this).subscribe(groups => {
-			this.tree = this.treeUtils.buildGroupTree(groups);
+			var treeNodes = this.treeUtils.buildGroupTree(groups);
+			if (this.ContextUser.IsAdmin) {
+				this.tree = treeNodes
+			} else {
+				if (this.ContextUser.permission_group_id) {
+					this.tree = [this.treeUtils.findTreeNode(treeNodes, this.ContextUser.permission_group_id)];
+				} else
+					this.tree = [];
+			}
 		});
 	}
 
