@@ -141,7 +141,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	viewGradebook() {
-		this.gradebookDialog.show(this.member,this.member);
+		this.gradebookDialog.show(this.member, this.member);
 	}
 
 	study() {
@@ -163,6 +163,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	submitProject(project: Project) {
 		this.projectSubmitDialog.show(project, this.member);
+	}
+
+	startExam(exam: Exam, member: ExamMember) {
+		this.confirm('Are you sure to start ?', () => {
+			exam.populate(this).subscribe(() => {
+				this.examStudyDialog.show(exam, member);
+			});
+
+		});
 	}
 
 }

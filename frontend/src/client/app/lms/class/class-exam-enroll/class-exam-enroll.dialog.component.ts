@@ -61,16 +61,18 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	enrollAll() {
 		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.exam.enroll(this, userIds).subscribe(() => {
-			this.exam.listMembers(this).subscribe(members => {
-				this.examMembers = members;
-			})
-			this.success('Register all successfully');
+			this.exam.populate(this).subscribe(() => {
+				this.exam.listMembers(this).subscribe(members => {
+					this.examMembers = members;
+				});
+				this.success('Register all successfully');
+			});
 		});
 	}
 
 	activateMember(member: ExamMember) {
 		member.status = 'active';
-		member.save(this).subscribe(()=> {
+		member.save(this).subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 		});
 	}
@@ -78,7 +80,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 
 	suspendMember(member: ExamMember) {
 		member.status = 'suspend';
-		member.save(this).subscribe(()=> {
+		member.save(this).subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 		});
 	}

@@ -64,21 +64,19 @@ export class UserProfileDialog extends BaseDialog<User> {
 			this.courseMembers = [];
 			this.skills = [];
 			this.examMembers = [];
+			this.displayGroupTree();
 			BaseModel
 				.bulk_list(this,
-					Group.__api__listUserGroup(),
 					User.__api__listCourseMembers(object.course_member_ids, COURSE_MEMBER_FIELDS),
 					User.__api__listCertificates(object.certificate_ids),
 					User.__api__listAchivements(object.achivement_ids),
 					User.__api__listExamMembers(object.exam_member_ids, EXAM_MEMBER_FIELDS))
 				.subscribe((jsonArr) => {
-					this.groups = Group.toArray(jsonArr[0]);
-					this.courseMembers = CourseMember.toArray(jsonArr[1]);
-					this.certificates = Certificate.toArray(jsonArr[2]);
-					this.skills = Achivement.toArray(jsonArr[3]);
-					this.examMembers = ExamMember.toArray(jsonArr[4]);
+					this.courseMembers = CourseMember.toArray(jsonArr[0]);
+					this.certificates = Certificate.toArray(jsonArr[1]);
+					this.skills = Achivement.toArray(jsonArr[2]);
+					this.examMembers = ExamMember.toArray(jsonArr[3]);
 					this.displayExams();
-					this.displayGroupTree();
 					this.displayCourseHistory();
 					this.displaySkills();
 				});
@@ -86,10 +84,14 @@ export class UserProfileDialog extends BaseDialog<User> {
 	}
 
 	displayGroupTree() {
-		this.tree = this.treeUtils.buildGroupTree(this.groups);
-		if (this.object.group_id) {
-			this.selectedNode = this.treeUtils.findTreeNode(this.tree, this.object.group_id);
-		}
+		Group.listUserGroup(this).subscribe(groups => {
+			this.groups =  groups;
+			this.tree = this.treeUtils.buildGroupTree(this.groups);
+			if (this.object.group_id) {
+				this.selectedNode = this.treeUtils.findTreeNode(this.tree, this.object.group_id);
+			}
+		})
+
 	}
 
 	displayCourseHistory() {

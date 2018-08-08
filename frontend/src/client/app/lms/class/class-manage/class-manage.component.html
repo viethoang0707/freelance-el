@@ -127,10 +127,6 @@
                         <th>
                             {{'End'|translate}}
                         </th>
-                        <th [pSortableColumn]="'status'">
-                            {{'Status'|translate}}
-                            <p-sortIcon [field]="'status'"></p-sortIcon>
-                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-project>
@@ -138,7 +134,6 @@
                         <td>{{project.name}}</td>
                         <td>{{project.start | date : "dd/MM/yyyy"}}</td>
                         <td>{{project.end | date : "dd/MM/yyyy"}}</td>
-                        <td>{{PROJECT_STATUS[project.status] | translate}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

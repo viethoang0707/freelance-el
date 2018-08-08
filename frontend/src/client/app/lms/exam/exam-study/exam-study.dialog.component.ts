@@ -146,7 +146,7 @@ export class ExamStudyDialog extends BaseComponent {
 	updateStats() {
 		this.stats.total = this.examQuestions.length;
 		var validAnswers = _.filter(this.answers, (ans: any) => {
-			return ans.option_id != "" && ans.option_id != "0";
+			return ans["attempted"];
 		});
 		if (validAnswers.length > 0) {
 			this.validAnswer = validAnswers.length;
@@ -219,6 +219,7 @@ export class ExamStudyDialog extends BaseComponent {
 				this.currentAnswer.score = this.currentQuestion.score;
 			} else
 				this.currentAnswer.score = 0;
+			this.currentAnswer["attempted"] = true;
 		}
 		return this.currentAnswer.save(this);
 	}
