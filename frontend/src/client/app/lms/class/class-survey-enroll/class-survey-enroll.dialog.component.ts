@@ -34,7 +34,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.surveyMembers = [];
 		this.courseMembers = [];
 		this.survey = new Survey();
-		this.courseClass =  new CourseClass();
+		this.courseClass = new CourseClass();
 	}
 
 	show(survey: Survey, courseClass: CourseClass) {
@@ -44,16 +44,16 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.survey = survey;
 		this.courseClass = courseClass;
 
-		this.survey.listMembers(this).subscribe((members)=> {
+		this.survey.listMembers(this).subscribe((members) => {
 			this.surveyMembers = _.filter(members, (member: SurveyMember) => {
-					return member.role == 'candidate';
-				});
-		})
-			this.courseClass.listMembers(this).subscribe(members=> {
-				this.courseMembers = _.filter(members, (member:CourseMember)=> {
-					return member.role =='student';
-				});
+				return member.role == 'candidate';
 			});
+		})
+		this.courseClass.listMembers(this).subscribe(members => {
+			this.courseMembers = _.filter(members, (member: CourseMember) => {
+				return member.role == 'student';
+			});
+		});
 	}
 
 	hide() {
@@ -64,9 +64,12 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.survey.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
-			this.survey.listMembers(this).subscribe(members=> {
-				this.surveyMembers = members;
+			this.survey.populate(this).subscribe(() => {
+				this.survey.listMembers(this).subscribe(members => {
+					this.surveyMembers = members;
+				});
 			});
+
 		});
 	}
 
