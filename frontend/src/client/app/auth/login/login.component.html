@@ -1,4 +1,4 @@
-<p-growl [sticky]="true" ></p-growl>
+<p-growl [sticky]="true"></p-growl>
 <div class="login-body">
   <div class="login-panel ui-fluid ui-g">
     <div class="ui-g-6 login-panel-header">
@@ -13,33 +13,44 @@
       <form class="form-horizontal form-simple" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate autocomplete="off">
         <div class="ui-g">
           <div class=" ui-g-12 ">
+            <li #languages class="language pb16" (click)="eventManager.topbarRootItemClick( languages)">
+              <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='gb'" (click)="setLang('vn')">
+                <i class="topbar-icon material-icons">language</i>
+                <span class="flag-icon" [ngClass]="'flag-icon-gb'">
+                  <p>{{'English' | translate}}</p>
+                </span>
+              </a>
+              <a pTooltip="{{'Language'|translate}}" *ngIf="lang=='vn'" (click)="setLang('gb')">
+                <i class="topbar-icon material-icons">language</i>
+                <span class="flag-icon" [ngClass]="'flag-icon-vn'">
+                  <p>{{'Vietnamese' | translate}}</p>
+                </span>
+              </a>
+            </li>
             <p class="title removeMB">{{'Please log in with your account and password.' | translate}}</p>
           </div>
           <div class=" ui-g-12 pb8">
             <div class="ui-inputgroup">
               <i class="material-icons">account_circle</i>
-              <input type="text" pInputText name="username"
-                [(ngModel)]="credential.username" [(lowercase)]="credential.username" #username="ngModel" placeholder="Username" required>
+              <input type="text" pInputText name="username" [(ngModel)]="credential.username" [(lowercase)]="credential.username" #username="ngModel"
+                placeholder="Username" required>
             </div>
-            <div *ngIf="username.invalid && (username.dirty || username.touched)"
-                class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="username.errors.required">
-                    {{'Username is required' | translate}}
-                </div>
+            <div *ngIf="username.invalid && (username.dirty || username.touched)" class="ui-message ui-messages-error ui-corner-all">
+              <div *ngIf="username.errors.required">
+                {{'Username is required' | translate}}
+              </div>
             </div>
           </div>
           <div class=" ui-g-12 pt8 pb8">
             <div class="ui-inputgroup">
               <i class="material-icons">lock</i>
-              <input type="password" pInputText autocomplete="off" name="password"
-                [(ngModel)]="credential.password" #password="ngModel"
+              <input type="password" pInputText autocomplete="off" name="password" [(ngModel)]="credential.password" #password="ngModel"
                 required placeholder="Password" icon="ui-icon-lock">
             </div>
-            <div *ngIf="password.invalid && (password.dirty || password.touched)"
-                class="ui-message ui-messages-error ui-corner-all">
-                <div *ngIf="password.errors.required">
-                    {{'Password is required' | translate}}
-                </div>
+            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="ui-message ui-messages-error ui-corner-all">
+              <div *ngIf="password.errors.required">
+                {{'Password is required' | translate}}
+              </div>
             </div>
           </div>
           <div class="ui-g-12 pl20">

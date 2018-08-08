@@ -58,3 +58,7 @@
 .scroll-y {
     overflow-y: auto;
 }
+
+.language {
+    list-style-type: none;
+}
