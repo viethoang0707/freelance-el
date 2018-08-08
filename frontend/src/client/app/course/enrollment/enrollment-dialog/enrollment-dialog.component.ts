@@ -110,7 +110,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			var userIds = _.pluck(users, 'id');
 			if (this.course.mode == 'group')
 				this.courseClass.enrollStaff(this, userIds).subscribe((result) => {
-					this.success('Add teacher successfully');
+					this.success(this.translateService.instant('Add teacher successfully'));
 					this.loadMembers();
 					var failList = result['failList'];
 					_.each(failList, userId => {
@@ -138,7 +138,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 		if (members && members.length)
 			this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 				CourseMember.deleteArray(this, members).subscribe(() => {
-					this.success('Delete member successfully');
+					this.success(this.translateService.instant('Delete member successfully'));
 					this.selectedStudents = [];
 					this.selectedTeachers = [];
 					this.loadMembers();

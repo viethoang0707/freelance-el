@@ -83,7 +83,7 @@ export class ExamEnrollDialog extends BaseComponent {
                 this.selectedCandidates = [];
                 this.selectedSupervisors = [];
                 this.loadMembers();
-                this.success('Delete member successfully');
+                this.success(this.translateService.instant('Delete member successfully'));
             });
         });
     }
