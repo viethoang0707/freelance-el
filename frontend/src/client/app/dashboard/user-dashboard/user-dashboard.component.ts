@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { CourseMember } from '../../shared/models/elearning/course-member.model';
 import { Course } from '../../shared/models/elearning/course.model';
+import { CourseLog } from '../../shared/models/elearning/log.model';
 import { ExamMember } from '../../shared/models/elearning/exam-member.model';
 import { Exam } from '../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../shared/models/elearning/exam-question.model';
@@ -30,8 +31,8 @@ import { SurveyMember } from '../../shared/models/elearning/survey-member.model'
 import { CoursePublishDialog } from '../../cms/course/course-publish/course-publish.dialog.component';
 import * as _ from 'underscore';
 
-const COURSE_FIELDS = ['status','review_state','name','write_date','create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name'];
-const EXAM_FIELDS = ['status','review_state', 'name', 'write_date','create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count','sheet_status'];
+const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name'];
+const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status'];
 const CLASS_FIELDS = ['start', 'end', 'name'];
 
 @Component({
@@ -73,6 +74,19 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayCourses(courses: Course[]) {
+        this.ContextUser.lastCourseUnitAttempt(this).subscribe(logs => {
+            if (logs && logs.length) {
+                let log: CourseLog = logs[0];
+                if (log.code == 'START_COURSE_UNIT')
+                    this.confirm('Do you want to continue last course', () => {
+                        var member = this.lmsProfileService.courseMemberById(log.member_id);
+                        var course = _.find(courses, (obj:Course)=> {
+                            return obj.id == log.course_id;
+                        });
+                        this.studyCourse(course, member);
+                    });
+            }
+        });
         _.each(courses, (course: Course) => {
             course['student'] = this.lmsProfileService.getCourseMemberByRole('student', course.id);
             course['teacher'] = this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
@@ -83,13 +97,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             return -this.lmsProfileService.getLastCourseTimestamp(course);
         });
         var classIds = _.pluck(this.courseMembers, 'class_id');
-        classIds = _.filter(classIds, id=> {
-                return id;
+        classIds = _.filter(classIds, id => {
+            return id;
         });
-        classIds = _.uniq(classIds, id=> {
-                return id;
+        classIds = _.uniq(classIds, id => {
+            return id;
         });
-        CourseClass.array(this, classIds, CLASS_FIELDS).subscribe(classList=> {
+        CourseClass.array(this, classIds, CLASS_FIELDS).subscribe(classList => {
             _.each(classList, (clazz: CourseClass) => {
                 if (clazz.IsAvailable)
                     this.events.push({
@@ -135,27 +149,24 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.lmsProfileService.init(this).subscribe(() => {
             this.courseMembers = this.lmsProfileService.MyCourseMembers;
             var courseIds = _.pluck(this.courseMembers, 'course_id');
-            courseIds = _.uniq(courseIds, id=> {
-                    return id;
+            courseIds = _.uniq(courseIds, id => {
+                return id;
             });
-            Course.array(this, courseIds, COURSE_FIELDS).subscribe(courses=> {
+            Course.array(this, courseIds, COURSE_FIELDS).subscribe(courses => {
                 this.displayCourses(courses);
             });
             this.examMembers = this.lmsProfileService.MyExamMembers;
             var examIds = _.pluck(this.examMembers, 'exam_id');
-            examIds = _.uniq(examIds, id=> {
-                    return id;
+            examIds = _.uniq(examIds, id => {
+                return id;
             });
-            Exam.array(this, examIds, EXAM_FIELDS).subscribe(exams=> {
+            Exam.array(this, examIds, EXAM_FIELDS).subscribe(exams => {
                 this.displayExams(exams);
             });
             var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
             ConferenceMember.populateConferences(this, conferenceMembers).subscribe(() => {
                 this.displayConferences(conferenceMembers);
             });
-            this.ContextUser.lastCourseUnitAttempt(this).subscribe(log => {
-                console.log(log);
-            })
         });
     }
 
@@ -179,10 +190,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     publishCourse(course: Course) {
-        course.populate(this).subscribe(()=> {
+        course.populate(this).subscribe(() => {
             this.publisiDialog.show(course);
         });
-        
+
     }
 
     manageCourse(course: Course, member: CourseMember) {
@@ -194,18 +205,18 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editExamContent(exam: Exam) {
-        exam.populate(this).subscribe(()=> {
+        exam.populate(this).subscribe(() => {
             this.examContentDialog.show(exam);
         });
-        
+
     }
 
     startExam(exam: Exam, member: ExamMember) {
         this.confirm('Are you sure to start ?', () => {
-            exam.populate(this).subscribe(()=> {
+            exam.populate(this).subscribe(() => {
                 this.examStudyDialog.show(exam, member);
             });
-            
+
         });
     }
 
@@ -220,8 +231,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     viewAnswer(exam: Exam, member: ExamMember) {
-        exam.populate(this).subscribe(()=> {
-            member.populate(this).subscribe(()=> {
+        exam.populate(this).subscribe(() => {
+            member.populate(this).subscribe(() => {
                 this.answerSheetDialog.show(exam, member);
             });
         });

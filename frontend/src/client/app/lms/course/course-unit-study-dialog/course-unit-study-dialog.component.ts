@@ -50,6 +50,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	private display: boolean;
 	private faqs: CourseFaq[];
 	private materials: CourseMaterial[];
+	private autoNext: boolean;
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
@@ -60,6 +61,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		this.course = new Course();
 		this.WINDOW_HEIGHT = $(window).height();
 		this.enableLogging = true;
+		this.autoNext =  false;
 		this.faqs = [];
 		this.materials = [];
 	}
@@ -216,8 +218,13 @@ export class CourseUnitStudyDialog extends BaseComponent {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			(<ICourseUnit>this.componentRef.instance).mode = 'study';
-			(<ICourseUnit>this.componentRef.instance).render(unit);
+			let courseUnitPlayer:ICourseUnit = (<ICourseUnit>this.componentRef.instance);
+			courseUnitPlayer.mode = 'study';
+			courseUnitPlayer.render(unit);
+			if (unit.type == 'video' && this.autoNext)
+				courseUnitPlayer.onViewCompleted.first().subscribe(()=> {
+					this.nextUnit();
+				});
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;

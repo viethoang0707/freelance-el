@@ -26,6 +26,8 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 
 	private unit: CourseUnit;
 	private lecture: SCORMLecture;
+	protected onViewCompletedReceiver: Subject<any> = new Subject();
+  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	viewCompleted: boolean;
 	private percentage: number;
 
@@ -34,7 +36,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new SCORMLecture();
-		this.viewCompleted = true;
+
 	}
 
 
@@ -42,6 +44,8 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 		this.unit = unit;
 		this.unit.populateScormLecture(this).subscribe(() => {
 			this.lecture = this.unit.scormLecture;
+			this.onViewCompletedReceiver.next();
+		this.viewCompleted = true;
 		});
 	}
 

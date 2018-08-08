@@ -24,6 +24,8 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 
 	private unit: CourseUnit;
 	private lecture: HtmlLecture;
+	protected onViewCompletedReceiver: Subject<any> = new Subject();
+  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	viewCompleted: boolean;
 
 	@Input() mode;
@@ -46,8 +48,10 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 	}
 
 	updateScrollPos(e) {
-		if (e.endReached)
+		if (e.endReached) {
 			this.viewCompleted = true;
+			this.onViewCompletedReceiver.next();
+		}
 	}
 
 }

@@ -30,6 +30,8 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	private stream: any;
 	private recordRTC: any;
 	private showToolbar: boolean;
+	protected onViewCompletedReceiver: Subject<any> = new Subject();
+  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	viewCompleted: boolean;
 	@ViewChild('camera') video: any;
 	@Input() mode;
@@ -144,6 +146,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	videoEnded() {
 		this.viewCompleted =  true;
+		this.onViewCompletedReceiver.next();
 	}
 
 }

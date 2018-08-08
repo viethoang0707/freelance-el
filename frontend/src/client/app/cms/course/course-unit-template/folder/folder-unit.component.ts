@@ -23,11 +23,14 @@ export class FolderCourseUnitComponent extends BaseComponent implements ICourseU
 
 	viewCompleted: boolean;
 	private unit: CourseUnit;
+	protected onViewCompletedReceiver: Subject<any> = new Subject();
+  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	@Input() mode;
 
 	constructor() {
 		super();
 		this.viewCompleted =  true;
+		this.onViewCompletedReceiver.next();
 	}
 
 	render(unit:CourseUnit) {

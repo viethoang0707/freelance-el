@@ -6,4 +6,5 @@ export interface ICourseUnit {
 	render(unit:CourseUnit);
 	saveEditor():Observable<any>;
 	viewCompleted: boolean;
+	onViewCompleted: Observable<any>;
 }

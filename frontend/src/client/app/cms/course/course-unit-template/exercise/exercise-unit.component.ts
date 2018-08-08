@@ -39,6 +39,8 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 	private treeUtils: TreeUtils;
 	private currentAnswer: Answer;
 	private componentRef: any;
+	protected onViewCompletedReceiver: Subject<any> = new Subject();
+  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	viewCompleted: boolean;
 
 	@Input() mode;
@@ -157,6 +159,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 				(<IQuestion>this.componentRef.instance).mode = 'study';
 		} else {
 			this.viewCompleted = true;
+			this.onViewCompletedReceiver.next();
 		}
 	}
 

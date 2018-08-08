@@ -27,6 +27,8 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	private unit: CourseUnit;
 	private lecture: SlideLecture;
 	private percentage: number;
+	protected onViewCompletedReceiver: Subject<any> = new Subject();
+  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	viewCompleted: boolean;
 	@Input() mode;
 
@@ -41,6 +43,8 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 		this.unit = unit;
 		this.unit.populateSlideLecture(this).subscribe(()=> {
 			this.lecture = this.unit.slideLecture;
+			this.onViewCompletedReceiver.next();
+		this.viewCompleted = true;
 		});
 	}
 
