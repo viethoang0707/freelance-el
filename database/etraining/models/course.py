@@ -208,7 +208,7 @@ class VideoLecture(models.Model):
 	video_url = fields.Char(string='Video URL')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 
-class Self-assessment(models.Model):
+class SelfAssessment(models.Model):
 	_name = 'etraining.self_assessment'
 
 	exam_id = fields.Many2one('etraining.exam', string='Self-assessment')
