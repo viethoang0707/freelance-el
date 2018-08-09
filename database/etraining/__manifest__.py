@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-	'name': "e-Training",
+	'name': "e-Training module for Nissan",
 
 	'summary': """
         Corporate Learning System""",
