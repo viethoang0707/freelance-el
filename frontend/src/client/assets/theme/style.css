@@ -654,10 +654,9 @@ body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-default a{
   font-weight: 500;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active a,
-body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active a{
   color: #fff;
-  /*background-color: #ababab;*/
+  background-color: #ababab;
   border-radius: 25px;
   font-weight: 500;
   padding: 6px 15px;
@@ -665,6 +664,10 @@ body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
 
 body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
   background-color: #7cb342;
+   color: #fff;
+  border-radius: 25px;
+  font-weight: 500;
+  padding: 6px 15px;
 }
 
 body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-left-icon,
