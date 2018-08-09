@@ -68,12 +68,13 @@ export class ProjectSubmissionDialog extends BaseComponent {
 
     uploadFile(file) {
         this.percentage = 0;
-        this.apiService.upload(file, this.authService.LoginToken).subscribe(
+        this.apiService.upload_S3(file, this.authService.LoginToken).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {
                         this.submit.file_url = data["url"];
                         this.submit.filename = file.name;
+                        this.submit.submission_file_id = data["attachment_id"];
                     });
                 } else {
                     this.ngZone.run(() => {

@@ -166,6 +166,7 @@ class ExamMember(models.Model):
 			submit.unlink()
 		return super(ExamMember, self).unlink()
 
+
 	@api.model
 	def create(self, vals):
 		members = []
@@ -177,6 +178,7 @@ class ExamMember(models.Model):
 			m = super(ExamMember, self).create(vals)
 			submission = self.env['etraining.submission'].create({'member_id':m.id})
 			m.write({'submission_id':submission.id})
+
 		return m
 
 	@api.multi
@@ -334,3 +336,4 @@ class Submission(models.Model):
 				submit.study_time =  elaspe.total_seconds()
 			else:
 				submit.study_time = 0
+
