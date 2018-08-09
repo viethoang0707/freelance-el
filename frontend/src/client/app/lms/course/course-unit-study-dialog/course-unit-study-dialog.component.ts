@@ -98,7 +98,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 			var last_attempt = _.max(this.logs, (log: CourseLog) => {
 				return log.start.getTime();
 			});
-			if (last_attempt)) {
+			if (last_attempt) {
 				this.selectedNode = this.sylUtils.findTreeNode(this.tree, last_attempt.res_id);
 				this.selectedUnit = this.selectedNode.data;
 				this.studyUnit();
