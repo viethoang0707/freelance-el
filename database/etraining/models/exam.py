@@ -131,7 +131,7 @@ class ExamMember(models.Model):
 	score = fields.Float(string="Score",related="exam_record_id.score")
 	grade = fields.Char(string="Grade",related="exam_record_id.grade")
 	class_id = fields.Many2one('etraining.course_class', related="course_member_id.class_id", readonly=True,string='Exam')
-	
+	submission_ids = fields.One2many('etraining.submission','member_id', string='Submission history')
 
 	@api.model
 	def create(self, vals):

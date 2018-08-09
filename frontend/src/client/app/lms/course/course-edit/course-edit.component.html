@@ -1,5 +1,6 @@
 <div class="card card-w-title course-edit">
-    <h1>{{'Course'|translate}}: {{course.name}} </h1>
+    <h1><a [routerLink]="['/dashboard/courses/']">{{'My courses' |translate}}</a><span class="fa fa-fw ui-icon-arrow-forward
+"></span><span>{{'Course'|translate}}: {{course.name}} </span></h1>
     <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
             <div class="ui-g-12">

@@ -96,7 +96,7 @@ export class CourseDialog extends BaseDialog<Course> {
 			}
 			this.buildCourseTree(object);
 		});
-		this.onCreateComplete.subscribe(object => {
+		this.onCreateComplete.first().subscribe(object => {
 			this.editor.role = 'editor';
 			this.editor.course_id = object.id;
 			this.editor.save(this).subscribe();

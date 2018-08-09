@@ -35,7 +35,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     private selectedExam: any;
     private reportUtils: ReportUtils;
 
-    constructor(private excelService: ExcelService, private datePipe: DatePipe) {
+    constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.reportUtils = new ReportUtils();
     }
@@ -52,7 +52,15 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
     export() {
         var output = _.map(this.records, record => {
-            return { 'Name': record['user_name'], 'Login': record['user_login'], 'User group': record['user_group'], 'Attempt date': record['date_attempt'], 'Score': record['score'], 'Result': record['result'] };
+            return {
+                'Name': record['user_name'],
+                'Login': record['user_login'],
+                'User group': record['user_group'],
+                'Attempt date': record['date_attempt'],
+                'Study time': record['study_time'],
+                'Score': record['score'],
+                'Result': record['result']
+            };
         });
         this.excelService.exportAsExcelFile(output, 'course_by_member_report');
     }
@@ -89,8 +97,8 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
             var result = this.reportUtils.analyzeExamMemberActivity(logs);
             if (result[0])
                 record["date_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
+            record["study_time"] = this.timePipe.transform(+(result[2]), 'min');
         }
-
         return record;
     }
 

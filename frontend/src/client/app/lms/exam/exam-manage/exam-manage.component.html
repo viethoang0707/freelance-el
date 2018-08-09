@@ -1,5 +1,6 @@
 <div class="card card-w-title exam-manage">
-    <h1>{{'Exam'|translate}}: {{exam.name}} </h1>
+    <h1><a [routerLink]="['/dashboard/exams/']">{{'My exams' |translate}}</a><span class="fa fa-fw ui-icon-arrow-forward
+"></span><span>{{'Exam'|translate}}: {{exam.name}} </span></h1>
     <div class="ui-g-12 ">
         <p-toolbar>
             <div class="ui-toolbar-group-left ">

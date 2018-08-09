@@ -13,6 +13,7 @@ import { HtmlLecture } from './lecture-html.model';
 import { SCORMLecture } from './lecture-scorm.model';
 import { SlideLecture } from './lecture-slide.model';
 import { VideoLecture } from './lecture-video.model';
+import { SelfAssessment } from './self_assessment.model';
 
 @Model('etraining.course_unit')
 export class CourseUnit extends BaseModel{
@@ -39,6 +40,7 @@ export class CourseUnit extends BaseModel{
         this.videoLecture =  new VideoLecture();
         this.scormLecture =  new SCORMLecture();
         this.slideLecture =  new SlideLecture();
+        this.selfAssessment =  new SelfAssessment();
 	}
 
     name:string;
@@ -56,6 +58,7 @@ export class CourseUnit extends BaseModel{
     video_lecture_id: number;
     scorm_lecture_id: number;
     slide_lecture_id: number;
+    self_assessment_id: number;
     @UnserializeProperty()
     htmlLecture: HtmlLecture;
     @UnserializeProperty()
@@ -64,6 +67,8 @@ export class CourseUnit extends BaseModel{
     scormLecture: SCORMLecture;
     @UnserializeProperty()
     slideLecture: SlideLecture;
+    @UnserializeProperty()
+    selfAssessment: SelfAssessment;
 
     static __api__listExerciseQuestions(exercise_question_ids: number[],fields?:string[]): SearchReadAPI {
         return new ListAPI(ExerciseQuestion.Model, exercise_question_ids,fields);
@@ -112,6 +117,20 @@ export class CourseUnit extends BaseModel{
             return Observable.of(this);
         return VideoLecture.get(context, this.video_lecture_id,fields).do(lecture => {
             this.videoLecture = lecture;
+        });
+    }
+
+    static __api__populateSelfAssessment(self_assessment_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(SelfAssessment.Model, [self_assessment_id],fields);
+    }
+
+    populateSelfAssessment(context: APIContext,fields?:string[]): Observable<any> {
+        if (!this.video_lecture_id)
+            return Observable.of(null);
+        if (!this.videoLecture.IsNew)
+            return Observable.of(this);
+        return SelfAssessment.get(context, this.self_assessment_id,fields).do(assess => {
+            this.selfAssessment = assess;
         });
     }
 

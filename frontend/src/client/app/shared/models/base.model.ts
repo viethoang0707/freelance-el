@@ -275,7 +275,7 @@ export abstract class BaseModel {
         });
     }
 
-    static single(context: APIContext, fields: string[], domain: string): Observable<any[]> {
+    static single(context: APIContext, fields: string[], domain: string): Observable<any> {
         var model = this.Model;
         return this.search(context, fields, domain).map(objects => {
             var records = this.toArray(objects);

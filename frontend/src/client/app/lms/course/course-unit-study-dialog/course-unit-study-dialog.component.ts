@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -20,7 +20,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
-
+import * as screenfull from 'screenfull';
 declare var $: any;
 
 @Component({
@@ -53,6 +53,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	private autoNext: boolean;
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
+	@ViewChild('unitPlayer') unitPlayer: ElementRef;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private winRef: WindowRef) {
 		super();
@@ -61,7 +62,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		this.course = new Course();
 		this.WINDOW_HEIGHT = $(window).height();
 		this.enableLogging = true;
-		this.autoNext =  false;
+		this.autoNext = false;
 		this.faqs = [];
 		this.materials = [];
 	}
@@ -218,11 +219,11 @@ export class CourseUnitStudyDialog extends BaseComponent {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			let courseUnitPlayer:ICourseUnit = (<ICourseUnit>this.componentRef.instance);
+			let courseUnitPlayer: ICourseUnit = (<ICourseUnit>this.componentRef.instance);
 			courseUnitPlayer.mode = 'study';
 			courseUnitPlayer.render(unit);
 			if (unit.type == 'video' && this.autoNext)
-				courseUnitPlayer.onViewCompleted.first().subscribe(()=> {
+				courseUnitPlayer.onViewCompleted.first().subscribe(() => {
 					this.nextUnit();
 				});
 		} else {
@@ -238,6 +239,13 @@ export class CourseUnitStudyDialog extends BaseComponent {
 
 	downloadMaterial(material: CourseMaterial) {
 		this.winRef.getNativeWindow().open(material.url, "_blank");
+	}
+
+	requestFullScreen() {
+		if (screenfull.enabled) {
+			screenfull.request(this.unitPlayer.nativeElement);
+		}
+
 	}
 
 }

@@ -158,12 +158,13 @@ class CourseUnit(models.Model):
 	status = fields.Selection(
 		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="draft")
 	type = fields.Selection(
-		[('folder', 'Folder'), ('html', 'HTML'), ('slide', 'Slide'), ('scorm', 'SCORM'),('exercise', 'Exercise'), ('video', 'Video')])
+		[('folder', 'Folder'), ('html', 'HTML'),('self-assess', 'Self-assessment'), ('slide', 'Slide'), ('scorm', 'SCORM'),('exercise', 'Exercise'), ('video', 'Video')])
 	exercise_question_ids = fields.One2many('etraining.exercise_question','unit_id', string="Exercise questions", readonly=True)
 	slide_lecture_id = fields.Many2one('etraining.slide_lecture', string='Slide lecture')
 	html_lecture_id = fields.Many2one('etraining.html_lecture', string='HTML lecture')
 	video_lecture_id = fields.Many2one('etraining.video_lecture', string='Video lecture')
 	scorm_lecture_id = fields.Many2one('etraining.scorm_lecture', string='SCORM lecture')
+	self_assessment_id = fields.Many2one('etraining.self_assessment', string='Self-assessment lecture')
 
 	@api.model
 	def create(self, vals):
@@ -180,6 +181,10 @@ class CourseUnit(models.Model):
 		if unit.type == 'scorm':
 			scorm_lecture = self.env['etraining.scorm_lecture'].create({'unit_id': unit.id})
 			unit.write({'scorm_lecture_id': scorm_lecture.id})
+		if unit.type == 'self-assess':
+			exam = self.env['etraining.exam'].create({'name':vals["name"]})
+			self_assess = self.env['etraining.self_assessment'].create({'unit_id': unit.id ,'exam_id':exam.id})
+			unit.write({'self_assessment_id': self_assess.id})
 		return unit
 
 class SlideLecture(models.Model):
@@ -201,6 +206,12 @@ class VideoLecture(models.Model):
 
 	transcript = fields.Text(string='Transcript')
 	video_url = fields.Char(string='Video URL')
+	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
+
+class Self-assessment(models.Model):
+	_name = 'etraining.self_assessment'
+
+	exam_id = fields.Many2one('etraining.exam', string='Self-assessment')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 
 class ExerciseQuestion(models.Model):

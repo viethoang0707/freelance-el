@@ -46,7 +46,7 @@ export class ExamListComponent extends BaseComponent {
         var exam = new Exam();
         exam.is_public = true;
         this.examDialog.show(exam);
-        this.examDialog.onCreateComplete.subscribe(() => {
+        this.examDialog.onCreateComplete.first().subscribe(() => {
             this.exams = [exam, ...this.exams];
             this.success(this.translateService.instant('Add exam successfully'));
         });

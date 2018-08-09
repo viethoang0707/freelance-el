@@ -13,6 +13,9 @@ import * as _ from 'underscore';
 @Injectable()
 export class MenuService {
 
+  protected onShowSettingReceiver: Subject<any> = new Subject();
+    onShowSetting: Observable<any> = this.onShowSettingReceiver.asObservable();
+
     private ADMIN_MENU = [
                 { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard/admin'] , code:'DASHBOARD'},
                 { label: '', separator: true, styleClass: 'menu-separator' },
@@ -70,7 +73,9 @@ export class MenuService {
                     ]
                 },
                 {
-                    label: 'Settings', icon: 'settings',code:'SETTING',
+                    label: 'Settings', icon: 'settings',code:'SETTING',command: ()=> {
+                      this.onShowSettingReceiver.next();
+                    }
                 }
             ];
 

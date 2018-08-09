@@ -58,7 +58,7 @@ export class QuestionListComponent extends BaseComponent {
         var question = new Question();
         question.type = type;
         this.questionDialog.show(question);
-        this.questionDialog.onCreateComplete.subscribe(() => {
+        this.questionDialog.onCreateComplete.first().subscribe(() => {
             this.questions.unshift(question);
             this.displayQuestions = [...this.questions];
             this.selectedQuestions = [];

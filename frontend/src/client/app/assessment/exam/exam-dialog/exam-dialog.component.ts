@@ -65,7 +65,7 @@ export class ExamDialog extends BaseDialog<Exam> {
                     this.locale = res.json();
                 });;
         });
-        this.onCreateComplete.subscribe(object=> {
+        this.onCreateComplete.first().subscribe(object=> {
             this.editor.role ='editor';
             this.editor.exam_id =  object.id;
             this.editor.save(this).subscribe();

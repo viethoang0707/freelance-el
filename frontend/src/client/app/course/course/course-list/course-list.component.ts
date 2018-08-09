@@ -59,7 +59,7 @@ export class CourseListComponent extends BaseComponent {
     addCourse() {
         var course = new Course();
         this.courseDialog.show(course);
-        this.courseDialog.onCreateComplete.subscribe(() => {
+        this.courseDialog.onCreateComplete.first().subscribe(() => {
             this.checkDuplicate(course);
             this.courses.unshift(course);
             this.displayCourses = [...this.courses];

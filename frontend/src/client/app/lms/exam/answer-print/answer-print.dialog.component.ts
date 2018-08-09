@@ -20,6 +20,8 @@ import 'rxjs/add/observable/timer';
 import { PRINT_DIALOG_STYLE } from '../../../shared/models/constants';
 import * as _ from 'underscore';
 import { BaseModel } from '../../../shared/models/base.model';
+import { ExamLog } from '../../../shared/models/elearning/log.model';
+import { ReportUtils } from '../../../shared/helpers/report.utils';
 
 
 @Component({
@@ -38,6 +40,8 @@ export class AnswerPrintDialog extends BaseComponent {
     private sheet: QuestionSheet;
     private submission: Submission;
     private setting: ExamSetting;
+    private studyTime: number;
+    private reportUtils: ReportUtils;
 
     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
     @ViewChild('printSection') printSection;
@@ -52,6 +56,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.member = new ExamMember();
         this.submission = new Submission();
         this.setting = new ExamSetting();
+        this.reportUtils =  new ReportUtils();
     }
 
     show(exam: Exam, member: ExamMember) {
@@ -78,6 +83,11 @@ export class AnswerPrintDialog extends BaseComponent {
                         this.startReview();
                     }
                 }
+                // computer time to study exam
+                ExamLog.memberStudyActivity(this, this.member.id, this.exam.id).subscribe(logs=> {
+                    var result = this.reportUtils.analyzeExamMemberActivity(logs);
+                    this.studyTime =  +result[2] / 1000 / 60;
+                });
             });
     }
 

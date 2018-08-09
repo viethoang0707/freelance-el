@@ -108,7 +108,7 @@ export class GradebookDialog extends BaseComponent {
         certificate.member_id = this.student.id;
         certificate.issue_member_id =  this.viewer.id;
         this.certDialog.show(certificate);
-        this.certDialog.onCreateComplete.subscribe((obj: Certificate) => {
+        this.certDialog.onCreateComplete.first().subscribe((obj: Certificate) => {
             this.certificate = obj;
             this.student.completeCourse(this, certificate.id).subscribe(() => {
                 this.student.enroll_status = 'completed';

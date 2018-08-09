@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
-import { SettingComponent } from './setting.component';
-import { SettingRoutingModule } from './setting-routing';
+import { SettingDialog } from './setting-dialog.component';
 
 @NgModule({
 	imports: [
-		SettingRoutingModule,
 		ErpSharedModule,
 		AuthModule
 	],
 	declarations: [
-		SettingComponent
+		SettingDialog
 	],
-	exports: [],
+	exports: [SettingDialog],
 	providers: []
 })
 export class SettingModule {

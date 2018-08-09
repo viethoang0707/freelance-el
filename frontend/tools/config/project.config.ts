@@ -84,6 +84,10 @@ export class ProjectConfig extends SeedConfig {
                 path: 'node_modules/underscore/underscore-min.js'
             },
             {
+                name: 'screenfull',
+                path: 'node_modules/screenfull/dist/screenfull.js'
+            },
+            {
                 name: 'recordrtc',
                 path: 'node_modules/recordrtc/RecordRTC.min.js'
             },

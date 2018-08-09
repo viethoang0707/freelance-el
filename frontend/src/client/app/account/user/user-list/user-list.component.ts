@@ -69,7 +69,7 @@ export class UserListComponent extends BaseComponent {
     addUser() {
         var user = new User();
         this.userDialog.show(user);
-        this.userDialog.onCreateComplete.subscribe(() => {
+        this.userDialog.onCreateComplete.first().subscribe(() => {
             this.users.unshift(user);
             this.displayUsers = [...this.users];
             this.selectedUsers = [];

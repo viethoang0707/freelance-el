@@ -64,13 +64,13 @@ export class QuestionDialog extends BaseDialog<Question>  {
 				(<IQuestion>this.componentRef.instance).render(object);
 			});
 		});
-		this.onUpdateComplete.subscribe(object => {
+		this.onUpdateComplete.first().subscribe(object => {
 			if (this.componentRef)
 				(<IQuestion>this.componentRef.instance).saveEditor().subscribe(() => {
 					this.success(this.translateService.instant('Question saved.'));
 				});
 		});
-		this.onCreateComplete.subscribe(object => {
+		this.onCreateComplete.first().subscribe(object => {
 			if (this.componentRef)
 				(<IQuestion>this.componentRef.instance).saveEditor().subscribe(() => {
 					this.success(this.translateService.instant('Question saved.'));

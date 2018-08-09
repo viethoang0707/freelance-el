@@ -49,10 +49,13 @@ export class CompetencyListComponent extends BaseComponent {
     addCompetency() {
         var competency = new Competency();
         this.competencyDialog.show(competency);
-        this.competencyDialog.onCreateComplete.subscribe(() => {
-            this.competencies.unshift(competency);
-            this.displayCompetencies = [...this.competencies];
-            this.success('Add competency successfully');
+        this.competencyDialog.onCreateComplete.first().subscribe(() => {
+            // refresh to get summary
+            competency.populate(this).subscribe(() => {
+                this.competencies.unshift(competency);
+                this.displayCompetencies = [...this.competencies];
+                this.success('Add competency successfully');
+            });
         });
     }
 
@@ -68,7 +71,7 @@ export class CompetencyListComponent extends BaseComponent {
             competency.delete(this).subscribe(() => {
                 this.selectedCompetency = null;
                 this.loadCompetencies();
-                this.competencies = _.reject(this.competencies, (obj:Competency)=> {
+                this.competencies = _.reject(this.competencies, (obj: Competency) => {
                     return competency.id == obj.id;
                 });
                 this.success('Delete competency successfully');
