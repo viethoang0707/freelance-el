@@ -615,6 +615,7 @@ body .ui-dialog.course-unit-study .ui-dialog-titlebar{
 
 body .ui-dialog.course-unit-study .ui-dialog-content {
     padding: 0 !important;
+    overflow: hidden;
 }
 
 body .ui-dialog.course-unit-study .ui-scrollpanel-content{
