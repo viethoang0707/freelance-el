@@ -88,6 +88,7 @@ export class UserListComponent extends BaseComponent {
     activateMultipleUsers(users:User[]){
         _.each(users, (user:User)=> {
             user.banned =  false;
+            user.unban_date =  new Date();
         });
         User.updateArray(this,users).subscribe(()=> {
             this.success(this.translateService.instant('User activated successfully'));

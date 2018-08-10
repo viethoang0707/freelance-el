@@ -77,7 +77,7 @@ export class SurveyEnrollDialog extends BaseComponent {
 
     loadMembers() {
         this.survey.populate(this).subscribe(() => {
-            this.survey.listMembers(this, SURVEY_MEMBER_FIELDS).subscribe(members => {
+            this.survey.listCandidates(this, SURVEY_MEMBER_FIELDS).subscribe(members => {
                 this.members = members;
             });
         });

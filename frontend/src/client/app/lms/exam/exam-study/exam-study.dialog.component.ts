@@ -184,7 +184,6 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
 			this.answers.push(answer);
-			this.updateStats();
 			return answer;
 		} else
 			return answer;

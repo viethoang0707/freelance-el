@@ -37,7 +37,8 @@ export class UserExportDialog extends BaseComponent {
 			{ value: 'gender', label: this.translateService.instant('Gender') },
 			{ value: 'phone', label: this.translateService.instant('Phone') },
 			{ value: 'email', label: this.translateService.instant('Email') },
-			{ value: 'ban_date', label: this.translateService.instant('Ban date') },
+			{ value: 'ban_date', label: this.translateService.instant('Deactivate date') },
+			{ value: 'unban_date', label: this.translateService.instant('Activate date') },
 		];
 		this.display = false;
 	}
