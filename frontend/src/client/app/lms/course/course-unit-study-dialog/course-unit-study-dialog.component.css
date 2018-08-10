@@ -1,5 +1,6 @@
 .course-study-unit{
-	height: 580px;
+	/* height: 580px; */
+	height: calc(100vh - 55px);
 	margin: 0 !important;
 	/*background-color: #b7b7b7;*/
 	position: relative;
