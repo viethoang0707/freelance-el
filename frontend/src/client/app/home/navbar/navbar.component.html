@@ -26,7 +26,7 @@
                     <div> {{teacherCount}} {{'Teachers'|translate}}</div>
                 </a>
             </li>
-            <li #profile class="profile-item" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
+            <li #profile class="profile-item mr20" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
                 <a>
                     <span class="profile-image-wrapper">
                         <img [src]='ContextUser.image | imageBase64'/>

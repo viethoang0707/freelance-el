@@ -9,3 +9,7 @@ h2.exam-name, .exam-timer h2{
 .exam-timer{
 	text-align: right;
 }
+
+.survey-study-footer button{
+	margin-right: 32%;
+}
