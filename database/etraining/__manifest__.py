@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-	'name': "e-Training",
+	'name': "e-Training for PINCOURSE",
 
 	'summary': """
         Corporate Learning System""",
