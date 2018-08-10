@@ -25,10 +25,10 @@
       <div class="ui-g">
         <div class="ui-lg-8 ui-md-12 ui-g-12">
           <ng-template question-container></ng-template>
-          <div class="footer">
-            <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
-            <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" style="margin-left: 550px;" (click)="submitSurvey()" ></button>
-            <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="next()" *ngIf="qIndex < surveyQuestions.length-1"></button>
+          <div class="survey-study-footer">
+            <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" (click)="prev()" *ngIf="qIndex >0 "></button>
+            <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn" (click)="submitSurvey()" ></button>
+            <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn removeMR" (click)="next()" *ngIf="qIndex < surveyQuestions.length-1"></button>
           </div>
         </div>
         <div class="ui-lg-4 ui-md-12 ui-g-12 info-study">
