@@ -9,6 +9,19 @@ export class TreeUtils {
   constructor() {
   }
 
+  getAncestorGroup(groups: Group[], groupId: number): any {
+    let group:Group = _.find(groups, (obj:Group)=> {
+      return obj.id == groupId;
+    });
+    while (group.parent_id != null) {
+      let parent:Group = _.find(groups, (obj:Group)=> {
+        return obj.id == group.parent_id;
+      });
+      group = parent;
+    }
+    return group;
+  }
+
   getSubGroup(groups: Group[], parentId: number): any[] {
     return _.filter(groups, (group: Group) => {
       return this.isSubGroup(groups, group, parentId);
