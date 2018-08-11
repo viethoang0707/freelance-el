@@ -6,24 +6,25 @@
             <button pButton type="button" class="orange-btn" icon="ui-icon-delete" (click)="clearSheet()" *ngIf="sheet && sheet.finalized" label="{{'Clear'|translate}}"></button>
         </div>
     </p-toolbar>
-    <ng-template pTemplate="header">
-        <tr>
-            <th>#</th>
-            <th>
-                {{'Title'|translate}}
-            </th>
-            <th>
-                {{'Group'|translate}}
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-question let-rowIndex="rowIndex">
-        <tr>
-            <td>{{rowIndex+1}}</td>
-            <td>{{question.title}}</td>
-            <td>{{question.group_name}}</td>
-        </tr>
-    </ng-template>
+    <p-table>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>#</th>
+                <th>
+                    {{'Title'|translate}}
+                </th>
+                <th>
+                    {{'Group'|translate}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-question let-rowIndex="rowIndex">
+            <tr>
+                <td>{{rowIndex+1}}</td>
+                <td>{{question.title}}</td>
+                <td>{{question.group_name}}</td>
+            </tr>
+        </ng-template>
     </p-table>
 </div>
 <div *ngIf="mode=='preview'">

@@ -68,8 +68,12 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 	doAssessment() {
 		this.assessment.populateExam(this).subscribe(() => {
 				this.studyDialog.show(this.assessment.exam, this.examMember);
+				this.studyDialog.onFinish.subscribe(()=> {
+					this.viewCompleted =  true;
+					this.onViewCompletedReceiver.next();
+				});
 		});
-	};
+	}
 
 	viewAnswer(submit:Submission) {
 		this.assessment.populateExam(this).subscribe(() => {

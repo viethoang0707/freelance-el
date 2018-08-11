@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
-import { AssessmentModule } from '../assessment/assessment.module';
 import { ErpSharedModule } from '../shared/shared.module';
 import { CMSComponent } from './cms.component';
 import { ExamContentDialog } from './exam/content-dialog/exam-content.dialog.component';
@@ -28,13 +27,15 @@ import { CourseBackupDialog } from './course/course-backup/course-backup.dialog.
 import { CourseRestoreDialog } from './course/course-restore/course-restore.dialog.component';
 import { QuestionSheetPreviewDialog } from './exam/question-sheet-preview/question-sheet-preview.dialog.component';
 import { SurveySheetPreviewDialog } from './survey/survey-sheet-preview/survey-sheet-preview.dialog.component';
-
+import { QuestionContainerDirective } from './question/question-container.directive';
+import { SingleChoiceQuestionComponent } from './question/single-choice-question/single-choice-question.component';
+import { OpenEndQuestionComponent } from './question/open-end-question/open-end-question.component';
+import { MultiChoiceQuestionComponent } from './question/multi-choice-question/multi-choice-question.component';
 
 @NgModule({
 	imports: [
 		ErpSharedModule,
 		AuthModule,
-		AssessmentModule
 	],
 	declarations: [
 		CMSComponent,
@@ -62,7 +63,11 @@ import { SurveySheetPreviewDialog } from './survey/survey-sheet-preview/survey-s
 		CourseBackupDialog,
 		CourseRestoreDialog,
 		QuestionSheetPreviewDialog,
-		SurveySheetPreviewDialog
+		SurveySheetPreviewDialog,
+		QuestionContainerDirective,
+		MultiChoiceQuestionComponent,
+		SingleChoiceQuestionComponent,
+		OpenEndQuestionComponent,
 	],
 	exports: [
 		ExamContentDialog,
@@ -75,7 +80,8 @@ import { SurveySheetPreviewDialog } from './survey/survey-sheet-preview/survey-s
 		CourseBackupDialog,
 		CourseRestoreDialog,
 		QuestionSheetPreviewDialog,
-		SurveySheetPreviewDialog
+		SurveySheetPreviewDialog,
+		QuestionContainerDirective
 	],
 	providers: [],
 	entryComponents: [
@@ -84,7 +90,10 @@ import { SurveySheetPreviewDialog } from './survey/survey-sheet-preview/survey-s
 		SCORMLectureCourseUnitComponent,
 		SlideLectureCourseUnitComponent,
 		VideoLectureCourseUnitComponent,
-		HtmlLectureCourseUnitComponent
+		HtmlLectureCourseUnitComponent,
+		MultiChoiceQuestionComponent,
+		SingleChoiceQuestionComponent,
+		OpenEndQuestionComponent,
 	]
 })
 export class CMSModule {

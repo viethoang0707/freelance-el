@@ -24,7 +24,7 @@ import { Token } from '../../../../shared/models/cloud/token.model';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../../shared/models/elearning/question-sheet.model';
 import { Http, Response } from '@angular/http';
-import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
+import { QuestionContainerDirective } from '../../../../cms/question/question-container.directive';
 import 'rxjs/add/observable/timer';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
 import { BaseModel } from '../../../../shared/models/base.model';

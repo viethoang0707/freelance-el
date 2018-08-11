@@ -16,9 +16,9 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { ExamLog } from '../../../shared/models/elearning/log.model';
 import { ClockPipe } from '../../../shared/pipes/time.pipe';
 import { SelectItem } from 'primeng/api';
-import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
+import { QuestionContainerDirective } from '../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../cms/question/question.decorator';
 import { ExamSubmissionDialog } from '../exam-submit/exam-submission.dialog.component';
 import 'rxjs/add/observable/timer';
 import { Message } from 'primeng/components/common/api';
@@ -58,8 +58,10 @@ export class ExamStudyDialog extends BaseComponent {
 	private componentRef: any;
 	private onShowReceiver: Subject<any> = new Subject();
 	private onHideReceiver: Subject<any> = new Subject();
+	protected onFinishReceiver: Subject<any> = new Subject();
 	onShow: Observable<any> = this.onShowReceiver.asObservable();
 	onHide: Observable<any> = this.onHideReceiver.asObservable();
+	onFinish: Observable<any> = this.onFinishReceiver.asObservable();
 
 	@ViewChild(ExamSubmissionDialog) submitDialog: ExamSubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -170,9 +172,10 @@ export class ExamStudyDialog extends BaseComponent {
 		this.submission.save(this).subscribe(() => {
 			this.member.submitScore(this).subscribe(() => {
 				this.member.enroll_status = 'completed';
-				ExamLog.finishExam(this, this.member, this.submission).subscribe();
 				this.timeoutSubscription.next();
+				this.onFinishReceiver.next();
 				this.hide();
+				ExamLog.finishExam(this, this.member, this.submission).subscribe();
 			});
 		});
 	}

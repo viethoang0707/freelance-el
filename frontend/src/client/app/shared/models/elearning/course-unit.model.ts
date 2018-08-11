@@ -4,10 +4,8 @@ import { Model,UnserializeProperty,ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { CourseLog } from './log.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import * as _ from 'underscore';
-import { ExerciseQuestion } from './exercise-question.model';
 import { ListAPI } from '../../services/api/list.api';
 import { HtmlLecture } from './lecture-html.model';
 import { SCORMLecture } from './lecture-scorm.model';

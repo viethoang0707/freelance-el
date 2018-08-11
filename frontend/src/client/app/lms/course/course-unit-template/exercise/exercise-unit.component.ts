@@ -12,9 +12,9 @@ import { TreeNode } from 'primeng/api';
 import { CourseUnitPlayerTemplate } from '../unit.decorator';
 import { TreeUtils } from '../../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../../shared/components/select-question-dialog/select-question-dialog.component';
-import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../../assessment/question/question-template/question.decorator';
+import { QuestionContainerDirective } from '../../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../../cms/question/question.decorator';
 import { ICourseUnitPlay } from '../unit.interface';
 import { CourseMember } from '../../../../shared/models/elearning/course-member.model';
 
@@ -54,7 +54,7 @@ export class ExerciseCourseUnitPlayerComponent extends BaseComponent implements 
 	ngOnInit() {
 	}
 
-	play(unit:CourseUnit, member: CourseMember) {
+	play(unit: CourseUnit, member: CourseMember) {
 		this.unit = unit;
 		this.unit.populateExercise(this).subscribe(() => {
 			this.unit.exercise.populateSheet(this).subscribe(() => {
@@ -94,10 +94,8 @@ export class ExerciseCourseUnitPlayerComponent extends BaseComponent implements 
 			(<IQuestion>this.componentRef.instance).mode = 'study';
 			(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
 			if (index == this.examQuestions.length - 1) {
-			else {
-					this.viewCompleted = true;
-					this.onViewCompletedReceiver.next();
-				}
+				this.viewCompleted = true;
+				this.onViewCompletedReceiver.next();
 			}
 		}
 	}

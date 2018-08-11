@@ -13,11 +13,7 @@ import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/s
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 import { QuestionListComponent } from './question/question-list/question-list.component';
 import { QuestionDialog } from './question/question-dialog/question-dialog.component';
-import { QuestionContainerDirective } from './question/question-template/question-container.directive';
-import { SingleChoiceQuestionComponent } from './question/question-template/single-choice-question/single-choice-question.component';
-import { OpenEndQuestionComponent } from './question/question-template/open-end-question/open-end-question.component';
 import { QuestionImportDialog } from './question/import-dialog/import-dialog.component';
-import { MultiChoiceQuestionComponent } from './question/question-template/multi-choice-question/multi-choice-question.component';
 import { QuestionSheetListComponent } from './question/question-sheet-list/question-sheet-list.component';
 import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
 import { AssessmentRoutingModule } from './assessment-routing';
@@ -34,10 +30,6 @@ import { AssessmentRoutingModule } from './assessment-routing';
 		QuestionSheetListComponent,
 		QuestionListComponent,
 		QuestionDialog,
-		QuestionContainerDirective,
-		MultiChoiceQuestionComponent,
-		SingleChoiceQuestionComponent,
-		OpenEndQuestionComponent,
 		QuestionImportDialog,
 		SurveySheetListComponent,
 		SurveyDialog, ExamEnrollDialog,
@@ -49,14 +41,8 @@ import { AssessmentRoutingModule } from './assessment-routing';
 		],
 	providers: [],
 	exports: [
-		QuestionContainerDirective,
 		ExamDialog,
-		SurveyDialog],
-	entryComponents: [
-		SingleChoiceQuestionComponent,
-		OpenEndQuestionComponent,
-		MultiChoiceQuestionComponent
-		]
+		SurveyDialog],]
 })
 export class AssessmentModule {
 }
