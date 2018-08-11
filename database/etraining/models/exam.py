@@ -261,6 +261,9 @@ class Submission(models.Model):
 	def _compute_study_time(self):
 		for submit in self:
 			if submit.start and submit.end:
-				submit.study_time =  (submit.end - submit.start).total_seconds()
+				start = datetime.datetime.strptime(submit.start, "%Y-%m-%d")
+				end = datetime.datetime.strptime(submit.end, "%Y-%m-%d")
+				elaspe = end - start
+				submit.study_time =  elaspe.total_seconds()
 			else:
 				submit.study_time = 0
