@@ -1,10 +1,10 @@
 <div class="card card-w-title ui-g">
     <div class="ui-g-12 ui-lg-12">
-        <h1><a [routerLink]="['/dashboard/courses/']">{{'My courses' |translate}}</a><span class="fa fa-fw ui-icon-arrow-forward
-"></span><span>{{'Course'|translate}}: {{course.name}} </span></h1>
+        <!-- <h1><a [routerLink]="['/dashboard/courses/']">{{'My courses' |translate}}</a><span class="fa fa-fw ui-icon-arrow-forward"></span><span>{{'Course'|translate}}: {{course.name}} </span></h1> -->
+        <h1>{{'Course'|translate}}: {{course.name}}</h1>
     </div>
     <div class="ui-g-12 ui-lg-12">
-        <p-tabView [style]="{width: '100%', height: '600px'}">
+        <p-tabView [style]="{width: '100%'}" styleClass="tabView-course-view">
             <p-tabPanel header="{{'Course info'|translate}}" leftIcon="ui-icon-info">
                  <div class="ui-g">
                     <div class="ui-lg-8 ui-g-12">
@@ -73,7 +73,7 @@
                 </div>
             </p-tabPanel>
             <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
-                <div class="ui-g-12">
+                <div class="ui-g">
                     <div class="ui-g-3 course-study-tree">
                         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
                     </div>
@@ -98,26 +98,30 @@
                 </div>
             </p-tabPanel>
             <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download">
-                <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
-                    <ul class="task-list-container">
-                        <li *ngFor="let material of materials">
-                            <a href="{{material.url}}">
-                  <span class="task-name">{{material.name}}</span>
-                </a>
-                            <i class="material-icons" *ngIf="material.type=='video'">videocam</i>
-                            <i class="material-icons" *ngIf="material.type=='audio'">mic</i>
-                            <i class="material-icons" *ngIf="material.type=='file'">attachment</i>
-                        </li>
-                    </ul>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
+                        <ul class="task-list-container">
+                            <li *ngFor="let material of materials">
+                                <a href="{{material.url}}">
+                                  <span class="task-name">{{material.name}}</span>
+                                </a>
+                                <i class="material-icons" *ngIf="material.type=='video'">videocam</i>
+                                <i class="material-icons" *ngIf="material.type=='audio'">mic</i>
+                                <i class="material-icons" *ngIf="material.type=='file'">attachment</i>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </p-tabPanel>
             <p-tabPanel header="{{'Course FAQ'|translate}}" leftIcon="ui-icon-question-answer">
-                <div class="ui-g-12">
-                    <p-accordion>
-                        <p-accordionTab header="{{faq.question}}" [selected]="true" *ngFor="let faq of faqs">
-                            <div [innerHTML]="faq.answer"></div>
-                        </p-accordionTab>
-                    </p-accordion>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p-accordion>
+                            <p-accordionTab header="{{faq.question}}" [selected]="true" *ngFor="let faq of faqs">
+                                <div [innerHTML]="faq.answer"></div>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </div>
                 </div>
             </p-tabPanel>
         </p-tabView>

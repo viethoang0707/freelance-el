@@ -10,7 +10,6 @@ h2.exam-name, .exam-timer h2{
 	text-align: right;
 }
 
-.footer{
-	width: 100%;
-	bottom: 10%;
+.exam-study-footer button{
+	margin-right: 32%;
 }
