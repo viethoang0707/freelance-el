@@ -159,13 +159,13 @@ class CourseUnit(models.Model):
 		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="draft")
 	type = fields.Selection(
 		[('folder', 'Folder'), ('html', 'HTML'),('self-assess', 'Self-assessment'), ('slide', 'Slide'), ('scorm', 'SCORM'),('exercise', 'Exercise'), ('video', 'Video')])
-	exercise_question_ids = fields.One2many('etraining.exercise_question','unit_id', string="Exercise questions", readonly=True)
 	slide_lecture_id = fields.Many2one('etraining.slide_lecture', string='Slide lecture')
 	html_lecture_id = fields.Many2one('etraining.html_lecture', string='HTML lecture')
 	video_lecture_id = fields.Many2one('etraining.video_lecture', string='Video lecture')
 	scorm_lecture_id = fields.Many2one('etraining.scorm_lecture', string='SCORM lecture')
-	self_assessment_id = fields.Many2one('etraining.self_assessment', string='Self-assessment lecture')
-
+	self_assessment_id = fields.Many2one('etraining.self_assessment', string='Self-assessment')
+	exercise_id = fields.Many2one('etraining.exercise', string='Exercise')
+	
 	@api.model
 	def create(self, vals):
 		unit = super(CourseUnit, self).create(vals)
@@ -182,9 +182,13 @@ class CourseUnit(models.Model):
 			scorm_lecture = self.env['etraining.scorm_lecture'].create({'unit_id': unit.id})
 			unit.write({'scorm_lecture_id': scorm_lecture.id})
 		if unit.type == 'self-assess':
-			exam = self.env['etraining.exam'].create({'name':vals["name"]})
+			exam = self.env['etraining.exam'].create({'name':vals["name"],"is_public":False,"is_test":True,"status":"published","review_state":"approved","supervisor_id":unit.supervisor_id.id})
 			self_assess = self.env['etraining.self_assessment'].create({'unit_id': unit.id ,'exam_id':exam.id})
 			unit.write({'self_assessment_id': self_assess.id})
+		if unit.type == 'exercise':
+			sheet = self.env['etraining.question_sheet'].create({'name':vals["name"]})
+			exercise = self.env['etraining.exercise'].create({'unit_id': unit.id ,'sheet_id':sheet.id})
+			unit.write({'exercise_id': exercise.id})
 		return unit
 
 class SlideLecture(models.Model):
@@ -214,20 +218,11 @@ class SelfAssessment(models.Model):
 	exam_id = fields.Many2one('etraining.exam', string='Self-assessment')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 
-class ExerciseQuestion(models.Model):
-	_name = 'etraining.exercise_question'
+class Exerise(models.Model):
+	_name = 'etraining.exercise'
 
-	question_id = fields.Many2one('etraining.question',string="Question")
+	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
-	order = fields.Integer(string='Order')
-	group_id = fields.Many2one('res.groups', related="question_id.group_id", string='Group', readonly=True)
-	group_name = fields.Char(related="group_id.name", string="Group Name")
-	option_ids = fields.One2many('etraining.option','question_id', related="question_id.option_ids", string="Options", readonly=True)
-	content = fields.Html(string="Content",related="question_id.content", readonly=True)
-	title = fields.Text(string="Title",related="question_id.title", readonly=True)
-	explanation = fields.Text(string="Explanation",related="question_id.explanation", readonly=True)
-	level = fields.Selection(string="Level",related="question_id.level", readonly=True)
-	type = fields.Selection(related="question_id.type", readonly=True)
 
 class SCORMLecture(models.Model):
 	_name = 'etraining.scorm_lecture'
@@ -251,6 +246,7 @@ class Project(models.Model):
 	submission_ids = fields.One2many('etraining.project_submission','project_id', string='Project Submission members')
 	status = fields.Selection(
 		[('draft', 'Draft'), ('open', 'Open'), ('closed', 'Closed')], default="draft")
+
 
 class ProjectSubmission(models.Model):
 	_name = 'etraining.project_submission'
@@ -437,6 +433,18 @@ class CourseMember(models.Model):
 				self.env['etraining.achivement'].create({'competency_level_id':member.course_id.competency_level_id.id,
 					'user_id':member.user_id.id, 'course_id':member.course_id.id, 'date_acquire':datetime.datetime.now()})
 			member.write({'enroll_status':'completed','certificate_id':certificateId})
+
+	@api.model
+	def do_assessment(self,params):
+		memberId = params["memberId"]
+		assessmentId = params["assessmentId"]
+		for member in self.env['etraining.course_member'].browse(memberId):
+			for assessment in self.env['etraining.self_assessment'].browse(assessmentId):
+				exam_member = self.env["etraining.exam_member"].create({"user_id":member.user_id.id,"exam_id":assessment.exam_id.id,"role":'candidate'})
+				if exam_member.enroll_status =='completed':
+					submission = self.env['etraining.submission'].create({'member_id':exam_member.id})
+					exam_member.write({'submission_id':submission.id, "enroll_status":"registered"})
+				return exam_member.id
 
 
 class CourseMaterial(models.Model):

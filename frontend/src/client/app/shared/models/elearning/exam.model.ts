@@ -4,7 +4,7 @@ import { Model,FieldProperty ,UnserializeProperty, ReadOnlyProperty} from '../de
 import { APIContext } from '../context';
 import { ExamQuestion } from './exam-question.model';
 import * as _ from 'underscore';
-
+import { Submission } from './submission.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import * as moment from 'moment';
 import {SERVER_DATETIME_FORMAT} from '../constants';
@@ -55,6 +55,7 @@ export class Exam extends BaseModel{
         this.setting_id =  undefined;
         this.sheet =  new QuestionSheet();
         this.question_ids = [];
+        this.submission_ids = [];
 	}
 
     @UnserializeProperty()
@@ -96,6 +97,8 @@ export class Exam extends BaseModel{
     grade_ids: number[];
     @ReadOnlyProperty()
     question_ids: number[];
+    @ReadOnlyProperty()
+    submission_ids:number[];
 
     get IsAvailable():boolean {
         if (this.review_state != 'approved')
@@ -245,6 +248,14 @@ export class Exam extends BaseModel{
 
     examEditor(context: APIContext,fields?:string[]): Observable<any> {
         return ExamMember.single(context, fields, "[('role','=','editor'),('exam_id','='," + this.id + ")]");
+    }
+
+    static __api__listSubmissions(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Submission.Model, fields,"[('exam_id','=',"+examId+")]");
+    }
+
+    listSubmissions(context:APIContext,fields?:string[]): Observable<any[]> {
+        return Submission.search(context,fields,"[('exam_id','=',"+this.id+")]");
     }
 
 

@@ -111,7 +111,8 @@ export class ExamStudyDialog extends BaseComponent {
 	loadExamContent() {
 		this.member.populateSubmission(this).subscribe(() => {
 			this.submission = this.member.submit;
-			this.submission.start = new Date();
+			if (!this.submission.start)
+				this.submission.start = new Date();
 			BaseModel.bulk_list(this,
 				QuestionSheet.__api__listQuestions(this.exam.question_ids),
 				Submission.__api__listAnswers(this.submission.answer_ids))
@@ -156,10 +157,12 @@ export class ExamStudyDialog extends BaseComponent {
 	startExam() {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
-		ExamLog.startExam(this, this.member, this.submission).subscribe();
-		this.updateStats();
-		this.startTimer();
-		this.displayQuestion(0);
+		BaseModel.bulk_update(this, this.submission.__api__update(), this.member.__api__update()).subscribe(() => {
+			ExamLog.startExam(this, this.member, this.submission).subscribe();
+			this.updateStats();
+			this.startTimer();
+			this.displayQuestion(0);
+		});
 	}
 
 	finishExam() {

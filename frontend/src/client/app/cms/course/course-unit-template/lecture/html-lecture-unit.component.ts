@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitTemplate } from '../unit.decorator';
-import { ICourseUnit } from '../unit.interface';
+import { ICourseUnitDesign } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import { BaseModel } from '../../../../shared/models/base.model';
 
@@ -18,41 +18,33 @@ import { BaseModel } from '../../../../shared/models/base.model';
 	templateUrl: 'html-lecture-unit.component.html',
 })
 @CourseUnitTemplate({
-	type:'html'
+	type: 'html'
 })
-export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICourseUnit{
+export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICourseUnitDesign {
 
 	private unit: CourseUnit;
 	private lecture: HtmlLecture;
-	protected onViewCompletedReceiver: Subject<any> = new Subject();
-  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
-	viewCompleted: boolean;
+
+	@ViewChild('content') lectureContent: ElementRef;
 
 	@Input() mode;
 
 	constructor() {
 		super();
 		this.lecture = new HtmlLecture();
-		this.viewCompleted =  false;
 	}
 
-	render(unit:CourseUnit) {
+	render(unit: CourseUnit) {
 		this.unit = unit;
-		this.unit.populateHtmlLecture(this).subscribe(()=> {
+		this.unit.populateHtmlLecture(this).subscribe(() => {
 			this.lecture = this.unit.htmlLecture;
 		})
 	}
 
-	saveEditor():Observable<any> {
-		return Observable.forkJoin(this.unit.save(this), this.lecture.save(this));
+	saveEditor(): Observable<any> {
+		return  this.lecture.save(this);
 	}
 
-	updateScrollPos(e) {
-		if (e.endReached) {
-			this.viewCompleted = true;
-			this.onViewCompletedReceiver.next();
-		}
-	}
 
 }
 

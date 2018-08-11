@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitTemplate } from '../unit.decorator';
-import { ICourseUnit } from '../unit.interface';
+import { ICourseUnitDesign } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import * as RecordRTC from 'recordrtc';
 import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.model';
@@ -22,20 +22,16 @@ import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.
 @CourseUnitTemplate({
 	type: 'slide'
 })
-export class SlideLectureCourseUnitComponent extends BaseComponent implements ICourseUnit {
+export class SlideLectureCourseUnitComponent extends BaseComponent implements ICourseUnitDesign {
 
 	private unit: CourseUnit;
 	private lecture: SlideLecture;
 	private percentage: number;
-	protected onViewCompletedReceiver: Subject<any> = new Subject();
-  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
-	viewCompleted: boolean;
 	@Input() mode;
 
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new SlideLecture();
-		this.viewCompleted = false;
 	}
 
 
@@ -43,13 +39,11 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 		this.unit = unit;
 		this.unit.populateSlideLecture(this).subscribe(()=> {
 			this.lecture = this.unit.slideLecture;
-			this.onViewCompletedReceiver.next();
-		this.viewCompleted = true;
 		});
 	}
 
 	saveEditor(): Observable<any> {
-		return Observable.forkJoin(this.unit.save(this), this.lecture.save(this));
+		return this.lecture.save(this);
 	}
 
 	uploadFile(file) {

@@ -97,7 +97,10 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
             this.info(this.translateService.instant('Student has not completed the exam'));
         else {
             this.selectedMember.populate(this).subscribe(()=> {
-                this.answerSheetDialog.show(this.exam, this.selectedMember);
+                this.selectedMember.populateSubmission(this).subscribe(()=> {
+                    this.answerSheetDialog.show(this.exam, this.selectedMember,this.selectedMember.submit);
+                })
+                
             });
         }
     }

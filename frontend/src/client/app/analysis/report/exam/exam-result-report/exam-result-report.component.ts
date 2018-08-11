@@ -68,37 +68,33 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     render(exam: Exam) {
         this.clear();
         exam.listCandidates(this, EXAM_MEMBER_FIELDS).subscribe(members => {
-            ExamLog.listByExam(this, exam.id).subscribe(logs => {
-                this.records = this.generateReport(exam, logs, members);
+            exam.listSubmissions(this).subscribe(submits => {
+                this.records = this.generateReport(exam, submits, members);
             });
         });
     }
 
 
-    generateReport(exam: Exam, logs: ExamLog[], members: ExamMember[]) {
+    generateReport(exam: Exam, submits: Submission[], members: ExamMember[]) {
         var rows = [];
         _.each(members, (member: ExamMember) => {
-            var userLogs = _.filter(logs, (log: ExamLog) => {
-                return log.user_id == member.user_id;
+            var submit = _.find(submits, (obj: Submission) => {
+                return obj.id == member.submission_id;
             });
-            rows.push(this.generateReportRow(exam, member, userLogs));
+            rows.push(this.generateReportRow(exam, member, submit));
         });
         return rows;
     }
 
-    generateReportRow(exam: Exam, member: ExamMember, logs: ExamLog[]): any {
+    generateReportRow(exam: Exam, member: ExamMember, submit: Submission): any {
         var record = {};
         record["user_login"] = member.login;
         record["user_name"] = member.name;
         record["user_group"] = member.group_name;
         record["score"] = member.score;
         record["grade"] = member.grade;
-        if (logs && logs.length) {
-            var result = this.reportUtils.analyzeExamMemberActivity(logs);
-            if (result[0])
-                record["date_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
-            record["study_time"] = this.timePipe.transform(+(result[2]), 'min');
-        }
+        record["date_attempt"] = submit.start;
+        record["study_time"] = this.timePipe.transform(submit.study_time*1000, 'min');
         return record;
     }
 

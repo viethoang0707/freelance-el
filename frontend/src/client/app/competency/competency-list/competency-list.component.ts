@@ -60,10 +60,13 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     editCompetency(competency: Competency) {
-        this.competencyDialog.show(competency);
-        this.competencyDialog.onUpdateComplete.subscribe(() => {
-            this.loadCompetencies();
-        });
+        competency.populate(this).subscribe(() => {
+            this.competencyDialog.show(competency);
+            this.competencyDialog.onUpdateComplete.subscribe(() => {
+                this.selectedGroupNodes = [];
+                this.loadCompetencies();
+            });
+        })
     }
 
     deleteCompetency(competency: Competency) {

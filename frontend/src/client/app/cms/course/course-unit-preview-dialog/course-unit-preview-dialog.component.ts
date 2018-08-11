@@ -10,7 +10,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitRegister } from '../course-unit-template/unit.decorator';
 import { CourseUnitContainerDirective } from '../course-unit-template/unit-container.directive';
-import { ICourseUnit } from '../course-unit-template/unit.interface';
+import { ICourseUnitDesign } from '../course-unit-template/unit.interface';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { Course } from '../../../shared/models/elearning/course.model';
@@ -57,8 +57,8 @@ export class CourseUnitPreviewDialog extends BaseComponent {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			(<ICourseUnit>this.componentRef.instance).mode = 'preview';
-			(<ICourseUnit>this.componentRef.instance).render(unit);
+			(<ICourseUnitDesign>this.componentRef.instance).mode = 'preview';
+			(<ICourseUnitDesign>this.componentRef.instance).render(unit);
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;
@@ -89,8 +89,8 @@ export class CourseUnitPreviewDialog extends BaseComponent {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			(<ICourseUnit>this.componentRef.instance).mode = 'preview';
-			(<ICourseUnit>this.componentRef.instance).render(this.selectedUnit);
+			(<ICourseUnitDesign>this.componentRef.instance).mode = 'preview';
+			(<ICourseUnitDesign>this.componentRef.instance).render(this.selectedUnit);
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;
@@ -110,8 +110,8 @@ export class CourseUnitPreviewDialog extends BaseComponent {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			(<ICourseUnit>this.componentRef.instance).mode = 'preview';
-			(<ICourseUnit>this.componentRef.instance).render(this.selectedUnit);
+			(<ICourseUnitDesign>this.componentRef.instance).mode = 'preview';
+			(<ICourseUnitDesign>this.componentRef.instance).render(this.selectedUnit);
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;

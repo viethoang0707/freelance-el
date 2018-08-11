@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
+import { CMSModule } from '../cms/cms.module';
 import { AssessmentComponent } from './assessment.component'
 import { ExamDialog } from './exam/exam-dialog/exam-dialog.component';
 import { ExamEnrollDialog } from './exam/enrollment-dialog/enrollment-dialog.component';
@@ -18,21 +19,19 @@ import { OpenEndQuestionComponent } from './question/question-template/open-end-
 import { QuestionImportDialog } from './question/import-dialog/import-dialog.component';
 import { MultiChoiceQuestionComponent } from './question/question-template/multi-choice-question/multi-choice-question.component';
 import { QuestionSheetListComponent } from './question/question-sheet-list/question-sheet-list.component';
-import { QuestionSheetPreviewDialog } from './question/question-sheet-preview/question-sheet-preview.dialog.component';
 import { SurveySheetListComponent } from './question/survey-sheet-list/survey-sheet-list.component';
-import { SurveySheetPreviewDialog } from './question/survey-sheet-preview/survey-sheet-preview.dialog.component';
 import { AssessmentRoutingModule } from './assessment-routing';
 
 @NgModule({
 	imports: [
 		AssessmentRoutingModule,
+		CMSModule,
 		ErpSharedModule,
 		AuthModule],
 	declarations: [
 		AssessmentComponent,
 		ExamDialog,
 		QuestionSheetListComponent,
-		QuestionSheetPreviewDialog,
 		QuestionListComponent,
 		QuestionDialog,
 		QuestionContainerDirective,
@@ -41,7 +40,6 @@ import { AssessmentRoutingModule } from './assessment-routing';
 		OpenEndQuestionComponent,
 		QuestionImportDialog,
 		SurveySheetListComponent,
-		SurveySheetPreviewDialog,
 		SurveyDialog, ExamEnrollDialog,
 		ExamEnrollmentListComponent,
 		ExamListComponent,
@@ -53,8 +51,6 @@ import { AssessmentRoutingModule } from './assessment-routing';
 	exports: [
 		QuestionContainerDirective,
 		ExamDialog,
-		QuestionSheetPreviewDialog,
-		SurveySheetPreviewDialog,
 		SurveyDialog],
 	entryComponents: [
 		SingleChoiceQuestionComponent,

@@ -36,7 +36,14 @@ import { CourseEditComponent } from './course/course-edit/course-edit.component'
 import { ClassMemberActivityDialog } from './class/class-member-activity/class-member-activity.dialog.component';
 import { LMSRoutingModule } from './lms-routing';
 import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-unit-study-dialog.component';
-
+import { CourseUnitPlayerContainerDirective } from './course/course-unit-template/unit-player.directive';
+import { FolderCourseUnitPlayerComponent } from './course/course-unit-template/folder/folder-unit.component';
+import { ExerciseCourseUnitPlayerComponent } from './course/course-unit-template/exercise/exercise-unit.component';
+import { SCORMLectureCourseUnitPlayerComponent } from './course/course-unit-template/scorm/scorm-lecture-unit.component';
+import { SlideLectureCourseUnitPlayerComponent } from './course/course-unit-template/slide/slide-lecture-unit.component';
+import { VideoLectureCourseUnitPlayerComponent } from './course/course-unit-template/video/video-lecture-unit.component';
+import { HtmlLectureCourseUnitPlayerComponent } from './course/course-unit-template/lecture/html-lecture-unit.component';
+import { SelfAssessmentCourseUnitPlayerComponent } from './course/course-unit-template/assessment/self-assessment-unit.component';
 
 @NgModule({
     imports: [
@@ -79,6 +86,14 @@ import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-
         SurveyStatsDialog,
         SurveyStudyDialog,
         CourseUnitStudyDialog,
+        CourseUnitPlayerContainerDirective,
+        FolderCourseUnitPlayerComponent,
+        ExerciseCourseUnitPlayerComponent,
+        SCORMLectureCourseUnitPlayerComponent,
+        SlideLectureCourseUnitPlayerComponent,
+        VideoLectureCourseUnitPlayerComponent,
+        HtmlLectureCourseUnitPlayerComponent,
+        SelfAssessmentCourseUnitPlayerComponent
     ],
 
     exports: [
@@ -87,6 +102,15 @@ import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-
         SurveyStudyDialog,
         AnswerPrintDialog,
         ExamSubmissionDialog
+    ],
+    entryComponents: [
+        FolderCourseUnitPlayerComponent,
+        ExerciseCourseUnitPlayerComponent,
+        SCORMLectureCourseUnitPlayerComponent,
+        SlideLectureCourseUnitPlayerComponent,
+        VideoLectureCourseUnitPlayerComponent,
+        HtmlLectureCourseUnitPlayerComponent,
+        SelfAssessmentCourseUnitPlayerComponent
     ],
     providers: []
 

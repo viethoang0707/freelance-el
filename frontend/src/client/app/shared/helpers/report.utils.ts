@@ -94,14 +94,9 @@ export class ReportUtils {
 		var last_attempt = _.max(endExamLogs, (log) => {
 			return log.start.getTime();
 		});
-		_.each(logs, (log) => {
-			if (log.code == 'FINISH_EXAM')
-				onTime += log.start.getTime();
-			if (log.code == 'START_EXAM')
-				onTime -= log.start.getTime();
-		});
-		if (endExamLogs.length == 0)
-			onTime = 0;
+		if (endExamLogs.length && startExamLogs.length )
+			onTime = last_attempt.start.getTime() -  first_attempt.start.getTime();
+
 		return [first_attempt.start, last_attempt.start, onTime];
 	}
 

@@ -21,6 +21,7 @@ class Exam(models.Model):
 	status = fields.Selection(
 		[('open', 'Open'), ('closed', 'Closed'), ('initial', 'Initial')], default="initial")
 	is_public = fields.Boolean(string='Is public')
+	is_test = fields.Boolean(string='Is test')
 	publish_score = fields.Boolean(string="Publish score", default=False)
 	competency_level_id = fields.Many2one('etraining.competency_level', string='Acquired competency level')
 	competency_id = fields.Many2one('etraining.competency',related='competency_level_id.competency_id', string="Competency", readonly=True)
@@ -30,6 +31,7 @@ class Exam(models.Model):
 		[('initial', 'initial'), ('rejected', 'Rejected'), ('pending', 'Pending'),  ('approved', 'Approved')], default="initial")
 	course_class_id = fields.Many2one('etraining.course_class', string='Course class')
 	member_ids = fields.One2many('etraining.exam_member','exam_id', string='Exam members')
+	submission_ids = fields.One2many('etraining.submission','exam_id', string='Exam submission')
 	answer_ids = fields.One2many('etraining.answer', 'exam_id', string='Answers')
 	grade_ids = fields.One2many('etraining.exam_grade', 'exam_id', string='Grades')
 	setting_id = fields.Many2one('etraining.exam_setting', string='Exam setting')
@@ -142,8 +144,8 @@ class ExamMember(models.Model):
 			m =  members[0]
 		else:
 			m = super(ExamMember, self).create(vals)
-		submission = self.env['etraining.submission'].create({'member_id':m.id})
-		m.write({'submission_id':submission.id})
+			submission = self.env['etraining.submission'].create({'member_id':m.id})
+			m.write({'submission_id':submission.id})
 		return m
 
 	@api.multi
@@ -162,6 +164,7 @@ class ExamMember(models.Model):
 					grade_name = grade.name
 					break
 			exam_record = self.env["etraining.exam_record"].create({'score':score,'grade':grade_name,'member_id':self.id})
+			self.submission_id.write({'score':score,'grade':grade_name})
 			self.write({'exam_record_id':exam_record.id})
 		return True
 
@@ -244,6 +247,7 @@ class Submission(models.Model):
 	_name = 'etraining.submission'
 
 	score = fields.Float(string="Score")
+	grade = fields.Char(string="Grade")
 	member_id = fields.Many2one('etraining.exam_member', string='Exam member')
 	user_id = fields.Many2one('res.users', string='User', related="member_id.user_id", readonly=True)
 	exam_id = fields.Many2one('etraining.exam', related="member_id.exam_id", readonly=True,string='Exam')
@@ -252,4 +256,11 @@ class Submission(models.Model):
 	end = fields.Datetime(string='End time')
 	picture = fields.Binary(string='Picture')
 
-	answer_ids = fields.One2many('etraining.answer', 'submission_id', string='Answers')
+	study_time = fields.Integer( compute='_compute_study_time', string='Study time')
+
+	def _compute_study_time(self):
+		for submit in self:
+			if submit.start and submit.end:
+				submit.study_time =  (submit.end - submit.start).total_seconds()
+			else:
+				submit.study_time = 0

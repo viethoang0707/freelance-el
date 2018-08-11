@@ -10,7 +10,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
-import { QuestionSheetPreviewDialog } from '../question-sheet-preview/question-sheet-preview.dialog.component';
+import { QuestionSheetPreviewDialog } from '../../../cms/exam/question-sheet-preview/question-sheet-preview.dialog.component';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 

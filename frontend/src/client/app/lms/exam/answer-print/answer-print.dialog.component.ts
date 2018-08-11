@@ -59,21 +59,18 @@ export class AnswerPrintDialog extends BaseComponent {
         this.reportUtils =  new ReportUtils();
     }
 
-    show(exam: Exam, member: ExamMember) {
+    show(exam: Exam, member: ExamMember, submit: Submission) {
         this.display = true;
         this.examQuestions = [];
         this.answers = [];
         this.exam = exam;
+        this.submission =  submit;
         this.member = member;
         BaseModel
             .bulk_list(this,
-                ExamMember.__api__populateSubmission(this.member.submission_id),
                 Exam.__api__populateSetting(this.exam.setting_id),
                 Exam.__api__populateQuestionSheet(this.exam.sheet_id))
             .subscribe(jsonArr => {
-                var submits = Submission.toArray(jsonArr[0]);
-                if (submits.length) {
-                    this.submission = submits[0];
                     var settings = ExamSetting.toArray(jsonArr[1]);
                     if (settings.length)
                         this.setting = settings[0];
@@ -82,9 +79,11 @@ export class AnswerPrintDialog extends BaseComponent {
                         this.sheet = sheets[0];
                         this.startReview();
                     }
-                }
-                // computer time to study exam
+                 // computer time to study exam
                 ExamLog.memberStudyActivity(this, this.member.id, this.exam.id).subscribe(logs=> {
+                    logs = _.filter(logs, (log:ExamLog)=> {
+                        return log.res_model == Submission.Model && log.res_id == this.submission.id;
+                    });
                     var result = this.reportUtils.analyzeExamMemberActivity(logs);
                     this.studyTime =  +result[2] / 1000 / 60;
                 });

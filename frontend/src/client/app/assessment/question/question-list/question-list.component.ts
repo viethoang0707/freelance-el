@@ -68,8 +68,10 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     editQuestion(question: Question) {
-        this.questionDialog.show(question);
-        this.selectedQuestions = [];
+        question.populate(this).subscribe(()=> {
+            this.questionDialog.show(question);
+            this.selectedQuestions = [];
+        });
     }
 
     deleteMultipleQuestions(questions: Question[]) {

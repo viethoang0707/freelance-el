@@ -26,6 +26,8 @@ import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.compo
 import { CoursePublishDialog } from './course/course-publish/course-publish.dialog.component';
 import { CourseBackupDialog } from './course/course-backup/course-backup.dialog.component';
 import { CourseRestoreDialog } from './course/course-restore/course-restore.dialog.component';
+import { QuestionSheetPreviewDialog } from './exam/question-sheet-preview/question-sheet-preview.dialog.component';
+import { SurveySheetPreviewDialog } from './survey/survey-sheet-preview/survey-sheet-preview.dialog.component';
 
 
 @NgModule({
@@ -58,7 +60,9 @@ import { CourseRestoreDialog } from './course/course-restore/course-restore.dial
 		ExamSettingDialog,
 		CoursePublishDialog,
 		CourseBackupDialog,
-		CourseRestoreDialog
+		CourseRestoreDialog,
+		QuestionSheetPreviewDialog,
+		SurveySheetPreviewDialog
 	],
 	exports: [
 		ExamContentDialog,
@@ -69,7 +73,9 @@ import { CourseRestoreDialog } from './course/course-restore/course-restore.dial
 		SurveyContentDialog,
 		CoursePublishDialog,
 		CourseBackupDialog,
-		CourseRestoreDialog
+		CourseRestoreDialog,
+		QuestionSheetPreviewDialog,
+		SurveySheetPreviewDialog
 	],
 	providers: [],
 	entryComponents: [

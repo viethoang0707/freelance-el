@@ -10,7 +10,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
-import { SurveySheetPreviewDialog } from '../survey-sheet-preview/survey-sheet-preview.dialog.component';
+import { SurveySheetPreviewDialog } from '../../../cms/survey/survey-sheet-preview/survey-sheet-preview.dialog.component';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
 

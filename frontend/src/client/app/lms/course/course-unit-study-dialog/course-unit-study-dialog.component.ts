@@ -8,9 +8,9 @@ import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { CourseUnitRegister } from '../../../cms/course/course-unit-template/unit.decorator';
-import { CourseUnitContainerDirective } from '../../../cms/course/course-unit-template/unit-container.directive';
-import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.interface';
+import { CourseUnitPlayerRegister } from '../course-unit-template/unit.decorator';
+import { CourseUnitPlayerContainerDirective } from '../course-unit-template/unit-player.directive';
+import { ICourseUnitPlay } from '../course-unit-template/unit.interface';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
@@ -52,7 +52,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	private materials: CourseMaterial[];
 	private autoNext: boolean;
 
-	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
+	@ViewChild(CourseUnitPlayerContainerDirective) unitHost: CourseUnitPlayerContainerDirective;
 	@ViewChild('unitPlayer') unitPlayer: ElementRef;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private winRef: WindowRef) {
@@ -213,19 +213,19 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	}
 
 	openUnit(unit: CourseUnit) {
-		var detailComponent = CourseUnitRegister.Instance.lookup(unit.type);
+		var detailComponent = CourseUnitPlayerRegister.Instance.lookup(unit.type);
 		let viewContainerRef = this.unitHost.viewContainerRef;
 		if (detailComponent) {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			let courseUnitPlayer: ICourseUnit = (<ICourseUnit>this.componentRef.instance);
-			courseUnitPlayer.mode = 'study';
-			courseUnitPlayer.render(unit);
-			if (unit.type == 'video' && this.autoNext)
-				courseUnitPlayer.onViewCompleted.first().subscribe(() => {
+			let courseUnitPlayer: ICourseUnitPlay = (<ICourseUnitPlay>this.componentRef.instance);
+			courseUnitPlayer.play(unit, this.member);
+
+			courseUnitPlayer.onViewCompleted.first().subscribe(() => {
+				if (unit.type == 'video' && this.autoNext)
 					this.nextUnit();
-				});
+			});
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;

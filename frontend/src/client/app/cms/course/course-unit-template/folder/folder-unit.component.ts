@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitTemplate } from '../unit.decorator';
-import { ICourseUnit } from '../unit.interface';
+import { ICourseUnitDesign } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 
 @Component({
@@ -19,18 +19,13 @@ import { CourseUnit } from '../../../../shared/models/elearning/course-unit.mode
 @CourseUnitTemplate({
 	type:'folder'
 })
-export class FolderCourseUnitComponent extends BaseComponent implements ICourseUnit{
+export class FolderCourseUnitComponent extends BaseComponent implements ICourseUnitDesign{
 
-	viewCompleted: boolean;
 	private unit: CourseUnit;
-	protected onViewCompletedReceiver: Subject<any> = new Subject();
-  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	@Input() mode;
 
 	constructor() {
 		super();
-		this.viewCompleted =  true;
-		this.onViewCompletedReceiver.next();
 	}
 
 	render(unit:CourseUnit) {
@@ -38,7 +33,7 @@ export class FolderCourseUnitComponent extends BaseComponent implements ICourseU
 	}
 
 	saveEditor():Observable<any> {
-		return this.unit.save(this);
+		return Observable.of(true);
 	}
 
 

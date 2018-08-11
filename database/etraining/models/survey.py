@@ -154,8 +154,8 @@ class SurveyMember(models.Model):
 			m =  members[0]
 		else:
 			m = super(SurveyMember, self).create(vals)
-		submission = self.env['etraining.survey_submission'].create({'member_id':m.id})
-		m.write({'submission_id':submission.id})
+			submission = self.env['etraining.survey_submission'].create({'member_id':m.id})
+			m.write({'submission_id':submission.id})
 		return m
 
 
