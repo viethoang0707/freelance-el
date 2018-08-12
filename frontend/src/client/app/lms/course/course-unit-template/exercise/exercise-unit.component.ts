@@ -65,8 +65,11 @@ export class ExerciseCourseUnitPlayerComponent extends BaseComponent implements 
 							return examQuestion.question;
 						});
 						Question.listOptionsForArray(this, questions).subscribe(() => {
-							this.qIndex = 0;
-							this.displayQuestion(this.qIndex);
+							if (this.examQuestions.length) {
+								this.qIndex = 0;
+								this.displayQuestion(this.qIndex);
+							}
+
 						});
 					});
 				});

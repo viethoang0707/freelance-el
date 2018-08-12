@@ -79,14 +79,7 @@ export class AnswerPrintDialog extends BaseComponent {
                         this.sheet = sheets[0];
                         this.startReview();
                     }
-                 // computer time to study exam
-                ExamLog.memberStudyActivity(this, this.member.id, this.exam.id).subscribe(logs=> {
-                    logs = _.filter(logs, (log:ExamLog)=> {
-                        return log.res_model == Submission.Model && log.res_id == this.submission.id;
-                    });
-                    var result = this.reportUtils.analyzeExamMemberActivity(logs);
-                    this.studyTime =  +result[2] / 1000 / 60;
-                });
+                    this.studyTime =  Math.floor(this.submission.study_time  / 60);
             });
     }
 

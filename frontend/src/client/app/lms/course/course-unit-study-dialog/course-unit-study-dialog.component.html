@@ -15,6 +15,7 @@
                     <div class="clearfix"></div> -->
                     <div #unitPlayer>
                         <ng-template course-unit-player-container></ng-template>
+                        <button pButton type="button" icon="ui-icon-fullscreen-exit" title="{{'Exit fullscreen'|translate}}" label="{{'Exit fullscreen'|translate}}" class="course-unit-study-btn" (click)="exitFullScreen()" [hidden]="!fullscreen"></button>
                     </div>
                 </div>
             </div>

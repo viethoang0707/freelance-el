@@ -32,6 +32,7 @@ declare var $: any;
 export class CourseUnitStudyDialog extends BaseComponent {
 
 	WINDOW_HEIGHT: any;
+	screenfull = screenfull;
 
 	private componentRef: any;
 	private treeUtils: TreeUtils;
@@ -51,6 +52,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	private faqs: CourseFaq[];
 	private materials: CourseMaterial[];
 	private autoNext: boolean;
+	private fullscreen: boolean;
 
 	@ViewChild(CourseUnitPlayerContainerDirective) unitHost: CourseUnitPlayerContainerDirective;
 	@ViewChild('unitPlayer') unitPlayer: ElementRef;
@@ -69,6 +71,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 
 	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[], faqs: CourseFaq[], materials: CourseMaterial[]) {
 		this.display = true;
+		this.fullscreen = false;
 		this.enableLogging = member.enroll_status != 'completed';
 		this.member = member;
 		this.course = course;
@@ -244,8 +247,14 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	requestFullScreen() {
 		if (screenfull.enabled) {
 			screenfull.request(this.unitPlayer.nativeElement);
+			this.fullscreen =  true;
 		}
 
+	}
+
+	private exitFullScreen() {
+		this.fullscreen = false;
+		screenfull.exit();
 	}
 
 }

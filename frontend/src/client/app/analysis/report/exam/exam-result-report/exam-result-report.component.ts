@@ -21,7 +21,7 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 import { BaseModel } from '../../../../shared/models/base.model';
 import { ExamRecord } from '../../../../shared/models/elearning/exam-record.model';
 
-const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'grade', 'score']
+const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'grade', 'score', 'submission_id']
 
 @Component({
     moduleId: module.id,
@@ -93,8 +93,12 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         record["user_group"] = member.group_name;
         record["score"] = member.score;
         record["grade"] = member.grade;
-        record["date_attempt"] = submit.start;
-        record["study_time"] = this.timePipe.transform(submit.study_time*1000, 'min');
+        if (submit) {
+            if (submit.start) 
+                record["date_attempt"] = this.datePipe.transform(submit.start, EXPORT_DATE_FORMAT);
+            if (submit.study_time)
+                record["study_time"] = this.timePipe.transform(submit.study_time * 1000, 'min');
+        }
         return record;
     }
 

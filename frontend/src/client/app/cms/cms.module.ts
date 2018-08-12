@@ -11,6 +11,7 @@ import { FolderCourseUnitComponent } from './course/course-unit-template/folder/
 import { ExerciseCourseUnitComponent } from './course/course-unit-template/exercise/exercise-unit.component';
 import { SCORMLectureCourseUnitComponent } from './course/course-unit-template/scorm/scorm-lecture-unit.component';
 import { SlideLectureCourseUnitComponent } from './course/course-unit-template/slide/slide-lecture-unit.component';
+import { SelfAssessmentCourseUnitComponent } from './course/course-unit-template/assessment/self-assessment-unit.component';
 import { VideoLectureCourseUnitComponent } from './course/course-unit-template/video/video-lecture-unit.component';
 import { HtmlLectureCourseUnitComponent } from './course/course-unit-template/lecture/html-lecture-unit.component';
 import { CourseUnitDialog } from './course/course-unit-dialog/course-unit-dialog.component';
@@ -55,6 +56,7 @@ import { MultiChoiceQuestionComponent } from './question/multi-choice-question/m
 		SCORMLectureCourseUnitComponent,
 		VideoLectureCourseUnitComponent,
 		HtmlLectureCourseUnitComponent,
+		SelfAssessmentCourseUnitComponent,
 		CourseUnitDialog,
 		SurveyContentDialog,
 		ValidateGradePipe,
@@ -93,6 +95,7 @@ import { MultiChoiceQuestionComponent } from './question/multi-choice-question/m
 		HtmlLectureCourseUnitComponent,
 		MultiChoiceQuestionComponent,
 		SingleChoiceQuestionComponent,
+		SelfAssessmentCourseUnitComponent,
 		OpenEndQuestionComponent,
 	]
 })
