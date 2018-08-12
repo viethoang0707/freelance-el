@@ -121,9 +121,9 @@ export class CourseUnit extends BaseModel{
     }
 
     populateSelfAssessment(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.video_lecture_id)
+        if (!this.self_assessment_id)
             return Observable.of(null);
-        if (!this.videoLecture.IsNew)
+        if (!this.selfAssessment.IsNew)
             return Observable.of(this);
         return SelfAssessment.get(context, this.self_assessment_id,fields).do(assess => {
             this.selfAssessment = assess;

@@ -38,6 +38,7 @@ export class MailTemplateListComponent extends BaseComponent {
 
 
     editTemplate(template: Mail) {
+        console.log(template);
         template.populate(this).subscribe(() => {
             this.mailTemplDialog.show(template);
             this.mailTemplDialog.onUpdateComplete.subscribe(() => {
@@ -63,7 +64,7 @@ export class MailTemplateListComponent extends BaseComponent {
             return _.flatten(jsonArr);
         })
         .subscribe(templates=> {
-            this.templates =  templates;
+            this.templates =  Mail.toArray(templates);
         })
 
     }

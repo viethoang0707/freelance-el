@@ -15,7 +15,7 @@ import { ExamStudyDialog } from '../../../exam/exam-study/exam-study.dialog.comp
 import { CourseMember } from '../../../../shared/models/elearning/course-member.model';
 import { ExamMember } from '../../../../shared/models/elearning/exam-member.model';
 import { Submission } from '../../../../shared/models/elearning/submission.model';
-import { AnswerPrintDialog } from '../../..//exam/answer-print/answer-print.dialog.component';
+import { AnswerPrintDialog } from '../../../exam/answer-print/answer-print.dialog.component';
 
 @Component({
 	moduleId: module.id,

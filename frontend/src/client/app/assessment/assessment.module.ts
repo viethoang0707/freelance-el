@@ -42,7 +42,7 @@ import { AssessmentRoutingModule } from './assessment-routing';
 	providers: [],
 	exports: [
 		ExamDialog,
-		SurveyDialog],]
+		SurveyDialog]
 })
 export class AssessmentModule {
 }

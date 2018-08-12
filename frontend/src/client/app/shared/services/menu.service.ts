@@ -81,10 +81,7 @@ export class MenuService {
           }
         },
         { label: 'Mail template', routerLink: ['/settings/mails'], code: 'SETTING-MAIL' },
-      ], command: () => {
-
-        this.onShowSettingReceiver.next();
-      }
+      ]
     }
   ];
 
