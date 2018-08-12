@@ -91,11 +91,6 @@ export class GroupsResolve implements Resolve<Group[]>,APIContext {
 	}
 
   resolve(route: ActivatedRouteSnapshot) {
-<<<<<<< HEAD
     	return Group.listQuestionGroup(this,['id','code']);
-=======
-      return Group.listQuestionGroup(this,['id','code']);
-  
->>>>>>> Fix bug
   }
 }
