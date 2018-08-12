@@ -278,6 +278,7 @@ class Exerise(models.Model):
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
 
+
 class SCORMLecture(models.Model):
 	_name = 'etraining.scorm_lecture'
 
