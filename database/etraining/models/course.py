@@ -182,7 +182,7 @@ class CourseUnit(models.Model):
 			scorm_lecture = self.env['etraining.scorm_lecture'].create({'unit_id': unit.id})
 			unit.write({'scorm_lecture_id': scorm_lecture.id})
 		if unit.type == 'self-assess':
-			exam = self.env['etraining.exam'].create({'name':vals["name"],"is_public":False,"is_test":True,"status":"published","review_state":"approved","supervisor_id":unit.supervisor_id.id})
+			exam = self.env['etraining.exam'].create({'name':vals["name"],"is_public":False,"is_test":True,"status":"open","review_state":"approved","supervisor_id":unit.supervisor_id.id})
 			self_assess = self.env['etraining.self_assessment'].create({'unit_id': unit.id ,'exam_id':exam.id})
 			unit.write({'self_assessment_id': self_assess.id})
 		if unit.type == 'exercise':
