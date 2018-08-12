@@ -37,6 +37,7 @@ class Exam(models.Model):
 	grade_ids = fields.One2many('etraining.exam_grade', 'exam_id', string='Grades')
 	setting_id = fields.Many2one('etraining.exam_setting', string='Exam setting')
 
+
 	@api.model
 	def create(self, vals):
 		exam = super(Exam, self).create(vals)
