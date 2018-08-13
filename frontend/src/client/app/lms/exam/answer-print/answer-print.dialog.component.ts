@@ -56,7 +56,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.member = new ExamMember();
         this.submission = new Submission();
         this.setting = new ExamSetting();
-        this.reportUtils =  new ReportUtils();
+        this.reportUtils = new ReportUtils();
     }
 
     show(exam: Exam, member: ExamMember, submit: Submission) {
@@ -64,22 +64,17 @@ export class AnswerPrintDialog extends BaseComponent {
         this.examQuestions = [];
         this.answers = [];
         this.exam = exam;
-        this.submission =  submit;
+        this.submission = submit;
         this.member = member;
         BaseModel
             .bulk_list(this,
                 Exam.__api__populateSetting(this.exam.setting_id),
                 Exam.__api__populateQuestionSheet(this.exam.sheet_id))
             .subscribe(jsonArr => {
-                    var settings = ExamSetting.toArray(jsonArr[1]);
-                    if (settings.length)
-                        this.setting = settings[0];
-                    var sheets = QuestionSheet.toArray(jsonArr[2]);
-                    if (sheets.length) {
-                        this.sheet = sheets[0];
-                        this.startReview();
-                    }
-                    this.studyTime =  Math.floor(this.submission.study_time  / 60);
+                this.setting = ExamSetting.toArray(jsonArr[0])[0];
+                this.sheet = QuestionSheet.toArray(jsonArr[1])[0];
+                this.startReview();
+                this.studyTime = Math.floor(this.submission.study_time / 60);
             });
     }
 
