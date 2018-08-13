@@ -614,6 +614,7 @@ body .ui-dialog.course-unit-study .ui-dialog-titlebar{
 
 body .ui-dialog.course-unit-study .ui-dialog-content {
     padding: 0 !important;
+    overflow: hidden;
 }
 
 body .ui-dialog.course-unit-study .ui-scrollpanel-content{
@@ -675,7 +676,8 @@ body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-lef
 }
 
 body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-panel{
-  height: 518px;
+  /* height: 518px; */
+  height: 100vh;
   overflow: auto;
 }
 
