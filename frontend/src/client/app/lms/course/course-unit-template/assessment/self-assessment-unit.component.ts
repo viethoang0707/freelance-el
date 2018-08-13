@@ -60,7 +60,7 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 	}
 
 	loadSubmissionHistory(examMemberId: number) {
-		ExamMember.get(this,examMemberId ).subscribe(examMember => {
+		ExamMember.get(this, examMemberId).subscribe(examMember => {
 			this.examMember = examMember;
 			this.examMember.listSubmissions(this).subscribe((submits: Submission[]) => {
 				this.submissions = _.filter(submits, (submit: Submission) => {
@@ -77,7 +77,9 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 			this.studyDialog.onFinish.subscribe(() => {
 				this.viewCompleted = true;
 				this.onViewCompletedReceiver.next();
-				this.loadSubmissionHistory();
+				this.member.doAssessment(this, this.assessment.id).subscribe(examMemberId => {
+					this.loadSubmissionHistory(examMemberId);
+				});
 			});
 		});
 	}

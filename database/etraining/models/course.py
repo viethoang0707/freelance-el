@@ -427,7 +427,7 @@ class CourseMember(models.Model):
 	@api.model
 	def complete_course(self,params):
 		memberId = params["memberId"]
-		certificateId = params["certificateId"]
+		certificateId = params["certificateId"] if "certificate" in params else None
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.course_id.competency_id and member.course_id.competency_level_id:
 				self.env['etraining.achivement'].create({'competency_level_id':member.course_id.competency_level_id.id,
@@ -438,12 +438,21 @@ class CourseMember(models.Model):
 	def do_assessment(self,params):
 		memberId = params["memberId"]
 		assessmentId = params["assessmentId"]
-		for member in self.env['etraining.course_member'].browse(memberId):
+		examMemberId = params["examMemberId"]
+		for exam_member in self.env['etraining.exam_member'].browse(examMemberId):
 			for assessment in self.env['etraining.self_assessment'].browse(assessmentId):
-				exam_member = self.env["etraining.exam_member"].create({"user_id":member.user_id.id,"exam_id":assessment.exam_id.id,"role":'candidate'})
 				if exam_member.enroll_status =='completed':
 					submission = self.env['etraining.submission'].create({'member_id':exam_member.id})
 					exam_member.write({'submission_id':submission.id, "enroll_status":"registered"})
+				return True
+
+	@api.model
+	def join_assessment(self,params):
+		memberId = params["memberId"]
+		assessmentId = params["assessmentId"]
+		for member in self.env['etraining.course_member'].browse(memberId):
+			for assessment in self.env['etraining.self_assessment'].browse(assessmentId):
+				exam_member = self.env["etraining.exam_member"].create({"user_id":member.user_id.id,"exam_id":assessment.exam_id.id,"role":'candidate'})
 				return exam_member.id
 
 

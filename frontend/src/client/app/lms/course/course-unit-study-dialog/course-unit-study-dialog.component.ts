@@ -69,7 +69,6 @@ export class CourseUnitStudyDialog extends BaseComponent {
 
 	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[], faqs: CourseFaq[], materials: CourseMaterial[]) {
 		this.display = true;
-		this.fullscreen = false;
 		this.enableLogging = member.enroll_status != 'completed';
 		this.member = member;
 		this.course = course;
