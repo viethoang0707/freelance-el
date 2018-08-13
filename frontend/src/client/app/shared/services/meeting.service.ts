@@ -13,6 +13,7 @@ export class MeetingService {
 	private cloud_code: string;
 
 	constructor(private winRef: WindowRef, private authService: AuthService) {
+		this.nativeWindow =  this.winRef.getNativeWindow();
 		this.cloud_code =  this.authService.LoginToken.cloud_code;
 	}
 
