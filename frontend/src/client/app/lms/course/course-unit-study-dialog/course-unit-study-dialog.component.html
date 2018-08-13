@@ -4,12 +4,6 @@
         <div class="ui-lg-9 ui-md-9 ui-g-12 removePd">
             <div class="card course-study-unit removePd">
                 <div class="head">
-                    <div class="btn-link-unit fLeft">
-                        <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" (click)="prevUnit()" class="course-unit-study-btn"></button>
-                    </div>
-                    <div class="btn-link-unit fRight">
-                        <button pButton type="button" icon="ui-icon-navigate-after" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class="course-unit-study-btn" (click)="nextUnit()"></button>
-                    </div>
                 </div>
                 <div class="image-box-content">
                     <!-- <div class="fLeft" *ngIf="selectedUnit">
@@ -19,8 +13,9 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div> -->
-                    <div>
-                        <ng-template course-unit-container></ng-template>
+                    <div #unitPlayer>
+                        <ng-template course-unit-player-container></ng-template>
+                        <button pButton type="button" icon="ui-icon-fullscreen-exit" title="{{'Exit fullscreen'|translate}}" label="{{'Exit fullscreen'|translate}}" class="course-unit-study-btn" (click)="exitFullScreen()" [hidden]="!fullscreen"></button>
                     </div>
                 </div>
             </div>
@@ -28,20 +23,21 @@
                 <div class="fLeft auto-next pt8">
                     <p-inputSwitch [(ngModel)]="autoNext"></p-inputSwitch>
                     <span>{{'Auto next'|translate}}</span>
-                    <!-- <button pButton type="button" icon="ui-icon-info-outline" title="{{'Info'|translate}}" class="course-unit-study-btn"></button> ( show "lecture.transcript") -->
+                    <button pButton type="button" icon="ui-icon-fullscreen" title="{{'Fullscreen'|translate}}" label="{{'Fullscreen'|translate}}" class="course-unit-study-btn" (click)="requestFullScreen()"></button>
                 </div>
                 <div class="fRight">
+                    <button pButton type="button" icon="ui-icon-navigate-before" iconPos="left" title="{{'Prev'|translate}}" label="{{'Prev'|translate}}" (click)="prevUnit()" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
                     <button pButton type="button" icon="ui-icon-navigate-next" iconPos="right" title="{{'Next'|translate}}" label="{{'Next'|translate}}" (click)="nextUnit()" [disabled]="componentRef && !componentRef.instance.viewCompleted && !completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
                 </div>
             </div>
         </div>
-        <div class="ui-lg-3 ui-md-3 ui-g-12 side-bar removePd" >
+        <div class="ui-lg-3 ui-md-3 ui-g-12 side-bar removePd">
             <div class="ui-g">
                 <div class="ui-g-12 removePd">
                     <p-tabView>
                         <p-tabPanel header="{{'Syllabus'|translate}}" leftIcon="ui-icon-collections-bookmark">
                             <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)">
-                                <ng-template let-node  pTemplate="default">
+                                <ng-template let-node pTemplate="default">
                                     <span>{{node.label}}</span>
                                     <span [hidden]="!node.data || !node.data.id || !completedUnitIds.includes(node.data.id)"><i class="material-icons" >check</i></span>
                                 </ng-template>
@@ -54,7 +50,7 @@
                                         <i class="material-icons">insert_drive_file</i>
                                         <span>{{material.name}}</span>
                                     </a>
-                                        <button type="button" pButton title="{{'Dowload'|translate}}" icon="ui-icon-file-download" (click)="downloadMaterial(material)"></button>
+                                    <button type="button" pButton title="{{'Dowload'|translate}}" icon="ui-icon-file-download" (click)="downloadMaterial(material)"></button>
                                 </li>
                             </ul>
                         </p-tabPanel>

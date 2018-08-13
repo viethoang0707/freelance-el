@@ -43,7 +43,18 @@ export class MemberByCourseReportComponent extends BaseComponent {
 
 	export() {
 		var output = _.map(this.records, record => {
-			return { 'Course code': record['course_code'], 'Course name': record['course_name'], 'Total': record['total_member'], 'Total registered': record['total_member_registered'], 'Percentage registered': record['percentage_member_registered'], 'Total in-progress': record['total_member_inprogress'], 'Percentage in-progress': record['percentage_member_inprogress'], 'Total completed': record['total_member_completed'], 'Percentage completed': record['percentage_member_inprogress'], 'Time': record['time_spent'] };
+			return {
+				'Course code': record['course_code'],
+				'Course name': record['course_name'],
+				'Total': record['total_member'],
+				'Total registered': record['total_member_registered'],
+				'Percentage registered': record['percentage_member_registered'],
+				'Total in-progress': record['total_member_inprogress'],
+				'Percentage in-progress': record['percentage_member_inprogress'],
+				'Total completed': record['total_member_completed'],
+				'Percentage completed': record['percentage_member_inprogress'],
+				'Time': record['time_spent']
+			};
 		});
 		this.excelService.exportAsExcelFile(output, 'course_by_member_report');
 	}
@@ -63,7 +74,7 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		var apiMemberList = [];
 		var apiLogList = [];
 		for (var i = 0; i < courses.length; i++) {
-			apiMemberList.push(Course.__api__listMembers(courses[i].member_ids,COURSE_MEMBER_FIELDS));
+			apiMemberList.push(Course.__api__listMembers(courses[i].member_ids, COURSE_MEMBER_FIELDS));
 			apiLogList.push(CourseLog.__api__courseActivity(courses[i].id));
 		};
 		BaseModel.bulk_list(this, ...apiMemberList).subscribe(jsonMemberArr => {

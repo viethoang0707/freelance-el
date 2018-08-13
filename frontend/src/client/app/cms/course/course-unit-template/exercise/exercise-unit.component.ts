@@ -1,21 +1,24 @@
 import { Component, OnInit, Input, ViewChild, QueryList, ViewChildren, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Answer } from '../../../../shared/models/elearning/answer.model';
+import { QuestionSheet } from '../../../../shared/models/elearning/question-sheet.model';
 import { Question } from '../../../../shared/models/elearning/question.model';
 import { QuestionOption } from '../../../../shared/models/elearning/option.model';
-import { ExerciseQuestion } from '../../../../shared/models/elearning/exercise-question.model';
+import { ExamQuestion } from '../../../../shared/models/elearning/exam-question.model';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitTemplate } from '../unit.decorator';
-import { ICourseUnit } from '../unit.interface';
+import { ICourseUnitDesign } from '../unit.interface';
 import { TreeUtils } from '../../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../../shared/components/select-question-dialog/select-question-dialog.component';
-import { QuestionContainerDirective } from '../../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../../assessment/question/question-template/question.decorator';
+import { QuestionContainerDirective } from '../../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../../cms/question/question.decorator';
+import { QuestionSheetPreviewDialog } from '../../../exam/question-sheet-preview/question-sheet-preview.dialog.component';
+import { QuestionSheetEditorDialog } from '../../../exam/question-sheet-editor/question-sheet-editor.dialog.component';
+import { SelectQuestionSheetDialog } from '../../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
 
 @Component({
 	moduleId: module.id,
@@ -25,36 +28,23 @@ import { QuestionRegister } from '../../../../assessment/question/question-templ
 @CourseUnitTemplate({
 	type: 'exercise'
 })
-export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnit, OnInit {
+export class ExerciseCourseUnitComponent extends BaseComponent implements ICourseUnitDesign, OnInit {
 
-	private tree: TreeNode[];
-	private selectedNode: TreeNode;
-	private selectedQuestions: Question[];
 	private questions: Question[];
 	private unit: CourseUnit;
-	private exerciseQuestions: ExerciseQuestion[];
-	private stage: string;
-	private qIndex: number;
-	private currentQuestion: ExerciseQuestion;
-	private treeUtils: TreeUtils;
-	private currentAnswer: Answer;
+	private sheet: QuestionSheet;
+	private examQuestions: ExamQuestion[];
 	private componentRef: any;
-	protected onViewCompletedReceiver: Subject<any> = new Subject();
-  onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
-	viewCompleted: boolean;
 
 	@Input() mode;
-	@ViewChild(SelectQuestionsDialog) questionDialog: SelectQuestionsDialog;
-	@ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
-	@ViewChild(QuestionContainerDirective) studyQuestionComponent: QuestionContainerDirective;
+	@ViewChild(QuestionSheetPreviewDialog) previewDialog: QuestionSheetPreviewDialog;
+	@ViewChild(SelectQuestionSheetDialog) selectSheetDialog: SelectQuestionSheetDialog;
+	@ViewChild(QuestionSheetEditorDialog) editorDialog: QuestionSheetEditorDialog;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
-		this.exerciseQuestions = [];
-		this.currentAnswer = new Answer();
-		this.currentQuestion = new ExerciseQuestion();
-		this.treeUtils = new TreeUtils();
-		this.viewCompleted = false;
+		this.examQuestions = [];
+		this.sheet = new QuestionSheet();
 	}
 
 	ngOnInit() {
@@ -62,126 +52,68 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		this.unit.listExerciseQuestions(this).subscribe(exerciseQuestions => {
-			this.exerciseQuestions = exerciseQuestions;
-			ExerciseQuestion.populateQuestions(this, this.exerciseQuestions).subscribe(() => {
-				var questions = _.map(exerciseQuestions, (exerviseQuestion: ExerciseQuestion) => {
-					return exerviseQuestion.question;
-				});
-				Question.listOptionsForArray(this, questions).subscribe(() => {
-					if (this.mode == 'preview')
-						setTimeout(() => {
-							var componentHostArr = this.questionsComponents.toArray();
-							for (var i = 0; i < exerciseQuestions.length; i++) {
-								var exerciseQuestion = exerciseQuestions[i];
-								var componentHost = componentHostArr[i];
-								this.previewQuestion(exerciseQuestion, componentHost);
-							}
 
-						}, 0);
-					else if (this.mode == 'study') {
-						this.qIndex = 0;
-						this.displayQuestion(this.qIndex);
-					}
+		this.unit.populateExercise(this).subscribe(() => {
+			this.unit.exercise.populateSheet(this).subscribe(() => {
+				this.sheet = this.unit.exercise.sheet;
+				this.sheet.listQuestions(this).subscribe(examQuestions => {
+					this.examQuestions = examQuestions;
 				});
 			});
-		})
-	}
-
-	previewQuestion(exerciseQuestion: ExerciseQuestion, componentHost: any) {
-		var detailComponent = QuestionRegister.Instance.lookup(exerciseQuestion.question.type);
-		if (detailComponent) {
-			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-			var componentRef = componentHost.viewContainerRef.createComponent(componentFactory);
-			(<IQuestion>componentRef.instance).mode = 'preview';
-			(<IQuestion>componentRef.instance).render(exerciseQuestion.question);
-		}
+		});
 	}
 
 	saveEditor(): Observable<any> {
-		var createList = [];
-		return this.unit.save(this).flatMap(() => {
-			_.each(this.exerciseQuestions, (exerciseQuestion: ExerciseQuestion) => {
-				exerciseQuestion.unit_id = this.unit.id;
-				if (!exerciseQuestion.id)
-					createList.push(exerciseQuestion);
+		this.sheet.finalized = true;
+		return this.sheet.save(this).flatMap(() => {
+			_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
+				examQuestion.sheet_id = this.sheet.id;
 			});
-			return ExerciseQuestion.createArray(this, createList).do(() => {
-				this.unit.exercise_question_ids = _.pluck(this.exerciseQuestions, 'id');
+			var newExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
+				return examQuestion.IsNew;
+			});
+			var existExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
+				return !examQuestion.IsNew;
+			});
+			return Observable.forkJoin(ExamQuestion.createArray(this, newExamQuestions), ExamQuestion.updateArray(this, existExamQuestions));
+		});
+	}
+
+	previewSheet() {
+		this.previewDialog.show(this.sheet);
+	}
+
+	clearSheet() {
+		this.sheet.finalized = false;
+		this.sheet.save(this).subscribe(() => {
+			var existExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
+				return examQuestion.id != null;
+			});
+			ExamQuestion.deleteArray(this, this.examQuestions).subscribe(() => {
+				this.examQuestions = [];
 			});
 		});
 	}
 
-	selectQuestion() {
-		this.questionDialog.show();
-		this.questionDialog.onSelectQuestions.subscribe(questions => {
-			var exerciseQuestions = _.map(questions, (question: Question) => {
-				var exerciseQuestion = new ExerciseQuestion();
-				exerciseQuestion.question_id = question.id;
-				exerciseQuestion.type = question.type;
-				exerciseQuestion.title = question.title;
-				return exerciseQuestion;
-			});
-			ExerciseQuestion.populateQuestions(this, exerciseQuestions).subscribe(() => {
-				this.exerciseQuestions = this.exerciseQuestions.concat(exerciseQuestions);
-			})
-		});
-	}
-
-
-	answerQuestion() {
-		this.stage = 'answer';
-		if (this.componentRef)
-			(<IQuestion>this.componentRef.instance).mode = 'review';
-	}
-
-
-	displayQuestion(index: number) {
-		this.qIndex = index;
-		this.stage = 'question';
-		this.currentQuestion = this.exerciseQuestions[index];
-		var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
-		let viewContainerRef = this.studyQuestionComponent.viewContainerRef;
-		if (detailComponent) {
-			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-			viewContainerRef.clear();
-			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			(<IQuestion>this.componentRef.instance).mode = 'study';
-			(<IQuestion>this.componentRef.instance).render(this.currentQuestion.question, this.currentAnswer);
-		}
-	}
-
-	next() {
-		if (this.qIndex < this.exerciseQuestions.length - 1) {
-			this.displayQuestion(this.qIndex + 1);
-			this.stage = 'question';
-			if (this.componentRef)
-				(<IQuestion>this.componentRef.instance).mode = 'study';
-		} else {
-			this.viewCompleted = true;
-			this.onViewCompletedReceiver.next();
-		}
-	}
-
-	prev() {
-		if (this.qIndex > 0) {
-			this.displayQuestion(this.qIndex - 1);
-			this.stage = 'question';
-			if (this.componentRef)
-				(<IQuestion>this.componentRef.instance).mode = 'study';
-		}
-	}
-
-	delete(exerciseQuestions) {
-		if (exerciseQuestions && exerciseQuestions.length)
-			this.confirm('Are you sure to delete ?', () => {
-				ExerciseQuestion.deleteArray(this, exerciseQuestions).subscribe(() => {
-					var questionIds = _.pluck(exerciseQuestions, 'question_id');
-					this.exerciseQuestions = _.reject(this.exerciseQuestions, (exerciseQuestion: ExerciseQuestion) => {
-						return _.contains(questionIds, exerciseQuestion.question_id);
-					});
+	loadSheetTemplate() {
+		if (this.sheet && !this.sheet.finalized)
+			this.selectSheetDialog.show();
+		this.selectSheetDialog.onSelectSheet.first().subscribe((sheetTempl: QuestionSheet) => {
+			sheetTempl.listQuestions(this).subscribe(examQuestions => {
+				this.examQuestions = _.map(examQuestions, examQuestion => {
+					return examQuestion.clone();
 				});
 			});
+		});
+	}
+
+	designSheet() {
+		if (this.sheet && !this.sheet.finalized) {
+			this.editorDialog.show();
+			this.editorDialog.onSave.subscribe(examQuestions => {
+				this.examQuestions = examQuestions;
+			});
+		}
 	}
 
 }

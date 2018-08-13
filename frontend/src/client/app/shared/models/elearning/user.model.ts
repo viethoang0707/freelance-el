@@ -71,6 +71,7 @@ export class User extends BaseModel {
         this.review_ticket_ids = [];
         this.permission_name = undefined;
         this.permission_group_id = undefined;
+        this.unban_date =  undefined;
     }
 
     permission_group_id: number;
@@ -82,6 +83,8 @@ export class User extends BaseModel {
     dob: Date;
     @FieldProperty<Date>()
     ban_date: Date;
+    @FieldProperty<Date>()
+    unban_date: Date;
     position: string;
     email: string;
     group_id: number;

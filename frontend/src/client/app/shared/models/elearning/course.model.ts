@@ -136,7 +136,6 @@ export class Course extends BaseModel{
     enrollStaff(context:APIContext, userIds: number[]):Observable<any> {
         return context.apiService.execute(Course.__api__enroll_staff(this.id, userIds), 
             context.authService.LoginToken);
-
     }
 
     static __api__open(courseId: number): ExecuteAPI {

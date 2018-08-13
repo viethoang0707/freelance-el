@@ -7,7 +7,6 @@ export class SearchCountAPI extends BaseAPI{
 
     constructor( model:string, domain:string){
         super();
-        this.is_restricted =  false;
         this.params = { model: model, domain: domain };
 	}
 

@@ -1,19 +1,24 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
-import { SettingComponent } from './setting.component';
 import { SettingRoutingModule } from './setting-routing';
-
+import { SettingComponent } from './setting.component';
+import { SettingDialog } from './setting-dialog.component';
+import { MailTemplateListComponent } from './mail-template-list/mail-template-list.component';
+import { MailTemplateDialog } from './mail-template-dialog/mail-template-dialog.component';
 @NgModule({
 	imports: [
-		SettingRoutingModule,
 		ErpSharedModule,
+		SettingRoutingModule,
 		AuthModule
 	],
 	declarations: [
-		SettingComponent
+		SettingDialog,
+		SettingComponent,
+		MailTemplateDialog,
+		MailTemplateListComponent
 	],
-	exports: [],
+	exports: [SettingDialog],
 	providers: []
 })
 export class SettingModule {

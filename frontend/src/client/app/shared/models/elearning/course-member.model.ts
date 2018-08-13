@@ -167,6 +167,15 @@ export class CourseMember extends BaseModel {
             context.authService.LoginToken);
     }
 
+    static __api__do_assessment(memberId: number, asessmentId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'do_assessment',{memberId:memberId, asessmentId:asessmentId}, null);
+    }
+
+    doAssessment(context:APIContext, asessmentId: number,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__complete_course(this.id, asessmentId), 
+            context.authService.LoginToken);
+    }
+
 
     static __api__populateClass(class_id: number,fields?:string[]): ListAPI {
         return new ListAPI(CourseClass.Model, [class_id],fields);

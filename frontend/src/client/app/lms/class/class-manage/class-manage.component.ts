@@ -200,7 +200,7 @@ export class ClassManageComponent extends BaseComponent {
 				project.class_id = this.courseClass.id;
 				project.course_id = this.courseClass.course_id;
 				this.projectContentDialog.show(project);
-				this.projectContentDialog.onCreateComplete.subscribe(() => {
+				this.projectContentDialog.onCreateComplete.first().subscribe(() => {
 					this.projects.push(project);
 					this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 				});
@@ -232,7 +232,7 @@ export class ClassManageComponent extends BaseComponent {
 				exam.supervisor_id = this.ContextUser.id;
 				exam.course_class_id = this.courseClass.id;
 				this.examDialog.show(exam);
-				this.examDialog.onCreateComplete.subscribe(() => {
+				this.examDialog.onCreateComplete.first().subscribe(() => {
 					this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 					this.classExams.push(exam);
 				});
@@ -266,7 +266,7 @@ export class ClassManageComponent extends BaseComponent {
 				survey.supervisor_id = this.ContextUser.id;
 				survey.course_class_id = this.courseClass.id;
 				this.surveyDialog.show(survey);
-				this.surveyDialog.onCreateComplete.subscribe(() => {
+				this.surveyDialog.onCreateComplete.first().subscribe(() => {
 					this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 					this.classSurveys.push(survey);
 				});

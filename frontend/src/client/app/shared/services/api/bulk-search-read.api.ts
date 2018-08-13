@@ -9,7 +9,6 @@ export class BulkSearchReadAPI extends BaseAPI{
     constructor(){
         super();
         this.params = {stacks:[]};
-        this.is_restricted =  false;
 	}
 
 	add(api: SearchReadAPI) {

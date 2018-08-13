@@ -238,6 +238,24 @@ export class ExamLog extends BaseModel{
     static listByExam( context:APIContext, examId: number): Observable<any[]> {
         return ExamLog.search(context,[],"[('exam_id','=',"+examId+")]");
     }
+
+    static __api__memberStudyActivity(memberId, examId):SearchReadAPI {
+        var domain = "";
+        if (examId)
+            domain = "[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]";
+        else
+            domain = "[('member_id','=',"+memberId+")]"
+        return new SearchReadAPI(ExamLog.Model, [], domain );
+    }
+
+    static memberStudyActivity(context:APIContext, memberId, examId):Observable<any> {
+        var domain = "";
+        if (examId)
+            domain = "[('member_id','=',"+memberId+"),('exam_id','=',"+examId+")]";
+        else
+            domain = "[('member_id','=',"+memberId+")]"
+        return ExamLog.search(context,[], domain );
+    }
 }
 
 

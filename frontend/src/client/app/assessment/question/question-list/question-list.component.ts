@@ -58,7 +58,7 @@ export class QuestionListComponent extends BaseComponent {
         var question = new Question();
         question.type = type;
         this.questionDialog.show(question);
-        this.questionDialog.onCreateComplete.subscribe(() => {
+        this.questionDialog.onCreateComplete.first().subscribe(() => {
             this.questions.unshift(question);
             this.displayQuestions = [...this.questions];
             this.selectedQuestions = [];
@@ -68,8 +68,10 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     editQuestion(question: Question) {
-        this.questionDialog.show(question);
-        this.selectedQuestions = [];
+        question.populate(this).subscribe(()=> {
+            this.questionDialog.show(question);
+            this.selectedQuestions = [];
+        });
     }
 
     deleteMultipleQuestions(questions: Question[]) {

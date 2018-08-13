@@ -1,4 +1,4 @@
-<p-dialog header="{{'Course syllabus'|translate}}: {{syl.name}}" [(visible)]="display" modal="false" [closeOnEscape]="false" [closable]="false"  positionLeft="0" positionTop="0" styleClass="ui-g-12 course-syllabus-dialog" [responsive]="true">
+<p-dialog header="{{'Course syllabus'|translate}}: {{course.name}}" [(visible)]="display" modal="false" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-syllabus-dialog" [responsive]="true">
   <div class="spinner" [hidden]="!loading"></div>
   <div class="ui-g">
     <div class="ui-g-12 course-syllabus">
@@ -35,7 +35,7 @@
   <course-setting-dialog></course-setting-dialog>
   <course-unit-dialog></course-unit-dialog>
   <course-unit-preview-dialog></course-unit-preview-dialog>
-  <p-footer>
+  <!-- <p-footer>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+  </p-footer> -->
 </p-dialog>

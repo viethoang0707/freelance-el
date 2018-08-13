@@ -52,7 +52,7 @@ export class SurveyListComponent extends BaseComponent {
         var survey = new Survey();
         survey.is_public = true;
         this.surveyDialog.show(survey);
-        this.surveyDialog.onCreateComplete.subscribe(() => {
+        this.surveyDialog.onCreateComplete.first().subscribe(() => {
             this.surveys = [ survey ,...this.surveys];
             this.success('Add survey successfully');
         });

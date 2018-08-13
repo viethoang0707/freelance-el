@@ -15,34 +15,29 @@ export class ModelAPIService {
 
     constructor(private http: Http, private appEvent: AppEventManager) { }
 
-    execute(api: BaseAPI,token:Token):Observable<any> {
+    execute(api: BaseAPI, token: Token): Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         var params = api.params;
-        console.log(params);
-        if (api.is_restricted) {
-            if (!token || !token.IsValid) {
-                this.appEvent.tokenExpired();
-                return Observable.throw('Token expired')
-            }
-            params["token"] = token.code;
-        } else {
-            if (this.buildMode != 'prod')
-                params["cloud_code"] = this.cloudId; 
+        if (!token || !token.IsValid) {
+            this.appEvent.tokenExpired();
+            return Observable.throw('Token expired')
         }
+        params["token"] = token.code;
+        params["cloud_code"] = this.cloudId;
         var endpoint = Config.API_ENDPOINT + api.Method;
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
-            .map((response: Response) => response.json()).do(()=> {
+            .map((response: Response) => response.json()).do(() => {
                 this.appEvent.finishHttpTransaction();
             })
-            .catch( (e) => {
+            .catch((e) => {
                 console.log(e);
                 this.appEvent.finishHttpTransaction();
-                if (e["status"]==401)
+                if (e["status"] == 401)
                     this.appEvent.accessDenied();
                 return Observable.throw(e.json());
-            } );
+            });
     }
 
 

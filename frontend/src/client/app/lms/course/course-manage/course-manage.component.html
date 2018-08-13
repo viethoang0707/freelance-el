@@ -1,5 +1,6 @@
 <div class="card card-w-title course-syllabus">
-    <h1>{{'Course manage'|translate}}: {{course.name}} </h1>
+    <!-- <h1><a [routerLink]="['/dashboard/courses/']">{{'My courses' |translate}}</a><span class="fa fa-fw ui-icon-arrow-forward"></span><span>{{'Course'|translate}}: {{course.name}} </span></h1> -->
+    <h1>{{'Course'|translate}}: {{course.name}}</h1>
     <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Class list'|translate}}" leftIcon="ui-icon-supervisor-account" *ngIf="course.mode=='group'">
             <div class="ui-g-12 ">

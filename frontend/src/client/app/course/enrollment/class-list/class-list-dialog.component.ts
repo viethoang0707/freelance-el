@@ -72,7 +72,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         clazz.course_id = this.course.id;
         clazz.course_name = this.course.name;
         this.classDialog.show(clazz);
-        this.classDialog.onCreateComplete.subscribe(() => {
+        this.classDialog.onCreateComplete.first().subscribe(() => {
             this.classes = [clazz, ...this.classes];
             this.success('Add class successfully');
         });

@@ -8,7 +8,6 @@ export class CreateAPI extends BaseAPI{
 
     constructor( model:string, object:any){
         super();
-        this.is_restricted =  true;
         this.params = {model: model, values:object };
 	}
 

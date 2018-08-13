@@ -57,7 +57,7 @@
             </field>
         </record>
         <record id="class_open_template" model="mail.template">
-            <field name="name">E-learning course open</field>
+            <field name="name">E-learning class open</field>
             <field name="subject">E-learning course open notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>

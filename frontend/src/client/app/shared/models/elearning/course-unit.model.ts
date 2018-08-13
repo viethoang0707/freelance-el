@@ -4,15 +4,15 @@ import { Model,UnserializeProperty,ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { CourseLog } from './log.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import * as _ from 'underscore';
-import { ExerciseQuestion } from './exercise-question.model';
 import { ListAPI } from '../../services/api/list.api';
 import { HtmlLecture } from './lecture-html.model';
 import { SCORMLecture } from './lecture-scorm.model';
 import { SlideLecture } from './lecture-slide.model';
 import { VideoLecture } from './lecture-video.model';
+import { SelfAssessment } from './self_assessment.model';
+import { Exercise } from './exercise.model';
 
 @Model('etraining.course_unit')
 export class CourseUnit extends BaseModel{
@@ -35,10 +35,13 @@ export class CourseUnit extends BaseModel{
         this.slide_lecture_id =  undefined;
         this.video_lecture_id =  undefined;
         this.scorm_lecture_id =  undefined;
+        this.exercise_id = undefined;
+        this.exercise =  new Exercise();
         this.htmlLecture =  new HtmlLecture();
         this.videoLecture =  new VideoLecture();
         this.scormLecture =  new SCORMLecture();
         this.slideLecture =  new SlideLecture();
+        this.selfAssessment =  new SelfAssessment();
 	}
 
     name:string;
@@ -56,6 +59,8 @@ export class CourseUnit extends BaseModel{
     video_lecture_id: number;
     scorm_lecture_id: number;
     slide_lecture_id: number;
+    exercise_id: number;
+    self_assessment_id: number;
     @UnserializeProperty()
     htmlLecture: HtmlLecture;
     @UnserializeProperty()
@@ -64,14 +69,10 @@ export class CourseUnit extends BaseModel{
     scormLecture: SCORMLecture;
     @UnserializeProperty()
     slideLecture: SlideLecture;
-
-    static __api__listExerciseQuestions(exercise_question_ids: number[],fields?:string[]): SearchReadAPI {
-        return new ListAPI(ExerciseQuestion.Model, exercise_question_ids,fields);
-    }
-
-    listExerciseQuestions(context: APIContext,fields?:string[]): Observable<any[]> {
-        return ExerciseQuestion.array(context, this.exercise_question_ids,fields);
-    }
+    @UnserializeProperty()
+    selfAssessment: SelfAssessment;
+    @UnserializeProperty()
+    exercise: Exercise;
 
     static __api__populateHtmlLecture(html_lecture_id: number,fields?:string[]): ListAPI {
         return new ListAPI(HtmlLecture.Model, [html_lecture_id],fields);
@@ -115,6 +116,20 @@ export class CourseUnit extends BaseModel{
         });
     }
 
+    static __api__populateSelfAssessment(self_assessment_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(SelfAssessment.Model, [self_assessment_id],fields);
+    }
+
+    populateSelfAssessment(context: APIContext,fields?:string[]): Observable<any> {
+        if (!this.self_assessment_id)
+            return Observable.of(null);
+        if (!this.selfAssessment.IsNew)
+            return Observable.of(this);
+        return SelfAssessment.get(context, this.self_assessment_id,fields).do(assess => {
+            this.selfAssessment = assess;
+        });
+    }
+
     static __api__populateSlideLecture(slide_lecture_id: number,fields?:string[]): ListAPI {
         return new ListAPI(SlideLecture.Model, [slide_lecture_id],fields);
     }
@@ -126,6 +141,20 @@ export class CourseUnit extends BaseModel{
             return Observable.of(this);
         return SlideLecture.get(context, this.slide_lecture_id,fields).do(lecture => {
             this.slideLecture = lecture;
+        });
+    }
+
+    static __api__populateExercise(exercise_id: number,fields?:string[]): ListAPI {
+        return new ListAPI(Exercise.Model, [exercise_id],fields);
+    }
+
+    populateExercise(context: APIContext,fields?:string[]): Observable<any> {
+        if (!this.exercise_id)
+            return Observable.of(null);
+        if (!this.exercise.IsNew)
+            return Observable.of(this);
+        return Exercise.get(context, this.exercise_id,fields).do(exercise => {
+            this.exercise = exercise;
         });
     }
 

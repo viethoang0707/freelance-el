@@ -51,7 +51,7 @@ class Survey(models.Model):
 			for candidate in self.env['etraining.survey_member'].search([('survey_id','=',survey.id),('role','=','candidate'),('enroll_status','!=','completed')]):
 				token = ''.join(random.choice(ascii_uppercase + digits) for _ in range(24))
 				candidate.write({'survey_token': token, 'survey_link':'/lms/survey/study/%s' % token})
-				self.env.ref("etraining.survey_invite_template").send_mail(candidate.id,force_send=True)
+				self.env.ref(self._module +"."+ "survey_invite_template").send_mail(candidate.id,force_send=True)
 			survey.write({'status':'open'})
 		return True
 
@@ -154,8 +154,8 @@ class SurveyMember(models.Model):
 			m =  members[0]
 		else:
 			m = super(SurveyMember, self).create(vals)
-		submission = self.env['etraining.survey_submission'].create({'member_id':m.id})
-		m.write({'submission_id':submission.id})
+			submission = self.env['etraining.survey_submission'].create({'member_id':m.id})
+			m.write({'submission_id':submission.id})
 		return m
 
 

@@ -27,11 +27,18 @@ export class UserExportDialog extends BaseComponent {
 		super();
 		this.userIds = [];
 		this.fields = [
-			{ value: 'name', label: this.translateService.instant('Name') },
-			{ value: 'email', label: this.translateService.instant('Email') },
 			{ value: 'login', label: this.translateService.instant('Login') },
-			{ value: 'banned', label: this.translateService.instant('Banned') },
-			{ value: 'group_code', label: this.translateService.instant('Group') }
+			{ value: 'name', label: this.translateService.instant('Name') },
+			{ value: 'social_id', label: this.translateService.instant('Social ID') },
+			{ value: 'group_name', label: this.translateService.instant('Group') },
+			{ value: 'group_code', label: this.translateService.instant('Group code ') },
+			{ value: 'position', label: this.translateService.instant('Position') },
+			{ value: 'dob', label: this.translateService.instant('Date of birth') },
+			{ value: 'gender', label: this.translateService.instant('Gender') },
+			{ value: 'phone', label: this.translateService.instant('Phone') },
+			{ value: 'email', label: this.translateService.instant('Email') },
+			{ value: 'ban_date', label: this.translateService.instant('Deactivate date') },
+			{ value: 'unban_date', label: this.translateService.instant('Activate date') },
 		];
 		this.display = false;
 	}

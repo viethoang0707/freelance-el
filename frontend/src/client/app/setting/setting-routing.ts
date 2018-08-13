@@ -1,21 +1,31 @@
 import { NgModule } from '@angular/core';
-import { Routes } from '@angular/router';
 import { SettingComponent } from './setting.component';
+import { MailTemplateListComponent } from './mail-template-list/mail-template-list.component';
+import { Routes } from '@angular/router';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { RouterModule } from '@angular/router';
 
 export const SettingRoutes: Routes = [
-  {
-    path: 'setting',
-    component: SettingComponent,
-    canActivate: [AdminGuard],
-    data: {
+    {
+       path: 'settings',
+       component: SettingComponent,
+       data: {
       breadcrumb: 'Setting'
     },
-    children:
-    [
-    ]
-  }
+    canActivate: [AdminGuard],
+       children:
+       [
+            {
+               path: "mails",
+               component: MailTemplateListComponent,
+               data: {
+                  breadcrumb: 'Mail templates'
+                }
+            },
+          
+
+       ]
+    }
 
 ]
 

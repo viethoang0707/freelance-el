@@ -13,13 +13,15 @@ import { Question } from '../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Http, Response } from '@angular/http';
-import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
+import { QuestionContainerDirective } from '../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../cms/question/question.decorator';
 import 'rxjs/add/observable/timer';
 import { PRINT_DIALOG_STYLE } from '../../../shared/models/constants';
 import * as _ from 'underscore';
 import { BaseModel } from '../../../shared/models/base.model';
+import { ExamLog } from '../../../shared/models/elearning/log.model';
+import { ReportUtils } from '../../../shared/helpers/report.utils';
 
 
 @Component({
@@ -38,6 +40,8 @@ export class AnswerPrintDialog extends BaseComponent {
     private sheet: QuestionSheet;
     private submission: Submission;
     private setting: ExamSetting;
+    private studyTime: number;
+    private reportUtils: ReportUtils;
 
     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
     @ViewChild('printSection') printSection;
@@ -52,23 +56,21 @@ export class AnswerPrintDialog extends BaseComponent {
         this.member = new ExamMember();
         this.submission = new Submission();
         this.setting = new ExamSetting();
+        this.reportUtils =  new ReportUtils();
     }
 
-    show(exam: Exam, member: ExamMember) {
+    show(exam: Exam, member: ExamMember, submit: Submission) {
         this.display = true;
         this.examQuestions = [];
         this.answers = [];
         this.exam = exam;
+        this.submission =  submit;
         this.member = member;
         BaseModel
             .bulk_list(this,
-                ExamMember.__api__populateSubmission(this.member.submission_id),
                 Exam.__api__populateSetting(this.exam.setting_id),
                 Exam.__api__populateQuestionSheet(this.exam.sheet_id))
             .subscribe(jsonArr => {
-                var submits = Submission.toArray(jsonArr[0]);
-                if (submits.length) {
-                    this.submission = submits[0];
                     var settings = ExamSetting.toArray(jsonArr[1]);
                     if (settings.length)
                         this.setting = settings[0];
@@ -77,7 +79,7 @@ export class AnswerPrintDialog extends BaseComponent {
                         this.sheet = sheets[0];
                         this.startReview();
                     }
-                }
+                    this.studyTime =  Math.floor(this.submission.study_time  / 60);
             });
     }
 

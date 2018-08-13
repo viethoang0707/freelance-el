@@ -12,10 +12,12 @@ export class Token extends BaseModel{
 		this.code = undefined;
 		this.date_expire = undefined;
         this.cloud_id = undefined;
+        this.cloud_code = undefined;
 	}
 
     code:string;
     cloud_id:number;
+    cloud_code: string;
     date_expire: number;
 
     get IsValid():boolean {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
@@ -8,9 +8,9 @@ import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
-import { CourseUnitRegister } from '../../../cms/course/course-unit-template/unit.decorator';
-import { CourseUnitContainerDirective } from '../../../cms/course/course-unit-template/unit-container.directive';
-import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.interface';
+import { CourseUnitPlayerRegister } from '../course-unit-template/unit.decorator';
+import { CourseUnitPlayerContainerDirective } from '../course-unit-template/unit-player.directive';
+import { ICourseUnitPlay } from '../course-unit-template/unit.interface';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { Submission } from '../../../shared/models/elearning/submission.model';
@@ -20,7 +20,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
-
+import * as screenfull from 'screenfull';
 declare var $: any;
 
 @Component({
@@ -32,6 +32,7 @@ declare var $: any;
 export class CourseUnitStudyDialog extends BaseComponent {
 
 	WINDOW_HEIGHT: any;
+	screenfull = screenfull;
 
 	private componentRef: any;
 	private treeUtils: TreeUtils;
@@ -51,8 +52,10 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	private faqs: CourseFaq[];
 	private materials: CourseMaterial[];
 	private autoNext: boolean;
+	private fullscreen: boolean;
 
-	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
+	@ViewChild(CourseUnitPlayerContainerDirective) unitHost: CourseUnitPlayerContainerDirective;
+	@ViewChild('unitPlayer') unitPlayer: ElementRef;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver, private winRef: WindowRef) {
 		super();
@@ -61,13 +64,14 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		this.course = new Course();
 		this.WINDOW_HEIGHT = $(window).height();
 		this.enableLogging = true;
-		this.autoNext =  false;
+		this.autoNext = false;
 		this.faqs = [];
 		this.materials = [];
 	}
 
 	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[], faqs: CourseFaq[], materials: CourseMaterial[]) {
 		this.display = true;
+		this.fullscreen = false;
 		this.enableLogging = member.enroll_status != 'completed';
 		this.member = member;
 		this.course = course;
@@ -212,19 +216,19 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	}
 
 	openUnit(unit: CourseUnit) {
-		var detailComponent = CourseUnitRegister.Instance.lookup(unit.type);
+		var detailComponent = CourseUnitPlayerRegister.Instance.lookup(unit.type);
 		let viewContainerRef = this.unitHost.viewContainerRef;
 		if (detailComponent) {
 			let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 			viewContainerRef.clear();
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
-			let courseUnitPlayer:ICourseUnit = (<ICourseUnit>this.componentRef.instance);
-			courseUnitPlayer.mode = 'study';
-			courseUnitPlayer.render(unit);
-			if (unit.type == 'video' && this.autoNext)
-				courseUnitPlayer.onViewCompleted.first().subscribe(()=> {
+			let courseUnitPlayer: ICourseUnitPlay = (<ICourseUnitPlay>this.componentRef.instance);
+			courseUnitPlayer.play(unit, this.member);
+
+			courseUnitPlayer.onViewCompleted.first().subscribe(() => {
+				if (unit.type == 'video' && this.autoNext)
 					this.nextUnit();
-				});
+			});
 		} else {
 			viewContainerRef.clear();
 			this.componentRef = null;
@@ -238,6 +242,19 @@ export class CourseUnitStudyDialog extends BaseComponent {
 
 	downloadMaterial(material: CourseMaterial) {
 		this.winRef.getNativeWindow().open(material.url, "_blank");
+	}
+
+	requestFullScreen() {
+		if (screenfull.enabled) {
+			screenfull.request(this.unitPlayer.nativeElement);
+			this.fullscreen =  true;
+		}
+
+	}
+
+	private exitFullScreen() {
+		this.fullscreen = false;
+		screenfull.exit();
 	}
 
 }

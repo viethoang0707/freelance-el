@@ -21,7 +21,7 @@ import { ExcelService } from '../../../../shared/services/excel.service';
 import { BaseModel } from '../../../../shared/models/base.model';
 import { ExamRecord } from '../../../../shared/models/elearning/exam-record.model';
 
-const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'grade', 'score']
+const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'grade', 'score', 'submission_id']
 
 @Component({
     moduleId: module.id,
@@ -35,7 +35,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     private selectedExam: any;
     private reportUtils: ReportUtils;
 
-    constructor(private excelService: ExcelService, private datePipe: DatePipe) {
+    constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
         super();
         this.reportUtils = new ReportUtils();
     }
@@ -52,7 +52,15 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
     export() {
         var output = _.map(this.records, record => {
-            return { 'Name': record['user_name'], 'Login': record['user_login'], 'User group': record['user_group'], 'Attempt date': record['date_attempt'], 'Score': record['score'], 'Result': record['result'] };
+            return {
+                'Name': record['user_name'],
+                'Login': record['user_login'],
+                'User group': record['user_group'],
+                'Attempt date': record['date_attempt'],
+                'Study time': record['study_time'],
+                'Score': record['score'],
+                'Result': record['result']
+            };
         });
         this.excelService.exportAsExcelFile(output, 'course_by_member_report');
     }
@@ -60,37 +68,37 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     render(exam: Exam) {
         this.clear();
         exam.listCandidates(this, EXAM_MEMBER_FIELDS).subscribe(members => {
-            ExamLog.listByExam(this, exam.id).subscribe(logs => {
-                this.records = this.generateReport(exam, logs, members);
+            exam.listSubmissions(this).subscribe(submits => {
+                this.records = this.generateReport(exam, submits, members);
             });
         });
     }
 
 
-    generateReport(exam: Exam, logs: ExamLog[], members: ExamMember[]) {
+    generateReport(exam: Exam, submits: Submission[], members: ExamMember[]) {
         var rows = [];
         _.each(members, (member: ExamMember) => {
-            var userLogs = _.filter(logs, (log: ExamLog) => {
-                return log.user_id == member.user_id;
+            var submit = _.find(submits, (obj: Submission) => {
+                return obj.id == member.submission_id;
             });
-            rows.push(this.generateReportRow(exam, member, userLogs));
+            rows.push(this.generateReportRow(exam, member, submit));
         });
         return rows;
     }
 
-    generateReportRow(exam: Exam, member: ExamMember, logs: ExamLog[]): any {
+    generateReportRow(exam: Exam, member: ExamMember, submit: Submission): any {
         var record = {};
         record["user_login"] = member.login;
         record["user_name"] = member.name;
         record["user_group"] = member.group_name;
         record["score"] = member.score;
         record["grade"] = member.grade;
-        if (logs && logs.length) {
-            var result = this.reportUtils.analyzeExamMemberActivity(logs);
-            if (result[0])
-                record["date_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
+        if (submit) {
+            if (submit.start) 
+                record["date_attempt"] = this.datePipe.transform(submit.start, EXPORT_DATE_FORMAT);
+            if (submit.study_time)
+                record["study_time"] = this.timePipe.transform(submit.study_time * 1000, 'min');
         }
-
         return record;
     }
 

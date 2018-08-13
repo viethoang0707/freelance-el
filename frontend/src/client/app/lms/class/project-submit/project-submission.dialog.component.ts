@@ -12,9 +12,6 @@ import { ProjectSubmission } from '../../../shared/models/elearning/project-subm
 import { Project } from '../../../shared/models/elearning/project.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Http, Response } from '@angular/http';
-import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
 import { WebcamImage } from 'ngx-webcam';

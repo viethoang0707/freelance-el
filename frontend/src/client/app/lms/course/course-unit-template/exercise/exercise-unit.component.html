@@ -1,0 +1,16 @@
+
+  <div class="pt10 pl10 pr10 pb10">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <ng-template question-container></ng-template>
+      </div>
+    </div>
+    <div class="ui-g-12" *ngIf="stage=='answer'">
+      <div class="mb5">{{'Explanation'|translate}} : {{currentQuestion.explanation}}</div>
+      <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous Question'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
+      <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next Question'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="next()" *ngIf="qIndex < examQuestions.length-1"></button>
+    </div>
+    <div class="ui-g-12" *ngIf="stage=='question'">
+      <button pButton type="button" icon="ui-icon-lightbulb-outline" title="{{'Answer'|translate}}" label="{{'Answer'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="answerQuestion()"></button>
+        </div>
+  </div>
