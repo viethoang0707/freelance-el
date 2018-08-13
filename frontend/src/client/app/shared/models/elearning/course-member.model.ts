@@ -163,12 +163,21 @@ export class CourseMember extends BaseModel {
             context.authService.LoginToken);
     }
 
-    static __api__do_assessment(memberId: number, assessmentId: number,fields?:string[]): ExecuteAPI {
-        return new ExecuteAPI(CourseMember.Model, 'do_assessment',{memberId:memberId, assessmentId:assessmentId}, null);
+    static __api__do_assessment(memberId: number, assessmentId: number,examMemberId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'do_assessment',{memberId:memberId, assessmentId:assessmentId, examMemberId:examMemberId}, null);
     }
 
-    doAssessment(context:APIContext, assessmentId: number,fields?:string[]):Observable<any> {
-        return context.apiService.execute(CourseMember.__api__do_assessment(this.id, assessmentId), 
+    doAssessment(context:APIContext, assessmentId: number,examMemberId: number,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__do_assessment(this.id, assessmentId,examMemberId), 
+            context.authService.LoginToken);
+    }
+
+    static __api__join_assessment(memberId: number, assessmentId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'join_assessment',{memberId:memberId, assessmentId:assessmentId}, null);
+    }
+
+    joinAssessment(context:APIContext, assessmentId: number,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__join_assessment(this.id, assessmentId), 
             context.authService.LoginToken);
     }
 
