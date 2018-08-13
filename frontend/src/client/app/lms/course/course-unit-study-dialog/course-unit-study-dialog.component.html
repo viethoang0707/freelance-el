@@ -7,17 +7,9 @@
                 <div class="head">
                 </div>
                 <div class="image-box-content">
-                    <!-- <div class="fLeft" *ngIf="selectedUnit">
-                        <h3 class="removeMT mb5 mr10 fLeft heading-unit-course">{{selectedUnit.name}}</h3>
-                        <span class="complete-status" *ngIf="completedUnitIds.includes(selectedUnit.id)">{{'Completed'|translate}}</span>
-                        <span class="incomplete-status" *ngIf="!completedUnitIds.includes(selectedUnit.id)">{{'Incompleted'|translate}}</span>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="clearfix"></div> -->
                     <div #unitPlayer>
                         <ng-template course-unit-player-container></ng-template>
-                        <button pButton type="button" icon="ui-icon-fullscreen-exit" title="{{'Exit fullscreen'|translate}}" label="{{'Exit fullscreen'|translate}}"
-                            class="course-unit-study-btn" (click)="exitFullScreen()" [hidden]="!fullscreen"></button>
+                        
                     </div>
                 </div>
             </div>

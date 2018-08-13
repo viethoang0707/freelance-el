@@ -10,10 +10,19 @@ import { BaseAPI } from './api/base.api';
 @Injectable()
 export class APIService {
     private cloudId: string = "<%= CLOUD_ID %>";
-    private apiEndpoint: string;
     constructor(private http: Http, private appEvent: AppEventManager) { }
 
+    set ApiEndpoint(lang: string) {
+        localStorage.setItem('apiEndpoint', lang);
+    }
+
+    get ApiEndpoint(): string {
+        return localStorage.getItem('apiEndpoint');
+    }
+
     init(): Observable<any> {
+        if (this.ApiEndpoint)
+            return Observable.of(true);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         var endpoint = Config.AUTHEN_SERVER_URL + '/account/cloud';
@@ -21,10 +30,10 @@ export class APIService {
         params["cloud_code"] = this.cloudId;
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
-            .do((response: Response) => { 
+            .do((response: Response) => {
                 var resp = response.json();
-                this.apiEndpoint =  resp["api_endpoint"];
-                console.log(this.apiEndpoint);
+                this.ApiEndpoint = resp["api_endpoint"];
+                console.log(this.ApiEndpoint);
                 this.appEvent.finishHttpTransaction();
             })
             .catch((e) => {
@@ -32,7 +41,7 @@ export class APIService {
                 this.appEvent.finishHttpTransaction();
                 return Observable.throw(e.json());
             });
-        }
+    }
 
 
     login(username: string, password: string): Observable<any> {
@@ -119,7 +128,7 @@ export class APIService {
                 observer.next(progress);
             };
 
-            xhr.open('POST', this.apiEndpoint + '/file/upload', true);
+            xhr.open('POST', this.ApiEndpoint + '/file/upload', true);
             xhr.send(formData);
         });
     }
@@ -134,7 +143,7 @@ export class APIService {
             return Observable.throw('Token expired')
         }
         params['token'] = token.code;
-        return this.http.post(this.apiEndpoint + '/file/unzip', JSON.stringify({ token: token.code, filename: filename }), options)
+        return this.http.post(this.ApiEndpoint + '/file/unzip', JSON.stringify({ token: token.code, filename: filename }), options)
             .map(res => res.json())
             .do(() => {
                 this.appEvent.finishHttpTransaction();
@@ -156,7 +165,7 @@ export class APIService {
             return Observable.throw('Token expired')
         }
         params['token'] = token.code;
-        return this.http.post(this.apiEndpoint + '/file/convert2pdf', JSON.stringify({ token: token.code, filename: filename }), options)
+        return this.http.post(this.ApiEndpoint + '/file/convert2pdf', JSON.stringify({ token: token.code, filename: filename }), options)
             .map(res => res.json())
             .do(() => {
                 this.appEvent.finishHttpTransaction();
@@ -178,7 +187,7 @@ export class APIService {
         }
         params["token"] = token.code;
         params["cloud_code"] = this.cloudId;
-        var endpoint = this.apiEndpoint + api.Method;
+        var endpoint = this.ApiEndpoint + api.Method;
         this.appEvent.startHttpTransaction();
         return this.http.post(endpoint, JSON.stringify(params), options)
             .map((response: Response) => response.json()).do(() => {

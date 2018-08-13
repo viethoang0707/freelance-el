@@ -183,8 +183,6 @@ export class Exam extends BaseModel{
     populateClass(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.course_class_id)
             return Observable.of(null);
-        if (!this.clazz.IsNew)
-            return Observable.of(this);
         return CourseClass.get(context, this.course_class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
@@ -197,8 +195,6 @@ export class Exam extends BaseModel{
     populateSetting(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.setting_id)
             return Observable.of(null);
-        if (!this.setting.IsNew)
-            return Observable.of(this);
         return ExamSetting.get(context, this.setting_id,fields).do(setting => {
             this.setting = setting;
         });
@@ -211,8 +207,6 @@ export class Exam extends BaseModel{
     populateQuestionSheet(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.sheet_id)
             return Observable.of(null);
-        if (!this.sheet.IsNew)
-            return Observable.of(this);
         return QuestionSheet.get(context, this.sheet_id,fields).do(sheet => {
             this.sheet = sheet;
         });

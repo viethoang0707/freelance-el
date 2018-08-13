@@ -203,8 +203,6 @@ export class Course extends BaseModel{
     populateSyllabus(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.syllabus_id)
             return Observable.of(null);
-        if (!this.syl.IsNew)
-            return Observable.of(this);
         return CourseSyllabus.get(context, this.syllabus_id,fields).do(syl => {
             this.syl = syl;
         });

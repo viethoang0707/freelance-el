@@ -34,6 +34,7 @@ export class CourseUnit extends BaseModel{
         this.html_lecture_id =  undefined;
         this.slide_lecture_id =  undefined;
         this.video_lecture_id =  undefined;
+        this.self_assessment_id = undefined;
         this.scorm_lecture_id =  undefined;
         this.exercise_id = undefined;
         this.exercise =  new Exercise();
@@ -81,8 +82,6 @@ export class CourseUnit extends BaseModel{
     populateHtmlLecture(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.html_lecture_id)
             return Observable.of(null);
-        if (!this.htmlLecture.IsNew)
-            return Observable.of(this);
         return HtmlLecture.get(context, this.html_lecture_id,fields).do(lecture => {
             this.htmlLecture = lecture;
         });
@@ -95,8 +94,6 @@ export class CourseUnit extends BaseModel{
     populateScormLecture(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.scorm_lecture_id)
             return Observable.of(null);
-        if (!this.scormLecture.IsNew)
-            return Observable.of(this);
         return SCORMLecture.get(context, this.scorm_lecture_id,fields).do(lecture => {
             this.scormLecture = lecture;
         });
@@ -109,8 +106,6 @@ export class CourseUnit extends BaseModel{
     populateVideoLecture(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.video_lecture_id)
             return Observable.of(null);
-        if (!this.videoLecture.IsNew)
-            return Observable.of(this);
         return VideoLecture.get(context, this.video_lecture_id,fields).do(lecture => {
             this.videoLecture = lecture;
         });
@@ -123,8 +118,6 @@ export class CourseUnit extends BaseModel{
     populateSelfAssessment(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.self_assessment_id)
             return Observable.of(null);
-        if (!this.selfAssessment.IsNew)
-            return Observable.of(this);
         return SelfAssessment.get(context, this.self_assessment_id,fields).do(assess => {
             this.selfAssessment = assess;
         });
@@ -137,8 +130,6 @@ export class CourseUnit extends BaseModel{
     populateSlideLecture(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.slide_lecture_id)
             return Observable.of(null);
-        if (!this.slideLecture.IsNew)
-            return Observable.of(this);
         return SlideLecture.get(context, this.slide_lecture_id,fields).do(lecture => {
             this.slideLecture = lecture;
         });
@@ -151,8 +142,6 @@ export class CourseUnit extends BaseModel{
     populateExercise(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.exercise_id)
             return Observable.of(null);
-        if (!this.exercise.IsNew)
-            return Observable.of(this);
         return Exercise.get(context, this.exercise_id,fields).do(exercise => {
             this.exercise = exercise;
         });

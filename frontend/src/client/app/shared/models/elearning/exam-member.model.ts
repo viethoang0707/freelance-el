@@ -80,8 +80,6 @@ export class ExamMember extends BaseModel{
     populateExam(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.exam_id)
             return Observable.of(null);
-        if (!this.exam.IsNew)
-            return Observable.of(this);
         return Exam.get(context, this.exam_id,fields).do(exam => {
             this.exam = exam;
         });
@@ -120,8 +118,6 @@ export class ExamMember extends BaseModel{
     populateUser(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        if (!this.user.IsNew)
-            return Observable.of(this);
         return User.get(context, this.user_id,fields).do(user => {
             this.user = user;
         });
@@ -134,8 +130,6 @@ export class ExamMember extends BaseModel{
     populateSubmission(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        if (!this.submit.IsNew)
-            return Observable.of(this);
         return Submission.get(context, this.submission_id,fields).do(submit => {
             this.submit = submit;
         });

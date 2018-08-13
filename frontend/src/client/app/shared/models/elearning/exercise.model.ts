@@ -34,8 +34,6 @@ export class Exercise extends BaseModel {
 	populateSheet(context: APIContext, fields?: string[]): Observable<any> {
 		if (!this.sheet_id)
 			return Observable.of(null);
-		if (!this.sheet.IsNew)
-			return Observable.of(this);
 		return QuestionSheet.get(context, this.sheet_id, fields).do(sheet => {
 			this.sheet = sheet;
 		});

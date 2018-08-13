@@ -74,7 +74,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 			});
 			var existExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
 				return !examQuestion.IsNew;
-			});
+			});			
 			return Observable.forkJoin(ExamQuestion.createArray(this, newExamQuestions), ExamQuestion.updateArray(this, existExamQuestions));
 		});
 	}

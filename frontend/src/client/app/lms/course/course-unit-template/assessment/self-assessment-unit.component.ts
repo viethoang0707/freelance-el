@@ -52,34 +52,41 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 		this.member = member;
 		this.unit.populateSelfAssessment(this).subscribe(() => {
 			this.assessment = this.unit.selfAssessment;
-		});
-		this.member.doAssessment(this, this.assessment.id).subscribe(examMemberId => {
-			ExamMember.get(this, examMemberId).subscribe(examMember => {
-				this.examMember = examMember;
-				this.examMember.listSubmissions(this).subscribe((submits:Submission[])=> {
-					this.submissions = _.filter(submits, (submit:Submission)=> {
-						return submit.start!=null && submit.end!=null;
-					})
-				});
+			this.member.doAssessment(this, this.assessment.id).subscribe(examMemberId => {
+				this.loadSubmissionHistory(examMemberId);
 			});
 		});
+
+	}
+
+	loadSubmissionHistory(examMemberId: number) {
+		ExamMember.get(this,examMemberId ).subscribe(examMember => {
+			this.examMember = examMember;
+			this.examMember.listSubmissions(this).subscribe((submits: Submission[]) => {
+				this.submissions = _.filter(submits, (submit: Submission) => {
+					return submit.start != null && submit.end != null;
+				})
+			});
+		});
+
 	}
 
 	doAssessment() {
 		this.assessment.populateExam(this).subscribe(() => {
-				this.studyDialog.show(this.assessment.exam, this.examMember);
-				this.studyDialog.onFinish.subscribe(()=> {
-					this.viewCompleted =  true;
-					this.onViewCompletedReceiver.next();
-				});
+			this.studyDialog.show(this.assessment.exam, this.examMember);
+			this.studyDialog.onFinish.subscribe(() => {
+				this.viewCompleted = true;
+				this.onViewCompletedReceiver.next();
+				this.loadSubmissionHistory();
+			});
 		});
 	}
 
-	viewAnswer(submit:Submission) {
+	viewAnswer(submit: Submission) {
 		this.assessment.populateExam(this).subscribe(() => {
 			this.answerPrintDialog.show(this.assessment.exam, this.examMember, submit);
 		});
-		
+
 	}
 
 

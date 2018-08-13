@@ -160,8 +160,6 @@ export class Survey extends BaseModel{
     populateClass(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.course_class_id)
             return Observable.of(null);
-        if (!this.clazz.IsNew)
-            return Observable.of(this);
         return CourseClass.get(context, this.course_class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
@@ -182,8 +180,6 @@ export class Survey extends BaseModel{
     populateQuestionSheet(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.sheet_id)
             return Observable.of(null);
-        if (!this.sheet.IsNew)
-            return Observable.of(this);
         return SurveySheet.get(context, this.sheet_id,fields).do(sheet => {
             this.sheet = sheet;
         });

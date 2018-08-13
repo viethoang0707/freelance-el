@@ -120,8 +120,6 @@ export class CourseMember extends BaseModel {
     populateCertificate(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.certificate_id)
             return Observable.of(null);
-        if (!this.certificate.IsNew)
-            return Observable.of(this);
         return Certificate.get(context, this.certificate_id,fields).do(certificate => {
             this.certificate = certificate;
         });
@@ -134,8 +132,6 @@ export class CourseMember extends BaseModel {
     populateCourse(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.course_id)
             return Observable.of(null);
-        if (!this.course.IsNew)
-            return Observable.of(this);
         return Course.get(context, this.course_id,fields).do(course => {
             this.course = course;
         });
@@ -167,12 +163,12 @@ export class CourseMember extends BaseModel {
             context.authService.LoginToken);
     }
 
-    static __api__do_assessment(memberId: number, asessmentId: number,fields?:string[]): ExecuteAPI {
-        return new ExecuteAPI(CourseMember.Model, 'do_assessment',{memberId:memberId, asessmentId:asessmentId}, null);
+    static __api__do_assessment(memberId: number, assessmentId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'do_assessment',{memberId:memberId, assessmentId:assessmentId}, null);
     }
 
-    doAssessment(context:APIContext, asessmentId: number,fields?:string[]):Observable<any> {
-        return context.apiService.execute(CourseMember.__api__complete_course(this.id, asessmentId), 
+    doAssessment(context:APIContext, assessmentId: number,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__do_assessment(this.id, assessmentId), 
             context.authService.LoginToken);
     }
 
@@ -184,8 +180,6 @@ export class CourseMember extends BaseModel {
     populateClass(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.class_id)
             return Observable.of(null);
-        if (!this.clazz.IsNew)
-            return Observable.of(this);
         return CourseClass.get(context, this.class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
@@ -241,8 +235,6 @@ export class CourseMember extends BaseModel {
     populateUser(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        if (!this.user.IsNew)
-            return Observable.of(this);
         return User.get(context, this.user_id,fields).do(user => {
             this.user = user;
         });

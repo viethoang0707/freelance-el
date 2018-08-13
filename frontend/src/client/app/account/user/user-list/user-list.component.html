@@ -12,10 +12,16 @@
                     <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editUser(selectedUsers[0])" [disabled]="!selectedUsers || selectedUsers.length!=1"></button>
                     <button pButton type="button" label="{{'Deactivate'|translate}}" class="red-btn" icon="ui-icon-lock" (click)="deactivateMultipleUsers(selectedUsers)" [disabled]="!selectedUsers || !selectedUsers.length"></button>
                     <button pButton type="button" label="{{'Activate'|translate}}" class="blue-btn" icon="ui-icon-lock-open" (click)="activateMultipleUsers(selectedUsers)" [disabled]="!selectedUsers || !selectedUsers.length"></button>
-                </div>
-                <div class="ui-toolbar-group-right" >
                     <button pButton type="button" label="{{'Export'|translate}}" class="blue-grey-btn" icon="ui-icon-file-download" (click)="exportUser()"></button>
                     <button pButton type="button" label="{{'Import'|translate}}" class="blue-grey-btn" icon="ui-icon-file-upload" (click)="importUser()"></button>
+                </div>
+                <div class="ui-toolbar-group-right">
+                    
+                    <span class="md-inputfield search">
+              <input type="text" pInputText placeholder="{{'Search'|translate}}" 
+              (input)="courseTable.filterGlobal($event.target.value, 'contains')">   
+              <i class="fa fa-search"></i>      
+          </span>
                 </div>
             </p-toolbar>
             <p-table #userTable [value]="displayUsers" [paginator]="true" [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers" [responsive]="true" [globalFilterFields]="['name', 'login', 'email']">

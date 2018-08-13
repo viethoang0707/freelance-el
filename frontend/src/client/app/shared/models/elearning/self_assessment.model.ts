@@ -34,8 +34,6 @@ export class SelfAssessment extends BaseModel {
 	populateExam(context: APIContext, fields?: string[]): Observable<any> {
 		if (!this.exam_id)
 			return Observable.of(null);
-		if (!this.exam.IsNew)
-			return Observable.of(this);
 		return Exam.get(context, this.exam_id, fields).do(exam => {
 			this.exam = exam;
 		});

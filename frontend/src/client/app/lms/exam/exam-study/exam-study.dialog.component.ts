@@ -87,6 +87,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	show(exam: Exam, member: ExamMember) {
 		this.display = true;
+		this.examQuestions = [];
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
