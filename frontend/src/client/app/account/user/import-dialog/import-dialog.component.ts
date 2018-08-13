@@ -41,11 +41,11 @@ export class UserImportDialog extends BaseComponent {
 		this.records = [];
 		this.statusMessages = [];
 		this.fields = [
-			{ value: 'login', label: this.translateService.instant('Login') },
-			{ value: 'name', label: this.translateService.instant('Name') },
-			{ value: 'social_id', label: this.translateService.instant('Social ID') },
-			{ value: 'group_name', label: this.translateService.instant('Group') },
-			{ value: 'group_code', label: this.translateService.instant('Group code ') },
+			{ value: 'login', label: this.translateService.instant('Username') },
+			{ value: 'name', label: this.translateService.instant('Fullname') },
+			{ value: 'social_id', label: this.translateService.instant('IDNo') },
+			{ value: 'group_name', label: this.translateService.instant('Dealer') },
+			{ value: 'group_code', label: this.translateService.instant('Dealer Code') },
 			{ value: 'position', label: this.translateService.instant('Position') },
 			{ value: 'dob', label: this.translateService.instant('Date of birth') },
 			{ value: 'gender', label: this.translateService.instant('Gender') },

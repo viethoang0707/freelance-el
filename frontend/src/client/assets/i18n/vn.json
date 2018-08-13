@@ -548,7 +548,14 @@
 	"Add teacher successfully": "Thêm mới giáo viên thành công",
 	"Delete member successfully": "Xóa thành viên thành công",
 	"Gender": "Giới tính",
-	"Date of birth": "Ngày sinh"
+	"Date of birth": "Ngày sinh",
+	"Dealer Code": "Mã đại lý",
+	"Dealer": "Đại lý",
+	"IDNo": "Số CMND",
+	"Fullname": "Tên đầy đủ",
+	"Deactivate date": "Ngày hủy kích hoạt",
+	"Activate date": "Ngày kích hoạt"
+
 
 
 
