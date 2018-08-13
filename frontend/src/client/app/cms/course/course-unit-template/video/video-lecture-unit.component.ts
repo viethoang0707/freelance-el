@@ -58,7 +58,7 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 
 	uploadFile(file) {
 		this.percentage = 0;
-		this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
+		this.apiService.upload(file, this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {

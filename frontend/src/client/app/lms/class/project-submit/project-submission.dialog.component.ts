@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, NgZone, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -68,7 +68,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
 
     uploadFile(file) {
         this.percentage = 0;
-        this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
+        this.apiService.upload(file, this.authService.LoginToken).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {

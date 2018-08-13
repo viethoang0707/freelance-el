@@ -6,20 +6,19 @@ import { User } from '../models/elearning/user.model';
 import { Permission } from '../models/elearning/permission.model';
 import { Token } from '../models/cloud/token.model';
 import { MapUtils } from '../helpers/map.utils';
-import { ModelAPIService } from './api/model-api.service';
-import { AccountAPIService } from './api/account-api.service';
+import { APIService } from './api.service';
 
 
-declare function escape(s:string): string;
-declare function unescape(s:string): string;
+declare function escape(s: string): string;
+declare function unescape(s: string): string;
 
 @Injectable()
 export class AuthService {
 
-    constructor(private accountService: AccountAPIService) {
+    constructor(private apiService: APIService) {
     }
 
-   get StoredCredential(): Credential {
+    get StoredCredential(): Credential {
         if (localStorage.getItem('credential'))
             return MapUtils.deserialize(Credential, JSON.parse(atob(localStorage.getItem('credential'))));
         return new Credential();
@@ -65,9 +64,9 @@ export class AuthService {
         localStorage.setItem('token', btoa(unescape(encodeURIComponent(JSON.stringify(token)))));
     }
 
-    get LoginToken():Token {
-         if (localStorage.getItem('token'))
-            return MapUtils.deserialize(Token, 
+    get LoginToken(): Token {
+        if (localStorage.getItem('token'))
+            return MapUtils.deserialize(Token,
                 JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('token'))))));
         return null;
     }
@@ -79,7 +78,7 @@ export class AuthService {
 
     get Remember(): boolean {
         if (localStorage.getItem('remember'))
-            return localStorage.getItem('remember')=='true';
+            return localStorage.getItem('remember') == 'true';
         else
             return false;
     }
@@ -89,10 +88,10 @@ export class AuthService {
     }
 
     login(info: Credential): Observable<any> {
-        return this.accountService.login(info.username, info.password).map(resp => {
+        return this.apiService.login(info.username, info.password).map(resp => {
             this.UserProfile = MapUtils.deserialize(User, resp["user"]);
             this.LoginToken = MapUtils.deserialize(Token, resp["token"]);
-            return {user: this.UserProfile, token: this.LoginToken};
+            return { user: this.UserProfile, token: this.LoginToken };
         });
     }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ModelAPIService } from '../../shared/services/api/model-api.service';
+
 import { Router } from '@angular/router';
 import { User } from '../../shared/models/elearning/user.model';
 import { Token } from '../../shared/models/cloud/token.model';

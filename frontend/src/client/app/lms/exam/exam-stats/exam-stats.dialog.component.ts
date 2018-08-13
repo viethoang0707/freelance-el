@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { ExcelService } from '../../../shared/services/excel.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';

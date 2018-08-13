@@ -13,14 +13,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 	template: `<div class="spinner" [hidden]="!loading"></div>
 				<router-outlet></router-outlet>`
 })
-export class AppComponent extends BaseComponent{
+export class AppComponent extends BaseComponent {
 
 	constructor(private router: Router) {
 		super();
-		this.translateService.setDefaultLang(DEFAULT_LANG);
-        this.translateService.use(this.settingService.Lang);
 		console.log('Environment config', Config);
+		this.apiService.init().subscribe(() => {
+			this.translateService.setDefaultLang(DEFAULT_LANG);
+			this.translateService.use(this.settingService.Lang);
+		});
 	}
-
-
 }

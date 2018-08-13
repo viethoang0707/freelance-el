@@ -5,7 +5,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { AuthService } from './auth.service';
 import { AppEventManager } from './app-event-manager.service';
 import { SettingService } from './setting.service';
-import { ModelAPIService } from './api/model-api.service';
 import 'rxjs/add/operator/map';
 import { BaseComponent } from '../components/base/base.component';
 import { Course } from '../models/elearning/course.model';

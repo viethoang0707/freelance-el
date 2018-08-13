@@ -18,7 +18,7 @@
                     <button pButton type="button" label="{{'Import'|translate}}" class="blue-grey-btn" icon="ui-icon-file-upload" (click)="importUser()"></button>
                 </div>
             </p-toolbar>
-            <p-table #userTable [value]="displayUsers" [paginator]="true" [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers" [responsive]="true">
+            <p-table #userTable [value]="displayUsers" [paginator]="true" [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers" [responsive]="true" [globalFilterFields]="['name', 'login', 'email']">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 2.25em">

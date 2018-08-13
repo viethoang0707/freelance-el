@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';

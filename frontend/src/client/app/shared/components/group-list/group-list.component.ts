@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../services/api/model-api.service';
+
 import { AuthService } from '../../services/auth.service';
 import * as _ from 'underscore';
 import { Group } from '../../models/elearning/group.model';

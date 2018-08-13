@@ -13,9 +13,7 @@ import { ClassGuard } from './guards/class.guard';
 import { ExamGuard } from './guards/exam.guard';
 import { SurveyGuard } from './guards/survey.guard';
 import { SyllabusGuard } from './guards/syllabus.guard';
-import { ModelAPIService } from './services/api/model-api.service';
-import { FileAPIService } from './services/api/file-api.service';
-import { AccountAPIService } from './services/api/account-api.service';
+import { APIService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { WorkflowService } from './services/workflow.service';
 import { ExcelService } from './services/excel.service';
@@ -367,9 +365,7 @@ export class ErpSharedModule {
                 ExamGuard,
                 SurveyGuard,
                 SyllabusGuard,
-                AccountAPIService,
-                ModelAPIService,
-                FileAPIService,
+                APIService,
                 AuthService,
                 MessageService,
                 MeetingService,
