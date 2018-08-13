@@ -87,11 +87,11 @@ class Course(models.Model):
 			if course.mode =='group':
 				for teacher in self.env['etraining.course_member'].search([('course_id','=',courseId),('role','=','teacher'),('class_id','=',None)]):
 					if teacher.class_id.status =='open':
-						self.env.ref("etraining.course_open_template").send_mail(teacher.id,force_send=True)
+						self.env.ref(self._module +"."+ "course_open_template").send_mail(teacher.id,force_send=True)
 			elif course.mode == 'self-study':	
 				for student in self.env['etraining.course_member'].search([('course_id','=',courseId),('role','=','student')]):
 					if student.enroll_status != 'completed':
-						self.env.ref("etraining.course_open_template").send_mail(student.id,force_send=True)
+						self.env.ref(self._module +"."+ "course_open_template").send_mail(student.id,force_send=True)
 			course.write({'status':'open'})
 			return True
 
@@ -102,11 +102,11 @@ class Course(models.Model):
 			if course.mode =='group':
 				for teacher in self.env['etraining.course_member'].search([('course_id','=',courseId),('role','=','teacher'),('class_id','=',None)]):
 					if teacher.class_id.status =='open':
-						self.env.ref("etraining.course_close_template").send_mail(teacher.id,force_send=True)
+						self.env.ref(self._module +"."+ "course_close_template").send_mail(teacher.id,force_send=True)
 			elif course.mode == 'self-study':	
 				for student in self.env['etraining.course_member'].search([('course_id','=',courseId),('role','=','student')]):
 					if student.enroll_status != 'completed':
-						self.env.ref("etraining.course_close_template").send_mail(student.id,force_send=True)
+						self.env.ref(self._module +"."+ "course_close_template").send_mail(student.id,force_send=True)
 			course.write({'status':'closed'})
 			return True
 
@@ -115,7 +115,7 @@ class Course(models.Model):
 		member =  self.env['etraining.course_member'].create({'role':role,
 			'course_id':self.id, 'user_id': user.id, 'status':'active', 
 			'enroll_status':'registered', 'date_register':datetime.datetime.now()})
-		self.env.ref("etraining.course_register_template").send_mail(member.id,force_send=True)
+		self.env.ref(self._module +"."+ "course_register_template").send_mail(member.id,force_send=True)
 		return member
 
 	@api.multi
@@ -335,7 +335,7 @@ class CourseClass(models.Model):
 			'course_id':self.course_id.id, 'user_id': user.id, 'status':'active', 
 			'enroll_status':'registered', 'date_register':datetime.datetime.now()})
 		conf_member = self.conference_id.createConferenceMember(member)
-		self.env.ref("etraining.course_register_template").send_mail(member.id,force_send=True)
+		self.env.ref(self._module +"."+ "course_register_template").send_mail(member.id,force_send=True)
 		return member
 
 	@api.model
@@ -344,7 +344,7 @@ class CourseClass(models.Model):
 		for clazz in self.env["etraining.course_class"].browse(classId):
 			for student in self.env['etraining.course_member'].search([('class_id','=',clazz.id),('role','=','student')]):
 				if student.enroll_status != 'completed':
-					self.env.ref("etraining.class_open_template").send_mail(student.id,force_send=True)
+					self.env.ref(self._module +"."+ "class_open_template").send_mail(student.id,force_send=True)
 			clazz.write({'status':'open'})
 			return True
 
@@ -354,7 +354,7 @@ class CourseClass(models.Model):
 		for clazz in self.env["etraining.course_class"].browse(classId):
 			for student in self.env['etraining.course_member'].search([('class_id','=',clazz.id),('role','=','student')]):
 				if student.enroll_status != 'completed':
-					self.env.ref("etraining.class_close_template").send_mail(student.id,force_send=True)
+					self.env.ref(self._module +"."+ "class_close_template").send_mail(student.id,force_send=True)
 			if clazz.conference_id:
 				clazz.conference_id.write({'status':'closed'})
 			clazz.write({'status':'closed'})
