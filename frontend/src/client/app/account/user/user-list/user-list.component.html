@@ -14,6 +14,11 @@
                     <button pButton type="button" label="{{'Activate'|translate}}" class="blue-btn" icon="ui-icon-lock-open" (click)="activateMultipleUsers(selectedUsers)" [disabled]="!selectedUsers || !selectedUsers.length"></button>
                 </div>
                 <div class="ui-toolbar-group-right" >
+                    <span class="md-inputfield search">
+                        <input type="text" pInputText placeholder="{{'Search'|translate}}" 
+                          (input)="userTable.filterGlobal($event.target.value, 'contains')">   
+                        <i class="fa fa-search"></i>      
+                    </span>
                     <button pButton type="button" label="{{'Export'|translate}}" class="blue-grey-btn" icon="ui-icon-file-download" (click)="exportUser()"></button>
                     <button pButton type="button" label="{{'Import'|translate}}" class="blue-grey-btn" icon="ui-icon-file-upload" (click)="importUser()"></button>
                 </div>
