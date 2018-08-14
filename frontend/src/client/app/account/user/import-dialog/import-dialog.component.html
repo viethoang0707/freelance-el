@@ -17,7 +17,7 @@
                 <li *ngFor="let i of columnMappings | keys">
                     <div class="ui-g-4" >
                     <p class="txtBold">Column {{i}}</p>
-                    <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label"></p-dropdown>
+                    <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label" [style]="{width: 'auto'}"></p-dropdown>
                     </div>
                 </li>
             </ul>

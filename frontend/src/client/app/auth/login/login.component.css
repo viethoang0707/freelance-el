@@ -141,7 +141,7 @@
 		border-top-right-radius: 15px;
 		border-bottom-left-radius: 0;
 		text-align: center;
-		padding: 20px 15px;
+		padding: 40px 15px 20px;
 	    height: auto;
 	}
 
@@ -153,8 +153,12 @@
 		display: none;
 	}
 
+	.login-body .login-panel .login-panel-header h1{
+		margin-bottom: 0;
+	}
+
 	.login-body .login-panel .login-panel-content{
-		padding: 25px !important;
+		padding: 5px 25px !important;
 	}
 
 	.footer{
