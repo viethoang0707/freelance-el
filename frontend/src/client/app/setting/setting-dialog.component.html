@@ -1,4 +1,4 @@
-<p-dialog header="{{'Setting'|translate}}" [(visible)]="display" modal="true"  [responsive]="true">
+<p-dialog header="{{'Setting'|translate}}" [(visible)]="display" modal="true" [responsive]="true" [closeOnEscape]="false" [closable]="false">
     <div class="spinner" [hidden]="!loading"></div>
     <p-growl></p-growl>
     <div class="ui-g ui-fluid form-group">

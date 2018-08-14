@@ -1,5 +1,5 @@
 <form novalidate (ngSubmit)="save()" #f="ngForm" autocomplete="off">
-    <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1000" [responsive]="true" [positionTop]="20">
+    <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1000" [responsive]="true" [positionTop]="20" [closeOnEscape]="false" [closable]="false">
         <div class="spinner" [hidden]="!loading"></div>
         <p-tabView styleClass="profile-dialog">
             <p-tabPanel header="{{'Account info'|translate}}" leftIcon="ui-icon-people">
@@ -150,10 +150,10 @@
                 </p-table>
             </p-tabPanel>
         </p-tabView>
-        <certificate-print-dialog></certificate-print-dialog>
         <p-footer>
-            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
             <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>
 </form>
+<certificate-print-dialog></certificate-print-dialog>

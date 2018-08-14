@@ -1,5 +1,5 @@
-<p-dialog header="{{'Course material'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true" appendTo="body">
-    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Course material'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
         <div class="ui-g ui-fluid form-group">
             <div class="ui-g-12 ">
                 <span class="md-inputfield">
@@ -32,9 +32,9 @@
                 </div>
             </div>
         </div>
-    </form>
-    <p-footer>
-        <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
-        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-</p-dialog>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="f.form.valid"></button>
+            <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

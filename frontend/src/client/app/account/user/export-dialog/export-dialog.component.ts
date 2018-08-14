@@ -40,6 +40,7 @@ export class UserExportDialog extends BaseComponent {
 			{ value: 'ban_date', label: this.translateService.instant('Deactivate date') },
 			{ value: 'unban_date', label: this.translateService.instant('Activate date') },
 		];
+		this.selectedFields = [];
 		this.display = false;
 	}
 

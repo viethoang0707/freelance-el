@@ -33,12 +33,14 @@ export class QuestionImportDialog extends BaseComponent {
 		super();
 		this.display = false;
 		this.records = [];
+		this.questionList = [];
 	}
 
 	show() {
 		this.display = true;
 		this.step = 1;
 		this.statusMessages = [];
+		this.questionList = [];
 	}
 
 	hide() {

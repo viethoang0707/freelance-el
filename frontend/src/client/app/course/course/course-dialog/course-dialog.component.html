@@ -1,7 +1,7 @@
-<p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-dialog" [responsive]="true">
-    <div class="spinner" [hidden]="!loading"></div>
-    <p-scrollPanel>
-        <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Course'|translate}}" [(visible)]="display" modal="false" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-dialog" [responsive]="true" [closeOnEscape]="false" [closable]="false">
+        <div class="spinner" [hidden]="!loading"></div>
+        <p-scrollPanel>
             <div class="ui-g ui-fluid form-group">
                 <div class="ui-g-3 logo-course">
                     <label>{{'Logo'|translate}}</label>
@@ -68,12 +68,12 @@
                     </div>
                 </div>
             </div>
-        </form>
-        <select-user-dialog></select-user-dialog>
-        <select-competency-level-dialog></select-competency-level-dialog>
-    </p-scrollPanel>
-    <p-footer>
-        <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" *ngIf="(object.supervisor_id == ContextUser.id && object.review_state!='approved') || ContextUser.IsSuperAdmin"></button>
-        <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-</p-dialog>
+        </p-scrollPanel>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="(object.supervisor_id != ContextUser.id || object.review_state=='approved') && !ContextUser.IsSuperAdmin"></button>
+            <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>
+<select-user-dialog></select-user-dialog>
+<select-competency-level-dialog></select-competency-level-dialog>

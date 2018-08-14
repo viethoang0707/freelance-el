@@ -1,18 +1,18 @@
-<p-dialog header="{{'Course setting'|translate}}" [(visible)]="display" modal="false"  height="100%" [responsive]="true" appendTo="body">
-  <div class="spinner" [hidden]="!loading"></div>
-  <p-scrollPanel [style]="{width: '100%', height: '300px'}">
-    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-      <div class="ui-g ui-fluid form-group">
-        <div class="ui-g-12">
-          <p-checkbox name="unit_complete" binary="true" label="{{'Complete unit by order user'|translate}}" [(ngModel)]="object.complete_unit_by_order"></p-checkbox>
-          <button type="button" pButton icon="ui-icon-change-history" label="{{object.prequisite_course_id?translateService.instant('Prequisite course') +':'+ object.prequisite_course_name:translateService.instant('Select prequisite course')}}" (click)="selectCourse()" class="mt20 mb20"></button>
-        </div>
-      </div>
-    </form>   
-    <select-course-dialog></select-course-dialog>
-  </p-scrollPanel>
-  <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
-</p-dialog>
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Course setting'|translate}}" [(visible)]="display" modal="false" height="100%" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
+        <div class="spinner" [hidden]="!loading"></div>
+        <p-scrollPanel [style]="{width: '100%', height: '300px'}">
+            <div class="ui-g ui-fluid form-group">
+                <div class="ui-g-12">
+                    <p-checkbox name="unit_complete" binary="true" label="{{'Complete unit by order user'|translate}}" [(ngModel)]="object.complete_unit_by_order"></p-checkbox>
+                    <button type="button" pButton icon="ui-icon-change-history" label="{{object.prequisite_course_id?translateService.instant('Prequisite course') +':'+ object.prequisite_course_name:translateService.instant('Select prequisite course')}}" (click)="selectCourse()" class="mt20 mb20"></button>
+                </div>
+            </div>
+        </p-scrollPanel>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
+            <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>
+<select-course-dialog></select-course-dialog>

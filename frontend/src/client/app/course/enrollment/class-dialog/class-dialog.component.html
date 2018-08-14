@@ -1,6 +1,6 @@
-<p-dialog header="{{'Class'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true" appendTo="body">
-    <div class="spinner" [hidden]="!loading"></div>
-    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Class'|translate}}" [(visible)]="display" modal="true" width="960" height="100%" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
+        <div class="spinner" [hidden]="!loading"></div>
         <div class="ui-g ui-fluid form-group">
             <div class="ui-g-12">
                 <label style="font-weight: 600;">{{'Course'|translate}}:{{object.course_name}}</label>
@@ -23,9 +23,9 @@
                 </div>
             </div>
         </div>
-    </form>
-    <p-footer>
-        <button type="submit" (click)="f.ngSubmit.emit()" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
-        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-</p-dialog>
+        <p-footer>
+            <button type="submit" [disabled]="!f.form.valid" pButton icon="fa-check" label="{{'Save'|translate}}"></button>
+            <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

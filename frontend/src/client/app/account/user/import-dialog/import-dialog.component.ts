@@ -39,6 +39,7 @@ export class UserImportDialog extends BaseComponent {
 		super();
 		this.display = false;
 		this.records = [];
+		this.users = [];
 		this.statusMessages = [];
 		this.fields = [
 			{ value: 'login', label: this.translateService.instant('Username') },
@@ -59,6 +60,7 @@ export class UserImportDialog extends BaseComponent {
 	show() {
 		this.display = true;
 		this.step = 1;
+		this.users = [];
 		this.statusMessages = [];
 	}
 
