@@ -47,13 +47,11 @@ export class ExamSubmissionDialog extends BaseComponent {
         this.setting = new ExamSetting();
     }
 
-    show(exam: Exam, submission: Submission) {
+    show(exam: Exam, setting:ExamSetting, submission: Submission) {
         this.display = true;
         this.exam = exam;
         this.submission = submission;
-        exam.populateSetting(this).subscribe(() => {
-            this.setting = exam.setting;
-        });
+        this.setting = setting;
     }
 
     hide() {

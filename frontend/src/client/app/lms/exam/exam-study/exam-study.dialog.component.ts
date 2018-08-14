@@ -91,24 +91,29 @@ export class ExamStudyDialog extends BaseComponent {
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-			.then(() => {
-				DetectRTC.load(() => {
-					console.log('Webcam available', DetectRTC.hasWebCam);
-					console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
-					if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
-						this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
+		this.exam.populateSetting(this).subscribe(() => {
+			if (this.exam.setting.take_picture_on_submit) {
+				navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+					.then(() => {
+						DetectRTC.load(() => {
+							console.log('Webcam available', DetectRTC.hasWebCam);
+							console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
+							if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
+								this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
+								this.display = false;
+								return;
+							}
+							this.loadExamContent();
+						})
+					})
+					.catch((e) => {
+						console.log('Get media error', e);
+						this.error('Webcam device not found');
 						this.display = false;
-						return;
-					}
-					this.loadExamContent();
-				})
-			})
-			.catch((e) => {
-				console.log('Get media error', e);
-				this.error('Webcam device not found');
-				this.display = false;
-			})
+					})
+			} else
+				this.loadExamContent();
+		});
 	}
 
 	loadExamContent() {
@@ -242,7 +247,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	submitExam() {
 		this.submitAnswer().subscribe(() => {
-			this.submitDialog.show(this.exam, this.submission);
+			this.submitDialog.show(this.exam, this.exam.setting,this.submission);
 			this.submitDialog.onConfirm.subscribe(() => {
 				this.finishExam();
 			});
