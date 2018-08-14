@@ -355,11 +355,11 @@ export class User extends BaseModel {
     }
 
     static __api__searchByLogin(login:string): SearchCountAPI {
-        return new SearchReadAPI(User.Model, ["login"],"[('login','!=','"+login+"')]");
+        return new SearchReadAPI(User.Model, ["login"],"[('login','=','"+login+"')]");
     }
 
     static searchByLogin(context: APIContext,login:string): Observable<any> {
-        return User.single(context, ["login"],"[('login','!=','"+login+"')]");
+        return User.single(context, ["login"],"[('login','=','"+login+"')]");
     }
 
 }
