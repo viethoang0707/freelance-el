@@ -20,6 +20,10 @@ export class APIService {
         return localStorage.getItem('apiEndpoint');
     }
 
+    clearApiEndpoint() {
+        localStorage.removeItem('apiEndpoint');
+    }
+
     init(): Observable<any> {
         if (this.ApiEndpoint)
             return Observable.of(true);
@@ -51,6 +55,25 @@ export class APIService {
         var params = { username: username, password: password }
         params["cloud_code"] = this.cloudId;
         this.appEvent.startHttpTransaction();
+        return this.http.post(endpoint, JSON.stringify(params), options)
+            .map((response: Response) => response.json()).do(() => {
+                this.appEvent.finishHttpTransaction();
+            })
+            .catch((e) => {
+                console.log(e);
+                this.appEvent.finishHttpTransaction();
+                return Observable.throw(e.json());
+            });
+    }
+
+    logout(): Observable<any> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        var endpoint = Config.AUTHEN_SERVER_URL + '/account/logout';
+        var params = {};
+        params["cloud_code"] = this.cloudId;
+        this.appEvent.startHttpTransaction();
+        this.clearApiEndpoint();
         return this.http.post(endpoint, JSON.stringify(params), options)
             .map((response: Response) => response.json()).do(() => {
                 this.appEvent.finishHttpTransaction();
