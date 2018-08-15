@@ -654,7 +654,8 @@ body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-default a{
   font-weight: 500;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active a{
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active a,
+body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a{
   color: #fff;
   background-color: #ababab;
   border-radius: 25px;
@@ -662,13 +663,13 @@ body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-
   padding: 6px 15px;
 }
 
-body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
+/*body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
   background-color: #7cb342;
    color: #fff;
   border-radius: 25px;
   font-weight: 500;
   padding: 6px 15px;
-}
+}*/
 
 body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-left-icon,
 body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-left-icon{
@@ -727,12 +728,53 @@ body .user-dashboard .schedule-dashboard.fc-ltr .fc-h-event.fc-not-start, .fc-rt
     border-bottom-left-radius: 0;
 }
 
+body .dashboard .ui-tabview.ui-tabview-top > .ui-tabview-nav{
+    border-bottom: none;
+    background-color: whitesmoke;
+    padding-left: 0;
+}
+
+body .dashboard .ui-tabview {
+    border: none;
+}
+
+body .dashboard .ui-tabview .ui-tabview-panels{
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+body .dashboard .ui-tabview .ui-tabview-nav > li {
+    background-color: transparent;
+    border-radius: 25px;
+    margin: 0 10px 10px 0;
+}
+
 .tabView-course-view, .tabView-course-edit {
   min-height: 600px;
 }
 
 body .ui-progressbar .ui-progressbar-value.ui-progressbar-value-animate.ui-widget-header{
   background-color: #7cb342 !important;
+}
+
+body .remember-pass .ui-chkbox .ui-chkbox-box{
+  border: 1px solid #daeaf1;
+  border-radius: 50%;
+}
+
+body .remember-pass .ui-chkbox .ui-chkbox-box .ui-chkbox-icon{
+  font-size: 15px;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+body .remember-pass .ui-chkbox .ui-chkbox-box.ui-state-active{
+  border-color: #3edd37;
+    background-color: #3edd37;
+    border-radius: 50%;
 }
 
 @media screen and (max-width: 500px) {
