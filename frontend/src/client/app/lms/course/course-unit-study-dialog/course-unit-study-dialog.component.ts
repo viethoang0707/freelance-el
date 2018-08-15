@@ -74,6 +74,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		this.course = course;
 		this.syl = syl;
 		this.units = units;
+		faqs[0].active = true;
 		this.faqs = faqs;
 		this.materials = materials;
 		CourseLog.memberStudyActivity(this, member.id, course.id).subscribe(logs => {
