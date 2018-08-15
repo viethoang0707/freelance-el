@@ -56,7 +56,7 @@
                         </p-tabPanel>
                         <p-tabPanel header="{{'FAQ'|translate}}" leftIcon="ui-icon-question-answer">
                             <p-accordion>
-                                <p-accordionTab header="{{faq.question}}" [selected]="true" *ngFor="let faq of faqs">
+                                <p-accordionTab header="{{faq.question}}" *ngFor="let faq of faqs" [selected]="faq.active">
                                     <div [innerHTML]="faq.answer"></div>
                                 </p-accordionTab>
                             </p-accordion>
