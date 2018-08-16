@@ -53,7 +53,7 @@
             </div>
         </p-scrollPanel>
         <p-footer>
-            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="(object.supervisor_id != ContextUser.id || object.review_state=='approved') && !ContextUser.IsSuperAdmin"></button>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="(object.supervisor_id != ContextUser.id || object.review_state=='approved') && !ContextUser.IsSuperAdmin"></button>
             <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>
