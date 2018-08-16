@@ -40,10 +40,6 @@ img.pre-loading {
   text-align: center;
 }
 
-body p-schedule .ui-state-highlight {
-  /* background-color: #161e840d; */
-}
-
 .ui-scrollpanel-bar-x {
   display: none;
 }
@@ -823,13 +819,13 @@ span.file-upload {
 
 /*calendar*/
 .schedule-dashboard .ui-widget-header {
-    border: 1px solid #aed0ea;
+    border-color: #d8d8d8;
     background: #deedf7;
     color: #222222;
     font-weight: bold;
 }
 
-body .user-dashboard .schedule-dashboard .fc-event{
+body .schedule-dashboard .fc-event{
   border-radius: 25px;
   background: -webkit-linear-gradient(left,#607d8b 0,#607d8ba1 100%);
   color: #ffffff;
@@ -837,16 +833,54 @@ body .user-dashboard .schedule-dashboard .fc-event{
   margin: 5px;
 }
 
-body .user-dashboard .schedule-dashboard.fc-ltr .fc-h-event.fc-not-end, .fc-rtl .fc-h-event.fc-not-start {
+body .schedule-dashboard.fc-ltr .fc-h-event.fc-not-end, .fc-rtl .fc-h-event.fc-not-start {
     margin-right: 0;
     border-right-width: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 
-body .user-dashboard .schedule-dashboard.fc-ltr .fc-h-event.fc-not-start, .fc-rtl .fc-h-event.fc-not-end {
+body .schedule-dashboard.fc-ltr .fc-h-event.fc-not-start, .fc-rtl .fc-h-event.fc-not-end {
     margin-left: 0;
     border-left-width: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+body .schedule-dashboard .ui-button, body .ui-datepicker-buttonpane > button {
+    background-color: transparent;
+    color: #586f79;
+    box-shadow: none;
+}
+
+body .schedule-dashboard .ui-button:enabled:not(:focus):hover, 
+body .schedule-dashboard .ui-datepicker-buttonpane > button:enabled:not(:focus):hover{
+    background-color: #f1f6f8;
+    color: #586f79;
+}
+
+body .schedule-dashboard.fc .fc-button-group .ui-state-active,
+body .schedule-dashboard.fc .fc-button-group .ui-button:hover{
+    background-color: #f1f6f8;
+    border-radius: 25px;
+    border: 1px solid #eee;
+    color: #586f79;
+}
+
+body .schedule-dashboard.fc .ui-state-highlight {
+   background-color: #f1f6f8;
+    border-color: #d8d8d8; 
+}
+
+body .schedule-dashboard.fc .ui-state-highlight .fc-day-number{
+  background-color: #32de4e;
+  border-radius: 50%;
+  padding: 5px;
+  margin: 3px;
+  color: #fff;
+}
+
+/*custom style*/
+.ui-table .ui-table-thead>tr>th, .ui-table .ui-table-tbody>tr>td, .ui-table .ui-table-tfoot>tr>td {
+    padding: 12px;
 }

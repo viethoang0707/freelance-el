@@ -1,82 +1,80 @@
-<div class="card card-w-title">
-  <h1>{{'Courses'|translate}}</h1>
-  <div class="ui-g">
-    <div class="ui-g-12">
-      <label>{{'Course group'|translate}}</label>
-      <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterCourse()" (onNodeUnselect)="filterCourse()" styleClass="width-tree"></p-tree>
-    </div>
-    <div class="ui-g-12">
-      <p-toolbar>
-        <div class="ui-toolbar-group-left">
-          <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addCourse()" icon="ui-icon-add"></button>
-          <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editCourse(selectedCourse)" [disabled]="!selectedCourse"></button>
-          <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCourse(selectedCourse)" [disabled]="!selectedCourse || selectedCourse.status=='open'"></button>
-          <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview(selectedCourse)" [disabled]="!selectedCourse ||  selectedCourse.review_state =='approved'"></button>
-        </div>
-        <div class="ui-toolbar-group-right">
-          <span class="md-inputfield search">
-              <input type="text" pInputText placeholder="{{'Search'|translate}}" 
-              (input)="courseTable.filterGlobal($event.target.value, 'contains')">   
-              <i class="fa fa-search"></i>      
-          </span>
-        </div>
-      </p-toolbar>
-      <p-table #totalRecords #courseTable [value]="displayCourses" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
-        <ng-template pTemplate="header">
-          <tr>
-            <th [pSortableColumn]="'name'">
-              {{'Name'|translate}}
-              <p-sortIcon [field]="'name'"></p-sortIcon>
-            </th>
-            <th style="width: 10%;" [pSortableColumn]="'code'">
-              {{'Code'|translate}}
-              <p-sortIcon [field]="'code'"></p-sortIcon>
-            </th>
-            <th style="width: 12%;" [pSortableColumn]="'mode'">
-              {{'Mode'|translate}}
-              <p-sortIcon [field]="'mode'"></p-sortIcon>
-            </th>
-            <th style="width: 10%;" [pSortableColumn]="'status'">
-              {{'Status'|translate}}
-              <p-sortIcon [field]="'status'"></p-sortIcon>
-            </th>
-             <th style="width: 10%;" [pSortableColumn]="'review_state'">
-              {{'Reviewed'|translate}}
-              <p-sortIcon [field]="'review_state'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'supervisor_name'">
-              {{'Supervisor'|translate}}
-              <p-sortIcon [field]="'supervisor_name'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'create_date'">
-              {{'Created'|translate}}
-              <p-sortIcon [field]="'create_date'"></p-sortIcon>
-            </th>
-            <th [pSortableColumn]="'write_date'">
-              {{'Updated'|translate}}
-              <p-sortIcon [field]="'write_date'"></p-sortIcon>
-            </th>
-          </tr>
-        </ng-template>
+<h1>{{'Courses'|translate}}</h1>
+<div class="ui-g">
+  <div class="ui-g-12">
+    <label>{{'Course group'|translate}}</label>
+    <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterCourse()" (onNodeUnselect)="filterCourse()" styleClass="width-tree"></p-tree>
+  </div>
+  <div class="ui-g-12">
+    <p-toolbar>
+      <div class="ui-toolbar-group-left">
+        <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addCourse()" icon="ui-icon-add"></button>
+        <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editCourse(selectedCourse)" [disabled]="!selectedCourse"></button>
+        <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCourse(selectedCourse)" [disabled]="!selectedCourse || selectedCourse.status=='open'"></button>
+        <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview(selectedCourse)" [disabled]="!selectedCourse ||  selectedCourse.review_state =='approved'"></button>
+      </div>
+      <div class="ui-toolbar-group-right">
+        <span class="md-inputfield search">
+            <input type="text" pInputText placeholder="{{'Search'|translate}}" 
+            (input)="courseTable.filterGlobal($event.target.value, 'contains')">   
+            <i class="fa fa-search"></i>      
+        </span>
+      </div>
+    </p-toolbar>
+    <p-table #totalRecords #courseTable [value]="displayCourses" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
+      <ng-template pTemplate="header">
+        <tr>
+          <th [pSortableColumn]="'name'">
+            {{'Name'|translate}}
+            <p-sortIcon [field]="'name'"></p-sortIcon>
+          </th>
+          <th style="width: 10%;" [pSortableColumn]="'code'">
+            {{'Code'|translate}}
+            <p-sortIcon [field]="'code'"></p-sortIcon>
+          </th>
+          <th style="width: 12%;" [pSortableColumn]="'mode'">
+            {{'Mode'|translate}}
+            <p-sortIcon [field]="'mode'"></p-sortIcon>
+          </th>
+          <th style="width: 10%;" [pSortableColumn]="'status'">
+            {{'Status'|translate}}
+            <p-sortIcon [field]="'status'"></p-sortIcon>
+          </th>
+           <th style="width: 10%;" [pSortableColumn]="'review_state'">
+            {{'Reviewed'|translate}}
+            <p-sortIcon [field]="'review_state'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'supervisor_name'">
+            {{'Supervisor'|translate}}
+            <p-sortIcon [field]="'supervisor_name'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'create_date'">
+            {{'Created'|translate}}
+            <p-sortIcon [field]="'create_date'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'write_date'">
+            {{'Updated'|translate}}
+            <p-sortIcon [field]="'write_date'"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
 
-        <ng-template pTemplate="body" let-course>
-          <tr [pSelectableRow]="course">
-            <td style="text-align: left;">{{course.name}}</td>
-            <td class="showformb">{{course.code}}</td>
-            <td class="showformb">{{COURSE_MODE[course.mode] | translate}}</td>
-            <td class="showformb">{{COURSE_STATUS[course.status] | translate}}</td>
-            <td class="showformb">{{REVIEW_STATE[course.review_state] | translate}}</td>
-            <td class="showformb">{{course.supervisor_name}}</td>
-            <td>{{course.create_date | date : "dd/MM/yyyy "}}</td>
-              <td>{{course.write_date | date : "dd/MM/yyyy "}}</td>
-          </tr>
-        </ng-template>
+      <ng-template pTemplate="body" let-course>
+        <tr [pSelectableRow]="course">
+          <td style="text-align: left;">{{course.name}}</td>
+          <td class="showformb">{{course.code}}</td>
+          <td class="showformb">{{COURSE_MODE[course.mode] | translate}}</td>
+          <td class="showformb">{{COURSE_STATUS[course.status] | translate}}</td>
+          <td class="showformb">{{REVIEW_STATE[course.review_state] | translate}}</td>
+          <td class="showformb">{{course.supervisor_name}}</td>
+          <td>{{course.create_date | date : "dd/MM/yyyy "}}</td>
+            <td>{{course.write_date | date : "dd/MM/yyyy "}}</td>
+        </tr>
+      </ng-template>
 
-        <ng-template pTemplate="summary">
-          {{'Total records'|translate}} : {{displayCourses?.length}}
-        </ng-template>
-      </p-table>
-      <course-dialog></course-dialog>
-    </div>
+      <ng-template pTemplate="summary">
+        {{'Total records'|translate}} : {{displayCourses?.length}}
+      </ng-template>
+    </p-table>
+    <course-dialog></course-dialog>
   </div>
 </div>

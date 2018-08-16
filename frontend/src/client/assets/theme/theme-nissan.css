@@ -3322,7 +3322,8 @@ body {
     height: 1.25em;
     cursor: default; }
     body .ui-chkbox .ui-chkbox-box {
-      border: 2px solid #757575;
+      border: 1px solid #d8d8d8;
+      border-radius: 50%;
       width: 1.25em;
       height: 1.25em;
       -moz-transition: background-color 0.3s;
@@ -4293,12 +4294,20 @@ body .ui-accordion .ui-accordion-header {
 body .ui-accordion .ui-accordion-content {
   padding: 0.625em 1em;
   line-height: 18px; }
-body .ui-toolbar {
+/*body .ui-toolbar {
   background-color: #c71632;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  padding: .625em; }
+  padding: .625em; }*/
+body .ui-toolbar {
+    background-color: #fff;
+    padding: .625em;
+    border-color: #ddd;
+    box-shadow: 0px 5px 10px 0px rgba(2, 92, 132, 0.08);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 0;}
 body .ui-tabview {
   padding: 0; }
   body .ui-tabview .ui-tabview-nav {
@@ -4545,11 +4554,12 @@ body .ui-organizationchart .ui-organizationchart-node-content .ui-node-toggler {
     body .ui-organizationchart .ui-organizationchart-node-content .ui-node-toggler .fa-chevron-up:before {
       content: "keyboard_arrow_up"; }
 body .ui-paginator {
-  background-color: #c71632;
-  padding: 0.625em 1em; }
+  background-color: #fff;
+  padding: 0.625em 1em;
+  border-color: #ddd; }
   body .ui-paginator > a {
     box-sizing: border-box;
-    color: #ffffff; }
+    color: #586f79; }
     body .ui-paginator > a .fa {
       display: none; }
     body .ui-paginator > a:not(.ui-state-disabled):not(.ui-state-active):hover {
@@ -4674,7 +4684,7 @@ body .ui-paginator {
     margin: 0 .375em 0 .375em; }
     body .ui-paginator .ui-paginator-pages a {
       padding: 0;
-      color: #ffffff;
+      color: #586f79;
       min-width: 1.714em;
       min-height: 1.714em;
       line-height: 1.714em;
@@ -4686,7 +4696,8 @@ body .ui-paginator {
       -webkit-transition: background-color 0.3s;
       transition: background-color 0.3s; }
       body .ui-paginator .ui-paginator-pages a:not(.ui-state-active):hover {
-        background-color: #E0334D; }
+        background-color: #E0334D;
+        color: #fff; }
       body .ui-paginator .ui-paginator-pages a.ui-state-active {
         background-color: #c71633;
         color: #ffffff; }
