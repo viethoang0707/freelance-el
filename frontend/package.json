@@ -1,9 +1,9 @@
 {
   "name": "e-Learning",
   "version": "2.1.2",
-  "description": "Enterprise Resource Management for Vietnam company",
+  "description": "Corporate Training LMS",
   "repository": {
-    "url": "https://github.com/VietInterview/e-learning"
+    "url": "https://github.com/VietInterview/e-training"
   },
   "scripts": {
     "build.dev": "gulp build.dev --color --env-config dev ",
