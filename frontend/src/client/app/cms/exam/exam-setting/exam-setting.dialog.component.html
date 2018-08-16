@@ -74,7 +74,7 @@
             </div>
         </p-scrollPanel>
         <p-footer>
-            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid "></button>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="!f.form.valid "></button>
             <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>
