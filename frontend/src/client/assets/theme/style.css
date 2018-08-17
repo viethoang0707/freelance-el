@@ -884,3 +884,36 @@ body .schedule-dashboard.fc .ui-state-highlight .fc-day-number{
 .ui-table .ui-table-thead>tr>th, .ui-table .ui-table-tbody>tr>td, .ui-table .ui-table-tfoot>tr>td {
     padding: 12px;
 }
+
+body .ui-tree .ui-treenode-content .ui-chkbox .fa-check {
+    background-color: #3edd37;
+    color: #fff;
+    border-radius: 50%;
+    margin-left: -1px;
+    padding: 1px 0px;
+}
+
+.nissan-btn{
+  color: #586f79 !important;
+  background-color: #fff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.nissan-btn:hover, .nissan-btn:focus, .nissan-btn:active{
+  background-color: #c71632 !important;
+  color: #fff !important;
+}
+
+.nissan-btn .fa{
+  color: #586f79 !important;
+}
+
+.nissan-btn:hover .fa, .nissan-btn:focus .fa, .nissan-btn:active .fa{
+  color: #fff !important;
+}
+
+.nissan-btn-active{
+  background-color: #c71632 !important;
+  color: #fff !important;
+}
