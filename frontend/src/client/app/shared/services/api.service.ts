@@ -84,7 +84,6 @@ export class APIService {
             params["cloud_code"] = this.cloudId;
             params['token'] = token.code;
             this.appEvent.startHttpTransaction();
-            this.clearApiEndpoint();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .do(() => {
                     this.appEvent.finishHttpTransaction();

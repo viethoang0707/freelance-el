@@ -96,7 +96,7 @@ export class AuthService {
     }
 
     logout() {
-        this.apiService.logout().subscribe();
+        this.apiService.logout(this.LoginToken);
         this.clearUserProfile();
         this.clearToken();
         this.clearUserPermission();

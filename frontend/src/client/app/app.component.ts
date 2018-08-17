@@ -23,6 +23,5 @@ export class AppComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.apiService.init().subscribe();
 	}
 }
