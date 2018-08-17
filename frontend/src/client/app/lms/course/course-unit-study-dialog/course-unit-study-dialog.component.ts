@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ComponentFactoryResolver, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -201,8 +200,8 @@ export class CourseUnitStudyDialog extends BaseComponent {
 					}
 				}
 				else {
-					this.openUnit(this.selectedUnit);
-					CourseLog.startCourseUnit(this, this.member, this.selectedUnit).subscribe();
+					this.warn('You have not completed previous unit');
+					this.selectedUnit = prevUnit;
 				}
 			}
 			else {
