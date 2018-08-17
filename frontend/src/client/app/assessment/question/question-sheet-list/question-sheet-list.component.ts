@@ -43,7 +43,7 @@ export class QuestionSheetListComponent extends BaseComponent {
                 this.sheets = _.reject(this.sheets, (obj:QuestionSheet)=> {
                     return sheet.id == obj.id;
                 });
-                this.success('Delete sheet successfully');
+                this.success(this.translateService.instant('Delete sheet successfully'));
             });
         });
     }

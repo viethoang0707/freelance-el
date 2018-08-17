@@ -213,7 +213,7 @@ export class ClassManageComponent extends BaseComponent {
 	deleteProject(project: Project) {
 				this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 					project.delete(this).subscribe(() => {
-						this.success('Project deleted');
+						this.success(this.translateService.instant('Project deleted'));
 						this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 						this.projects = _.reject(this.projects, (obj: Project) => {
 							return obj.id == project.id;

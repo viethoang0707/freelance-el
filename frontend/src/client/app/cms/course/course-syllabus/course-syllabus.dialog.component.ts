@@ -138,10 +138,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	deleteNode(node: TreeNode) {
 		if (node.children.length) {
-			this.error('Cannot delete non-empty folder');
+			this.error(this.translateService.instant('Cannot delete non-empty folder'));
 			return;
 		}
-		this.confirm('Are you sure to delete?', () => {
+		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 			node.data.delete(this).subscribe(() => {
 				this.selectedNode = null;
 				this.units = _.reject(this.units, (unit:CourseUnit)=> {
@@ -162,7 +162,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	moveUp(node: TreeNode) {
 		this.sylUtils.moveUp(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
-			this.success('Move sucessfully');
+			this.success(this.translateService.instant('Move sucessfully'));
 			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
@@ -170,7 +170,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	moveDown(node: TreeNode) {
 		this.sylUtils.moveDown(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
-			this.success('Move sucessfully');
+			this.success(this.translateService.instant('Move sucessfully'));
 			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}

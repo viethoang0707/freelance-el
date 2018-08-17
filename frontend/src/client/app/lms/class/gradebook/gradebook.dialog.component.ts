@@ -99,7 +99,7 @@ export class GradebookDialog extends BaseComponent {
 
     issueCertificate() {
         if (this.student.enroll_status == 'completed') {
-            this.error('This member already completed the course');
+            this.error(this.translateService.instant('This member already completed the course'));
             return;
         }
         var certificate = new Certificate();
@@ -112,7 +112,7 @@ export class GradebookDialog extends BaseComponent {
             this.certificate = obj;
             this.student.completeCourse(this, certificate.id).subscribe(() => {
                 this.student.enroll_status = 'completed';
-                this.success('Congratulations! You have completed the course.');
+                this.success(this.translateService.instant('Congratulations! You have completed the course.'));
             })
         });
     }
@@ -195,7 +195,7 @@ export class GradebookDialog extends BaseComponent {
             });
         }
         else
-            this.error('You have not been registered for this exam');
+            this.error(this.translateService.instant('You have not been registered for this exam'));
     }
 
 }

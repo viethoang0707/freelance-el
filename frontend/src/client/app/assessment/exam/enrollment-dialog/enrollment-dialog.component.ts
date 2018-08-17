@@ -72,7 +72,7 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enrollSupervisor(this, userIds).subscribe(() => {
                 this.loadMembers();
-                this.success('Add supervisor successfully');
+                this.success(this.translateService.instant('Add supervisor successfully'));
             });
         });
     }

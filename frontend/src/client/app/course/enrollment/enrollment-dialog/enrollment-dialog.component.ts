@@ -80,7 +80,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 			var userIds = _.pluck(users, 'id');
 			if (this.course.mode == 'group')
 				this.courseClass.enroll(this, userIds).subscribe((result) => {
-					this.success('Enroll student successfully');
+					this.success(this.translateService.instant('Enroll student successfully'));
 					this.loadMembers();
 					var failList = result['failList'];
 					_.each(failList, userId => {

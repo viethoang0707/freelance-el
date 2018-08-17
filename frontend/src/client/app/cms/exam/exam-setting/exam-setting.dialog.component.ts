@@ -20,6 +20,7 @@ import { BaseModel } from '../../../shared/models/base.model';
     moduleId: module.id,
     selector: 'exam-setting-dialog',
     templateUrl: 'exam-setting.dialog.component.html',
+    styleUrls: ['exam-setting.dialog.component.css']
 })
 export class ExamSettingDialog extends BaseComponent {
 

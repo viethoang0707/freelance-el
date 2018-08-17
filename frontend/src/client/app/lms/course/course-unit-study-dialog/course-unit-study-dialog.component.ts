@@ -106,7 +106,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 			}
 		}
 		if (this.syl.status != 'published')
-			this.warn('Cours syllabus is not published');
+			this.warn(this.translateService.instant('Course syllabus is not published'));
 	}
 
 	nodeSelect(event: any) {
@@ -200,7 +200,7 @@ export class CourseUnitStudyDialog extends BaseComponent {
 					}
 				}
 				else {
-					this.warn('You have not completed previous unit');
+					this.warn(this.translateService.instant('You have not completed previous unit'));
 					this.selectedUnit = prevUnit;
 				}
 			}

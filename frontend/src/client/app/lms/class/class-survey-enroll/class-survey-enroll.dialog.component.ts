@@ -74,19 +74,19 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 	}
 
 	closeSurvey() {
-		this.confirm('Are you sure to proceed ?  You will not be able to enroll new members after the survey is closed', () => {
+		this.confirm(this.translateService.instant('Are you sure to proceed ?  You will not be able to enroll new members after the survey is closed'), () => {
 			this.survey.close(this).subscribe(() => {
 				this.survey.status = 'closed';
-				this.success('Survey close');
+				this.success(this.translateService.instant('Survey close'));
 			});
 		});
 	}
 
 	openSurvey() {
-		this.confirm('Are you sure to proceed ?.', () => {
+		this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
 			this.survey.open(this).subscribe(() => {
 				this.survey.status = 'open';
-				this.success('Survey open');
+				this.success(this.translateService.instant('Survey open'));
 			});
 		});
 	}

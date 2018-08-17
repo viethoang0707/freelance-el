@@ -65,7 +65,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 				this.exam.listCandidates(this).subscribe(members => {
 					this.examMembers = members;
 				});
-				this.success('Register all successfully');
+				this.success(this.translateService.instant('Register all successfully'));
 			});
 		});
 	}
@@ -86,10 +86,10 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	}
 
 	closeExam() {
-		this.confirm('Are you sure to proceed ?', () => {
+		this.confirm('Are you sure to proceed?', () => {
 			this.exam.close(this).subscribe(() => {
 				this.exam.status = 'closed';
-				this.success('Exam close');
+				this.success(this.translateService.instant('Exam close'));
 			});
 		});
 	}
@@ -98,7 +98,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', () => {
 			this.exam.open(this).subscribe(() => {
 				this.exam.status = 'open';
-				this.success('Exam open');
+				this.success(this.translateService.instant('Exam open'));
 			});
 		});
 	}

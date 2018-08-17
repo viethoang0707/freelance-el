@@ -74,7 +74,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         this.classDialog.show(clazz);
         this.classDialog.onCreateComplete.first().subscribe(() => {
             this.classes = [clazz, ...this.classes];
-            this.success('Add class successfully');
+            this.success(this.translateService.instant('Add class successfully'));
         });
     }
 
@@ -94,7 +94,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
                     this.classes = _.reject(this.classes, (obj: CourseClass) => {
                         return courseClass.id == obj.id;
                     });
-                    this.success('Delete class successfully');
+                    this.success(this.translateService.instant('Delete class successfully'));
                 })
             });
     }

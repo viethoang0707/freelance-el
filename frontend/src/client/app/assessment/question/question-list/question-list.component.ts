@@ -63,7 +63,7 @@ export class QuestionListComponent extends BaseComponent {
             this.displayQuestions = [...this.questions];
             this.selectedQuestions = [];
             this.selectedGroupNodes = [];
-            this.success('Add question successfully');
+            this.success(this.translateService.instant('Add question successfully'));
         });
     }
 
@@ -75,7 +75,7 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     deleteMultipleQuestions(questions: Question[]) {
-        this.confirm('Are you sure to delete ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             Question.deleteArray(this, questions).subscribe(() => {
                 this.selectedQuestions = [];
                 var qIds = _.pluck(questions,'id');
@@ -83,7 +83,7 @@ export class QuestionListComponent extends BaseComponent {
                     return qIds.includes(obj.id);
                 });
                 this.displayQuestions = this.questions;
-                this.success('Delete question successfully');
+                this.success(this.translateService.instant('Delete question successfully'));
             });
         });
     }

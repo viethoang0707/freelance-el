@@ -113,7 +113,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 				this.member.populateCourse(this).subscribe(() => {
 					this.course = this.member.course;
 					if (this.course.syllabus_status != 'published') {
-						this.error('Syllabus has not been published');
+						this.error(this.translateService.instant('Syllabus has not been published'));
 						return;
 					}
 					this.lmsProfileService.getCourseContent(this.course).subscribe(content => {
@@ -158,7 +158,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		if (this.conference.id && this.conferenceMember.id && this.conferenceMember.is_active)
 			this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
 		else
-			this.error('You are  not allowed to join the conference');
+			this.error(this.translateService.instant('You are  not allowed to join the conference'));
 	}
 
 	submitProject(project: Project) {
@@ -166,7 +166,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	startExam(exam: Exam, member: ExamMember) {
-		this.confirm('Are you sure to start ?', () => {
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			exam.populate(this).subscribe(() => {
 				this.examStudyDialog.show(exam, member);
 			});

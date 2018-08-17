@@ -99,7 +99,7 @@ export class ExamStudyDialog extends BaseComponent {
 							console.log('Webcam available', DetectRTC.hasWebCam);
 							console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
 							if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
-								this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
+								this.error(this.translateService.instant('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.'));
 								this.display = false;
 								return;
 							}
@@ -108,7 +108,7 @@ export class ExamStudyDialog extends BaseComponent {
 					})
 					.catch((e) => {
 						console.log('Get media error', e);
-						this.error('Webcam device not found');
+						this.error(this.translateService.instant('Webcam device not found'));
 						this.display = false;
 					})
 			} else

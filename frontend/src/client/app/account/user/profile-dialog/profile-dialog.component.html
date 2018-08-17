@@ -43,27 +43,27 @@
                 <div class="ui-g ui-fluid form-group pt20">
                     <div class="ui-g-6">
                         <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.email" name="email" pKeyFilter="email" [disabled]="true">
-              <label>{{'Email'|translate}}</label>
-            </span>
+                          <input type="text" pInputText [(ngModel)]="object.email" name="email" pKeyFilter="email" [disabled]="true">
+                          <label>{{'Email'|translate}}</label>
+                        </span>
                     </div>
                     <div class="ui-g-6">
                         <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.phone" name="phone">
-              <label>{{'Mobile'|translate}}</label>
-            </span>
+                          <input type="text" pInputText [(ngModel)]="object.phone" name="phone">
+                          <label>{{'Mobile'|translate}}</label>
+                        </span>
                     </div>
                     <div class="ui-g-6">
                         <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.social_id" name="social_id">
-              <label>{{'Social ID'|translate}}</label>
-            </span>
+                          <input type="text" pInputText [(ngModel)]="object.social_id" name="social_id">
+                          <label>{{'Social ID'|translate}}</label>
+                        </span>
                     </div>
                     <div class="ui-g-6">
                         <span class="md-inputfield">
-          <input type="text" pInputText [(ngModel)]="object.position" #position="ngModel" name="department" required>
-          <label>{{'Position'|translate}}</label>
-        </span>
+                          <input type="text" pInputText [(ngModel)]="object.position" #position="ngModel" name="department" required>
+                          <label>{{'Position'|translate}}</label>
+                        </span>
                     </div>
                     <div class="ui-g-6">
                         <label>{{'Gender'|translate}}</label>
@@ -77,15 +77,15 @@
                     </div>
                     <div class="ui-g-6">
                         <span class="md-inputfield">
-          <p-calendar [(ngModel)]="object.dob" #dob="ngModel" name="dob" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
-            yearRange="1918:2099" required="true" dateFormat="dd/mm/yy"></p-calendar>
-          <label>{{'Birthday'|translate}}</label>
-          <div *ngIf="dob.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
-            <div *ngIf="dob.errors.required">
-              {{'Birthday is required' | translate}}
-            </div>
-          </div>
-        </span>
+                          <p-calendar [(ngModel)]="object.dob" #dob="ngModel" name="dob" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                            yearRange="1918:2099" required="true" dateFormat="dd/mm/yy"></p-calendar>
+                          <label>{{'Birthday'|translate}}</label>
+                          <div *ngIf="dob.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+                            <div *ngIf="dob.errors.required">
+                              {{'Birthday is required' | translate}}
+                            </div>
+                          </div>
+                        </span>
                     </div>
                 </div>
             </p-tabPanel>

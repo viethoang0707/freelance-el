@@ -90,7 +90,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have close permission for this class'));
             return;
         }
-        this.confirm(('Are you sure to proceed ? You will not be able to add new class after the course is closed'), () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed ? You will not be able to add new class after the course is closed'), () => {
             course.close(this).subscribe(() => {
                 course.status = 'closed';
                 this.success(this.translateService.instant('Course close'));

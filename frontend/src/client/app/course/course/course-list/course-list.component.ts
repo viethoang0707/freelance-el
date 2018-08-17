@@ -70,7 +70,7 @@ export class CourseListComponent extends BaseComponent {
 
     editCourse(course: Course) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
-            this.error('You do not have edit permission for this course');
+            this.error(this.translateService.instant('You do not have edit permission for this course'));
             return;
         }
         course.populate(this).subscribe(() => {
@@ -83,7 +83,7 @@ export class CourseListComponent extends BaseComponent {
 
     requestReview(course: Course) {
         if (this.ContextUser.id != course.supervisor_id) {
-            this.error('You do not have submit-review permission for this course');
+            this.error(this.translateService.instant('You do not have submit-review permission for this course'));
             return;
         }
         this.workflowService.createCourseReviewTicket(this, course).subscribe(() => {
@@ -94,16 +94,16 @@ export class CourseListComponent extends BaseComponent {
 
     deleteCourse(course: Course) {
         if (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != course.supervisor_id) {
-            this.error('You do not have delete permission for this course');
+            this.error(this.translateService.instant('You do not have delete permission for this course'));
             return;
         }
-        this.confirm('Are you sure to delete ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             course.delete(this).subscribe(() => {
                 this.selectedCourse = null;
                 this.courses = _.reject(this.courses, (obj: Course) => {
                     return course.id == obj.id;
                 });
-                this.success('Delete course successfully');
+                this.success(this.translateService.instant('Delete course successfully'));
             })
         });
     }

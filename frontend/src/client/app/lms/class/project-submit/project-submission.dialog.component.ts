@@ -50,7 +50,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
 
     confirm() {
         if (!this.submit.file_url)
-            this.error('You have not submiited any attachment');
+            this.error(this.translateService.instant('You have not submiited any attachment'));
         else {
             this.submit.date_submit = new Date();
             this.submit.save(this).subscribe(() => {

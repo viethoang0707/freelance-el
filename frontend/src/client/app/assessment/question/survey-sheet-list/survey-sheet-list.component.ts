@@ -37,14 +37,14 @@ export class SurveySheetListComponent extends BaseComponent {
     }
 
     deleteSheet(sheet:SurveySheet) {
-        this.confirm('Are you sure to delete ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             sheet.delete(this).subscribe(() => {
                 this.selectedSheet = null;
                 this.sheets = _.reject(this.sheets, (obj:SurveySheet)=> {
                     return sheet.id == obj.id;
                 });
             });
-            this.success('Delete sheet successfully');
+            this.success(this.translateService.instant('Delete sheet successfully'));
         });
     }
 

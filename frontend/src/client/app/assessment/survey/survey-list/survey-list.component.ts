@@ -81,7 +81,7 @@ export class SurveyListComponent extends BaseComponent {
                 this.surveys = _.reject(this.surveys, (obj:Survey)=> {
                     return survey.id == obj.id;
                 });
-                this.success('Delete survey successfully');
+                this.success(this.translateService.instant('Delete survey successfully'));
             })
         });
     }
