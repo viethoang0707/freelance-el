@@ -47,7 +47,7 @@ export class SurveySheetSaveDialog extends BaseComponent {
 				return surveyQuestion;
 			});
 			SurveyQuestion.createArray(this, surveyQuestions).subscribe(()=> {
-				this.success(this.translateService.instant('Question sheet saved successfully');
+				this.success(this.translateService.instant('Question sheet saved successfully'));
 				this.hide();
 			});
 		});
@@ -56,8 +56,6 @@ export class SurveySheetSaveDialog extends BaseComponent {
 	hide() {
 		this.display = false;
 	}
-
-
 
 	
 }
