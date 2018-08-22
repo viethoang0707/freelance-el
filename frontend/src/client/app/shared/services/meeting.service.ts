@@ -10,15 +10,14 @@ import { Observable, Subject } from 'rxjs/Rx';
 export class MeetingService {
 
 	private nativeWindow: any;
-	private cloud_code: string;
 
 	constructor(private winRef: WindowRef, private authService: AuthService) {
 		this.nativeWindow =  this.winRef.getNativeWindow();
-		this.cloud_code =  this.authService.LoginToken.cloud_code;
 	}
 
 	join(room_ref: string, member_ref: string) {
-		this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&cloudid=${this.cloud_code}`);
+		this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}
+			&cloudid=${this.authService.LoginToken.cloud_code}&token=${this.authService.LoginToken.code}`);
 	}
 
 
