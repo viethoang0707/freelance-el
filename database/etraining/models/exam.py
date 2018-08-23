@@ -73,7 +73,8 @@ class Exam(models.Model):
 		if self.course_class_id:
 			for course_member in self.env['etraining.course_member'].search([('class_id','=',self.course_class_id.id),('user_id','=',user.id)]):
 				member.write({'course_member_id':course_member.id})
-		self.env.ref(self._module +"."+ "exam_register_template").send_mail(member.id,force_send=True)
+		if member.email:
+				self.env.ref(self._module +"."+ "exam_register_template").send_mail(member.id,force_send=True)
 		return member
 
 	@api.multi
@@ -88,7 +89,7 @@ class Exam(models.Model):
 		examId = +params["examId"]
 		for exam in self.env["etraining.exam"].browse(examId):
 			for candidate in self.env['etraining.exam_member'].search([('exam_id','=',exam.id),('role','=','candidate')]):
-				if candidate.enroll_status != 'completed':
+				if candidate.enroll_status != 'completed' and candidate.email:
 					self.env.ref(self._module +"."+ "exam_open_template").send_mail(candidate.id,force_send=True)
 			exam.write({'status':'open'})
 		return True
