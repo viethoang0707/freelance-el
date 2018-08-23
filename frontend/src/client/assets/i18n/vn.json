@@ -214,6 +214,7 @@
 	"Level down": "Xuống cấp",
 	"Clear selection": "Xóa lựa chọn",
 	"Course syllabus": "Giáo trình khóa học",
+	"Edit syllabus": "Chỉnh sửa giáo trình",
 	"Course unit": "Giáo trình",
 	"Select questions": "Lựa chọn câu hỏi",
 	"Lecture": "Bài học",
@@ -314,6 +315,7 @@
 	"Class exams": "Bài kiểm tra lớp học",
 	"Select question": "Lựa chọn câu hỏi",
 	"Select group": "Lựa chọn danh mục",
+	"Select groups": "Lựa chọn danh mục",
 	"Select course": "Lựa chọn khóa học",
 	"Course setting": "Cài đặt khóa học",
 	"Select prequisite course": "Chọn khóa học tiên quyết",
@@ -604,6 +606,18 @@
 	"Delete question successfully": "Xóa câu hỏi thành công",
 	"Delete sheet successfully": "Xóa mẫu đề thi thành công",
 	"Delete survey successfully": "Xóa khảo sát thành công",
-	"Survey content": "Nội dung khảo sát"
+	"Survey content": "Nội dung khảo sát",
+	"Save to templates": "Lưu nội dung",
+	"Clear": "Xóa nội dung",
+	"Self-assessment": "Bài thi",
+	"User exist": "Người dùng đã tồn tại",
+	"Survey not available": "Khảo sát không khả dụng",
+	"Add survey successfully": "Thêm mới khảo sát thành công",
+	"Survey result statistics report": "Báo cáo kết quả khảo sát",
+	"Competency by group report": "Báo cáo năng lực theo nhóm",
+	"Select a survey": "Chọn khảo sát",
+	"Survey answer statistics": "Thống kê câu trả lời khảo sát",
+	"User chart": "Biểu đồ người dùng",
+	"User status chart": "Biểu đồ tình trạng người dùng"
 
 }

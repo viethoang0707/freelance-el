@@ -49,7 +49,7 @@ export class UserDialog extends BaseDialog<User> {
 		if (!this.object.id) {
 			User.searchByLogin(this, this.object.login).subscribe(user => {
 				if (user != null) {
-					this.error('User exist');
+					this.error(this.translateService.instant('User exist'));
 					return;
 				}
 				this.object.save(this).subscribe(() => {

@@ -54,7 +54,7 @@ export class SurveyListComponent extends BaseComponent {
         this.surveyDialog.show(survey);
         this.surveyDialog.onCreateComplete.first().subscribe(() => {
             this.surveys = [ survey ,...this.surveys];
-            this.success('Add survey successfully');
+            this.success(this.translateService.instant('Add survey successfully'));
         });
     }
 
