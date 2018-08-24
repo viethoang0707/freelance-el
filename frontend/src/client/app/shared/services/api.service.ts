@@ -154,8 +154,8 @@ export class APIService {
                     var progress = Math.round(event.loaded / event.total * 100);
                     observer.next(progress);
                 };
-                xhr.setRequestHeader('Authorization',`${this.cloudId} ${token.code}` )
                 xhr.open('POST', this.apiEndpoint + '/file/upload', true);
+                xhr.setRequestHeader('Authorization',`${token.cloud_code} ${this.cloudId} ${token.code}` )
                 xhr.send(formData);
             });
         });
