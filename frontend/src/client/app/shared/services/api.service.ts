@@ -17,11 +17,10 @@ export class APIService {
     init(): Observable<any> {
         if (this.apiEndpoint)
             return Observable.of(this.apiEndpoint);
-        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId}`});
         let options = new RequestOptions({ headers: headers });
         var endpoint = Config.AUTHEN_SERVER_URL + '/account/cloud';
         var params = {};
-        params["cloud_code"] = this.cloudId;
         return this.http.post(endpoint, JSON.stringify(params), options)
             .map((response: Response) => {
                 var resp = response.json();
@@ -36,11 +35,10 @@ export class APIService {
 
     register(user: any): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId}`});
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/register';
             var params = { user: user }
-            params["cloud_code"] = this.cloudId;
             this.appEvent.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .map((response: Response) => response.json()).do(() => {
@@ -57,11 +55,10 @@ export class APIService {
 
     login(username: string, password: string): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId}`});
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/login';
             var params = { username: username, password: password }
-            params["cloud_code"] = this.cloudId;
             this.appEvent.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .map((response: Response) => response.json()).do(() => {
@@ -77,12 +74,10 @@ export class APIService {
 
     logout(token: Token): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId} ${token.code}`});
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/logout';
             var params = {};
-            params["cloud_code"] = this.cloudId;
-            params['token'] = token.code;
             this.appEvent.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .do(() => {
@@ -98,11 +93,10 @@ export class APIService {
 
     resetPasswordRequest(email: string): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId}`});
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/resetpass/request';
             var params = { email: email }
-            params["cloud_code"] = this.cloudId;
             this.appEvent.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .map((response: Response) => response.json()).do(() => {
@@ -118,11 +112,10 @@ export class APIService {
 
     resetPasswordExecute(token: string, new_pass: string): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId} ${token.code}`});
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/resetpass/execute';
             var params = { new_pass: new_pass, token: token }
-            params["cloud_code"] = this.cloudId;
             this.appEvent.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .map((response: Response) => response.json()).do(() => {
@@ -140,11 +133,6 @@ export class APIService {
         return this.init().flatMap(() => {
             let formData: FormData = new FormData();
             formData.append('file', file, file.name);
-            if (!token || !token.IsValid) {
-                this.appEvent.tokenExpired();
-                return Observable.throw('Token expired')
-            }
-            formData.append('token', token.code);
             this.appEvent.startHttpTransaction();
 
             return Observable.create(observer => {
@@ -166,7 +154,7 @@ export class APIService {
                     var progress = Math.round(event.loaded / event.total * 100);
                     observer.next(progress);
                 };
-
+                xhr.setRequestHeader('Authorization',`${this.cloudId} ${token.code}` )
                 xhr.open('POST', this.apiEndpoint + '/file/upload', true);
                 xhr.send(formData);
             });
@@ -175,15 +163,10 @@ export class APIService {
 
     unzip(filename: any, token: Token): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId} ${token.code}`});
             let options = new RequestOptions({ headers: headers });
             this.appEvent.startHttpTransaction();
             var params = { filename: filename };
-            if (!token || !token.IsValid) {
-                this.appEvent.tokenExpired();
-                return Observable.throw('Token expired')
-            }
-            params['token'] = token.code;
             return this.http.post(this.apiEndpoint + '/file/unzip', JSON.stringify({ token: token.code, filename: filename }), options)
                 .map(res => res.json())
                 .do(() => {
@@ -199,15 +182,10 @@ export class APIService {
 
     convert2Pdf(filename: any, token: Token): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId} ${token.code}`});
             let options = new RequestOptions({ headers: headers });
             this.appEvent.startHttpTransaction();
             var params = { filename: filename };
-            if (!token || !token.IsValid) {
-                this.appEvent.tokenExpired();
-                return Observable.throw('Token expired')
-            }
-            params['token'] = token.code;
             return this.http.post(this.apiEndpoint + '/file/convert2pdf', JSON.stringify({ token: token.code, filename: filename }), options)
                 .map(res => res.json())
                 .do(() => {
@@ -223,13 +201,9 @@ export class APIService {
 
     execute(api: BaseAPI, token: Token): Observable<any> {
         return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+            let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId} ${token.code}`});
             let options = new RequestOptions({ headers: headers });
             var params = api.params;
-            if (token && !token.IsValid) {
-                params["token"] = token.code;
-            }
-            params["cloud_code"] = this.cloudId;
             var endpoint = this.apiEndpoint + api.Method;
             this.appEvent.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)

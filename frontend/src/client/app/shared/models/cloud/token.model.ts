@@ -20,12 +20,4 @@ export class Token extends BaseModel{
     cloud_code: string;
     date_expire: number;
 
-    get IsValid():boolean {
-        var now = new Date();
-        var expireDate = new Date(this.date_expire);
-        if (expireDate.getTime() > now.getTime())
-            return true;
-        return false;
-    }
-
 }
