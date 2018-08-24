@@ -110,7 +110,7 @@ export class APIService {
         });
     }
 
-    resetPasswordExecute(token: string, new_pass: string): Observable<any> {
+    resetPasswordExecute(token: Token, new_pass: string): Observable<any> {
         return this.init().flatMap(() => {
             let headers = new Headers({ 'Content-Type': 'application/json' ,'Authorization': `${this.cloudId} ${token.code}`});
             let options = new RequestOptions({ headers: headers });
