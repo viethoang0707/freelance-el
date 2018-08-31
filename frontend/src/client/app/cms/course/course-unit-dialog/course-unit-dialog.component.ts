@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
@@ -10,7 +10,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitRegister } from '../course-unit-template/unit.decorator';
 import { CourseUnitContainerDirective } from '../course-unit-template/unit-container.directive';
-import { ICourseUnit } from '../course-unit-template/unit.interface';
+import { ICourseUnitDesign } from '../course-unit-template/unit.interface';
 import { SelectItem, MenuItem } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 
@@ -52,8 +52,8 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 				let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
 				viewContainerRef.clear();
 				this.componentRef = viewContainerRef.createComponent(componentFactory);
-				(<ICourseUnit>this.componentRef.instance).mode = 'design';
-				(<ICourseUnit>this.componentRef.instance).render(object);
+				(<ICourseUnitDesign>this.componentRef.instance).mode = 'design';
+				(<ICourseUnitDesign>this.componentRef.instance).render(object);
 			} else {
 				viewContainerRef.clear();
 				this.componentRef = null;
@@ -62,7 +62,7 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 		});
 		this.onUpdateComplete.subscribe(object => {
 			if (this.componentRef)
-				(<ICourseUnit>this.componentRef.instance).saveEditor().subscribe(() => {
+				(<ICourseUnitDesign>this.componentRef.instance).saveEditor().subscribe(() => {
 				});
 		})
 	}

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Permission } from '../../../shared/models/elearning/permission.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -64,7 +64,7 @@ export class MemberPermissionDialog extends BaseComponent {
             });
             User.updateArray(this, users,USER_FIELDS).subscribe(() => {
                 this.loadMembers();
-                this.success('Delete member successfully');
+                this.success(this.translateService.instant('Delete member successfully'));
             });
         });
     }

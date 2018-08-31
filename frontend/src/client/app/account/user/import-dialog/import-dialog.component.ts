@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
+import { Setting } from '../../../shared/models/elearning/setting.model';
 import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY, SERVER_DATE_FORMAT, GENDER } from '../../../shared/models/constants';
 import { TreeNode, SelectItem } from 'primeng/api';
@@ -38,13 +39,14 @@ export class UserImportDialog extends BaseComponent {
 		super();
 		this.display = false;
 		this.records = [];
+		this.users = [];
 		this.statusMessages = [];
 		this.fields = [
-			{ value: 'login', label: this.translateService.instant('Login') },
-			{ value: 'name', label: this.translateService.instant('Name') },
-			{ value: 'social_id', label: this.translateService.instant('Social ID') },
-			{ value: 'group_name', label: this.translateService.instant('Group') },
-			{ value: 'group_code', label: this.translateService.instant('Group code ') },
+			{ value: 'login', label: this.translateService.instant('Username') },
+			{ value: 'name', label: this.translateService.instant('Fullname') },
+			{ value: 'social_id', label: this.translateService.instant('IDNo') },
+			{ value: 'group_name', label: this.translateService.instant('Dealer') },
+			{ value: 'group_code', label: this.translateService.instant('Dealer Code') },
 			{ value: 'position', label: this.translateService.instant('Position') },
 			{ value: 'dob', label: this.translateService.instant('Date of birth') },
 			{ value: 'gender', label: this.translateService.instant('Gender') },
@@ -58,6 +60,7 @@ export class UserImportDialog extends BaseComponent {
 	show() {
 		this.display = true;
 		this.step = 1;
+		this.users = [];
 		this.statusMessages = [];
 	}
 
@@ -68,14 +71,17 @@ export class UserImportDialog extends BaseComponent {
 	import() {
 		Group.listUserGroup(this).subscribe(groups => {
 			this.step = 3;
-			this.parseData(groups).subscribe(success => {
+			Setting.dateFormat(this).subscribe(dateFormat=> {
+				this.parseData(groups,dateFormat).subscribe(success => {
 				if (success && this.users.length)
 					this.uploadData();
 			});
+			})
+			
 		});
 	}
 
-	parseData(groups: Group[]): Observable<any> {
+	parseData(groups: Group[],dateFormat:Setting): Observable<any> {
 		this.users = [];
 		this.statusMessages = [];
 		_.each(this.records, (record, index) => {
@@ -98,21 +104,22 @@ export class UserImportDialog extends BaseComponent {
 				this.statusMessages.push(`Record ${index}: Group ${record["group_code"]} is not defined`);
 			}
 			if (userFields.includes('dob')) {
-				if (user.dob && moment(user.dob, SERVER_DATE_FORMAT)["_isValid"])
-					user.dob = moment(user.dob, SERVER_DATE_FORMAT).toDate();
+				if (user.dob && moment(user.dob, dateFormat.value)["_isValid"])
+					user.dob = moment(user.dob, dateFormat.value).toDate();
 				else {
 					isValid = false;
-					this.statusMessages.push(`Record ${index}: Invalid date of birth format. Require ${SERVER_DATE_FORMAT}`);
+					this.statusMessages.push(`Record ${index}: Invalid date of birth format. Require ${dateFormat.value}`);
 				}
 			}
 			if (userFields.includes('gender')) {
 				isValid = user['gender'] in GENDER;
 				if (!isValid)
-					this.statusMessages.push(`Record ${index}: Invalid gender. Valid values: ${GENDER}`);
+					this.statusMessages.push(`Record ${index}: Invalid gender. Valid values: ${Object.keys(GENDER)}`);
 			}
 			if (isValid)
 				this.users.push(user);
 		});
+		console.log(this.users);
 		if (this.statusMessages.length)
 			return Observable.of(true);
 		else

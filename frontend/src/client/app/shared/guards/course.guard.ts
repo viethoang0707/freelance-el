@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { ModelAPIService } from '../services/api/model-api.service';
+import { APIService } from '../services/api.service';
 import { APIContext } from '../models/context';
 import { CourseMember } from '../models/elearning/course-member.model';
 import * as _ from 'underscore';
@@ -11,10 +11,10 @@ import { LMSProfileService } from '../services/lms-profile.service';
 @Injectable()
 export class CourseGuard implements CanActivate, APIContext {
 
-	apiService: ModelAPIService;
+	apiService: APIService;
 	authService: AuthService;
 
-	constructor(apiService: ModelAPIService, authService: AuthService, private lmsService: LMSProfileService, private router: Router) {
+	constructor(apiService: APIService, authService: AuthService, private lmsService: LMSProfileService, private router: Router) {
 		this.apiService =  apiService;
 		this.authService = authService;
 	}

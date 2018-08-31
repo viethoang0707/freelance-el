@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitTemplate } from '../unit.decorator';
-import { ICourseUnit } from '../unit.interface';
+import { ICourseUnitDesign } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import * as RecordRTC from 'recordrtc';
 import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.model';
@@ -22,18 +22,16 @@ import { VideoLecture } from '../../../../shared/models/elearning/lecture-video.
 @CourseUnitTemplate({
 	type: 'slide'
 })
-export class SlideLectureCourseUnitComponent extends BaseComponent implements ICourseUnit {
+export class SlideLectureCourseUnitComponent extends BaseComponent implements ICourseUnitDesign {
 
 	private unit: CourseUnit;
 	private lecture: SlideLecture;
 	private percentage: number;
-	viewCompleted: boolean;
 	@Input() mode;
 
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new SlideLecture();
-		this.viewCompleted = false;
 	}
 
 
@@ -45,13 +43,13 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	}
 
 	saveEditor(): Observable<any> {
-		return Observable.forkJoin(this.unit.save(this), this.lecture.save(this));
+		return this.lecture.save(this);
 	}
 
 	uploadFile(file) {
 		this.percentage = 0;
 		this.lecture.filename = file.name;
-		this.fileApiService.upload(file,  this.authService.LoginToken).subscribe(
+		this.apiService.upload(file,  this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(()=> {
@@ -59,7 +57,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 							this.lecture.slide_url = data["url"];
 						else {
 							var serverFile = data["filename"]
-							this.fileApiService.convert2Pdf(serverFile, this.authService.LoginToken).subscribe((data)=> {
+							this.apiService.convert2Pdf(serverFile, this.authService.LoginToken).subscribe((data)=> {
 								this.lecture.slide_url = data["url"];
 							});
 						}

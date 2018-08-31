@@ -88,9 +88,9 @@ export abstract class BaseModel {
         return new SearchCountAPI(model, domain);
     }
 
-    static __api__search(fields: string[], domain: string):SearchReadAPI {
+    static __api__search(fields: string[], domain: string,limit?:any, offset?:any, order?:any):SearchReadAPI {
         var model = this.Model;
-        return new SearchReadAPI(model, fields, domain);
+        return new SearchReadAPI(model, fields, domain,limit,offset,order);
     }
 
     static __api__all(fields?:string[]):SearchReadAPI {
@@ -275,7 +275,7 @@ export abstract class BaseModel {
         });
     }
 
-    static single(context: APIContext, fields: string[], domain: string): Observable<any[]> {
+    static single(context: APIContext, fields: string[], domain: string): Observable<any> {
         var model = this.Model;
         return this.search(context, fields, domain).map(objects => {
             var records = this.toArray(objects);
@@ -320,10 +320,10 @@ export abstract class BaseModel {
         return context.apiService.execute(this.__api__count(domain), token);
     }
 
-    static search(context: APIContext, fields: string[], domain: string): Observable<any[]> {
+    static search(context: APIContext, fields: string[], domain: string,limit?:any, offset?:any, order?:any): Observable<any[]> {
         var model = this.Model;
         var token = context.authService.LoginToken;
-        return context.apiService.execute(this.__api__search( fields, domain), token).map(objects => {
+        return context.apiService.execute(this.__api__search( fields, domain, limit, offset, order), token).map(objects => {
             return this.toArray(objects);
         });
     }

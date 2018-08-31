@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { ModelAPIService } from '../../services/api/model-api.service';
+
 import { AuthService } from '../../services/auth.service';
 import { Group } from '../../models/elearning/group.model';
 import { BaseComponent } from '../base/base.component';

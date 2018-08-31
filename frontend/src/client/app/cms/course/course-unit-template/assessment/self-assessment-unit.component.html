@@ -1,0 +1,10 @@
+<div *ngIf="mode=='design'">
+    <div class="ui-g-12 removePdLf removePdRt">
+        <button pButton type="button" icon="ui-icon-edit" title="{{'Edit exam'| translate}}" label="{{'Edit exam'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="editContent(exam)"></button>
+    </div>
+</div>
+<div *ngIf="mode=='preview'">
+    <button pButton type="button" class="blue-grey-btn" icon="ui-icon-settings" (click)="previewSheet()" label="{{'Preview'|translate}}"></button>
+</div>
+<question-sheet-preview-dialog></question-sheet-preview-dialog>
+<exam-content-dialog></exam-content-dialog>

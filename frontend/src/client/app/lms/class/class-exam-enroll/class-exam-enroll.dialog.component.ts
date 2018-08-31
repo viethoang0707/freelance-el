@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
@@ -61,16 +61,18 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	enrollAll() {
 		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.exam.enroll(this, userIds).subscribe(() => {
-			this.exam.listMembers(this).subscribe(members => {
-				this.examMembers = members;
-			})
-			this.success('Register all successfully');
+			this.exam.populate(this).subscribe(() => {
+				this.exam.listCandidates(this).subscribe(members => {
+					this.examMembers = members;
+				});
+				this.success(this.translateService.instant('Register all successfully'));
+			});
 		});
 	}
 
 	activateMember(member: ExamMember) {
 		member.status = 'active';
-		member.save(this).subscribe(()=> {
+		member.save(this).subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 		});
 	}
@@ -78,16 +80,16 @@ export class ClassExamEnrollDialog extends BaseComponent {
 
 	suspendMember(member: ExamMember) {
 		member.status = 'suspend';
-		member.save(this).subscribe(()=> {
+		member.save(this).subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 		});
 	}
 
 	closeExam() {
-		this.confirm('Are you sure to proceed ?', () => {
+		this.confirm('Are you sure to proceed?', () => {
 			this.exam.close(this).subscribe(() => {
 				this.exam.status = 'closed';
-				this.success('Exam close');
+				this.success(this.translateService.instant('Exam close'));
 			});
 		});
 	}
@@ -96,7 +98,7 @@ export class ClassExamEnrollDialog extends BaseComponent {
 		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', () => {
 			this.exam.open(this).subscribe(() => {
 				this.exam.status = 'open';
-				this.success('Exam open');
+				this.success(this.translateService.instant('Exam open'));
 			});
 		});
 	}

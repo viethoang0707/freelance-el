@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -20,6 +20,7 @@ import { BaseModel } from '../../../shared/models/base.model';
     moduleId: module.id,
     selector: 'exam-setting-dialog',
     templateUrl: 'exam-setting.dialog.component.html',
+    styleUrls: ['exam-setting.dialog.component.css']
 })
 export class ExamSettingDialog extends BaseComponent {
 

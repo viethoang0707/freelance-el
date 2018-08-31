@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,ViewChild} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -62,7 +62,7 @@ export class SurveyDialog extends BaseDialog<Survey> {
 
         });  
 
-        this.onCreateComplete.subscribe(object=> {
+        this.onCreateComplete.first().subscribe(object=> {
             this.editor.role ='editor';
             this.editor.survey_id =  object.id;
             this.editor.save(this).subscribe();

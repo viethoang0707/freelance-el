@@ -1,5 +1,6 @@
 <div class="card card-w-title">
-    <h1>{{'Class'|translate}}: {{courseClass.name}} </h1>
+    <h1><a [routerLink]="['/lms/courses/manage',course.id,member.id]">{{'Course: ' |translate}}{{course.name}}</a><span class="fa fa-fw ui-icon-arrow-forward
+"></span><span>{{'Class'|translate}}: {{courseClass.name}}</span> </h1>
    
     <p-tabView [style]="{width: '100%', height: '600px'}">
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
@@ -127,10 +128,6 @@
                         <th>
                             {{'End'|translate}}
                         </th>
-                        <th [pSortableColumn]="'status'">
-                            {{'Status'|translate}}
-                            <p-sortIcon [field]="'status'"></p-sortIcon>
-                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-project>
@@ -138,7 +135,6 @@
                         <td>{{project.name}}</td>
                         <td>{{project.start | date : "dd/MM/yyyy"}}</td>
                         <td>{{project.end | date : "dd/MM/yyyy"}}</td>
-                        <td>{{PROJECT_STATUS[project.status] | translate}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

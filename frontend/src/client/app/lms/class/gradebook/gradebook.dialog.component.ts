@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, NgZone, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -99,7 +99,7 @@ export class GradebookDialog extends BaseComponent {
 
     issueCertificate() {
         if (this.student.enroll_status == 'completed') {
-            this.error('This member already completed the course');
+            this.error(this.translateService.instant('This member already completed the course'));
             return;
         }
         var certificate = new Certificate();
@@ -108,11 +108,11 @@ export class GradebookDialog extends BaseComponent {
         certificate.member_id = this.student.id;
         certificate.issue_member_id =  this.viewer.id;
         this.certDialog.show(certificate);
-        this.certDialog.onCreateComplete.subscribe((obj: Certificate) => {
+        this.certDialog.onCreateComplete.first().subscribe((obj: Certificate) => {
             this.certificate = obj;
             this.student.completeCourse(this, certificate.id).subscribe(() => {
                 this.student.enroll_status = 'completed';
-                this.success('Congratulations! You have completed the course.');
+                this.success(this.translateService.instant('Congratulations! You have completed the course.'));
             })
         });
     }
@@ -189,10 +189,13 @@ export class GradebookDialog extends BaseComponent {
         var member = _.find(this.examMembers, (member: ExamMember) => {
             return member.exam_id = exam.id;
         });
-        if (member)
-            this.answerSheetDialog.show(exam, member);
+        if (member) {
+            member.populateSubmission(this).subscribe(()=> {
+                this.answerSheetDialog.show(exam, member, member.submit);
+            });
+        }
         else
-            this.error('You have not been registered for this exam');
+            this.error(this.translateService.instant('You have not been registered for this exam'));
     }
 
 }

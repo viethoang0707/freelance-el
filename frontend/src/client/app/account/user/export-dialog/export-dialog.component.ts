@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -27,12 +27,20 @@ export class UserExportDialog extends BaseComponent {
 		super();
 		this.userIds = [];
 		this.fields = [
-			{ value: 'name', label: this.translateService.instant('Name') },
+			{ value: 'login', label: this.translateService.instant('Username') },
+			{ value: 'name', label: this.translateService.instant('Fullname') },
+			{ value: 'social_id', label: this.translateService.instant('IDNo') },
+			{ value: 'group_name', label: this.translateService.instant('Dealer') },
+			{ value: 'group_code', label: this.translateService.instant('Dealer Code') },
+			{ value: 'position', label: this.translateService.instant('Position') },
+			{ value: 'dob', label: this.translateService.instant('Date of birth') },
+			{ value: 'gender', label: this.translateService.instant('Gender') },
+			{ value: 'phone', label: this.translateService.instant('Phone') },
 			{ value: 'email', label: this.translateService.instant('Email') },
-			{ value: 'login', label: this.translateService.instant('Login') },
-			{ value: 'banned', label: this.translateService.instant('Banned') },
-			{ value: 'group_code', label: this.translateService.instant('Group') }
+			{ value: 'ban_date', label: this.translateService.instant('Deactivate date') },
+			{ value: 'unban_date', label: this.translateService.instant('Activate date') },
 		];
+		this.selectedFields = [];
 		this.display = false;
 	}
 

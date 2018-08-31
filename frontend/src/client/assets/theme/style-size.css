@@ -12,6 +12,27 @@
 .removeML{ margin-left: 0px !important}
 .removeMR{ margin-right: 0px !important}
 
+/* Margin */
+.m-1{ margin: 1px !important }
+.m-2{ margin: 2px !important }
+.m-3{ margin: 3px !important }
+.m-4{ margin: 4px !important }
+.m-5{ margin: 5px !important }
+.m-6{ margin: 6px !important }
+.m-7{ margin: 7px !important }
+.m-8{ margin: 8px !important }
+.m-9{ margin: 9px !important }
+.m-10{ margin: 10px !important }
+.m-11{ margin: 11px !important }
+.m-12{ margin: 12px !important }
+.m-13{ margin: 13px !important }
+.m-14{ margin: 14px !important }
+.m-15{ margin: 15px !important }
+.m-16{ margin: 16px !important }
+.m-17{ margin: 17px !important }
+.m-18{ margin: 18px !important }
+.m-19{ margin: 19px !important }
+.m-20{ margin: 20px !important }
 
 /* Margin Left */
 .ml1{ margin-left: 1px !important}
@@ -103,7 +124,29 @@
 .mb19{ margin-bottom: 19px !important}
 .mb20{ margin-bottom: 20px !important}
 
-/* Margin Left */
+/* Padding */
+.p-1{ padding: 1px !important}
+.p-2{ padding: 2px !important}
+.p-3{ padding: 3px !important}
+.p-4{ padding: 4px !important}
+.p-5{ padding: 5px !important}
+.p-6{ padding: 6px !important}
+.p-7{ padding: 7px !important}
+.p-8{ padding: 8px !important}
+.p-9{ padding: 9px !important}
+.p-10{ padding: 10px !important}
+.p-11{ padding: 11px !important}
+.p-12{ padding: 12px !important}
+.p-13{ padding: 13px !important}
+.p-14{ padding: 14px !important}
+.p-15{ padding: 15px !important}
+.p-16{ padding: 16px !important}
+.p-17{ padding: 17px !important}
+.p-18{ padding: 18px !important}
+.p-19{ padding: 19px !important}
+.p-20{ padding: 20px !important}
+
+/* Padding Left */
 .pl1{ padding-left: 1px !important}
 .pl2{ padding-left: 2px !important}
 .pl3{ padding-left: 3px !important}
@@ -125,7 +168,7 @@
 .pl19{ padding-left: 19px !important}
 .pl20{ padding-left: 20px !important}
 
-/* Margin Right */
+/* Padding Right */
 .pr1{ padding-right: 1px !important}
 .pr2{ padding-right: 2px !important}
 .pr3{ padding-right: 3px !important}
@@ -147,7 +190,7 @@
 .pr19{ padding-right: 19px !important}
 .pr20{ padding-right: 20px !important}
 
-/* Margin Top */
+/* Padding Top */
 .pt1{ padding-top: 1px !important}
 .pt2{ padding-top: 2px !important}
 .pt3{ padding-top: 3px !important}
@@ -172,7 +215,7 @@
 .pt30{ padding-top: 30px !important}
 .pt40{ padding-top: 40px !important}
 
-/* Margin Bottom */
+/* Padding Bottom */
 .pb1{ padding-bottom: 1px !important}
 .pb2{ padding-bottom: 2px !important}
 .pb3{ padding-bottom: 3px !important}

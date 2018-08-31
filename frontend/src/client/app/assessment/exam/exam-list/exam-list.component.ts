@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, SCHEDULER_HEADER, REVIEW_STATE } from '../../../shared/models/constants'
@@ -46,7 +46,7 @@ export class ExamListComponent extends BaseComponent {
         var exam = new Exam();
         exam.is_public = true;
         this.examDialog.show(exam);
-        this.examDialog.onCreateComplete.subscribe(() => {
+        this.examDialog.onCreateComplete.first().subscribe(() => {
             this.exams = [exam, ...this.exams];
             this.success(this.translateService.instant('Add exam successfully'));
         });

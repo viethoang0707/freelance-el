@@ -9,7 +9,6 @@ export class BulkUpdateAPI extends BaseAPI{
     constructor( ){
         super();
         this.params = {stacks:[]};
-        this.is_restricted =  true;
 	}
 
 	add(api: UpdateAPI) {

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -59,7 +59,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 			{ label: this.translateService.instant(COURSE_UNIT_TYPE['video']), command: () => { this.addUnit('video') } },
 			{ label: this.translateService.instant(COURSE_UNIT_TYPE['exercise']), command: () => { this.addUnit('exercise') } },
 			{ label: this.translateService.instant(COURSE_UNIT_TYPE['scorm']), command: () => { this.addUnit('scorm') } },
-
+			{ label: this.translateService.instant(COURSE_UNIT_TYPE['self-assess']), command: () => { this.addUnit('self-assess') } },
 		];
 		this.syl = new CourseSyllabus();
 		this.course = new Course();
@@ -114,7 +114,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 		unit.type = type;
 		unit.name = 'New unit';
 		unit.parent_id = this.selectedNode ? this.selectedNode.data.id : null;
-		unit.order = maxOrder;
+		unit.order = maxOrder + 1;
 		unit.save(this).subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 			if (this.selectedNode)
@@ -138,10 +138,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 
 	deleteNode(node: TreeNode) {
 		if (node.children.length) {
-			this.error('Cannot delete non-empty folder');
+			this.error(this.translateService.instant('Cannot delete non-empty folder'));
 			return;
 		}
-		this.confirm('Are you sure to delete?', () => {
+		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 			node.data.delete(this).subscribe(() => {
 				this.selectedNode = null;
 				this.units = _.reject(this.units, (unit:CourseUnit)=> {
@@ -162,7 +162,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	moveUp(node: TreeNode) {
 		this.sylUtils.moveUp(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
-			this.success('Move sucessfully');
+			this.success(this.translateService.instant('Move sucessfully'));
 			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
@@ -170,7 +170,7 @@ export class CourseSyllabusDialog extends BaseComponent {
 	moveDown(node: TreeNode) {
 		this.sylUtils.moveDown(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
-			this.success('Move sucessfully');
+			this.success(this.translateService.instant('Move sucessfully'));
 			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}

@@ -10,6 +10,8 @@ import { UserLog } from '../shared/models/elearning/log.model';
 import { Group } from '../shared/models/elearning/group.model';
 import { BaseModel } from '../shared/models/base.model';
 import { User } from '../shared/models/elearning/user.model';
+import { MenuService } from '../shared/services/menu.service';
+import { SettingDialog } from '../setting/setting-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -20,6 +22,7 @@ import { User } from '../shared/models/elearning/user.model';
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
     @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
+    @ViewChild(SettingDialog) settingDialog: SettingDialog;
 
     menuClick: boolean;
     menuButtonClick: boolean;
@@ -32,7 +35,8 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     mobileMenuActive: boolean;
     darkMenu: boolean;
 
-    constructor( private router: Router, private eventManager :HomeEventManager) {
+    constructor( private router: Router, private menuService: MenuService,
+        private eventManager :HomeEventManager) {
         super();
         this.appEvent.onTokenExpired.first().subscribe(()=> {
             this.warn('Your token has been expired');
@@ -53,6 +57,9 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
             this.error('Access denied. You must login again!')
             this.authService.logout();
         });
+        this.menuService.onShowSetting.subscribe(()=> {
+            this.settingDialog.show();
+        })
     }
 
     ngOnInit() {

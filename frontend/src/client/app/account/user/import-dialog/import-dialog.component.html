@@ -1,4 +1,4 @@
-<p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display" #importDialog modal="true" [responsive]="true" [positionTop]="20" [positionLeft]="300" styleClass="import-excel">
+<p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display" #importDialog modal="true" [responsive]="true" [positionTop]="20" [positionLeft]="300" styleClass="import-excel" [closeOnEscape]="false" [closable]="false">
     <div class="spinner" [hidden]="!loading"></div>
     <p-growl ></p-growl>
     <div class="ui-g">
@@ -10,14 +10,14 @@
         <div class="ui-g-12">
             <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="selectFile($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false">
             </p-fileUpload>
-            <label [hidden]="!fileName">{{fileName}}</label>
+            <span class="file-upload"><label [hidden]="!fileName">{{fileName}}</label></span>
         </div>
         <div class="ui-g-12" [hidden]='step!=2'>
             <ul class="select-columns">
                 <li *ngFor="let i of columnMappings | keys">
                     <div class="ui-g-4" >
                     <p class="txtBold">Column {{i}}</p>
-                    <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label"></p-dropdown>
+                    <p-dropdown [options]="fields" [(ngModel)]="columnMappings[i]" optionLabel="label" [style]="{width: 'auto'}"></p-dropdown>
                     </div>
                 </li>
             </ul>
@@ -32,7 +32,8 @@
         </div>
     </div>
     <p-footer>
-        <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="!records.length"></button>
+        <!-- <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="users.length==0"></button> -->
+        <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()"></button>
         <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
 </p-dialog>

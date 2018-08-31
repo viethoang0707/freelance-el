@@ -4,10 +4,9 @@ import { Submission } from './submission.model';
 import { ExamGrade } from './exam-grade.model';
 import { Exam } from './exam.model';
 import { Observable, Subject } from 'rxjs/Rx';
-import { Model,FieldProperty,UnserializeProperty } from '../decorator';
+import { Model,FieldProperty,UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
-
 import { ListAPI } from '../../services/api/list.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
@@ -42,6 +41,7 @@ export class ExamMember extends BaseModel{
         this.grade =  undefined;
         this.user =  new User();
         this.submit =  new Submission();
+        this.submission_ids = [];
     }
 
     @UnserializeProperty()
@@ -49,6 +49,8 @@ export class ExamMember extends BaseModel{
     @UnserializeProperty()
     submit: Submission;
     submission_id: number;
+    @ReadOnlyProperty()
+    submission_ids: number[];
     exam_id: number;
     course_member_id: number;
     exam_name: string;
@@ -78,8 +80,6 @@ export class ExamMember extends BaseModel{
     populateExam(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.exam_id)
             return Observable.of(null);
-        if (!this.exam.IsNew)
-            return Observable.of(this);
         return Exam.get(context, this.exam_id,fields).do(exam => {
             this.exam = exam;
         });
@@ -118,8 +118,6 @@ export class ExamMember extends BaseModel{
     populateUser(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        if (!this.user.IsNew)
-            return Observable.of(this);
         return User.get(context, this.user_id,fields).do(user => {
             this.user = user;
         });
@@ -132,10 +130,16 @@ export class ExamMember extends BaseModel{
     populateSubmission(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        if (!this.submit.IsNew)
-            return Observable.of(this);
         return Submission.get(context, this.submission_id,fields).do(submit => {
             this.submit = submit;
         });
+    }
+
+    static __api__listSubmissions(submission_ids: number[],fields?:string[]): ListAPI {
+        return new ListAPI(Submission.Model, submission_ids,fields);
+    }
+
+    listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Submission.array(context,this.submission_ids,fields);
     }
 }

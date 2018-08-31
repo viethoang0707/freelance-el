@@ -4,6 +4,7 @@ export const GENDER = { 'male': 'Male', 'female': 'Female', 'other': 'Other' };
 export const GROUP_CATEGORY = { USER: 'organization', QUESTION: 'question', COURSE: 'course', COMPETENCY: 'competency' };
 export const SERVER_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const SERVER_DATE_FORMAT = 'YYYY-MM-DD';
+export const DEFAULT_DATE_FORMAT = 'DD-MM-YYYY';
 export const DEFAULT_DATE_LOCALE = {
     firstDayOfWeek: 0,
     dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -24,8 +25,8 @@ export const EXAM_MEMBER_ROLE = { 'candidate': 'Candidate', 'supervisor': 'Super
 export const EXAM_MEMBER_STATUS = { 'active': 'Active', 'withdraw': 'Withdraw', 'suspend': 'Suspended' };
 export const QUESTION_SELECTION = { 'manual': 'Manual', 'random': 'Random' };
 export const EXAM_MEMBER_ENROLL_STATUS = { 'in-progress': 'In-progress', 'completed': 'Complete', 'registered': 'Registered' };
-export const COURSE_UNIT_TYPE = { 'folder': 'Folder', 'exercise': 'Exercise', 'html': 'HTML Lecture', 'video': 'Video lecture', 'scorm': 'SCORM lecture', 'slide': 'Presentation' };
-export const COURSE_UNIT_ICON = { 'folder': 'ui-icon-folder', 'exercise': 'ui-icon-play-for-work', 'html': 'ui-icon-text-fields', 'video': 'ui-icon-videocam', 'scorm': 'ui-icon-unarchive', 'slide': 'ui-icon-slideshow' };
+export const COURSE_UNIT_TYPE = { 'folder': 'Folder','self-assess': 'Self-assessment', 'exercise': 'Exercise', 'html': 'HTML Lecture', 'video': 'Video lecture', 'scorm': 'SCORM lecture', 'slide': 'Presentation' };
+export const COURSE_UNIT_ICON = { 'folder': 'ui-icon-folder', 'exercise': 'ui-icon-play-for-work', 'html': 'ui-icon-text-fields', 'video': 'ui-icon-videocam', 'scorm': 'ui-icon-unarchive', 'slide': 'ui-icon-slideshow' ,'self-assess':'ui-icon-grade'};
 export const CONFERENCE_STATUS = { 'open': 'Open', 'closed': 'Closed' };
 export const CONTENT_STATUS = { 'draft': 'Draft', 'published': 'Published', 'unpublished': 'Unpublished' };
 export const COURSE_MODE = { 'self-study': 'Self-study', 'group': 'Group-study' };

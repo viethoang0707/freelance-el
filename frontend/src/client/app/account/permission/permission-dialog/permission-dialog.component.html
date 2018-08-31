@@ -1,5 +1,5 @@
 <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-    <p-dialog header="{{'Permission'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true">
+    <p-dialog header="{{'Permission'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true" [closeOnEscape]="false" [closable]="false">
         <div class="spinner" [hidden]="!loading"></div>
         <div class="ui-g ui-fluid form-group">
             <div class="ui-g-12 ">
@@ -15,7 +15,7 @@
             </div>
         </div>
         <p-footer>
-            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" ></button>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid" ></button>
             <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>

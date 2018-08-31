@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
@@ -28,7 +28,7 @@ export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 
 	uploadFile(file) {
 		this.percentage = 0;
-		this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
+		this.apiService.upload(file, this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {

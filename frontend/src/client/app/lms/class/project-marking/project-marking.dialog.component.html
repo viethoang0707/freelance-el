@@ -1,21 +1,21 @@
-<p-dialog header="{{'Marking project' | translate}}" [(visible)]="display" modal="true" width="960" [responsive]="true" appendTo="body">
-  <div class="spinner" [hidden]="!loading"></div>
-  <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-    <div class="ui-g-6">
-      <span>
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Marking project' | translate}}" [(visible)]="display" modal="true" width="960" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
+        <div class="spinner" [hidden]="!loading"></div>
+        <div class="ui-g-6">
+            <span>
           {{'Submit date'|translate}} :{{object.date_submit | date : "dd/MM/yyyy"}}
         </span>
-    </div>
-    <div class="ui-g-6">
-      <a href="{{object.file_url}}" target="_blank" >{{object.filename}}</a>
-    </div>
-    <div class="ui-g-6">
-      <label>{{'Score'|translate}}</label>
-      <p-spinner size="30" [(ngModel)]="object.score" [min]="0"  name="score" ></p-spinner>
-    </div>
-  </form>
-  <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
-</p-dialog>
+        </div>
+        <div class="ui-g-6">
+            <a href="{{object.file_url}}" target="_blank">{{object.filename}}</a>
+        </div>
+        <div class="ui-g-6">
+            <label>{{'Score'|translate}}</label>
+            <p-spinner size="30" [(ngModel)]="object.score" [min]="0" name="score"></p-spinner>
+        </div>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
+            <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

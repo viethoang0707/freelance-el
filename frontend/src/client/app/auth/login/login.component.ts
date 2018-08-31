@@ -41,7 +41,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
             resp => {
                 let user: User = resp["user"];
                 if (user.banned) {
-                    this.error('Your account has been banned');
+                    this.error(this.translateService.instant('Your account has been banned'));
                     return;
                 }
                 this.appEvent.userLogin(user);

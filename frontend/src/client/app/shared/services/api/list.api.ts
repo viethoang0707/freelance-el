@@ -14,7 +14,6 @@ export class ListAPI extends BaseAPI{
             var modelFields = BaseModel.fields(model);
             this.params = { model: model,fields:modelFields, ids:ids };
         }
-        this.is_restricted =  false;
 	}
 
 }

@@ -82,24 +82,21 @@ export class ReportUtils {
 
 	analyzeExamMemberActivity(logs: ExamLog[]) {
 		var onTime = 0;
-		var startCourseUnitLogs = _.filter(logs, (log) => {
+		var startExamLogs = _.filter(logs, (log) => {
 			return log.start && log.code == 'START_EXAM';
 		});
-		var endCourseUnitLogs = _.filter(logs, (log) => {
+		var endExamLogs = _.filter(logs, (log) => {
 			return log.start && log.code == 'FINISH_EXAM';
 		});
-		var first_attempt = _.min(startCourseUnitLogs, (log) => {
+		var first_attempt = _.min(startExamLogs, (log) => {
 			return log.start.getTime();
 		});
-		var last_attempt = _.max(startCourseUnitLogs, (log) => {
+		var last_attempt = _.max(endExamLogs, (log) => {
 			return log.start.getTime();
 		});
-		_.each(logs, (log) => {
-			if (log.code == 'FINISH_EXAM')
-				onTime += log.start.getTime();
-			if (log.code == 'START_EXAM')
-				onTime -= log.start.getTime();
-		});
+		if (endExamLogs.length && startExamLogs.length )
+			onTime = last_attempt.start.getTime() -  first_attempt.start.getTime();
+
 		return [first_attempt.start, last_attempt.start, onTime];
 	}
 

@@ -16,3 +16,4 @@ class ExamSetting(models.Model):
 	take_picture_on_submit = fields.Boolean(string='Take picture on submit')
 	max_attempt = fields.Integer(string='Max attempt', default=1)
 	allow_navigate = fields.Boolean(string='Allow navigate question', default=True)
+	allow_review_answer = fields.Boolean(string='Allow review answer', default=True)

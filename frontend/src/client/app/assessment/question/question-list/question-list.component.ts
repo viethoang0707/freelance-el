@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
@@ -58,22 +58,24 @@ export class QuestionListComponent extends BaseComponent {
         var question = new Question();
         question.type = type;
         this.questionDialog.show(question);
-        this.questionDialog.onCreateComplete.subscribe(() => {
+        this.questionDialog.onCreateComplete.first().subscribe(() => {
             this.questions.unshift(question);
             this.displayQuestions = [...this.questions];
             this.selectedQuestions = [];
             this.selectedGroupNodes = [];
-            this.success('Add question successfully');
+            this.success(this.translateService.instant('Add question successfully'));
         });
     }
 
     editQuestion(question: Question) {
-        this.questionDialog.show(question);
-        this.selectedQuestions = [];
+        question.populate(this).subscribe(()=> {
+            this.questionDialog.show(question);
+            this.selectedQuestions = [];
+        });
     }
 
     deleteMultipleQuestions(questions: Question[]) {
-        this.confirm('Are you sure to delete ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             Question.deleteArray(this, questions).subscribe(() => {
                 this.selectedQuestions = [];
                 var qIds = _.pluck(questions,'id');
@@ -81,7 +83,7 @@ export class QuestionListComponent extends BaseComponent {
                     return qIds.includes(obj.id);
                 });
                 this.displayQuestions = this.questions;
-                this.success('Delete question successfully');
+                this.success(this.translateService.instant('Delete question successfully'));
             });
         });
     }

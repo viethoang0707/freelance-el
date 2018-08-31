@@ -53,8 +53,6 @@ export class ConferenceMember extends BaseModel{
     populateConference(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.conference_id)
             return Observable.of(null);
-        if (!this.conference.IsNew)
-            return Observable.of(this);
         return Conference.get(context, this.conference_id,fields).do(conf => {
             this.conference = conf;
         });

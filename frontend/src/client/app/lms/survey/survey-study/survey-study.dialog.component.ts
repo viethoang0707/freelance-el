@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, EXAM_TIME_WARNING } from '../../../shared/models/constants'
@@ -16,9 +16,9 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { ExamLog } from '../../../shared/models/elearning/log.model';
 import { ClockPipe } from '../../../shared/pipes/time.pipe';
 import { SelectItem } from 'primeng/api';
-import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
+import { QuestionContainerDirective } from '../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../cms/question/question.decorator';
 import 'rxjs/add/observable/timer';
 import { Message } from 'primeng/components/common/api';
 import { MessageService } from 'primeng/components/common/messageservice';

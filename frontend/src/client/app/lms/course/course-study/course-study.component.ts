@@ -39,7 +39,7 @@ import { AnswerPrintDialog } from '../../exam/answer-print/answer-print.dialog.c
 import { MeetingService } from '../../../shared/services/meeting.service';
 import { CourseUnitRegister } from '../../../cms/course/course-unit-template/unit.decorator';
 import { CourseUnitContainerDirective } from '../../../cms/course/course-unit-template/unit-container.directive';
-import { ICourseUnit } from '../../../cms/course/course-unit-template/unit.interface';
+import { ICourseUnitDesign } from '../../../cms/course/course-unit-template/unit.interface';
 import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
 import { ProjectSubmissionDialog } from '../../class/project-submit/project-submission.dialog.component';
@@ -113,7 +113,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 				this.member.populateCourse(this).subscribe(() => {
 					this.course = this.member.course;
 					if (this.course.syllabus_status != 'published') {
-						this.error('Syllabus has not been published');
+						this.error(this.translateService.instant('Syllabus has not been published'));
 						return;
 					}
 					this.lmsProfileService.getCourseContent(this.course).subscribe(content => {
@@ -141,7 +141,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	viewGradebook() {
-		this.gradebookDialog.show(this.member,this.member);
+		this.gradebookDialog.show(this.member, this.member);
 	}
 
 	study() {
@@ -158,11 +158,20 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		if (this.conference.id && this.conferenceMember.id && this.conferenceMember.is_active)
 			this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
 		else
-			this.error('You are  not allowed to join the conference');
+			this.error(this.translateService.instant('You are  not allowed to join the conference'));
 	}
 
 	submitProject(project: Project) {
 		this.projectSubmitDialog.show(project, this.member);
+	}
+
+	startExam(exam: Exam, member: ExamMember) {
+		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
+			exam.populate(this).subscribe(() => {
+				this.examStudyDialog.show(exam, member);
+			});
+
+		});
 	}
 
 }

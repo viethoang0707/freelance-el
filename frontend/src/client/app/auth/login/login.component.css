@@ -18,6 +18,7 @@
 	left: 25%;
 	margin-left: 0;
 	border-radius: 15px;
+	box-shadow: 0px 20px 35px 0px rgba(2, 92, 132, 0.15);
 }
 
 .login-body .login-panel .login-panel-header{
@@ -94,6 +95,12 @@
     width: auto;
 }
 
+.btn-login:hover, .btn-login:focus, .btn-login:active{
+    background-color: #c71633 !important;
+    border: none;
+    color: #fff;
+}
+
 .forgot-pass a{
 	color: #586f79 !important;
 }
@@ -121,4 +128,49 @@
     background: #ea1336e0;
     color: #fff;
     border: none;
+}
+
+@media screen and (max-width: 768px) {
+  .login-body .login-panel{
+	width: 100%;
+	height: auto;
+	left: 0;
+	top: 36%;
+	}
+
+	.login-body .login-panel .login-panel-header{
+		border-bottom-left-radius: 0;
+	    border-top-right-radius: 15px;
+	    text-align: center;
+	}
+
+	.login-body .login-panel .login-panel-header .content{
+		border-top-right-radius: 15px;
+		border-bottom-left-radius: 0;
+		text-align: center;
+		padding: 40px 15px 20px;
+	    height: auto;
+	}
+
+	.login-body .login-panel .login-panel-header img{
+		margin-bottom: 0;
+	}
+
+	.login-body .login-panel .login-panel-header p{
+		display: none;
+	}
+
+	.login-body .login-panel .login-panel-header h1{
+		margin-bottom: 0;
+	}
+
+	.login-body .login-panel .login-panel-content{
+		padding: 5px 25px !important;
+	}
+
+	.footer{
+		bottom: 0;
+	}
+
+
 }

@@ -1,28 +1,28 @@
-<p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display"  #importDialog modal="true" width="600" [responsive]="true" [positionTop]="20" styleClass="import-excel">
-  <div class="spinner" [hidden]="!loading"></div>
-  <p-growl ></p-growl>
-  <div class="ui-g">
-    <div class="ui-g-12">
-    <p-fieldset legend="{{'Download import template'|translate}}">
-    <a href="/assets/templates/question_import.xlsx" target="_blank">question_import.xlsx</a>
-</p-fieldset>
-</div>
-    <div class="ui-g-12">
-      <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="selectFile($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false" >  
-    </p-fileUpload>
-    <label [hidden]="!fileName">{{fileName}}</label>
-    </div>
-    <div class="ui-g-12" [hidden]='step!=2'>
-          <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
+<p-dialog header="{{'Import from Excel'|translate}}" [(visible)]="display" #importDialog modal="true" width="600" [responsive]="true" [positionTop]="20" styleClass="import-excel" [closeOnEscape]="false" [closable]="false">
+    <div class="spinner" [hidden]="!loading"></div>
+    <p-growl></p-growl>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-fieldset legend="{{'Download import template'|translate}}">
+                <a href="/assets/templates/question_import.xlsx" target="_blank">question_import.xlsx</a>
+            </p-fieldset>
+        </div>
+        <div class="ui-g-12">
+            <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="selectFile($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false">
+            </p-fileUpload>
+            <span class="file-upload"><label [hidden]="!fileName">{{fileName}}</label></span>
+        </div>
+        <div class="ui-g-12" [hidden]='step!=2'>
+            <p-progressBar mode="indeterminate" *ngIf="loading"></p-progressBar>
             <ul>
                 <li *ngFor="let msg of statusMessages;let i =index">
                     <p> {{msg}} </p>
                 </li>
             </ul>
         </div>
-  </div>
-  <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()" [disabled]="!records.length"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()"></button>
+        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
 </p-dialog>

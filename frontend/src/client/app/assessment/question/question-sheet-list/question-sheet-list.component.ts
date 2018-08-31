@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
@@ -10,7 +10,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
-import { QuestionSheetPreviewDialog } from '../question-sheet-preview/question-sheet-preview.dialog.component';
+import { QuestionSheetPreviewDialog } from '../../../cms/exam/question-sheet-preview/question-sheet-preview.dialog.component';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 
@@ -43,7 +43,7 @@ export class QuestionSheetListComponent extends BaseComponent {
                 this.sheets = _.reject(this.sheets, (obj:QuestionSheet)=> {
                     return sheet.id == obj.id;
                 });
-                this.success('Delete sheet successfully');
+                this.success(this.translateService.instant('Delete sheet successfully'));
             });
         });
     }

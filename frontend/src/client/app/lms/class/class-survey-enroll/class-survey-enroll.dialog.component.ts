@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, SURVEY_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
@@ -34,7 +34,7 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.surveyMembers = [];
 		this.courseMembers = [];
 		this.survey = new Survey();
-		this.courseClass =  new CourseClass();
+		this.courseClass = new CourseClass();
 	}
 
 	show(survey: Survey, courseClass: CourseClass) {
@@ -44,16 +44,16 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		this.survey = survey;
 		this.courseClass = courseClass;
 
-		this.survey.listMembers(this).subscribe((members)=> {
+		this.survey.listMembers(this).subscribe((members) => {
 			this.surveyMembers = _.filter(members, (member: SurveyMember) => {
-					return member.role == 'candidate';
-				});
-		})
-			this.courseClass.listMembers(this).subscribe(members=> {
-				this.courseMembers = _.filter(members, (member:CourseMember)=> {
-					return member.role =='student';
-				});
+				return member.role == 'candidate';
 			});
+		})
+		this.courseClass.listMembers(this).subscribe(members => {
+			this.courseMembers = _.filter(members, (member: CourseMember) => {
+				return member.role == 'student';
+			});
+		});
 	}
 
 	hide() {
@@ -64,26 +64,29 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 		var userIds = _.pluck(this.courseMembers, 'user_id');
 		this.survey.enroll(this, userIds).subscribe(() => {
 			this.info('Register all successfully');
-			this.survey.listMembers(this).subscribe(members=> {
-				this.surveyMembers = members;
+			this.survey.populate(this).subscribe(() => {
+				this.survey.listCandidates(this).subscribe(members => {
+					this.surveyMembers = members;
+				});
 			});
+
 		});
 	}
 
 	closeSurvey() {
-		this.confirm('Are you sure to proceed ?  You will not be able to enroll new members after the survey is closed', () => {
+		this.confirm(this.translateService.instant('Are you sure to proceed ?  You will not be able to enroll new members after the survey is closed'), () => {
 			this.survey.close(this).subscribe(() => {
 				this.survey.status = 'closed';
-				this.success('Survey close');
+				this.success(this.translateService.instant('Survey close'));
 			});
 		});
 	}
 
 	openSurvey() {
-		this.confirm('Are you sure to proceed ?.', () => {
+		this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
 			this.survey.open(this).subscribe(() => {
 				this.survey.status = 'open';
-				this.success('Survey open');
+				this.success(this.translateService.instant('Survey open'));
 			});
 		});
 	}

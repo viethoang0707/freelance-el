@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, EXAM_TIME_WARNING } from '../../../shared/models/constants'
@@ -16,9 +16,9 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { ExamLog } from '../../../shared/models/elearning/log.model';
 import { ClockPipe } from '../../../shared/pipes/time.pipe';
 import { SelectItem } from 'primeng/api';
-import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
+import { QuestionContainerDirective } from '../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../cms/question/question.decorator';
 import { ExamSubmissionDialog } from '../exam-submit/exam-submission.dialog.component';
 import 'rxjs/add/observable/timer';
 import { Message } from 'primeng/components/common/api';
@@ -58,8 +58,10 @@ export class ExamStudyDialog extends BaseComponent {
 	private componentRef: any;
 	private onShowReceiver: Subject<any> = new Subject();
 	private onHideReceiver: Subject<any> = new Subject();
+	protected onFinishReceiver: Subject<any> = new Subject();
 	onShow: Observable<any> = this.onShowReceiver.asObservable();
 	onHide: Observable<any> = this.onHideReceiver.asObservable();
+	onFinish: Observable<any> = this.onFinishReceiver.asObservable();
 
 	@ViewChild(ExamSubmissionDialog) submitDialog: ExamSubmissionDialog;
 	@ViewChild(QuestionContainerDirective) questionHost: QuestionContainerDirective;
@@ -85,33 +87,40 @@ export class ExamStudyDialog extends BaseComponent {
 
 	show(exam: Exam, member: ExamMember) {
 		this.display = true;
+		this.examQuestions = [];
 		this.exam = exam;
 		this.member = member;
 		this.qIndex = 0;
-		navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-			.then(() => {
-				DetectRTC.load(() => {
-					console.log('Webcam available', DetectRTC.hasWebCam);
-					console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
-					if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
-						this.error('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.');
+		this.exam.populateSetting(this).subscribe(() => {
+			if (this.exam.setting.take_picture_on_submit) {
+				navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+					.then(() => {
+						DetectRTC.load(() => {
+							console.log('Webcam available', DetectRTC.hasWebCam);
+							console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
+							if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
+								this.error(this.translateService.instant('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.'));
+								this.display = false;
+								return;
+							}
+							this.loadExamContent();
+						})
+					})
+					.catch((e) => {
+						console.log('Get media error', e);
+						this.error(this.translateService.instant('Webcam device not found'));
 						this.display = false;
-						return;
-					}
-					this.loadExamContent();
-				})
-			})
-			.catch((e) => {
-				console.log('Get media error', e);
-				this.error('Webcam device not found');
-				this.display = false;
-			})
+					})
+			} else
+				this.loadExamContent();
+		});
 	}
 
 	loadExamContent() {
 		this.member.populateSubmission(this).subscribe(() => {
 			this.submission = this.member.submit;
-			this.submission.start = new Date();
+			if (!this.submission.start)
+				this.submission.start = new Date();
 			BaseModel.bulk_list(this,
 				QuestionSheet.__api__listQuestions(this.exam.question_ids),
 				Submission.__api__listAnswers(this.submission.answer_ids))
@@ -145,26 +154,23 @@ export class ExamStudyDialog extends BaseComponent {
 
 	updateStats() {
 		this.stats.total = this.examQuestions.length;
-		var validAnswers = _.filter(this.answers, (ans: any) => {
-			return ans.option_id != "" && ans.option_id != "0";
+		var attemptQuestions = _.filter(this.examQuestions, (q: any) => {
+			return q["attempted"];
 		});
-		if (validAnswers.length > 0) {
-			this.validAnswer = validAnswers.length;
-		} else {
-			this.validAnswer = 0;
-		}
-		this.stats.attempt = this.validAnswer;
+		this.stats.attempt = attemptQuestions.length;
 		this.stats.unattempt = this.stats.total - this.stats.attempt;
-		this.progress = Math.floor(validAnswers.length / this.examQuestions.length * 100)
+		this.progress = Math.floor(attemptQuestions.length / this.examQuestions.length * 100)
 	}
 
 	startExam() {
 		this.member.enroll_status = 'in-progress';
 		this.member.save(this).subscribe();
-		ExamLog.startExam(this, this.member, this.submission).subscribe();
-		this.updateStats();
-		this.startTimer();
-		this.displayQuestion(0);
+		BaseModel.bulk_update(this, this.submission.__api__update(), this.member.__api__update()).subscribe(() => {
+			ExamLog.startExam(this, this.member, this.submission).subscribe();
+			this.updateStats();
+			this.startTimer();
+			this.displayQuestion(0);
+		});
 	}
 
 	finishExam() {
@@ -172,9 +178,10 @@ export class ExamStudyDialog extends BaseComponent {
 		this.submission.save(this).subscribe(() => {
 			this.member.submitScore(this).subscribe(() => {
 				this.member.enroll_status = 'completed';
-				ExamLog.finishExam(this, this.member, this.submission).subscribe();
 				this.timeoutSubscription.next();
+				this.onFinishReceiver.next();
 				this.hide();
+				ExamLog.finishExam(this, this.member, this.submission).subscribe();
 			});
 		});
 	}
@@ -189,7 +196,6 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
 			this.answers.push(answer);
-			this.updateStats();
 			return answer;
 		} else
 			return answer;
@@ -199,7 +205,6 @@ export class ExamStudyDialog extends BaseComponent {
 		this.qIndex = index;
 		this.currentQuestion = this.examQuestions[index];
 		this.currentAnswer = this.prepareAnswer(this.currentQuestion);
-		this.checkAnswer();
 		var detailComponent = QuestionRegister.Instance.lookup(this.currentQuestion.question.type);
 		let viewContainerRef = this.questionHost.viewContainerRef;
 		if (detailComponent) {
@@ -219,6 +224,7 @@ export class ExamStudyDialog extends BaseComponent {
 				this.currentAnswer.score = this.currentQuestion.score;
 			} else
 				this.currentAnswer.score = 0;
+			this.currentQuestion["attempted"] = true;
 		}
 		return this.currentAnswer.save(this);
 	}
@@ -241,7 +247,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	submitExam() {
 		this.submitAnswer().subscribe(() => {
-			this.submitDialog.show(this.exam, this.submission);
+			this.submitDialog.show(this.exam, this.exam.setting,this.submission);
 			this.submitDialog.onConfirm.subscribe(() => {
 				this.finishExam();
 			});

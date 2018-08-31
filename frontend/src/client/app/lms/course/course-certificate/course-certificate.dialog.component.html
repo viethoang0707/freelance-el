@@ -1,27 +1,27 @@
-<p-dialog header="{{'Course certificate'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true" appendTo="body">
-  <div class="spinner" [hidden]="!loading"></div>
-  <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-    <div class="ui-g ui-fluid form-group">
-      <div class="ui-g-6 ">
-          <span class="md-inputfield">
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Course certificate'|translate}}" [(visible)]="display" modal="true" width="600" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
+        <div class="spinner" [hidden]="!loading"></div>
+        <div class="ui-g ui-fluid form-group">
+            <div class="ui-g-6 ">
+                <span class="md-inputfield">
               <input type="text" pInputText [(ngModel)]="object.name" name="name">
               <label>{{'Name'|translate}}</label>
             </span>
-        </div>
-      <div class="ui-g-6 ">
-          <span class="md-inputfield">
+            </div>
+            <div class="ui-g-6 ">
+                <span class="md-inputfield">
               <input type="text" pInputText [(ngModel)]="object.qualification" name="qualification">
               <label>{{'Qualification'|translate}}</label>
             </span>
+            </div>
+            <div class="ui-g-12 ">
+                <label>{{'Summary'|translate}}</label>
+                <textarea pInputTextarea [(ngModel)]="object.answer" name="answer"></textarea>
+            </div>
         </div>
-      <div class="ui-g-12 ">
-        <label>{{'Summary'|translate}}</label>
-        <textarea pInputTextarea [(ngModel)]="object.answer" name="answer"></textarea>
-      </div>
-    </div>
-  </form>
-  <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-  </p-footer>
-</p-dialog>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
+            <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

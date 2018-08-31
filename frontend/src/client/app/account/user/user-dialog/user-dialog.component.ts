@@ -1,6 +1,6 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { Observable}     from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
@@ -20,7 +20,7 @@ export class UserDialog extends BaseDialog<User> {
 
 	private tree: TreeNode[];
 	private selectedNode: any;
-	private treeUtils: TreeUtils;te;
+	private treeUtils: TreeUtils; te;
 
 	constructor() {
 		super();
@@ -43,6 +43,33 @@ export class UserDialog extends BaseDialog<User> {
 				}
 			});
 		});
+	}
+
+	save() {
+		if (!this.object.id) {
+			User.searchByLogin(this, this.object.login).subscribe(user => {
+				if (user != null) {
+					this.error(this.translateService.instant('User exist'));
+					return;
+				}
+				this.object.save(this).subscribe(() => {
+					this.hide();
+					this.onCreateCompleteReceiver.next(this.object);
+				}, (e) => {
+					this.error(this.translateService.instant('Operation failed'));
+				});
+
+			})
+
+		}
+		else {
+			this.object.save(this).subscribe(() => {
+				this.onUpdateCompleteReceiver.next(this.object);
+				this.hide();
+			}, (e) => {
+				this.error(this.translateService.instant('Operation failed'));
+			});
+		}
 	}
 
 

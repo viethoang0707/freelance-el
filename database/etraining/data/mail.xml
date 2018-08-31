@@ -5,7 +5,7 @@
             <field name="subject">E-learning course enrollment notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -19,7 +19,7 @@
             <field name="subject">E-learning course open notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -33,7 +33,7 @@
             <field name="subject">E-learning course close notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -47,7 +47,7 @@
             <field name="subject">E-learning class enrollment notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -57,11 +57,11 @@
             </field>
         </record>
         <record id="class_open_template" model="mail.template">
-            <field name="name">E-learning course open</field>
+            <field name="name">E-learning class open</field>
             <field name="subject">E-learning course open notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -75,7 +75,7 @@
             <field name="subject">E-learning class close notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_course_member" />
+            <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -89,7 +89,7 @@
             <field name="subject">E-learning exam registration</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_exam_member" />
+            <field name="model_id" ref="model_etraining_exam_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -103,7 +103,7 @@
             <field name="subject">E-learning exam open notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_exam_member" />
+            <field name="model_id" ref="model_etraining_exam_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -117,7 +117,7 @@
             <field name="subject">E-learning exam close notification</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_exam_member" />
+            <field name="model_id" ref="model_etraining_exam_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
@@ -131,7 +131,7 @@
             <field name="subject">E-learning survey invitation</field>
             <field name="email_from">info@vietinterview.com</field>
             <field name="email_to">${object.email|safe}</field>
-            <field name="model_id" ref="etraining.model_etraining_survey_member" />
+            <field name="model_id" ref="model_etraining_survey_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[

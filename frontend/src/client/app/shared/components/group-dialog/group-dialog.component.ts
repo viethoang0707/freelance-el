@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModelAPIService } from '../../services/api/model-api.service';
+
 import { AuthService } from '../../services/auth.service';
 import { BaseDialog } from '../../components/base/base.dialog';
 import { Group } from '../../models/elearning/group.model';

@@ -69,8 +69,6 @@ export class SurveyMember extends BaseModel{
     populateSurvey(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.survey_id)
             return Observable.of(null);
-        if (!this.survey.IsNew)
-            return Observable.of(this);
         return Survey.get(context, this.survey_id,fields).do(survey => {
             this.survey = survey;
         });
@@ -100,8 +98,6 @@ export class SurveyMember extends BaseModel{
     populateUser(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        if (!this.user.IsNew)
-            return Observable.of(this);
         return User.get(context, this.user_id,fields).do(user => {
             this.user = user;
         });
@@ -114,8 +110,6 @@ export class SurveyMember extends BaseModel{
     populateSubmission(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.user_id)
             return Observable.of(null);
-        if (!this.submit.IsNew)
-            return Observable.of(this);
         return SurveySubmission.get(context, this.submission_id,fields).do(submit => {
             this.submit = submit;
         });

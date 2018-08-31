@@ -1,7 +1,5 @@
 import { Component, ElementRef, Input, Output, EventEmitter } from '@angular/core';
-import { ModelAPIService } from '../../services/api/model-api.service';
-import { AccountAPIService } from '../../services/api/account-api.service';
-import { FileAPIService } from '../../services/api/file-api.service';
+import { APIService } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { AppEventManager } from '../../services/app-event-manager.service';
 import { MessageService } from 'primeng/components/common/messageservice';
@@ -18,9 +16,7 @@ import { WorkflowService } from '../../services/workflow.service';
 import { LMSProfileService } from '../../services/lms-profile.service';
 
 export abstract class BaseComponent implements APIContext {
-	apiService: ModelAPIService;
-	accApiService: AccountAPIService;
-	fileApiService: FileAPIService;
+	apiService: APIService;
 	authService: AuthService;
 	messageService: MessageService;
 	confirmationService: ConfirmationService;
@@ -33,10 +29,8 @@ export abstract class BaseComponent implements APIContext {
 	loading: boolean;
 
 	constructor() {
-		this.apiService = ServiceLocator.injector.get(ModelAPIService);
-		this.fileApiService = ServiceLocator.injector.get(FileAPIService);
+		this.apiService = ServiceLocator.injector.get(APIService);
 		this.appEvent = ServiceLocator.injector.get(AppEventManager);
-		this.accApiService = ServiceLocator.injector.get(AccountAPIService);
 		this.authService = ServiceLocator.injector.get(AuthService);
 		this.messageService = ServiceLocator.injector.get(MessageService);
 		this.confirmationService = ServiceLocator.injector.get(ConfirmationService);
@@ -45,15 +39,16 @@ export abstract class BaseComponent implements APIContext {
 		this.workflowService = ServiceLocator.injector.get(WorkflowService);
 		this.lmsProfileService = ServiceLocator.injector.get(LMSProfileService);
 
-		this.appEvent.onStartHTTP.subscribe(()=> {
-			this.loading =  true;
+		this.appEvent.onStartHTTP.subscribe(() => {
+			this.loading = true;
 		});
-		this.appEvent.onFinishHTTP.subscribe(()=> {
-			this.loading =  false;
+		this.appEvent.onFinishHTTP.subscribe(() => {
+			this.loading = false;
 		});
+
 	}
 
-	get ContextUser():User {
+	get ContextUser(): User {
 		return this.authService.UserProfile;
 	}
 
@@ -61,29 +56,29 @@ export abstract class BaseComponent implements APIContext {
 		return this.authService.UserPermission;
 	}
 
-	error(msg:string) {
+	error(msg: string) {
 		this.messageService.add({ severity: 'error', summary: this.translateService.instant('Error'), detail: this.translateService.instant(msg) });
 	}
 
-	info(msg:string) {
+	info(msg: string) {
 		this.messageService.add({ severity: 'info', summary: this.translateService.instant('Info'), detail: this.translateService.instant(msg) });
 	}
 
-	success(msg:string) {
+	success(msg: string) {
 		this.messageService.add({ severity: 'success', summary: this.translateService.instant('Success'), detail: this.translateService.instant(msg) });
 	}
 
-	warn(msg:string) {
+	warn(msg: string) {
 		this.messageService.add({ severity: 'warn', summary: this.translateService.instant('Warn'), detail: this.translateService.instant(msg) });
 	}
 
-	confirm(prompt:string, callback:()=> any) {
+	confirm(prompt: string, callback: () => any) {
 		this.confirmationService.confirm({
-            message: this.translateService.instant(prompt),
-            accept: () => {
-                callback();
-            }
-        });
+			message: this.translateService.instant(prompt),
+			accept: () => {
+				callback();
+			}
+		});
 	}
 
 }

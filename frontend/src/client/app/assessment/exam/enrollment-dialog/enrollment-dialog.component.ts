@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -18,9 +18,9 @@ import { Subscription } from 'rxjs/Subscription';
 const EXAM_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 'status'];
 
 @Component({
-	moduleId: module.id,
-	selector: 'exam-enrollment-dialog',
-	templateUrl: 'enrollment-dialog.component.html',
+    moduleId: module.id,
+    selector: 'exam-enrollment-dialog',
+    templateUrl: 'enrollment-dialog.component.html',
 })
 export class ExamEnrollDialog extends BaseComponent {
 
@@ -30,7 +30,7 @@ export class ExamEnrollDialog extends BaseComponent {
 
 
     private display: boolean;
-	private exam: Exam;
+    private exam: Exam;
     private candidates: ExamMember[];
     private selectedCandidates: any;
     private supervisors: ExamMember[];
@@ -39,21 +39,21 @@ export class ExamEnrollDialog extends BaseComponent {
 
     @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
-	constructor() {
-		super();
-	}
+    constructor() {
+        super();
+    }
 
-	enroll(exam: Exam) {
-		this.display = true;
-		this.exam = exam;
+    enroll(exam: Exam) {
+        this.display = true;
+        this.exam = exam;
         this.selectedCandidates = [];
         this.selectedSupervisors = [];
-		this.loadMembers();
-	}
+        this.loadMembers();
+    }
 
-	hide() {
-		this.display = false;
-	}
+    hide() {
+        this.display = false;
+    }
 
     addCandidate() {
         this.usersDialog.show();
@@ -61,7 +61,7 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enroll(this, userIds).subscribe(() => {
                 this.loadMembers();
-                this.success('Add candidate successfully');
+                this.success(this.translateService.instant('Add candidate successfully'));
             });
         });
     }
@@ -72,7 +72,7 @@ export class ExamEnrollDialog extends BaseComponent {
             var userIds = _.pluck(users, 'id');
             this.exam.enrollSupervisor(this, userIds).subscribe(() => {
                 this.loadMembers();
-                this.success('Add supervisor successfully');
+                this.success(this.translateService.instant('Add supervisor successfully'));
             });
         });
     }
@@ -83,7 +83,7 @@ export class ExamEnrollDialog extends BaseComponent {
                 this.selectedCandidates = [];
                 this.selectedSupervisors = [];
                 this.loadMembers();
-                this.success('Delete member successfully');
+                this.success(this.translateService.instant('Delete member successfully'));
             });
         });
     }

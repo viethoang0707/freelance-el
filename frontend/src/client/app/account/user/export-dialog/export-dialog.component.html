@@ -1,4 +1,4 @@
-<p-dialog header="{{'Export to Excel'|translate}}" [(visible)]="display" modal="true" width="300" [responsive]="true">
+<p-dialog header="{{'Export to Excel'|translate}}" [(visible)]="display" modal="true" width="300" [responsive]="true" [closeOnEscape]="false" [closable]="false">
   <div class="spinner" [hidden]="!loading"></div>
   <div class="ui-g form-group">
     <div class="ui-g-12">
@@ -8,7 +8,7 @@
     </div>
   </div>
   <p-footer>
-    <button type="button" pButton icon="fa-check" label="{{'Export'|translate}}" (click)="export()"></button>
+    <button type="button" pButton icon="fa-check" label="{{'Export'|translate}}" (click)="export()" [disabled]="selectedFields.length==0"></button>
     <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>

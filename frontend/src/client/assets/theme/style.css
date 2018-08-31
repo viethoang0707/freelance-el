@@ -40,19 +40,15 @@ img.pre-loading {
   text-align: center;
 }
 
-body p-schedule .ui-state-highlight {
-  /* background-color: #161e840d; */
-}
-
 .ui-scrollpanel-bar-x {
   display: none;
 }
 
-.ui-scrollpanel-bar-y{
+.ui-scrollpanel-bar-y {
   display: none;
 }
 
-body .ui-growl>.ui-growl-item-container.ui-shadow{
+body .ui-growl>.ui-growl-item-container.ui-shadow {
   border-radius: 10px !important;
   box-shadow: 0px 5px 25px #00000030 !important;
 }
@@ -179,7 +175,7 @@ body .ui-datepicker-buttonpane>button.red-btn {
   .footer {
     width: calc(100% - 32px);
   }
-}  
+}
 
 .ui-state-default {
   border: none;
@@ -276,7 +272,7 @@ body .linkPage.ui-paginator .ui-paginator-pages a.ui-state-active {
   color: #fff;
 }
 
-body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar{
+body .user-dashboard .ui-datagrid .card-exam .ui-panel .ui-panel-titlebar {
   height: 100px;
   overflow: hidden;
   padding: 0;
@@ -340,13 +336,13 @@ body .user-dashboard .ui-fieldset.ui-widget-content {
   height: 50%;
 }
 
-.course-study-tree .ui-tree{
+.course-study-tree .ui-tree {
   width: 100%;
 }
 
 .course-edit-tree .ui-tree {
   width: 100%;
-  height: 430px;
+  /*  height: 430px;*/
 }
 
 .tree-unit-course-syllabus {
@@ -548,33 +544,33 @@ body .class-manage .ui-dialog-content.ui-widget-content {
 }
 
 .mobile-logo {
-  width: 140px;
-  height: 40px !important;
+  height: 50px !important;
 }
 
 .course-syllabus-dialog .ui-splitbutton {
   display: inline;
 }
 
-body .exam-study .ui-widget-content, body .survey-study .ui-widget-content{
+body .exam-study .ui-widget-content,
+body .survey-study .ui-widget-content {
   border: none;
 }
 
-.tree-question-dialog{
+.tree-question-dialog {
   max-height: 380px;
-    display: inline;
+  display: inline;
 }
 
-body .ui-dialog.course-dialog .ui-dialog-content{
+body .ui-dialog.course-dialog .ui-dialog-content {
   height: 85%;
   overflow: auto;
 }
 
-body .exam-study .ui-dialog-content.ui-widget-content{
+body .exam-study .ui-dialog-content.ui-widget-content {
   height: 100% !important;
 }
 
-.exam-study .ques-exam-study .ui-card-body{
+.exam-study .ques-exam-study .ui-card-body {
   padding-left: 0;
   padding-right: 0;
 }
@@ -583,41 +579,42 @@ body .exam-study .ui-dialog-content.ui-widget-content{
   display: -webkit-box;
 }
 
-.lms-search-course .lms-course-list.ui-datascroller .ui-datascroller-content{
+.lms-search-course .lms-course-list.ui-datascroller .ui-datascroller-content {
   border: none;
 }
 
-.course-unit-study{
+.course-unit-study {
   background-color: #f1f6f8 !important;
 }
 
-.course-unit-study .ui-tabview{
+.course-unit-study .ui-tabview {
   border: 1px solid #eee !important;
 }
 
-body .ui-dialog.course-unit-study .ui-dialog-titlebar .ui-dialog-titlebar-close{
+body .ui-dialog.course-unit-study .ui-dialog-titlebar .ui-dialog-titlebar-close {
   position: absolute;
   right: 15px;
   top: 1px;
 }
 
-.course-unit-study-btn .fa{
+.course-unit-study-btn .fa {
   color: #757575 !important;
 }
 
-body .ui-dialog.course-unit-study .ui-dialog-footer{
-    display: none !important;
+body .ui-dialog.course-unit-study .ui-dialog-footer {
+  display: none !important;
 }
 
-body .ui-dialog.course-unit-study .ui-dialog-titlebar{
+body .ui-dialog.course-unit-study .ui-dialog-titlebar {
   padding-top: 0;
 }
 
 body .ui-dialog.course-unit-study .ui-dialog-content {
-    padding: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
 }
 
-body .ui-dialog.course-unit-study .ui-scrollpanel-content{
+body .ui-dialog.course-unit-study .ui-scrollpanel-content {
   padding-top: 5px;
 }
 
@@ -632,26 +629,30 @@ body .ui-dialog.course-unit-study .tree-unit-course-study {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;*/
   border: none !important;
-} 
+}
 
-body .ui-dialog.course-unit-study .btn-link-unit .fa{
+body .ui-dialog.course-unit-study .btn-link-unit .fa {
   color: #fff !important;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview.ui-tabview-top > .ui-tabview-nav{
+body .ui-dialog.course-unit-study .side-bar .ui-tabview.ui-tabview-top>.ui-tabview-nav,
+body .dashboard .ui-tabview.ui-tabview-top>.ui-tabview-nav {
   padding-left: 10px;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview-nav li {
+body .ui-dialog.course-unit-study .side-bar .ui-tabview-nav li,
+body .dashboard .ui-tabview-nav li {
   border: none !important;
   margin: 10px 5px;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-default a{
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav>li.ui-state-default a,
+body .dashboard .ui-tabview .ui-tabview-nav>li.ui-state-default a {
   font-weight: 500;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active a {
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav>li.ui-state-active a,
+body .dashboard .ui-tabview .ui-tabview-nav>li.ui-state-active a {
   color: #fff;
   background-color: #ababab;
   border-radius: 25px;
@@ -659,12 +660,22 @@ body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-
   padding: 6px 15px;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav > li.ui-state-active .ui-tabview-left-icon{
+/*body .dashboard .ui-tabview .ui-tabview-nav > li.ui-state-active a {
+  background-color: #7cb342;
+   color: #fff;
+  border-radius: 25px;
+  font-weight: 500;
+  padding: 6px 15px;
+}*/
+
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav>li.ui-state-active .ui-tabview-left-icon,
+body .dashboard .ui-tabview .ui-tabview-nav>li.ui-state-active .ui-tabview-left-icon {
   color: #fff;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-panel{
-  height: 518px;
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-panel {
+  /* height: 518px; */
+  height: calc(100vh - 185px);
   overflow: auto;
 }
 
@@ -675,12 +686,12 @@ body .ui-dialog.course-unit-study .pdfViewer .textLayer {
   width: 100% !important;
 }
 
-.import-excel{
+.import-excel {
   max-height: 590px;
-  overflow: auto; 
+  overflow: auto;
 }
 
-body .question-sheet-preview .ui-widget-content{
+body .question-sheet-preview .ui-widget-content {
   border: none;
 }
 
@@ -688,30 +699,77 @@ body .question-sheet-template .ui-scrollpanel-content {
   height: 100%;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-accordion-header .fa{
+body .ui-dialog.course-unit-study .side-bar .ui-accordion-header .fa {
   color: #fff;
 }
 
-@media screen and (max-width: 500px) {
-  .tree-unit-course-study{
-    height: 150px;
-    overflow: auto;}
+body .dashboard .ui-tabview.ui-tabview-top>.ui-tabview-nav {
+  border-bottom: none;
+  background-color: whitesmoke;
+  padding-left: 0;
+}
 
+body .dashboard .ui-tabview {
+  border: none;
+}
+
+body .dashboard .ui-tabview .ui-tabview-panels {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+body .dashboard .ui-tabview .ui-tabview-nav>li {
+  background-color: transparent;
+  border-radius: 25px;
+  margin: 0 10px 10px 0;
+}
+
+.tabView-course-view,
+.tabView-course-edit {
+  min-height: 600px;
+}
+
+body .ui-progressbar .ui-progressbar-value.ui-progressbar-value-animate.ui-widget-header {
+  background-color: #7cb342 !important;
+}
+
+body .remember-pass .ui-chkbox .ui-chkbox-box {
+  border: 1px solid #daeaf1;
+  border-radius: 50%;
+}
+
+body .remember-pass .ui-chkbox .ui-chkbox-box .ui-chkbox-icon {
+  font-size: 15px;
+  margin-left: 0px;
+  margin-top: 0px;
+}
+
+body .remember-pass .ui-chkbox .ui-chkbox-box.ui-state-active {
+  border-color: #3edd37;
+  background-color: #3edd37;
+  border-radius: 50%;
+}
+
+@media screen and (max-width: 500px) {
+  .tree-unit-course-study {
+    height: 150px;
+    overflow: auto;
+  }
   .exam-study .btn-submit-exam {
     margin-left: 0 !important;
   }
-
   .layout-wrapper .layout-main .layout-footer {
     padding: 5px 10px;
   }
-
   .layout-wrapper .layout-main .layout-footer .footer-text-left,
-  .layout-wrapper .layout-main .layout-footer .footer-text-right{
+  .layout-wrapper .layout-main .layout-footer .footer-text-right {
     margin-top: 5px !important;
   }
-
   .layout-wrapper .layout-main .layout-footer .footer-text-right,
-  .layout-wrapper .layout-main .layout-footer .footer-text-left{
+  .layout-wrapper .layout-main .layout-footer .footer-text-left {
     margin-top: 10px;
     text-align: center;
     display: block;
@@ -733,22 +791,146 @@ body .ui-dialog.course-unit-study .side-bar .ui-accordion-header .fa{
   body .ui-buttonset>.ui-button:first-child {
     float: left !important;
   }
-
-  .lms-course-list-item button{
+  .lms-course-list-item button {
     margin-bottom: 5px;
   }
-
-  .fc .fc-toolbar > * > *{
+  .fc .fc-toolbar>*>* {
     margin-left: .5em;
   }
 }
 
-@media screen and (max-width: 768px){
-  .project-course-study, .course-material-study{
+@media screen and (max-width: 768px) {
+  .project-course-study,
+  .course-material-study {
     display: none !important;
   }
 }
 
- .ui-table-tbody> tr> td {
-    word-wrap: break-word;
-;}
+.ui-table-tbody>tr>td {
+  word-wrap: break-word;
+  ;
+}
+
+span.file-upload {
+  color: blue;
+}
+
+/*calendar*/
+
+.schedule-dashboard .ui-widget-header {
+  border-color: #d8d8d8;
+  background: #deedf7;
+  color: #222222;
+  font-weight: bold;
+}
+
+body .schedule-dashboard .fc-event {
+  border-radius: 25px;
+  background: -webkit-linear-gradient(left, #607d8b 0, #607d8ba1 100%);
+  color: #ffffff;
+  padding: 5px 15px;
+  margin: 5px;
+}
+
+body .schedule-dashboard.fc-ltr .fc-h-event.fc-not-end,
+.fc-rtl .fc-h-event.fc-not-start {
+  margin-right: 0;
+  border-right-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+body .schedule-dashboard.fc-ltr .fc-h-event.fc-not-start,
+.fc-rtl .fc-h-event.fc-not-end {
+  margin-left: 0;
+  border-left-width: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+body .schedule-dashboard .ui-button,
+body .ui-datepicker-buttonpane>button {
+  background-color: transparent;
+  color: #586f79;
+  box-shadow: none;
+}
+
+body .schedule-dashboard .ui-button:enabled:not(:focus):hover,
+body .schedule-dashboard .ui-datepicker-buttonpane>button:enabled:not(:focus):hover {
+  background-color: #f1f6f8;
+  color: #586f79;
+}
+
+body .schedule-dashboard.fc .fc-button-group .ui-state-active,
+body .schedule-dashboard.fc .fc-button-group .ui-button:hover {
+  background-color: #f1f6f8;
+  border-radius: 25px;
+  border: 1px solid #eee;
+  color: #586f79;
+}
+
+body .schedule-dashboard.fc .ui-state-highlight {
+  background-color: #f1f6f8;
+  border-color: #d8d8d8;
+}
+
+body .schedule-dashboard.fc .ui-state-highlight .fc-day-number {
+  background-color: #32de4e;
+  border-radius: 50%;
+  padding: 5px;
+  margin: 3px;
+  color: #fff;
+}
+
+/*custom style*/
+
+.ui-table .ui-table-thead>tr>th,
+.ui-table .ui-table-tbody>tr>td,
+.ui-table .ui-table-tfoot>tr>td {
+  padding: 12px;
+}
+
+body .ui-tree .ui-treenode-content .ui-chkbox .fa-check {
+  background-color: #3edd37;
+  color: #fff;
+  border-radius: 50%;
+  margin-left: -1px;
+  padding: 1px 0px;
+}
+
+.nissan-btn {
+  color: #586f79 !important;
+  background-color: #fff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.nissan-btn:hover,
+.nissan-btn:focus,
+.nissan-btn:active {
+  background-color: #c71632 !important;
+  color: #fff !important;
+}
+
+.nissan-btn .fa {
+  color: #586f79 !important;
+}
+
+.nissan-btn:hover .fa,
+.nissan-btn:focus .fa,
+.nissan-btn:active .fa {
+  color: #fff !important;
+}
+
+.nissan-btn-active {
+  background-color: #c71632 !important;
+  color: #fff !important;
+}
+
+@media screen and (max-width: 500px) {
+  .next-btn .course-unit-study-btn span.ui-button-text.ui-clickable,
+  .next-btn .course-unit-study-btn span.ui-button-text.ui-clickable {
+    display: none;
+    background: #fff;
+  }
+}

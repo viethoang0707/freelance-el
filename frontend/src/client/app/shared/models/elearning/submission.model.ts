@@ -21,17 +21,22 @@ export class Submission extends BaseModel{
         this.start = undefined;
         this.score = undefined;
         this.answer_ids = [];
+        this.score =  undefined;
+        this.grade =  undefined;
+        this.study_time = undefined;
     }
     
     exam_id: number;
     user_id: number;
     member_id: number;
+    study_time: number;
     picture: string;
+    score: number;
+    grade: string;
     @FieldProperty<Date>()
     end: Date;
     @FieldProperty<Date>()
     start: Date;
-    score: number;
     @ReadOnlyProperty()
     answer_ids: number[];
     

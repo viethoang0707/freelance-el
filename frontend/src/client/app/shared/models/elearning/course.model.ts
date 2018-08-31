@@ -136,7 +136,6 @@ export class Course extends BaseModel{
     enrollStaff(context:APIContext, userIds: number[]):Observable<any> {
         return context.apiService.execute(Course.__api__enroll_staff(this.id, userIds), 
             context.authService.LoginToken);
-
     }
 
     static __api__open(courseId: number): ExecuteAPI {
@@ -204,8 +203,6 @@ export class Course extends BaseModel{
     populateSyllabus(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.syllabus_id)
             return Observable.of(null);
-        if (!this.syl.IsNew)
-            return Observable.of(this);
         return CourseSyllabus.get(context, this.syllabus_id,fields).do(syl => {
             this.syl = syl;
         });

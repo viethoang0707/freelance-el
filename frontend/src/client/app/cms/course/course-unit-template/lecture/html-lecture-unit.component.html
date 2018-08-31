@@ -8,6 +8,3 @@
 <div *ngIf="mode=='preview'">
   <div [innerHTML]="lecture.content"></div>
 </div>
-<div *ngIf="mode=='study'">
-  <div [innerHTML]="lecture.content" style="height: 580px; overflow: auto; padding: 15px;" scrollTracker (scrolled)="updateScrollPos($event)"></div>
-</div>

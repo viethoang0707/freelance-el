@@ -1,7 +1,7 @@
-<p-dialog header="{{'Exam setting'|translate}}" [(visible)]="display" modal="false" width="500" height="100%" [responsive]="true" appendTo="body">
-    <div class="spinner" [hidden]="!loading"></div>
-    <p-scrollPanel [style]="{width: '100%', height: '300px'}">
-        <form novalidate (ngSubmit)="f.form.valid && saveExamSetting()" #f="ngForm" autocomplete="off">
+<form novalidate (ngSubmit)="f.form.valid && saveExamSetting()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Exam setting'|translate}}" [(visible)]="display" modal="false" width="500" height="100%" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
+        <div class="spinner" [hidden]="!loading"></div>
+        <p-scrollPanel [style]="{width: '100%', height: '300px'}">
             <div class="ui-g-12 ui-fluid form-group mt20">
                 <div class="ui-g-6">
                     <span class="md-inputfield input-scale">
@@ -47,7 +47,7 @@
                                 <td pEditableColumn>
                                     <p-cellEditor>
                                         <ng-template pTemplate="input">
-                                             <p-spinner [(ngModel)]="grade.min_score" name="grade_min" [min]="0"></p-spinner>
+                                            <p-spinner [(ngModel)]="grade.min_score" name="grade_min" [min]="0"></p-spinner>
                                         </ng-template>
                                         <ng-template pTemplate="output">
                                             {{grade.min_score}}
@@ -57,7 +57,7 @@
                                 <td pEditableColumn>
                                     <p-cellEditor>
                                         <ng-template pTemplate="input">
-                                             <p-spinner [(ngModel)]="grade.max_score" name="grade_max" [min]="0"></p-spinner>
+                                            <p-spinner [(ngModel)]="grade.max_score" name="grade_max" [min]="0"></p-spinner>
                                         </ng-template>
                                         <ng-template pTemplate="output">
                                             {{grade.max_score}}
@@ -72,10 +72,10 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </p-scrollPanel>
-    <p-footer>
-        <button type="button" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
-        <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-</p-dialog>
+        </p-scrollPanel>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="!f.form.valid "></button>
+            <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

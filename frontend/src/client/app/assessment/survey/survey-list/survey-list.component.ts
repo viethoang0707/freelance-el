@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, SURVEY_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
@@ -52,9 +52,9 @@ export class SurveyListComponent extends BaseComponent {
         var survey = new Survey();
         survey.is_public = true;
         this.surveyDialog.show(survey);
-        this.surveyDialog.onCreateComplete.subscribe(() => {
+        this.surveyDialog.onCreateComplete.first().subscribe(() => {
             this.surveys = [ survey ,...this.surveys];
-            this.success('Add survey successfully');
+            this.success(this.translateService.instant('Add survey successfully'));
         });
     }
 
@@ -81,7 +81,7 @@ export class SurveyListComponent extends BaseComponent {
                 this.surveys = _.reject(this.surveys, (obj:Survey)=> {
                     return survey.id == obj.id;
                 });
-                this.success('Delete survey successfully');
+                this.success(this.translateService.instant('Delete survey successfully'));
             })
         });
     }

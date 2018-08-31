@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ModelAPIService } from '../../shared/services/api/model-api.service';
 import { Router } from '@angular/router';
 import { User } from '../../shared/models/elearning/user.model';
 import { Token } from '../../shared/models/cloud/token.model';
@@ -26,43 +25,46 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
 	private notifs: Notification[];
 	private userCount: any;
-    private studentCount: any;
-    private teacherCount: any;
-    private courseCount: any;
+	private studentCount: any;
+	private teacherCount: any;
+	private courseCount: any;
+	private user: User;
 	@Input() lang: string;
 	@Input() viewMode: string;
 	@ViewChild(TicketDialog) ticketDialog: TicketDialog;
 
-	constructor(private router:Router, private parent:HomeComponent, 
+	constructor(private router: Router, private parent: HomeComponent,
 		private eventManager: HomeEventManager) {
 		super();
 		this.lang = this.translateService.currentLang;
 		this.notifs = [];
-		this.viewMode = this.ContextUser.IsAdmin ? 'admin': 'lms';
+		this.viewMode = this.ContextUser.IsAdmin ? 'admin' : 'lms';
+		this.user = new User();
 	}
 
 	ngOnInit() {
 		this.viewMode = this.settingService.ViewMode;
-		if (this.viewMode =='admin')
+		if (this.viewMode == 'admin')
 			this.loadStats();
+		this.user = this.ContextUser;
 	}
 
 	loadStats() {
 		BaseModel
-	        .bulk_count(this,
-	            User.__api__countAll(),
-	            Course.__api__countAll(),
-	            CourseMember.__api__countTeacher(),
-	            CourseMember.__api__countStudent())
-	        .map(jsonArray => {
-	            return _.flatten(jsonArray);
-	        })
-	        .subscribe((counts)=> {
-	            this.userCount = counts[0];
-	            this.courseCount = counts[1];
-	            this.teacherCount = counts[2];
-	            this.studentCount = counts[3];
-	        });
+			.bulk_count(this,
+				User.__api__countAll(),
+				Course.__api__countAll(),
+				CourseMember.__api__countTeacher(),
+				CourseMember.__api__countStudent())
+			.map(jsonArray => {
+				return _.flatten(jsonArray);
+			})
+			.subscribe((counts) => {
+				this.userCount = counts[0];
+				this.courseCount = counts[1];
+				this.teacherCount = counts[2];
+				this.studentCount = counts[3];
+			});
 	}
 
 	setLang(lang: string) {
@@ -74,7 +76,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	setViewMode(mode) {
 		this.viewMode = mode;
 		this.settingService.ViewMode = mode;
-		if (this.viewMode =='admin') 
+		if (this.viewMode == 'admin')
 			this.router.navigate(['/dashboard/admin']);
 		else
 			this.router.navigate(['/dashboard/lms']);

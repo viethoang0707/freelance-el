@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -48,7 +47,7 @@ export class SurveySheetSaveDialog extends BaseComponent {
 				return surveyQuestion;
 			});
 			SurveyQuestion.createArray(this, surveyQuestions).subscribe(()=> {
-				this.success('Question sheet saved successfully');
+				this.success(this.translateService.instant('Question sheet saved successfully'));
 				this.hide();
 			});
 		});
@@ -57,8 +56,6 @@ export class SurveySheetSaveDialog extends BaseComponent {
 	hide() {
 		this.display = false;
 	}
-
-
 
 	
 }

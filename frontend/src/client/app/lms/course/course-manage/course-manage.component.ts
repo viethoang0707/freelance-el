@@ -104,7 +104,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		});
 		this.tree = this.sylUtils.buildGroupTree(this.units);
 		if (this.syl.status != 'published')
-			this.warn('Cours syllabus is not published');
+			this.warn(this.translateService.instant('Course syllabus is not published'));
 	}
 
 	manageConference(courseClass: CourseClass) {

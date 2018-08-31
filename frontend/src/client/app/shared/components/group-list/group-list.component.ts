@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../services/api/model-api.service';
+
 import { AuthService } from '../../services/auth.service';
 import * as _ from 'underscore';
 import { Group } from '../../models/elearning/group.model';
@@ -49,7 +49,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         var group = new Group();
         group.category = this.category;
         this.groupDialog.show(group);
-        this.groupDialog.onCreateComplete.subscribe(() => {
+        this.groupDialog.onCreateComplete.first().subscribe(() => {
             this.loadGroups();
         })
     }

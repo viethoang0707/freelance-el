@@ -73,8 +73,6 @@ export class ExamQuestion extends BaseModel{
     populateQuestion(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.question_id)
             return Observable.of(null);
-        if (!this.question.IsNew)
-            return Observable.of(this);
         return Question.get(context, this.question_id,fields).do(question => {
             this.question = question;
         });

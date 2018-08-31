@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -9,7 +9,7 @@ import { Question } from '../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
-import { QuestionSheetPreviewDialog } from '../../../assessment/question/question-sheet-preview/question-sheet-preview.dialog.component';
+import { QuestionSheetPreviewDialog } from '../question-sheet-preview/question-sheet-preview.dialog.component';
 import { QuestionSheetEditorDialog } from '../question-sheet-editor/question-sheet-editor.dialog.component';
 import { QuestionSheetSaveDialog } from '../question-sheet-save/question-sheet-save.dialog.component';
 import { Http, Response } from '@angular/http';
@@ -57,21 +57,12 @@ export class ExamContentDialog extends BaseComponent {
 	}
 
 	loadQuestionSheet() {
-		QuestionSheet.get(this, this.exam.sheet_id).subscribe(sheet => {
-			if (sheet) {
-				this.sheet = sheet;
+		this.exam.populateQuestionSheet(this).subscribe( ()=> {
+				this.sheet = this.exam.sheet;
 				this.sheet.listQuestions(this).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
 				});
-			}
-			else {
-				this.sheet = new QuestionSheet();
-				this.sheet.exam_id = this.exam.id;
-				this.sheet.save(this).subscribe(sheet => {
-					this.sheet = sheet;
-				});
-			}
 		});
 	}
 
@@ -81,14 +72,12 @@ export class ExamContentDialog extends BaseComponent {
 			_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
 				examQuestion.sheet_id = this.sheet.id;
 			});
-			console.log(this.examQuestions);
 			var newExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
 				return examQuestion.IsNew;
 			});
 			var existExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
 				return !examQuestion.IsNew;
 			});
-			console.log(newExamQuestions);
 			ExamQuestion.createArray(this, newExamQuestions).subscribe(() => {
 				ExamQuestion.updateArray(this, existExamQuestions).subscribe(() => {
 					this.exam.question_count =  this.sheet.question_count = this.examQuestions.length;

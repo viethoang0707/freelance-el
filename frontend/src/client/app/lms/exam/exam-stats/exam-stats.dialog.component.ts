@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { ExcelService } from '../../../shared/services/excel.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -13,9 +13,9 @@ import { Question } from '../../../shared/models/elearning/question.model';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Http, Response } from '@angular/http';
-import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
+import { QuestionContainerDirective } from '../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../cms/question/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
 import { QuestionOption } from '../../../shared/models/elearning/option.model';

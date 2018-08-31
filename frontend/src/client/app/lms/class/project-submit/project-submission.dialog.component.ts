@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, NgZone, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -12,9 +12,6 @@ import { ProjectSubmission } from '../../../shared/models/elearning/project-subm
 import { Project } from '../../../shared/models/elearning/project.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Http, Response } from '@angular/http';
-import { QuestionContainerDirective } from '../../../assessment/question/question-template/question-container.directive';
-import { IQuestion } from '../../../assessment/question/question-template/question.interface';
-import { QuestionRegister } from '../../../assessment/question/question-template/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
 import { WebcamImage } from 'ngx-webcam';
@@ -53,7 +50,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
 
     confirm() {
         if (!this.submit.file_url)
-            this.error('You have not submiited any attachment');
+            this.error(this.translateService.instant('You have not submiited any attachment'));
         else {
             this.submit.date_submit = new Date();
             this.submit.save(this).subscribe(() => {
@@ -71,7 +68,7 @@ export class ProjectSubmissionDialog extends BaseComponent {
 
     uploadFile(file) {
         this.percentage = 0;
-        this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
+        this.apiService.upload(file, this.authService.LoginToken).subscribe(
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {

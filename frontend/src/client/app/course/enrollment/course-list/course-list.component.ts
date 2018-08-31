@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, COURSE_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
@@ -90,7 +90,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have close permission for this class'));
             return;
         }
-        this.confirm(('Are you sure to proceed ? You will not be able to add new class after the course is closed'), () => {
+        this.confirm(this.translateService.instant('Are you sure to proceed ? You will not be able to add new class after the course is closed'), () => {
             course.close(this).subscribe(() => {
                 course.status = 'closed';
                 this.success(this.translateService.instant('Course close'));

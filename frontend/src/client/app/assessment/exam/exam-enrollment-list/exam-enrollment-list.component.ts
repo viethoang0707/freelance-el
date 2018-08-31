@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, SCHEDULER_HEADER, REVIEW_STATE } from '../../../shared/models/constants'
@@ -40,7 +40,7 @@ export class ExamEnrollmentListComponent extends BaseComponent {
 
     enrollExam(exam:Exam) {
         if (exam.review_state != 'approved') {
-            this.warn('Exam not reviewed yet');
+            this.warn(this.translateService.instant('Exam not reviewed yet'));
             return;
         }
         if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != this.selectedExam.supervisor_id) {
@@ -64,14 +64,14 @@ export class ExamEnrollmentListComponent extends BaseComponent {
         this.confirm(this.translateService.instant('Are you sure to proceed ?  You will not be able to enroll students after the exam is closed'), ()=> {
             exam.close(this).subscribe(() => {
                 exam.status = 'closed';
-                this.success('Exam close');
+                this.success(this.translateService.instant('Exam close'));
             });
         });
     }
 
     openExam(exam:Exam) {
         if  (!this.ContextUser.IsSuperAdmin && this.ContextUser.id != exam.supervisor_id) {
-            this.error('You do not have open permission for this exam');
+            this.error(this.translateService.instant('You do not have open permission for this exam'));
             return;
         }
         this.confirm(this.translateService.instant('Are you sure to proceed?'), ()=> {

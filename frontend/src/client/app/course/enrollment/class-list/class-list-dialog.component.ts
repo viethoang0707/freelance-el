@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -72,9 +72,9 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         clazz.course_id = this.course.id;
         clazz.course_name = this.course.name;
         this.classDialog.show(clazz);
-        this.classDialog.onCreateComplete.subscribe(() => {
+        this.classDialog.onCreateComplete.first().subscribe(() => {
             this.classes = [clazz, ...this.classes];
-            this.success('Add class successfully');
+            this.success(this.translateService.instant('Add class successfully'));
         });
     }
 
@@ -94,7 +94,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
                     this.classes = _.reject(this.classes, (obj: CourseClass) => {
                         return courseClass.id == obj.id;
                     });
-                    this.success('Delete class successfully');
+                    this.success(this.translateService.instant('Delete class successfully'));
                 })
             });
     }

@@ -8,7 +8,7 @@ import * as _ from 'underscore';
 import { DEFAULT_PASSWORD, GROUP_CATEGORY } from '../../../../shared/models/constants';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitTemplate } from '../unit.decorator';
-import { ICourseUnit } from '../unit.interface';
+import { ICourseUnitDesign } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import * as RecordRTC from 'recordrtc';
 
@@ -22,7 +22,7 @@ import * as RecordRTC from 'recordrtc';
 @CourseUnitTemplate({
 	type: 'video'
 })
-export class VideoLectureCourseUnitComponent extends BaseComponent implements AfterViewInit, ICourseUnit {
+export class VideoLectureCourseUnitComponent extends BaseComponent implements AfterViewInit, ICourseUnitDesign {
 	
 	private unit: CourseUnit;
 	private lecture: VideoLecture;
@@ -30,14 +30,12 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	private stream: any;
 	private recordRTC: any;
 	private showToolbar: boolean;
-	viewCompleted: boolean;
 	@ViewChild('camera') video: any;
 	@Input() mode;
 
 	constructor(private ngZone: NgZone) {
 		super();
 		this.lecture = new VideoLecture();
-		this.viewCompleted = false;
 	}
 
 	ngAfterViewInit() {
@@ -55,12 +53,12 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 	}
 
 	saveEditor(): Observable<any> {
-		return Observable.forkJoin(this.unit.save(this), this.lecture.save(this));
+		return this.lecture.save(this);
 	}
 
 	uploadFile(file) {
 		this.percentage = 0;
-		this.fileApiService.upload(file, this.authService.LoginToken).subscribe(
+		this.apiService.upload(file, this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {
@@ -142,9 +140,6 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 		this.uploadFile(file);
 	}
 
-	videoEnded() {
-		this.viewCompleted =  true;
-	}
 
 }
 

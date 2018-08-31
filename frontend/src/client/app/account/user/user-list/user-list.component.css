@@ -6,3 +6,20 @@
     max-height: 200px;
     overflow-y: auto;
 }
+
+.search{
+    display: inline-block !important;
+}
+
+.search input{
+	color: #fff;
+	padding: 6px 24px 6px 6px;
+}
+
+.search i{
+	position: absolute;
+    right: 0;
+    top: 0;
+    color: #E8EAF6;
+    font-size: 28px;
+}

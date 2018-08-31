@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ModelAPIService } from '../../../shared/services/api/model-api.service';
+
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -8,7 +8,7 @@ import { Survey } from '../../../shared/models/elearning/survey.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
-import { SurveySheetPreviewDialog } from '../../../assessment/question/survey-sheet-preview/survey-sheet-preview.dialog.component';
+import { SurveySheetPreviewDialog } from '../survey-sheet-preview/survey-sheet-preview.dialog.component';
 import { SurveySheetSaveDialog } from '../survey-sheet-save/survey-sheet-save.dialog.component';
 import { Http, Response } from '@angular/http';
 import { QUESTION_SELECTION, GROUP_CATEGORY, EXAM_STATUS, QUESTION_TYPE, EXAM_MEMBER_STATUS, QUESTION_LEVEL } from '../../../shared/models/constants'

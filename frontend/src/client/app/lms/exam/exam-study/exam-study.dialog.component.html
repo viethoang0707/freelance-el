@@ -1,5 +1,5 @@
 <div class="ui-g exam-study">
-  <p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true" [closeOnEscape]="false" [closable]="false">
+  <p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true" [closeOnEscape]="false" [closable]="false"  appendTo="body">
     <div class="spinner" [hidden]="!loading"></div>
     <p-growl ></p-growl>
     <div class="ui-g-12 ui-md-6 ui-lg-6">
@@ -28,10 +28,10 @@
           <div class="ui-g">
             <div class="ui-lg-8 ui-md-12 ui-g-12">
               <ng-template question-container></ng-template>
-              <div class="">
-                <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="prev()" *ngIf="qIndex >0 "></button>
+              <div class="exam-study-footer">
+                <button pButton type="button" icon="ui-icon-navigate-before" title="{{'Previous'|translate}}" label="{{'Previous'|translate}}" class=" blue-grey-btn" (click)="prev()" *ngIf="qIndex >0 "></button>
                 <button pButton type="button" icon="ui-icon-check" title="{{'Submit'|translate}}" label="{{'Submit'|translate}}" class=" green-btn btn-submit-exam" (click)="submitExam()"></button>
-                <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn" style="margin-right:4px;" (click)="next()" *ngIf="qIndex < examQuestions.length-1"></button>
+                <button pButton type="button" icon="ui-icon-navigate-next" title="{{'Next'|translate}}" label="{{'Next'|translate}}" class=" blue-grey-btn removeMR" (click)="next()" *ngIf="qIndex < examQuestions.length-1"></button>
               </div>
             </div>
             <div class="ui-lg-4 ui-md-12 ui-g-12 info-study">
@@ -51,7 +51,7 @@
               </ul>
               <div>
                 <div class="dpInB fLeft" *ngFor="let question of examQuestions; let i = index">
-                  <button type="button" pButton [ngClass]="{'mt10': true, 'lineHeight2-25': true, 'ui-button-success':question.checkAnswer}"
+                  <button type="button" pButton [ngClass]="{'mt10': true, 'lineHeight2-25': true, 'ui-button-success':question.attempted}"
                     (click)="displayQuestion(i)">{{ i + 1 }}</button>
                 </div>
                 <div class="clear"></div>
