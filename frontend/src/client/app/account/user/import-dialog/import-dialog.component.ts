@@ -101,20 +101,20 @@ export class UserImportDialog extends BaseComponent {
 				user.group_id = group.id;
 			} else {
 				isValid = false;
-				this.statusMessages.push(`Record ${index}: Group ${record["group_code"]} is not defined`);
+				this.statusMessages.push(`Record ${index+1}: Group ${record["group_code"]} is not defined`);
 			}
 			if (userFields.includes('dob')) {
 				if (user.dob && moment(user.dob, dateFormat.value)["_isValid"])
 					user.dob = moment(user.dob, dateFormat.value).toDate();
 				else {
 					isValid = false;
-					this.statusMessages.push(`Record ${index}: Invalid date of birth format. Require ${dateFormat.value}`);
+					this.statusMessages.push(`Record ${index+1}: Invalid date of birth format. Require ${dateFormat.value}`);
 				}
 			}
 			if (userFields.includes('gender')) {
 				isValid = user['gender'] in GENDER;
 				if (!isValid)
-					this.statusMessages.push(`Record ${index}: Invalid gender. Valid values: ${Object.keys(GENDER)}`);
+					this.statusMessages.push(`Record ${index+1}: Invalid gender. Valid values: ${Object.keys(Object.keys(GENDER)}`);
 			}
 			if (isValid)
 				this.users.push(user);

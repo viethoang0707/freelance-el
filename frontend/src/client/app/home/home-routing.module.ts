@@ -11,6 +11,7 @@ import { DashboardRoutes } from '../dashboard/dashboard-routing';
 import { WorkflowRoutes } from '../workflow/workflow-routing';
 import { CompetencyRoutes } from '../competency/competency-routing';
 import { SettingRoutes } from '../setting/setting-routing';
+import { APIResolver } from '../shared/guards/init.guard';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { SettingRoutes } from '../setting/setting-routing';
         path: '',
         component: HomeComponent,
         canActivate: [AuthGuard],
+        resolve: { api: APIResolver },
         children: [
           ...DashboardRoutes,
           ...AccountRoutes,

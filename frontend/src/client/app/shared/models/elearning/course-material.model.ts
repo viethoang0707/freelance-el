@@ -17,10 +17,12 @@ export class CourseMaterial extends BaseModel{
 		this.filename = undefined;
         this.type = undefined;
         this.url = undefined;
+        this.material_file_id = undefined;
     }
     
     name:string;
     course_id: number;
+    material_file_id: number;
     filename:string;
     type:string;
     url:string;

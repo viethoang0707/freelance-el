@@ -22,10 +22,12 @@ export class ProjectSubmission extends BaseModel{
         this.start = undefined;
         this.score = undefined;
         this.date_submit =  undefined;
+        this.submission_file_id = undefined;
 	}
    
 
     filename: string;
+    submission_file_id: string;
     file_url: string;
     class_id: number;
     course_id: number;

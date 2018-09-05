@@ -14,3 +14,4 @@ from . import discussion
 from . import ticket
 from . import setting
 from . import service
+from . import attachment

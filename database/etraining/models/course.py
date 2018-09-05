@@ -47,6 +47,24 @@ class Course(models.Model):
 		course.write({'syllabus_id': syllabus.id})
 		return course
 
+	@api.multi
+	def unlink(self):
+		for clazz in self.class_ids:
+			clazz.unlink()
+		for member in self.member_ids:
+			member.unlink()
+		if self.syllabus_id:
+			self.syllabus_id.unlink()
+		for material in self.material_ids:
+			material.unlink()
+		for unit in self.unit_ids:
+			unit.unlink()
+		for faq in self.faq_ids:
+			faq.unlink()
+		for rating in self.rating_ids:
+			rating.unlink()
+		return super(Course, self).unlink()
+
 	@api.model
 	def enroll(self, params):
 		successList = []
@@ -119,13 +137,6 @@ class Course(models.Model):
 			self.env.ref(self._module +"."+ "course_register_template").send_mail(member.id,force_send=True)
 		return member
 
-	@api.multi
-	def unlink(self):
-		for member in self.env['etraining.course_member'].search([('course_id','=',self.id)]):
-			member.unlink()
-		return super(Course, self).unlink()
-
-
 
 class CourseSyllabus(models.Model):
 	_name = 'etraining.syllabus'
@@ -192,13 +203,37 @@ class CourseUnit(models.Model):
 			unit.write({'exercise_id': exercise.id})
 		return unit
 
+	@api.multi
+	def unlink(self):
+		if self.slide_lecture_id:
+			self.slide_lecture_id.unlink()
+		if self.html_lecture_id:
+			self.html_lecture_id.unlink()
+		if self.video_lecture_id:
+			self.video_lecture_id.unlink()
+		if self.scorm_lecture_id:
+			self.scorm_lecture_id.unlink()
+		return super(CourseUnit, self).unlink()
+
 class SlideLecture(models.Model):
 	_name = 'etraining.slide_lecture'
 
-	slide_url = fields.Text(string='Slide URL')
+	slide_url = fields.Char(string='Slide URL',related='slide_file_id.url')
+	slide_file_id = fields.Many2one('ir.attachment', string='Slide file')
 	filename = fields.Text(string='Filename')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 
+	@api.multi
+	def write(self, vals):
+		if self.slide_file_id and "slide_file_id" in vals and self.slide_file_id.id != vals["slide_file_id"]:
+			self.slide_file_id.unlink()
+		return super(SlideLecture, self).write(vals)
+
+	@api.multi
+	def unlink(self):
+		if self.slide_file_id:
+			self.slide_file_id.unlink()
+		return super(SlideLecture, self).unlink()
 
 class HtmlLecture(models.Model):
 	_name = 'etraining.html_lecture'
@@ -210,8 +245,23 @@ class VideoLecture(models.Model):
 	_name = 'etraining.video_lecture'
 
 	transcript = fields.Text(string='Transcript')
-	video_url = fields.Char(string='Video URL')
+	video_url = fields.Char(string='Video URL', related='attachment_id.url', stored=True)
+	attachment_id = fields.Many2one('ir.attachment', string='Attachment')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
+	length = fields.Integer(string='Length in minutes')
+	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
+
+	@api.multi
+	def write(self, vals):
+		if self.attachment_id and "attachment_id" in vals and self.attachment_id.id != vals["attachment_id"]:
+			self.attachment_id.unlink()
+		return super(VideoLecture, self).write(vals)
+
+	@api.multi
+	def unlink(self):
+		if self.attachment_id:
+			self.attachment_id.unlink()
+		return super(VideoLecture, self).unlink()
 
 class SelfAssessment(models.Model):
 	_name = 'etraining.self_assessment'
@@ -228,10 +278,24 @@ class Exerise(models.Model):
 class SCORMLecture(models.Model):
 	_name = 'etraining.scorm_lecture'
 
-	base_url = fields.Text(string='Base URL')
+	base_url = fields.Char(string='Base URL')
 	entry_file = fields.Text(string='Entry file')
-	package_url = fields.Text(string='Package URL')
+	package_url = fields.Char(string='Package URL',related='package_file_id.url')
+	package_file_id = fields.Many2one('ir.attachment', string='Package file')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
+	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
+
+	@api.multi
+	def write(self, vals):
+		if self.package_file_id and "package_file_id" in vals and self.package_file_id.id != vals["package_file_id"]:
+			self.package_file_id.unlink()
+		return super(SCORMLecture, self).write(vals)
+
+	@api.multi
+	def unlink(self):
+		if self.package_file_id:
+			self.package_file_id.unlink()
+		return super(SCORMLecture, self).unlink()
 		
 class Project(models.Model):
 	_name = 'etraining.project'
@@ -239,6 +303,7 @@ class Project(models.Model):
 	name = fields.Char(string='Name')
 	filename = fields.Text(string='Filename')
 	file_url = fields.Text(string='Entry file')
+	project_file_id = fields.Many2one('ir.attachment', string='Project file')
 	content = fields.Html(string='Project content')
 	class_id = fields.Many2one('etraining.course_class', string='Class')
 	course_id = fields.Many2one('etraining.course', string='Course')
@@ -248,6 +313,19 @@ class Project(models.Model):
 	status = fields.Selection(
 		[('draft', 'Draft'), ('open', 'Open'), ('closed', 'Closed')], default="draft")
 
+	@api.multi
+	def write(self, vals):
+		if self.project_file_id and "project_file_id" in vals and self.project_file_id.id != vals["project_file_id"]:
+			self.project_file_id.unlink()
+		return super(Project, self).write(vals)
+
+	@api.multi
+	def unlink(self):
+		if self.project_file_id:
+			self.project_file_id.unlink()
+		for submit in self.submission_ids:
+			submit.unlink()
+		return super(Project, self).unlink()
 
 class ProjectSubmission(models.Model):
 	_name = 'etraining.project_submission'
@@ -258,11 +336,24 @@ class ProjectSubmission(models.Model):
 	project_id = fields.Many2one('etraining.project',string='Project')
 	filename = fields.Text(string='Filename')
 	file_url = fields.Text(string='Entry file')
+	submission_file_id = fields.Many2one('ir.attachment', string='Submission file')
 	course_id = fields.Many2one('etraining.course', related="member_id.course_id", readonly=True,string='Course')
 	class_id = fields.Many2one('etraining.course_class', related="member_id.class_id", readonly=True,string='Class')
 	date_submit = fields.Datetime(string='Date submit')
 	start = fields.Datetime(string='Start time', related="project_id.start")
 	end = fields.Datetime(string='End time',related="project_id.end")
+
+	@api.multi
+	def write(self, vals):
+		if self.submission_file_id and "submission_file_id" in vals and self.submission_file_id.id != vals["submission_file_id"]:
+			self.submission_file_id.unlink()
+		return super(ProjectSubmission, self).write(vals)
+		
+	@api.multi
+	def unlink(self):
+		if self.submission_file_id:
+			self.submission_file_id.unlink()
+		return super(ProjectSubmission, self).unlink()
 
 class CourseClass(models.Model):
 	_name = 'etraining.course_class'
@@ -295,6 +386,20 @@ class CourseClass(models.Model):
 		course_class.write({ 'conference_id': conference.id})
 		self.env['etraining.course_member'].create({'class_id':course_class.id, 'course_id':course_class.course_id.id, 'user_id': course_class.course_id.supervisor_id.id,'role':'supervisor'})
 		return course_class
+
+	@api.multi
+	def unlink(self):
+		if self.conference_id:
+			self.conference_id.unlink()
+		for project in self.project_ids:
+			project.unlink()
+		for survey in self.survey_ids:
+			survey.unlink()
+		for exam in self.exam_ids:
+			exam.unlink()
+		for member in self.member_ids:
+			member.unlink()
+		return super(CourseClass, self).unlink()
 
 	@api.model
 	def enroll(self, params):
@@ -363,14 +468,6 @@ class CourseClass(models.Model):
 			return True
 
 
-	@api.multi
-	def unlink(self):
-		for conf in self.env['etraining.conference'].search([('class_id','=',self.id)]):
-			conf.unlink()
-		for member in self.env['etraining.course_member'].search([('class_id','=',self.id)]):
-			member.unlink()
-		return super(CourseClass, self).unlink()
-
 
 class CourseMember(models.Model):
 	_name = 'etraining.course_member'
@@ -408,8 +505,18 @@ class CourseMember(models.Model):
 
 	@api.multi
 	def unlink(self):
-		for conf_member in self.env['etraining.conference_member'].search([('course_member_id','=',self.id)]):
-			conf_member.unlink()
+		if self.conference_member_id:
+			self.conference_member_id.unlink()
+		if self.certificate_id:
+			self.certificate_id.unlink()
+		for record in self.exam_record_ids:
+			record.unlink()
+		for submit in self.project_submission_ids:
+			submit.unlink()
+		for member in self.exam_member_ids:
+			member.unlink()
+		for member in self.survey_member_ids:
+			member.unlink()
 		return super(CourseMember, self).unlink()
 
 	@api.model
@@ -467,7 +574,20 @@ class CourseMaterial(models.Model):
 		[('video', 'Video'), ('audio', 'Audio'), ('file','File')])
 	url = fields.Text( string='Attachment URL')
 	filename = fields.Char( string='Attachment Filename')
+	material_file_id = fields.Many2one('ir.attachment', string='Material file')
 
+	@api.multi
+	def write(self, vals):
+		if self.material_file_id and "material_file_id" in vals and self.material_file_id.id != vals["material_file_id"]:
+			self.material_file_id.unlink()
+		return super(CourseMaterial, self).write(vals)
+
+	@api.multi
+	def unlink(self):
+		if self.material_file_id:
+			self.material_file_id.unlink()
+		return super(CourseMaterial, self).unlink()
+		
 class Certificate(models.Model):
 	_name = 'etraining.course_certificate'
 
