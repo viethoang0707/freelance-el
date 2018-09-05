@@ -7,6 +7,7 @@ import { Token } from '../../shared/models/cloud/token.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Permission } from '../../shared/models/elearning/permission.model';
 import { User } from '../../shared/models/elearning/user.model';
+import { HomeEventManager } from '../../home/home-manager.service';
 
 @Component({
     moduleId: module.id,
@@ -21,10 +22,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
     private returnUrl: string;
 
     @Input() remember: boolean;
+    @Input() lang: string;
 
-    constructor(private route: ActivatedRoute, private router: Router) {
+    constructor(private route: ActivatedRoute, private router: Router, private eventManager: HomeEventManager) {
         super();
         this.credential = new Credential();
+        this.lang = this.translateService.currentLang;
     }
 
     ngOnInit() {
@@ -36,7 +39,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     login() {
         this.authService.login(this.credential).subscribe(
             resp => {
-                let user:User = resp["user"];
+                let user: User = resp["user"];
                 if (user.banned) {
                     this.error(this.translateService.instant('Your account has been banned'));
                     return;
@@ -53,6 +56,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
             error => {
                 this.error('Login failed.');
             });
+    }
+
+    setLang(lang: string) {
+        this.lang = lang;
+        this.settingService.Lang = lang;
+        this.translateService.use(lang);
     }
 }
 
