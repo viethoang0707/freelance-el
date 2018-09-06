@@ -2,7 +2,7 @@
         <h1>{{'Competency matrix'|translate}}</h1>
         <div class="ui-g">
             <div class="ui-g-12">
-                <p-table  #skillTable [value]="courses" [paginator]="true" [rows]="10" [responsive]="true" selectionMode="single">
+                <p-table  #skillTable [value]="courses" [paginator]="true" [rows]="25" [responsive]="true" selectionMode="single">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">

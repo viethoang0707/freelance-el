@@ -8,7 +8,7 @@
                     <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedUsers) " [disabled]="!selectedUsers || !selectedUsers.length "></button>
                 </div>
             </p-toolbar>
-            <p-table #userTable [value]="users" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers " [responsive]="true " sortField="name">
+            <p-table #userTable [value]="users" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedUsers " [responsive]="true " sortField="name">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 2.25em">

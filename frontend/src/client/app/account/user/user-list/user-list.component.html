@@ -3,17 +3,22 @@
     <div class="ui-g">
         <div class="ui-g-12">
             <label>{{'Organization'|translate}}</label>
-            <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterUser()" (onNodeUnselect)="filterUser()" styleClass="maxH200 width-tree"></p-tree>
+            <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterUserByGroup()" (onNodeUnselect)="filterUserByGroup()" styleClass="maxH200 width-tree"></p-tree>
         </div>
         <div class="ui-g-12">
             <p-toolbar>
-                <div class="ui-toolbar-group-left">
+                <div class="ui-toolbar-group-left" *ngIf="mode=='single'">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addUser()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editUser(selectedUsers[0])" [disabled]="!selectedUsers || selectedUsers.length!=1"></button>
-                    <button pButton type="button" label="{{'Deactivate'|translate}}" class="red-btn" icon="ui-icon-lock" (click)="deactivateMultipleUsers(selectedUsers)" [disabled]="!selectedUsers || !selectedUsers.length"></button>
-                    <button pButton type="button" label="{{'Activate'|translate}}" class="blue-btn" icon="ui-icon-lock-open" (click)="activateMultipleUsers(selectedUsers)" [disabled]="!selectedUsers || !selectedUsers.length"></button>
-                      <button pButton type="button" label="{{'Export'|translate}}" class="secondary-btn" icon="ui-icon-file-download" (click)="exportUser()"></button>
-                    <button pButton type="button" label="{{'Import'|translate}}" class="secondary-btn" icon="ui-icon-file-upload" (click)="importUser()"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editUser(selectedUsers)" [disabled]="!selectedUsers"></button>
+                    <button pButton type="button" label="{{'View'|translate}}" class="blue-grey-btn" icon="ui-icon-visibility" (click)="viewUser(selectedUsers)" [disabled]="!selectedUsers"></button>
+                    <button pButton type="button" label="{{'Deactivate'|translate}}" class="red-btn" icon="ui-icon-lock" (click)="enterBatchMode('deactivate')" ></button>
+                    <button pButton type="button" label="{{'Activate'|translate}}" class="green-btn" icon="ui-icon-lock-open" (click)="enterBatchMode('activate')" ></button>
+                      <button pButton type="button" label="{{'Export'|translate}}" class="blue-grey-btn" icon="ui-icon-file-download" (click)="exportUser()"></button>
+                    <button pButton type="button" label="{{'Import'|translate}}" class="blue-grey-btn" icon="ui-icon-file-upload" (click)="importUser()"></button>
+                </div>
+                <div class="ui-toolbar-group-left" *ngIf="mode=='multiple'">
+                    <button pButton type="button" label="{{'Apply'|translate}}" class="green-btn" (click)="applyBatchAction()" icon="ui-icon-check" [disabled]="!selectedUsers || !selectedUsers.length"></button>
+                    <button pButton type="button" label="{{'Cancel'|translate}}" class="red-btn" icon="ui-icon-clear" (click)="enterSingleMode()"></button>
                 </div>
                 <div class="ui-toolbar-group-right" >
                     <span class="md-inputfield search">
@@ -21,14 +26,16 @@
                           (input)="userTable.filterGlobal($event.target.value, 'contains')">   
                         <i class="fa fa-search"></i>      
                     </span>
-                  
                 </div>
             </p-toolbar>
-            <p-table #userTable [value]="displayUsers" [paginator]="true" [rows]="10" selectionMode="multiple" [(selection)]="selectedUsers" [responsive]="true" [globalFilterFields]="['name', 'login', 'email']">
+            <p-table #userTable [value]="displayUsers" [paginator]="true" [rows]="25" selectionMode="{{mode}}" [(selection)]="selectedUsers" [responsive]="true" [globalFilterFields]="['name', 'login', 'email']">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 2.25em">
+                        <th style="width: 2.25em" *ngIf="mode=='multiple'">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>
+                            {{'Index'|translate}}
                         </th>
                         <th [pSortableColumn]="'name'">
                             {{'Name'|translate}}
@@ -64,11 +71,12 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-user>
+                <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="user">
-                        <td>
+                        <td *ngIf="mode=='multiple'">
                             <p-tableCheckbox [value]="user"></p-tableCheckbox>
                         </td>
+                        <td>{{rowIndex+1}}</td>
                         <td class="showformb" style="text-align: left;">{{user.name}}</td>
                         <td>{{user.login}}</td>
                         <td class="showformb" style="text-align: left;">{{user.email}}</td>
@@ -83,10 +91,7 @@
                     {{'Total records'|translate}} : {{displayUsers?.length}}
                 </ng-template>
             </p-table>
-            <user-dialog></user-dialog>
-            <user-export-dialog></user-export-dialog>
-            <user-import-dialog></user-import-dialog>
-            <user-profile-dialog></user-profile-dialog>
         </div>
     </div>
 </div>
+<user-export-dialog></user-export-dialog>

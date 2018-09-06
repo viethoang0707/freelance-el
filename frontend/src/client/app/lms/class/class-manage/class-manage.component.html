@@ -14,7 +14,7 @@
                 </div>
             </p-toolbar>
             <div [hidden]="viewMode=='detail'">
-                <p-table #outlineTable [value]="studentRecords" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #outlineTable [value]="studentRecords" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">
@@ -69,7 +69,7 @@
                 </p-table>
             </div>
             <div [hidden]="viewMode=='outline'">
-                <p-table #detailTable [value]="studentRecords" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #detailTable [value]="studentRecords" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">
@@ -115,7 +115,7 @@
                     <button pButton type="button " label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="markProject(selectedProject)" [disabled]="!selectedProject"></button>
                 </div>
             </p-toolbar>
-            <p-table #examTable [value]="projects" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">
+            <p-table #examTable [value]="projects" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">
@@ -154,7 +154,7 @@
                     </button>
                 </div>
             </p-toolbar>
-            <p-table #examTable [value]="classExams" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedClassExam" [responsive]="true">
+            <p-table #examTable [value]="classExams" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedClassExam" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">
@@ -199,7 +199,7 @@
                     </button>
                 </div>
             </p-toolbar>
-            <p-table #examTable [value]="classSurveys" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedClassSurvey" [responsive]="true">
+            <p-table #examTable [value]="classSurveys" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedClassSurvey" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">

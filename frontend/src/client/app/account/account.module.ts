@@ -1,42 +1,49 @@
-import { NgModule } from '@angular/core';
+import { NgModule,  Injectable } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
 import { LMSModule } from '../lms/lms.module';
 import { UserListComponent } from './user/user-list/user-list.component';
-import { UserDialog } from './user/user-dialog/user-dialog.component';
 import { UserExportDialog } from './user/export-dialog/export-dialog.component';
-import { UserImportDialog } from './user/import-dialog/import-dialog.component';
-import { UserProfileDialog } from './user/profile-dialog/profile-dialog.component';
+import { UserImportComponent } from './user/user-import/user-import.component';
 import { PermissionListComponent } from './permission/permission-list/permission-list.component';
 import { PermissionDialog } from './permission/permission-dialog/permission-dialog.component';
 import { MenuPermissionDialog } from './permission/menu-permission-dialog/menu-permission-dialog.component';
 import { MemberPermissionDialog } from './permission/member-permission-dialog/member-permission-dialog.component';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { AccountRoutingModule } from './account-routing';
+import { UserFormComponent } from './user/user-form/user-form.component';
+import { UserViewComponent } from './user/user-view/user-view.component';
+import { UserResolve, GroupsResolve, DateFormatResolve, PermissionResolve } from './route.resolver';
+import { PermissionFormComponent } from './permission/permission-form/permission-form.component';
+import { PermissionViewComponent } from './permission/permission-view/permission-view.component';
 
 @NgModule({
     imports: [
-        AccountRoutingModule,
         ErpSharedModule,
         AuthModule,
         LMSModule
     ],
     declarations: [
         UserListComponent,
-        UserDialog,
+        UserFormComponent,
+        UserViewComponent,
         UserExportDialog,
-        UserImportDialog,
-        UserProfileDialog,
+        UserImportComponent,
         PermissionListComponent,
         PermissionDialog,
         MenuPermissionDialog,
         MemberPermissionDialog,
+        PermissionFormComponent,
+        PermissionViewComponent
     ],
     exports: [
-        UserProfileDialog
     ],
-    providers: []
+    providers: [
+        UserResolve,
+        GroupsResolve,
+        DateFormatResolve,
+        PermissionResolve
+    ]
 })
 export class AccountModule {
 }

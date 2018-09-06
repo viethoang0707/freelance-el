@@ -20,7 +20,7 @@
           </span>
                 </div>
             </p-toolbar>
-            <p-table #totalRecords #courseTable [value]="displayCourses" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
+            <p-table #totalRecords #courseTable [value]="displayCourses" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">

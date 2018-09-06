@@ -1,0 +1,99 @@
+<div class="card card-w-title">
+    <h1>{{'Permission view'|translate}}</h1>
+    <p-tabView>
+        <p-tabPanel header="{{'Basic info'|translate}}" leftIcon="ui-icon-people">
+            <div class="ui-g ui-fluid form-group">
+                <div class="ui-g-6 ">
+                    <div class="ui-g-3">
+                        <label>{{'Name'|translate}}<span> *</span></label>
+                    </div>
+                    <div class="ui-g-9">
+                        <span>{{permission.name}}</span>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="{{'Members'|translate}}" leftIcon="ui-icon-people">
+            <div class="ui-g ui-fluid form-group">
+                <div class="ui-g-12 ">
+                    <p-table #userTable [value]="users" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedUsers " [responsive]="true " sortField="name">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>
+                                    {{'Index'|translate}}
+                                </th>
+                                <th [pSortableColumn]="'name'">
+                                    {{'Name'|translate}}
+                                    <p-sortIcon [field]="'name'"></p-sortIcon>
+                                </th>
+                                <th [pSortableColumn]="'login'">
+                                    {{'Login'|translate}}
+                                    <p-sortIcon [field]="'login'"></p-sortIcon>
+                                </th>
+                                <th [pSortableColumn]="'email'">
+                                    {{'Email'|translate}}
+                                    <p-sortIcon [field]="'email'"></p-sortIcon>
+                                </th>
+                                <th [pSortableColumn]="'position'">
+                                    {{'Position'|translate}}
+                                    <p-sortIcon [field]="'position'"></p-sortIcon>
+                                </th>
+                                <th [pSortableColumn]="'gender'">
+                                    {{'Gender'|translate}}
+                                    <p-sortIcon [field]="'gender'"></p-sortIcon>
+                                </th>
+                                <th [pSortableColumn]="'dob'">
+                                    {{'Date of birth'|translate}}
+                                    <p-sortIcon [field]="'dob'"></p-sortIcon>
+                                </th>
+                                <th>{{'Phone'|translate}}</th>
+                                <th [pSortableColumn]="'group_name'">
+                                    {{'Department'|translate}}
+                                    <p-sortIcon [field]="'group_name'"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
+                            <tr [pSelectableRow]="user ">
+                                <td>{{rowIndex+1}}</td>
+                                <td class="showformb" style="text-align: left;">{{user.name}}</td>
+                                <td>{{user.login}}</td>
+                                <td class="showformb" style="text-align: left;">{{user.email}}</td>
+                                <td class="showformb">{{user.position}}</td>
+                                <td class="showformb">{{user.gender}}</td>
+                                <td class="showformb">{{user.dob | date : "dd/MM/yyyy "}}</td>
+                                <td class="showformb">{{user.phone}}</td>
+                                <td class="showformb">{{user.group_name}}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            {{'Total records'|translate}} : {{users?.length}}
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="{{'Menu'|translate}}" leftIcon="ui-icon-apps">
+            <div class="ui-g ui-fluid form-group">
+                <p-tree [value]="menuTree" selectionMode="checkbox" [(selection)]="selectedMenus" ></p-tree>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="{{'Managed group'|translate}}" leftIcon="ui-icon-cloud">
+            <div class="ui-g ui-fluid form-group">
+                <div class="ui-g-12">
+                    <div class="ui-g-3">
+                        <label>{{'Managed group'|translate}}<span> *</span>
+                        </label>
+                    </div>
+                    <div class="ui-g-9">
+                        {{permission.user_group_name}}
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+    <div class="card-footer">
+        <button type="button" class="blue-grey-btn" (click)="editPermission()" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}"></button>
+        <button type="button" class="blue-grey-btn" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
+    </div>
+</div>

@@ -10,7 +10,7 @@
                             <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedStudents) " *ngIf="selectedStudents && selectedStudents.length "></button>
                         </div>
                     </p-toolbar>
-                    <p-table #studentTable [value]="students" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedStudents " [responsive]="true " sortField="name">
+                    <p-table #studentTable [value]="students" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedStudents " [responsive]="true " sortField="name">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th style="width: 2.25em">
@@ -66,7 +66,7 @@
                             <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedTeachers) " *ngIf="selectedTeachers && selectedTeachers.length "></button>
                         </div>
                     </p-toolbar>
-                    <p-table #candidateTable [value]="teachers" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedTeachers " [responsive]="true " sortField="name">
+                    <p-table #candidateTable [value]="teachers" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedTeachers " [responsive]="true " sortField="name">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th style="width: 2.25em">

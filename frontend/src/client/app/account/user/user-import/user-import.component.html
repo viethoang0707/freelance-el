@@ -1,0 +1,45 @@
+<div class="card card-w-title">
+    <h1>{{'Import users'|translate}}</h1>
+    <div class="spinner" [hidden]="!loading"></div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-fieldset legend="{{'Download template'|translate}}">
+                <a href="/assets/templates/user_import.xlsx" target="_blank">user_import.xlsx</a>
+            </p-fieldset>
+        </div>
+        <div class="ui-g-12">
+            <p-fileUpload name="userlist" mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="selectFile($event)" accept="'xlsx'" maxFileSize="1024*16" showUploadButton="false">
+            </p-fileUpload>
+            <span class="file-upload"><label [hidden]="!fileName">{{fileName}}</label></span>
+        </div>
+        <div class="ui-g-12">
+            <h3>{{'Data'|translate}}</h3>
+            <table>
+                <tr>
+                    <th *ngFor="let field of dataFields">
+                        <p-dropdown [options]="modelFields" [(ngModel)]="columnMappings[field]" optionLabel="label" [style]="{width: 'auto'}"></p-dropdown>
+                    </th>
+                </tr>
+                <tbody>
+                    <tr *ngFor="let record of records">
+                        <td *ngFor="let field of dataFields">
+                            {{record[field]}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="ui-g-12">
+            <h3>{{'Result'|translate}}</h3>
+            <ul>
+                <li *ngFor="let msg of statusMessages;let i =index">
+                    <p> {{msg}} </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="button"class="blue-grey-btn" pButton icon="fa-check" label="{{'Import'|translate}}" (click)="import()"></button>
+        <button type="button"class="blue-grey-btn" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
+    </div>
+</div>

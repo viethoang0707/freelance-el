@@ -18,7 +18,7 @@
                             <button pButton type="button" label="{{'New level'|translate}}" class="green-btn" (click)="addGrade()" icon="ui-icon-add"></button>
                         </div>
                     </p-toolbar>
-                    <p-table #levelTable [value]="grades" [paginator]="false" [rows]="10" [(selection)]="selectedGrade" [responsive]="true" selectionMode="single">
+                    <p-table #levelTable [value]="grades" [paginator]="false" [rows]="25" [(selection)]="selectedGrade" [responsive]="true" selectionMode="single">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>

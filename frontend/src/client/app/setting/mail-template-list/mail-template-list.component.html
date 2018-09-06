@@ -7,7 +7,7 @@
                     <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editTemplate(selectedTemplate)" [disabled]="!selectedTemplate"></button>
                 </div>
             </p-toolbar>
-            <p-table #skillTable [value]="templates" [paginator]="true" [rows]="10" [(selection)]="selectedTemplate" [responsive]="true" selectionMode="single">
+            <p-table #skillTable [value]="templates" [paginator]="true" [rows]="25" [(selection)]="selectedTemplate" [responsive]="true" selectionMode="single">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">

@@ -1,14 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
+import { TreeUtils } from '../../../shared/helpers/tree.utils';
+import { TreeNode } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
+import { BaseModel } from '../../../shared/models/base.model';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
-import * as _ from 'underscore';
 import { ExcelService } from '../../../shared/services/excel.service';
-import { SelectItem } from 'primeng/api';
-import { GROUP_CATEGORY } from '../../../shared/models/constants';
+import * as _ from 'underscore';
 
 @Component({
 	moduleId: module.id,
@@ -17,15 +18,14 @@ import { GROUP_CATEGORY } from '../../../shared/models/constants';
 })
 export class UserExportDialog extends BaseComponent {
 
-	private userIds: number[];
+	private tree: TreeNode[];
+	private selectedGroupNodes: TreeNode[];
 	private fields: SelectItem[];
 	private selectedFields: string[];
 	private display: boolean;
-	private users;
 
 	constructor(private excelService: ExcelService) {
 		super();
-		this.userIds = [];
 		this.fields = [
 			{ value: 'login', label: this.translateService.instant('Username') },
 			{ value: 'name', label: this.translateService.instant('Fullname') },
@@ -41,13 +41,16 @@ export class UserExportDialog extends BaseComponent {
 			{ value: 'unban_date', label: this.translateService.instant('Activate date') },
 		];
 		this.selectedFields = [];
+		this.selectedGroupNodes = [];
 		this.display = false;
 	}
 
-	show(userIds: number[]) {
-		this.selectedFields = [];
-		this.userIds = userIds;
+	show() {
 		this.display = true;
+		Group.listUserGroup(this).subscribe(groups => {
+			let treeUtils = new TreeUtils();
+			this.tree = treeUtils.buildGroupTree(groups);
+		});
 	}
 
 	hide() {
@@ -55,7 +58,13 @@ export class UserExportDialog extends BaseComponent {
 	}
 
 	export() {
-		User.array(this, this.userIds, this.selectedFields).subscribe(users => {
+		var apiList = _.map(this.selectedGroupNodes, (node: TreeNode) => {
+			return User.__api__searchByGroup(node.data["id"], this.selectedFields);
+		});
+		BaseModel.bulk_search(this, ...apiList)
+		.map(jsonArray=> {
+			return _.flatten(jsonArray);
+		}).subscribe(users => {
 			var data = _.map(users, (user) => {
 				var userData = {};
 				_.each(this.selectedFields, (field) => {
@@ -65,8 +74,7 @@ export class UserExportDialog extends BaseComponent {
 			});
 			this.excelService.exportAsExcelFile(data, 'user_export');
 			this.hide();
-	});
-
+		});
 	}
 
 }

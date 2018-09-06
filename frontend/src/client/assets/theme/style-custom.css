@@ -62,3 +62,8 @@
 .language {
     list-style-type: none;
 }
+
+.card-footer {
+    margin: 10px;
+    text-align: right;
+}

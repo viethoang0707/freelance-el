@@ -103,6 +103,7 @@ export class CourseListComponent extends BaseComponent {
                 this.courses = _.reject(this.courses, (obj: Course) => {
                     return course.id == obj.id;
                 });
+                this.displayCourses = this.courses;
                 this.success(this.translateService.instant('Delete course successfully'));
             })
         });

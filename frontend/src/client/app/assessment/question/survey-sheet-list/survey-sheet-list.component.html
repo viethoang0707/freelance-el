@@ -8,7 +8,7 @@
                        <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteSheet(selectedSheet)" [disabled]="!selectedSheet"></button> 
                     </div>
                 </p-toolbar>
-                <p-table  #questionSheetTable [value]="sheets" [paginator]="true" [rows]="10"  [(selection)]="selectedSheet" [responsive]="true" selectionMode="single">
+                <p-table  #questionSheetTable [value]="sheets" [paginator]="true" [rows]="25"  [(selection)]="selectedSheet" [responsive]="true" selectionMode="single">
                     <ng-template pTemplate="header">
                         <tr>
                             <th [pSortableColumn]="'name'">

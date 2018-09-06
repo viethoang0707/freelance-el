@@ -367,4 +367,13 @@ export class User extends BaseModel {
         return User.single(context, ["login"],"[('login','=','"+login+"')]");
     }
 
+    static __api__searchByGroup(groupId:number, fields?:string[]): SearchCountAPI {
+        return new SearchReadAPI(User.Model, fields,"[('group_id','=',"+groupId+")]");
+    }
+
+    static searchByGroup(context: APIContext,groupId:number, fields?:string[]): Observable<any> {
+        return User.single(context, fields,"[('group_id','=',"+groupId+")]");
+    }
+
+
 }

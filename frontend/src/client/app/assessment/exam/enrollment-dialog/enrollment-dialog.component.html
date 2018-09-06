@@ -11,7 +11,7 @@
                 [disabled]="!selectedCandidates || !selectedCandidates.length "></button>
             </div>
           </p-toolbar>
-          <p-table #candidateTable [value]="candidates" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedCandidates "
+          <p-table #candidateTable [value]="candidates" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedCandidates "
             [responsive]="true " sortField="name">
             <ng-template pTemplate="header">
               <tr>
@@ -64,7 +64,7 @@
                 *ngIf="selectedSupervisors && selectedSupervisors.length"></button>
             </div>
           </p-toolbar>
-          <p-table #candidateTable [value]="supervisors" [paginator]="true " [rows]="10" selectionMode="multiple" [(selection)]="selectedSupervisors "
+          <p-table #candidateTable [value]="supervisors" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedSupervisors "
             [responsive]="true " sortField="name">
             <ng-template pTemplate="header">
               <tr>

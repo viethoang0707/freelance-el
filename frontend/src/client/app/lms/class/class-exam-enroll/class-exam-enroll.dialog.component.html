@@ -11,7 +11,7 @@
                      <button pButton type="button " label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeExam() " [disabled]=" exam.status=='closed'" ></button>
                 </div>
             </p-toolbar>
-            <p-table #candidateTable [value]="examMembers" [paginator]="true " [rows]="10" selectionMode="single" [(selection)]="selectedMember " [responsive]="true " sortField="name">
+            <p-table #candidateTable [value]="examMembers" [paginator]="true " [rows]="25" selectionMode="single" [(selection)]="selectedMember " [responsive]="true " sortField="name">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">

@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="ui-lg-9 ui-md-12 ui-g-12" *ngIf="courses && courses.length">
-        <p-dataScroller [value]="courses" [rows]="10" styleClass="lms-course-list">
+        <p-dataScroller [value]="courses" [rows]="25" styleClass="lms-course-list">
             <ng-template let-course pTemplate="item">
                 <p-card styleClass="lms-course-list-item">
                     <div class="ui-g">

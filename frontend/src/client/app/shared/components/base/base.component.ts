@@ -16,6 +16,7 @@ import { WorkflowService } from '../../services/workflow.service';
 import { LMSProfileService } from '../../services/lms-profile.service';
 
 export abstract class BaseComponent implements APIContext {
+	
 	apiService: APIService;
 	authService: AuthService;
 	messageService: MessageService;
@@ -25,7 +26,7 @@ export abstract class BaseComponent implements APIContext {
 	workflowService: WorkflowService;
 	lmsProfileService: LMSProfileService;
 	appEvent: AppEventManager;
-
+	
 	loading: boolean;
 
 	constructor() {

@@ -16,7 +16,7 @@
                     <button pButton type="button" label="{{'Import'|translate}}" class="blue-grey-btn" icon="ui-icon-file-upload" (click)="importQuestion()"></button>
                 </div>
             </p-toolbar>
-            <p-table  #questionTable [value]="displayQuestions" [paginator]="true" [rows]="10"  [(selection)]="selectedQuestions" [responsive]="true" selectionMode="multiple">
+            <p-table  #questionTable [value]="displayQuestions" [paginator]="true" [rows]="25"  [(selection)]="selectedQuestions" [responsive]="true" selectionMode="multiple">
                 <ng-template pTemplate="header">
                     <tr>
                         <th style="width: 2.25em">

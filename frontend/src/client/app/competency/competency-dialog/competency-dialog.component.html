@@ -30,7 +30,7 @@
                                 <button pButton type="button" label="{{'New level'|translate}}" class="green-btn" (click)="addCompetencyLevel()" icon="ui-icon-add"></button>
                             </div>
                         </p-toolbar>
-                        <p-table #levelTable [value]="levels" [paginator]="false" [rows]="10" [(selection)]="selectedLevel" [responsive]="true" selectionMode="single">
+                        <p-table #levelTable [value]="levels" [paginator]="false" [rows]="25" [(selection)]="selectedLevel" [responsive]="true" selectionMode="single">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>

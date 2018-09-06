@@ -1,20 +1,18 @@
 import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { AuthService } from '../../../shared/services/auth.service';
-import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
 import { User } from '../../../shared/models/elearning/user.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { UserDialog } from '../user-dialog/user-dialog.component';
 import { UserExportDialog } from '../export-dialog/export-dialog.component';
-import { UserImportDialog } from '../import-dialog/import-dialog.component';
-import { UserProfileDialog } from '../profile-dialog/profile-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { BaseModel } from '../../../shared/models/base.model';
+import * as _ from 'underscore';
 
 const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position', 'phone', 'group_name', 'permission_name'];
 
@@ -27,62 +25,45 @@ const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position',
 })
 export class UserListComponent extends BaseComponent {
 
-    @ViewChild(UserDialog) userDialog: UserDialog;
     @ViewChild(UserExportDialog) userExportDialog: UserExportDialog;
-    @ViewChild(UserImportDialog) userImportDialog: UserImportDialog;
-    @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
 
     private tree: TreeNode[];
     private users: User[];
+    private displayUsers: User[];
     private selectedUsers: any;
     private selectedGroupNodes: TreeNode[];
-    private treeUtils: TreeUtils;
-    private displayUsers: User[];
+    
+    private mode: string;
+    private batchAction: string;
 
-
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
-        this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
+        this.enterSingleMode();
         Group.listUserGroup(this).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
+            let treeUtils = new TreeUtils();
+            this.tree = treeUtils.buildGroupTree(groups);
         });
-        this.loadUsers();
-    }
-
-    loadUsers() {
         User.all(this,USER_FIELDS).subscribe(users => {
-            this.users = users;
-            this.displayUsers = users;
-            this.selectedUsers = [];
-        });
-    }
-
-    buildGroupTree() {
-        Group.listUserGroup(this).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
+            this.users = _.sortBy(users, (user:User)=> {
+                return -user.id;
+            });
+            this.displayUsers = this.users;
         });
     }
 
     addUser() {
-        var user = new User();
-        this.userDialog.show(user);
-        this.userDialog.onCreateComplete.first().subscribe(() => {
-            this.users.unshift(user);
-            this.displayUsers = [...this.users];
-            this.selectedUsers = [];
-            this.selectedGroupNodes = [];
-            this.success(this.translateService.instant('Add user successfully'));
-        });
+        this.router.navigate(['/account/user/form']);
     }
 
     editUser(user:User) {
-        user.populate(this).subscribe(()=> {
-            this.userProfileDialog.show(user);
-            this.selectedUsers = [];
-        });
+        this.router.navigate(['/account/user/form', user.id]);
+    }
+
+    viewUser(user:User) {
+        this.router.navigate(['/account/user/view', user.id]);
     }
 
     activateMultipleUsers(users:User[]){
@@ -90,44 +71,63 @@ export class UserListComponent extends BaseComponent {
             user.banned =  false;
             user.unban_date =  new Date();
         });
-        User.updateArray(this,users).subscribe(()=> {
+        return User.updateArray(this,users).do(()=> {
             this.success(this.translateService.instant('User activated successfully'));
         });
     }
-
 
     deactivateMultipleUsers(users: User[]){
         _.each(users, (user:User)=> {
             user.banned =  true;
             user.ban_date =  new Date();
         });
-        User.updateArray(this,users).subscribe(()=> {
+        return User.updateArray(this,users).do(()=> {
             this.success(this.translateService.instant('User deactivated successfully'));
         });
     }
 
     exportUser() {
-        var userIds = _.pluck(this.displayUsers, 'id');
-        this.userExportDialog.show(userIds);
+        this.userExportDialog.show();
     }
 
     importUser() {
-        this.userImportDialog.show();
-        this.userImportDialog.onImportComplete.subscribe(() => {
-            this.loadUsers();
-        });
+        this.router.navigate(['/account/users/import']);
     }
 
-    filterUser() {
+    filterUserByGroup() {
         if (this.selectedGroupNodes.length != 0) {
-            this.displayUsers = _.filter(this.users, user => {
-                var parentGroupNode = _.find(this.selectedGroupNodes, node => {
-                    return node.data.id == user.group_id;
-                });
-                return parentGroupNode != null;
+            var groupIds = _.map(this.selectedGroupNodes, (node:TreeNode)=> {
+                return node.data["id"];
+            });
+            this.displayUsers = _.filter(this.users, (user:User) => {
+                return groupIds.includes(user.group_id);
             });
         } else {
             this.displayUsers = this.users;
         }
     }
+
+    enterBatchMode(action:string) {
+        this.batchAction = action;
+        this.mode =  'multiple';
+        this.selectedUsers = [];
+    }
+
+    enterSingleMode() {
+        this.mode = 'single';
+        this.batchAction = '';
+        this.selectedUsers = null;
+    }
+
+    applyBatchAction() {
+        if (this.batchAction=='activate')
+            this.activateMultipleUsers(this.selectedUsers).subscribe(()=> {
+                this.enterSingleMode();
+            });
+        if (this.batchAction=='deactivate') 
+            this.deactivateMultipleUsers(this.selectedUsers).subscribe(()=> {
+                this.enterSingleMode();
+            });
+    }
+
 }

@@ -1,5 +1,3 @@
-
-
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Observable, Subject } from 'rxjs/Rx';

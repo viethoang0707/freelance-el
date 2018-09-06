@@ -4,7 +4,6 @@ import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
-import { UserProfileDialog } from '../account/user/profile-dialog/profile-dialog.component';
 import { AppEventManager } from '../shared/services/app-event-manager.service';
 import { UserLog } from '../shared/models/elearning/log.model';
 import { Group } from '../shared/models/elearning/group.model';
@@ -21,7 +20,6 @@ import { SettingDialog } from '../setting/setting-dialog.component';
 })
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
-    @ViewChild(UserProfileDialog) userProfileDialog: UserProfileDialog;
     @ViewChild(SettingDialog) settingDialog: SettingDialog;
 
     menuClick: boolean;
@@ -63,7 +61,6 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     }
 
     ngOnInit() {
-        // Fill the cache
         if (this.ContextUser.IsAdmin)
             this.router.navigate(['/dashboard/admin']);
         else
@@ -87,7 +84,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
 
     ngAfterViewInit() {
         this.eventManager.showProfileEvents.subscribe(() => {
-            this.userProfileDialog.show(this.ContextUser);
+            this.router.navigate(['/account/user/form', this.ContextUser.id]);
         });
         
         this.eventManager.topbarMenuEvents.subscribe(() => {

@@ -13,7 +13,7 @@
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCompetency(selectedCompetency)" [disabled]="!selectedCompetency"></button>
                 </div>
             </p-toolbar>
-            <p-table #skillTable [value]="displayCompetencies" [paginator]="true" [rows]="10" [(selection)]="selectedCompetency" [responsive]="true" selectionMode="single">
+            <p-table #skillTable [value]="displayCompetencies" [paginator]="true" [rows]="25" [(selection)]="selectedCompetency" [responsive]="true" selectionMode="single">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">

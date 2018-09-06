@@ -47,7 +47,7 @@
                                 <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteMaterial(selectedMaterial)" *ngIf="selectedMaterial"></button>
                             </div>
                         </p-toolbar>
-                        <p-table #materialTable [value]="materials" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMaterial" [responsive]="true">
+                        <p-table #materialTable [value]="materials" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMaterial" [responsive]="true">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th [pSortableColumn]="'name'">
@@ -88,7 +88,7 @@
                                 <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteFaq(selectedFaq)" *ngIf="selectedFaq"></button>
                             </div>
                         </p-toolbar>
-                        <p-table #faqTable [value]="faqs" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedFaq" [responsive]="true">
+                        <p-table #faqTable [value]="faqs" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedFaq" [responsive]="true">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>

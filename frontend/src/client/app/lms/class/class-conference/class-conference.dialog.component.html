@@ -12,7 +12,7 @@
                 <label for="password">{{'Room password' | translate}}</label>
                 <input type="text" pInputText name="password" [(ngModel)]="conference.room_pass" [disabled]="true">
             </div>
-            <p-table #memberTable [value]="members" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
+            <p-table #memberTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th [pSortableColumn]="'name'">

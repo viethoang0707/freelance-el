@@ -28,7 +28,7 @@
                 <a href="{{project.file_url}}" target="_blank" *ngIf="project.file_url">{{project.filename}}</a>
             </div>
         </div>
-        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
+        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
             <!--  sortField="role" -->
             <ng-template pTemplate="header">
                 <tr>
