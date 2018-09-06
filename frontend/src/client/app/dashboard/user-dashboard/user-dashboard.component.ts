@@ -78,7 +78,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             if (logs && logs.length) {
                 let log: CourseLog = logs[0];
                 if (log.code == 'START_COURSE_UNIT')
-                    this.confirm('Do you want to continue last course', () => {
+                    this.confirm(this.translateService.instant('Do you want to continue last course'), () => {
                         var member = this.lmsProfileService.courseMemberById(log.member_id);
                         var course = _.find(courses, (obj:Course)=> {
                             return obj.id == log.course_id;
@@ -174,7 +174,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         if (member.is_active)
             this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
         else
-            this.error('You are  not allowed to join the conference');
+            this.error(this.translateService.instant('You are  not allowed to join the conference'));
     }
 
     studyCourse(course: Course, member: CourseMember) {
@@ -212,7 +212,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
-        this.confirm('Are you sure to start ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to start?'), () => {
             exam.populate(this).subscribe(() => {
                 this.examStudyDialog.show(exam, member);
             });

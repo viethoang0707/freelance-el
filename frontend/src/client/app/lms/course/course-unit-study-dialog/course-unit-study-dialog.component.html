@@ -21,7 +21,7 @@
                         class="course-unit-study-btn" (click)="requestFullScreen()"></button>
                 </div>
                 <div class="fRight next-btn">
-                    <button pButton type="button" icon="ui-icon-navigate-before" iconPos="left" title="{{'Prev'|translate}}" label="{{'Prev'|translate}}"
+                    <button pButton type="button" icon="ui-icon-navigate-before" iconPos="left" title="{{'Prev'|translate}}" label="{{'Previous'|translate}}"
                         (click)="prevUnit()" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
                     <button pButton type="button" icon="ui-icon-navigate-next" iconPos="right" title="{{'Next'|translate}}" label="{{'Next'|translate}}"
                         (click)="nextUnit()" [disabled]="componentRef && !componentRef.instance.viewCompleted && !completedUnitIds.includes(selectedUnit.id)"

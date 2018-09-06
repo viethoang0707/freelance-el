@@ -12,7 +12,6 @@
 }
 
 .search input{
-	color: #fff;
 	padding: 6px 24px 6px 6px;
 }
 
@@ -20,6 +19,6 @@
 	position: absolute;
     right: 0;
     top: 0;
-    color: #E8EAF6;
     font-size: 28px;
+    color: #888 !important;
 }

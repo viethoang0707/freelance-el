@@ -1,8 +1,9 @@
-<div class="card card-w-title">
-    <h1><a [routerLink]="['/lms/courses/manage',course.id,member.id]">{{'Course: ' |translate}}{{course.name}}</a><span class="fa fa-fw ui-icon-arrow-forward
-"></span><span>{{'Class'|translate}}: {{courseClass.name}}</span> </h1>
+<div class="card card-w-title ui-g">
+    <h1><a [routerLink]="['/lms/courses/manage',course.id,member.id]">{{'Course: ' |translate}}{{course.name}}</a>
+        <span class="fa fa-fw ui-icon-chevron-right" style="vertical-align: -10px;"></span>
+        <span>{{'Class'|translate}}: {{courseClass.name}}</span> </h1>
    
-    <p-tabView [style]="{width: '100%', height: '600px'}">
+    <p-tabView [style]="{width: '100%'}">
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
