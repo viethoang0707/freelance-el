@@ -16,9 +16,11 @@ export class SCORMLecture extends BaseModel{
         this.entry_file = undefined;
         this.unit_id = undefined;
         this.package_url = undefined;
+        this.package_file_id = undefined;
     }
 
     entry_file: string;
+    package_file_id: number;
     base_url: string;
     package_url: string;
     unit_id: number;

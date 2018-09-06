@@ -27,6 +27,18 @@ class Survey(models.Model):
 	member_ids = fields.One2many('etraining.survey_member','survey_id', string='Survey members')
 	answer_ids = fields.One2many('etraining.survey_answer', 'survey_id', string='Answers')
 
+	@api.multi
+	def unlink(self, vals):
+		if self.sheet_id:
+			self.sheet_id.unlink()
+		for member in self.member_ids:
+			member.unlink()
+		for question in self.question_ids:
+			question.unlink()
+		for answer in self.answer_ids:
+			answer.unlink()
+		return super(Survey, self).unlink()
+
 	@api.model
 	def create(self, vals):
 		survey = super(Survey, self).create(vals)
@@ -37,12 +49,6 @@ class Survey(models.Model):
 				supervisor.write({'course_member_id':course_member.id})
 		survey.write({"sheet_id": sheet.id})
 		return survey
-
-	@api.multi
-	def unlink(self):
-		for member in self.env['etraining.survey_member'].search([('survey_id','=',self.id)]):
-			member.unlink()
-		return super(Survey, self).unlink()
 
 	@api.model
 	def open(self, params):
@@ -122,6 +128,12 @@ class SurveySheet(models.Model):
 			questions = self.env['etraining.survey_question'].search([('sheet_id', '=', sheet.id)])
 			sheet.question_count =  len(questions)
 
+	@api.multi
+	def unlink(self, vals):
+		for question in self.question_ids:
+			question.unlink()
+		return super(SurveySheet, self).unlink()
+
 class SurveyMember(models.Model):
 	_name = 'etraining.survey_member'
 
@@ -145,6 +157,12 @@ class SurveyMember(models.Model):
 	survey_token = fields.Char(string="Token")
 	submission_id = fields.Many2one('etraining.survey_submission', string='Submission')
 	class_id = fields.Many2one('etraining.course_class', related="course_member_id.class_id", string='Class')
+
+	@api.multi
+	def unlink(self, vals):
+		if self.submission_id:
+			self.submission_id.unlink()
+		return super(SurveyMember, self).unlink()
 
 	@api.model
 	def create(self, vals):
@@ -184,3 +202,8 @@ class SurveySubmission(models.Model):
 
 	answer_ids = fields.One2many('etraining.survey_answer', 'submission_id', string='Answers')
 
+	@api.multi
+	def unlink(self, vals):
+		for answer in self.answer_ids:
+			answer.unlink()
+		return super(SurveyAnswer, self).unlink()

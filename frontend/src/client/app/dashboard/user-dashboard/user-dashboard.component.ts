@@ -74,9 +74,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayCourses(courses: Course[]) {
-        this.ContextUser.lastCourseUnitAttempt(this).subscribe(logs => {
-            if (logs && logs.length) {
-                let log: CourseLog = logs[0];
+        this.ContextUser.lastCourseUnitAttempt(this).subscribe(log => {
+            if (log) {
                 if (log.code == 'START_COURSE_UNIT')
                     this.confirm(this.translateService.instant('Do you want to continue last course'), () => {
                         var member = this.lmsProfileService.courseMemberById(log.member_id);

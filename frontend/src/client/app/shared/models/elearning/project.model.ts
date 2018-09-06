@@ -27,8 +27,10 @@ export class Project extends BaseModel{
         this.start = undefined;
         this.end = undefined;
         this.submission_ids = [];
+        this.project_file_id = undefined;
 	}
 
+    project_file_id: string;
     name:string;
     status:string;
     content:string;

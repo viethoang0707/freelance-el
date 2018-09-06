@@ -351,7 +351,12 @@ export class User extends BaseModel {
     }
 
     lastCourseUnitAttempt(context: APIContext):Observable<any> {
-        return CourseLog.search(context,[],"[('user_id','=',"+this.id+ ")]",1,null,'id desc');
+        return CourseLog.search(context,[],"[('user_id','=',"+this.id+ ")]",1,null,'id desc').map(logs=> {
+            if (logs.length)
+                return logs[0];
+            else
+                return null;
+        });
     }
 
     static __api__searchByLogin(login:string): SearchCountAPI {

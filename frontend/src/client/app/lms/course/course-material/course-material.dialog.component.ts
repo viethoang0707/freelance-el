@@ -28,12 +28,13 @@ export class CourseMaterialDialog extends BaseDialog<CourseMaterial> {
 
 	uploadFile(file) {
 		this.percentage = 0;
-		this.apiService.upload(file, this.authService.LoginToken).subscribe(
+		this.apiService.upload_S3(file, this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(() => {
 						this.object.url = data["url"];
 						this.object.filename = file.name;
+						this.object.material_file_id = data["attachment_id"];
 					});
 				} else {
 					this.ngZone.run(() => {

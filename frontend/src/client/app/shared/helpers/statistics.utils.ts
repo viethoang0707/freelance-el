@@ -13,6 +13,9 @@ import { SurveyAnswer } from '../models/elearning/survey-answer.model';
 import { Competency } from '../models/elearning/competency.model';
 import { Achivement } from '../models/elearning/achievement.model';
 import { CompetencyLevel } from '../models/elearning/competency-level.model';
+import { Course } from '../models/elearning/course.model';
+import { User } from '../models/elearning/user.model';
+import { Exam } from '../models/elearning/exam.model';
 
 export class StatsUtils {
 
@@ -49,7 +52,7 @@ export class StatsUtils {
 	courseStatisticByDate(context: APIContext, startDate: Date, endDate: Date): Observable<any> {
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return CourseLog.search(context, [], "[('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "'),('res_model','=','etraining.course')]").map(logs => {
+		return CourseLog.search(context, [], "[('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "')]").map(logs => {
 			var dayLengthMills = 1000 * 60 * 60 * 24;
 			var slots = [];
 			var starTimeMillis = startDate.getTime();
@@ -68,7 +71,7 @@ export class StatsUtils {
 	courseMemberStatisticByDate(context: APIContext, memberId: number, courseId: number, startDate: Date, endDate: Date): Observable<any> {
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return CourseLog.search(context, [], "[('member_id','='," + memberId + "),('course_id','='," + courseId + "),('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "'),('res_model','=','etraining.course')]").map(logs => {
+		return CourseLog.search(context, [], "[('member_id','='," + memberId + "),('course_id','='," + courseId + "),('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "')]").map(logs => {
 			var dayLengthMills = 1000 * 60 * 60 * 24;
 			var slots = [];
 			var starTimeMillis = startDate.getTime();
@@ -189,7 +192,7 @@ export class StatsUtils {
 	userLoginStatisticByDate(context: APIContext, startDate: Date, endDate: Date): Observable<any> {
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return UserLog.search(context, [], "[('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "'),('res_model','=','res.users'),('code','=','LOGIN')]").map(logs => {
+		return UserLog.search(context, [], "[('start','>=','" + startDateStr + "'),('start','<=','" + endDateStr + "'),('res_model','=','"+User.Model+ "'),('code','=','LOGIN')]").map(logs => {
 			var dayLengthMills = 1000 * 60 * 60 * 24;
 			var slots = [];
 			var starTimeMillis = startDate.getTime();

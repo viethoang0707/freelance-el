@@ -8,6 +8,8 @@ export class SearchReadAPI extends BaseAPI{
 
     constructor( model:string, fields:string[], domain:string,limit?:any, offset?:any, order?:any){
         super();
+        if (!fields || fields.length==0)
+            fields =  BaseModel.fields(model);
         this.params = { model: model,fields:fields, domain: domain, limit: limit, offset: offset, order: order};
 	}
 

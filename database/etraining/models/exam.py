@@ -48,6 +48,23 @@ class Exam(models.Model):
 		exam.write({"sheet_id": sheet.id, 'setting_id': setting.id})
 		return exam
 
+	@api.multi
+	def unlink(self, vals):
+		if self.sheet_id:
+			self.sheet_id.unlink()
+		if self.setting_id:
+			self.setting_id.unlink()
+		for grade in self.grades:
+			grade.unlink()
+		for member in self.member_ids:
+			member.unlink()
+		for submit in self.submission_ids:
+			submit.unlink()
+		for question in self.question_ids:
+			question.unlink()
+		for answer in self.answer_ids:
+			answer.unlink()
+		return super(Exam, self).unlink()
 
 	@api.model
 	def enroll(self, params):
@@ -135,6 +152,16 @@ class ExamMember(models.Model):
 	grade = fields.Char(string="Grade",related="exam_record_id.grade")
 	class_id = fields.Many2one('etraining.course_class', related="course_member_id.class_id", readonly=True,string='Exam')
 	submission_ids = fields.One2many('etraining.submission','member_id', string='Submission history')
+
+	@api.multi
+	def unlink(self, vals):
+		if self.exam_record_id:
+			self.exam_record_id.unlink()
+		if self.submission_id:
+			self.submission_id.unlink()
+		for submit in self.submission_ids:
+			submit.unlink()
+		return super(ExamMember, self).unlink()
 
 	@api.model
 	def create(self, vals):
@@ -229,6 +256,13 @@ class QuestionSheet(models.Model):
 				[('sheet_id', '=', sheet.id)])
 			sheet.question_count =  len(questions)
 
+	@api.multi
+	def unlink(self, vals):
+		for question in self.question_ids:
+			question.unlink()
+		return super(QuestionSheet, self).unlink()
+
+
 class Answer(models.Model):
 	_name = 'etraining.answer'
 
@@ -258,6 +292,13 @@ class Submission(models.Model):
 	picture = fields.Binary(string='Picture')
 
 	study_time = fields.Integer( compute='_compute_study_time', string='Study time')
+
+	@api.multi
+	def unlink(self, vals):
+		for answer in self.answer_ids:
+			answer.unlink()
+		return super(Submission, self).unlink()
+
 
 	def _compute_study_time(self):
 		for submit in self:
