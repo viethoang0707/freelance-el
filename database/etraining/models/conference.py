@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 import requests
 import json
+import erppeek
 
 class Conference(models.Model):
 	_name = 'etraining.conference'
@@ -18,31 +19,34 @@ class Conference(models.Model):
 	@api.model
 	def create(self, vals):
 		cr,uid, context = self.env.args
-		account = context["account"]
-		room = {'name':vals["name"],'category':'one-to-many'}
-		headers = { "Authorization": account["meeting_cloudid"], 'Content-Type': 'application/json'}
-		r = requests.post(account["api_endpoint"]+"/api/execute", data=json.dumps({"model":"emeeting.room","method":"add_room","paramList":{"room":room}}), headers=headers,verify=False)
-		resp = json.loads(r.content)
-		vals["room_ref"] = resp["room"]["ref"]
-		vals["room_pass"] = resp["room"]["password"]
+		if "meeting_cloudid" in context:
+			meeting_account = context["meeting_cloudid"]
+			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
+			room = {'name':vals["name"],'category':'one-to-many'}
+			resp = client.model('emeeting.room','add_room',{"room":room})
+			if resp["success"]:
+				vals["room_ref"] = resp["room"]["ref"]
+				vals["room_pass"] = resp["room"]["password"]
 		conference = super(Conference, self).create(vals)
 		return conference
 
 	@api.multi
 	def createConferenceMember(self, course_member):
 		cr,uid, context = self.env.args
-		for conference in self:
-			member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
-			headers = { "Authorization": account["meeting_cloudid"],'Content-Type': 'application/json'}
-			r = requests.post(account["api_endpoint"]+"/api/execute", data=json.dumps({"model":"emeeting.room", "method":"add_member","paramList": {"room_ref":self.room_ref, "member":member}}),headers=headers,verify=False)
-			resp = json.loads(r.content)
-			conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"]})
-			return conf_member
+		if "meeting_cloudid" in context:
+			meeting_account = context["meeting_cloudid"]
+			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
+			for conference in self:
+				member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
+				resp = client.model('emeeting.room','add_member',{"room_ref":self.room_ref, "member":member})
+				if resp["success"]:
+					conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"]})
+					return conf_member
 
 
 	@api.model
 	def open(self, params):
-		conferenceId = +params["conferenceId"]
+		classId = +params["classId"]
 		for conference in self.env["etraining.conference"].browse(conferenceId):
 			for member in self.env['etraining.conference_member'].search([('conference_id','=',conferenceId)]):
 				member.write({'is_active':True})
