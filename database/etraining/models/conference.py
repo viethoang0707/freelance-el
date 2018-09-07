@@ -18,13 +18,12 @@ class Conference(models.Model):
 	@api.model
 	def create(self, vals):
 		cr,uid, context = self.env.args
+		print context
 		if "account" in context:
 			account = context["account"]
-			print account.meeting_cloudid
 			room = {'name':vals["name"],'category':'one-to-many'}
 			headers = { "Authorization": account.meeting_cloudid, 'Content-Type': 'application/json'}
 			r = requests.post(account.api_endpoint+"/api/create", data=json.dumps({"model":"emeeting.room","values":room}), headers=headers,verify=False)
-			print r.content
 			resp = json.loads(r.content)
 
 			vals["room_ref"] = resp["record"]["ref"]
