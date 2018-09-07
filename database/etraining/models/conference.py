@@ -20,10 +20,13 @@ class Conference(models.Model):
 		cr,uid, context = self.env.args
 		if "account" in context:
 			account = context["account"]
+			print account.meeting_cloudid
 			room = {'name':vals["name"],'category':'one-to-many'}
 			headers = { "Authorization": account.meeting_cloudid, 'Content-Type': 'application/json'}
 			r = requests.post(account.api_endpoint+"/api/create", data=json.dumps({"model":"emeeting.room","values":room}), headers=headers,verify=False)
+			print r.content
 			resp = json.loads(r.content)
+
 			vals["room_ref"] = resp["record"]["ref"]
 			vals["room_pass"] = resp["record"]["password"]
 			conference = super(Conference, self).create(vals)
