@@ -11,13 +11,12 @@ export class MeetingService {
 
 	private nativeWindow: any;
 
-	constructor(private winRef: WindowRef, private authService: AuthService) {
+	constructor(private winRef: WindowRef) {
 		this.nativeWindow =  this.winRef.getNativeWindow();
 	}
 
 	join(room_ref: string, member_ref: string) {
-		this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}
-			&cloudid=${this.authService.LoginToken.cloud_code}&token=${this.authService.LoginToken.code}`);
+		this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}`);
 	}
 
 
