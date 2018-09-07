@@ -147,7 +147,7 @@
 	"Question list": "Danh sách câu hỏi",
 	"Max": "Lớn nhất",
 	"Min": "Nhỏ nhất",
-	"Scale": "Tỉ lệ",
+	"Scale": "Thang điểm",
 	"Add grade": "Thêm thang điểm",
 	"Invalid grade options": "Tùy chọn thang điểm không hợp lệ",
 	"Course by member report": "Báo cáo khóa học theo học viên",
@@ -620,6 +620,22 @@
 	"Select a survey": "Chọn khảo sát",
 	"Survey answer statistics": "Thống kê câu trả lời khảo sát",
 	"User chart": "Biểu đồ người dùng",
-	"User status chart": "Biểu đồ tình trạng người dùng"
+	"User status chart": "Biểu đồ tình trạng người dùng",
+	"Do you want to continue last course": "Bạn có muốn tiếp tục khóa học không?",
+	"You are  not allowed to join the conference": "Bạn không được phép tham gia lớp học trực tuyến",
+	"Auto next": "Tự động phát tiếp",
+	"Fullscreen": "Mở rộng màn hình",
+	"Edit exam": "Chỉnh sửa kỳ thi",
+	"Download score": "Tải xuống bảng điểm",
+	"Total course unit": "Tổng số phần học",
+	"Completed course unit": "Phần học đã hoàn thành",
+	"View answer": "Xem phiếu trả lời",
+	"Study history": "Lịch sử học viên",
+	"Outline": "Thông tin",
+	"Detail": "Chi tiết",
+	"Compose": "Biên soạn",
+	"Exam setting": "Cài đặt kỳ thi",
+	"Save survey sheet": "Lưu mẫu khảo sát",
+	"Name is requried": "Nhập tên là bắt buộc"
 
 }

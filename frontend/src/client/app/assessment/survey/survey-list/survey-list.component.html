@@ -9,7 +9,6 @@
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteSurvey(selectedSurvey)" [disabled]="!selectedSurvey"></button>
                     <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview(selectedSurvey)" [disabled]="!selectedSurvey ||  selectedSurvey.review_state =='approved'"></button>
                 </div>
-
             </p-toolbar>
             <p-table #surveyTable [value]="surveys" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedSurvey" [responsive]="true" >
                 <ng-template pTemplate="header">

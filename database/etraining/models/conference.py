@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import requests
+import json
 
 class Conference(models.Model):
 	_name = 'etraining.conference'
@@ -16,27 +18,31 @@ class Conference(models.Model):
 
 	@api.model
 	def create(self, vals):
-		room = self.env['emeeting.room'].create({'name':vals["name"],'category':'one-to-many'})
-		vals["room_ref"] = room.ref
-		vals["room_pass"] = room.password
-		conference = super(Conference, self).create(vals)
-		return conference
-
-	@api.model
-	def createConferenceMember(self, course_member):
-		for room in self.env['emeeting.room'].search([('ref','=',self.room_ref)]):
-			room_member  = self.env['emeeting.member'].create({'room_id':room.id,'name':course_member.name,'avatar':course_member.image,
-			'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'}) 
-			conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': room_member.ref})
-			return conf_member
+		cr,uid, context = self.env.args
+		if "account" in context:
+			account = context["account"]
+			room = {'name':vals["name"],'category':'one-to-many'}
+			headers = { "Authorization": account.meeting_cloudid}
+			r = requests.post(account.api_endpoint+"/api/create", data={"model":"emeeting.room","values":room}, headers=headers)
+			resp = json.loads(r.read())
+			vals["room_ref"] = room.ref
+			vals["room_pass"] = room.password
+			conference = super(Conference, self).create(vals)
+			return conference
 
 	@api.multi
-	def unlink(self):
-		if self.room_ref:
-			room = self.env['emeeting.room'].search([('ref','=',self.room_ref)])
-			if room:
-				room.unlink()
-		return super(Conference, self).unlink()
+	def createConferenceMember(self, course_member):
+		cr,uid, context = self.env.args
+		if "account" in context:
+			account = context["account"]
+			for conference in self:
+				member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
+				headers = { "Authorization": account.meeting_cloudid}
+				r = requests.post(account.api_endpoint+"/api/execute", data={"model":"emeeting.room", "method":"add_member","paramList": {"room_ref":self.room_ref, "member":member}})
+				resp = json.loads(r.read())
+				conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"]["ref"]},headers=headers)
+				return conf_member
+
 
 	@api.model
 	def open(self, params):
@@ -70,12 +76,3 @@ class ConferenceMember(models.Model):
 	name = fields.Char(related='course_member_id.name', string='User name', readonly=True)
 	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	user_id = fields.Many2one('res.users',related='course_member_id.user_id', string='User ID', readonly=True)
-
-
-	@api.multi
-	def unlink(self):
-		if self.room_member_ref:
-			room_member = self.env['emeeting.member'].search([('ref','=',self.room_member_ref)])
-			if room_member:
-				room_member.unlink()
-		return super(ConferenceMember, self).unlink()
