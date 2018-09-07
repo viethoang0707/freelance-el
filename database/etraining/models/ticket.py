@@ -22,7 +22,7 @@ class Notification(models.Model):
 
 	title = fields.Char(string='Title')
 	target_user_id = fields.Many2one('res.users',string='Target user')
-	ticket_id = fields.Many2one('eticket.ticket',string='Ticket')
+	ticket_id = fields.Many2one('etraining.ticket',string='Ticket')
 	date_open = fields.Datetime('Open date')
 
 class Comment(models.Model):
@@ -30,5 +30,5 @@ class Comment(models.Model):
 
 	content = fields.Text(string='Content')
 	submit_user_id = fields.Many2one('res.users',string='Target user')
-	ticket_id = fields.Many2one('eticket.ticket',string='Ticket')
+	ticket_id = fields.Many2one('etraining.ticket',string='Ticket')
 	date_submit = fields.Datetime('Submit date')

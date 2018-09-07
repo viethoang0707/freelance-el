@@ -18,31 +18,27 @@ class Conference(models.Model):
 	@api.model
 	def create(self, vals):
 		cr,uid, context = self.env.args
-		print context
-		if "account" in context:
-			account = context["account"]
-			room = {'name':vals["name"],'category':'one-to-many'}
-			headers = { "Authorization": account.meeting_cloudid, 'Content-Type': 'application/json'}
-			r = requests.post(account.api_endpoint+"/api/create", data=json.dumps({"model":"emeeting.room","values":room}), headers=headers,verify=False)
-			resp = json.loads(r.content)
+		account = context["account"]
+		room = {'name':vals["name"],'category':'one-to-many'}
+		headers = { "Authorization": account.meeting_cloudid, 'Content-Type': 'application/json'}
+		r = requests.post(account.api_endpoint+"/api/create", data=json.dumps({"model":"emeeting.room","values":room}), headers=headers,verify=False)
+		resp = json.loads(r.content)
 
-			vals["room_ref"] = resp["record"]["ref"]
-			vals["room_pass"] = resp["record"]["password"]
-			conference = super(Conference, self).create(vals)
-			return conference
+		vals["room_ref"] = resp["record"]["ref"]
+		vals["room_pass"] = resp["record"]["password"]
+		conference = super(Conference, self).create(vals)
+		return conference
 
 	@api.multi
 	def createConferenceMember(self, course_member):
 		cr,uid, context = self.env.args
-		if "account" in context:
-			account = context["account"]
-			for conference in self:
-				member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
-				headers = { "Authorization": account.meeting_cloudid,'Content-Type': 'application/json'}
-				r = requests.post(account.api_endpoint+"/api/execute", data=json.dumps({"model":"emeeting.room", "method":"add_member","paramList": {"room_ref":self.room_ref, "member":member}}),headers=headers,verify=False)
-				resp = json.loads(r.content)
-				conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"]})
-				return conf_member
+		for conference in self:
+			member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
+			headers = { "Authorization": account.meeting_cloudid,'Content-Type': 'application/json'}
+			r = requests.post(account.api_endpoint+"/api/execute", data=json.dumps({"model":"emeeting.room", "method":"add_member","paramList": {"room_ref":self.room_ref, "member":member}}),headers=headers,verify=False)
+			resp = json.loads(r.content)
+			conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"]})
+			return conf_member
 
 
 	@api.model
