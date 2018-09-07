@@ -19,9 +19,10 @@ class Conference(models.Model):
 	def create(self, vals):
 		cr,uid, context = self.env.args
 		account = context["account"]
+		print "Account", account
 		room = {'name':vals["name"],'category':'one-to-many'}
-		headers = { "Authorization": account.meeting_cloudid, 'Content-Type': 'application/json'}
-		r = requests.post(account.api_endpoint+"/api/create", data=json.dumps({"model":"emeeting.room","values":room}), headers=headers,verify=False)
+		headers = { "Authorization": account["meeting_cloudid"], 'Content-Type': 'application/json'}
+		r = requests.post(accoun["api_endpoint"]+"/api/create", data=json.dumps({"model":"emeeting.room","values":room}), headers=headers,verify=False)
 		resp = json.loads(r.content)
 
 		vals["room_ref"] = resp["record"]["ref"]
@@ -34,8 +35,8 @@ class Conference(models.Model):
 		cr,uid, context = self.env.args
 		for conference in self:
 			member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
-			headers = { "Authorization": account.meeting_cloudid,'Content-Type': 'application/json'}
-			r = requests.post(account.api_endpoint+"/api/execute", data=json.dumps({"model":"emeeting.room", "method":"add_member","paramList": {"room_ref":self.room_ref, "member":member}}),headers=headers,verify=False)
+			headers = { "Authorization": account["meeting_cloudid"],'Content-Type': 'application/json'}
+			r = requests.post(account["api_endpoint"]+"/api/execute", data=json.dumps({"model":"emeeting.room", "method":"add_member","paramList": {"room_ref":self.room_ref, "member":member}}),headers=headers,verify=False)
 			resp = json.loads(r.content)
 			conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"]})
 			return conf_member
