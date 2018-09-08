@@ -95,8 +95,8 @@ export class PermissionViewComponent extends BaseComponent {
 		this.menuTree.forEach((tree: any) => {
 			tree.label = this.translateService.instant(tree.label);
 			if (tree.children.length > 0) {
-				tree.children.forEach((child: any) => {
-					child.label = this.translateService.instant(child.label);
+				_.each(tree.children, child => {
+					child["label"] = this.translateService.instant(child["label"]);
 				});
 			}
 		});

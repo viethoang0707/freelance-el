@@ -6,9 +6,6 @@ import { UserListComponent } from './user/user-list/user-list.component';
 import { UserExportDialog } from './user/export-dialog/export-dialog.component';
 import { UserImportComponent } from './user/user-import/user-import.component';
 import { PermissionListComponent } from './permission/permission-list/permission-list.component';
-import { PermissionDialog } from './permission/permission-dialog/permission-dialog.component';
-import { MenuPermissionDialog } from './permission/menu-permission-dialog/menu-permission-dialog.component';
-import { MemberPermissionDialog } from './permission/member-permission-dialog/member-permission-dialog.component';
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { UserFormComponent } from './user/user-form/user-form.component';
@@ -30,9 +27,6 @@ import { PermissionViewComponent } from './permission/permission-view/permission
         UserExportDialog,
         UserImportComponent,
         PermissionListComponent,
-        PermissionDialog,
-        MenuPermissionDialog,
-        MemberPermissionDialog,
         PermissionFormComponent,
         PermissionViewComponent
     ],

@@ -11,6 +11,8 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { ExcelService } from '../../../shared/services/excel.service';
 import * as _ from 'underscore';
 
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'user-export-dialog',
@@ -47,7 +49,7 @@ export class UserExportDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		Group.listUserGroup(this).subscribe(groups => {
+		Group.listUserGroup(this,GROUP_FIELDS).subscribe(groups => {
 			let treeUtils = new TreeUtils();
 			this.tree = treeUtils.buildGroupTree(groups);
 		});

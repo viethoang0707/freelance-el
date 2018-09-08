@@ -94,7 +94,7 @@
             </p-tabPanel>
         </p-tabView>
         <div class="card-footer">
-            <button type="submit" class="blue-grey-btn"pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid "></button>
+            <button type="submit" class="blue-grey-btn"pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid || loading"></button>
             <button type="button"class="blue-grey-btn" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>
         </div>
     </form>

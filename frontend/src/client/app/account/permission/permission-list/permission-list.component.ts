@@ -5,11 +5,8 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { AuthService } from '../../../shared/services/auth.service';
 import { USER_STATUS, GROUP_CATEGORY } from '../../../shared/models/constants'
 import { Permission } from '../../../shared/models/elearning/permission.model';
-import { PermissionDialog } from '../permission-dialog/permission-dialog.component';
-import { MenuPermissionDialog } from '../menu-permission-dialog/menu-permission-dialog.component';
 import { SelectGroupDialog } from '../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { MemberPermissionDialog } from '../member-permission-dialog/member-permission-dialog.component';
 import { User } from '../../../shared/models/elearning/user.model';
 import * as _ from 'underscore';
 

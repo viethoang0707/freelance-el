@@ -35,27 +35,27 @@ export class CompetencyProfileChartComponent extends BaseComponent {
     drawChart(competency: Competency) {
         competency.listLevels(this).subscribe(levels => {
             User.countAll(this).subscribe(totalUserCount => {
-                    var totalWithSkill = 0;
-                    var labels = [];
-                    var data = [];
-                    _.each(levels, (level:CompetencyLevel) => {
-                        totalWithSkill += level.achivement_ids.length;
-                        labels.push(level.name);
-                        data.push(level.achivement_ids.length);
-                    });
-                    labels.push('Unknwon');
-                    data.push(totalUserCount - totalWithSkill);
-                    this.chartData = {
-                        labels: labels,
-                        datasets: [
-                            {
-                                data: data,
-                                backgroundColor: COLOR_BAND.slice(levels.length + 1),
-                                hoverBackgroundColor: COLOR_BAND.slice(levels.length + 1)
-                            }]
-                    };
+                var totalWithSkill = 0;
+                var labels = [];
+                var data = [];
+                _.each(levels, (level: CompetencyLevel) => {
+                    totalWithSkill += level.achivement_ids.length;
+                    labels.push(level.name);
+                    data.push(level.achivement_ids.length);
                 });
+                labels.push('Unknwon');
+                data.push(totalUserCount - totalWithSkill);
+                this.chartData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            data: data,
+                            backgroundColor: COLOR_BAND.slice(levels.length + 1),
+                            hoverBackgroundColor: COLOR_BAND.slice(levels.length + 1)
+                        }]
+                };
             });
+        });
     }
 
 }

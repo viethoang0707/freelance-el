@@ -242,17 +242,33 @@ export abstract class BaseModel {
         return this.count(context, "[]");
     }
 
-    populate(context: APIContext): Observable<any> {
+    populate(context: APIContext, fields?:string[]): Observable<any> {
         if (this.id) {
-            var getApi = new ListAPI(this.Model, [this.id]);
+            var getApi = new ListAPI(this.Model, [this.id],fields);
+            var token = context.authService.LoginToken;
             return context.apiService.execute(getApi, 
-                context.authService.LoginToken).do(items=> {
+                token).do(items=> {
                 var object = MapUtils.deserializeModel(this.Model, items[0]);
                 Object.assign(this, object);
             });
         } else
             return Observable.of(this)
+    }
 
+    static populateArray(context: APIContext, objects:BaseModel[],fields?:string[]): Observable<any> {
+        if (objects.length) {
+            var objectIds = _.pluck(objects, 'id');
+            var model = this.Model;
+            var token = context.authService.LoginToken;
+            return context.apiService.execute(this.__api__get(objectIds,fields), token).do(arr => {
+                var objectArr =  this.toArray(arr);
+                for (var i=0;i<objects.length; i++) {
+                    var populatedObj = MapUtils.deserializeModel(model, objectArr[i]);
+                    Object.assign(objects[i], populatedObj);
+                }
+            });
+        } else
+            return Observable.of([])
     }
 
     save(context: APIContext, fields?:string[]): Observable<any> {

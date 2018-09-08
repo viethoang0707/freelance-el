@@ -15,6 +15,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 import * as _ from 'underscore';
 
 const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position', 'phone', 'group_name', 'permission_name'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
 
 @Component({
     moduleId: module.id,
@@ -42,7 +43,7 @@ export class UserListComponent extends BaseComponent {
 
     ngOnInit() {
         this.enterSingleMode();
-        Group.listUserGroup(this).subscribe(groups => {
+        Group.listUserGroup(this,GROUP_FIELDS).subscribe(groups => {
             let treeUtils = new TreeUtils();
             this.tree = treeUtils.buildGroupTree(groups);
         });

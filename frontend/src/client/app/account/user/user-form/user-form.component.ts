@@ -10,6 +10,7 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY } from '../../../shared/models/constants';
 import * as _ from 'underscore';
 
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 
 @Component({
 	moduleId: module.id,
@@ -36,7 +37,7 @@ export class UserFormComponent extends BaseComponent {
 
 	ngOnInit() {
 		this.user = this.route.snapshot.data['user'];
-		Group.listUserGroup(this).subscribe(groups => {
+		Group.listUserGroup(this, GROUP_FIELDS).subscribe(groups => {
 			let treeUtils: TreeUtils = new TreeUtils();
 			this.tree = treeUtils.buildGroupTree(groups);
 			if (this.user.group_id) {
@@ -47,14 +48,12 @@ export class UserFormComponent extends BaseComponent {
 
 	save() {
 		if (this.user.IsNew) {
-			User.searchByLogin(this, this.user.login).subscribe(user => {
-				if (user != null) {
-					this.error(this.translateService.instant('User exist'));
+			User.register(this, this.user).subscribe(resp => {
+				if (!resp["success"]) {
+					this.error(this.translateService.instant(resp["message"]));
 					return;
 				}
-				this.user.save(this).subscribe(() => {
-					this.router.navigate(['/account/user/view', this.user.id]);
-				});
+				this.router.navigate(['/account/user/view', this.user.id]);
 			})
 		}
 		else {
@@ -65,7 +64,7 @@ export class UserFormComponent extends BaseComponent {
 	}
 
 	cancel() {
-		if (this.user.IsNew) 
+		if (this.user.IsNew)
 			this.router.navigate(['/account/users']);
 		else
 			this.router.navigate(['/account/user/view', this.user.id]);

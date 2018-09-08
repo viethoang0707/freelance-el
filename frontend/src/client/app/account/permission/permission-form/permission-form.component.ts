@@ -14,7 +14,7 @@ import { MenuService } from '../../../shared/services/menu.service';
 import * as _ from 'underscore';
 
 const USER_FIELDS = ['name', 'email', 'login', 'position', 'permission_id', 'gender', 'dob', 'group_id', 'group_name']
-
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 
 @Component({
 	moduleId: module.id,
@@ -58,7 +58,7 @@ export class PermissionFormComponent extends BaseComponent {
 		this.addUsers = [];
 		this.deleteUsers = [];
 		this.permission = this.route.snapshot.data['permission'];
-		Group.listUserGroup(this).subscribe(groups => {
+		Group.listUserGroup(this, GROUP_FIELDS).subscribe(groups => {
 			let treeUtils: TreeUtils = new TreeUtils();
 			this.tree = treeUtils.buildGroupTree(groups);
 			if (this.permission.user_group_id) {
@@ -72,13 +72,15 @@ export class PermissionFormComponent extends BaseComponent {
 	addMember() {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
-			_.each(users, (user: User) => {
-				this.users.push(user);
-				this.addUsers.push(user);
-				this.deleteUsers = _.reject(this.deleteUsers, (obj: User) => {
-					return obj.id == user.id;
+			User.populateArray(this, users, USER_FIELDS).subscribe(() => {
+				_.each(users, (user: User) => {
+					this.users.push(user);
+					this.addUsers.push(user);
+					this.deleteUsers = _.reject(this.deleteUsers, (obj: User) => {
+						return obj.id == user.id;
+					});
 				});
-			});
+			})
 		});
 	}
 
@@ -125,14 +127,14 @@ export class PermissionFormComponent extends BaseComponent {
 
 	save() {
 		this.permission.save(this).subscribe(() => {
-			_.each(this.addUsers, (user:User)=> {
+			_.each(this.addUsers, (user: User) => {
 				user.permission_id = this.permission.id;
 			});
-			_.each(this.deleteUsers, (user:User)=> {
+			_.each(this.deleteUsers, (user: User) => {
 				user.permission_id = null;
 			});
 			var udpateUsers = this.addUsers.concat(this.deleteUsers);
-			User.updateArray(this, udpateUsers).subscribe(()=> {
+			User.updateArray(this, udpateUsers).subscribe(() => {
 				this.router.navigate(['/account/permission/view', this.permission.id]);
 			});
 		});

@@ -59,6 +59,14 @@ class User(models.Model):
 		user = super(User, self).create(vals)
 		return user
 
+	@api.model
+	def register(self, params):
+		user = params["user"]
+		if self.env["res.users"].search([("login","=",user["login"])]):
+			return {"success":False, "code":"USER_EXIST", message:"Username exist" }
+		user = super(User, self).create(user)
+		return {"success":True}
+
 class Permission(models.Model):
 	_name = 'etraining.permission'
 

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { AuthService } from '../../services/auth.service';
 import { Group } from '../../models/elearning/group.model';
 import { BaseComponent } from '../base/base.component';
@@ -10,6 +9,8 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
+
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
 
 @Component({
 	moduleId: module.id,
@@ -50,8 +51,7 @@ export class SelectCompetencyDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		// , GROUP_CATEGORY.COURSE
-		Group.listCompetencyGroup(this).subscribe(groups => {
+		Group.listCompetencyGroup(this, GROUP_FIELDS).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 		});
 	}

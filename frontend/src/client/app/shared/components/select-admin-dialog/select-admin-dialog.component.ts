@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { AuthService } from '../../services/auth.service';
 import { Group } from '../../models/elearning/group.model';
 import { BaseComponent } from '../base/base.component';
@@ -12,6 +11,7 @@ import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants
 import { SelectItem } from 'primeng/api';
 
 const USER_FIELDS = ['name', 'group_name', 'is_admin'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
 
 @Component({
 	moduleId: module.id,
@@ -21,12 +21,12 @@ const USER_FIELDS = ['name', 'group_name', 'is_admin'];
 export class SelectAdminDialog extends BaseComponent {
 
 	private tree: TreeNode[];
+	private treeUtils: TreeUtils;
 	private selectedNode: TreeNode;
 	private selectedAdmin: User;
 	private users: User[];
 	private display: boolean;
-	private treeUtils: TreeUtils;
-
+	
 	private onSelectUsersReceiver: Subject<any> = new Subject();
 	onSelectUsers: Observable<any> = this.onSelectUsersReceiver.asObservable();
 
@@ -54,8 +54,7 @@ export class SelectAdminDialog extends BaseComponent {
 		this.display = true;
 		this.selectedNode = null;
 		this.selectedAdmin = null;
-		//, GROUP_CATEGORY.USER
-		Group.listUserGroup(this).subscribe(groups => {
+		Group.listUserGroup(this,GROUP_FIELDS).subscribe(groups => {
 			var treeNodes = this.treeUtils.buildGroupTree(groups);
 			if (this.ContextUser.IsAdmin) {
 				this.tree = treeNodes

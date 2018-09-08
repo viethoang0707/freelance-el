@@ -22,6 +22,7 @@ import { Exam } from './exam.model';
 import { Survey } from './survey.model';
 import { CourseLog } from './log.model';
 import { Ticket } from './ticket.model';
+import { ExecuteAPI } from '../../services/api/execute.api';
 import {SERVER_DATETIME_FORMAT} from '../constants';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -373,6 +374,15 @@ export class User extends BaseModel {
 
     static searchByGroup(context: APIContext,groupId:number, fields?:string[]): Observable<any> {
         return User.single(context, fields,"[('group_id','=',"+groupId+")]");
+    }
+
+    static __api__register(user: User): ExecuteAPI {
+        return new ExecuteAPI(User.Model, 'register',{user:user}, null);
+    }
+
+    static register(context:APIContext, user:User):Observable<any> {
+        return context.apiService.execute(User.__api__register(user), 
+            context.authService.LoginToken);
     }
 
 

@@ -14,6 +14,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { Competency } from '../../../shared/models/elearning/competency.model';
 
+
 @Component({
     moduleId: module.id,
     selector: 'group-list',
