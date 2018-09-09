@@ -21,7 +21,6 @@ export class QuestionSheet extends BaseModel{
         this.name = undefined;
         this.status =  undefined;
         this.question_count =  undefined;
-        this.question_ids = [];
 	}
 
     name: string;
@@ -31,8 +30,6 @@ export class QuestionSheet extends BaseModel{
     seed:number;
     finalized:boolean;
     status: string;
-    @ReadOnlyProperty()
-    question_ids: number[];
 
     
     clone():QuestionSheet {
@@ -53,11 +50,11 @@ export class QuestionSheet extends BaseModel{
         return QuestionSheet.search(context,fields,"[('exam_id','=',False)]");
     }
 
-    static __api__listQuestions(question_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ExamQuestion.Model, question_ids,fields);
+    static __api__listQuestions(sheetId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamQuestion.Model,fields, "[('sheet_id','=',"+sheetId+")]");
     }
 
     listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ExamQuestion.array(context,this.question_ids,fields);
+        return ExamQuestion.search(context,fields,"[('sheet_id','=',"+this.id+")]");
     }
 }

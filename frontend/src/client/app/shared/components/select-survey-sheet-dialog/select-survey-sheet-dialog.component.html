@@ -6,7 +6,6 @@
         <ng-template pTemplate="header" >
           <tr>
             <th style="width: 2.25em">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th style="width: 100px;">
               {{'Name'|translate}}
@@ -19,7 +18,7 @@
         <ng-template pTemplate="body" let-rowData>
           <tr [pSelectableRow]="rowData">
             <td>
-              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
             </td>
             <td >
               {{rowData.name}}
@@ -33,7 +32,7 @@
     </div>
   </div>
   <p-footer>
-    <button type="button" [disabled]="!selectedSheet" pButton icon="fa-check" label="{{'OK'|translate}}" (click)="selectSheet()"></button>
-    <button type="button" pButton icon="fa-close" (click)="hide()" label="{{'Close'|translate}}"></button>
+    <button type="button" [disabled]="!selectedSheet" pButton icon="ui-icon" label="{{'OK'|translate}}" (click)="selectSheet()"></button>
+    <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
   </p-footer>
 </p-dialog>

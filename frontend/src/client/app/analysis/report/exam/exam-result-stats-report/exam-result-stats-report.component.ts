@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { StatsUtils } from '../../../../shared/helpers/statistics.utils';
 import { Exam } from '../../../../shared/models/elearning/exam.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
@@ -12,7 +11,6 @@ import { Submission } from '../../../../shared/models/elearning/submission.model
 import { Answer } from '../../../../shared/models/elearning/answer.model';
 import { ExamMember } from '../../../../shared/models/elearning/exam-member.model';
 import * as _ from 'underscore';
-import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../../shared/models/constants'
 import { Report } from '../../report.decorator';
 import { SelectGroupDialog } from '../../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
@@ -69,32 +67,33 @@ export class ExamResultStatsReportComponent extends BaseComponent {
 
     render(exam: Exam) {
         this.clear();
-        BaseModel
-            .bulk_list(this,
-                Exam.__api__populateQuestionSheet(exam.sheet_id),
-                Exam.__api__listAnswers(exam.answer_ids))
-            .subscribe(jsonArr => {
-                var sheet = QuestionSheet.toArray(jsonArr[0])[0];
-                var answers = Answer.toArray(jsonArr[1]);
-                var statistics = this.statsUtils.examAnswerStatistics(answers);
-                this.optionPercentage = statistics['multichoice'];
-                sheet.listQuestions(this).subscribe(examQuestions => {
-                    var apiList = _.map(examQuestions, (examQuestion: ExamQuestion) => {
-                        return Question.__api__listOptions(examQuestion.option_ids)
-                    });
-                    BaseModel.bulk_list(this, ...apiList)
-                        .map(jsonArr => _.flatten(jsonArr))
-                        .subscribe(jsonArr => {
-                            var options = QuestionOption.toArray(jsonArr);
-                            _.each(examQuestions, (examQuestion: ExamQuestion) => {
-                                examQuestion["options"] = _.filter(options, (opt: QuestionOption) => {
-                                    return opt.question_id == examQuestion.question_id;
-                                });
-                            });
-                            this.records = examQuestions;
+        exam.populateQuestionSheet(this).subscribe(sheet => {
+            BaseModel
+                .bulk_list(this,
+                    Exam.__api__listAnswers(exam.id))
+                .subscribe(jsonArr => {
+                    var sheet = sheet;
+                    var answers = Answer.toArray(jsonArr[1]);
+                    var statistics = this.statsUtils.examAnswerStatistics(answers);
+                    this.optionPercentage = statistics['multichoice'];
+                    sheet.listQuestions(this).subscribe(examQuestions => {
+                        var apiList = _.map(examQuestions, (examQuestion: ExamQuestion) => {
+                            return Question.__api__listOptions(examQuestion.id)
                         });
+                        BaseModel.bulk_list(this, ...apiList)
+                            .map(jsonArr => _.flatten(jsonArr))
+                            .subscribe(jsonArr => {
+                                var options = QuestionOption.toArray(jsonArr);
+                                _.each(examQuestions, (examQuestion: ExamQuestion) => {
+                                    examQuestion["options"] = _.filter(options, (opt: QuestionOption) => {
+                                        return opt.question_id == examQuestion.question_id;
+                                    });
+                                });
+                                this.records = examQuestions;
+                            });
+                    });
                 });
-            });
+        });
     }
 
 

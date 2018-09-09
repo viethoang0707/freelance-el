@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -12,24 +12,23 @@ import { Http, Response } from '@angular/http';
 import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
 import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
-import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 
 const EXAM_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 'status'];
 
 @Component({
     moduleId: module.id,
-    selector: 'exam-enrollment-dialog',
-    templateUrl: 'enrollment-dialog.component.html',
+    selector: 'exam-enroll',
+    templateUrl: 'exam-enroll.component.html',
 })
-export class ExamEnrollDialog extends BaseComponent {
+export class ExamEnrollComponent extends BaseComponent implements OnInit{
 
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
     EXAM_STATUS = EXAM_STATUS;
     EXAM_MEMBER_STATUS = EXAM_MEMBER_STATUS;
 
 
-    private display: boolean;
     private exam: Exam;
     private candidates: ExamMember[];
     private selectedCandidates: any;
@@ -37,22 +36,22 @@ export class ExamEnrollDialog extends BaseComponent {
     private selectedSupervisors: any;
 
 
-    @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
+    @ViewChild(SelectMultiUsersDialog) usersDialog: SelectMultiUsersDialog;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
+        this.exam = new Exam();
     }
 
-    enroll(exam: Exam) {
-        this.display = true;
-        this.exam = exam;
+    ngOnInit() {
+        this.exam = this.route.snapshot.data['exam'];
         this.selectedCandidates = [];
         this.selectedSupervisors = [];
         this.loadMembers();
     }
 
-    hide() {
-        this.display = false;
+    close() {
+        this.router.navigate(['/assessment/exams/enrollment']);
     }
 
     addCandidate() {

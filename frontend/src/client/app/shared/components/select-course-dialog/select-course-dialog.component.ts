@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { AuthService } from '../../services/auth.service';
 import { Group } from '../../models/elearning/group.model';
 import { BaseComponent } from '../base/base.component';
@@ -12,6 +11,7 @@ import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants
 import { SelectItem } from 'primeng/api';
 
 const COURSE_FIELDS = ['name', 'code'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
 
 @Component({
 	moduleId: module.id,
@@ -53,8 +53,7 @@ export class SelectCoursesDialog extends BaseComponent {
 	show() {
 		this.display = true;
 		this.selectedCourses = [];
-		// , GROUP_CATEGORY.COURSE
-		Group.listCourseGroup(this).subscribe(groups => {
+		Group.listCourseGroup(this, GROUP_FIELDS).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 		});
 	}

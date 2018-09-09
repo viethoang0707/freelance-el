@@ -61,7 +61,7 @@ export class UserExportDialog extends BaseComponent {
 
 	export() {
 		var apiList = _.map(this.selectedGroupNodes, (node: TreeNode) => {
-			return User.__api__searchByGroup(node.data["id"], this.selectedFields);
+			return Group.__api__listUsers(node.data["id"], this.selectedFields);
 		});
 		BaseModel.bulk_search(this, ...apiList)
 		.map(jsonArray=> {

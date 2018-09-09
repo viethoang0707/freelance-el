@@ -10,7 +10,9 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
+const COMPETENCY_FIELDS = ['name', 'group_id'];
+
 
 @Component({
 	moduleId: module.id,
@@ -43,7 +45,7 @@ export class SelectCompetencyDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.selectedNode.data.listCompetencies(this).subscribe(competencies => {
+			this.selectedNode.data.listCompetencies(this,COMPETENCY_FIELDS).subscribe(competencies => {
 				this.competencies = competencies;
 			});
 		}

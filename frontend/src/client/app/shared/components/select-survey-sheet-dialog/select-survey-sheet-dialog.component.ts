@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { AuthService } from '../../services/auth.service';
 import { SurveyQuestion } from '../../models/elearning/survey-question.model';
 import { BaseComponent } from '../base/base.component';
@@ -9,6 +8,8 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
+
+const SURVEY_SHEET_FIELDS = ['name', 'question_count'];
 
 @Component({
 	moduleId: module.id,
@@ -19,11 +20,11 @@ import { SelectItem } from 'primeng/api';
 export class SelectSurveySheetDialog extends BaseComponent {
 
 	private selectedSheet: SurveySheet[];
-	private sheets:SurveySheet[];
+	private sheets: SurveySheet[];
 	private display: boolean;
 
 	private onSelectSheetReceiver: Subject<any> = new Subject();
-    onSelectSheet:Observable<any> =  this.onSelectSheetReceiver.asObservable();
+	onSelectSheet: Observable<any> = this.onSelectSheetReceiver.asObservable();
 
 	constructor() {
 		super();
@@ -38,7 +39,7 @@ export class SelectSurveySheetDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		SurveySheet.listTemplate(this).subscribe(sheets => {
+		SurveySheet.listTemplate(this, SURVEY_SHEET_FIELDS).subscribe(sheets => {
 			this.sheets = sheets;
 		});
 	}

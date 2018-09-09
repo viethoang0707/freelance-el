@@ -10,6 +10,8 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
+const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'select-multi-group-dialog',
@@ -42,11 +44,11 @@ export class SelectMultiGroupDialog extends BaseComponent {
 		this.selectedNodes = [];
 		var subscription = null;
         if(this.category == "course")
-            subscription =  Group.listCourseGroup(this);
+            subscription =  Group.listCourseGroup(this, GROUP_FIELDS);
         if(this.category == "organization")
-            subscription =  Group.listUserGroup(this);
+            subscription =  Group.listUserGroup(this, GROUP_FIELDS);
         if(this.category == "question")
-            subscription =  Group.listQuestionGroup(this);
+            subscription =  Group.listQuestionGroup(this, GROUP_FIELDS);
         if (subscription)  
             subscription.subscribe(groups => {
                 this.tree = this.treeUtils.buildGroupTree(groups);

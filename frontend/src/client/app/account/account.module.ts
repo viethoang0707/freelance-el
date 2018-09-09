@@ -9,6 +9,8 @@ import { PermissionListComponent } from './permission/permission-list/permission
 import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { UserFormComponent } from './user/user-form/user-form.component';
+import { UserFormContentComponent } from './user/user-form/user-form-content.component';
+import { UserProfileDialogComponent } from './user/user-form/profile-dialog.component';
 import { UserViewComponent } from './user/user-view/user-view.component';
 import { UserResolve, GroupsResolve, DateFormatResolve, PermissionResolve } from './route.resolver';
 import { PermissionFormComponent } from './permission/permission-form/permission-form.component';
@@ -28,9 +30,12 @@ import { PermissionViewComponent } from './permission/permission-view/permission
         UserImportComponent,
         PermissionListComponent,
         PermissionFormComponent,
-        PermissionViewComponent
+        PermissionViewComponent,
+        UserFormContentComponent,
+        UserProfileDialogComponent
     ],
     exports: [
+        UserProfileDialogComponent
     ],
     providers: [
         UserResolve,

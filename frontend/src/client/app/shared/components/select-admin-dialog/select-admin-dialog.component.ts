@@ -11,7 +11,7 @@ import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants
 import { SelectItem } from 'primeng/api';
 
 const USER_FIELDS = ['name', 'group_name', 'is_admin'];
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
 
 @Component({
 	moduleId: module.id,

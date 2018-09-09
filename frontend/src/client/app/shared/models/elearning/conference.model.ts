@@ -21,7 +21,6 @@ export class Conference extends BaseModel{
         this.name = undefined;
         this.status = undefined;
         this.room_pass = undefined;
-        this.member_ids = [];
     }
 
     class_id: number;
@@ -29,15 +28,13 @@ export class Conference extends BaseModel{
     room_pass: string;
     status: string;
     name: string;
-    @ReadOnlyProperty()
-    member_ids: number[];
 
-    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ConferenceMember.Model, member_ids,fields);
+    static __api__listMembers(conferenceId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ConferenceMember.Model,fields,"[('conference_id','=',"+conferenceId+")]");
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ConferenceMember.array(context,this.member_ids,fields);
+        return ConferenceMember.search(context,fields,"[('conference_id','=',"+this.id+")]");
     }
 
     static __api__open(conferenceId: number): ExecuteAPI {

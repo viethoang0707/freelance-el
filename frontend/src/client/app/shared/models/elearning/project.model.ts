@@ -26,7 +26,6 @@ export class Project extends BaseModel{
         this.file_url = undefined;
         this.start = undefined;
         this.end = undefined;
-        this.submission_ids = [];
         this.project_file_id = undefined;
 	}
 
@@ -42,8 +41,7 @@ export class Project extends BaseModel{
     start: Date;
     @FieldProperty<Date>()
     end: Date;
-    @ReadOnlyProperty()
-    submission_ids: number[];
+
 
     
     get IsAvailable():boolean {
@@ -55,12 +53,12 @@ export class Project extends BaseModel{
         return true;
     }
 
-    static __api__listSubmissios(submission_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ProjectSubmission.Model, submission_ids,fields);
+    static __api__listSubmissios(projectId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ProjectSubmission.Model,fields, "[('project_id','=',"+projectId+")]");
     }
 
     listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ProjectSubmission.array(context,this.submission_ids,fields);
+        return ProjectSubmission.search(context,fields, "[('project_id','=',"+this.id+")]");
     }
 
 }

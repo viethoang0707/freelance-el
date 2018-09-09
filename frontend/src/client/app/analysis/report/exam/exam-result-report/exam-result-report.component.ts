@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { ReportUtils } from '../../../../shared/helpers/report.utils';
 import { Exam } from '../../../../shared/models/elearning/exam.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
@@ -31,8 +30,6 @@ const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'g
 export class ExamResultReportComponent extends BaseComponent implements OnInit {
 
     private records: any;
-    private exams: Exam[];
-    private selectedExam: any;
     private reportUtils: ReportUtils;
 
     constructor(private excelService: ExcelService, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
@@ -41,9 +38,6 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        Exam.all(this).subscribe(exams => {
-            this.exams = exams;
-        });
     }
 
     clear() {

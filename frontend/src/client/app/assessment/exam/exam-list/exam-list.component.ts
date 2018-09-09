@@ -1,14 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, SCHEDULER_HEADER, REVIEW_STATE } from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { ExamDialog } from '../exam-dialog/exam-dialog.component';
-import { ExamEnrollDialog } from '../enrollment-dialog/enrollment-dialog.component';
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
@@ -28,12 +26,8 @@ export class ExamListComponent extends BaseComponent {
 
     private selectedExam: Exam;
     private exams: Exam[];
-    private events: any[];
 
-    @ViewChild(ExamDialog) examDialog: ExamDialog;
-    @ViewChild(ExamEnrollDialog) examEnrollDialog: ExamEnrollDialog;
-
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
     }
 
@@ -43,13 +37,7 @@ export class ExamListComponent extends BaseComponent {
 
 
     addExam() {
-        var exam = new Exam();
-        exam.is_public = true;
-        this.examDialog.show(exam);
-        this.examDialog.onCreateComplete.first().subscribe(() => {
-            this.exams = [exam, ...this.exams];
-            this.success(this.translateService.instant('Add exam successfully'));
-        });
+        this.router.navigate(['/assessment/exam/form']);
     }
 
     editExam(exam: Exam) {
@@ -57,9 +45,11 @@ export class ExamListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this exam'));
             return;
         }
-        exam.populate(this).subscribe(() => {
-            this.examDialog.show(exam);
-        });
+        this.router.navigate(['/assessment/exam/form', exam.id]);
+    }
+
+    viewExam(exam: Exam) {
+        this.router.navigate(['/assessment/exam/view', exam.id]);
     }
 
     deleteExam(exam: Exam) {
@@ -81,7 +71,7 @@ export class ExamListComponent extends BaseComponent {
     loadExams() {
         Exam.listPublicExam(this, EXAM_FIELDS).subscribe(exams => {
             this.exams = _.sortBy(exams, (exam: Exam) => {
-                return exam.id
+                return -exam.id;
             });
         });
     }

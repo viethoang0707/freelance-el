@@ -9,7 +9,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { Permission } from '../../../shared/models/elearning/permission.model';
 import { GROUP_CATEGORY } from '../../../shared/models/constants';
-import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 import { MenuService } from '../../../shared/services/menu.service';
 import * as _ from 'underscore';
 
@@ -33,7 +33,7 @@ export class PermissionFormComponent extends BaseComponent {
 	private menuTree: TreeNode[];
 	private selectedMenus: TreeNode[];
 
-	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
+	@ViewChild(SelectMultiUsersDialog) usersDialog: SelectMultiUsersDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute, private menuService: MenuService) {
 		super();

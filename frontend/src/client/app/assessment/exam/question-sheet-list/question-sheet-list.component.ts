@@ -1,18 +1,18 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { QuestionSheetPreviewDialog } from '../../../cms/exam/question-sheet-preview/question-sheet-preview.dialog.component';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { Question } from '../../../shared/models/elearning/question.model';
+
+const SHEET_FIELDS = ['name', 'question_count','create_date', 'write_date',];
 
 @Component({
     moduleId: module.id,
@@ -53,8 +53,10 @@ export class QuestionSheetListComponent extends BaseComponent {
     }
 
     loadQuestionSheets() {
-        QuestionSheet.listTemplate(this).subscribe(sheets => {
-            this.sheets = sheets;
+        QuestionSheet.listTemplate(this, SHEET_FIELDS).subscribe(sheets => {
+            this.sheets = _.sortBy(sheets, (sheet:QuestionSheet)=> {
+                return -sheet.id;
+            });
         });
     }
 

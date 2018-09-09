@@ -63,7 +63,7 @@ class User(models.Model):
 	def register(self, params):
 		user = params["user"]
 		if self.env["res.users"].search([("login","=",user["login"])]):
-			return {"success":False, "code":"USER_EXIST", message:"Username exist" }
+			return {"success":False, "code":"USER_EXIST", "message":"Username exist" }
 		user = super(User, self).create(user)
 		return {"success":True}
 

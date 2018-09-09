@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -12,18 +12,17 @@ import { Http, Response } from '@angular/http';
 import { DEFAULT_DATE_LOCALE, SURVEY_STATUS, EXAM_MEMBER_ROLE, SURVEY_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
 import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
-import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 
 const SURVEY_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 'status'];
 
-
 @Component({
     moduleId: module.id,
-    selector: 'survey-enrollment-dialog',
-    templateUrl: 'enrollment-dialog.component.html',
+    selector: 'survey-enroll',
+    templateUrl: 'survey-enroll.component.html',
 })
-export class SurveyEnrollDialog extends BaseComponent {
+export class SurveyEnrollComponent extends BaseComponent implements OnInit{
 
     SURVEY_STATUS = SURVEY_STATUS;
     SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
@@ -34,24 +33,22 @@ export class SurveyEnrollDialog extends BaseComponent {
     private selectedMembers: any;
 
 
-    @ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
+    @ViewChild(SelectMultiUsersDialog) usersDialog: SelectMultiUsersDialog;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
+        this.survey = new Survey();
     }
 
-    enroll(survey: Survey) {
-        this.display = true;
-        this.survey = survey;
+    ngOnInit() {
+        this.survey = this.route.snapshot.data['survey'];
         this.selectedMembers = [];
         this.loadMembers();
     }
 
-    hide() {
-        this.display = false;
+    close() {
+        this.router.navigate(['/assessment/surveys/enrollment']);
     }
-
-
 
     addMember() {
         this.usersDialog.show();

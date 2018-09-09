@@ -2,7 +2,6 @@ import { BaseModel } from '../base.model';
 import { Observable, Subject } from 'rxjs/Rx';
 import { Model,UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
-
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
 import * as moment from 'moment';
@@ -50,11 +49,6 @@ export class Course extends BaseModel{
         this.syllabus_id = undefined;
         this.unit_count = undefined;
         this.syllabus_status = undefined;
-        this.member_ids = [];
-        this.class_ids = [];
-        this.faq_ids = [];
-        this.material_ids = [];
-        this.unit_ids = [];
         this.syl =  new CourseSyllabus();
         this.group_name = undefined;
 	}
@@ -83,16 +77,6 @@ export class Course extends BaseModel{
     status: string;
     mode: string;
     logo: string;
-    @ReadOnlyProperty()
-    member_ids: number[];
-    @ReadOnlyProperty()
-    class_ids: number[];
-    @ReadOnlyProperty()
-    faq_ids: number[];
-    @ReadOnlyProperty()
-    material_ids: number[];
-    @ReadOnlyProperty()
-    unit_ids: number[];
     @UnserializeProperty()
     syl: CourseSyllabus;
 
@@ -156,44 +140,44 @@ export class Course extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__listMembers(member_ids,fields?:string[]): ListAPI {
-        return new ListAPI(CourseMember.Model, member_ids,fields);
+    static __api__listMembers(courseId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model,fields, "[('course_id','=',"+courseId+")]");
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseMember.array(context,this.member_ids,fields);
+        return CourseMember.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
-    static __api__listClasses(class_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(CourseClass.Model, class_ids,fields);
+    static __api__listClasses(courseId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseClass.Model,fields,"[('course_id','=',"+courseId+")]");
     }
 
     listClasses( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseClass.array(context,this.class_ids,fields);
+        return CourseClass.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
-    static __api__listFaqs(faq_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(CourseFaq.Model, faq_ids,fields);
+    static __api__listFaqs(courseId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseFaq.Model,fields,"[('course_id','=',"+courseId+")]");
     }
 
     listFaqs( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseFaq.array(context,this.faq_ids,fields);
+        return CourseFaq.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
-    static __api__listMaterials(material_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(CourseMaterial.Model, material_ids,fields);
+    static __api__listMaterials(courseId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseMaterial.Model,fields,"[('course_id','=',"+courseId+")]");
     }
 
     listMaterials( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseMaterial.array(context,this.material_ids,fields);
+        return CourseMaterial.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
-    static __api__listUnits(unit_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(CourseUnit.Model, unit_ids,fields);
+    static __api__listUnits(courseId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseUnit.Model,fields,"[('course_id','=',"+courseId+")]");
     }
 
     listUnits( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseUnit.array(context,this.unit_ids,fields);
+        return CourseUnit.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
     static __api__populateSyllabus(syllabus_id: number,fields?:string[]): ListAPI {

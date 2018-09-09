@@ -7,12 +7,13 @@ import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
 import { Question } from '../../../shared/models/elearning/question.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { SurveySheetPreviewDialog } from '../../../cms/survey/survey-sheet-preview/survey-sheet-preview.dialog.component';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
+
+const SHEET_FIELDS = ['name', 'question_count','create_date', 'write_date',];
 
 @Component({
     moduleId: module.id,
@@ -53,8 +54,10 @@ export class SurveySheetListComponent extends BaseComponent {
     }
 
     loadSurveySheets() {
-        SurveySheet.listTemplate(this).subscribe(sheets => {
-            this.sheets = sheets;
+        SurveySheet.listTemplate(this, SHEET_FIELDS).subscribe(sheets => {
+            this.sheets = _.sortBy(sheets, (sheet:SurveySheet)=> {
+                return -sheet.id;
+            });
         });
     }
 

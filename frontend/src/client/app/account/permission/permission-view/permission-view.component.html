@@ -16,7 +16,7 @@
         <p-tabPanel header="{{'Members'|translate}}" leftIcon="ui-icon-people">
             <div class="ui-g ui-fluid form-group">
                 <div class="ui-g-12 ">
-                    <p-table #userTable [value]="users" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedUsers " [responsive]="true " sortField="name">
+                    <p-table #userTable [value]="users" [paginator]="true " [rows]="25" selectionMode="multiple"  [responsive]="true " sortField="name">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th>

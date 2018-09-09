@@ -17,6 +17,8 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { CourseByMemberReportComponent } from './course-by-member-report.component';
 
+const USER_FIELDS = ['name'];
+
 @Component({
     moduleId: module.id,
     selector: 'course-by-member-report-container',
@@ -44,7 +46,7 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
     selectUserGroup() {
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.first().subscribe((group:Group) => {
-    		group.listUsers(this).subscribe(users => {
+    		group.listUsers(this,USER_FIELDS).subscribe(users => {
                 this.courseReport.clear();
     			this.courseReport.render(users);
 			});	
@@ -54,11 +56,8 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
     selectIndividualUsers() {
     	this.userDialog.show();
     	this.userDialog.onSelectUsers.first().subscribe((users:User[]) => {
-            var userIds = _.pluck(users,'id');
-            User.array(this,userIds).subscribe( users => {
-                this.courseReport.clear();
-                this.courseReport.render(users);
-            });
+            this.courseReport.clear();
+            this.courseReport.render(users);
 		});
     }
 

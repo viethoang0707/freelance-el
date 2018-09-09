@@ -15,6 +15,8 @@ import { Chart } from '../chart.decorator';
 import { StatsUtils } from '../../../shared/helpers/statistics.utils';
 import { CompetencyLevel } from '../../../shared/models/elearning/competency-level.model';
 
+const LEVEL_FIELDS = ['name','competency_id', 'achivement_count']
+
 @Component({
     moduleId: module.id,
     selector: 'competency-profile-chart',
@@ -25,23 +27,26 @@ export class CompetencyProfileChartComponent extends BaseComponent {
     private chartData: any;
     private statsUtils: StatsUtils;
     private cacheData: any;
+    private competency: Competency
 
     constructor() {
         super();
         this.statsUtils = new StatsUtils();
         this.cacheData = {};
+        this.competency =  new Competency();
     }
 
     drawChart(competency: Competency) {
-        competency.listLevels(this).subscribe(levels => {
+        this.competency = competency;
+        this.competency.listLevels(this,LEVEL_FIELDS).subscribe(levels => {
             User.countAll(this).subscribe(totalUserCount => {
                 var totalWithSkill = 0;
                 var labels = [];
                 var data = [];
                 _.each(levels, (level: CompetencyLevel) => {
-                    totalWithSkill += level.achivement_ids.length;
+                    totalWithSkill += level.achivement_count;
                     labels.push(level.name);
-                    data.push(level.achivement_ids.length);
+                    data.push(level.achivement_count);
                 });
                 labels.push('Unknwon');
                 data.push(totalUserCount - totalWithSkill);

@@ -19,7 +19,6 @@ export class SurveySheet extends BaseModel{
         this.finalized = undefined;
         this.status =  undefined;
         this.question_count =  undefined;
-        this.question_ids = [];
 	}
 
     question_count: number;
@@ -28,8 +27,7 @@ export class SurveySheet extends BaseModel{
     seed:number;
     finalized:boolean;
     status: string;
-    @ReadOnlyProperty()
-    question_ids: number[];
+
     
     clone() {
         var sheet = new SurveySheet();
@@ -48,11 +46,11 @@ export class SurveySheet extends BaseModel{
         return SurveySheet.search(context,fields,"[('survey_id','=',False)]");
     }
 
-    static __api__listQuestions(question_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(SurveyQuestion.Model, question_ids,fields);
+    static __api__listQuestions(sheetId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyQuestion.Model,fields, "[('sheet_id','=',"+sheetId+")]");
     }
 
     listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
-        return SurveyQuestion.array(context,this.question_ids,fields);
+        return SurveyQuestion.search(context,fields,"[('sheet_id','=',"+this.id+")]");
     }
 }

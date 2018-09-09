@@ -1,14 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, SURVEY_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { SurveyDialog } from '../survey-dialog/survey-dialog.component';
-import { SurveyEnrollDialog } from '../enrollment-dialog/enrollment-dialog.component';
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
@@ -27,19 +25,10 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
 
     private selectedSurvey: Survey;
     private surveys: Survey[];
-    private events: any[];
-    private header: any;
 
-    @ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
-    @ViewChild(SurveyEnrollDialog) surveyEnrollDialog: SurveyEnrollDialog;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
-        this.header = {
-            left: 'prev, today, next',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        };
     }
 
     enrollSurvey(survey: Survey) {
@@ -51,7 +40,7 @@ export class SurveyEnrollmentListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have enroll permission for this survey'));
             return;
         }
-        this.surveyEnrollDialog.enroll(survey);
+        this.router.navigate(['/assessment/exam/survey', survey.id]);
     }
 
     ngOnInit() {

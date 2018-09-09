@@ -47,15 +47,11 @@ export class Exam extends BaseModel{
         this.sheet_id =  undefined;
         this.question_count = undefined;
         this.sheet_status = undefined;
-        this.answer_ids = [];
         this.clazz =  new CourseClass();
-        this.member_ids = [];
-        this.grade_ids = [];
         this.setting =  new ExamSetting();
         this.setting_id =  undefined;
         this.sheet =  new QuestionSheet();
-        this.question_ids = [];
-        this.submission_ids = [];
+
 	}
 
     @UnserializeProperty()
@@ -89,16 +85,6 @@ export class Exam extends BaseModel{
     publish_score: boolean;
     supervisor_id: number;
     supervisor_name: string;
-    @ReadOnlyProperty()
-    answer_ids: number[];
-    @ReadOnlyProperty()
-    member_ids: number[];
-    @ReadOnlyProperty()
-    grade_ids: number[];
-    @ReadOnlyProperty()
-    question_ids: number[];
-    @ReadOnlyProperty()
-    submission_ids:number[];
 
     get IsAvailable():boolean {
         if (this.review_state != 'approved')
@@ -147,7 +133,9 @@ export class Exam extends BaseModel{
 
     open(context:APIContext):Observable<any> {
         return context.apiService.execute(Exam.__api__open(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = "open";
+            });
     }
 
     static __api__close(examId: number): ExecuteAPI {
@@ -156,7 +144,9 @@ export class Exam extends BaseModel{
 
     close(context:APIContext):Observable<any> {
         return context.apiService.execute(Exam.__api__close(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = "closed";
+            });
     }
 
     static __api__enroll_supervior(examId: number, userIds: number[]): SearchReadAPI {
@@ -166,14 +156,6 @@ export class Exam extends BaseModel{
     enrollSupervisor(context:APIContext, userIds: number[]):Observable<any> {
         return context.apiService.execute(Exam.__api__enroll_supervior(this.id, userIds), 
             context.authService.LoginToken);
-    }
-
-    static __api__listAnswers(answer_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Answer.Model, answer_ids,fields);
-    }
-
-    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Answer.array(context,this.answer_ids,fields);
     }
 
     static __api__populateClass(course_class_id: number,fields?:string[]): ListAPI {
@@ -186,6 +168,14 @@ export class Exam extends BaseModel{
         return CourseClass.get(context, this.course_class_id,fields).do(clazz => {
             this.clazz = clazz;
         });
+    }
+
+    static __api__examEditor(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model, fields,"[('role','=','editor'),('exam_id','='," + examId + ")]");
+    }
+
+    examEditor(context: APIContext,fields?:string[]): Observable<any> {
+        return ExamMember.single(context, fields, "[('role','=','editor'),('exam_id','='," + this.id + ")]");
     }
 
     static __api__populateSetting(setting_id: number,fields?:string[]): ListAPI {
@@ -212,20 +202,28 @@ export class Exam extends BaseModel{
         });
     }
 
-    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ExamMember.Model, member_ids,fields);
+    static __api__listMembers(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model,fields, "[('exam_id','=',"+examId+")]");
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ExamMember.array(context,this.member_ids,fields);
+        return ExamMember.search(context,fields,"[('exam_id','=',"+this.id+")]");
     }
 
-    static __api__listGrades(grade_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ExamGrade.Model, grade_ids,fields);
+    static __api__listGrades(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamGrade.Model,fields, "[('exam_id','=',"+examId+")]");
+    }
+
+    static __api__listAnswers(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Answer.Model,fields,"[('exam_id','=',"+examId+")]");
+    }
+
+    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Answer.search(context,fields,"[('exam_id','=',"+this.id+")]");
     }
 
     listGrades( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ExamGrade.array(context,this.grade_ids,fields);
+        return ExamGrade.search(context,fields,"[('exam_id','=',"+this.id+")]");
     }
 
     static __api__listCandidates(examId: number,fields?:string[]): SearchReadAPI {
@@ -234,14 +232,6 @@ export class Exam extends BaseModel{
 
     listCandidates( context:APIContext,fields?:string[]): Observable<any[]> {
         return ExamMember.search(context,fields,"[('exam_id','=',"+this.id+"),('role','=','candidate')]");
-    }
-
-    static __api__examEditor(examId: number,fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(ExamMember.Model, fields,"[('role','=','editor'),('exam_id','='," + examId + ")]");
-    }
-
-    examEditor(context: APIContext,fields?:string[]): Observable<any> {
-        return ExamMember.single(context, fields, "[('role','=','editor'),('exam_id','='," + this.id + ")]");
     }
 
     static __api__listSubmissions(examId: number,fields?:string[]): SearchReadAPI {

@@ -49,8 +49,6 @@ export class ExamMember extends BaseModel{
     @UnserializeProperty()
     submit: Submission;
     submission_id: number;
-    @ReadOnlyProperty()
-    submission_ids: number[];
     exam_id: number;
     course_member_id: number;
     exam_name: string;
@@ -135,11 +133,11 @@ export class ExamMember extends BaseModel{
         });
     }
 
-    static __api__listSubmissions(submission_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Submission.Model, submission_ids,fields);
+    static __api__listSubmissions(memberId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Submission.Model,fields,"[('member_id','=',"+memberId+")]");
     }
 
     listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Submission.array(context,this.submission_ids,fields);
+        return Submission.search(context,fields,"[('member_id','=',"+this.id+")]");
     }
 }

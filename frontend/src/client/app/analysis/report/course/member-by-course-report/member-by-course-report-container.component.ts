@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { ReportUtils } from '../../../../shared/helpers/report.utils';
 import { Group } from '../../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
@@ -17,6 +16,8 @@ import { SelectCoursesDialog } from '../../../../shared/components/select-course
 import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { MemberByCourseReportComponent } from './member-by-course-report.component';
+
+const COURSE_FIELDS = ['name'];
 
 @Component({
     moduleId: module.id,
@@ -45,7 +46,7 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     selectCourseGroup() {
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.first().subscribe((group:Group) => {
-    		group.listCourses(this).subscribe((courses:Course[]) => {
+    		group.listCourses(this,COURSE_FIELDS).subscribe((courses:Course[]) => {
     			this.memberReport.render(courses);
     		});
     	});
@@ -54,10 +55,7 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     selectIndividualCourses() {
 		this.courseDialog.show();
     	this.courseDialog.onSelectCourses.first().subscribe((courses:Course[]) => {
-			var courseIds = _.pluck(courses,'id');
-            Course.array(this,courseIds).subscribe( courses => {
-                this.memberReport.render(courses);
-            });
+            this.memberReport.render(courses);
 		});
     }
 }

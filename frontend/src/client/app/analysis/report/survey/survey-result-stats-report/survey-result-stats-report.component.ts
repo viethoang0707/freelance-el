@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { StatsUtils } from '../../../../shared/helpers/statistics.utils';
 import { Exam } from '../../../../shared/models/elearning/exam.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
@@ -82,12 +81,11 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
                 var statistics = this.statsUtils.surveyAnswerStatistics(answers);
                 this.optionPercentage = statistics['multichoice'];
                 this.ratingPercentage = statistics['rating'];
-                console.log(statistics);
                 sheet.listQuestions(this).subscribe(surveyQuestions => {
                     var apiList = _.map(surveyQuestions, (surveyQuestion: SurveyQuestion) => {
-                        return Question.__api__listOptions(surveyQuestion.option_ids)
+                        return Question.__api__listOptions(surveyQuestion.question_id)
                     });
-                    BaseModel.bulk_list(this, ...apiList)
+                    BaseModel.bulk_search(this, ...apiList)
                         .map(jsonArr => _.flatten(jsonArr))
                         .subscribe(jsonArr => {
                             var options = QuestionOption.toArray(jsonArr);
@@ -96,7 +94,6 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
                                     return opt.question_id == surveyQuestion.question_id;
                                 });
                             });
-                            console.log(surveyQuestions);
                             this.records = surveyQuestions;
                         });
                 });

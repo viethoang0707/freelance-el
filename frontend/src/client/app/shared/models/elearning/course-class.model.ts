@@ -31,11 +31,6 @@ export class CourseClass extends BaseModel{
         this.conference_id =  undefined;
         this.end = undefined;
         this.status = undefined;
-        this.certificate_ids = [];
-        this.member_ids = [];
-        this.project_ids = [];
-        this.exam_ids = [];
-        this.survey_ids = [];
         this.member_count = undefined;
 	}
 
@@ -46,16 +41,6 @@ export class CourseClass extends BaseModel{
     conference_id: number;
     supervisor_id: number;
     status: string;
-    @ReadOnlyProperty()
-    certificate_ids: number[];
-    @ReadOnlyProperty()
-    member_ids: number[];
-    @ReadOnlyProperty()
-    project_ids: number[];
-    @ReadOnlyProperty()
-    exam_ids: number[];
-    @ReadOnlyProperty()
-    survey_ids: number[];
     member_count: number;
     
     @FieldProperty<Date>()
@@ -112,45 +97,44 @@ export class CourseClass extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__listCertificates(certificate_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Certificate.Model, certificate_ids,fields);
+    static __api__listCertificates(classId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Certificate.Model,fields,"['class_id','=',"+classId+ "]");
     }
 
     listCertificates( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Certificate.array(context,this.certificate_ids,fields);
+        return Certificate.search(context,fields,"['class_id','=',"+this.id+ "]");
     }
 
-    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(CourseMember.Model, member_ids,fields);
+    static __api__listMembers(classId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model,fields,"['class_id','=',"+classId+ "]");
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseMember.array(context,this.member_ids,fields);
+        return CourseMember.search(context,fields,"['class_id','=',"+this.id+ "]");
     }
 
-    static __api__listProjects(project_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Project.Model, project_ids,fields);
+    static __api__listProjects(classId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Project.Model,fields,"['class_id','=',"+classId+ "]");
     }
 
     listProjects( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Project.array(context,this.project_ids,fields);
+        return Project.search(context,fields,"['class_id','=',"+this.id+ "]");
     }
 
-    static __api__listExams(exam_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Exam.Model, exam_ids,fields);
+    static __api__listExams(classId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model,fields,"['course_class_id','=',"+classId+ "]");
     }
 
     listExams( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Exam.array(context,this.exam_ids,fields);
+        return Exam.search(context,fields, "['course_class_id','=',"+this.id+ "]");
     }
 
-
-    static __api__listSurveys(survey_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Survey.Model, survey_ids,fields);
+    static __api__listSurveys(classId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model,fields,"['course_class_id','=',"+classId+ "]");
     }
 
     listSurveys( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Survey.array(context,this.survey_ids,fields);
+        return Survey.search(context,fields, "['course_class_id','=',"+this.id+ "]");
     }
 
 

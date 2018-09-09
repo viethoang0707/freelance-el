@@ -11,6 +11,7 @@ import { BaseModel } from '../shared/models/base.model';
 import { User } from '../shared/models/elearning/user.model';
 import { MenuService } from '../shared/services/menu.service';
 import { SettingDialog } from '../setting/setting-dialog.component';
+import { UserProfileDialogComponent } from '../account/user/user-form/profile-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -21,6 +22,7 @@ import { SettingDialog } from '../setting/setting-dialog.component';
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
     @ViewChild(SettingDialog) settingDialog: SettingDialog;
+    @ViewChild(UserProfileDialogComponent) profieDialog: UserProfileDialogComponent;
 
     menuClick: boolean;
     menuButtonClick: boolean;
@@ -84,7 +86,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
 
     ngAfterViewInit() {
         this.eventManager.showProfileEvents.subscribe(() => {
-            this.router.navigate(['/account/user/form', this.ContextUser.id]);
+            this.profieDialog.show(this.ContextUser);
         });
         
         this.eventManager.topbarMenuEvents.subscribe(() => {

@@ -1,0 +1,10 @@
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Exam form'|translate}}" [(visible)]="display" modal="true" width="1000" [responsive]="true" [positionTop]="20" [closeOnEscape]="false" [closable]="false">
+        <div class="spinner" [hidden]="!loading"></div>
+        <exam-form-content></exam-form-content>
+        <p-footer>
+            <button type="submit" class="blue-grey-btn" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid || loading"></button>
+            <button type="button" class="blue-grey-btn" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

@@ -24,7 +24,6 @@ import { LMSProfileDialog } from '../../course/lms-profile/lms-profile-dialog.co
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Project } from '../../../shared/models/elearning/project.model';
-import { ExamDialog } from '../../../assessment/exam/exam-dialog/exam-dialog.component';
 import { ProjectManageDialog } from '../project-manage/project-manage.dialog.component';
 import { ProjectContentDialog } from '../../../cms/project/content-dialog/project-content.dialog.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
@@ -33,7 +32,6 @@ import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
-import { SurveyDialog } from '../../../assessment/survey/survey-dialog/survey-dialog.component';
 import { SurveyContentDialog } from '../../../cms/survey/content-dialog/survey-content.dialog.component';
 import { ClassSurveyEnrollDialog } from '../class-survey-enroll/class-survey-enroll.dialog.component';
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
@@ -80,10 +78,8 @@ export class ClassManageComponent extends BaseComponent {
 	@ViewChild(LMSProfileDialog) lmsProfileDialog: LMSProfileDialog;
 	@ViewChild(ProjectContentDialog) projectContentDialog: ProjectContentDialog;
 	@ViewChild(ProjectManageDialog) projectManageDialog: ProjectManageDialog;
-	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
 	@ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
-	@ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
 	@ViewChild(ClassSurveyEnrollDialog) enrollDialog: ClassSurveyEnrollDialog;
 	@ViewChild(SurveyContentDialog) surveyContentDialog: SurveyContentDialog;
 	@ViewChild(SurveyStatsDialog) statsDialog: SurveyStatsDialog;

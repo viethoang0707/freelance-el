@@ -1,0 +1,48 @@
+<p-dialog header="{{'Select users'|translate}}" [(visible)]="display" modal="true" width="800" height="100%" [responsive]="true" appendTo="body" positionTop="50">
+    <div class="spinner" [hidden]="!loading"></div>
+    <div class="ui-g ui-fluid form-group">
+        <div class="ui-g-5">
+            <p-tree [value]="tree" selectionMode="single" (onNodeSelect)="nodeSelect($event)" [(selection)]="selectedNode"></p-tree>
+        </div>
+        <div class="ui-g-7">
+            <p-table [value]="users" [(selection)]="selectedUsers">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 2.25em">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>
+                            {{'Login'|translate}}
+                        </th>
+                        <th>
+                            {{'Name'|translate}}
+                        </th>
+                        <th>
+                            {{'Group'|translate}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr [pSelectableRow]="rowData">
+                        <td>
+                            <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                        </td>
+                        <td>
+                            {{rowData.login}}
+                        </td>
+                        <td>
+                            {{rowData.name}}
+                        </td>
+                        <td>
+                            {{rowData.group_name}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" [disabled]="!selectedUsers.length" pButton icon="ui-icon" label="{{'OK'|translate}}" (click)="select()"></button>
+        <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
+    </p-footer>
+</p-dialog>

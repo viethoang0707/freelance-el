@@ -12,7 +12,7 @@ import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants
 import { SelectItem } from 'primeng/api';
 
 const USER_FIELDS = ['name', 'group_name', 'login'];
-
+const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
 
 @Component({
 	moduleId: module.id,
@@ -24,7 +24,7 @@ export class SelectUsersDialog extends BaseComponent {
 
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
-	private selectedUsers: User[];
+	private selectedUser: User[];
 	private users: User[];
 	private display: boolean;
 	private treeUtils: TreeUtils;
@@ -35,7 +35,7 @@ export class SelectUsersDialog extends BaseComponent {
 	constructor() {
 		super();
 		this.display = false;
-		this.selectedUsers = [];
+		this.selectedUser = null;
 		this.treeUtils = new TreeUtils();
 	}
 
@@ -53,9 +53,8 @@ export class SelectUsersDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		this.selectedUsers = [];
-		// , GROUP_CATEGORY.USER
-		Group.listUserGroup(this).subscribe(groups => {
+		this.selectedUser = null;
+		Group.listUserGroup(this,GROUP_FIELDS).subscribe(groups => {
 			var treeNodes = this.treeUtils.buildGroupTree(groups);
 			if (this.ContextUser.IsAdmin) {
 				this.tree = treeNodes
@@ -69,8 +68,8 @@ export class SelectUsersDialog extends BaseComponent {
 	}
 
 	select() {
-		this.onSelectUsersReceiver.next(this.selectedUsers);
-		this.selectedUsers = [];
+		this.onSelectUsersReceiver.next(this.selectedUser);
+		this.selectedUser = null;
 		this.hide();
 	}
 

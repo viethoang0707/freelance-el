@@ -6,6 +6,7 @@
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addExam()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editExam(selectedExam)" [disabled]="!selectedExam"></button>
+                    <button pButton type="button" label="{{'View'|translate}}" class="blue-grey-btn" icon="ui-icon-visibility" (click)="viewExam(selectedExam)" [disabled]="!selectedExam"></button>
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteExam(selectedExam)" [disabled]="!selectedExam"></button>
                     <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview(selectedExam)" [disabled]="!selectedExam ||  selectedExam.review_state =='approved'"></button>
                 </div>
@@ -20,6 +21,9 @@
             <p-table #examTable [value]="exams" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedExam" [responsive]="true" [globalFilterFields]="['name']">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
                         <th [pSortableColumn]="'name'">
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -51,8 +55,9 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-exam>
+                <ng-template pTemplate="body" let-exam let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="exam">
+                        <td>{{rowIndex+1}}</td>
                         <td  style="text-align: left;">{{exam.name}}</td>
                         <td class="showformb" style="text-align: left;">{{exam.supervisor_name}}</td>
                         <td class="showformb">{{exam.start | date : "dd/MM/yyyy"}}</td>
@@ -67,7 +72,6 @@
                     {{'Total records'|translate}} : {{exams?.length}}
                 </ng-template>
             </p-table>
-            <exam-dialog></exam-dialog>
         </div>
     </div>
 </div>

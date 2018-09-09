@@ -47,8 +47,6 @@ export class ExerciseQuestion extends BaseModel{
     type: string;
     group_id: number;
     sheet_id: number;
-    @ReadOnlyProperty()
-    option_ids: number[];
 
     populateQuestion(context: APIContext,fields?:string[]): Observable<any> {
         if (!this.question_id)

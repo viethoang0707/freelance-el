@@ -70,10 +70,10 @@ export class CompetencyByGroupReportComponent extends BaseComponent implements O
 	generateReport(competency: Competency, levels: CompetencyLevel[], groups: Group[]) {
 		var apiList = [];
 		for (var i=0;i<groups.length; i++) {
-			apiList.push(Group.__api__listAchivements(groups[i].achivement_ids));
+			apiList.push(Group.__api__listAchivements(groups[i].id));
 		};
 		var records = [];
-		BaseModel.bulk_list(this, ...apiList).subscribe(jsonArr => {
+		BaseModel.bulk_search(this, ...apiList).subscribe(jsonArr => {
 			for (var i=0;i<groups.length; i++) {
 				var skills = Achivement.toArray(jsonArr[i])
 				var record = this.generateReportRow(groups[i], skills,competency,levels);

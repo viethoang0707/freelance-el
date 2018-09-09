@@ -20,7 +20,6 @@ export class Submission extends BaseModel{
         this.end = undefined;
         this.start = undefined;
         this.score = undefined;
-        this.answer_ids = [];
         this.score =  undefined;
         this.grade =  undefined;
         this.study_time = undefined;
@@ -37,16 +36,14 @@ export class Submission extends BaseModel{
     end: Date;
     @FieldProperty<Date>()
     start: Date;
-    @ReadOnlyProperty()
-    answer_ids: number[];
-    
 
-    static __api__listAnswers(answer_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Answer.Model, answer_ids,fields);
+
+    static __api__listAnswers(submissionId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Answer.Model,fields, "[('submission_id','=',"+submissionId+")]");
     }
 
     listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Answer.array(context,this.answer_ids,fields);
+        return Answer.search(context,fields, "[('submission_id','=',"+this.id+")]");
     }
 
 }

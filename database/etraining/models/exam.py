@@ -73,7 +73,7 @@ class Exam(models.Model):
 		for exam in self.env['etraining.exam'].browse(examId):
 			for user in self.env['res.users'].browse(userIds):
 				exam.registerExamMember(user,'candidate')
-		return True
+		return {"success":True}
 
 	@api.model
 	def enroll_supervisor(self, params):
@@ -82,7 +82,7 @@ class Exam(models.Model):
 		for exam in self.env['etraining.exam'].browse(examId):
 			for user in self.env['res.users'].browse(userIds):
 				exam.registerExamMember(user,'supervisor')
-		return True
+		return {"success":True}
 
 	def registerExamMember(self, user, role):
 		member =  self.env['etraining.exam_member'].create({'exam_id':self.id,'role':role,
@@ -109,7 +109,7 @@ class Exam(models.Model):
 				if candidate.enroll_status != 'completed' and candidate.email:
 					self.env.ref(self._module +"."+ "exam_open_template").send_mail(candidate.id,force_send=True)
 			exam.write({'status':'open'})
-		return True
+		return {"success":True}
 
 	@api.model
 	def close(self, params):
@@ -121,7 +121,7 @@ class Exam(models.Model):
 				if candidate.exam_record_id:
 					candidate.computeExamRecord()
 			exam.write({'status':'closed'})
-		return True
+		return {"success":True}
 
 
 class ExamMember(models.Model):

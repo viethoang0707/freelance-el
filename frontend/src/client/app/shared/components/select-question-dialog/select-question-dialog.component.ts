@@ -9,6 +9,9 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, QUESTION_TYPE } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
 
+const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
+const QUESTION_FIELDS = ['title', 'group_id', 'type'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'select-question-dialog',
@@ -17,12 +20,13 @@ import { SelectItem } from 'primeng/api';
 })
 export class SelectQuestionsDialog extends BaseComponent {
 
+	QUESTION_TYPE = QUESTION_TYPE;
+
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	private selectedQuestions: Question[];
 	private questions: Question[];
 	private display: boolean;
-	QUESTION_TYPE = QUESTION_TYPE;
 	private treeUtils: TreeUtils;
 	private selectedGroupNodes: TreeNode[];
 
@@ -46,7 +50,7 @@ export class SelectQuestionsDialog extends BaseComponent {
 			var groups = _.map(this.selectedGroupNodes, node=> {
 				return node.data;
 			});
-			Question.listByGroups(this, groups).subscribe(questions => {
+			Question.listByGroups(this, groups, QUESTION_FIELDS).subscribe(questions => {
 				this.questions = questions;
 			});
 		}
@@ -55,8 +59,7 @@ export class SelectQuestionsDialog extends BaseComponent {
 	show() {
 		this.display = true;
 		this.selectedQuestions = [];
-		// , GROUP_CATEGORY.QUESTION
-		Group.listQuestionGroup(this).subscribe(groups => {
+		Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
 		});
 	}

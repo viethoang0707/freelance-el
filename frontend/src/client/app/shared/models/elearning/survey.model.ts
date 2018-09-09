@@ -5,7 +5,6 @@ import { APIContext } from '../context';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ExecuteAPI } from '../../services/api/execute.api';
-
 import * as moment from 'moment';
 import { SERVER_DATETIME_FORMAT} from '../constants';
 import { ListAPI } from '../../services/api/list.api';
@@ -35,11 +34,8 @@ export class Survey extends BaseModel{
         this.sheet_id =  undefined;
         this.question_count = undefined;
         this.sheet_status = undefined;
-        this.answer_ids = [];
-        this.member_ids = [];
         this.clazz =  new CourseClass();
         this.sheet =  new SurveySheet();
-        this.question_ids = [];
 	}
 
     @UnserializeProperty()
@@ -62,12 +58,6 @@ export class Survey extends BaseModel{
     is_public: boolean;
     supervisor_id: number;
     supervisor_name: string;
-    @ReadOnlyProperty()
-    answer_ids: number[];
-    @ReadOnlyProperty()
-    member_ids: number[];
-    @ReadOnlyProperty()
-    question_ids: number[];
     
 
     get IsAvailable():boolean {
@@ -107,7 +97,9 @@ export class Survey extends BaseModel{
 
     open(context:APIContext):Observable<any> {
         return context.apiService.execute(Survey.__api__open(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = "open";
+            });
     }
 
     static __api__close(surveyId: number): ExecuteAPI {
@@ -116,7 +108,9 @@ export class Survey extends BaseModel{
 
     close(context:APIContext):Observable<any> {
         return context.apiService.execute(Survey.__api__close(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = "closed";
+            });
     }
 
     static __api__enroll(surveyId: number, userIds: number[]): SearchReadAPI {
@@ -135,22 +129,6 @@ export class Survey extends BaseModel{
     enrollSupervisor(context:APIContext, userIds: number[]):Observable<any> {
         return context.apiService.execute(Survey.__api__enroll_supervior(this.id, userIds), 
             context.authService.LoginToken);
-    }
-
-    static __api__listAnswers(answer_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(SurveyAnswer.Model, answer_ids,fields);
-    }
-
-    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return SurveyAnswer.array(context,this.answer_ids,fields);
-    }
-
-    static __api__listMembers(member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(SurveyMember.Model, member_ids,fields);
-    }
-
-    listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return SurveyMember.array(context,this.member_ids,fields);
     }
 
     static __api__populateClass(class_id:number,fields?:string[]): ListAPI {
@@ -191,5 +169,21 @@ export class Survey extends BaseModel{
 
     listCandidates( context:APIContext,fields?:string[]): Observable<any[]> {
         return SurveyMember.search(context,fields,"[('survey_id','=',"+this.id+"),('role','=','candidate')]");
+    }
+
+    static __api__listAnswers(surveyId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyAnswer.Model,fields,"[('survey_id','=',"+surveyId+")]");
+    }
+
+    listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return SurveyAnswer.search(context,fields,"[('survey_id','=',"+this.id+")]");
+    }
+
+    static __api__listMembers(surveyId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model,fields,"[('survey_id','=',"+surveyId+")]");
+    }
+
+    listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        return SurveyMember.search(context,fields,"[('survey_id','=',"+this.id+")]");
     }
 }

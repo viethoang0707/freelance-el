@@ -20,7 +20,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { ExamResultReportComponent } from './exam-result-report.component';
 
-const EXAM_FIELDS = ['name'];
+const EXAM_FIELDS = ['name', 'sheet_id'];
 
 @Component({
     moduleId: module.id,
@@ -55,9 +55,7 @@ export class ExamResultReportContainerComponent extends BaseComponent implements
     selectExam() {
     	if (this.selectedExam) {
             this.examReport.clear();
-            this.selectedExam.populate(this).subscribe(()=> {
-                this.examReport.render(this.selectedExam);
-            });
+            this.examReport.render(this.selectedExam);
     	}
     }
 

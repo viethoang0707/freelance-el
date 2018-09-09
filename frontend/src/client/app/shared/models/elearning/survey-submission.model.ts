@@ -17,7 +17,6 @@ export class SurveySubmission extends BaseModel{
         this.end = undefined;
         this.start = undefined;
 	    this.survey_id =  undefined;
-        this.answer_ids = [];
     }
     
     survey_id: number;
@@ -27,15 +26,14 @@ export class SurveySubmission extends BaseModel{
     end: Date;
     @FieldProperty<Date>()
     start: Date;
-    @ReadOnlyProperty()
-    answer_ids: number[];
 
-
-    static __api__listAnswers(answer_ids:number[], fields?:string[]): ListAPI {
-        return new ListAPI(SurveyAnswer.Model, answer_ids,[]);
+    static __api__listAnswers(submissionId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyAnswer.Model,fields, "[('submission_id','=',"+submissionId+")]");
     }
 
     listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return SurveyAnswer.array(context,this.answer_ids);
+        return SurveyAnswer.search(context,fields, "[('submission_id','=',"+this.id+")]");
     }
+
+
 }

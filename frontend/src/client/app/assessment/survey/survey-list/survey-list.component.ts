@@ -1,18 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, SURVEY_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { SurveyDialog } from '../survey-dialog/survey-dialog.component';
-import { SurveyEnrollDialog } from '../enrollment-dialog/enrollment-dialog.component';
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
 
-const SURVEY_FIELDS = ['status', 'name', 'summary', 'start', 'end', 'create_date', 'write_date', 'review_state', 'status', 'supervisor_id'];
+const SURVEY_FIELDS = ['status', 'name', 'summary', 'start', 'end', 'create_date', 'write_date','supervisor_name', 'review_state', 'status', 'supervisor_id'];
 
 
 @Component({
@@ -31,16 +29,9 @@ export class SurveyListComponent extends BaseComponent {
     private events: any[];
     private header: any;
 
-    @ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
-    @ViewChild(SurveyEnrollDialog) surveyEnrollDialog: SurveyEnrollDialog;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
-        this.header = {
-            left: 'prev, today, next',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        };
     }
 
     ngOnInit() {
@@ -49,13 +40,7 @@ export class SurveyListComponent extends BaseComponent {
 
 
     addSurvey() {
-        var survey = new Survey();
-        survey.is_public = true;
-        this.surveyDialog.show(survey);
-        this.surveyDialog.onCreateComplete.first().subscribe(() => {
-            this.surveys = [ survey ,...this.surveys];
-            this.success(this.translateService.instant('Add survey successfully'));
-        });
+        this.router.navigate(['/assessment/survey/form']);
     }
 
     editSurvey(survey:Survey) {
@@ -64,9 +49,13 @@ export class SurveyListComponent extends BaseComponent {
             return;
         }
         survey.populate(this).subscribe(()=> {
-            this.surveyDialog.show(survey);
+            this.router.navigate(['/assessment/survey/form', survey.id]);
         });
         
+    }
+
+    viewSurvey(survey:Survey) {
+        this.router.navigate(['/assessment/survey/view', survey.id]);
     }
 
     deleteSurvey(survey:Survey) {
@@ -89,7 +78,7 @@ export class SurveyListComponent extends BaseComponent {
     loadSurveys() {
         Survey.listPublicSurvey(this,SURVEY_FIELDS).subscribe(surveys => {
             this.surveys = _.sortBy(surveys, (survey:Survey)=> {
-                return survey.id;
+                return -survey.id;
             });
         });
     }

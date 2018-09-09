@@ -28,7 +28,6 @@ export class Question extends BaseModel{
         this.group_id = undefined;
         this.max_rating =  undefined;
         this.options = [];
-        this.option_ids = [];
         this.group_name = undefined;
 	}
 
@@ -41,14 +40,12 @@ export class Question extends BaseModel{
     max_rating: number;
     @UnserializeProperty()
     options: QuestionOption[];
-    @ReadOnlyProperty()
-    option_ids: number[];
     group_name: string;
 
     static listByGroups(context:APIContext, groups:Group[],fields?:string[]):Observable<any> {
         var api = new BulkListAPI();
         _.each(groups, (group:Group)=> {
-            var subApi = Group.__api__listQuestions(group.question_ids,fields)
+            var subApi = Group.__api__listQuestions(group.id,fields)
             api.add(subApi);
         });
         return context.apiService.execute(api, context.authService.LoginToken).map(questionArrs => {
@@ -60,9 +57,9 @@ export class Question extends BaseModel{
     }
     static listOptionsForArray(context:APIContext, questions: Question[],fields?:string[]):Observable<any> {
         var apiList = _.map(questions,(question:Question)=> {
-            return Question.__api__listOptions(question.option_ids,fields);
+            return Question.__api__listOptions(question.id,fields);
         });
-        return BaseModel.bulk_list(context, ...apiList)
+        return BaseModel.bulk_search(context, ...apiList)
         .map(jsonArr => {
             return _.flatten(jsonArr);
         })
@@ -86,12 +83,12 @@ export class Question extends BaseModel{
 
     }
 
-    static __api__listOptions(option_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(QuestionOption.Model, option_ids,fields);
+    static __api__listOptions(questionId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(QuestionOption.Model,fields, "[('question_id','=',"+questionId+")]");
     }
 
     listOptions( context:APIContext,fields?:string[]): Observable<any[]> {
-        return QuestionOption.array(context,this.option_ids,fields);
+        return QuestionOption.search(context,fields,"[('question_id','=',"+this.id+")]");
     }
 
 }

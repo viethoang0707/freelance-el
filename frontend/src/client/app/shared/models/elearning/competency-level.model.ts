@@ -18,17 +18,15 @@ export class CompetencyLevel extends BaseModel{
         this.competency_name = undefined;
         this.competency_group_id = undefined;
         this.competency_group_name = undefined;
-        this.achivement_ids = [];
+        this.achivement_count = undefined;
 	}
 
     name:string;
     order: number;
+    achivement_count: number;
     competency_id: number;
     competency_name: string;
     competency_group_id: number;
     competency_group_name: string;
-    @ReadOnlyProperty()
-    achivement_ids: number[];
-
 
 }

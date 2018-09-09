@@ -15,7 +15,6 @@ import * as _ from 'underscore';
 
 const USER_FIELDS = ['name', 'email', 'login', 'position', 'permission_id', 'gender', 'dob', 'group_id', 'group_name']
 
-
 @Component({
 	moduleId: module.id,
 	selector: 'permission-view',
@@ -23,11 +22,8 @@ const USER_FIELDS = ['name', 'email', 'login', 'position', 'permission_id', 'gen
 })
 export class PermissionViewComponent extends BaseComponent {
 
-	private tree: TreeNode[];
-	private selectedNode: any;
 	private permission: Permission;
 	private users: User[];
-	private selectedUsers: any;
 	private menuTree: TreeNode[];
 	private selectedMenus: TreeNode[];
 
@@ -38,58 +34,14 @@ export class PermissionViewComponent extends BaseComponent {
 		this.permission = new Permission();
 	}
 
-	groupNodeSelect(event: any) {
-		if (this.selectedNode) {
-			this.permission.user_group_id = this.selectedNode.data.id;
-			this.permission.user_group_name = this.selectedNode.data.name;
-		}
-	}
-
-	menuNodeSelect(event: any) {
-		var menuCodes = _.map(this.selectedMenus, menuNode => {
-			return menuNode["data"];
-		});
-		this.permission.menu_access = JSON.stringify(menuCodes);
-	}
-
+	
 	ngOnInit() {
 		this.permission = this.route.snapshot.data['permission'];
-		Group.listUserGroup(this).subscribe(groups => {
-			let treeUtils: TreeUtils = new TreeUtils();
-			this.tree = treeUtils.buildGroupTree(groups);
-			if (this.permission.user_group_id) {
-				this.selectedNode = treeUtils.findTreeNode(this.tree, this.permission.user_group_id);
-			}
-		});
 		this.loadMembers();
 		this.loadMenus()
 	}
 
-	addMember() {
-		this.usersDialog.show();
-		this.usersDialog.onSelectUsers.first().subscribe(users => {
-			_.each(users, (user: User) => {
-				user.permission_id = this.permission.id;
-			});
-			User.updateArray(this, users, USER_FIELDS).subscribe(() => {
-				this.loadMembers();
-				this.success('Add member successfully');
-			});
-		});
-	}
-
-	deleteMember(users: User[]) {
-		this.confirm('Are you sure to remove ?', () => {
-			_.each(users, (user: User) => {
-				user.permission_id = null;
-			});
-			User.updateArray(this, users, USER_FIELDS).subscribe(() => {
-				this.loadMembers();
-				this.success(this.translateService.instant('Delete member successfully'));
-			});
-		});
-	}
-
+	
 	loadMenus() {
 		this.menuTree = this.menuService.menuToTree(this.menuService.adminMenu());
 		this.menuTree.forEach((tree: any) => {

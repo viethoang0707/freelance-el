@@ -48,11 +48,11 @@ export class UserViewComponent extends BaseComponent {
 		this.skills = [];
 		this.examMembers = [];
 		BaseModel
-			.bulk_list(this,
-				User.__api__listCourseMembers(this.user.course_member_ids, COURSE_MEMBER_FIELDS),
-				User.__api__listCertificates(this.user.certificate_ids),
-				User.__api__listAchivements(this.user.achivement_ids),
-				User.__api__listExamMembers(this.user.exam_member_ids, EXAM_MEMBER_FIELDS))
+			.bulk_search(this,
+				User.__api__listCourseMembers(this.user.id, COURSE_MEMBER_FIELDS),
+				User.__api__listCertificates(this.user.id),
+				User.__api__listAchivements(this.user.id),
+				User.__api__listExamMembers(this.user.id, EXAM_MEMBER_FIELDS))
 			.subscribe((jsonArr) => {
 				this.courseMembers = CourseMember.toArray(jsonArr[0]);
 				this.certificates = Certificate.toArray(jsonArr[1]);

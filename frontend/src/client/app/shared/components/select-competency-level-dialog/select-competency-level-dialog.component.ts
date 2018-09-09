@@ -12,6 +12,11 @@ import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants
 import { SelectItem } from 'primeng/api';
 import { CompetencyLevel } from '../../../shared/models/elearning/competency-level.model';
 
+const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
+const COMPETENCY_FIELDS = ['name', 'group_id'];
+const COMPETENCY_LEVEL_FIELDS = ['name', 'competency_id'];
+
+
 @Component({
 	moduleId: module.id,
 	selector: 'select-competency-level-dialog',
@@ -23,13 +28,13 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 	private tree: TreeNode[];
 	private selectedNode: TreeNode;
 	private selectedLevel: any;
-	private levels:CompetencyLevel[];
-	private displayLevels:CompetencyLevel[];
+	private levels: CompetencyLevel[];
+	private displayLevels: CompetencyLevel[];
 	private display: boolean;
 	private treeUtils: TreeUtils;
 
 	private onSelectCompetencyLevelReceiver: Subject<any> = new Subject();
-    onSelectCompetencyLevel:Observable<any> =  this.onSelectCompetencyLevelReceiver.asObservable();
+	onSelectCompetencyLevel: Observable<any> = this.onSelectCompetencyLevelReceiver.asObservable();
 
 	constructor() {
 		super();
@@ -45,10 +50,10 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.displayLevels =  [];
-			this.selectedNode.data.listCompetencies(this).subscribe(competencies => {
-				_.each(competencies, (competency:Competency)=> {
-					var levels = _.filter(this.levels, (level:CompetencyLevel)=> {
+			this.displayLevels = [];
+			this.selectedNode.data.listCompetencies(this, COMPETENCY_FIELDS).subscribe(competencies => {
+				_.each(competencies, (competency: Competency) => {
+					var levels = _.filter(this.levels, (level: CompetencyLevel) => {
 						return level.competency_id == competency.id;
 					});
 					this.displayLevels = this.displayLevels.concat(levels);
@@ -59,12 +64,10 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		
-		Group.listCompetencyGroup(this).subscribe(groups => {
+		Group.listCompetencyGroup(this, GROUP_FIELDS).subscribe(groups => {
 			this.tree = this.treeUtils.buildGroupTree(groups);
-			CompetencyLevel.all(this).subscribe(levels => {
+			CompetencyLevel.all(this, COMPETENCY_LEVEL_FIELDS).subscribe(levels => {
 				this.levels = levels;
-				
 			});
 		});
 	}

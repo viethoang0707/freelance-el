@@ -25,7 +25,7 @@ export class StatsUtils {
 	competencyStatisticByDate(context: APIContext, competency: Competency, levels: CompetencyLevel[], startDate: Date, endDate: Date): Observable<any> {
 		var startDateStr = moment(startDate).format(SERVER_DATETIME_FORMAT);
 		var endDateStr = moment(endDate).format(SERVER_DATETIME_FORMAT);
-		return Achivement.searchByDateAndCompetency(context, competency.id, startDate, endDate).map(skills => {
+		return Achivement.searchByDateAndCompetency(context, competency.id, startDate, endDate, ['date_acquire','competency_level_id' ]).map(skills => {
 			var monthLengthMills = 1000 * 60 * 60 * 24 * 30;
 			var slots = [];
 			var starTimeMillis = startDate.getTime();
@@ -40,7 +40,7 @@ export class StatsUtils {
 					profile = {};
 					_.each(levels, (level: CompetencyLevel) => {
 						profile[level.id] = 0;
-					})
+					});
 				}
 				profile[skill.competency_level_id] +=1;
 				slots[index] = profile;

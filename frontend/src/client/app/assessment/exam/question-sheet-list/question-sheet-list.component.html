@@ -1,0 +1,45 @@
+<div class="card card-w-title">
+    <h1>{{'Question sheet bank'|translate}}</h1>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                    <button pButton type="button" label="{{'Preview'|translate}}" class="blue-grey-btn" icon="ui-icon-remove-red-eye" (click)="previewSheet(selectedSheet)" [disabled]="!selectedSheet"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteSheet(selectedSheet)" [disabled]="!selectedSheet"></button>
+                </div>
+            </p-toolbar>
+            <p-table #surveySheetTable [value]="sheets" [paginator]="true" [rows]="25" [(selection)]="selectedSheet" [responsive]="true" selectionMode="single">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
+                        <th [pSortableColumn]="'name'">
+                            {{'Name'|translate}}
+                            <p-sortIcon [field]="'name'"></p-sortIcon>
+                        </th>
+                        <th>
+                            {{'Number of question'|translate}}
+                        </th>
+                        <th [pSortableColumn]="'create_date'">
+                            {{'Created'|translate}}
+                            <p-sortIcon [field]="'create_date'"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-sheet let-rowIndex="rowIndex">
+                    <tr [pSelectableRow]="sheet">
+                        <td>{{rowIndex+1}}</td>
+                        <td style="text-align: left;">{{sheet.name}}</td>
+                        <td>{{sheet.question_count}}</td>
+                        <td>{{sheet.create_date | date : "dd/MM/yyyy "}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    {{'Total records'|translate}} : {{sheets?.length}}
+                </ng-template>
+            </p-table>
+            <question-sheet-preview-dialog></question-sheet-preview-dialog>
+        </div>
+    </div>
+</div>

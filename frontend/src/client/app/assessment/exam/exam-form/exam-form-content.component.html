@@ -1,0 +1,63 @@
+<div class="ui-g ui-fluid form-group pt40">
+    <div class="ui-g-6">
+        <label>{{'Name'|translate}}</label>
+        <input type="text" pInputText [(ngModel)]="exam.name" #name="ngModel" name="name" required>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="name.errors.required">
+                {{'Name is required' | translate}}
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-6">
+        <label>{{'Duration (in minutes)'|translate}}</label>
+        <input type="text" pInputText [(ngModel)]="exam.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
+        <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="ui-message ui-messages-error ui-corner-all">
+            <div *ngIf="duration.errors.required">
+                {{'Duration is required' | translate}}
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-12">
+        <label>{{'Summary'|translate}}</label>
+        <input type="text" pInputText [(ngModel)]="exam.summary" name="summary">
+    </div>
+    <div class="ui-g-12">
+        <label>{{'Instruction'|translate}}</label>
+        <p-editor [(ngModel)]="exam.instruction" [style]="{'height':'120px'}" name="instruction">
+        </p-editor>
+    </div>
+    <div class="ui-g-6">
+        <label>{{'Start'|translate}}</label>
+        <p-calendar [(ngModel)]="exam.start" showTime="true" hourFormat="24" #start="ngModel" name="start" required="true" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+        <div *ngIf="start.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+            <div *ngIf="start.errors.required">
+                {{'Exam start time is required' | translate}}
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-6">
+        <label>{{'End'|translate}}</label>
+        <p-calendar [(ngModel)]="exam.end" showTime="true" hourFormat="24" #end="ngModel" name="end" required="true" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+        <div *ngIf="end.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+            <div *ngIf="end.errors.required">
+                {{'Exam end time is required' | translate}}
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-6">
+        <div (click)="selectEditor()">
+            <label>{{'Editor' |translate}}:</label>
+            <span> {{editor.name}}
+                    <i class="material-icons">open_in_browser</i></span>
+        </div>
+    </div>
+    <div class="ui-g-6">
+        <div (click)="selectCompetencyLevel()">
+            <label>{{'Competency level' |translate}}:</label>
+            <span>{{exam.competency_level_name}}
+                    <i class="material-icons">open_in_browser</i></span>
+        </div>
+    </div>
+</div>
+<select-user-dialog></select-user-dialog>
+<select-competency-level-dialog></select-competency-level-dialog>

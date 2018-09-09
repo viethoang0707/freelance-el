@@ -1,0 +1,12 @@
+<div class="card card-w-title">
+    <h1>{{'Exam form'|translate}}</h1>
+    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+        <exam-form-content></exam-form-content>
+        <div class="card-footer">
+            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="(!f.form.valid || loading ) && (exam.supervisor_id != ContextUser.id && !ContextUser.IsSuperAdmin)"></button>
+            <button type="button" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>
+        </div>
+    </form>
+</div>
+<select-user-dialog></select-user-dialog>
+<select-competency-level-dialog></select-competency-level-dialog>

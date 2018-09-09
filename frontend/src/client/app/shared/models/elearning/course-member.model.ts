@@ -87,15 +87,8 @@ export class CourseMember extends BaseModel {
     email: string;
     phone: string;
     group_id: number;
-    @ReadOnlyProperty()
-    project_submission_ids: number[];
-    @ReadOnlyProperty()
-    exam_record_ids: number[];
     group_name: string;
-    @ReadOnlyProperty()
-    exam_member_ids:number[];
-    @ReadOnlyProperty()
-    survey_member_ids:number[];
+
 
     static __api__countTeacher(): SearchCountAPI {
         return new SearchCountAPI(CourseMember.Model, "[('role','=','teacher')]");
@@ -249,36 +242,36 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static __api__listProjectSubmissions(project_submission_ids: number[],fields?:string[]): SearchReadAPI {
-        return new ListAPI(ProjectSubmission.Model, project_submission_ids,fields);
+    static __api__listProjectSubmissions(memberId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ProjectSubmission.Model,fields, "[('member_id','=',"+memberId+")]");
     }
 
     listProjectSubmissions(context: APIContext,fields?:string[]): Observable<any[]> {
-        return ProjectSubmission.array(context, this.project_submission_ids,fields);
+        return ProjectSubmission.search(context,fields,"[('member_id','=',"+this.id+")]");
     }
 
-    static __api__listExamRecords(exam_record_ids: number[],fields?:string[]): SearchReadAPI {
-        return new ListAPI(ExamRecord.Model, exam_record_ids,fields);
+    static __api__listExamRecords(memberId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamRecord.Model,fields,"[('course_member_id','=',"+memberId+")]");
     }
 
     listExamRecords(context: APIContext,fields?:string[]): Observable<any[]> {
-        return ExamRecord.array(context, this.exam_record_ids,fields);
+        return ExamRecord.search(context,fields,"[('course_member_id','=',"+this.id+")]");
     }
 
-    static __api__listExamMembers(exam_member_ids: number[],fields?:string[]): SearchReadAPI {
-        return new ListAPI(ExamMember.Model, exam_member_ids,fields);
+    static __api__listExamMembers(memberId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model,fields,"[('course_member_id','=',"+memberId+")]");
     }
 
     listExamMembers(context: APIContext,fields?:string[]): Observable<any[]> {
-        return ExamMember.array(context, this.exam_member_ids,fields);
+        return ExamMember.search(context,fields,"[('course_member_id','=',"+this.id+")]");
     }
 
-    static __api__listSurveyMembers(survey_member_ids: number[],fields?:string[]): SearchReadAPI {
-        return new ListAPI(SurveyMember.Model, survey_member_ids,fields);
+    static __api__listSurveyMembers(memberId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model,fields,"[('course_member_id','=',"+memberId+")]");
     }
 
     listSurveyMembers(context: APIContext,fields?:string[]): Observable<any[]> {
-        return SurveyMember.array(context, this.survey_member_ids,fields);
+        return SurveyMember.search(context,fields,"[('course_member_id','=',"+this.id+")]");
     }
 
 }

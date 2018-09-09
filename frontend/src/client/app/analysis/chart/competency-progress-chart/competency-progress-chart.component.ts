@@ -26,11 +26,13 @@ export class CompetencyProgressChartComponent extends BaseComponent {
     private chartData: any;
     private statsUtils: StatsUtils;
     private cacheData: any;
+    private competency: Competency
 
     constructor() {
         super();
         this.statsUtils = new StatsUtils();
         this.cacheData = {};
+        this.competency = new Competency();
     }
 
     prepareChartData(competency: Competency, levels: CompetencyLevel[], duration: number): Observable<any> {
@@ -45,8 +47,9 @@ export class CompetencyProgressChartComponent extends BaseComponent {
     }
 
     drawChart(competency: Competency, duration: number) {
-        competency.listLevels(this).subscribe(levels => {
-            this.prepareChartData(competency, levels, duration).subscribe(slots => {
+        this.competency =  competency;
+        this.competency.listLevels(this).subscribe(levels => {
+            this.prepareChartData(this.competency, levels, duration).subscribe(slots => {
                 var labels = [this.translateService.instant('Current')];
                 var datasets = [];
                 for (var j = 0; j < levels.length; j++) {
@@ -63,7 +66,6 @@ export class CompetencyProgressChartComponent extends BaseComponent {
                         datasets[j]["data"].push(slots[j][levels[j]["id"]]);
                     }
                 }
-
                 this.chartData = {
                     labels: labels,
                     datasets: datasets

@@ -55,21 +55,6 @@ export class User extends BaseModel {
         this.permission_name = undefined;
         this.supervisor_id = undefined;
         this.supervisor_name = undefined;
-        this.achivement_ids = [];
-        this.course_member_ids = [];
-        this.exam_member_ids = [];
-        this.certificate_ids = [];
-        this.survey_member_ids = [];
-        this.conference_member_ids = [];
-        this.exam_record_ids = [];
-        this.submission_ids = [];
-        this.project_submission_ids = [];
-        this.manage_course_ids = [];
-        this.manage_class_ids = [];
-        this.manage_exam_ids = [];
-        this.manage_survey_ids = [];
-        this.submit_ticket_ids = [];
-        this.review_ticket_ids = [];
         this.permission_name = undefined;
         this.permission_group_id = undefined;
         this.unban_date =  undefined;
@@ -102,36 +87,6 @@ export class User extends BaseModel {
     supervisor_name: string;
     social_id: string;
     permission_name: string;
-    @ReadOnlyProperty()
-    achivement_ids: number[];
-    @ReadOnlyProperty()
-    course_member_ids: number[];
-    @ReadOnlyProperty()
-    exam_member_ids: number[];
-    @ReadOnlyProperty()
-    survey_member_ids: number[];
-    @ReadOnlyProperty()
-    conference_member_ids: number[];
-    @ReadOnlyProperty()
-    certificate_ids: number[];
-    @ReadOnlyProperty()
-    exam_record_ids: number[];
-    @ReadOnlyProperty()
-    submission_ids: number[];
-    @ReadOnlyProperty()
-    project_submission_ids: number[];
-    @ReadOnlyProperty()
-    manage_course_ids: number[];
-    @ReadOnlyProperty()
-    manage_class_ids: number[];
-    @ReadOnlyProperty()
-    manage_exam_ids: number[];
-    @ReadOnlyProperty()
-    manage_survey_ids: number[];
-    @ReadOnlyProperty()
-    submit_ticket_ids: number[];
-    @ReadOnlyProperty()
-    review_ticket_ids: number[];
 
     get IsAdmin() {
         return this.is_admin || this.login == 'admin';
@@ -190,103 +145,128 @@ export class User extends BaseModel {
     }
 
 
-    static __api__listAchivements(achivement_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Achivement.Model, achivement_ids,fields);
+    static __api__listAchivements(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Achivement.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listAchivements( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Achivement.array(context,this.achivement_ids,fields);
+        return Achivement.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listCourseMembers(course_member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(CourseMember.Model, course_member_ids,fields);
+    static __api__listCourseMembers(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseMember.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listCourseMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseMember.array(context,this.course_member_ids,fields);
+        return CourseMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listCertificates(certificate_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Certificate.Model, certificate_ids,fields);
+    static __api__listCertificates(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Certificate.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listCertificates( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Certificate.array(context,this.certificate_ids,fields);
+        return Certificate.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listExamMembers(exam_member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ExamMember.Model, exam_member_ids,fields);
+    static __api__listExamMembers(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamMember.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listExamMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ExamMember.array(context,this.exam_member_ids,fields);
+        return ExamMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listSurveyMembers(survey_member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(SurveyMember.Model, survey_member_ids,fields);
+    static __api__listSurveyMembers(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyMember.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listSurveyMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return SurveyMember.array(context,this.survey_member_ids,fields);
+        return SurveyMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listConferenceMembers(conference_member_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ConferenceMember.Model, conference_member_ids,fields);
+    static __api__listConferenceMembers(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ConferenceMember.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listConferenceMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ConferenceMember.array(context,this.conference_member_ids,fields);
+        return ConferenceMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listExamRecords(exam_record_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ExamRecord.Model, exam_record_ids,fields);
+    static __api__listExamRecords(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ExamRecord.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listExamRecords( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ExamRecord.array(context,this.exam_record_ids,fields);
+        return ExamRecord.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listSubmissions(submission_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Submission.Model, submission_ids,fields);
+    static __api__listSubmissions(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Submission.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Submission.array(context,this.submission_ids,fields);
+        return Submission.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listProjectSubmissions(project_submission_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(ProjectSubmission.Model, project_submission_ids,fields);
+    static __api__listProjectSubmissions(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(ProjectSubmission.Model,fields,"[('user_id','=',"+userId+")]");
     }
 
     listProjectSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
-        return ProjectSubmission.array(context,this.project_submission_ids,fields);
+        return ProjectSubmission.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
-    static __api__listManageCourses(manage_course_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Course.Model, manage_course_ids,fields);
+    static __api__listManageCourses(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Course.Model,fields,"[('supervisor_id','=',"+userId+")]");
     }
 
     listManageCourses( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Course.array(context,this.manage_course_ids,fields);
+        return Course.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
     }
 
-    static __api__listManageCourseClasses(manage_class_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(CourseClass.Model, manage_class_ids,fields);
+    static __api__listManageCourseClasses(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(CourseClass.Model,fields,"[('supervisor_id','=',"+userId+")]");
     }
 
     listManageCourseClasses( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseClass.array(context,this.manage_class_ids,fields);
+        return CourseClass.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
     }
 
-    static __api__listManageExams(manage_exam_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Exam.Model, manage_exam_ids,fields);
+    static __api__listManageExams(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Exam.Model,fields,"[('supervisor_id','=',"+userId+")]");
     }
 
     listManageExams( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Exam.array(context,this.manage_exam_ids,fields);
+        return Exam.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
     }
 
-    static __api__searchManageExamsByDate(userId, start:Date, end:Date,fields?:string[]): ListAPI {
+    static __api__listManageSurveys(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Survey.Model,fields,"[('supervisor_id','=',"+userId+")]");
+    }
+
+    listManageSurveys( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Survey.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
+    }
+
+    static __api__listReviewTickets(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model,fields,"[('approve_user_id','=',"+userId+")]");
+    }
+
+    listReviewTickets( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Ticket.search(context,fields,"[('approve_user_id','=',"+this.id+")]");
+    }
+
+    static __api__listSubmitTickets(userId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Ticket.Model,fields,"[('submit_user_id','=',"+userId+")]");
+    }
+
+    listSubmitTickets( context:APIContext,fields?:string[]): Observable<any[]> {
+        return Ticket.search(context,fields,"[('submit_user_id','=',"+this.id+")]");
+    }
+
+
+    static __api__searchManageExamsByDate(userId, start:Date, end:Date,fields?:string[]): SearchReadAPI {
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
         var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
         return new SearchReadAPI(Exam.Model, fields,"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+userId+")]");
@@ -298,7 +278,7 @@ export class User extends BaseModel {
         return Exam.search(context,fields,"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+this.id+")]");
     }
 
-    static __api__searchManageClassesByDate(userId: number,start:Date, end:Date,fields?:string[]): ListAPI {
+    static __api__searchManageClassesByDate(userId: number,start:Date, end:Date,fields?:string[]): SearchReadAPI {
         var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
         var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
         return new SearchReadAPI(CourseClass.Model, fields,"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+userId+")]");
@@ -310,32 +290,7 @@ export class User extends BaseModel {
         return CourseClass.search(context,fields,"[('start','>=','"+startDateStr+"'),('start','<=','"+endDateStr+"'),('supervisor_id','=',"+this.id+")]");
     }
 
-
-    static __api__listManageSurveys(manage_survey_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Survey.Model, manage_survey_ids,fields);
-    }
-
-    listManageSurveys( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Survey.array(context,this.manage_survey_ids,fields);
-    }
-
-    static __api__listReviewTickets(review_ticket_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Ticket.Model, review_ticket_ids,fields);
-    }
-
-    listReviewTickets( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Ticket.array(context,this.review_ticket_ids,fields);
-    }
-
-    static __api__listSubmitTickets(submit_ticket_ids: number[],fields?:string[]): ListAPI {
-        return new ListAPI(Ticket.Model, submit_ticket_ids,fields);
-    }
-
-    listSubmitTickets( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Ticket.array(context,this.submit_ticket_ids,fields);
-    }
-
-    static __api__searchPendingReviewTickets(userId,fields?:string[]): ListAPI {
+    static __api__searchPendingReviewTickets(userId,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(Ticket.Model, fields,"[('approve_user_id','=',"+userId+"),('status','=','pending')]");
     }
 
@@ -343,7 +298,7 @@ export class User extends BaseModel {
         return Ticket.search(context,fields, "[('approve_user_id','=',"+this.id+"),('status','=','pending')]");
     }
 
-    static __api__searchPendingSubmitTickets(userId,fields?:string[]): ListAPI {
+    static __api__searchPendingSubmitTickets(userId,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(Ticket.Model, fields,"[('submit_user_id','=',"+userId+"),('status','=','pending')]");
     }
 
@@ -358,22 +313,6 @@ export class User extends BaseModel {
             else
                 return null;
         });
-    }
-
-    static __api__searchByLogin(login:string): SearchCountAPI {
-        return new SearchReadAPI(User.Model, ["login"],"[('login','=','"+login+"')]");
-    }
-
-    static searchByLogin(context: APIContext,login:string): Observable<any> {
-        return User.single(context, ["login"],"[('login','=','"+login+"')]");
-    }
-
-    static __api__searchByGroup(groupId:number, fields?:string[]): SearchCountAPI {
-        return new SearchReadAPI(User.Model, fields,"[('group_id','=',"+groupId+")]");
-    }
-
-    static searchByGroup(context: APIContext,groupId:number, fields?:string[]): Observable<any> {
-        return User.single(context, fields,"[('group_id','=',"+groupId+")]");
     }
 
     static __api__register(user: User): ExecuteAPI {

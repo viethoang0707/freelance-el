@@ -21,6 +21,9 @@
                     <th style="width: 2.25em; padding: 0 7px;">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
+                    <th>
+                            {{'Index'|translate}}
+                        </th>
                     <th [pSortableColumn]="'group_name'">
                         {{'Group'|translate}}
                         <p-sortIcon [field]="'group_name'"></p-sortIcon>
@@ -40,11 +43,12 @@
                     </th> 
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-question let-i="rowIndex">
+            <ng-template pTemplate="body" let-question let-rowIndex="rowIndex" >
                 <tr [pSelectableRow]="question">
                     <td style="width: 2.25em; padding: 0 7px;">
                         <p-tableCheckbox [value]="question"></p-tableCheckbox>
                     </td>
+                    <td>{{rowIndex+1}}</td>
                     <td style="text-align: left;">{{question.group_name}}</td>
                     <td style="text-align: left;">{{question.title}}</td>
                     <td class="q-content" [innerHTML]="question.content">{{question.content}}</td>

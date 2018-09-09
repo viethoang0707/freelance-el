@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { ReportUtils } from '../../../../shared/helpers/report.utils';
 import { Exam } from '../../../../shared/models/elearning/exam.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
@@ -20,7 +19,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { ExamResultStatsReportComponent } from './exam-result-stats-report.component';
 
-const EXAM_FIELDS = ['name'];
+const EXAM_FIELDS = ['name' ,'sheet_id'];
 
 @Component({
     moduleId: module.id,
@@ -55,10 +54,7 @@ export class ExamResultStatsReportContainerComponent extends BaseComponent imple
     selectExam() {
     	if (this.selectedExam) {
             this.statsReport.clear();
-            this.selectedExam.populate(this).subscribe(()=> {
-                this.statsReport.render(this.selectedExam);
-            });
-            
+            this.statsReport.render(this.selectedExam);
     	}
     }
 

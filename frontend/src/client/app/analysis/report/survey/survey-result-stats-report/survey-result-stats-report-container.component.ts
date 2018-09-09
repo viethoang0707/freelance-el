@@ -20,7 +20,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { SurveyResultStatsReportComponent } from './survey-result-stats-report.component';
 
-const SURVEY_FIELDS = ['name'];
+const SURVEY_FIELDS = ['name', 'sheet_id'];
 
 @Component({
     moduleId: module.id,
@@ -55,9 +55,7 @@ export class SurveyResultStatsReportContainerComponent extends BaseComponent imp
     selectSurvey() {
     	if (this.selectedSurvey) {
             this.statsReport.clear();
-            this.selectedSurvey.populate(this).subscribe(()=> {
-                this.statsReport.render(this.selectedSurvey);
-            });
+            this.statsReport.render(this.selectedSurvey);
     	}
     }
 

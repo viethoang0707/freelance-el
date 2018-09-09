@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { ReportUtils } from '../../../../shared/helpers/report.utils';
 import { Group } from '../../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
@@ -74,10 +73,10 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		var apiMemberList = [];
 		var apiLogList = [];
 		for (var i = 0; i < courses.length; i++) {
-			apiMemberList.push(Course.__api__listMembers(courses[i].member_ids, COURSE_MEMBER_FIELDS));
+			apiMemberList.push(Course.__api__listMembers(courses[i].id, COURSE_MEMBER_FIELDS));
 			apiLogList.push(CourseLog.__api__courseActivity(courses[i].id));
 		};
-		BaseModel.bulk_list(this, ...apiMemberList).subscribe(jsonMemberArr => {
+		BaseModel.bulk_search(this, ...apiMemberList).subscribe(jsonMemberArr => {
 			BaseModel.bulk_search(this, ...apiLogList).subscribe(jsonLogArr => {
 				for (var i = 0; i < courses.length; i++) {
 					var members = CourseMember.toArray(jsonMemberArr[i]);

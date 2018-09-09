@@ -64,7 +64,7 @@ class WorkflowService(osv.AbstractModel):
         params["body"] = "You have pending ticket to be reviewed: %s" % ticket.content
         self.env[ticket.res_model].browse(ticket.res_id).write({'review_state':'pending'})
         self.env["etraining.notification_service"].sendSingleMail(params)
-        return True
+        return {"success":True}
 
     @api.model
     def approveTicket(self, params):
@@ -77,7 +77,7 @@ class WorkflowService(osv.AbstractModel):
             if ticket.code == 'REVIEW_SURVEY':
                 self.approveSurvey(ticket.res_id)
             ticket.write({'status':'approved','date_close':datetime.now()})
-        return True
+        return {"success":True}
 
     @api.model
     def rejectTicket(self, params):
@@ -90,7 +90,7 @@ class WorkflowService(osv.AbstractModel):
             if ticket.code == 'REVIEW_SURVEY':
                 self.approveSurvey(ticket.res_id)
             ticket.write({'status':'rejected','date_close':datetime.now()})
-        return True
+        return {"success":True}
 
     def approveCourse(self, courseId):
         for course in self.env['etraining.course'].browse(courseId):
@@ -101,8 +101,8 @@ class WorkflowService(osv.AbstractModel):
             params["subject"] = "E-learning notification"
             params["body"] = "Course %s has been approved" % course.name
             self.env["etraining.notification_service"].sendSingleMail(params)
-            return True
-        return False
+            return {"success":True}
+        return {"success":False}
 
     def rejectCourse(self, courseId):
         for course in self.env['etraining.course'].browse(courseId):
@@ -113,8 +113,8 @@ class WorkflowService(osv.AbstractModel):
             params["subject"] = "E-learning notification"
             params["body"] = "Course %s has been rejected" % course.name
             self.env["etraining.notification_service"].sendSingleMail(params)
-            return True
-        return False
+            return {"success":True}
+        return {"success":False}
 
     def approveExam(self, examId):
         for exam in self.env['etraining.exam'].browse(examId):
@@ -125,8 +125,8 @@ class WorkflowService(osv.AbstractModel):
             params["subject"] = "E-learning notification"
             params["body"] = "Exam %s has been approved" % exam.name
             self.env["etraining.notification_service"].sendSingleMail(params)
-            return True
-        return False
+            return {"success":True}
+        return {"success":False}
 
     def rejectExam(self, examId):
         for exam in self.env['etraining.exam'].browse(examId):
@@ -137,8 +137,8 @@ class WorkflowService(osv.AbstractModel):
             params["subject"] = "E-learning notification"
             params["body"] = "Exam %s has been rejected" % exam.name
             self.env["etraining.notification_service"].sendSingleMail(params)
-            return True
-        return False
+            return {"success":True}
+        return {"success":False}
 
     def approveSurvey(self, surveyId):
         for survey in self.env['etraining.survey'].browse(surveyId):
@@ -149,8 +149,8 @@ class WorkflowService(osv.AbstractModel):
             params["subject"] = "E-learning notification"
             params["body"] = "Survey %s has been rejected" % survey.name
             self.env["etraining.notification_service"].sendSingleMail(params)
-            return True
-        return False
+            return {"success":True}
+        return {"success":False}
 
     def rejectSurvey(self, surveyId):
         for survey in self.env['etraining.survey'].browse(surveyId):
@@ -161,6 +161,6 @@ class WorkflowService(osv.AbstractModel):
             params["subject"] = "E-learning notification"
             params["body"] = "Survey %s has been rejected" % survey.name
             self.env["etraining.notification_service"].sendSingleMail(params)
-            return True
-        return False
+            return {"success":True}
+        return {"success":False}
         

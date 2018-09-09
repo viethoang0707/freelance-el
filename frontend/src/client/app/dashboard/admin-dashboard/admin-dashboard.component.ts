@@ -9,7 +9,6 @@ import { SelectItem } from 'primeng/api';
 import { Exam } from '../../shared/models/elearning/exam.model';
 import { DateUtils } from '../../shared/helpers/date.utils';
 import { Group } from '../../shared/models/elearning/group.model';
-import { ExamDialog } from '../../assessment/exam/exam-dialog/exam-dialog.component';
 import * as _ from 'underscore';
 import * as moment from 'moment';
 import { USER_STATUS, SERVER_DATETIME_FORMAT,TICKET_STATUS, CONTENT_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants';
@@ -18,6 +17,7 @@ import { BaseModel } from '../../shared/models/base.model';
 import { CourseClass } from '../../shared/models/elearning/course-class.model';
 import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { WorkflowService } from '../../shared/services/workflow.service';
+
 
 const EXAM_FIELDS = ['name','start','end'];
 const CLASS_FIELDS = ['name','start','end'];
@@ -41,7 +41,6 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     private approvalTickets : Ticket[];
     private dateUtils: DateUtils;
 
-    @ViewChild(ExamDialog) examDialog: ExamDialog;
     @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
 
     constructor() {

@@ -34,12 +34,12 @@ export class MenuService {
         { label: 'Question category', routerLink: ['/assessment/groups'], code: 'ASSESSMENT-QUESTION_GROUP' },
         { label: '', separator: true, styleClass: 'menu-separator' },
         { label: 'Exams', routerLink: ['/assessment/exams'], code: 'ASSESSMENT-EXAMS' },
-        { label: 'Exam enrollments', routerLink: ['/assessment/exam-enrollments'], code: 'ASSESSMENT-EXAM_ENROLLMENTS' },
-        { label: 'Question sheet templates', routerLink: ['/assessment/question-sheets'], code: 'ASSESSMENT-QUESTION_SHEET' },
+        { label: 'Exam enrollments', routerLink: ['/assessment/exams/enrollment'], code: 'ASSESSMENT-EXAM_ENROLLMENTS' },
+        { label: 'Question sheet templates', routerLink: ['/assessment/exams/sheets'], code: 'ASSESSMENT-EXAM_SHEET' },
         { label: '', separator: true, styleClass: 'menu-separator' },
         { label: 'Surveys', routerLink: ['/assessment/surveys'], code: 'ASSESSMENT-SURVEYS' },
-        { label: 'Survey enrollments', routerLink: ['/assessment/survey-enrollments'], code: 'ASSESSMENT-SURVEY_ENROLLMENTS' },
-        { label: 'Survey sheet templates', routerLink: ['/assessment/survey-sheets'], code: 'ASSESSMENT-SURVEY_SHEET' },
+        { label: 'Survey enrollments', routerLink: ['/assessment/surveys/enrollment'], code: 'ASSESSMENT-SURVEY_ENROLLMENTS' },
+        { label: 'Survey sheet templates', routerLink: ['/assessment/surveys/sheets'], code: 'ASSESSMENT-SURVEY_SHEET' },
       ]
     },
     {
