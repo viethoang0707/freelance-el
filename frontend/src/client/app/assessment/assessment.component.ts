@@ -8,8 +8,6 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class AssessmentComponent  {
 
-
-
   constructor() {
 
   }

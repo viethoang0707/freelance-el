@@ -6,24 +6,27 @@
     </div>
     <div class="ui-g-12">
         <p-toolbar>
-            <div class="ui-toolbar-group-left">
+            <div class="ui-toolbar-group-left" *ngIf="mode=='single'">
                 <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success button-add-ques"></p-splitButton>
-                <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editQuestion(selectedQuestions[0])" [disabled]="!selectedQuestions || selectedQuestions.length!=1"></button>
-                <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteMultipleQuestions(selectedQuestions)" [disabled]="!selectedQuestions || !selectedQuestions.length"></button>
+                <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editQuestion(selectedQuestions)" [disabled]="!selectedQuestions"></button>
+                <button pButton type="button" label="{{'View'|translate}}" class="blue-grey-btn" icon="ui-icon-visibility" (click)="viewQuestion(selectedQuestions)" [disabled]="!selectedQuestions"></button>
+                <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="enterBatchMode('delete')"></button>
+                 <button pButton type="button" label="{{'Import'|translate}}" class="blue-grey-btn" icon="ui-icon-file-upload" (click)="importQuestion()"></button>
             </div>
-            <div class="ui-toolbar-group-right">
-                <button pButton type="button" label="{{'Import'|translate}}" class="blue-grey-btn" icon="ui-icon-file-upload" (click)="importQuestion()"></button>
+            <div class="ui-toolbar-group-left" *ngIf="mode=='multiple'">
+                <button pButton type="button" label="{{'Apply'|translate}}" class="green-btn" (click)="applyBatchAction()" icon="ui-icon-check" [disabled]="!selectedQuestions || !selectedQuestions.length"></button>
+                <button pButton type="button" label="{{'Cancel'|translate}}" class="red-btn" icon="ui-icon-clear" (click)="enterSingleMode()"></button>
             </div>
         </p-toolbar>
-        <p-table  #questionTable [value]="displayQuestions" [paginator]="true" [rows]="10"  [(selection)]="selectedQuestions" [responsive]="true" selectionMode="multiple">
+        <p-table #questionTable [value]="displayQuestions" [paginator]="true" [rows]="25" [(selection)]="selectedQuestions" [responsive]="true" selectionMode="{{mode}}">
             <ng-template pTemplate="header">
                 <tr>
-                    <th style="width: 2.25em; padding: 0 7px;">
+                    <th style="width: 2.25em; padding: 0 7px;" *ngIf="mode=='multiple'">
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
                     <th>
-                            {{'Index'|translate}}
-                        </th>
+                        {{'Index'|translate}}
+                    </th>
                     <th [pSortableColumn]="'group_name'">
                         {{'Group'|translate}}
                         <p-sortIcon [field]="'group_name'"></p-sortIcon>
@@ -40,12 +43,12 @@
                     <th width="20%" [pSortableColumn]="'type'">
                         {{'Type'|translate}}
                         <p-sortIcon [field]="'type'"></p-sortIcon>
-                    </th> 
+                    </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-question let-rowIndex="rowIndex" >
+            <ng-template pTemplate="body" let-question let-rowIndex="rowIndex">
                 <tr [pSelectableRow]="question">
-                    <td style="width: 2.25em; padding: 0 7px;">
+                    <td style="width: 2.25em; padding: 0 7px;"*ngIf="mode=='multiple'">
                         <p-tableCheckbox [value]="question"></p-tableCheckbox>
                     </td>
                     <td>{{rowIndex+1}}</td>
@@ -60,7 +63,5 @@
                 {{'Total records'|translate}} : {{displayQuestions?.length}}
             </ng-template>
         </p-table>
-        <question-dialog></question-dialog>
-        <question-import-dialog></question-import-dialog>
     </div>
 </div>

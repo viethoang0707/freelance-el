@@ -56,7 +56,7 @@
             </div>
         </p-scrollPanel>
         <p-footer>
-            <button type="submit" pButton icon="ui-icon" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="!f.form.valid "></button>
+            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()" [disabled]="!f.form.valid "></button>
             <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>

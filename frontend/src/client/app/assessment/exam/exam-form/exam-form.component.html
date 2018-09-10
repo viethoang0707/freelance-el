@@ -3,7 +3,7 @@
     <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
         <exam-form-content></exam-form-content>
         <div class="card-footer">
-            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="(!f.form.valid || loading ) && (exam.supervisor_id != ContextUser.id && !ContextUser.IsSuperAdmin)"></button>
+            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid || loading || (exam.supervisor_id != ContextUser.id && !ContextUser.IsSuperAdmin)"></button>
             <button type="button" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>
         </div>
     </form>

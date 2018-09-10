@@ -1,0 +1,40 @@
+<div class="card card-w-title">
+    <h1>{{'Question view'|translate}}</h1>
+    <p-tabView [style]="{width: '100%', height: '100vh'}">
+        <p-tabPanel header="{{'General'|translate}}" leftIcon="ui-icon-info">
+            <div class="ui-g ui-fluid form-group">
+                <div class="ui-g-12">
+                    <div class="ui-g-3">
+                        <label>{{'Title'|translate}}</label>
+                    </div>
+                    <div class="ui-g-9">
+                        <span>{{question.title}}</span>
+                    </div>
+                </div>
+                <div class="ui-g-6">
+                    <div class="ui-g-3">
+                        <label>{{'Group'|translate}}</label>
+                    </div>
+                    <div class="ui-g-9">
+                        <span>{{question.group_name}}</span>
+                    </div>
+                </div>
+                <div class="ui-g-6">
+                    <div class="ui-g-3">
+                        <label>{{'Level'|translate}}</label>
+                    </div>
+                    <div class="ui-g-9">
+                        <span>{{question.level}}</span>
+                    </div>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="{{'Details'|translate}}" leftIcon="ui-icon-details" [hidden]="!componentRef">
+            <ng-template question-container></ng-template>
+        </p-tabPanel>
+    </p-tabView>
+    <div class="card-footer">
+        <button type="submit" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}" (click)="editQuestion()"></button>
+        <button type="button" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
+    </div>
+</div>

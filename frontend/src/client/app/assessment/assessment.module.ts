@@ -12,17 +12,18 @@ import { SurveyEnrollComponent } from './survey/survey-enroll/survey-enroll.comp
 import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/survey-enrollment-list.component';
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 import { QuestionListComponent } from './question/question-list/question-list.component';
-import { QuestionDialog } from './question/question-dialog/question-dialog.component';
-import { QuestionImportDialog } from './question/import-dialog/import-dialog.component';
+import { QuestionImportComponent } from './question/question-import/question-import.component';
 import { QuestionSheetListComponent } from './exam/question-sheet-list/question-sheet-list.component';
 import { SurveySheetListComponent } from './survey/survey-sheet-list/survey-sheet-list.component';
-import { ExamResolve, SurveyResolve } from './route.resolver';
+import { ExamResolve, SurveyResolve, QuestionResolve, GroupsResolve } from './route.resolver';
 import { ExamFormComponent } from './exam/exam-form/exam-form.component';
 import { ExamViewComponent } from './exam/exam-view/exam-view.component';
 import { ExamFormContentComponent } from './exam/exam-form/exam-form-content.component';
 import { ExamDialogComponent } from './exam/exam-form/exam-dialog.component';
 import { SurveyFormContentComponent } from './survey/survey-form/survey-form-content.component';
 import { SurveyDialogComponent } from './survey/survey-form/survey-dialog.component';
+import { QuestionFormComponent } from './question/question-form/question-form.component';
+import { QuestionViewComponent } from './question/question-view/question-view.component';
 
 
 @NgModule({
@@ -36,8 +37,9 @@ import { SurveyDialogComponent } from './survey/survey-form/survey-dialog.compon
 		ExamViewComponent,
 		QuestionSheetListComponent,
 		QuestionListComponent,
-		QuestionDialog,
-		QuestionImportDialog,
+		QuestionFormComponent,
+		QuestionImportComponent,
+		QuestionViewComponent,
 		SurveySheetListComponent,
 		SurveyFormComponent, 
 		ExamEnrollComponent,
@@ -55,6 +57,8 @@ import { SurveyDialogComponent } from './survey/survey-form/survey-dialog.compon
 	providers: [
 		ExamResolve,
 		SurveyResolve,
+		QuestionResolve,
+		GroupsResolve,
 		ExamDialogComponent,
 		SurveyDialogComponent
 	],

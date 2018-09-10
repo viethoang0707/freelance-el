@@ -1,16 +1,18 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../../shared/models/constants'
 import { Question } from '../../../shared/models/elearning/question.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { QuestionDialog } from '../question-dialog/question-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { QuestionImportDialog } from '../import-dialog/import-dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
+
+const QUESTION_FIELDS = ['title', 'level', 'type', 'group_id', 'group_name'];
 
 @Component({
     moduleId: module.id,
@@ -28,16 +30,13 @@ export class QuestionListComponent extends BaseComponent {
     private questions: Question[];
     private displayQuestions: Question[];
     private selectedGroupNodes: TreeNode[];
-    private treeUtils: TreeUtils;
     private selectedQuestions: any;
 
-    @ViewChild(QuestionDialog) questionDialog: QuestionDialog;
-    @ViewChild(QuestionImportDialog) questionImportDialog: QuestionImportDialog;
+    private mode: string;
+    private batchAction: string;
 
-
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
-        this.treeUtils = new TreeUtils();
         this.questions = [];
         this.items = [
             { label: this.translateService.instant(QUESTION_TYPE['sc']), command: () => { this.addQuestion('sc') } },
@@ -48,29 +47,23 @@ export class QuestionListComponent extends BaseComponent {
 
     ngOnInit() {
         Group.listQuestionGroup(this).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
+            var treeUtils = new TreeUtils();
+            this.tree = treeUtils.buildGroupTree(groups);
         });
         this.loadQuestions();
+        this.enterSingleMode();
     }
 
     addQuestion(type: string) {
-        var question = new Question();
-        question.type = type;
-        this.questionDialog.show(question);
-        this.questionDialog.onCreateComplete.first().subscribe(() => {
-            this.questions.unshift(question);
-            this.displayQuestions = [...this.questions];
-            this.selectedQuestions = [];
-            this.selectedGroupNodes = [];
-            this.success(this.translateService.instant('Add question successfully'));
-        });
+        this.router.navigate(['/assessment/question/form/create', type]);
     }
 
     editQuestion(question: Question) {
-        question.populate(this).subscribe(()=> {
-            this.questionDialog.show(question);
-            this.selectedQuestions = [];
-        });
+       this.router.navigate(['/assessment/question/form/edit', question.id]);
+    }
+
+    viewQuestion(question: Question) {
+       this.router.navigate(['/assessment/question/view', question.id]);
     }
 
     deleteMultipleQuestions(questions: Question[]) {
@@ -88,21 +81,17 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     loadQuestions() {
-        Question.all(this).subscribe(questions => {
+        Question.all(this,QUESTION_FIELDS).subscribe(questions => {
             questions  = _.sortBy(questions,(question:Question)=> {
                 return question.create_date;
             });
             this.questions = questions;
             this.displayQuestions = questions;
-            this.selectedQuestions = [];
         });
     }
 
     importQuestion() {
-        this.questionImportDialog.show();
-        this.questionImportDialog.onImportComplete.subscribe(() => {
-            this.loadQuestions();
-        });
+        this.router.navigate(['/assessment/questions/import']);
     }
 
     filterQuestion() {
@@ -116,5 +105,24 @@ export class QuestionListComponent extends BaseComponent {
         } else {
             this.displayQuestions = this.questions;
         }
+    }
+
+    enterBatchMode(action:string) {
+        this.batchAction = action;
+        this.mode =  'multiple';
+        this.selectedQuestions = [];
+    }
+
+    enterSingleMode() {
+        this.mode = 'single';
+        this.batchAction = '';
+        this.selectedQuestions = null;
+    }
+
+    applyBatchAction() {
+        if (this.batchAction=='delete')
+            this.deleteMultipleQuestions(this.selectedQuestions).subscribe(()=> {
+                this.enterSingleMode();
+            });
     }
 }

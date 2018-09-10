@@ -1,9 +1,9 @@
 <div class="card card-w-title">
-    <h1>{{'Import users'|translate}}</h1>
+    <h1>{{'Import questions'|translate}}</h1>
     <div class="ui-g">
         <div class="ui-g-12">
-            <p-fieldset legend="{{'Download template'|translate}}">
-                <a href="/assets/templates/user_import.xlsx" target="_blank">user_import.xlsx</a>
+            <p-fieldset legend="{{'Download import template'|translate}}">
+                <a href="/assets/templates/question_import.xlsx" target="_blank">question_import.xlsx</a>
             </p-fieldset>
         </div>
         <div class="ui-g-12">
@@ -16,7 +16,6 @@
             <table>
                 <tr>
                     <th *ngFor="let field of dataFields">
-                        <p-dropdown [options]="modelFields" [(ngModel)]="columnMappings[field]" optionLabel="label" [style]="{width: 'auto'}"></p-dropdown>
                     </th>
                 </tr>
                 <tbody>
@@ -38,7 +37,7 @@
         </div>
     </div>
     <div class="card-footer">
-        <button type="button"class="blue-grey-btn" pButton icon="ui-icon-check" label="{{'Import'|translate}}" (click)="import()"></button>
-        <button type="button"class="blue-grey-btn" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>
+        <button type="button" pButton icon="ui-icon-check" label="{{'Import'|translate}}" (click)="import()"></button>
+        <button type="button" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>
     </div>
 </div>

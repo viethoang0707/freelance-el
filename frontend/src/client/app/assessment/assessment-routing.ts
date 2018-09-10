@@ -4,7 +4,8 @@ import { AssessmentComponent } from './assessment.component'
 import { ExamListComponent } from './exam/exam-list/exam-list.component';
 import { ExamFormComponent } from './exam/exam-form/exam-form.component';
 import { ExamViewComponent } from './exam/exam-view/exam-view.component';import { QuestionListComponent } from './question/question-list/question-list.component';
-import { QuestionDialog } from './question/question-dialog/question-dialog.component';
+import { QuestionFormComponent } from './question/question-form/question-form.component';
+import { QuestionViewComponent } from './question/question-view/question-view.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
 import { SurveySheetListComponent } from './survey/survey-sheet-list/survey-sheet-list.component';
@@ -13,9 +14,10 @@ import { ExamEnrollmentListComponent } from './exam/exam-enrollment-list/exam-en
 import { SurveyFormComponent } from './survey/survey-form/survey-form.component';
 import { SurveyViewComponent } from './survey/survey-view/survey-view.component';
 import { SurveyEnrollComponent } from './survey/survey-enroll/survey-enroll.component';import { SurveyListComponent } from './survey/survey-list/survey-list.component';
-import { ExamResolve,SurveyResolve } from './route.resolver';
+import { ExamResolve,SurveyResolve, QuestionResolve, GroupsResolve } from './route.resolver';
 import { ExamEnrollComponent } from './exam/exam-enroll/exam-enroll.component';
 import { SurveyEnrollmentListComponent } from './survey/survey-enrollment-list/survey-enrollment-list.component';
+import { QuestionImportComponent } from './question/question-import/question-import.component';
 
 export const AssessmentRoutes: Routes = [
   {
@@ -152,6 +154,46 @@ export const AssessmentRoutes: Routes = [
         data: {
           breadcrumb: 'Questions'
         }
+      },
+      {
+        path: "question/form/create/:type",
+        component: QuestionFormComponent,
+        data: {
+          breadcrumb: 'Question create form'
+        },
+        resolve: {
+          question: QuestionResolve,
+        },
+      },
+      {
+        path: "question/form/edit/:questionId",
+        component: QuestionFormComponent,
+        data: {
+          breadcrumb: 'Question edit form'
+        },
+        resolve: {
+          question: QuestionResolve,
+        },
+      },
+      {
+        path: "question/view/:questionId",
+        component: QuestionViewComponent,
+        data: {
+          breadcrumb: 'Question view form'
+        },
+        resolve: {
+          question: QuestionResolve,
+        },
+      },
+      {
+        path: "questions/import",
+        component: QuestionImportComponent,
+        resolve: {
+          groups: GroupsResolve,
+        },
+        data: {
+          breadcrumb: 'Import questions'
+        },
       },
       {
         path: "groups",
