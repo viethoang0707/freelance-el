@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -16,6 +15,8 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
 import { TreeNode } from 'primeng/api';
+
+const GROUP_FIELDS = ['name','parent_id'];
 
 @Component({
 	moduleId: module.id,
@@ -96,7 +97,7 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	show() {
 		this.display = true;
 		this.examQuestions = [];
-		Group.listQuestionGroup(this).subscribe(groups => {
+		Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
 			_.each(QUESTION_LEVEL, (val, key) => {
 				this.tree[key] = this.treeUtils.buildGroupTree(groups);
 			});

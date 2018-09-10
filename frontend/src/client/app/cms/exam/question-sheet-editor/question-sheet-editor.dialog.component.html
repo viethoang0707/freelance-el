@@ -10,16 +10,12 @@
                         <p-tree [value]="tree[level]" selectionMode="checkbox" [(selection)]="selectedNodes[level]" (onNodeSelect)="nodeSelect($event,level)"></p-tree>
                     </div>
                     <div class="ui-g-6">
-                        <span class="md-inputfield">
-                <input type="text" pInputText [(ngModel)]="selectorGroups[level].number" name="number" pKeyFilter="pint" >
-                <label>{{'Number of question'|translate}}</label>
-                </span>
+                        <label>{{'Number of question'|translate}}</label>
+                        <input type="text" pInputText [(ngModel)]="selectorGroups[level].number" name="number" pKeyFilter="pint">
                     </div>
                     <div class="ui-g-6">
-                        <span class="md-inputfield">
-                <input type="text" pInputText [(ngModel)]="selectorGroups[level].score" name="number" pKeyFilter="num" >
-                <label>{{'Question score'|translate}}</label>
-                </span>
+                        <label>{{'Question score'|translate}}</label>
+                        <input type="text" pInputText [(ngModel)]="selectorGroups[level].score" name="number" pKeyFilter="num">
                     </div>
                 </p-fieldset>
             </div>

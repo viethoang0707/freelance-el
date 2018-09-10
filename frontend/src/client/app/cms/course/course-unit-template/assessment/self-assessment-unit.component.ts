@@ -54,14 +54,9 @@ export class SelfAssessmentCourseUnitComponent extends BaseComponent implements 
 	}
 
 	previewSheet() {
-		this.assessment.populateExam(this).subscribe(() => {
-			this.assessment.exam.populateQuestionSheet(this).subscribe(() => {
-				this.previewDialog.show(this.assessment.exam.sheet);
-			})
+		this.assessment.populateQuestionSheet(this).subscribe(() => {
+			this.previewDialog.show(this.assessment.sheet);
 		});
-
 	}
-
-
 }
 

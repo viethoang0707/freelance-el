@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -19,86 +20,49 @@ import { ExcelService } from '../../../shared/services/excel.service';
 
 @Component({
 	moduleId: module.id,
-	selector: 'course-restore-dialog',
-	templateUrl: 'course-restore.dialog.component.html',
-	styleUrls: ['course-restore.dialog.component.css'],
+	selector: 'course-restore',
+	templateUrl: 'course-restore.component.html',
+	styleUrls: ['course-restore.component.css'],
 })
-export class CourseRestoreDialog extends BaseComponent {
+export class CourseRestoreComponent extends BaseComponent {
 
-	private display: boolean;
 	private tree: TreeNode[];
 	private syl: CourseSyllabus;
 	private selectedNode: TreeNode;
-	private items: MenuItem[];
 	private units: CourseUnit[];
-	private electedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
 	private fileName: string;
 	private data: string;
 	private course: Course;
-	private user: User;
 	private faqs: CourseFaq[];
 	private downloadJsonHref;
 	private materials: CourseMaterial[];
 	private output: String;
-	private courseStatus: SelectItem[];
-	private msgs: Message[];
 	private uploadedFiles: any[] = [];
 	private total: number;
 	private http: Http;
+
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
-	private onShowReceiver: Subject<any> = new Subject();
-	private onHideReceiver: Subject<any> = new Subject();
-	onShow: Observable<any> = this.onShowReceiver.asObservable();
-	onHide: Observable<any> = this.onHideReceiver.asObservable();
-
-	constructor(private sanitizer: DomSanitizer, private excelService: ExcelService) {
+	constructor(private sanitizer: DomSanitizer, private excelService: ExcelService,private location: Location ,private router: Router, private route: ActivatedRoute) {
 		super();
-		this.sylUtils = new SyllabusUtils();
-		this.syl = new CourseSyllabus();
-		this.course = new Course();
-		this.courseStatus = _.map(COURSE_STATUS, (val, key) => {
-			return {
-				label: this.translateService.instant(val),
-				value: key
-			}
-		});
-		this.user = this.authService.UserProfile;
-		this.faqs = [];
-		this.materials = [];
 	}
 
-	show(course: Course) {
-		this.onShowReceiver.next();
-		this.display = true;
-		this.course = course;
-		this.buildCourseTree();
+	ngOnInit() {
+		this.units = [];
+		this.faqs = [];
+		this.materials = [];
+		this.course = this.route.snapshot.data['course'];
+		this.syl = this.route.snapshot.data['syllabus'];
 	}
 
 	buildCourseTree() {
-		this.course.populateSyllabus(this).subscribe(()=> {
-			this.syl = this.course.syl;
-			this.course.listUnits(this).subscribe(units => {
-				this.units = units;
-				this.tree = this.sylUtils.buildGroupTree(units);
-				this.output = '"course-syllabus"', this.sylUtils.buildGroupTree(units);
-			});
-		});
-	}
-
-	hide() {
-		this.display = false;
-		this.onHideReceiver.next();
 	}
 
 	onUpload(event) {
 		for (let file of event.files) {
 			this.uploadedFiles.push(file);
 		}
-
-		this.msgs = [];
-		this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
 	}
 
 	changeListner(event: any) {
@@ -111,16 +75,12 @@ export class CourseRestoreDialog extends BaseComponent {
 
 	restoreCourse() {
 		var subscriptions = [];
-		console.log(this.data);
 		var output = JSON.parse(this.data);
 		var course_faq = output.course_faq;
 		var course_material =  output.course_material;
 		var course_syllabus = output.course_syllabus;
 		var course_unit = output.course_unit;
-		console.log('course_faq: ', course_faq);
-		console.log('course_material: ', course_material);
-		console.log('course_syllabus: ', course_syllabus);
-		console.log('course_unit: ', course_unit);
+		this.buildCourseTree();
 	}
 }
 

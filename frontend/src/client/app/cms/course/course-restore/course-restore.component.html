@@ -1,0 +1,19 @@
+<div class="card card-w-title">
+    <h1>{{'Course restore'|translate}} :{{course.name}}</h1>
+    <div class="ui-g">
+        <div class="ui-g-12 course-syllabus">
+            <p-toolbar>
+                <div class="ui-toolbar-group-left mt5">
+                    <button pButton type="button" label="{{'Restore'|translate}}" [disabled]="loading" class="green-btn" icon="ui-icon-mode-edit" (click)="restoreCourse()"></button>
+                    <p-fileUpload mode="basic" chooseLabel="{{'Select file'|translate}}" (onSelect)="changeListner($event)" accept="json" maxFileSize="1024*16" showUploadButton="false"></p-fileUpload>
+                </div>
+            </p-toolbar>
+            <div class="ui-g-6">
+                <p-tree [value]="tree" [loading]="loading" selectionMode="single" [(selection)]="selectedNode"></p-tree>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="button" pButton icon="ui-icon-arrow-back" (click)="back()" label="{{'Go back'|translate}}"></button>
+    </div>
+</div>

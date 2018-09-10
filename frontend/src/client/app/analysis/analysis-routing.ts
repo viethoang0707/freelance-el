@@ -35,8 +35,3 @@ export const AnalysisRoutes: Routes = [
 
 ]
 
-@NgModule({
-  imports: [RouterModule.forChild(AnalysisRoutes)],
-  exports: [RouterModule]
-})
-export class AnalysisRoutingModule {}

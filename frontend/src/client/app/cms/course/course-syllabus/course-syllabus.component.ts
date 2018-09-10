@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -15,20 +16,17 @@ import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-un
 import { CourseSettingDialog } from '../course-setting/course-setting.dialog.component';
 import * as _ from 'underscore';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
-import { WindowRef } from '../../../shared/helpers/windonw.ref';
 
-declare var $: any;
 
 @Component({
 	moduleId: module.id,
-	selector: 'course-syllabus-dialog',
-	templateUrl: 'course-syllabus.dialog.component.html',
-	styleUrls: ['course-syllabus.dialog.component.css'],
+	selector: 'course-syllabus',
+	templateUrl: 'course-syllabus.component.html',
+	styleUrls: ['course-syllabus.component.css'],
 })
-export class CourseSyllabusDialog extends BaseComponent {
+export class CourseSyllabusComponent extends BaseComponent {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
-	WINDOW_HEIGHT: any;
 
 	private display: boolean;
 	private tree: TreeNode[];
@@ -41,15 +39,11 @@ export class CourseSyllabusDialog extends BaseComponent {
 	private course: Course;
 	private courseStatus: SelectItem[];
 
-  protected onEditCompleteReceiver: Subject<any> = new Subject();
-  onEditComplete: Observable<any> = this.onEditCompleteReceiver.asObservable();
-	
-
 	@ViewChild(CourseUnitDialog) unitDialog: CourseUnitDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(CourseSettingDialog) settingDialog: CourseSettingDialog;
 
-	constructor() {
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.items = [
@@ -69,17 +63,13 @@ export class CourseSyllabusDialog extends BaseComponent {
 				value: key
 			}
 		});
-		this.WINDOW_HEIGHT = $(window).height();
 	}
 
-	show(course: Course) {
-		this.display = true;
-		this.display = true;
-		this.course = course;
-		course.populateSyllabus(this).subscribe(()=> {
-			this.syl = course.syl;
-			this.buildCourseTree();
-		})
+	ngOnInit() {
+		this.units = [];
+		this.course = this.route.snapshot.data['course'];
+		this.syl = this.route.snapshot.data['syllabus'];
+		this.buildCourseTree();
 	}
 
 	clearSelection() {
@@ -88,10 +78,10 @@ export class CourseSyllabusDialog extends BaseComponent {
 	}
 
 	buildCourseTree() {
-			this.course.listUnits(this).subscribe(units => {
-				this.units = units;
-				this.tree = this.sylUtils.buildGroupTree(units);
-			});
+		this.course.listUnits(this).subscribe(units => {
+			this.units = units;
+			this.tree = this.sylUtils.buildGroupTree(units);
+		});
 	}
 
 	showSetting() {
@@ -123,7 +113,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 				this.sylUtils.addRootNode(this.tree, unit);
 			this.units.push(unit);
 			this.tree = this.sylUtils.buildGroupTree(this.units);
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 
@@ -132,7 +121,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.unitDialog.onUpdateComplete.first().subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 			this.tree = this.sylUtils.buildGroupTree(this.units);
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 
@@ -144,26 +132,22 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 			node.data.delete(this).subscribe(() => {
 				this.selectedNode = null;
-				this.units = _.reject(this.units, (unit:CourseUnit)=> {
+				this.units = _.reject(this.units, (unit: CourseUnit) => {
 					return unit.id == node.data.id
 				});
 				this.tree = this.sylUtils.buildGroupTree(this.units);
-				this.lmsProfileService.invalidateCourseContent(this.course.id);
 			})
 		});
 	}
 
-	hide() {
-		this.clearSelection();
-		this.display = false;
-		this.onEditCompleteReceiver.next();
+	back() {
+		this.location.back();
 	}
 
 	moveUp(node: TreeNode) {
 		this.sylUtils.moveUp(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
 			this.success(this.translateService.instant('Move sucessfully'));
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 
@@ -171,7 +155,6 @@ export class CourseSyllabusDialog extends BaseComponent {
 		this.sylUtils.moveDown(this.tree, node);
 		CourseUnit.updateArray(this, this.units).subscribe(() => {
 			this.success(this.translateService.instant('Move sucessfully'));
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
 		});
 	}
 

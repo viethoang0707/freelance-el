@@ -86,7 +86,6 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 		this.options.push(new QuestionOption());
 	}
 
-
 	removeOption(option: QuestionOption) {
 		if (option.id) {
 			option.delete(this).subscribe(() => {

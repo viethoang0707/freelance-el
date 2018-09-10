@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -71,9 +70,6 @@ export class CourseUnitPreviewDialog extends BaseComponent {
 		if (viewContainerRef)
 			viewContainerRef.clear();
 	}
-
-
-
 
 	nextUnitPreview() {
 		let viewContainerRef = this.unitHost.viewContainerRef;

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -19,19 +20,17 @@ import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
-	selector: 'course-publish-dialog',
-	templateUrl: 'course-publish.dialog.component.html',
-	styleUrls: ['course-publish.dialog.component.css'],
+	selector: 'course-publish',
+	templateUrl: 'course-publish.component.html',
+	styleUrls: ['course-publish.component.css'],
 })
-export class CoursePublishDialog extends BaseComponent {
+export class CoursePublishComponent extends BaseComponent implements OnInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
-	private display: boolean;
 	private tree: TreeNode[];
 	private syl: CourseSyllabus;
 	private selectedNode: TreeNode;
-	private items: MenuItem[];
 	private units: CourseUnit[];
 	private selectedUnit: CourseUnit;
 	private sylUtils: SyllabusUtils;
@@ -40,7 +39,7 @@ export class CoursePublishDialog extends BaseComponent {
 
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 
-	constructor() {
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.syl = new CourseSyllabus();
@@ -53,33 +52,19 @@ export class CoursePublishDialog extends BaseComponent {
 		});
 	}
 
-	show(course: Course) {
-		this.display = true;
-		this.course = course;
-		this.course.populateSyllabus(this).subscribe(()=> {
-			this.syl = this.course.syl;
-			this.buildCourseTree();
-		})
+	ngOnInit() {
+		this.course = this.route.snapshot.data['course'];
+		this.syl = this.route.snapshot.data['syllabus'];
+		this.course.listUnits(this).subscribe(units => {
+			this.units = units;
+			this.tree = this.sylUtils.buildGroupTree(units);
+		});
 	}
 
 	clearSelection() {
 		this.selectedNode = null;
 		this.selectedUnit = null;
 	}
-
-	buildCourseTree() {
-			this.course.listUnits(this).subscribe(units => {
-				this.units = units;
-				this.tree = this.sylUtils.buildGroupTree(units);
-			});
-		
-	}
-
-	hide() {
-		this.clearSelection();
-		this.display = false;
-	}
-
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
@@ -91,23 +76,23 @@ export class CoursePublishDialog extends BaseComponent {
 		}
 	}
 
-	previewUnit() {
-		if (this.selectedNode) {
-			this.selectedNode.data.course_id = this.course.id;
-			this.unitPreviewDialog.show(this.selectedNode.data, this.course, this.syl, this.units);
-		}
+	previewUnit(unit: CourseUnit) {
+		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
 	}
 
-	save() {
+	publish() {
 		var saveApiList = _.map(this.units, (unit: CourseUnit) => {
 			return unit.__api__update();
 		});
 		saveApiList.push(this.syl.__api__update());
 		BaseModel.bulk_update(this, ...saveApiList).subscribe(() => {
-			this.hide();
+			this.success('Course published successful');
 		});
 	}
 
+	back() {
+		this.location.back();
+	}
 
 }
 

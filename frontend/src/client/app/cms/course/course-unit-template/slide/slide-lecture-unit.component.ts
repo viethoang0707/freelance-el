@@ -53,8 +53,10 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 			data => {
 				if (data["result"]) {
 					this.ngZone.run(()=> {
-						if (file.name.endsWith('pdf'))
+						if (file.name.endsWith('pdf')) {
 							this.lecture.slide_url = data["url"];
+							this.lecture.slide_file_id = data["attachment_id"];
+						}
 						else {
 							var serverFile = data["filename"]
 							this.apiService.convert2Pdf(serverFile, this.authService.LoginToken).subscribe((data)=> {
@@ -66,7 +68,6 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 					this.ngZone.run(()=> {
 						this.percentage = +data;
 					});
-					
 				}
 			}
 		);
@@ -76,7 +77,5 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 		let file = event.files[0];
 		this.uploadFile(file);
 	}
-
-
 }
 

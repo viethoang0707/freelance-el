@@ -4,7 +4,7 @@ import { ErpSharedModule } from '../shared/shared.module';
 import { CMSComponent } from './cms.component';
 import { ExamContentDialog } from './exam/content-dialog/exam-content.dialog.component';
 import { ProjectContentDialog } from './project/content-dialog/project-content.dialog.component';
-import { CourseSyllabusDialog } from './course/course-syllabus/course-syllabus.dialog.component';
+import { CourseSyllabusComponent } from './course/course-syllabus/course-syllabus.component';
 import { SumPipe } from './exam/sum.pipe';
 import { CourseUnitContainerDirective } from './course/course-unit-template/unit-container.directive';
 import { FolderCourseUnitComponent } from './course/course-unit-template/folder/folder-unit.component';
@@ -23,15 +23,17 @@ import { SurveyContentDialog } from './survey/content-dialog/survey-content.dial
 import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-save.dialog.component';
 import { ValidateGradePipe } from './exam/exam-setting/grade.pipe';
 import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.component';
-import { CoursePublishDialog } from './course/course-publish/course-publish.dialog.component';
-import { CourseBackupDialog } from './course/course-backup/course-backup.dialog.component';
-import { CourseRestoreDialog } from './course/course-restore/course-restore.dialog.component';
+import { CoursePublishComponent } from './course/course-publish/course-publish.component';
+import { CourseBackupComponent } from './course/course-backup/course-backup.component';
+import { CourseRestoreComponent } from './course/course-restore/course-restore.component';
 import { QuestionSheetPreviewDialog } from './exam/question-sheet-preview/question-sheet-preview.dialog.component';
 import { SurveySheetPreviewDialog } from './survey/survey-sheet-preview/survey-sheet-preview.dialog.component';
 import { QuestionContainerDirective } from './question/question-container.directive';
 import { SingleChoiceQuestionComponent } from './question/single-choice-question/single-choice-question.component';
 import { OpenEndQuestionComponent } from './question/open-end-question/open-end-question.component';
 import { MultiChoiceQuestionComponent } from './question/multi-choice-question/multi-choice-question.component';
+import { CourseResolve, CourseSyllabusResolve } from './route.resolver';
+
 
 @NgModule({
 	imports: [
@@ -44,7 +46,7 @@ import { MultiChoiceQuestionComponent } from './question/multi-choice-question/m
 		ExamContentDialog,
 		CourseUnitPreviewDialog,
 		ProjectContentDialog,
-		CourseSyllabusDialog,
+		CourseSyllabusComponent,
 		CourseUnitContainerDirective,
 		FolderCourseUnitComponent,
 		CourseSettingDialog,
@@ -61,9 +63,9 @@ import { MultiChoiceQuestionComponent } from './question/multi-choice-question/m
 		SurveyContentDialog,
 		ValidateGradePipe,
 		ExamSettingDialog,
-		CoursePublishDialog,
-		CourseBackupDialog,
-		CourseRestoreDialog,
+		CoursePublishComponent,
+		CourseBackupComponent,
+		CourseRestoreComponent,
 		QuestionSheetPreviewDialog,
 		SurveySheetPreviewDialog,
 		QuestionContainerDirective,
@@ -73,19 +75,18 @@ import { MultiChoiceQuestionComponent } from './question/multi-choice-question/m
 	],
 	exports: [
 		ExamContentDialog,
-		CourseSyllabusDialog,
 		CourseUnitPreviewDialog,
 		CourseUnitContainerDirective,
 		ProjectContentDialog,
 		SurveyContentDialog,
-		CoursePublishDialog,
-		CourseBackupDialog,
-		CourseRestoreDialog,
 		QuestionSheetPreviewDialog,
 		SurveySheetPreviewDialog,
 		QuestionContainerDirective
 	],
-	providers: [],
+	providers: [
+		CourseResolve,
+		CourseSyllabusResolve
+	],
 	entryComponents: [
 		FolderCourseUnitComponent,
 		ExerciseCourseUnitComponent,

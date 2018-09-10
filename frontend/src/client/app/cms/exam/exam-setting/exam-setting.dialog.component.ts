@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -48,7 +47,7 @@ export class ExamSettingDialog extends BaseComponent {
         })
         exam.populateSetting(this).subscribe(() => {
             this.setting = exam.setting;
-        })
+        });
     }
 
     hide() {
@@ -61,7 +60,6 @@ export class ExamSettingDialog extends BaseComponent {
         grade.exam_id = this.exam.id;
         this.grades.push(grade);
     }
-
 
     saveExamSetting() {
         this.setting.save(this).subscribe(() => {

@@ -55,6 +55,7 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 				if (data["result"]) {
 					this.ngZone.run(() => {
 						this.lecture.package_url = data["url"];
+						this.lecture.package_file_id = data["attachment_id"];
 						var serverFile = data["filename"]
 						this.apiService.unzip(serverFile, this.authService.LoginToken)
 							.subscribe((data) => {
@@ -67,7 +68,6 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 						this.percentage = +data;
 					});
 				}
-
 			}, () => {
 			}
 		);

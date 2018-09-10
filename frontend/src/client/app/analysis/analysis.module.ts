@@ -33,13 +33,11 @@ import { CompetencyProfileChartContainerComponent } from './chart/competency-pro
 import { CompetencyProgressChartComponent } from './chart/competency-progress-chart/competency-progress-chart.component';
 import { CompetencyProgressChartContainerComponent } from './chart/competency-progress-chart/competency-progress-chart-container.component';
 import { CourseMemberActivityChartComponent } from './chart/course-member-activity-chart/course-member-activity-chart.component';
-import { AnalysisRoutingModule } from './analysis-routing';
 import { UserStatusChartComponent } from './chart/user-status-chart/user-status-chart.component';
 import { UserStatusChartContainerComponent } from './chart/user-status-chart/user-status-chart-container.component';
 
 @NgModule({
 	imports: [
-		AnalysisRoutingModule,
 		ErpSharedModule,
 		AuthModule
 	],

@@ -12,9 +12,7 @@ import { Token } from '../../shared/models/cloud/token.model';
 
 export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
-    
     @Input() recover_email: string;
-
 
     constructor() { 
       super(); 

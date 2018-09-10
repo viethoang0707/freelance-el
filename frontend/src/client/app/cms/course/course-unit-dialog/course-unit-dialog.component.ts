@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
@@ -28,14 +27,12 @@ import { GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE
 export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 
 	private componentRef: any;
-	private treeUtils: TreeUtils;
 	private contentStatus: SelectItem[];
 
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
 	constructor( private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
-		this.treeUtils = new TreeUtils();
 		this.contentStatus = _.map(CONTENT_STATUS, (val, key) => {
 			return {
 				label: this.translateService.instant(val),
@@ -58,7 +55,6 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 				viewContainerRef.clear();
 				this.componentRef = null;
 			}
-
 		});
 		this.onUpdateComplete.subscribe(object => {
 			if (this.componentRef)

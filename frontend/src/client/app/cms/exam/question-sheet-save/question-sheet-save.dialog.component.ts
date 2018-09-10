@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -45,7 +44,6 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 	save() {
 		var sheet = new QuestionSheet();
 		sheet.name = this.sheet.name;
-		
 		sheet.save(this).subscribe(()=> {
 			var examQuestions = _.map(this.examQuestions, question=> {
 				var questionTempl = question.clone();
@@ -53,8 +51,6 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 				questionTempl.sheet_id =  sheet.id;
 				return questionTempl;
 			});
-			// ExamQuestion.createArray(this, examQuestions).subscribe(()=> {
-			// 	this.success(this.translateService.instant('Question sheet saved successfully'));
 			var subscriptions = _.map(examQuestions, examQuestion=> {
 				return examQuestion.save(this);
 			});

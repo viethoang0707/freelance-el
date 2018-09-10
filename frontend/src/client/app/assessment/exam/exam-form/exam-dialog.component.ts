@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -26,7 +25,7 @@ export class ExamDialogComponent extends BaseDialog<Exam> {
 
     @ViewChild(ExamFormContentComponent) formContent: ExamFormContentComponent;
 
-    constructor(private router: Router, private route: ActivatedRoute, private http: Http) {
+    constructor() {
         super();
         this.editor = new ExamMember();
     }

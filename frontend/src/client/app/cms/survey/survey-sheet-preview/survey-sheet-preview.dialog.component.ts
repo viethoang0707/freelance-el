@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -26,7 +25,7 @@ import * as _ from 'underscore';
     styleUrls: ['survey-sheet-preview.dialog.component.css'],
 })
 export class SurveySheetPreviewDialog extends BaseComponent {
-    
+
     private display: boolean;
     private surveyQuestions: SurveyQuestion[];
     private sheet: SurveySheet;
@@ -52,12 +51,12 @@ export class SurveySheetPreviewDialog extends BaseComponent {
 
     startPreReview() {
         this.sheet.listQuestions(this).subscribe(surveyQuestions => {
-            SurveyQuestion.populateQuestions(this, surveyQuestions).subscribe(()=> {
+            SurveyQuestion.populateQuestions(this, surveyQuestions).subscribe(() => {
                 this.surveyQuestions = surveyQuestions;
-                var questions = _.map(surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
+                var questions = _.map(surveyQuestions, (surveyQuestion: SurveyQuestion) => {
                     return surveyQuestion.question;
                 });
-                Question.listOptionsForArray(this,questions).subscribe(()=> {
+                Question.listOptionsForArray(this, questions).subscribe(() => {
                     var componentHostArr = this.questionsComponents.toArray();
                     for (var i = 0; i < surveyQuestions.length; i++) {
                         var surveyQuestion = surveyQuestions[i];
@@ -66,21 +65,19 @@ export class SurveySheetPreviewDialog extends BaseComponent {
                     }
                 });
             })
-            
-            
         });
     }
 
     displayQuestion(surveyQuestion: SurveyQuestion, componentHost) {
-            var detailComponent = QuestionRegister.Instance.lookup(surveyQuestion.question.type);
-            let viewContainerRef = componentHost.viewContainerRef;
-            if (detailComponent) {
-                let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
-                viewContainerRef.clear();
-                var componentRef = viewContainerRef.createComponent(componentFactory);
-                (<IQuestion>componentRef.instance).mode = 'preview';
-                (<IQuestion>componentRef.instance).render(surveyQuestion.question);
-            }
+        var detailComponent = QuestionRegister.Instance.lookup(surveyQuestion.question.type);
+        let viewContainerRef = componentHost.viewContainerRef;
+        if (detailComponent) {
+            let componentFactory = this.componentFactoryResolver.resolveComponentFactory(detailComponent);
+            viewContainerRef.clear();
+            var componentRef = viewContainerRef.createComponent(componentFactory);
+            (<IQuestion>componentRef.instance).mode = 'preview';
+            (<IQuestion>componentRef.instance).render(surveyQuestion.question);
+        }
     }
 }
 

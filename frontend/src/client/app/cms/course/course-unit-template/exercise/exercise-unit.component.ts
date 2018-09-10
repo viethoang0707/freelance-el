@@ -20,6 +20,8 @@ import { QuestionSheetPreviewDialog } from '../../../exam/question-sheet-preview
 import { QuestionSheetEditorDialog } from '../../../exam/question-sheet-editor/question-sheet-editor.dialog.component';
 import { SelectQuestionSheetDialog } from '../../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
 
+const QUESTION_FIELS = ['title', 'group_name'];
+
 @Component({
 	moduleId: module.id,
 	selector: 'exercise-course-unit',
@@ -56,7 +58,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		this.unit.populateExercise(this).subscribe(() => {
 			this.unit.exercise.populateSheet(this).subscribe(() => {
 				this.sheet = this.unit.exercise.sheet;
-				this.sheet.listQuestions(this).subscribe(examQuestions => {
+				this.sheet.listQuestions(this,QUESTION_FIELS).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 				});
 			});

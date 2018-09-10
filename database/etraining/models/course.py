@@ -266,7 +266,8 @@ class VideoLecture(models.Model):
 class SelfAssessment(models.Model):
 	_name = 'etraining.self_assessment'
 
-	exam_id = fields.Many2one('etraining.exam', string='Self-assessment')
+	exam_id = fields.Many2one('etraining.exam', string='Exam')
+	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet', related="exam_id.sheet_id")
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 
 class Exerise(models.Model):
