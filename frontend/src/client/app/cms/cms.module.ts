@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
 import { CMSComponent } from './cms.component';
-import { ExamContentDialog } from './exam/exam-content/exam-content.dialog.component';
-import { ExamContent } from './exam/exam-content/exam-content.component';
-import { ExamContentFormCoponent } from './exam/exam-content/exam-content-form.component';
+import { ExamEditorDialog } from './exam/exam-editor/exam-editor.dialog.component';
+import { ExamEditor } from './exam/exam-editor/exam-editor.component';
+import { ExamEditorFormCoponent } from './exam/exam-editor/exam-editor-form.component';
 import { ProjectContentDialog } from './project/project-content/project-content.dialog.component';
 import { CourseSyllabusComponent } from './course/course-syllabus/course-syllabus.component';
 import { SumPipe } from './exam/sum.pipe';
@@ -21,9 +21,9 @@ import { CourseUnitPreviewDialog } from './course/course-unit-preview-dialog/cou
 import { CourseSettingDialog } from './course/course-setting/course-setting.dialog.component';
 import { QuestionSheetEditorDialog } from './exam/question-sheet-editor/question-sheet-editor.dialog.component';
 import { QuestionSheetSaveDialog } from './exam/question-sheet-save/question-sheet-save.dialog.component';
-import { SurveyContentDialog } from './survey/survey-content/survey-content.dialog.component';
-import { SurveyContent } from './survey/survey-content/survey-content.component';
-import { SurveyContentFormComponent } from './survey/survey-content/survey-content-form.component';
+import { SurveyEditorDialog } from './survey/survey-editor/survey-editor.dialog.component';
+import { SurveyEditor } from './survey/survey-editor/survey-editor.component';
+import { SurveyEditorFormComponent } from './survey/survey-editor/survey-editor-form.component';
 import { SurveySheetSaveDialog } from './survey/survey-sheet-save/survey-sheet-save.dialog.component';
 import { ValidateGradePipe } from './exam/exam-setting/grade.pipe';
 import { ExamSettingDialog } from './exam/exam-setting/exam-setting.dialog.component';
@@ -47,9 +47,9 @@ import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve
 	declarations: [
 		CMSComponent,
 		SumPipe,
-		ExamContentDialog,
-		ExamContent, 
-		ExamContentFormCoponent,
+		ExamEditorDialog,
+		ExamEditor, 
+		ExamEditorFormCoponent,
 		CourseUnitPreviewDialog,
 		ProjectContentDialog,
 		CourseSyllabusComponent,
@@ -66,9 +66,9 @@ import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve
 		HtmlLectureCourseUnitComponent,
 		SelfAssessmentCourseUnitComponent,
 		CourseUnitDialog,
-		SurveyContentDialog,
-		SurveyContent,
-		SurveyContentFormComponent,
+		SurveyEditorDialog,
+		SurveyEditor,
+		SurveyEditorFormComponent,
 		ValidateGradePipe,
 		ExamSettingDialog,
 		CoursePublishComponent,
@@ -82,11 +82,11 @@ import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve
 		OpenEndQuestionComponent,
 	],
 	exports: [
-		ExamContentDialog,
+		ExamEditorDialog,
 		CourseUnitPreviewDialog,
 		CourseUnitContainerDirective,
 		ProjectContentDialog,
-		SurveyContentDialog,
+		SurveyEditorDialog,
 		QuestionSheetPreviewDialog,
 		SurveySheetPreviewDialog,
 		QuestionContainerDirective

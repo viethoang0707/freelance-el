@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { Course } from '../../../shared/models/elearning/course.model';
@@ -42,7 +43,7 @@ export class CourseEnrollDialog extends BaseDialog<Course> {
 	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
-	constructor() {
+	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
 		this.items = [
 			{ label: this.translateService.instant('Student'), value: 'student', command: () => { this.addStudent() } },

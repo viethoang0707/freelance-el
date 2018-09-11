@@ -20,10 +20,10 @@ import { SelectQuestionsDialog } from '../../../shared/components/select-questio
 
 @Component({
 	moduleId: module.id,
-	selector: 'survey-content',
-	templateUrl: 'survey-content.component.html',
+	selector: 'survey-editor',
+	templateUrl: 'survey-editor.component.html',
 })
-export class SurveyContent extends BaseComponent {
+export class SurveyEditor extends BaseComponent {
 
 	private survey: Survey;
 	private sheet: SurveySheet;

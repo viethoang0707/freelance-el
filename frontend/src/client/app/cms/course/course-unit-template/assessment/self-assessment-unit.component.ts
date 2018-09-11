@@ -11,7 +11,7 @@ import { CourseUnitTemplate } from '../unit.decorator';
 import { ICourseUnitDesign } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import { BaseModel } from '../../../../shared/models/base.model';
-import { ExamContentDialog } from '../../../exam/exam-content/exam-content.dialog.component';
+import { ExamEditorDialog } from '../../../exam/exam-editor/exam-editor.dialog.component';
 import { QuestionSheetPreviewDialog } from '../../../exam/question-sheet-preview/question-sheet-preview.dialog.component';
 
 @Component({
@@ -28,7 +28,7 @@ export class SelfAssessmentCourseUnitComponent extends BaseComponent implements 
 	private assessment: SelfAssessment;
 
 	@Input() mode;
-	@ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
+	@ViewChild(ExamEditorDialog) examContentDialog: ExamEditorDialog;
 	@ViewChild(QuestionSheetPreviewDialog) previewDialog: QuestionSheetPreviewDialog;
 
 	constructor() {

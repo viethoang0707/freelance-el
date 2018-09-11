@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { CompetencyComponent } from './competency.component'
 import { CompetencyListComponent } from './competency-list/competency-list.component';
-import { CompetencyDialog } from './competency-dialog/competency-dialog.component';
 import { AdminGuard } from '../shared/guards/admin.guard';
 import { GroupListComponent } from '../shared/components/group-list/group-list.component';
 import { CompetencyMatrixComponent } from './competency-matrix/competency-matrix.component';
-import { RouterModule } from '@angular/router';
+import { CompetencyFormComponent } from './competency-form/competency-form.component';
+import { CompetencyViewComponent } from './competency-view/competency-view.component';
+import { CompetencyResolve } from './route.resolver';
 
 export const CompetencyRoutes: Routes = [
   {
@@ -22,8 +23,28 @@ export const CompetencyRoutes: Routes = [
         path: "list",
         component: CompetencyListComponent,
         data: {
-          breadcrumb: 'List'
+          breadcrumb: 'Competency list'
         }
+      },
+      {
+        path: "form/:competencyId",
+        component: CompetencyFormComponent,
+        data: {
+          breadcrumb: 'Competency form'
+        },
+        resolve: {
+          competency: CompetencyResolve,
+        },
+      },
+      {
+        path: "view/:competencyId",
+        component: CompetencyViewComponent,
+        data: {
+          breadcrumb: 'Competency view'
+        },
+        resolve: {
+          competency: CompetencyResolve,
+        },
       },
       {
         path: "matrix",
@@ -45,8 +66,4 @@ export const CompetencyRoutes: Routes = [
 
 ]
 
-@NgModule({
-  imports: [RouterModule.forChild(CompetencyRoutes)],
-  exports: [RouterModule]
-})
-export class CompetencyRoutingModule {}
+

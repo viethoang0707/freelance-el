@@ -23,10 +23,10 @@ import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 
 @Component({
 	moduleId: module.id,
-	selector: 'exam-content',
-	templateUrl: 'exam-content.component.html',
+	selector: 'exam-editor',
+	templateUrl: 'exam-editor.component.html',
 })
-export class ExamContent extends BaseComponent {
+export class ExamEditor extends BaseComponent {
 
 	QUESTION_LEVEL = QUESTION_LEVEL;
 

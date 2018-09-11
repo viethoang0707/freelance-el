@@ -1,0 +1,64 @@
+<div class="card card-w-title">
+    <h1>{{'Competency form'|translate}}</h1>
+    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+        <div class="ui-g ui-fluid form-group">
+            <div class=" ui-g-6">
+                <label for="name">{{'Name'|translate}}</label>
+                <input type="text" pInputText name="name" [(ngModel)]="competency.name" #name="ngModel" required>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
+                    <div *ngIf="name.errors.required">
+                        {{'Name is required' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-6">
+                <label>{{'Group'|translate}}</label>
+                <p-tree [value]="tree" selectionMode="single" required [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+                <input type="hidden" name="group" #group="ngModel" [(ngModel)]="competency.group_id" required>
+                <div *ngIf="group.invalid" class="ui-message ui-messages-error ui-corner-all">
+                    <div *ngIf="group.errors.required">
+                        {{'Group is required' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class=" ui-g-12">
+                <p-toolbar>
+                    <div class="ui-toolbar-group-left">
+                        <button pButton type="button" label="{{'New level'|translate}}" class="green-btn" (click)="addCompetencyLevel()" icon="ui-icon-add"></button>
+                    </div>
+                </p-toolbar>
+                <p-table #levelTable [value]="levels" [paginator]="false" [rows]="25" [(selection)]="selectedLevel" [responsive]="true" selectionMode="single">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>
+                                {{'Index'|translate}}
+                            </th>
+                            <th>
+                                {{'Name'|translate}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-level let-rowIndex="rowIndex">
+                        <tr [pSelectableRow]="level">
+                            <td>{{rowIndex+1}}</td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input type="text" name="name" [(ngModel)]="level.name">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{level.name}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid || loading"></button>
+            <button type="button" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Cancel'|translate}}"></button>
+        </div>
+    </form>
+</div>

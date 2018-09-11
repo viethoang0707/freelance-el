@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -34,7 +34,7 @@ export class ClassListDialog extends BaseComponent implements OnInit {
     @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
     @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
         this.classes = [];
         this.teachers = [];

@@ -10,12 +10,16 @@
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addCompetency()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editCompetency(selectedCompetency)" [disabled]="!selectedCompetency"></button>
+                    <button pButton type="button" label="{{'View'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="viewCompetency(selectedCompetency)" [disabled]="!selectedCompetency"></button>
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteCompetency(selectedCompetency)" [disabled]="!selectedCompetency"></button>
                 </div>
             </p-toolbar>
             <p-table #skillTable [value]="displayCompetencies" [paginator]="true" [rows]="25" [(selection)]="selectedCompetency" [responsive]="true" selectionMode="single">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
                         <th [pSortableColumn]="'name'">
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -37,8 +41,9 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-competency let-i="rowIndex">
+                <ng-template pTemplate="body" let-competency let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="competency">
+                        <td>{{rowIndex+1}}</td>
                         <td style="text-align: center;"> {{competency.name}}</td>
                         <td style="text-align: center;">{{competency.group_name}}</td>
                         <td>
@@ -52,7 +57,6 @@
                     {{'Total records'|translate}} : {{displayCompetencies?.length}}
                 </ng-template>
             </p-table>
-            <competency-dialog></competency-dialog>
         </div>
     </div>
 </div>

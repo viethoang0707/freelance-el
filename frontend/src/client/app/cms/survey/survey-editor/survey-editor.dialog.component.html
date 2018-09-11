@@ -1,6 +1,6 @@
-<p-dialog header="{{'Exam content'|translate}}" [(visible)]="display" modal="false" width="960" height="600" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
+<p-dialog header="{{'Survey content'|translate}}: {{survey.name}}" [(visible)]="display" modal="false" width="1000" height="100%" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
     <div class="spinner" [hidden]="!loading"></div>
-    <exam-content></exam-content>
+    <survey-editor></survey-editor>
     <p-footer>
         <button type="button" pButton icon="ui-icon-check" (click)="save()" label="{{'Save'|translate}}"></button>
         <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>

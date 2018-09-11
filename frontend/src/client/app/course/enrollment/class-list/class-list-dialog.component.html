@@ -17,6 +17,9 @@
             <p-table #classTable [value]="classes" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedClass" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
                         <th [pSortableColumn]=" 'name' ">
                             {{'Name'|translate}}
                             <p-sortIcon [field]=" 'name' "></p-sortIcon>
@@ -37,8 +40,9 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-courseClass>
+                <ng-template pTemplate="body" let-courseClass let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="courseClass ">
+                        <td>{{rowIndex+1}}</td>
                         <td style="text-align: left; ">{{courseClass.name}}</td>
                         <td style="text-align: left; ">{{courseClass.course_name}}</td>
                         <td >{{CLASS_STATUS[courseClass.status]}}</td>

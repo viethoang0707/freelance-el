@@ -63,10 +63,6 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     }
 
     ngOnInit() {
-        if (this.ContextUser.IsAdmin)
-            this.router.navigate(['/dashboard/admin']);
-        else
-            this.router.navigate(['/dashboard/lms']);
     }
 
     onWrapperClick() {

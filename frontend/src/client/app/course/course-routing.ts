@@ -46,8 +46,3 @@ export const CourseRoutes: Routes = [
 
 ]
 
-@NgModule({
-  imports: [RouterModule.forChild(CourseRoutes)],
-  exports: [RouterModule]
-})
-export class CourseRoutingModule {}

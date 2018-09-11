@@ -5,6 +5,9 @@
                 <p-table  #skillTable [value]="courses" [paginator]="true" [rows]="25" [responsive]="true" selectionMode="single">
                     <ng-template pTemplate="header">
                         <tr>
+                             <th>
+                            {{'Index'|translate}}
+                        </th>
                             <th [pSortableColumn]="'name'">
                                 {{'Course'|translate}}
                                 <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -23,8 +26,9 @@
                             </th> 
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-course let-i="rowIndex">
+                    <ng-template pTemplate="body" let-course let-rowIndex="rowIndex">
                         <tr [pSelectableRow]="course">
+                            <td>{{rowIndex+1}}</td>
                             <td style="text-align: left;">{{course.name}}</td>
                             <td style="text-align: left;">{{course.competency_group_name}}</td>
                             <td style="text-align: left;">{{course.competency_name}}</td>

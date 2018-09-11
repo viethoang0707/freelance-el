@@ -16,6 +16,9 @@
                                 <th style="width: 2.25em">
                                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                                 </th>
+                                <th>
+                            {{'Index'|translate}}
+                        </th>
                                 <th [pSortableColumn]="'name'">
                                     {{'Name'|translate}}
                                     <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -39,11 +42,12 @@
                                 </th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-member>
+                        <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                             <tr [pSelectableRow]="member ">
                                 <td>
                                     <p-tableCheckbox [value]="member"></p-tableCheckbox>
                                 </td>
+                                <td>{{rowIndex+1}}</td>
                                 <td style="text-align: left;">{{member.name}}</td>
                                 <td style="text-align: left;" width="250px">{{member.email}}</td>
                                 <td>{{member.phone}}</td>
@@ -72,6 +76,9 @@
                                 <th style="width: 2.25em">
                                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                                 </th>
+                                <th>
+                            {{'Index'|translate}}
+                        </th>
                                 <th [pSortableColumn]="'name'">
                                     {{'Name'|translate}}
                                     <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -91,11 +98,12 @@
                                 </th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-member>
+                        <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                             <tr [pSelectableRow]="member ">
                                 <td>
                                     <p-tableCheckbox [value]="member"></p-tableCheckbox>
                                 </td>
+                                <td>{{rowIndex+1}}</td>
                                 <td>{{member.name}}</td>
                                 <td>{{member.email}}</td>
                                 <td>{{member.phone}}</td>

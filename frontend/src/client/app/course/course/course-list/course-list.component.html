@@ -23,6 +23,9 @@
     <p-table #totalRecords #courseTable [value]="displayCourses" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
       <ng-template pTemplate="header">
         <tr>
+          <th>
+                            {{'Index'|translate}}
+                        </th>
           <th [pSortableColumn]="'name'">
             {{'Name'|translate}}
             <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -58,8 +61,9 @@
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-course>
+      <ng-template pTemplate="body" let-course let-rowIndex="rowIndex">
         <tr [pSelectableRow]="course">
+          <td>{{rowIndex+1}}</td>
           <td style="text-align: left;">{{course.name}}</td>
           <td class="showformb">{{course.code}}</td>
           <td class="showformb">{{COURSE_MODE[course.mode] | translate}}</td>

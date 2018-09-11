@@ -1,16 +1,17 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../shared/components/base/base.component';
-
 import { AuthService } from '../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../shared/models/constants'
 import { Competency } from '../../shared/models/elearning/competency.model';
 import { Group } from '../../shared/models/elearning/group.model';
-import { CompetencyDialog } from '../competency-dialog/competency-dialog.component';
 import { TreeUtils } from '../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { Course } from '../../shared/models/elearning/course.model';
+
+const COURSE_FIELDS = ['name', 'competency_group_name', 'competency_name', 'competency_level_name'];
+
 
 @Component({
     moduleId: module.id,

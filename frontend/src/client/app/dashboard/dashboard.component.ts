@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import { BaseComponent } from '../shared/components/base/base.component';
-import { HomeEventManager } from '../home/home-manager.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -11,7 +11,7 @@ export class DashboardComponent extends BaseComponent implements OnInit{
 
     private viewMode:string;
 
-    constructor(private eventManager: HomeEventManager) {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
         this.settingService.viewModeEvents.subscribe((mode:string) => {
             this.viewMode = mode;
@@ -19,7 +19,11 @@ export class DashboardComponent extends BaseComponent implements OnInit{
     }
 
     ngOnInit() {
-    	this.viewMode = this.settingService.ViewMode;
+        this.viewMode = this.settingService.ViewMode;
+        if (this.viewMode =='admin')
+            this.router.navigate(['/dashboard/admin']);
+        else
+            this.router.navigate(['/dashboard/lms']);
     }
 
 }

@@ -1,0 +1,45 @@
+<div class="card card-w-title">
+    <h1>{{'Competency view'|translate}}</h1>
+    <div class="ui-g ui-fluid form-group">
+        <div class="ui-g-6">
+            <div class="ui-g-3">
+                <label>{{'Name'|translate}}</label>
+            </div>
+            <div class="ui-g-9">
+                <span>{{competency.name}}</span>
+            </div>
+        </div>
+        <div class="ui-g-6">
+            <div class="ui-g-3">
+                <label>{{'Group'|translate}}</label>
+            </div>
+            <div class="ui-g-9">
+                <span>{{competency.group_name}}</span>
+            </div>
+        </div>
+        <div class=" ui-g-12 ">
+            <p-table #levelTable [value]="levels" [paginator]="false" [rows]="25" [(selection)]="selectedLevel" [responsive]="true" selectionMode="single">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
+                        <th>
+                            {{'Name'|translate}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-level let-rowIndex="rowIndex">
+                    <tr [pSelectableRow]="level">
+                        <td>{{rowIndex+1}}</td>
+                        <td>{{level.name}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="button" (click)="editCompetency()" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}"></button>
+        <button type="button" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
+    </div>
+</div>

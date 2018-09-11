@@ -12,6 +12,7 @@ import { WorkflowRoutes } from '../workflow/workflow-routing';
 import { CompetencyRoutes } from '../competency/competency-routing';
 import { SettingRoutes } from '../setting/setting-routing';
 import { APIResolver } from '../shared/guards/init.guard';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,10 @@ import { APIResolver } from '../shared/guards/init.guard';
         canActivate: [AuthGuard],
         resolve: { api: APIResolver },
         children: [
+          {
+            path: '',
+            component: DashboardComponent,
+          },
           ...DashboardRoutes,
           ...AccountRoutes,
           ...LMSRoutes,

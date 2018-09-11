@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {Location} from '@angular/common';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -20,42 +18,44 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionSheetDialog } from '../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
 import { TreeNode } from 'primeng/api';
-import { ExamSettingDialog } from '../exam-setting/exam-setting.dialog.component';
+import { ExamEditor } from './exam-editor.component';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
-import { ExamContent } from './exam-content.component';
 
 @Component({
 	moduleId: module.id,
-	selector: 'exam-content-form',
-	templateUrl: 'exam-content-form.component.html',
+	selector: 'exam-editor-dialog',
+	templateUrl: 'exam-editor.dialog.component.html',
 })
-export class ExamContentFormCoponent extends BaseComponent {
+export class ExamEditorDialog extends BaseComponent {
 
-	@ViewChild(ExamContent) examContent: ExamContent;
-
+	private display: boolean;
 	private exam: Exam;
 	private sheet: QuestionSheet;
 
-	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
+	@ViewChild(ExamEditor) examContent: ExamEditor;
+
+	constructor() {
 		super();
 		this.sheet = new QuestionSheet();
 		this.exam = new Exam();
 	}
 
-	ngOnInit() {
-		this.exam = this.route.snapshot.data['exam'];
-		this.sheet = this.route.snapshot.data['sheet'];
-		this.examContent.render(this.exam, this.sheet);
+	show(exam: Exam, sheet:QuestionSheet) {
+		this.display = true;
+		this.exam = exam;
+		this.sheet = sheet;
+		this.examContent.render(exam, sheet);
 	}
 
 	save() {
 		this.examContent.save().subscribe(()=> {
-			this.location.back();
+			this.hide();
 		});
 	}
 
-	back() {
-		this.location.back();
+	hide() {
+		this.display = false;
 	}
 
+	
 }

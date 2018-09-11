@@ -28,11 +28,11 @@ import { ProjectManageDialog } from '../project-manage/project-manage.dialog.com
 import { ProjectContentDialog } from '../../../cms/project/project-content/project-content.dialog.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
-import { ExamContentDialog } from '../../../cms/exam/exam-content/exam-content.dialog.component';
+import { ExamEditorDialog } from '../../../cms/exam/exam-editor/exam-editor.dialog.component';
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
-import { SurveyContentDialog } from '../../../cms/survey/survey-content/survey-content.dialog.component';
+import { SurveyEditorDialog } from '../../../cms/survey/survey-editor/survey-editor.dialog.component';
 import { ClassSurveyEnrollDialog } from '../class-survey-enroll/class-survey-enroll.dialog.component';
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
 import { Conference } from '../../../shared/models/elearning/conference.model';
@@ -79,9 +79,9 @@ export class ClassManageComponent extends BaseComponent {
 	@ViewChild(ProjectContentDialog) projectContentDialog: ProjectContentDialog;
 	@ViewChild(ProjectManageDialog) projectManageDialog: ProjectManageDialog;
 	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
-	@ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
+	@ViewChild(ExamEditorDialog) examContentDialog: ExamEditorDialog;
 	@ViewChild(ClassSurveyEnrollDialog) enrollDialog: ClassSurveyEnrollDialog;
-	@ViewChild(SurveyContentDialog) surveyContentDialog: SurveyContentDialog;
+	@ViewChild(SurveyEditorDialog) surveyContentDialog: SurveyEditorDialog;
 	@ViewChild(SurveyStatsDialog) statsDialog: SurveyStatsDialog;
 	@ViewChild(ClassMemberActivityDialog) memberActivityChart: ClassMemberActivityDialog;
 

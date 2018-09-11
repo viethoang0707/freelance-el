@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Location } from '@angular/common';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -18,41 +16,45 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectSurveySheetDialog } from '../../../shared/components/select-survey-sheet-dialog/select-survey-sheet-dialog.component';
 import { TreeNode } from 'primeng/api';
-import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
-import { SurveyContent } from './survey-content.component';
+import { SurveyEditor } from './survey-editor.component';
 
 @Component({
 	moduleId: module.id,
-	selector: 'survey-content-form',
-	templateUrl: 'survey-content-form.component.html',
+	selector: 'survey-editor-dialog',
+	templateUrl: 'survey-editor.dialog.component.html',
 })
-export class SurveyContentFormComponent extends BaseComponent {
+export class SurveyEditorDialog extends BaseComponent {
 
+	private display: boolean;
 	private survey: Survey;
 	private sheet: SurveySheet;
 
-	@ViewChild(SurveyContent) surveyContent: SurveyContent;
+	@ViewChild(SurveyEditor) surveyContent: SurveyEditor;
 
 
-	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
+	constructor() {
 		super();
 		this.sheet = new SurveySheet();
 		this.survey = new Survey();
 	}
 
-	ngOnInit() {
-		this.survey = this.route.snapshot.data['exam'];
-		this.sheet = this.route.snapshot.data['sheet'];
+	show(survey: Survey,sheet:SurveySheet) {
+		this.display = true;
+		this.survey = survey;
+		this.sheet = sheet;
 		this.surveyContent.render(this.survey, this.sheet);
 	}
 
+	
 	save() {
-		this.surveyContent.save().subscribe(() => {
-			this.location.back();
-		});
+		this.surveyContent.save().subscribe(()=> {
+			this.hide();
+		})
 	}
 
-	back() {
-		this.location.back();
+	hide() {
+		this.display = false;
 	}
+
+	
 }

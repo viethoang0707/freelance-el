@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, COURSE_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
@@ -39,7 +39,7 @@ export class CourseEnrollmentListComponent extends BaseComponent {
     @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
     @ViewChild(ClassListDialog) classListDialog: ClassListDialog;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
         this.treeUtils = new TreeUtils();
     }

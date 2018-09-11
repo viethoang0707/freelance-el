@@ -22,6 +22,13 @@ export const DashboardRoutes: Routes = [
 		children:
 			[
 				{
+					path: "",
+					component: DashboardComponent,
+					data: {
+						breadcrumb: 'LMS'
+					},
+				},
+				{
 					path: "lms",
 					component: UserDashboardComponent,
 					data: {

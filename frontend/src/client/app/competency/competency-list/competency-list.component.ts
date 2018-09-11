@@ -1,13 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BaseComponent } from '../../shared/components/base/base.component';
-
 import { AuthService } from '../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../shared/models/constants'
 import { Competency } from '../../shared/models/elearning/competency.model';
 import { Group } from '../../shared/models/elearning/group.model';
-import { CompetencyDialog } from '../competency-dialog/competency-dialog.component';
 import { TreeUtils } from '../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { CompetencyLevel } from '../../shared/models/elearning/competency-level.model';
@@ -21,52 +20,37 @@ import { BaseModel } from '../../shared/models/base.model';
 })
 export class CompetencyListComponent extends BaseComponent {
 
-    @ViewChild(CompetencyDialog) competencyDialog: CompetencyDialog;
-
     private tree: TreeNode[];
-    private items: MenuItem[];
     private competencies: Competency[];
     private levels: CompetencyLevel[];
     private displayCompetencies: Competency[];
     private selectedGroupNodes: TreeNode[];
-    private treeUtils: TreeUtils;
     private selectedCompetency: any;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
-        this.treeUtils = new TreeUtils();
         this.competencies = [];
     }
 
     ngOnInit() {
         Group.listCompetencyGroup(this).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
+            var treeUtils = new TreeUtils()
+            this.tree = treeUtils.buildGroupTree(groups);
         })
         this.loadCompetencies();
     }
 
 
     addCompetency() {
-        var competency = new Competency();
-        this.competencyDialog.show(competency);
-        this.competencyDialog.onCreateComplete.first().subscribe(() => {
-            // refresh to get summary
-            competency.populate(this).subscribe(() => {
-                this.competencies.unshift(competency);
-                this.displayCompetencies = [...this.competencies];
-                this.success('Add competency successfully');
-            });
-        });
+        this.router.navigate(['/competency/form']);
     }
 
     editCompetency(competency: Competency) {
-        competency.populate(this).subscribe(() => {
-            this.competencyDialog.show(competency);
-            this.competencyDialog.onUpdateComplete.subscribe(() => {
-                this.selectedGroupNodes = [];
-                this.loadCompetencies();
-            });
-        })
+        this.router.navigate(['/competency/form', competency.id]);
+    }
+
+    viewCompetency(competency: Competency) {
+        this.router.navigate(['/competency/view', competency.id]);
     }
 
     deleteCompetency(competency: Competency) {
@@ -109,6 +93,4 @@ export class CompetencyListComponent extends BaseComponent {
             this.displayCompetencies = this.competencies;
         }
     }
-
-
 }
