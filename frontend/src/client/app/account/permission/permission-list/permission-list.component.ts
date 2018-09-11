@@ -57,7 +57,7 @@ export class PermissionListComponent extends BaseComponent {
                         return perm.id == permission.id;
                     });
                     this.selectedPermission =  null;
-                    this.success('Delete permission successfully');
+                    this.success(this.translateService.instant('Delete permission successfully'));
                 })
             });
         }

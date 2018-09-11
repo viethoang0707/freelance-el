@@ -54,14 +54,14 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     deleteCompetency(competency: Competency) {
-        this.confirm('Are you sure to delete?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             competency.delete(this).subscribe(() => {
                 this.selectedCompetency = null;
                 this.loadCompetencies();
                 this.competencies = _.reject(this.competencies, (obj: Competency) => {
                     return competency.id == obj.id;
                 });
-                this.success('Delete competency successfully');
+                this.success(this.translateService.instant('Delete competency successfully'));
             });
         });
     }

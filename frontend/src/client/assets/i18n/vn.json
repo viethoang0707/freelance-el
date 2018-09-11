@@ -636,6 +636,16 @@
 	"Compose": "Biên soạn",
 	"Exam setting": "Cài đặt kỳ thi",
 	"Save survey sheet": "Lưu mẫu khảo sát",
-	"Name is requried": "Nhập tên là bắt buộc"
+	"Name is requried": "Nhập tên là bắt buộc",
+	"You cannot delete permission assigned to other uers": "Bạn không thể xóa quyền được gán cho người dùng khác",
+	"Delete permission successfully": "Xóa quyền thành công",
+	"Are you sure to remove ?": "Bạn chắc chắn muốn xóa không?",
+	"The group is used by another content.": "Nhóm này được sử dụng bởi một nội dung khác.",
+	"Delete competency successfully": "Xóa thành công năng lực",
+	"Reviewed": "Xét duyệt",
+	"Exam enroll": "Tuyển sinh kỳ thi",
+	"Index": "STT",
+	"Study time": "Thời gian làm bài",
+	"minutes": "phút"
 
 }
