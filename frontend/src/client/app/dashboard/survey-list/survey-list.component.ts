@@ -9,14 +9,13 @@ import { SurveyQuestion } from '../../shared/models/elearning/survey-question.mo
 import { Group } from '../../shared/models/elearning/group.model';
 import { SurveySubmission } from '../../shared/models/elearning/survey-submission.model';
 import { SelectItem } from 'primeng/api';
-import { SurveyContentDialog } from '../../cms/survey/content-dialog/survey-content.dialog.component';
 import { SurveyStudyDialog } from '../../lms/survey/survey-study/survey-study.dialog.component';
 import { ReportUtils } from '../../shared/helpers/report.utils';
 import { Route, Router } from '@angular/router';
 import { BaseModel } from '../../shared/models/base.model';
 import { User } from '../../shared/models/elearning/user.model';
 
-const SURVEY_FIELDS = ['status','review_state', 'name', 'create_date', 'write_date','supervisor_id', 'summary', 'instruction', 'start', 'end', 'question_count','sheet_status'];
+const SURVEY_FIELDS = ['status','review_state', 'name', 'create_date', 'write_date','supervisor_id', 'summary', 'instruction', 'start', 'end', 'sheet_id',  'question_count','sheet_status'];
 
 
 @Component({
@@ -34,7 +33,6 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     private reportUtils: ReportUtils;
     private surveyMembers: SurveyMember[];
 
-    @ViewChild(SurveyContentDialog) surveyContentDialog: SurveyContentDialog;
     @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
 
     constructor(private router: Router) {
@@ -69,9 +67,7 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     }
 
     editContent(survey: Survey) {
-        survey.populate(this).subscribe(()=> {
-            this.surveyContentDialog.show(survey);
-        });
+        this.router.navigate(['/cms/survey/compose', survey.id, survey.sheet_id]);
     }
 
     startSurvey(survey: Survey, member: SurveyMember) {

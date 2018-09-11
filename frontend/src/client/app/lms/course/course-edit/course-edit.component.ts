@@ -26,9 +26,7 @@ import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
-import { CourseSyllabusDialog } from '../../../cms/course/course-syllabus/course-syllabus.dialog.component';
-import { CourseBackupDialog } from '../../../cms/course/course-backup/course-backup.dialog.component';
-import { CourseRestoreDialog } from '../../../cms/course/course-restore/course-restore.dialog.component';
+
 @Component({
 	moduleId: module.id,
 	selector: 'course-edit',
@@ -57,9 +55,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
-	@ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
-	@ViewChild(CourseBackupDialog) backupDialog: CourseBackupDialog;
-	@ViewChild(CourseRestoreDialog) restoreDialog: CourseRestoreDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
@@ -96,90 +91,81 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	}
 
 	editSyllabus() {
-		this.syllabusDialog.show(this.course);
-		this.syllabusDialog.onEditComplete.first().subscribe(() => {
-				this.course.populate(this).subscribe(() => {
-					this.lmsProfileService.getCourseContent(this.member.course).subscribe(content => {
-						this.syl = content["syllabus"];
-						this.units = content["units"];
-						this.displayCouseSyllabus();
-					});
-				});
-		});
+		this.router.navigate(['/cms/course/compose', this.course.id, this.course.syllabus_id]);
 	}
 
 
 	addFaq() {
-				var faq = new CourseFaq();
-				faq.course_id = this.course.id;
-				this.faqDialog.show(faq);
-				this.faqDialog.onCreateComplete.first().subscribe(() => {
-					this.lmsProfileService.invalidateCourseContent(this.course.id);
-					this.faqs.push(faq);
-					this.success(this.translateService.instant('Add course FAQ successfully'));
-				});
-			}
+		var faq = new CourseFaq();
+		faq.course_id = this.course.id;
+		this.faqDialog.show(faq);
+		this.faqDialog.onCreateComplete.first().subscribe(() => {
+			this.lmsProfileService.invalidateCourseContent(this.course.id);
+			this.faqs.push(faq);
+			this.success(this.translateService.instant('Add course FAQ successfully'));
+		});
+	}
 
 	editFaq(faq: CourseFaq) {
-				this.faqDialog.show(faq);
-			}
+		this.faqDialog.show(faq);
+	}
 
 	deleteFaq(faq: CourseFaq) {
-				this.confirm('Are you sure to delete ?', () => {
-					faq.delete(this).subscribe(() => {
-						this.lmsProfileService.invalidateCourseContent(this.course.id);
-						this.faqs = _.reject(this.faqs, (obj: CourseFaq) => {
-							return faq.id == obj.id;
-						});
-						this.success(this.translateService.instant('Delete course FAQ successfully'));
-					})
+		this.confirm('Are you sure to delete ?', () => {
+			faq.delete(this).subscribe(() => {
+				this.lmsProfileService.invalidateCourseContent(this.course.id);
+				this.faqs = _.reject(this.faqs, (obj: CourseFaq) => {
+					return faq.id == obj.id;
 				});
-			}
+				this.success(this.translateService.instant('Delete course FAQ successfully'));
+			})
+		});
+	}
 
 	addMaterial() {
-				var material = new CourseMaterial();
-				material.course_id = this.course.id;
-				this.materialDialog.show(material);
-				this.materialDialog.onCreateComplete.first().subscribe(() => {
-					this.lmsProfileService.invalidateCourseContent(this.course.id);
-					this.materials.push(material);
-					this.success(this.translateService.instant('Add course material successfully'));
-				});
-			}
+		var material = new CourseMaterial();
+		material.course_id = this.course.id;
+		this.materialDialog.show(material);
+		this.materialDialog.onCreateComplete.first().subscribe(() => {
+			this.lmsProfileService.invalidateCourseContent(this.course.id);
+			this.materials.push(material);
+			this.success(this.translateService.instant('Add course material successfully'));
+		});
+	}
 
 	editMaterial(material: CourseMaterial) {
-				this.materialDialog.show(material);
-			}
+		this.materialDialog.show(material);
+	}
 
 	deleteMaterial(material: CourseMaterial) {
-				this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-					material.delete(this).subscribe(() => {
-						this.lmsProfileService.invalidateCourseContent(this.course.id);
-						this.materials = _.reject(this.materials, (obj: CourseMaterial) => {
-							return material.id == obj.id;
-						});
-						this.success(this.translateService.instant('Delete course material successfully'));
-					});
+		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+			material.delete(this).subscribe(() => {
+				this.lmsProfileService.invalidateCourseContent(this.course.id);
+				this.materials = _.reject(this.materials, (obj: CourseMaterial) => {
+					return material.id == obj.id;
 				});
-			}
+				this.success(this.translateService.instant('Delete course material successfully'));
+			});
+		});
+	}
 
 	nodeSelect(event: any) {
-				if(this.selectedNode) {
-					this.selectedUnit = this.selectedNode.data;
-				}
-			}
+		if (this.selectedNode) {
+			this.selectedUnit = this.selectedNode.data;
+		}
+	}
 
 	previewUnit(unit: CourseUnit) {
-				this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
-			}
+		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
+	}
 
 	backupCourse() {
-				this.backupDialog.show(this.course);
-			}
+		this.router.navigate(['/cms/course/backup', this.course.id, this.course.syllabus_id]);
+	}
 
 	restoreCourse() {
-				this.restoreDialog.show(this.course);
-			}
+		this.router.navigate(['/cms/course/restore', this.course.id, this.course.syllabus_id]);
+	}
 
 }
 

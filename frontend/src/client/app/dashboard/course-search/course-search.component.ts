@@ -12,7 +12,6 @@ import { Competency } from '../../shared/models/elearning/competency.model';
 import { Group } from '../../shared/models/elearning/group.model';
 import { User } from '../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
-import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { BaseModel } from '../../shared/models/base.model';
 
 const COURSE_FIELDS = ['name', 'code', 'mode','summary' ,'logo', 'status','description', 'author_name', 'group_name', 'unit_count'];

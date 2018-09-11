@@ -11,7 +11,7 @@ import { CourseUnitTemplate } from '../unit.decorator';
 import { ICourseUnitDesign } from '../unit.interface';
 import { CourseUnit } from '../../../../shared/models/elearning/course-unit.model';
 import { BaseModel } from '../../../../shared/models/base.model';
-import { ExamContentDialog } from '../../../exam/content-dialog/exam-content.dialog.component';
+import { ExamContentDialog } from '../../../exam/exam-content/exam-content.dialog.component';
 import { QuestionSheetPreviewDialog } from '../../../exam/question-sheet-preview/question-sheet-preview.dialog.component';
 
 @Component({

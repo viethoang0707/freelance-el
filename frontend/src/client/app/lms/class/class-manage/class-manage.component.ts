@@ -25,14 +25,14 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Project } from '../../../shared/models/elearning/project.model';
 import { ProjectManageDialog } from '../project-manage/project-manage.dialog.component';
-import { ProjectContentDialog } from '../../../cms/project/content-dialog/project-content.dialog.component';
+import { ProjectContentDialog } from '../../../cms/project/project-content/project-content.dialog.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
-import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
+import { ExamContentDialog } from '../../../cms/exam/exam-content/exam-content.dialog.component';
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
-import { SurveyContentDialog } from '../../../cms/survey/content-dialog/survey-content.dialog.component';
+import { SurveyContentDialog } from '../../../cms/survey/survey-content/survey-content.dialog.component';
 import { ClassSurveyEnrollDialog } from '../class-survey-enroll/class-survey-enroll.dialog.component';
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
 import { Conference } from '../../../shared/models/elearning/conference.model';
@@ -140,145 +140,145 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	viewChart(member: CourseMember) {
-				this.memberActivityChart.show(member);
-			}
+		this.memberActivityChart.show(member);
+	}
 
 	viewGradebook(student: CourseMember) {
-				this.gradebookDialog.show(this.member, student);
-			}
+		this.gradebookDialog.show(this.member, student);
+	}
 
 	viewLMSProfile(member: CourseMember) {
-				this.lmsProfileDialog.show(member);
-			}
+		this.lmsProfileDialog.show(member);
+	}
 
 	loadMemberStats(logs: CourseLog[]) {
-				this.studentRecords = _.filter(this.courseMembers, (member: CourseMember) => {
-					return member.role == 'student';
-				});
-				var totalUnit = this.course.unit_count;
-				_.each(this.studentRecords, (record => {
-					var certificate = _.find(this.certificates, (cert: Certificate) => {
-						return cert.member_id == record["id"];
-					});
-					if (certificate)
-						record["certificate"] = certificate.name;
-					else
-						record["certificate"] = '';
-					var memberLogs = _.filter(logs, (log: CourseLog) => {
-						return log.member_id == record["id"];
-					})
-					var result = this.reportUtils.analyzeCourseMemberActivity(memberLogs);
-					if (result[0])
-						record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
-					if (result[1])
-						record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
-					record["time_spent"] = this.timePipe.transform(+result[2], 'min');
-					if (totalUnit)
-						record["completion"] = Math.floor(+result[3] * 100 / +totalUnit);
-					else
-						record["completion"] = 0;
-					record["logs"] = memberLogs;
-				}));
-			}
+		this.studentRecords = _.filter(this.courseMembers, (member: CourseMember) => {
+			return member.role == 'student';
+		});
+		var totalUnit = this.course.unit_count;
+		_.each(this.studentRecords, (record => {
+			var certificate = _.find(this.certificates, (cert: Certificate) => {
+				return cert.member_id == record["id"];
+			});
+			if (certificate)
+				record["certificate"] = certificate.name;
+			else
+				record["certificate"] = '';
+			var memberLogs = _.filter(logs, (log: CourseLog) => {
+				return log.member_id == record["id"];
+			})
+			var result = this.reportUtils.analyzeCourseMemberActivity(memberLogs);
+			if (result[0])
+				record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
+			if (result[1])
+				record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
+			record["time_spent"] = this.timePipe.transform(+result[2], 'min');
+			if (totalUnit)
+				record["completion"] = Math.floor(+result[3] * 100 / +totalUnit);
+			else
+				record["completion"] = 0;
+			record["logs"] = memberLogs;
+		}));
+	}
 
 	checkUnitComplete(record, unit) {
-				let log: CourseLog = _.find(record["logs"], log => {
-					return log.res_model == CourseUnit.Model && log.res_id == unit.id && log.code == 'COMPLETE_COURSE_UNIT';
-				});
-				if(log)
+		let log: CourseLog = _.find(record["logs"], log => {
+			return log.res_model == CourseUnit.Model && log.res_id == unit.id && log.code == 'COMPLETE_COURSE_UNIT';
+		});
+		if (log)
 			return this.translateService.instant('Finished');
-				else
+		else
 			return this.translateService.instant('Unfinished');
-			}
+	}
 
 	addProject() {
-				var project = new Project();
-				project.class_id = this.courseClass.id;
-				project.course_id = this.courseClass.course_id;
-				this.projectContentDialog.show(project);
-				this.projectContentDialog.onCreateComplete.first().subscribe(() => {
-					this.projects.push(project);
-					this.lmsProfileService.invalidateClassContent(this.courseClass.id);
-				});
-			}
+		var project = new Project();
+		project.class_id = this.courseClass.id;
+		project.course_id = this.courseClass.course_id;
+		this.projectContentDialog.show(project);
+		this.projectContentDialog.onCreateComplete.first().subscribe(() => {
+			this.projects.push(project);
+			this.lmsProfileService.invalidateClassContent(this.courseClass.id);
+		});
+	}
 
 	editProject(project: Project) {
-				this.projectContentDialog.show(project);
-			}
+		this.projectContentDialog.show(project);
+	}
 
 	deleteProject(project: Project) {
-				this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-					project.delete(this).subscribe(() => {
-						this.success(this.translateService.instant('Project deleted'));
-						this.lmsProfileService.invalidateClassContent(this.courseClass.id);
-						this.projects = _.reject(this.projects, (obj: Project) => {
-							return obj.id == project.id;
-						})
-					});
-				});
-			}
+		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+			project.delete(this).subscribe(() => {
+				this.success(this.translateService.instant('Project deleted'));
+				this.lmsProfileService.invalidateClassContent(this.courseClass.id);
+				this.projects = _.reject(this.projects, (obj: Project) => {
+					return obj.id == project.id;
+				})
+			});
+		});
+	}
 
 	markProject(project: Project) {
-				this.projectManageDialog.show(project, this.courseClass);
-			}
+		this.projectManageDialog.show(project, this.courseClass);
+	}
 
 	addExam() {
-				var exam = new Exam();
-				exam.is_public = false;
-				exam.supervisor_id = this.ContextUser.id;
-				exam.course_class_id = this.courseClass.id;
-				this.examDialog.show(exam);
-				this.examDialog.onCreateComplete.first().subscribe(() => {
-					this.lmsProfileService.invalidateClassContent(this.courseClass.id);
-					this.classExams.push(exam);
-				});
-			}
+		var exam = new Exam();
+		exam.is_public = false;
+		exam.supervisor_id = this.ContextUser.id;
+		exam.course_class_id = this.courseClass.id;
+		this.examDialog.show(exam);
+		this.examDialog.onCreateComplete.first().subscribe(() => {
+			this.lmsProfileService.invalidateClassContent(this.courseClass.id);
+			this.classExams.push(exam);
+		});
+	}
 
 	editExam(exam: Exam) {
-				this.examDialog.show(exam);
-			}
+		this.examDialog.show(exam);
+	}
 
 	enrollExam(exam: Exam) {
-				this.examEnrollDialog.show(exam, this.courseClass);
-			}
+		this.examEnrollDialog.show(exam, this.courseClass);
+	}
 
 	manageExam(exam: Exam) {
-				var member = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id) || this.lmsProfileService.getExamMemberByRole('teacher', exam.id);
-				this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
-			}
+		var member = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id) || this.lmsProfileService.getExamMemberByRole('teacher', exam.id);
+		this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
+	}
 
 	editExamContent(exam: Exam) {
-				this.examContentDialog.show(exam);
-			}
+		this.examContentDialog.show(exam);
+	}
 
 
 	enrollSurvey(survey: Survey) {
-				this.enrollDialog.show(survey, this.courseClass);
-			}
+		this.enrollDialog.show(survey, this.courseClass);
+	}
 
 	addSurvey() {
-				var survey = new Survey();
-				survey.is_public = false;
-				survey.supervisor_id = this.ContextUser.id;
-				survey.course_class_id = this.courseClass.id;
-				this.surveyDialog.show(survey);
-				this.surveyDialog.onCreateComplete.first().subscribe(() => {
-					this.lmsProfileService.invalidateClassContent(this.courseClass.id);
-					this.classSurveys.push(survey);
-				});
-			}
+		var survey = new Survey();
+		survey.is_public = false;
+		survey.supervisor_id = this.ContextUser.id;
+		survey.course_class_id = this.courseClass.id;
+		this.surveyDialog.show(survey);
+		this.surveyDialog.onCreateComplete.first().subscribe(() => {
+			this.lmsProfileService.invalidateClassContent(this.courseClass.id);
+			this.classSurveys.push(survey);
+		});
+	}
 
 	editSurvey(survey: Survey) {
-				this.surveyDialog.show(survey);
-			}
+		this.surveyDialog.show(survey);
+	}
 
 	viewReportSurvey(survey: Survey) {
-				this.statsDialog.show(survey);
-			}
+		this.statsDialog.show(survey);
+	}
 
 	editSurveyContent(survey: Survey) {
-				this.surveyContentDialog.show(survey);
-			}
+		this.surveyContentDialog.show(survey);
+	}
 
 
 

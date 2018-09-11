@@ -29,7 +29,6 @@ import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { ExamContentDialog } from '../../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../exam/exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { Route, } from '@angular/router';

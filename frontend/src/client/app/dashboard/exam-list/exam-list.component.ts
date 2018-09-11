@@ -9,7 +9,6 @@ import { ExamQuestion } from '../../shared/models/elearning/exam-question.model'
 import { Group } from '../../shared/models/elearning/group.model';
 import { Submission } from '../../shared/models/elearning/submission.model';
 import { SelectItem } from 'primeng/api';
-import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
 import { ReportUtils } from '../../shared/helpers/report.utils';
 import { Route, Router } from '@angular/router';
@@ -18,7 +17,7 @@ import { User } from '../../shared/models/elearning/user.model';
 import { ExamRecord } from '../../shared/models/elearning/exam-record.model';
 import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
 
-const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status'];
+const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 
 @Component({
     moduleId: module.id,
@@ -34,7 +33,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     private examMembers: ExamMember[];
     private reportUtils: ReportUtils;
 
-    @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
 
@@ -78,9 +76,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     editContent(exam: Exam) {
-        exam.populate(this).subscribe(() => {
-            this.examContentDialog.show(exam);
-        });
+        this.router.navigate(['/cms/exam/compose', exam.id, exam.sheet_id]);
     }
 
     publishExam(exam: Exam) {

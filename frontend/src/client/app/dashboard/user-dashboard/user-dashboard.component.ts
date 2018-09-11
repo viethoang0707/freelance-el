@@ -17,10 +17,8 @@ import { User } from '../../shared/models/elearning/user.model';
 import { GROUP_CATEGORY, CONFERENCE_STATUS, COURSE_MODE, COURSE_STATUS, EXAM_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants'
 import { CourseSyllabus } from '../../shared/models/elearning/course-syllabus.model';
 import { SelectItem } from 'primeng/api';
-import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { QuestionMarkingDialog } from '../../lms/exam/question-marking/question-marking.dialog.component';
 import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
-import { ExamContentDialog } from '../../cms/exam/content-dialog/exam-content.dialog.component';
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
 import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
 import { Submission } from '../../shared/models/elearning/submission.model';
@@ -28,11 +26,10 @@ import { BaseModel } from '../../shared/models/base.model';
 import { Survey } from '../../shared/models/elearning/survey.model';
 import { SurveyStudyDialog } from '../../lms/survey/survey-study/survey-study.dialog.component';
 import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
-import { CoursePublishDialog } from '../../cms/course/course-publish/course-publish.dialog.component';
 import * as _ from 'underscore';
 
-const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name'];
-const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status'];
+const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
+const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 const CLASS_FIELDS = ['start', 'end', 'name'];
 
 @Component({
@@ -57,11 +54,8 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     private header: any;
     private events: any[];
 
-    @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
-    @ViewChild(ExamContentDialog) examContentDialog: ExamContentDialog;
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
     @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
-    @ViewChild(CoursePublishDialog) publisiDialog: CoursePublishDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
 
     constructor(private meetingSerivce: MeetingService, private router: Router) {
@@ -189,10 +183,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     publishCourse(course: Course) {
-        course.populate(this).subscribe(() => {
-            this.publisiDialog.show(course);
-        });
-
+        this.router.navigate(['/cms/course/publish', course.id, course.syllabus_id]);
     }
 
     manageCourse(course: Course, member: CourseMember) {
@@ -204,10 +195,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editExamContent(exam: Exam) {
-        exam.populate(this).subscribe(() => {
-            this.examContentDialog.show(exam);
-        });
-
+       this.router.navigate(['/cms/exam/compose', exam.id, exam.sheet_id]);
     }
 
     startExam(exam: Exam, member: ExamMember) {

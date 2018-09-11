@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -24,10 +23,10 @@ import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 
 @Component({
 	moduleId: module.id,
-	selector: 'exam-content-dialog',
-	templateUrl: 'exam-content.dialog.component.html',
+	selector: 'exam-content',
+	templateUrl: 'exam-content.component.html',
 })
-export class ExamContentDialog extends BaseComponent {
+export class ExamContent extends BaseComponent {
 
 	QUESTION_LEVEL = QUESTION_LEVEL;
 
@@ -42,6 +41,7 @@ export class ExamContentDialog extends BaseComponent {
 	@ViewChild(QuestionSheetEditorDialog) editorDialog: QuestionSheetEditorDialog;
 	@ViewChild(QuestionSheetSaveDialog) saveDialog: QuestionSheetSaveDialog;
 	@ViewChild(ExamSettingDialog) settingDialog: ExamSettingDialog;
+
 	constructor() {
 		super();
 		this.sheet = new QuestionSheet();
@@ -49,48 +49,18 @@ export class ExamContentDialog extends BaseComponent {
 		this.exam = new Exam();
 	}
 
-	show(exam: Exam) {
-		this.display = true;
+	render(exam: Exam, sheet:QuestionSheet) {
 		this.exam = exam;
+		this.sheet = sheet;
 		this.examQuestions = [];
 		this.loadQuestionSheet();
 	}
 
 	loadQuestionSheet() {
-		this.exam.populateQuestionSheet(this).subscribe( ()=> {
-				this.sheet = this.exam.sheet;
-				this.sheet.listQuestions(this).subscribe(examQuestions => {
-					this.examQuestions = examQuestions;
-					this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
-				});
-		});
-	}
-
-	save() {
-		this.sheet.finalized = true;
-		this.sheet.save(this).subscribe(() => {
-			_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
-				examQuestion.sheet_id = this.sheet.id;
+			this.sheet.listQuestions(this).subscribe(examQuestions => {
+				this.examQuestions = examQuestions;
+				this.totalScore = _.reduce(examQuestions, (memo, q) => { return memo + +q.score; }, 0);
 			});
-			var newExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
-				return examQuestion.IsNew;
-			});
-			var existExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
-				return !examQuestion.IsNew;
-			});
-			ExamQuestion.createArray(this, newExamQuestions).subscribe(() => {
-				ExamQuestion.updateArray(this, existExamQuestions).subscribe(() => {
-					this.exam.question_count =  this.sheet.question_count = this.examQuestions.length;
-					this.hide();
-					this.success(this.translateService.instant('Content saved successfully.'));
-				});
-			});
-
-		});
-	}
-
-	hide() {
-		this.display = false;
 	}
 
 	showSetting() {
@@ -130,6 +100,25 @@ export class ExamContentDialog extends BaseComponent {
 		if (this.sheet && this.sheet.finalized) {
 			this.saveDialog.show(this.sheet, this.examQuestions);
 		}
+	}
+
+	save() {
+		this.sheet.finalized = true;
+		return this.sheet.save(this).flatMap(() => {
+			_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
+				examQuestion.sheet_id = this.sheet.id;
+			});
+			var newExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
+				return examQuestion.IsNew;
+			});
+			var existExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
+				return !examQuestion.IsNew;
+			});
+			return Observable.forkJoin(ExamQuestion.createArray(this, newExamQuestions), ExamQuestion.updateArray(this, existExamQuestions)).do(() => {
+					this.exam.question_count =  this.sheet.question_count = this.examQuestions.length;
+					this.success(this.translateService.instant('Content saved successfully.'));
+				});
+			});
 	}
 
 	designSheet() {

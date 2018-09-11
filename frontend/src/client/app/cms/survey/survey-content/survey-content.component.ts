@@ -20,12 +20,11 @@ import { SelectQuestionsDialog } from '../../../shared/components/select-questio
 
 @Component({
 	moduleId: module.id,
-	selector: 'survey-content-dialog',
-	templateUrl: 'survey-content.dialog.component.html',
+	selector: 'survey-content',
+	templateUrl: 'survey-content.component.html',
 })
-export class SurveyContentDialog extends BaseComponent {
+export class SurveyContent extends BaseComponent {
 
-	private display: boolean;
 	private survey: Survey;
 	private sheet: SurveySheet;
 	private surveyQuestions: SurveyQuestion[];
@@ -42,49 +41,33 @@ export class SurveyContentDialog extends BaseComponent {
 		this.survey = new Survey();
 	}
 
-	show(survey: Survey) {
-		this.display = true;
+	render(survey: Survey, sheet: SurveySheet) {
 		this.survey = survey;
+		this.sheet = sheet;
 		this.loadSurveynSheet();
 	}
 
 	loadSurveynSheet() {
-		SurveySheet.get(this, this.survey.sheet_id).subscribe(sheet => {
-			if (sheet) {
-				this.sheet = sheet;
-				this.sheet.listQuestions(this).subscribe(surveyQuestions => {
-					this.surveyQuestions = surveyQuestions;
-				});
-			}
-			else {
-				this.sheet = new SurveySheet();
-				this.sheet.survey_id = this.survey.id;
-				this.sheet.save(this).subscribe(sheet => {
-					this.sheet = sheet;
-				});
-			}
+		this.sheet.listQuestions(this).subscribe(surveyQuestions => {
+			this.surveyQuestions = surveyQuestions;
 		});
 	}
 
 	save() {
 		this.sheet.finalized = true;
-		this.sheet.save(this).subscribe(() => {
+		return this.sheet.save(this).flatMap(() => {
 			_.each(this.surveyQuestions, (surveyQyestion: SurveyQuestion) => {
-					surveyQyestion.sheet_id = this.sheet.id;
+				surveyQyestion.sheet_id = this.sheet.id;
 			});
-			var newSurveyQuestions = _.filter(this.surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
+			var newSurveyQuestions = _.filter(this.surveyQuestions, (surveyQuestion: SurveyQuestion) => {
 				return surveyQuestion.id == null;
 			});
-			SurveyQuestion.createArray(this, newSurveyQuestions).subscribe(() => {
-				this.hide();
+			return SurveyQuestion.createArray(this, newSurveyQuestions).do(() => {
 				this.success(this.translateService.instant('Content saved successfully.'));
 			});
 		});
 	}
 
-	hide() {
-		this.display = false;
-	}
 
 	previewSheet() {
 		this.previewDialog.show(this.sheet);
@@ -93,7 +76,7 @@ export class SurveyContentDialog extends BaseComponent {
 	clearSheet() {
 		this.sheet.finalized = false;
 		this.sheet.save(this).subscribe(() => {
-			var existSurveyQuestions = _.filter(this.surveyQuestions, (surveyQuestion:SurveyQuestion)=> {
+			var existSurveyQuestions = _.filter(this.surveyQuestions, (surveyQuestion: SurveyQuestion) => {
 				return surveyQuestion.id != null;
 			});
 			SurveyQuestion.deleteArray(this, existSurveyQuestions).subscribe(() => {
@@ -122,18 +105,18 @@ export class SurveyContentDialog extends BaseComponent {
 	}
 
 	designSheet() {
-		if (this.surveyQuestions.length == 0){
+		if (this.surveyQuestions.length == 0) {
 			this.selectQuestionDialog.show();
 			this.selectQuestionDialog.onSelectQuestions.first().subscribe(questions => {
-				this.surveyQuestions = _.map(questions, (question:Question) => {
+				this.surveyQuestions = _.map(questions, (question: Question) => {
 					var newSurveyQuestion = new SurveyQuestion();
 					newSurveyQuestion.question_id = question.id;
-					newSurveyQuestion.title =  question.title;
-					newSurveyQuestion.type =  question.type;
-					newSurveyQuestion.survey_id	 = this.survey.id;
-					newSurveyQuestion.group_id =  question.group_id;
-					newSurveyQuestion.group_name =  question.group_name;
-					newSurveyQuestion.content =  question.content;
+					newSurveyQuestion.title = question.title;
+					newSurveyQuestion.type = question.type;
+					newSurveyQuestion.survey_id = this.survey.id;
+					newSurveyQuestion.group_id = question.group_id;
+					newSurveyQuestion.group_name = question.group_name;
+					newSurveyQuestion.content = question.content;
 					return newSurveyQuestion;
 				});
 			});

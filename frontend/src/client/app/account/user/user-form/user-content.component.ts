@@ -14,10 +14,10 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 
 @Component({
 	moduleId: module.id,
-	selector: 'user-form-content',
-	templateUrl: 'user-form-content.component.html',
+	selector: 'user-content',
+	templateUrl: 'user-content.component.html',
 })
-export class UserFormContentComponent extends BaseComponent {
+export class UserContentComponent extends BaseComponent {
 
 	private tree: TreeNode[];
 	private selectedNode: any;

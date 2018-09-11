@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { ReportUtils } from '../../shared/helpers/report.utils';
@@ -12,11 +12,9 @@ import { CourseMember } from '../../shared/models/elearning/course-member.model'
 import { Group } from '../../shared/models/elearning/group.model';
 import { User } from '../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
-import { CourseSyllabusDialog } from '../../cms/course/course-syllabus/course-syllabus.dialog.component';
 import { BaseModel } from '../../shared/models/base.model';
-import { CoursePublishDialog } from '../../cms/course/course-publish/course-publish.dialog.component';
 
-const COURSE_FIELDS = ['status','review_state','name', 'write_date','create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name'];
+const COURSE_FIELDS = ['status','review_state','name', 'write_date','create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
 
 @Component({
     moduleId: module.id,
@@ -33,10 +31,9 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     private filteredCourses: Course[];
     private courseMembers: CourseMember[];
     private reportUtils: ReportUtils;
+
     @Input() keyword: string;
 
-    @ViewChild(CourseSyllabusDialog) syllabusDialog: CourseSyllabusDialog;
-    @ViewChild(CoursePublishDialog) publisiDialog: CoursePublishDialog;
 
     constructor(private router: Router) {
         super();
@@ -85,14 +82,12 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/view', course.id]);
     }
 
-    editSyllabus(course: Course, member: CourseMember) {
+    editCourse(course: Course, member: CourseMember) {
         this.router.navigate(['/lms/courses/edit', course.id, member.id]);
     }
 
     publishCourse(course: Course) {
-        course.populate(this).subscribe(()=> {
-            this.publisiDialog.show(course);
-        });
+        this.router.navigate(['/cms/course/publish', course.id, course.syllabus_id]);
     }
 
     manageCourse(course: Course, member: CourseMember) {

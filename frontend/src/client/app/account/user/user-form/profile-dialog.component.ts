@@ -6,7 +6,7 @@ import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseDialog } from '../../../shared/components/base/base.dialog';
 import { User } from '../../../shared/models/elearning/user.model';
 import * as _ from 'underscore';
-import { UserFormContentComponent } from './user-form-content.component';
+import { UserContentComponent } from './user-content.component';
 
 const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 
@@ -17,7 +17,7 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 })
 export class UserProfileDialogComponent extends BaseDialog<User> {
 	
-	@ViewChild(UserFormContentComponent) formContent: UserFormContentComponent;
+	@ViewChild(UserContentComponent) formContent: UserContentComponent;
 
 	private user: User;
 

@@ -1,7 +1,7 @@
 <div class="card card-w-title">
     <h1>{{'User form'|translate}}</h1>
     <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
-        <user-form-content></user-form-content>
+        <user-content></user-content>
         <div class="card-footer">
             <button type="submit" class="blue-grey-btn"pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid || loading"></button>
             <button type="button"class="blue-grey-btn" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>

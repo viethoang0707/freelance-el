@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
 import { User } from '../../shared/models/elearning/user.model';
 import { Course } from '../../shared/models/elearning/course.model';
@@ -43,7 +44,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
 
     @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
         this.header = SCHEDULER_HEADER;
         this.dateUtils =  new DateUtils();
@@ -96,7 +97,7 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
             var exam = _.find(this.exams, (exam)=> {
                 return exam.id == id;
             });
-            this.examDialog.show(exam);
+            this.router.navigate(['/assessment/exam/form', exam.id]);
         }
         if (model == CourseClass.Model) {
             var clazz = _.find(this.classes, (clazz:CourseClass)=> {

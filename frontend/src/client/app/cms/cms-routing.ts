@@ -4,10 +4,12 @@ import { AdminGuard } from '../shared/guards/admin.guard';
 import { RouterModule } from '@angular/router';
 import { CMSComponent } from './cms.component';
 import { CourseBackupComponent } from './course/course-backup/course-backup.component';
-import { CourseResolve, CourseSyllabusResolve } from './route.resolver';
+import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve, SurveyResolve, SurveySheetResolve } from './route.resolver';
 import { CoursePublishComponent } from './course/course-publish/course-publish.component';
 import { CourseRestoreComponent } from './course/course-restore/course-restore.component';
 import { CourseSyllabusComponent } from './course/course-syllabus/course-syllabus.component';
+import { SurveyContentFormComponent } from './survey/survey-content/survey-content-form.component';
+import { ExamContentFormCoponent } from './exam/exam-content/exam-content-form.component';
 
 export const CmsRoutes: Routes = [
   {
@@ -60,6 +62,28 @@ export const CmsRoutes: Routes = [
           resolve: {
             course: CourseResolve,
             syllabus: CourseSyllabusResolve
+          },
+        },
+        {
+          path: "exam/compose/:examId/:sheetId",
+          component: ExamContentFormCoponent,
+          data: {
+            breadcrumb: 'Exam editor'
+          },
+          resolve: {
+            exam: ExamResolve,
+            sheet: QuestionSheetResolve
+          },
+        },
+        {
+          path: "survey/compose/:surveyId/:sheetId",
+          component: SurveyContentFormComponent,
+          data: {
+            breadcrumb: 'Survey editor'
+          },
+          resolve: {
+            survey: SurveyResolve,
+            sheet: SurveySheetResolve
           },
         },
       ]
