@@ -8,7 +8,6 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { DashboardComponent } from './dashboard.component';
 import { DateUtils } from '../shared/helpers/date.utils';
-import { DashboardRoutingModule } from './dashboard-routing';
 import { ExamListComponent } from './exam-list/exam-list.component';
 import { CourseListComponent } from './course-list/course-list.component';
 import { ConferenceListComponent } from './conference-list/conference-list.component';
@@ -18,7 +17,6 @@ import { SurveyListComponent } from './survey-list/survey-list.component';
 
 @NgModule({
 	imports: [
-		DashboardRoutingModule,
 		ErpSharedModule,
 		AssessmentModule,
 		CourseModule, CMSModule,

@@ -1,0 +1,35 @@
+<div class="card card-w-title">
+    <h1>{{'Mail template view'|translate}}</h1>
+    <div class="ui-g ui-fluid form-group">
+        <div class=" ui-g-12">
+            <div class=" ui-g-6">
+                <div class="ui-g-3">
+                    <label for="email_from">{{'Email from'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{template.email_from}}</span>
+                </div>
+            </div>
+            <div class=" ui-g-6">
+                <div class="ui-g-3">
+                    <label for="subject">{{'Subject'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{template.subject}}</span>
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-3">
+                    <label>{{'Body'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <p [innerHTML]="emplate.body_html"></p>
+                </div> name="body_html" [style]="{'height':'120px'}"></p-editor>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="button" (click)="editTemplate()" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}"></button>
+        <button type="button" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
+    </div>
+</div>

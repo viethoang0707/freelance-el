@@ -53,14 +53,12 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
         this.menu = this.menuService.userMenu();
     }
 
-
     ngAfterViewInit() {
         this.layoutMenuScroller = <HTMLDivElement>this.layoutMenuScrollerViewChild.nativeElement;
         setTimeout(() => {
             jQuery(this.layoutMenuScroller).nanoScroller({ flash: true });
         }, 10);
     }
-
 
     updateNanoScroll() {
         setTimeout(() => {

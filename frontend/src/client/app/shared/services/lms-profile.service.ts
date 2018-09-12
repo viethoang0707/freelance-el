@@ -65,7 +65,7 @@ export class LMSProfileService {
   private context: APIContext;
 
   constructor(private settingService: SettingService, private appEvent: AppEventManager) {
-    this.settingService.viewModeEvents.subscribe(()=> {
+    this.settingService.viewModeEvents.subscribe(() => {
       this.invalidateAll();
     });
     this.appEvent.onLogin.subscribe(() => {
@@ -93,15 +93,15 @@ export class LMSProfileService {
       return Observable.of([]);
     var user = context.authService.UserProfile;
     return user.populate(context).flatMap(() => {
-      return BaseModel.bulk_list(context,
-        User.__api__listCourseMembers(user.course_member_ids),
-        User.__api__listExamMembers(user.exam_member_ids),
-        User.__api__listConferenceMembers(user.conference_member_ids),
-        User.__api__listSurveyMembers(user.survey_member_ids),
-        User.__api__listCertificates(user.certificate_ids),
-        User.__api__listExamRecords(user.exam_record_ids),
-        User.__api__listSubmissions(user.submission_ids),
-        User.__api__listProjectSubmissions(user.project_submission_ids)
+      return BaseModel.bulk_search(context,
+        User.__api__listCourseMembers(user.id),
+        User.__api__listExamMembers(user.id),
+        User.__api__listConferenceMembers(user.id),
+        User.__api__listSurveyMembers(user.id),
+        User.__api__listCertificates(user.id),
+        User.__api__listExamRecords(user.id),
+        User.__api__listSubmissions(user.id),
+        User.__api__listProjectSubmissions(user.id)
       ).map(jsonArray => {
         this.myCourseMembers = _.filter(CourseMember.toArray(jsonArray[0]), (member: CourseMember) => {
           return isFinite(parseInt(member.course_id + "")) && member.status == 'active' && member.course_review_state == 'approved';
@@ -132,12 +132,36 @@ export class LMSProfileService {
     return this.myCourseMembers;
   }
 
+  get MyCourseIds() {
+    var courseIds = _.pluck(this.myCourseMembers, 'course_id');
+    courseIds = _.uniq(courseIds, id => {
+      return id;
+    });
+    return courseIds
+  }
+
   get MyExamMembers() {
     return this.myExamMembers;
   }
 
+  get MyExamIds() {
+    var examIds = _.pluck(this.myExamMembers, 'exam_id');
+    examIds = _.uniq(examIds, id => {
+      return id;
+    });
+    return examIds
+  }
+
   get MySurveyMembers() {
     return this.mySurveyMembers;
+  }
+
+  get MySurveyIds() {
+    var surveyIds = _.pluck(this.mySurveyMembers, 'survey_id');
+    surveyIds = _.uniq(surveyIds, id => {
+      return id;
+    });
+    return surveyIds
   }
 
   get MyConferenceMembers() {
@@ -215,70 +239,6 @@ export class LMSProfileService {
     });
   }
 
-  getCourseContent(course: Course): Observable<any> {
-    if (this.courseContent[course.id])
-      return Observable.of(this.courseContent[course.id]);
-    return BaseModel.bulk_list(this.context,
-      Course.__api__populateSyllabus(course.syllabus_id),
-      Course.__api__listUnits(course.unit_ids),
-      Course.__api__listFaqs(course.faq_ids),
-      Course.__api__listMaterials(course.material_ids)
-    )
-      .map(jsonArray => {
-        var content = {};
-        content["syllabus"] = CourseSyllabus.toArray(jsonArray[0])[0];
-        content["units"] = CourseUnit.toArray(jsonArray[1]);
-        content["faqs"] = CourseFaq.toArray(jsonArray[2]);
-        content["materials"] = CourseMaterial.toArray(jsonArray[3]);
-        this.courseContent[course.id] = content;
-        return content;
-      });
-  }
-
-  getClassContent(clazz: CourseClass): Observable<any> {
-    if (this.classContent[clazz.id])
-      return Observable.of(this.classContent[clazz.id]);
-    return BaseModel.bulk_list(this.context,
-      CourseClass.__api__listProjects(clazz.project_ids),
-      CourseClass.__api__listExams(clazz.exam_ids),
-      CourseClass.__api__listSurveys(clazz.survey_ids)
-    )
-      .map(jsonArray => {
-        var content = {};
-        content["projects"] = Project.toArray(jsonArray[0]);
-        content["exams"] = Exam.toArray(jsonArray[1]);
-        content["surveys"] = Survey.toArray(jsonArray[2]);
-        this.classContent[clazz.id] = content;
-        return content;
-      });
-  }
-
-  invalidateClassContent(classId: number) {
-    delete this.classContent[classId];
-  }
-
-  invalidateCourseContent(courseId: number) {
-    delete this.courseContent[courseId];
-  }
-
-
-  getLastCourseTimestamp(course: Course) {
-    var timestamp = course.create_date.getTime();
-    var editorRole = this.getCourseMemberByRole('editor', course.id);
-    var studentRole = this.getCourseMemberByRole('student', course.id);
-    var teacherRole = this.getCourseMemberByRole('teacher', course.id);
-    var supervisorRole = this.getCourseMemberByRole('supervisor', course.id);
-    if (studentRole && studentRole.create_date.getTime() < timestamp)
-      timestamp = studentRole.create_date.getTime();
-    if (teacherRole && teacherRole.create_date.getTime() < timestamp)
-      timestamp = teacherRole.create_date.getTime();
-    if (editorRole && editorRole.create_date.getTime() < timestamp)
-      timestamp = editorRole.create_date.getTime();
-    if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.write_date.getTime();
-    return timestamp;
-  }
-
   getCourseMemberByRole(role: string, courseId: number) {
     return _.find(this.myCourseMembers, (member: CourseMember) => {
       return member.role == role && member.course_id == courseId;
@@ -291,53 +251,16 @@ export class LMSProfileService {
     });
   }
 
-
-  getLastExamTimestamp(exam: Exam) {
-    var timestamp = exam.create_date.getTime();
-    var editorRole = this.getExamMemberByRole('editor', exam.id);
-    var candidateRole = this.getExamMemberByRole('candidate', exam.id);
-    var supervisorRole = this.getExamMemberByRole('supervisor', exam.id);
-    if (candidateRole && candidateRole.create_date.getTime() < timestamp)
-      timestamp = candidateRole.create_date.getTime();
-    if (editorRole && editorRole.create_date.getTime() < timestamp)
-      timestamp = editorRole.create_date.getTime();
-    if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.write_date.getTime();
-    return timestamp;
-  }
-
   getExamMemberByRole(role: string, examId: number) {
     return _.find(this.myExamMembers, (member: ExamMember) => {
       return member.role == role && member.exam_id == examId;
     });
   }
 
-  getLastSurveyTimestamp(survey: Survey) {
-    var timestamp = survey.create_date.getTime();
-    var editorRole = this.getSurveyMemberByRole('editor', survey.id);
-    var candidateRole = this.getSurveyMemberByRole('candidate', survey.id);
-    var supervisorRole = this.getSurveyMemberByRole('supervisor', survey.id);
-    if (candidateRole && candidateRole.create_date.getTime() < timestamp)
-      timestamp = candidateRole.create_date.getTime();
-    if (editorRole && editorRole.create_date.getTime() < timestamp)
-      timestamp = editorRole.create_date.getTime();
-    if (supervisorRole && supervisorRole.create_date.getTime() < timestamp)
-      timestamp = supervisorRole.write_date.getTime();
-    return timestamp;
-  }
-
   getSurveyMemberByRole(role: string, surveyId: number) {
     return _.find(this.mySurveyMembers, (member: SurveyMember) => {
       return member.role == role && member.survey_id == surveyId;
     });
-  }
-
-
-  getLastConferenceTimestamp(member: ConferenceMember) {
-    var timestamp = member.conference.create_date.getTime();
-    if (member.create_date.getTime() < timestamp)
-      timestamp = member.create_date.getTime();
-    return timestamp;
   }
 
 }

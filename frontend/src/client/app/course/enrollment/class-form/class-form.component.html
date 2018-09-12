@@ -1,0 +1,26 @@
+<div class="card card-w-title">
+    <h1>{{'Class form'|translate}}</h1>
+    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+        <div class="ui-g ui-fluid form-group">
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label>{{'Enrollment'|translate}}</label>
+                    <p-calendar [(ngModel)]="rangeDates" selectionMode="range" readonlyInput="true" name="date" [inline]="true" required [locale]="locale" (onSelect)="onDateSelect($event)" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="ui-g-8">
+                    <label>{{'Name'|translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="courseClass.name" #name="ngModel" name="name" required>
+                    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
+                        <div *ngIf="name.errors.required">
+                            {{'Name is required' | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" [disabled]="loading || !f.form.valid" pButton icon="ui-icon-check" label="{{'Save'|translate}}"></button>
+            <button type="button" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Cancel'|translate}}"></button>
+        </div>
+    </form>
+</div>

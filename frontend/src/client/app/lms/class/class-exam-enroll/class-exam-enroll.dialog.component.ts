@@ -88,7 +88,6 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	closeExam() {
 		this.confirm('Are you sure to proceed?', () => {
 			this.exam.close(this).subscribe(() => {
-				this.exam.status = 'closed';
 				this.success(this.translateService.instant('Exam close'));
 			});
 		});
@@ -97,7 +96,6 @@ export class ClassExamEnrollDialog extends BaseComponent {
 	openExam() {
 		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', () => {
 			this.exam.open(this).subscribe(() => {
-				this.exam.status = 'open';
 				this.success(this.translateService.instant('Exam open'));
 			});
 		});

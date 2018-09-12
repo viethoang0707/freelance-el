@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -66,16 +65,11 @@ export class AnswerPrintDialog extends BaseComponent {
         this.exam = exam;
         this.submission = submit;
         this.member = member;
-        BaseModel
-            .bulk_list(this,
-                Exam.__api__populateSetting(this.exam.setting_id),
-                Exam.__api__populateQuestionSheet(this.exam.sheet_id))
-            .subscribe(jsonArr => {
-                this.setting = ExamSetting.toArray(jsonArr[0])[0];
-                this.sheet = QuestionSheet.toArray(jsonArr[1])[0];
-                this.startReview();
-                this.studyTime = Math.floor(this.submission.study_time / 60);
-            });
+        this.studyTime = Math.floor(this.submission.study_time / 60);
+        ExamSetting.get(this, this.exam.setting_id).subscribe(setting=> {
+            this.setting = setting;
+            this.startReview();     
+        });
     }
 
     hide() {
@@ -84,9 +78,9 @@ export class AnswerPrintDialog extends BaseComponent {
 
     startReview() {
         BaseModel
-            .bulk_list(this,
-                QuestionSheet.__api__listQuestions(this.sheet.question_ids),
-                Submission.__api__listAnswers(this.submission.answer_ids))
+            .bulk_search(this,
+                QuestionSheet.__api__listQuestions(this.exam.sheet_id),
+                Submission.__api__listAnswers(this.submission.id))
             .subscribe(jsonArr => {
                 this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
                 this.answers = Answer.toArray(jsonArr[1]);

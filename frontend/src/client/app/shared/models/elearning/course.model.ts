@@ -128,7 +128,9 @@ export class Course extends BaseModel{
 
     open(context:APIContext):Observable<any> {
         return context.apiService.execute(Course.__api__open(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = 'open';
+            });
     }
 
     static __api__close(courseId: number): ExecuteAPI {
@@ -137,7 +139,9 @@ export class Course extends BaseModel{
 
     close(context:APIContext):Observable<any> {
         return context.apiService.execute(Course.__api__close(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = 'closed';
+            });
     }
 
     static __api__listMembers(courseId: number,fields?:string[]): SearchReadAPI {

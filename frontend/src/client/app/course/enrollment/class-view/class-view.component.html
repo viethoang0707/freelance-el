@@ -1,0 +1,35 @@
+<div class="card card-w-title">
+    <h1>{{'Class form'|translate}}</h1>
+    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+        <div class="ui-g ui-fluid form-group">
+            <div class="ui-g-4">
+                <div class="ui-g-3">
+                    <label>{{'Name'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{courseClass.name}}</span>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="ui-g-3">
+                    <label>{{'Start'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{courseClass.start | date :'dd/MM/yyyy'}}</span>
+                </div>
+            </div>
+            <div class="ui-g-4">
+                <div class="ui-g-3">
+                    <label>{{'End'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{courseClass.end | date :'dd/MM/yyy'}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}" (click)="editClass()"></button>
+            <button type="button" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
+        </div>
+    </form>
+</div>

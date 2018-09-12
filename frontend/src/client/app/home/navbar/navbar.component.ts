@@ -11,7 +11,6 @@ import { BaseComponent } from '../../shared/components/base/base.component';
 import { TicketDialog } from '../../workflow/ticket-dialog/ticket-dialog.component';
 import * as _ from 'underscore'
 import { Course } from '../../shared/models/elearning/course.model';
-import { CourseDialog } from '../../course/course/course-dialog/course-dialog.component';
 import { CourseMember } from '../../shared/models/elearning/course-member.model';
 import { BaseModel } from '../../shared/models/base.model';
 

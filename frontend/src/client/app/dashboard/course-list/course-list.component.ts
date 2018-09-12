@@ -14,7 +14,7 @@ import { User } from '../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../shared/models/base.model';
 
-const COURSE_FIELDS = ['status','review_state','name', 'write_date','create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
+const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
 
 @Component({
     moduleId: module.id,
@@ -42,26 +42,22 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            this.courseMembers =  this.lmsProfileService.MyCourseMembers;
-            var courseIds = _.pluck(this.courseMembers, 'course_id');
-            courseIds = _.uniq(courseIds, id=> {
-                    return id;
-            });
-            Course.array(this, courseIds, COURSE_FIELDS).subscribe(courses=> {
+            this.courseMembers = this.lmsProfileService.MyCourseMembers;
+            Course.array(this, this.lmsProfileService.MyCourseIds, COURSE_FIELDS).subscribe(courses => {
                 this.displayCourses(courses);
             });
         });
     }
 
-    displayCourses(courses:Course[]) {
-        _.each(courses, (course:Course)=> {
-            course['student'] =  this.lmsProfileService.getCourseMemberByRole('student', course.id);
-            course['teacher'] =  this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
-            course['editor'] =  this.lmsProfileService.getCourseMemberByRole('editor', course.id);
-            course['supervisor'] =  this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
+    displayCourses(courses: Course[]) {
+        _.each(courses, (course: Course) => {
+            course['student'] = this.lmsProfileService.getCourseMemberByRole('student', course.id);
+            course['teacher'] = this.lmsProfileService.getCourseMemberByRole('teacher', course.id);
+            course['editor'] = this.lmsProfileService.getCourseMemberByRole('editor', course.id);
+            course['supervisor'] = this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
         });
         this.courses = this.filteredCourses = _.sortBy(courses, (course: Course) => {
-            return -this.lmsProfileService.getLastCourseTimestamp(course);
+            return -course.id;
         });
     }
 
@@ -70,9 +66,9 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     withdrawCourse(course: Course, member: CourseMember) {
-        this.confirm(this.translateService.instant('Are you sure to proceed?'), ()=> {
+        this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             member.status = 'withdraw';
-            member.save(this).subscribe(()=> {
+            member.save(this).subscribe(() => {
                 this.lmsProfileService.invalidateAll();
             })
         });

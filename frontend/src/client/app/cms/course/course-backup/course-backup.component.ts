@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -34,7 +34,7 @@ export class CourseBackupComponent extends BaseComponent implements OnInit {
 	private output: any;
 
 
-	constructor(private sanitizer: DomSanitizer, private location: Location ,private router: Router, private route: ActivatedRoute) {
+	constructor(private sanitizer: DomSanitizer, private location: Location, private router: Router, private route: ActivatedRoute) {
 		super();
 
 	}
@@ -66,7 +66,7 @@ export class CourseBackupComponent extends BaseComponent implements OnInit {
 	}
 
 	back() {
-		 this.location.back();
+		this.location.back();
 	}
 }
 

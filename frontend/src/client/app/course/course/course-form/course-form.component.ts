@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
-import { BaseDialog } from '../../../shared/components/base/base.dialog';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Ticket } from '../../../shared/models/elearning/ticket.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
@@ -16,39 +16,35 @@ import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { WorkflowService } from '../../../shared/services/workflow.service';
 import { SelectCompetencyLevelDialog } from '../../../shared/components/select-competency-level-dialog/select-competency-level-dialog.component';
-import { WindowRef } from '../../../shared/helpers/windonw.ref';
 
-declare var $: any;
+const GROUP_FIELDS = ['name', 'category', 'parent_id'];
 
 @Component({
 	moduleId: module.id,
-	selector: 'course-dialog',
-	templateUrl: 'course-dialog.component.html',
-	styleUrls: ['course-dialog.component.css'],
+	selector: 'course-form',
+	templateUrl: 'course-form.component.html',
+	styleUrls: ['course-form.component.css'],
 })
-export class CourseDialog extends BaseDialog<Course> {
+export class CourseFormComponent extends BaseComponent {
 
-	WINDOW_HEIGHT: any;
 	private tree: TreeNode[];
-	private items: MenuItem[];
 	private selectedNode: TreeNode;
-	private treeUtils: TreeUtils;
 	private editor: CourseMember;
+	private course: Course;
 
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 	@ViewChild(SelectCompetencyLevelDialog) competencyLevelDialog: SelectCompetencyLevelDialog;
 
-	constructor( ) {
+	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
-		this.treeUtils = new TreeUtils();
 		this.editor = new CourseMember();
-		this.WINDOW_HEIGHT = $(window).height();
+		this.course = new Course();
 	}
 
 	nodeSelect(event: any) {
 		if (this.selectedNode) {
-			this.object.group_id = this.selectedNode.data.id;
-			this.object.group_name = this.selectedNode.data.name;
+			this.course.group_id = this.selectedNode.data.id;
+			this.course.group_name = this.selectedNode.data.name;
 		}
 	}
 
@@ -69,50 +65,52 @@ export class CourseDialog extends BaseDialog<Course> {
 	selectCompetencyLevel() {
 		this.competencyLevelDialog.show();
 		this.competencyLevelDialog.onSelectCompetencyLevel.subscribe(level => {
-				this.object.competency_level_id = level.id;
-				this.object.competency_level_name = level.name;
-				this.object.competency_id = level.competency_id;
-				this.object.competency_name = level.competency_name;
-				this.object.competency_group_id = level.competency_group_id;
-				this.object.competency_group_name = level.competency_group_name;
+			this.course.competency_level_id = level.id;
+			this.course.competency_level_name = level.name;
+			this.course.competency_id = level.competency_id;
+			this.course.competency_name = level.competency_name;
+			this.course.competency_group_id = level.competency_group_id;
+			this.course.competency_group_name = level.competency_group_name;
 		});
 	}
 
 	ngOnInit() {
-		this.onShow.subscribe((object:Course) => {
-			if (object.IsNew)  {
-				this.editor = new CourseMember();
-				object.supervisor_id = this.ContextUser.id;
-				object.review_state = this.ContextUser.IsSuperAdmin ?'approved':'initial';
-			} else {
-				object.courseEditor(this).subscribe(member=> {
-					if (!member) {
-						this.editor =  new CourseMember();
-						this.editor.role = 'editor';
-						this.editor.course_id = object.id;
-					} else
-						this.editor =  member;
-				});
+		this.course = this.route.snapshot.data['course'];
+		if (this.course.IsNew) {
+			this.editor = new CourseMember();
+			this.course.supervisor_id = this.ContextUser.id;
+			this.course.review_state = this.ContextUser.IsSuperAdmin ? 'approved' : 'initial';
+		} else {
+			this.course.courseEditor(this).subscribe(member => {
+				if (!member) {
+					this.editor = new CourseMember();
+					this.editor.role = 'editor';
+					this.editor.course_id = this.course.id;
+				} else
+					this.editor = member;
+			});
+		}
+		Group.listCourseGroup(this, GROUP_FIELDS).subscribe(groups => {
+			var treeUtils = new TreeUtils();
+			this.tree = treeUtils.buildGroupTree(groups);
+			if (this.course.group_id) {
+				this.selectedNode = treeUtils.findTreeNode(this.tree, this.course.group_id);
 			}
-			this.buildCourseTree(object);
-		});
-		this.onCreateComplete.first().subscribe(object => {
-			this.editor.role = 'editor';
-			this.editor.course_id = object.id;
-			this.editor.save(this).subscribe();
-		});
-		this.onUpdateComplete.subscribe(object => {
-			this.editor.save(this).subscribe();
 		});
 	}
 
-	buildCourseTree(object) {
-		Group.listCourseGroup(this).subscribe(groups => {
-			this.tree = this.treeUtils.buildGroupTree(groups);
-			if (object.group_id) {
-				this.selectedNode = this.treeUtils.findTreeNode(this.tree, object.group_id);
-			}
+	save() {
+		this.course.save(this).subscribe(() => {
+			this.editor.role = 'editor';
+			this.editor.course_id = this.course.id;
+			this.editor.save(this).subscribe(() => {
+				this.router.navigate(['/course/view', this.course.id]);
+			});
 		});
+	}
+
+	cancel() {
+		this.router.navigate(['/course/list']);
 	}
 }
 

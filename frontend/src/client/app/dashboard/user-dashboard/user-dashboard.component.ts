@@ -87,7 +87,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             course['supervisor'] = this.lmsProfileService.getCourseMemberByRole('supervisor', course.id);
         });
         this.courses = _.sortBy(courses, (course: Course) => {
-            return -this.lmsProfileService.getLastCourseTimestamp(course);
+            return -course.id;
         });
         var classIds = _.pluck(this.courseMembers, 'class_id');
         classIds = _.filter(classIds, id => {
@@ -124,15 +124,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     allDay: true
                 });
         });
-        exams.sort((exam1: Exam, exam2: Exam): any => {
-            return this.lmsProfileService.getLastExamTimestamp(exam2) - this.lmsProfileService.getLastExamTimestamp(exam1);
+        this.exams  = _.sortBy(exams, (exam: Exam) => {
+            return -exam.id;
         });
-        this.exams = exams;
     }
 
     displayConferences(conferenceMembers: ConferenceMember[]) {
         conferenceMembers = _.sortBy(conferenceMembers, (member: ConferenceMember) => {
-            return -this.lmsProfileService.getLastConferenceTimestamp(member);
+            return -member.id;
         });
         this.conferenceMembers = conferenceMembers;
     }
@@ -141,19 +140,11 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.courseMembers = this.lmsProfileService.MyCourseMembers;
-            var courseIds = _.pluck(this.courseMembers, 'course_id');
-            courseIds = _.uniq(courseIds, id => {
-                return id;
-            });
-            Course.array(this, courseIds, COURSE_FIELDS).subscribe(courses => {
+            Course.array(this, this.lmsProfileService.MyCourseIds, COURSE_FIELDS).subscribe(courses => {
                 this.displayCourses(courses);
             });
             this.examMembers = this.lmsProfileService.MyExamMembers;
-            var examIds = _.pluck(this.examMembers, 'exam_id');
-            examIds = _.uniq(examIds, id => {
-                return id;
-            });
-            Exam.array(this, examIds, EXAM_FIELDS).subscribe(exams => {
+            Exam.array(this, this.lmsProfileService.MyExamIds, EXAM_FIELDS).subscribe(exams => {
                 this.displayExams(exams);
             });
             var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
@@ -178,7 +169,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
         this.router.navigate(['/lms/courses/view', course.id]);
     }
 
-    editSyllabus(course: Course, member: CourseMember) {
+    editCourse(course: Course, member: CourseMember) {
         this.router.navigate(['/lms/courses/edit', course.id, member.id]);
     }
 
@@ -203,7 +194,6 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             exam.populate(this).subscribe(() => {
                 this.examStudyDialog.show(exam, member);
             });
-
         });
     }
 

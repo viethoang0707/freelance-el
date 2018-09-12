@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
@@ -9,79 +10,60 @@ import { CourseClass } from '../../../shared/models/elearning/course-class.model
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { GROUP_CATEGORY, CLASS_STATUS, COURSE_MODE } from '../../../shared/models/constants'
-import { CourseEnrollDialog } from '../enrollment-dialog/enrollment-dialog.component';
-import { CourseClassDialog } from '../class-dialog/class-dialog.component';
+import { BaseModel } from '../../../shared/models/base.model';
 
 const CLASS_FIELDS = ['name', 'member_count', 'status', 'course_name', 'supervisor_id', 'start', 'end'];
 
 @Component({
     moduleId: module.id,
-    selector: 'class-list-dialog',
-    templateUrl: 'class-list-dialog.component.html',
-    styleUrls: ['class-list-dialog.component.css'],
+    selector: 'class-list',
+    templateUrl: 'class-list.component.html',
+    styleUrls: ['class-list.component.css'],
 })
-export class ClassListDialog extends BaseComponent implements OnInit {
+export class CourseClassListComponent extends BaseComponent implements OnInit {
 
     COURSE_MODE = COURSE_MODE;
     CLASS_STATUS = CLASS_STATUS;
 
     private classes: CourseClass[];
+    private courseId: number;
     private selectedClass: any;
-    private course: Course;
-    private teachers: any;
     private display: boolean;
 
-    @ViewChild(CourseEnrollDialog) courseEnrollDialog: CourseEnrollDialog;
-    @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
-
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
         super();
         this.classes = [];
-        this.teachers = [];
     }
 
     ngOnInit() {
-
+        this.route.params.subscribe(params => {
+            this.courseId = +params['courseId'];
+            BaseModel.bulk_search(this, Course.__api__listClasses(+params['courseId'], CLASS_FIELDS))
+                .map(jsonArr => {
+                    return _.flatten(jsonArr)
+                }).subscribe(jsonArr => {
+                    this.classes = _.sortBy(CourseClass.toArray(jsonArr), (clazz:CourseClass)=> {
+                        return -clazz.id;
+                    });
+                });
+        });
     }
 
     enroll(courseClass: CourseClass) {
-        this.courseEnrollDialog.enrollClass(this.course, courseClass);
+        this.router.navigate(['/course/enroll/class', courseClass.id]);
     }
 
-    loadClasses() {
-        this.course.populate(this).subscribe(() => {
-            this.course.listClasses(this, CLASS_FIELDS).subscribe(classes => {
-                this.classes = classes;
-            });
-        });
 
-    }
-
-    hide() {
-        this.display = false;
-    }
-
-    show(course: Course) {
-        this.course = course;
-        this.display = true;
-        this.loadClasses();
+    close() {
+        this.router.navigate(['/course/enrollments']);
     }
 
     addClass() {
-        var clazz = new CourseClass();
-        clazz.course_id = this.course.id;
-        clazz.course_name = this.course.name;
-        this.classDialog.show(clazz);
-        this.classDialog.onCreateComplete.first().subscribe(() => {
-            this.classes = [clazz, ...this.classes];
-            this.success(this.translateService.instant('Add class successfully'));
-        });
+        this.router.navigate(['/course/class/form', this.courseId]);
     }
 
     editClass(courseClass: CourseClass) {
-        courseClass.populate(this).subscribe(() => {
-            this.classDialog.show(courseClass);
-        });
+        this.router.navigate(['/course/class/form', this.courseId, courseClass.id]);
     }
 
     deleteClass(courseClass: CourseClass) {
@@ -106,7 +88,6 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         }
         this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             courseClass.close(this).subscribe(() => {
-                courseClass.status = 'closed';
                 this.success(this.translateService.instant('Class close'));
             });
         });
@@ -119,7 +100,6 @@ export class ClassListDialog extends BaseComponent implements OnInit {
         }
         this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
             courseClass.open(this).subscribe(() => {
-                courseClass.status = 'open';
                 this.success(this.translateService.instant('Class open'));
             });
         });

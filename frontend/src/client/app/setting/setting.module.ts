@@ -1,25 +1,29 @@
 import { NgModule } from '@angular/core';
 import { AuthModule } from '../auth/auth.module';
 import { ErpSharedModule } from '../shared/shared.module';
-import { SettingRoutingModule } from './setting-routing';
 import { SettingComponent } from './setting.component';
 import { SettingDialog } from './setting-dialog.component';
 import { MailTemplateListComponent } from './mail-template-list/mail-template-list.component';
-import { MailTemplateDialog } from './mail-template-dialog/mail-template-dialog.component';
+import { MailTemplateFormComponent } from './mail-template-form/mail-template-form.component';
+import { MailTemplateViewComponent } from './mail-template-view/mail-template-view.component';
+import { TemplateResolve } from './route.resolver';
+
 @NgModule({
 	imports: [
 		ErpSharedModule,
-		SettingRoutingModule,
 		AuthModule
 	],
 	declarations: [
 		SettingDialog,
 		SettingComponent,
-		MailTemplateDialog,
+		MailTemplateFormComponent,
+		MailTemplateViewComponent,
 		MailTemplateListComponent
 	],
 	exports: [SettingDialog],
-	providers: []
+	providers: [
+		TemplateResolve
+	]
 })
 export class SettingModule {
 }

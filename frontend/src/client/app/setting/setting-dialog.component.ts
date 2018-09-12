@@ -1,6 +1,5 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { Observable}     from 'rxjs/Observable';
-
+import { Component, OnInit, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { AuthService } from '.././shared/services/auth.service';
 import { Group } from '.././shared/models/elearning/group.model';
 import { BaseComponent } from '../shared/components/base/base.component';
@@ -21,27 +20,26 @@ export class SettingDialog extends BaseComponent {
 
 	constructor() {
 		super();
-		this.dateFormat =  new Setting();
+		this.dateFormat = new Setting();
 	}
 
 	show() {
-		this.display =  true;
-		Setting.dateFormat(this).subscribe(setting=> {
-			this.dateFormat =  setting;
+		this.display = true;
+		Setting.dateFormat(this).subscribe(setting => {
+			this.dateFormat = setting;
 		});
 	}
 
 	hide() {
-		this.display =  false;
+		this.display = false;
 	}
 
 	save() {
-		this.dateFormat.save(this).subscribe(()=> {
+		this.dateFormat.save(this).subscribe(() => {
 			this.success('Setting saved');
 			this.hide();
 		});
 	}
-
 
 
 }

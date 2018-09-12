@@ -14,10 +14,10 @@
                 </div>
                 <div class="ui-toolbar-group-right">
                     <span class="md-inputfield search">
-              <input type="text" pInputText placeholder="{{'Search'|translate}}" 
-              (input)="courseTable.filterGlobal($event.target.value, 'contains')">   
-              <i class="fa fa-search"></i>      
-          </span>
+                      <input type="text" pInputText placeholder="{{'Search'|translate}}" 
+                      (input)="courseTable.filterGlobal($event.target.value, 'contains')">   
+                      <i class="fa fa-search"></i>      
+                    </span>
                 </div>
             </p-toolbar>
             <p-table #totalRecords #courseTable [value]="displayCourses" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedCourse" [responsive]="true" [globalFilterFields]="['name', 'code']">
@@ -77,8 +77,6 @@
                     {{'Total records'|translate}} : {{displayCourses?.length}}
                 </ng-template>
             </p-table>
-            <class-list-dialog></class-list-dialog>
-            <course-enrollment-dialog></course-enrollment-dialog>
         </div>
     </div>
 </div>

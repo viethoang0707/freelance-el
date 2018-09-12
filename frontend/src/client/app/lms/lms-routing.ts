@@ -74,8 +74,3 @@ export const LMSRoutes: Routes = [
 
 ]
 
-@NgModule({
-  imports: [RouterModule.forChild(LMSRoutes)],
-  exports: [RouterModule]
-})
-export class LMSRoutingModule {}

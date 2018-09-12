@@ -45,11 +45,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.examMembers = this.lmsProfileService.MyExamMembers;
-            var examIds = _.pluck(this.examMembers, 'exam_id');
-            examIds = _.uniq(examIds, id => {
-                return id;
-            });
-            Exam.array(this, examIds, EXAM_FIELDS).subscribe(exams => {
+            Exam.array(this, this.lmsProfileService.MyExamIds, EXAM_FIELDS).subscribe(exams => {
                 this.displayExams(exams);
             });
         });
@@ -61,10 +57,9 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
             exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
         });
-        exams = _.sortBy(exams, (exam: Exam) => {
-            return -this.lmsProfileService.getLastExamTimestamp(exam);
+        this.exams = _.sortBy(exams, (exam: Exam) => {
+            return -exam.id;
         });
-        this.exams = exams;
     }
 
     manageExam(exam: Exam, member: ExamMember) {
@@ -108,7 +103,5 @@ export class ExamListComponent extends BaseComponent implements OnInit {
                 });
             });
         });
-
     }
-
 }

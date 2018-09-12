@@ -44,11 +44,7 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             this.surveyMembers =  this.lmsProfileService.MySurveyMembers;
-            var surveyIds = _.pluck(this.surveyMembers, 'survey_id');
-            surveyIds = _.uniq(surveyIds, id=> {
-                    return id;
-            });
-            Survey.array(this, surveyIds, SURVEY_FIELDS).subscribe(surveys=> {
+            Survey.array(this, this.lmsProfileService.MySurveyIds, SURVEY_FIELDS).subscribe(surveys=> {
                 this.displaySurveys(surveys);
             });
         });
@@ -60,10 +56,9 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
             survey['editor'] =  this.lmsProfileService.getSurveyMemberByRole('editor', survey.id);
             survey['supervisor'] =  this.lmsProfileService.getSurveyMemberByRole('supervisor', survey.id);
         });
-        surveys.sort((survey1: Survey, survey2: Survey): any => {
-            return this.lmsProfileService.getLastSurveyTimestamp(survey2) - this.lmsProfileService.getLastSurveyTimestamp(survey1);
+        this.surveys = _.sortBy(surveys, (survey: Survey) => {
+            return -survey.id;
         });
-        this.surveys = surveys;
     }
 
     editContent(survey: Survey) {

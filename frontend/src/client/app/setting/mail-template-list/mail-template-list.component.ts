@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../shared/components/base/base.component';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../shared/models/constants'
@@ -26,19 +26,16 @@ export class MailTemplateListComponent extends BaseComponent {
     private templates: Mail[];
     private selectedTemplate: any;
 
-    constructor() {
+    constructor(private router: Router, private route: ActivatedRoute) {
         super();
         this.templates = [];
     }
 
     ngOnInit() {
-        
         this.loadTemplates();
     }
 
-
     editTemplate(template: Mail) {
-        console.log(template);
         template.populate(this).subscribe(() => {
             this.mailTemplDialog.show(template);
             this.mailTemplDialog.onUpdateComplete.subscribe(() => {
@@ -46,7 +43,6 @@ export class MailTemplateListComponent extends BaseComponent {
             });
         })
     }
-
 
     loadTemplates() {
         BaseModel.bulk_search(this, 

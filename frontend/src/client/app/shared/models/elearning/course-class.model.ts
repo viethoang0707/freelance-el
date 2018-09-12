@@ -85,7 +85,9 @@ export class CourseClass extends BaseModel{
 
     open(context:APIContext):Observable<any> {
         return context.apiService.execute(CourseClass.__api__open(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = 'open';
+            });
     }
 
     static __api__close(classId: number): ExecuteAPI {
@@ -94,47 +96,49 @@ export class CourseClass extends BaseModel{
 
     close(context:APIContext):Observable<any> {
         return context.apiService.execute(CourseClass.__api__close(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.status = 'closed';
+            });
     }
 
     static __api__listCertificates(classId:number,fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(Certificate.Model,fields,"['class_id','=',"+classId+ "]");
+        return new SearchReadAPI(Certificate.Model,fields,"[('class_id','=',"+classId+ ")]");
     }
 
     listCertificates( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Certificate.search(context,fields,"['class_id','=',"+this.id+ "]");
+        return Certificate.search(context,fields,"[('class_id','=',"+this.id+ ")]");
     }
 
     static __api__listMembers(classId:number,fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(CourseMember.Model,fields,"['class_id','=',"+classId+ "]");
+        return new SearchReadAPI(CourseMember.Model,fields,"[('class_id','=',"+classId+ ")]");
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
-        return CourseMember.search(context,fields,"['class_id','=',"+this.id+ "]");
+        return CourseMember.search(context,fields,"[('class_id','=',"+this.id+ ")]");
     }
 
     static __api__listProjects(classId:number,fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(Project.Model,fields,"['class_id','=',"+classId+ "]");
+        return new SearchReadAPI(Project.Model,fields,"[('class_id','=',"+classId+ ")]");
     }
 
     listProjects( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Project.search(context,fields,"['class_id','=',"+this.id+ "]");
+        return Project.search(context,fields,"[('class_id','=',"+this.id+ ")]");
     }
 
     static __api__listExams(classId:number,fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(Exam.Model,fields,"['course_class_id','=',"+classId+ "]");
+        return new SearchReadAPI(Exam.Model,fields,"[('course_class_id','=',"+classId+ ")]");
     }
 
     listExams( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Exam.search(context,fields, "['course_class_id','=',"+this.id+ "]");
+        return Exam.search(context,fields, "[('course_class_id','=',"+this.id+ ")]");
     }
 
     static __api__listSurveys(classId:number,fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(Survey.Model,fields,"['course_class_id','=',"+classId+ "]");
+        return new SearchReadAPI(Survey.Model,fields,"[('course_class_id','=',"+classId+ ")]");
     }
 
     listSurveys( context:APIContext,fields?:string[]): Observable<any[]> {
-        return Survey.search(context,fields, "['course_class_id','=',"+this.id+ "]");
+        return Survey.search(context,fields, "[('course_class_id','=',"+this.id+ ")]");
     }
 
 

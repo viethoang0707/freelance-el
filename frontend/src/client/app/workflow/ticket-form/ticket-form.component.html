@@ -1,0 +1,46 @@
+<div class="card card-w-title">
+    <h1>{{'Ticket form'|translate}}</h1>
+    <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+        <div class="ui-g ui-fluid form-group">
+            <div class="ui-g-12">
+                <span>{{'Status'|translate}}:{{TICKET_STATUS[ticket.status]}}</span>
+                <button pButton type="button" icon="ui-icon-check" title="{{'Approve'| translate}}" label="{{'Approve'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="approveTicket()" [disabled]="object.status!='open' && ContextUser.id != object.approve_user_id"></button>
+                <button pButton type="button" icon="ui-icon-block" title="{{'Reject'| translate}}" label="{{'Reject'|translate}}" class=" red-btn" style="margin-right:4px;" (click)="rejectTicket()" [disabled]="object.status!='open'  && ContextUser.id != object.approve_user_id"></button>
+            </div>
+            <div class="ui-g-12">
+                <ul class="list-cmt">
+                    <li class="clearfix">
+                        <i class="material-icons">date_range</i>
+                        <span class="cmt-title">{{'Open date'|translate}}</span>
+                        <span class="cmt-detail">{{ticket.date_open | date : "dd/MM/yyyy"}}</span>
+                    </li>
+                    <li class="clearfix">
+                        <i class="material-icons">date_range</i>
+                        <span class="cmt-title">{{'Close date'|translate}}</span>
+                        <span class="cmt-detail">{{ticket.date_close | date : "dd/MM/yyyy"}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-3">
+                    <label>{{'Title'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{ticket.title}}</span>
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-3">
+                    <label>{{'Content'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <p>{{ticket.content}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="loading || (ContextUser.id != object.submit_user_id)"></button>
+            <button type="button" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Cancel'|translate}}"></button>
+        </div>
+    </form>
+</div>

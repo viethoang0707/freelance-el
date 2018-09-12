@@ -22,8 +22,8 @@ export class MenuService {
     {
       label: 'Course', icon: 'school', code: 'SCHOOL',
       items: [
-        { label: 'Course', routerLink: ['/course/courses'], code: 'SCHOOL-COURSE' },
-        { label: 'Enrollment', routerLink: ['/course/enrollment'], code: 'SCHOOL-ENROLLMENT' },
+        { label: 'Course', routerLink: ['/course/list'], code: 'SCHOOL-COURSE' },
+        { label: 'Enrollment', routerLink: ['/course/enrollments'], code: 'SCHOOL-ENROLLMENT' },
         { label: 'Course group', routerLink: ['/course/groups'], code: 'SCHOOL-GROUP' },
       ]
     },

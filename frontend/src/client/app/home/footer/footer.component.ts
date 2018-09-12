@@ -1,9 +1,6 @@
 import { Component , ViewEncapsulation} from '@angular/core';
 import { Config } from '../../env.config'
 
-/**
- * This class represents the navigation bar component.
- */
 @Component({
   moduleId: module.id,
   selector: 'app-footer',

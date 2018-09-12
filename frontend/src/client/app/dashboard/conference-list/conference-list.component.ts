@@ -11,6 +11,7 @@ import { Conference } from '../../shared/models/elearning/conference.model';
 import { MeetingService } from '../../shared/services/meeting.service';
 import { BaseModel } from '../../shared/models/base.model';
 
+const CONFERENCE_FIELDS = ['name', 'status', 'room_pass', 'room_ref'];
 
 @Component({
     moduleId: module.id,
@@ -31,15 +32,15 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
-            ConferenceMember.populateConferences(this, conferenceMembers ).subscribe(()=> {
+            ConferenceMember.populateConferences(this, conferenceMembers,CONFERENCE_FIELDS ).subscribe(()=> {
                 this.displayConferences(conferenceMembers);
-            })
+            });
         });
     }
 
     displayConferences(conferenceMembers: ConferenceMember[]) {
         this.conferenceMembers = _.sortBy(conferenceMembers, (member: ConferenceMember) => {
-            return -this.lmsProfileService.getLastConferenceTimestamp(member);
+            return -member.id;
         });
     }
 

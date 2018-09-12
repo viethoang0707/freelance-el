@@ -27,6 +27,16 @@ export const CompetencyRoutes: Routes = [
         }
       },
       {
+        path: "form",
+        component: CompetencyFormComponent,
+        data: {
+          breadcrumb: 'Competency form'
+        },
+        resolve: {
+          competency: CompetencyResolve,
+        },
+      },
+      {
         path: "form/:competencyId",
         component: CompetencyFormComponent,
         data: {

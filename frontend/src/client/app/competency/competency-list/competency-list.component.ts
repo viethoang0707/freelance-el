@@ -12,6 +12,8 @@ import { TreeNode, MenuItem } from 'primeng/api';
 import { CompetencyLevel } from '../../shared/models/elearning/competency-level.model';
 import { BaseModel } from '../../shared/models/base.model';
 
+const GROUP_FIELDS = ['name', 'category', 'parent_id'];
+
 @Component({
     moduleId: module.id,
     selector: 'competency-list',
@@ -33,7 +35,7 @@ export class CompetencyListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listCompetencyGroup(this).subscribe(groups => {
+        Group.listCompetencyGroup(this,GROUP_FIELDS).subscribe(groups => {
             var treeUtils = new TreeUtils()
             this.tree = treeUtils.buildGroupTree(groups);
         })
@@ -75,8 +77,10 @@ export class CompetencyListComponent extends BaseComponent {
                         return level.competency_id == competency.id;
                     });
                 });
-                this.competencies = competencies;
-                this.displayCompetencies = competencies;
+                this.competencies = _.sortBy(competencies, (competency:Competency)=> {
+                    return -competency.id;
+                });
+                this.displayCompetencies = this.competencies;
             });
         });
     }

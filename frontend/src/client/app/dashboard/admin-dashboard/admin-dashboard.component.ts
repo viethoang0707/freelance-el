@@ -3,7 +3,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
 import { User } from '../../shared/models/elearning/user.model';
 import { Course } from '../../shared/models/elearning/course.model';
-import { CourseClassDialog } from '../../course/enrollment/class-dialog/class-dialog.component';
 import { CourseMember } from '../../shared/models/elearning/course-member.model';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { SelectItem } from 'primeng/api';
@@ -19,10 +18,8 @@ import { CourseClass } from '../../shared/models/elearning/course-class.model';
 import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { WorkflowService } from '../../shared/services/workflow.service';
 
-
 const EXAM_FIELDS = ['name','start','end'];
 const CLASS_FIELDS = ['name','start','end'];
-
 
 @Component({
     moduleId: module.id,
@@ -41,8 +38,6 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     private classes: CourseClass[];
     private approvalTickets : Ticket[];
     private dateUtils: DateUtils;
-
-    @ViewChild(CourseClassDialog) classDialog: CourseClassDialog;
 
     constructor(private router: Router, private route: ActivatedRoute) {
         super();
@@ -97,13 +92,13 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
             var exam = _.find(this.exams, (exam)=> {
                 return exam.id == id;
             });
-            this.router.navigate(['/assessment/exam/form', exam.id]);
+            this.router.navigate(['/assessment/exam/view', exam.id]);
         }
         if (model == CourseClass.Model) {
             var clazz = _.find(this.classes, (clazz:CourseClass)=> {
                 return clazz.id == id;
             });
-            this.classDialog.show(clazz);
+            this.router.navigate(['/course/class/view', clazz.id]);
         }
     }
 

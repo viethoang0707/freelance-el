@@ -34,7 +34,6 @@ import { WebcamModule } from 'ngx-webcam';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
 import { ClassMemberActivityDialog } from './class/class-member-activity/class-member-activity.dialog.component';
-import { LMSRoutingModule } from './lms-routing';
 import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-unit-study-dialog.component';
 import { CourseUnitPlayerContainerDirective } from './course/course-unit-template/unit-player.directive';
 import { FolderCourseUnitPlayerComponent } from './course/course-unit-template/folder/folder-unit.component';
@@ -47,7 +46,6 @@ import { SelfAssessmentCourseUnitPlayerComponent } from './course/course-unit-te
 
 @NgModule({
     imports: [
-        LMSRoutingModule,
         ErpSharedModule,
         CMSModule,
         AssessmentModule,

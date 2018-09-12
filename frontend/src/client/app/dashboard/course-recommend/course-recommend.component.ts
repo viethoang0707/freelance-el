@@ -48,7 +48,7 @@ export class CourseRecommendComponent extends BaseComponent implements OnInit {
             var apiList = _.map(skills, (skill:Achivement)=> {
                 return Course.__api__listByCompetency(skill.competency_id,COURSE_FIELDS);
             });
-            BaseModel.bulk_list(this, ...apiList)
+            BaseModel.bulk_search(this, ...apiList)
             .map(jsonArr=> {
                 return _.flatten(jsonArr);
             })

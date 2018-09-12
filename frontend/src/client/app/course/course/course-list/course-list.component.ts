@@ -7,13 +7,13 @@ import * as _ from 'underscore';
 import { USER_STATUS, GROUP_CATEGORY, COURSE_MODE, COURSE_STATUS, REVIEW_STATE } from '../../../shared/models/constants'
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Group } from '../../../shared/models/elearning/group.model';
-import { CourseDialog } from '../course-dialog/course-dialog.component';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
 
 const COURSE_FIELDS = ['name', 'group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id'];
 
 @Component({
     moduleId: module.id,
@@ -32,18 +32,15 @@ export class CourseListComponent extends BaseComponent {
     private displayCourses: Course[];
     private selectedGroupNodes: TreeNode[];
     private selectedCourse: any;
-    private treeUtils: TreeUtils;
-
-    @ViewChild(CourseDialog) courseDialog: CourseDialog;
 
     constructor(private router: Router, private route: ActivatedRoute) {
         super();
-        this.treeUtils = new TreeUtils();
     }
 
     ngOnInit() {
-        Group.listCourseGroup(this).subscribe(groups => {
-            this.tree = this.treeUtils.buildGroupTree(groups);
+        Group.listCourseGroup(this,GROUP_FIELDS).subscribe(groups => {
+            var treeUtils = new TreeUtils();
+            this.tree = treeUtils.buildGroupTree(groups);
         })
         this.loadCourses();
     }
@@ -57,15 +54,7 @@ export class CourseListComponent extends BaseComponent {
     }
 
     addCourse() {
-        var course = new Course();
-        this.courseDialog.show(course);
-        this.courseDialog.onCreateComplete.first().subscribe(() => {
-            this.checkDuplicate(course);
-            this.courses.unshift(course);
-            this.displayCourses = [...this.courses];
-            this.selectedGroupNodes = [];
-            this.success(this.translateService.instant('Add course successfully'));
-        });
+        this.router.navigate(['/course/form']);
     }
 
     editCourse(course: Course) {
@@ -73,12 +62,11 @@ export class CourseListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have edit permission for this course'));
             return;
         }
-        course.populate(this).subscribe(() => {
-            this.courseDialog.show(course);
-            this.courseDialog.onUpdateComplete.subscribe(() => {
-                this.checkDuplicate(course);
-            });
-        });
+        this.router.navigate(['/course/form', course.id]);
+    }
+
+    viwCourse(course: Course) {
+        this.router.navigate(['/course/view', course.id]);
     }
 
     requestReview(course: Course) {
@@ -111,10 +99,10 @@ export class CourseListComponent extends BaseComponent {
 
     loadCourses() {
         Course.all(this, COURSE_FIELDS).subscribe(courses => {
-            courses = _.sortBy(courses, (course: Course) => {
+            this.courses = _.sortBy(courses, (course: Course) => {
                 return -course.id
             })
-            this.courses = this.displayCourses = courses;
+            this.displayCourses = this.courses;
         });
     }
 
