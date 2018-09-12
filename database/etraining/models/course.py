@@ -94,7 +94,7 @@ class Course(models.Model):
 		for course in self.env['etraining.course'].browse(courseId):
 			for user in self.env['res.users'].browse(userIds):
 				course.registerCourseMember(user, 'teacher')
-			return {'success':True,,'successIds':userIds, 'failIds':[]}
+			return {'success':True,'successIds':userIds, 'failIds':[]}
 
 	@api.model
 	def open(self, params):
