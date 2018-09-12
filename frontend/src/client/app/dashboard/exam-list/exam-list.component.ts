@@ -67,7 +67,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             this.warn(this.translateService.instant('Exam is not available.'));
             return;
         }
-        this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
+        this.router.navigate(['/lms/exam/manage', exam.id, member.id]);
     }
 
     editContent(exam: Exam) {
@@ -89,7 +89,9 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             message: this.translateService.instant('Are you sure to start?'),
             accept: () => {
                 exam.populate(this).subscribe(() => {
-                    this.examStudyDialog.show(exam, member);
+                    exam.populateSetting(this).subscribe(()=> {
+                        this.examStudyDialog.show(exam, exam.setting, member);
+                    })
                 });
             }
         });

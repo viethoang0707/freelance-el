@@ -60,14 +60,14 @@ class Survey(models.Model):
 				if candidate.email:
 						self.env.ref(self._module +"."+ "survey_invite_template").send_mail(candidate.id,force_send=True)
 			survey.write({'status':'open'})
-		return True
+		return {'success':True}
 
 	@api.model
 	def close(self, params):
 		surveyId = +params["surveyId"]
 		for survey in self.env["etraining.survey"].browse(surveyId):
 			survey.write({'status':'closed'})
-		return True
+		return {'success':True}
 
 	@api.model
 	def enroll(self, params):
@@ -76,7 +76,7 @@ class Survey(models.Model):
 		for survey in self.env['etraining.survey'].browse(surveyId):
 			for user in self.env['res.users'].browse(userIds):
 				survey.registerSurveyMember(user, 'candidate')
-		return True
+		return {'success':True}
 
 	@api.model
 	def enroll_supervisor(self, params):
@@ -85,7 +85,7 @@ class Survey(models.Model):
 		for survey in self.env['etraining.survey'].browse(surveyId):
 			for user in self.env['res.users'].browse(userIds):
 				survey.registerSurveyMember(user, 'supervisor')
-		return True
+		return {'success':True}
 
 	def registerSurveyMember(self, user, role):
 		member =  self.env['etraining.survey_member'].create({'survey_id':self.id,'role':role,
@@ -155,6 +155,7 @@ class SurveyMember(models.Model):
 	course_member_id = fields.Many2one('etraining.course_member', string='Course member')
 	survey_link = fields.Text(string="Survey link")
 	survey_token = fields.Char(string="Token")
+	sheet_id = fields.Many2one('etraining.survey_sheet', related='survey_id.sheet_id', string='Survey sheet', readonly=True)
 	submission_id = fields.Many2one('etraining.survey_submission', string='Submission')
 	class_id = fields.Many2one('etraining.course_class', related="course_member_id.class_id", string='Class')
 

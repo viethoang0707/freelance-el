@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { DatePipe } from '@angular/common';
 import * as _ from 'underscore';
@@ -24,20 +23,22 @@ import { LMSProfileDialog } from '../../course/lms-profile/lms-profile-dialog.co
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { Project } from '../../../shared/models/elearning/project.model';
-import { ProjectManageDialog } from '../project-manage/project-manage.dialog.component';
-import { ProjectContentDialog } from '../../../cms/project/project-content/project-content.dialog.component';
+import { ProjectDialog } from '../project-dialog/project-dialog.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
-import { ClassExamEnrollDialog } from '../class-exam-enroll/class-exam-enroll.dialog.component';
 import { ExamEditorDialog } from '../../../cms/exam/exam-editor/exam-editor.dialog.component';
 import { Survey } from '../../../shared/models/elearning/survey.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { SurveyEditorDialog } from '../../../cms/survey/survey-editor/survey-editor.dialog.component';
-import { ClassSurveyEnrollDialog } from '../class-survey-enroll/class-survey-enroll.dialog.component';
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
 import { Conference } from '../../../shared/models/elearning/conference.model';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { ClassMemberActivityDialog } from '../class-member-activity/class-member-activity.dialog.component';
+import { ProjectMarkingDialog } from '../project-marking/project-marking.dialog.component';
+import { ExamDialog } from '../../../assessment/exam/exam-form/exam-dialog.component';
+import { SurveyDialog } from '../../../assessment/survey/survey-form/survey-dialog.component';
+import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
+import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 
 @Component({
 	moduleId: module.id,
@@ -58,9 +59,6 @@ export class ClassManageComponent extends BaseComponent {
 	private reportUtils: ReportUtils;
 	private viewModes: SelectItem[];
 	private viewMode: any;
-	private course: Course;
-	private memberId: number;
-	private courseUnits: CourseUnit[];
 	private projects: Project[];
 	private selectedProject: Project;
 	private courseMembers: CourseMember[];
@@ -76,14 +74,14 @@ export class ClassManageComponent extends BaseComponent {
 
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
 	@ViewChild(LMSProfileDialog) lmsProfileDialog: LMSProfileDialog;
-	@ViewChild(ProjectContentDialog) projectContentDialog: ProjectContentDialog;
-	@ViewChild(ProjectManageDialog) projectManageDialog: ProjectManageDialog;
-	@ViewChild(ClassExamEnrollDialog) examEnrollDialog: ClassExamEnrollDialog;
+	@ViewChild(ProjectDialog) projectDialog: ProjectDialog;
 	@ViewChild(ExamEditorDialog) examContentDialog: ExamEditorDialog;
-	@ViewChild(ClassSurveyEnrollDialog) enrollDialog: ClassSurveyEnrollDialog;
 	@ViewChild(SurveyEditorDialog) surveyContentDialog: SurveyEditorDialog;
 	@ViewChild(SurveyStatsDialog) statsDialog: SurveyStatsDialog;
 	@ViewChild(ClassMemberActivityDialog) memberActivityChart: ClassMemberActivityDialog;
+	@ViewChild(ProjectMarkingDialog) projectMarkingDialog: ProjectMarkingDialog;
+	@ViewChild(ExamDialog) examDialog: ExamDialog;
+	@ViewChild(ExamDialog) surveyDialog: SurveyDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -104,39 +102,26 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			var courseId = +params['courseId'];
-			var classId = +params['classId'];
-			var memberId = +params['memberId'];
-			this.viewMode = "outline";
-			this.lmsProfileService.init(this).subscribe(() => {
-				this.member = this.lmsProfileService.courseMemberById(memberId);
-				this.member.populateCourse(this).subscribe(() => {
-					this.member.populateClass(this).subscribe(() => {
-						this.courseClass = this.member.clazz;
-						this.course = this.member.course;
-						this.lmsProfileService.getClassContent(this.member.clazz).subscribe(classContent => {
-							this.projects = classContent["projects"];
-							this.classExams = classContent["exams"];
-							this.classSurveys = classContent["surveys"];
-							BaseModel.bulk_list(this,
-								CourseClass.__api__listMembers(this.courseClass.member_ids),
-								CourseClass.__api__listCertificates(this.courseClass.certificate_ids))
-								.subscribe(jsonArr => {
-									this.courseMembers = CourseMember.toArray(jsonArr[0]);
-									this.certificates = Certificate.toArray(jsonArr[1]);
-									this.lmsProfileService.getCourseContent(this.member.course).subscribe(courseContent => {
-										this.courseUnits = courseContent["units"];
-										CourseLog.classActivity(this, classId).subscribe(logs => {
-											this.loadMemberStats(logs);
-										});
-									});
-								});
-						});
+		this.courseClass = this.route.snapshot.data['courseClass'];
+		this.viewMode = "outline";
+		this.lmsProfileService.init(this).subscribe(() => {
+			BaseModel.bulk_search(this,
+				CourseClass.__api__listProjects(this.courseClass.id),
+				CourseClass.__api__listExams(this.courseClass.id),
+				CourseClass.__api__listSurveys(this.courseClass.id),
+				CourseClass.__api__listMembers(this.courseClass.id),
+				CourseClass.__api__listCertificates(this.courseClass.id))
+				.subscribe(jsonArr => {
+					this.projects = Project.toArray(jsonArr[0]);
+					this.classExams = Exam.toArray(jsonArr[0]);
+					this.classSurveys = Survey.toArray(jsonArr[0]);
+					this.courseMembers = CourseMember.toArray(jsonArr[3]);
+					this.certificates = Certificate.toArray(jsonArr[4]);
+					CourseLog.classActivity(this, this.courseClass.id).subscribe(logs => {
+						this.loadMemberStats(logs);
 					});
 				});
-			});
-		})
+		});
 	}
 
 	viewChart(member: CourseMember) {
@@ -144,7 +129,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	viewGradebook(student: CourseMember) {
-		this.gradebookDialog.show(this.member, student);
+		this.gradebookDialog.show(this.member, this.courseClass, student);
 	}
 
 	viewLMSProfile(member: CourseMember) {
@@ -155,7 +140,7 @@ export class ClassManageComponent extends BaseComponent {
 		this.studentRecords = _.filter(this.courseMembers, (member: CourseMember) => {
 			return member.role == 'student';
 		});
-		var totalUnit = this.course.unit_count;
+		var totalUnit = this.courseClass.unit_count;
 		_.each(this.studentRecords, (record => {
 			var certificate = _.find(this.certificates, (cert: Certificate) => {
 				return cert.member_id == record["id"];
@@ -195,22 +180,20 @@ export class ClassManageComponent extends BaseComponent {
 		var project = new Project();
 		project.class_id = this.courseClass.id;
 		project.course_id = this.courseClass.course_id;
-		this.projectContentDialog.show(project);
-		this.projectContentDialog.onCreateComplete.first().subscribe(() => {
+		this.projectDialog.show(project);
+		this.projectDialog.onCreateComplete.first().subscribe(() => {
 			this.projects.push(project);
-			this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 		});
 	}
 
 	editProject(project: Project) {
-		this.projectContentDialog.show(project);
+		this.projectDialog.show(project);
 	}
 
 	deleteProject(project: Project) {
 		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 			project.delete(this).subscribe(() => {
 				this.success(this.translateService.instant('Project deleted'));
-				this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 				this.projects = _.reject(this.projects, (obj: Project) => {
 					return obj.id == project.id;
 				})
@@ -219,7 +202,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	markProject(project: Project) {
-		this.projectManageDialog.show(project, this.courseClass);
+		this.projectMarkingDialog.show(project);
 	}
 
 	addExam() {
@@ -229,7 +212,6 @@ export class ClassManageComponent extends BaseComponent {
 		exam.course_class_id = this.courseClass.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.first().subscribe(() => {
-			this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 			this.classExams.push(exam);
 		});
 	}
@@ -239,7 +221,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	enrollExam(exam: Exam) {
-		this.examEnrollDialog.show(exam, this.courseClass);
+		this.router.navigate(['/lms/class/manage/exam', this.courseClass.id, exam.id]);
 	}
 
 	manageExam(exam: Exam) {
@@ -248,12 +230,14 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	editExamContent(exam: Exam) {
-		this.examContentDialog.show(exam);
+		QuestionSheet.get(this, exam.sheet_id).subscribe(sheet=> {
+			this.examContentDialog.show(exam, sheet);
+		});
 	}
 
 
 	enrollSurvey(survey: Survey) {
-		this.enrollDialog.show(survey, this.courseClass);
+		this.router.navigate(['/lms/class/manage/survey', this.courseClass.id, survey.id]);
 	}
 
 	addSurvey() {
@@ -263,7 +247,6 @@ export class ClassManageComponent extends BaseComponent {
 		survey.course_class_id = this.courseClass.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.first().subscribe(() => {
-			this.lmsProfileService.invalidateClassContent(this.courseClass.id);
 			this.classSurveys.push(survey);
 		});
 	}
@@ -277,9 +260,9 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	editSurveyContent(survey: Survey) {
-		this.surveyContentDialog.show(survey);
+		Survey.get(this, survey.sheet_id).subscribe(sheet=> {
+			this.surveyContentDialog.show(survey, sheet);
+		});
 	}
-
-
 
 }

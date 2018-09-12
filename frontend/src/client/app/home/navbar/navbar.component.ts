@@ -8,7 +8,6 @@ import { HomeComponent } from '../home.component';
 import { SettingService } from '../../shared/services/setting.service';
 import { SelectItem } from 'primeng/primeng';
 import { BaseComponent } from '../../shared/components/base/base.component';
-import { TicketDialog } from '../../workflow/ticket-dialog/ticket-dialog.component';
 import * as _ from 'underscore'
 import { Course } from '../../shared/models/elearning/course.model';
 import { CourseMember } from '../../shared/models/elearning/course-member.model';
@@ -30,7 +29,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 	private user: User;
 	@Input() lang: string;
 	@Input() viewMode: string;
-	@ViewChild(TicketDialog) ticketDialog: TicketDialog;
 
 	constructor(private router: Router, private parent: HomeComponent,
 		private eventManager: HomeEventManager) {

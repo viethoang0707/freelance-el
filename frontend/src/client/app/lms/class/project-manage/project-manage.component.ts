@@ -29,41 +29,36 @@ import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
-	selector: 'project-manage-dialog',
-	templateUrl: 'project-manage.dialog.component.html',
-    styleUrls: ['project-manage.dialog.component.css'],
+	selector: 'project-manage',
+	templateUrl: 'project-manage.component.html',
+    styleUrls: ['project-manage.component.css'],
 })
-export class ProjectManageDialog extends BaseComponent {
+export class ProjectManageComponent extends BaseComponent {
 
     PROJECT_STATUS = PROJECT_STATUS;
-    
-    private display: boolean;
+
 	private project: Project;
-    private courseClass: CourseClass;
     private submits: ProjectSubmission[];
     private members: CourseMember[];
     private selectedMember: any;
-    
+
     @ViewChild(ProjectMarkingDialog) projectMarkDialog: ProjectMarkingDialog;
 
-	constructor() {
+	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
 		this.project = new Project();
-        this.courseClass = new CourseClass();
 	}
 
-	show(project: Project, courseClass: CourseClass) {
-        this.project = project;
-        this.courseClass =  courseClass;
-        this.display = true;
-        BaseModel.bulk_list(this,
-            Project.__api__listSubmissios(this.project.submission_ids),
-            CourseClass.__api__listMembers(this.courseClass.member_ids))
+    ngOnInit() {
+        this.project = this.route.snapshot.data['project'];
+        BaseModel.bulk_search(this,
+            Project.__api__listSubmissios(this.project.id),
+            CourseClass.__api__listMembers(this.project.class_id))
             .subscribe(jsonArr => {
                 this.submits = ProjectSubmission.toArray(jsonArr[0]);
                 this.members = CourseMember.toArray(jsonArr[1]);
             });
-	}
+    }
 
 	mark() {
         var submit = this.getProjectSubmit(this.selectedMember);
@@ -77,8 +72,8 @@ export class ProjectManageDialog extends BaseComponent {
         }) || new ProjectSubmission();
     }
 
-    hide() {
-        this.display = false;
+    close() {
+        this.router.navigate(['/lms/class/manage', this.project.class_id]);
     }
 
 }

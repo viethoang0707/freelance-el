@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, EXAM_TIME_WARNING } from '../../../shared/models/constants'
@@ -90,9 +89,9 @@ export class SurveyStudyDialog extends BaseComponent {
 		this.member.populateSubmission(this).subscribe(() => {
 			this.submission = this.member.submit;
 			this.submission.start = new Date();
-			BaseModel.bulk_list(this,
-				SurveySheet.__api__listQuestions(this.survey.question_ids),
-				SurveySubmission.__api__listAnswers(this.submission.answer_ids))
+			BaseModel.bulk_search(this,
+				SurveySheet.__api__listQuestions(this.survey.id),
+				SurveySubmission.__api__listAnswers(this.submission.id))
 				.subscribe(jsonArr => {
 					this.surveyQuestions = SurveyQuestion.toArray(jsonArr[0]);
 					this.answers = SurveyAnswer.toArray(jsonArr[1]);

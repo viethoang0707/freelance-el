@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, NgZone, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -9,7 +8,6 @@ import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, COURSE_MEMBER_ENROLL_STATUS, EXAM_STATUS, PROJECT_STATUS } from '../../../shared/models/constants'
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
-import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { CourseLog } from '../../../shared/models/elearning/log.model';
@@ -32,7 +30,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
 import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 import { Course } from '../../../shared/models/elearning/course.model';
-
+import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 
 @Component({
     moduleId: module.id,
@@ -44,7 +42,7 @@ export class GradebookDialog extends BaseComponent {
 
     private display: boolean;
     private student: CourseMember;
-    private course: Course;
+    private courseClass: CourseClass;
     private exams: Exam[];
     private examRecords: ExamRecord[];
     private examMembers: ExamMember[];
@@ -66,7 +64,7 @@ export class GradebookDialog extends BaseComponent {
         this.stats = [];
         this.reportUtils = new ReportUtils();
         this.student = new CourseMember();
-        this.viewer =  new CourseMember();
+        this.viewer = new CourseMember();
     }
 
     ngOnInit() {
@@ -106,7 +104,7 @@ export class GradebookDialog extends BaseComponent {
         certificate.date_issue = new Date();
         certificate.course_id = this.student.course_id;
         certificate.member_id = this.student.id;
-        certificate.issue_member_id =  this.viewer.id;
+        certificate.issue_member_id = this.viewer.id;
         this.certDialog.show(certificate);
         this.certDialog.onCreateComplete.first().subscribe((obj: Certificate) => {
             this.certificate = obj;
@@ -117,55 +115,50 @@ export class GradebookDialog extends BaseComponent {
         });
     }
 
-    show(viewer: CourseMember,student: CourseMember) {
+    show(viewer: CourseMember ,courseClass: CourseClass, student: CourseMember) {
         this.display = true;
         this.exams = [];
         this.projects = [];
         this.stats = [];
-        this.viewer =  viewer;
+        this.viewer = viewer;
         this.student = student;
-        this.lmsProfileService.init(this).subscribe(() => {
-            this.student.populateCourse(this).subscribe(() => {
-                this.student.populateClass(this).subscribe(() => {
-                    this.course = this.student.course;
-                    this.lmsProfileService.getClassContent(this.student.clazz).subscribe(content => {
-                        this.projects = content["projects"];
-                        this.exams = content["exams"];
-                        BaseModel.bulk_list(this,
-                            CourseMember.__api__populateCertificate(student.certificate_id),
-                            CourseMember.__api__listProjectSubmissions(student.project_submission_ids),
-                            CourseMember.__api__listExamRecords(student.exam_record_ids),
-                            CourseMember.__api__listExamMembers(student.exam_member_ids))
-                            .subscribe(jsonArr => {
-                                var certificates = Certificate.toArray(jsonArr[0]);
-                                if (certificates.length)
-                                    this.certificate = certificates[0];
-                                this.projectSubmits = ProjectSubmission.toArray(jsonArr[1]);
-                                this.examRecords = ExamRecord.toArray(jsonArr[2]);
-                                this.examMembers = ExamMember.toArray(jsonArr[3]);
-                                CourseLog.memberStudyActivity(this, this.student.id, this.student.course_id)
-                                    .subscribe(logs => {
-                                        this.computeCourseStats(logs);
-                                    });
-                            });
-                    });
-                });
-
-            });
+        this.courseClass = courseClass;
+        student.populateCertificate(this).subscribe(() => {
+            this.certificate = student.certificate;
         });
+        this.lmsProfileService.init(this).subscribe(() => {
+            BaseModel.bulk_search(this,
+                CourseClass.__api__listProjects(courseClass.id),
+                CourseClass.__api__listExams(courseClass.id),
+                CourseMember.__api__listProjectSubmissions(student.id),
+                CourseMember.__api__listExamRecords(student.id),
+                CourseMember.__api__listExamMembers(student.id))
+                .subscribe(jsonArr => {
+                    this.projects = Project.toArray(jsonArr[0]);
+                    this.exams = Exam.toArray(jsonArr[1]);
+                    this.projectSubmits = ProjectSubmission.toArray(jsonArr[2]);
+                    this.examRecords = ExamRecord.toArray(jsonArr[3]);
+                    this.examMembers = ExamMember.toArray(jsonArr[4]);
+                    CourseLog.memberStudyActivity(this, this.student.id, this.student.course_id)
+                        .subscribe(logs => {
+                            this.computeCourseStats(logs);
+                        });
+                });
+        });
+
     }
 
     computeCourseStats(logs: CourseLog[]) {
         var record = {};
-        record["total_unit"] = this.course.unit_count;
+        record["total_unit"] = this.courseClass.unit_count;
         var result = this.reportUtils.analyzeCourseMemberActivity(logs);
         if (result[0] != Infinity)
             record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATETIME_FORMAT);
         if (result[1] != Infinity)
             record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATETIME_FORMAT);
         record["time_spent"] = this.timePipe.transform(+result[2], 'min');
-        if (this.course.unit_count)
-            record["complete_percent"] = Math.floor(+result[3] * 100 / +this.course.unit_count);
+        if (this.courseClass.unit_count)
+            record["complete_percent"] = Math.floor(+result[3] * 100 / +this.courseClass.unit_count);
         else
             record["complete_percent"] = 0;
         record["complete_unit"] = +result[3];
@@ -190,7 +183,7 @@ export class GradebookDialog extends BaseComponent {
             return member.exam_id = exam.id;
         });
         if (member) {
-            member.populateSubmission(this).subscribe(()=> {
+            member.populateSubmission(this).subscribe(() => {
                 this.answerSheetDialog.show(exam, member, member.submit);
             });
         }

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
@@ -47,12 +46,9 @@ export class QuestionMarkingDialog extends BaseComponent {
 		this.member = member;
 		this.submit = submit;
 
-		BaseModel.bulk_list(this,
-			Exam.__api__populateQuestionSheet(this.submit.exam_id),
-			Submission.__api__listAnswers(this.submit.answer_ids))
-			.subscribe(jsonArr => {
-				var sheet = QuestionSheet.toArray(jsonArr[0])[0];
-				this.answers = Answer.toArray(jsonArr[1]);
+		QuestionSheet.get(this, this.member.sheet_id).subscribe(sheet => {
+			this.submit.listAnswers(this).subscribe(ans => {
+				this.answers = ans;
 				sheet.listQuestions(this).subscribe(examQuestions => {
 					_.each(examQuestions, (question: ExamQuestion) => {
 						this.questions[question.question_id] = question;
@@ -65,6 +61,7 @@ export class QuestionMarkingDialog extends BaseComponent {
 					});
 				});
 			});
+		});
 	}
 
 	hide() {

@@ -7,7 +7,6 @@ import * as _ from 'underscore';
 import { QUESTION_TYPE, GROUP_CATEGORY, QUESTION_LEVEL } from '../../shared/models/constants'
 import { Mail } from '../../shared/models/elearning/mail.model';
 import { Group } from '../../shared/models/elearning/group.model';
-import { MailTemplateDialog } from '../mail-template-dialog/mail-template-dialog.component';
 import { TreeUtils } from '../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { CompetencyLevel } from '../../shared/models/elearning/competency-level.model';
@@ -21,7 +20,6 @@ import { BaseModel } from '../../shared/models/base.model';
 })
 export class MailTemplateListComponent extends BaseComponent {
 
-    @ViewChild(MailTemplateDialog) mailTemplDialog: MailTemplateDialog;
 
     private templates: Mail[];
     private selectedTemplate: any;
@@ -36,12 +34,7 @@ export class MailTemplateListComponent extends BaseComponent {
     }
 
     editTemplate(template: Mail) {
-        template.populate(this).subscribe(() => {
-            this.mailTemplDialog.show(template);
-            this.mailTemplDialog.onUpdateComplete.subscribe(() => {
-                this.loadTemplates();
-            });
-        })
+        this.router.navigate(['/settings/mail/form', template.id]);
     }
 
     loadTemplates() {

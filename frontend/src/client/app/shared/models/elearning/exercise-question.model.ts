@@ -29,7 +29,6 @@ export class ExerciseQuestion extends BaseModel{
         this.score = undefined;
         this.order = undefined;
         this.sheet_id = undefined;
-        this.option_ids = [];
         this.group_name =  undefined;
     }
 

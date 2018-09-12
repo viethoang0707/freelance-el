@@ -1,6 +1,5 @@
 <div class="card card-w-title ui-g">
     <div class="ui-g-12 ui-lg-12">
-        <!-- <h1><a [routerLink]="['/dashboard/courses/']">{{'My courses' |translate}}</a><span class="fa fa-fw ui-icon-arrow-forward"></span><span>{{'Course'|translate}}: {{course.name}} </span></h1> -->
         <h1>{{'Course'|translate}}: {{course.name}}</h1>
     </div>
     <div class="ui-g-12 ui-lg-12">
@@ -125,5 +124,8 @@
                 </div>
             </p-tabPanel>
         </p-tabView>
+    </div>
+     <div class="card-footer">
+        <button type="button" pButton icon="ui-icon-arrow-back" (click)="back()" label="{{'Go back'|translate}}"></button>
     </div>
 </div>

@@ -16,6 +16,9 @@
             <!--  sortField="role" -->
             <ng-template pTemplate="header">
                 <tr>
+                    <th>
+                        {{'Index'|translate}}
+                    </th>
                     <th [pSortableColumn]="'name'">
                         {{'Name'|translate}}
                         <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -38,8 +41,9 @@
                     </th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-member>
+            <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                 <tr [pSelectableRow]="member">
+                     <td>{{rowIndex+1}}</td>
                     <td>{{member.name}}</td>
                     <td>{{member.group_name}}</td>
                     <td>{{member.score}}</td>
@@ -51,6 +55,9 @@
                 {{'Total records'|translate}} : {{members?.length}}
             </ng-template>
         </p-table>
+    </div>
+     <div class="card-footer">
+        <button type="button" pButton icon="ui-icon-arrow-back" (click)="back()" label="{{'Go back'|translate}}"></button>
     </div>
     <question-marking-dialog></question-marking-dialog>
     <question-sheet-print-dialog></question-sheet-print-dialog>

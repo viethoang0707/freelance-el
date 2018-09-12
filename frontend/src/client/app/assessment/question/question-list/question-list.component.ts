@@ -9,7 +9,6 @@ import { Question } from '../../../shared/models/elearning/question.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
-import { QuestionImportDialog } from '../import-dialog/import-dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 
 const QUESTION_FIELDS = ['title', 'level', 'type', 'group_id', 'group_name'];
@@ -59,19 +58,19 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     editQuestion(question: Question) {
-       this.router.navigate(['/assessment/question/form/edit', question.id]);
+        this.router.navigate(['/assessment/question/form/edit', question.id]);
     }
 
     viewQuestion(question: Question) {
-       this.router.navigate(['/assessment/question/view', question.id]);
+        this.router.navigate(['/assessment/question/view', question.id]);
     }
 
     deleteMultipleQuestions(questions: Question[]) {
         this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             Question.deleteArray(this, questions).subscribe(() => {
                 this.selectedQuestions = [];
-                var qIds = _.pluck(questions,'id');
-                this.questions = _.reject(this.questions, (obj:Question)=> {
+                var qIds = _.pluck(questions, 'id');
+                this.questions = _.reject(this.questions, (obj: Question) => {
                     return qIds.includes(obj.id);
                 });
                 this.displayQuestions = this.questions;
@@ -81,8 +80,8 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     loadQuestions() {
-        Question.all(this,QUESTION_FIELDS).subscribe(questions => {
-            questions  = _.sortBy(questions,(question:Question)=> {
+        Question.all(this, QUESTION_FIELDS).subscribe(questions => {
+            questions = _.sortBy(questions, (question: Question) => {
                 return question.create_date;
             });
             this.questions = questions;
@@ -107,9 +106,9 @@ export class QuestionListComponent extends BaseComponent {
         }
     }
 
-    enterBatchMode(action:string) {
+    enterBatchMode(action: string) {
         this.batchAction = action;
-        this.mode =  'multiple';
+        this.mode = 'multiple';
         this.selectedQuestions = [];
     }
 
@@ -120,9 +119,8 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     applyBatchAction() {
-        if (this.batchAction=='delete')
-            this.deleteMultipleQuestions(this.selectedQuestions).subscribe(()=> {
-                this.enterSingleMode();
-            });
+        if (this.batchAction == 'delete')
+            this.deleteMultipleQuestions(this.selectedQuestions);
+        this.enterSingleMode();
     }
 }

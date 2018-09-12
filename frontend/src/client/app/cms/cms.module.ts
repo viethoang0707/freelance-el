@@ -5,7 +5,6 @@ import { CMSComponent } from './cms.component';
 import { ExamEditorDialog } from './exam/exam-editor/exam-editor.dialog.component';
 import { ExamEditor } from './exam/exam-editor/exam-editor.component';
 import { ExamEditorFormCoponent } from './exam/exam-editor/exam-editor-form.component';
-import { ProjectContentDialog } from './project/project-content/project-content.dialog.component';
 import { CourseSyllabusComponent } from './course/course-syllabus/course-syllabus.component';
 import { SumPipe } from './exam/sum.pipe';
 import { CourseUnitContainerDirective } from './course/course-unit-template/unit-container.directive';
@@ -51,7 +50,6 @@ import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve
 		ExamEditor, 
 		ExamEditorFormCoponent,
 		CourseUnitPreviewDialog,
-		ProjectContentDialog,
 		CourseSyllabusComponent,
 		CourseUnitContainerDirective,
 		FolderCourseUnitComponent,
@@ -85,7 +83,6 @@ import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve
 		ExamEditorDialog,
 		CourseUnitPreviewDialog,
 		CourseUnitContainerDirective,
-		ProjectContentDialog,
 		SurveyEditorDialog,
 		QuestionSheetPreviewDialog,
 		SurveySheetPreviewDialog,

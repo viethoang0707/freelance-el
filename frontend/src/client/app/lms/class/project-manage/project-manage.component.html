@@ -1,5 +1,5 @@
-<p-dialog header="{{project.name}}" [(visible)]="display" modal="true" width="960" [responsive]="true" appendTo="body">
-    <div class="spinner" [hidden]="!loading"></div>
+<div class="card card-w-title">
+    <h1>{{'Project manage'|translate}} : {{project.name}}</h1>
     <div class="ui-g-12 ">
         <p-toolbar>
             <div class="ui-toolbar-group-left ">
@@ -8,24 +8,44 @@
         </p-toolbar>
         <div>
             <div class="ui-g-6">
-                <span> {{ 'Name'|translate}} : {{project.name}}</span>
+                <div class="ui-g-3">
+                    <label>{{'Name'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>  {{project.name}}</span>
+                </div>
             </div>
             <div class="ui-g-12">
-                <div>
+                <div class="ui-g-3">
                     <label>{{'Content'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
                     <p [innerHTML]="project.content"></p>
                 </div>
             </div>
             <div class="ui-g-6">
-                <label>{{'Start'|translate}}</label>
-                {{project.start | date : "dd/MM/yyyy"}}
+                <div class="ui-g-3">
+                    <label>{{'Start'|translate}}</label>
+                </div>
+                <div class="ui-g-3">
+                    {{project.start | date : "dd/MM/yyyy"}}
+                </div>
             </div>
             <div class="ui-g-6">
-                <label>{{'End'|translate}}</label>
-                {{project.end | date : "dd/MM/yyyy"}}
+                <div class="ui-g-3">
+                    <label>{{'End'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    {{project.end | date : "dd/MM/yyyy"}}
+                </div>
             </div>
             <div class="ui-g-6">
-                <a href="{{project.file_url}}" target="_blank" *ngIf="project.file_url">{{project.filename}}</a>
+                <div class="ui-g-3">
+                    <label>{{'File'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <a href="{{project.file_url}}" target="_blank" *ngIf="project.file_url">{{project.filename}}</a>
+                </div>
             </div>
         </div>
         <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
@@ -64,7 +84,7 @@
         </p-table>
     </div>
     <project-marking-dialog></project-marking-dialog>
-    <p-footer>
-        <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
-    </p-footer>
-</p-dialog>
+    <div class="card-footer">
+        <button type="button" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
+    </div>
+</div>

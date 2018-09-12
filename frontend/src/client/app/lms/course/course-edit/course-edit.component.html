@@ -9,11 +9,11 @@
                     <div class="ui-g-12">
                         <p-toolbar>
                             <button pButton type="button" icon="ui-icon-backup" title="{{'Backup'| translate}}" label="{{'Backup'|translate}}" class="green-btn" style="margin-right:4px;" (click)="backupCourse()"></button>
-                            <button pButton type="button" icon="ui-icon-restore" title="{{'Restore'| translate}}" label="{{'Restore'|translate}}" class="blue-btn" style="margin-right:4px;" (click)="restoreCourse()"></button> 
+                            <button pButton type="button" icon="ui-icon-restore" title="{{'Restore'| translate}}" label="{{'Restore'|translate}}" class="blue-btn" style="margin-right:4px;" (click)="restoreCourse()"></button>
                         </p-toolbar>
                     </div>
                     <div class="ui-g-3 course-edit-tree">
-                        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" ></p-tree>
+                        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
                         <div class="ui-g-12">
                             <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, member)"></button>
                         </div>
@@ -47,6 +47,9 @@
                         <p-table #materialTable [value]="materials" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMaterial" [responsive]="true">
                             <ng-template pTemplate="header">
                                 <tr>
+                                    <th>
+                                        {{'Index'|translate}}
+                                    </th>
                                     <th [pSortableColumn]="'name'">
                                         {{'Name'|translate}}
                                         <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -60,8 +63,9 @@
                                     </th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-material>
+                            <ng-template pTemplate="body" let-material  let-rowIndex="rowIndex">
                                 <tr [pSelectableRow]="material">
+                                    <td>{{frowIndex+1}}</td>
                                     <td>{{material.name}}</td>
                                     <td>{{material.type}}</td>
                                     <td class="url-course-material">{{material.url}}</td>
@@ -89,6 +93,9 @@
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
+                                        {{'Index'|translate}}
+                                    </th>
+                                    <th>
                                         {{'Question'|translate}}
                                     </th>
                                     <th>
@@ -96,8 +103,9 @@
                                     </th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-faq>
+                            <ng-template pTemplate="body" let-faq  let-rowIndex="rowIndex">
                                 <tr [pSelectableRow]="faq">
+                                    <td>{{frowIndex+1}}</td>
                                     <td>{{faq.question}}</td>
                                     <td>{{faq.answer}}</td>
                                 </tr>
@@ -111,5 +119,8 @@
                 </div>
             </p-tabPanel>
         </p-tabView>
+    </div>
+     <div class="card-footer">
+        <button type="button" pButton icon="ui-icon-arrow-back" (click)="back()" label="{{'Go back'|translate}}"></button>
     </div>
 </div>

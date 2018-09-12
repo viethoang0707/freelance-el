@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Course } from '../../../shared/models/elearning/course.model';
@@ -78,26 +79,27 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseUnitContainerDirective) unitHost: CourseUnitContainerDirective;
 
 
-	constructor(private router: Router, private route: ActivatedRoute, private componentFactoryResolver: ComponentFactoryResolver) {
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute, private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			var courseId = +params['courseId'];
-			Course.get(this, courseId).subscribe((course:Course) => {
-				this.course = course;
-				this.lmsProfileService.getCourseContent( course).subscribe(content => {
-					this.syl = content["syllabus"];
-					this.faqs = content["faqs"];
-					this.materials = content["materials"];
-					this.units = content["units"];
+		this.course = this.route.snapshot.data['course'];
+		BaseModel.bulk_search(this,
+			Course.__api__listFaqs(this.course.id),
+			Course.__api__listMaterials(this.course.id),
+			Course.__api__listUnits(this.course.id))
+			.subscribe(jsonArr => {
+				this.faqs = CourseFaq.toArray(jsonArr[0]);
+				this.materials = CourseMaterial.toArray(jsonArr[1]);
+				this.units = CourseUnit.toArray(jsonArr[2]);
+				CourseSyllabus.get(this, this.course.syllabus_id).subscribe(syl => {
+					this.syl = syl;
 					this.displayCouseSyllabus();
-				});
+				})
 			});
-		});
 	}
 
 	displayCouseSyllabus() {
@@ -174,5 +176,9 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 			currentNodeIndex++;
 		}
 		return (currentNodeIndex < this.treeList.length ? this.treeList[currentNodeIndex].data : null);
+	}
+
+	back() {
+		this.location.back();
 	}
 }

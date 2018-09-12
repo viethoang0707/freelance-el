@@ -1,12 +1,11 @@
 <div>
-    
     <p-table #dataTable [value]="submissions" [responsive]="true">
         <ng-template pTemplate="caption">
             {{'Assessment history'|translate}}
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-            		<th>#</th>
+                <th>{{'Index' | translate}}</th>
                 <th>{{'Attempt date'|translate}}</th>
                 <th>{{'Study time (min)'|translate}}</th>
                 <th>{{'Score'|translate}}</th>
@@ -16,13 +15,13 @@
         </ng-template>
         <ng-template pTemplate="body" let-submit let-rowIndex="rowIndex">
             <tr>
-            		<td>{{rowIndex+1}}</td>
+                <td>{{rowIndex+1}}</td>
                 <td>{{submit.date_attempt}}</td>
                 <td>{{submit.study_time | timeConvert:'min'}}</td>
                 <td>{{submit.score}}</td>
                 <td>{{submit.grade}}</td>
                 <td>
-                	<button pButton type="button" icon="ui-icon-timeline" title="{{'View answer sheet'| translate}}" label="{{'View answer sheet'|translate}}" class="blue-grey-btn"  style="margin-right:4px;" (click)="viewAnswer(submit)"></button>
+                    <button pButton type="button" icon="ui-icon-timeline" title="{{'View answer sheet'| translate}}" label="{{'View answer sheet'|translate}}" class="blue-grey-btn" style="margin-right:4px;" (click)="viewAnswer(submit)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -30,7 +29,7 @@
             {{'Total records'|translate}} : {{submissions?.length}}
         </ng-template>
     </p-table>
-    <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Start'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="doAssessment()" ></button>
+    <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" label="{{'Start'|translate}}" class=" green-btn" style="margin-right:4px;" (click)="doAssessment()"></button>
 </div>
 <exam-study-dialog></exam-study-dialog>
 <answer-print-dialog></answer-print-dialog>

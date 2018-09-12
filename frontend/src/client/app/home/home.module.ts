@@ -43,8 +43,8 @@ import { CompetencyModule } from '../competency/competency.module';
     NavbarComponent,
     SideMenuComponent,
     FooterComponent,
-    SubMenuComponent
-    , BreadcrumbComponent
+    SubMenuComponent, 
+    BreadcrumbComponent
   ],
   exports: [],
   providers: [HomeEventManager]

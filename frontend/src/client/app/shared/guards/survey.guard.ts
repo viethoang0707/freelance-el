@@ -16,21 +16,20 @@ export class SurveyGuard implements CanActivate, APIContext {
 	authService: AuthService;
 
 	constructor(apiService: APIService, authService: AuthService, private lmsService: LMSProfileService, private router: Router) {
-		this.apiService =  apiService;
+		this.apiService = apiService;
 		this.authService = authService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		var surveyId = route.params.surveyId;
-		var memberId = route.params.memberId;
-		if (!surveyId || !memberId)
+		if (!surveyId)
 			return Observable.of(false);
 		return this.lmsService.init(this)
-		.map(()=> {
-			var member = this.lmsService.surveyMemberById(memberId);
-            return member != null && ( member.role == 'editor' ||  member.role == 'supervisor' );
-        }).catch(() => {
-            return Observable.of(false);
-        });
+			.map(() => {
+				var roles = this.lmsService.getSurveyMemberRoles(surveyId);
+				return  roles.includes('supervisor') || roles.includes('editor');
+			}).catch(() => {
+				return Observable.of(false);
+			});
 	}
 }

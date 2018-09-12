@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, Input, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Course } from '../../../shared/models/elearning/course.model';
@@ -91,7 +92,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
 	@ViewChild(CourseUnitStudyDialog) unitStudyDialog: CourseUnitStudyDialog;
 
-	constructor(private router: Router, private route: ActivatedRoute,
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute,
 		private meetingSerivce: MeetingService, private componentFactoryResolver: ComponentFactoryResolver) {
 		super();
 		this.course = new Course();
@@ -103,44 +104,49 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			var memberId = +params['memberId'];
-			var courseId = +params['courseId'];
-			this.lmsProfileService.init(this).subscribe(() => {
-				this.member = this.lmsProfileService.courseMemberById(memberId);
-				this.certificate = this.lmsProfileService.certificateByMember(memberId);
-				this.member.populateCourse(this).subscribe(() => {
-					this.course = this.member.course;
-					if (this.course.syllabus_status != 'published') {
-						this.error(this.translateService.instant('Syllabus has not been published'));
-						return;
-					}
-					this.lmsProfileService.getCourseContent(this.course).subscribe(content => {
-						this.syl = content["syllabus"];
-						this.faqs = content["faqs"];
-						this.materials = content["materials"];
-						this.units = content["units"];
-						if (this.member.class_id) {
-							this.examMembers = this.lmsProfileService.examMembersByClassId(this.member.class_id);
-							this.conferenceMember = this.lmsProfileService.conferenceMemberByClassId(this.member.class_id);
-							if (this.conferenceMember)
-								this.conference = this.conferenceMember.conference;
-							this.projectSubmits = this.lmsProfileService.projectSubmitsByMember(this.member.id);
-							this.member.populateClass(this).subscribe(() => {
-								this.lmsProfileService.getClassContent(this.member.clazz).subscribe(content => {
-									this.projects = content["projects"];
-								});
-							})
-							ExamMember.populateExams(this, this.examMembers).subscribe();
-						}
-					});
+		this.course = this.route.snapshot.data['course'];
+		this.member = this.route.snapshot.data['member'];
+		if (this.course.syllabus_status != 'published') {
+			this.error(this.translateService.instant('Syllabus has not been published'));
+			return;
+		}
+		this.lmsProfileService.init(this).subscribe(() => {
+			this.certificate = this.lmsProfileService.certificateByMember(this.member.id);
+			BaseModel.bulk_search(this,
+				Course.__api__listFaqs(this.course.id),
+				Course.__api__listMaterials(this.course.id),
+				Course.__api__listUnits(this.course.id))
+				.subscribe(jsonArr => {
+					this.faqs = CourseFaq.toArray(jsonArr[0]);
+					this.materials = CourseMaterial.toArray(jsonArr[1]);
+					this.units = CourseUnit.toArray(jsonArr[2]);
+					CourseSyllabus.get(this, this.course.syllabus_id).subscribe(syl => {
+						this.syl = syl;
+					})
 				});
-			});
+			if (this.member.class_id) {
+				this.examMembers = this.lmsProfileService.examMembersByClassId(this.member.class_id);
+				this.conferenceMember = this.lmsProfileService.conferenceMemberByClassId(this.member.class_id);
+				if (this.conferenceMember)
+					Conference.get(this, this.conferenceMember.conference_id).subscribe(conference => {
+						this.conference = conference;
+					})
+				this.projectSubmits = this.lmsProfileService.projectSubmitsByMember(this.member.id);
+				BaseModel.bulk_search(this,
+					CourseClass.__api__listProjects(this.member.class_id))
+					.subscribe(jsonArr => {
+						this.projects = Project.toArray(jsonArr[0]);
+					})
+				ExamMember.populateExams(this, this.examMembers).subscribe();
+			}
 		});
 	}
 
 	viewGradebook() {
-		this.gradebookDialog.show(this.member, this.member);
+		CourseClass.get(this, this.member.class_id).subscribe(courseClass => {
+			this.gradebookDialog.show(this.member, courseClass, this.member);
+		})
+
 	}
 
 	study() {
@@ -167,10 +173,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	startExam(exam: Exam, member: ExamMember) {
 		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			exam.populate(this).subscribe(() => {
-				this.examStudyDialog.show(exam, member);
+				exam.populateSetting(this).subscribe(() => {
+					this.examStudyDialog.show(exam, exam.setting, member);
+				})
 			});
-
 		});
+	}
+
+	back() {
+		this.location.back();
 	}
 
 }

@@ -13,64 +13,132 @@ import { SyllabusGuard } from '../shared/guards/syllabus.guard';
 import { SurveyGuard } from '../shared/guards/survey.guard';
 import { RouterModule } from '@angular/router';
 import { ClassGuard } from '../shared/guards/class.guard';
+import { ClassConferenceComponent } from './class/class-conference/class-conference.component';
+import { ClassExamEnrollComponent } from './class/class-exam-enroll/class-exam-enroll.component';
+import { ClassSurveyEnrollComponent } from './class/class-survey-enroll/class-survey-enroll.component';
+import { ConferenceeResolve, ProjectResolve, CourseResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
+import { ProjectManageComponent } from './class/project-manage/project-manage.component';
 
 export const LMSRoutes: Routes = [
-    {
-       path: 'lms',
-       component: LMSComponent,
-       data: {
-         breadcrumb:'LMS'
-       },
-       children:
-       [
-            {
-               path: "exams/manage/:examId/:memberId",
-               component: ExamManageComponent,
-               data: {
-                 breadcrumb:'Manage exam'
-               },
-               canActivate:[ExamGuard]
-            },
-            {
-               path: "courses/edit/:courseId/:memberId",
-               component: CourseEditComponent,
-               data: {
-                 breadcrumb:'Edit course'
-               },
-               canActivate:[SyllabusGuard]
-            },
-            {
-               path: "courses/manage/:courseId/:memberId",
-               component: CourseManageComponent,
-               data: {
-                 breadcrumb:'Manage course'
-               },
-               canActivate:[CourseGuard]
-            },
-            {
-               path: "courses/manage/class/:courseId/:classId/:memberId",
-               component: ClassManageComponent,
-               data: {
-                 breadcrumb:'Manage class student'
-               },
-               canActivate:[ClassGuard]
-            },
-            {
-               path: "courses/view/:courseId",
-               component: CourseViewComponent,
-               data: {
-                 breadcrumb:'View course'
-               }
-            },
-            {
-               path: "courses/study/:courseId/:memberId",
-               component: CourseStudyComponent,
-               data: {
-                 breadcrumb:'Study course'
-               },
-            },
-       ]
-    }
+  {
+    path: 'lms',
+    component: LMSComponent,
+    data: {
+      breadcrumb: 'LMS'
+    },
+    children:
+      [
+        {
+          path: "exam/manage/:examId",
+          component: ExamManageComponent,
+          data: {
+            breadcrumb: 'Manage exam'
+          },
+          resolve: {
+            exam: ExamResolve,
+          },
+          canActivate: [ExamGuard]
+        },
+        {
+          path: "course/edit/:courseId",
+          component: CourseEditComponent,
+          data: {
+            breadcrumb: 'Edit course'
+          },
+          resolve: {
+            course: CourseResolve,
+          },
+          canActivate: [SyllabusGuard]
+        },
+        {
+          path: "course/manage/:courseId",
+          component: CourseManageComponent,
+          data: {
+            breadcrumb: 'Manage course'
+          },
+          resolve: {
+            course: CourseResolve,
+          },
+          canActivate: [CourseGuard]
+        },
+        {
+          path: "class/manage/:classId",
+          component: ClassManageComponent,
+          data: {
+            breadcrumb: 'Manage class student'
+          },
+          resolve: {
+            courseClass: CourseClassResolve
+          },
+          canActivate: [ClassGuard]
+        },
+        {
+          path: "class/manage/exam/:classId/:examId",
+          component: ClassExamEnrollComponent,
+          data: {
+            breadcrumb: 'Manage class exam enrollment'
+          },
+          resolve: {
+            exam: ExamResolve
+          },
+          canActivate: [ClassGuard]
+        },
+        {
+          path: "class/manage/project/:classId/:projectId",
+          component: ProjectManageComponent,
+          data: {
+            breadcrumb: 'Manage class project'
+          },
+          resolve: {
+            project: ProjectResolve
+          },
+          canActivate: [ClassGuard]
+        },
+        {
+          path: "class/manage/survey/:classId/:surveyId",
+          component: ClassSurveyEnrollComponent,
+          data: {
+            breadcrumb: 'Manage class survey enrollment'
+          },
+          resolve: {
+            survey: SurveyResolve
+          },
+          canActivate: [ClassGuard]
+        },
+        {
+          path: "class/manage/conference/:classId/:conferenceId",
+          component: ClassConferenceComponent,
+          data: {
+            breadcrumb: 'Manage class conference'
+          },
+          resolve: {
+            conference: ConferenceeResolve,
+          },
+          canActivate: [ClassGuard]
+        },
+        {
+          path: "course/view/:courseId",
+          component: CourseViewComponent,
+          data: {
+            breadcrumb: 'View course'
+          },
+          resolve: {
+            course: CourseResolve,
+          },
+        },
+        {
+          path: "course/study/:courseId/:memberId",
+          component: CourseStudyComponent,
+          data: {
+            breadcrumb: 'Study course'
+          },
+          resolve: {
+            course: CourseResolve,
+            member: CourseMemberResolve
+          },
+        },
+      ]
+  }
 
 ]
 

@@ -19,7 +19,7 @@ import { ExamFormContentComponent } from './exam-form-content.component';
     selector: 'exam-dialog',
     templateUrl: 'exam-dialog.component.html',
 })
-export class ExamDialogComponent extends BaseDialog<Exam> {
+export class ExamDialog extends BaseDialog<Exam> {
 
     private editor: ExamMember;
 

@@ -61,8 +61,6 @@ class Course(models.Model):
 			unit.unlink()
 		for faq in self.faq_ids:
 			faq.unlink()
-		for rating in self.rating_ids:
-			rating.unlink()
 		return super(Course, self).unlink()
 
 	@api.model
@@ -87,7 +85,7 @@ class Course(models.Model):
 				successList =  userIds
 			for user in self.env['res.users'].browse(successList):
 				course.registerCourseMember(user,'student')
-			return {'success':successList, 'fail':failList}
+			return {'success':True,'successIds':successList, 'failIds':failList}
 
 	@api.model
 	def enroll_staff(self, params):
@@ -96,7 +94,7 @@ class Course(models.Model):
 		for course in self.env['etraining.course'].browse(courseId):
 			for user in self.env['res.users'].browse(userIds):
 				course.registerCourseMember(user, 'teacher')
-			return {'success':userIds, 'fail':[]}
+			return {'success':True,,'successIds':userIds, 'failIds':[]}
 
 	@api.model
 	def open(self, params):
@@ -111,7 +109,7 @@ class Course(models.Model):
 					if student.enroll_status != 'completed' and student.email:
 						self.env.ref(self._module +"."+ "course_open_template").send_mail(student.id,force_send=True)
 			course.write({'status':'open'})
-			return True
+			return {'success':True}
 
 	@api.model
 	def close(self, params):
@@ -126,7 +124,7 @@ class Course(models.Model):
 					if student.enroll_status != 'completed' and student.email:
 						self.env.ref(self._module +"."+ "course_close_template").send_mail(student.id,force_send=True)
 			course.write({'status':'closed'})
-			return True
+			return {'success':True}
 
 
 	def registerCourseMember(self, user, role):
@@ -373,7 +371,7 @@ class CourseClass(models.Model):
 	project_ids = fields.One2many('etraining.project','class_id', string='Course members')
 	exam_ids = fields.One2many('etraining.exam','course_class_id', string='Course exams')
 	survey_ids = fields.One2many('etraining.survey','course_class_id', string='Course surveys')
-
+	unit_count = fields.Integer(related='course_id.unit_count', string='Course unit count', readonly=True)
 	member_count = fields.Integer( compute='_compute_member_count', string='Member count')
 
 	def _compute_member_count(self):
@@ -424,7 +422,7 @@ class CourseClass(models.Model):
 				successList =  userIds
 			for user in self.env['res.users'].browse(successList):
 				course_class.registerClassMember(user, 'student')
-			return {'success':successList, 'fail':failList}
+			return {'success':True, 'successIds':successList, 'failIds':failList}
 
 	@api.model
 	def enroll_staff(self, params):
@@ -435,13 +433,12 @@ class CourseClass(models.Model):
 		for course_class in self.env['etraining.course_class'].browse(classId):
 			for user in self.env['res.users'].browse(userIds):
 				course_class.registerClassMember(user, 'teacher')
-			return {'success':userIds, 'fail':[]}
+			return {'success':True,'successIds':userIds, 'failIds':[]}
 
 	def registerClassMember(self, user, role):
 		member =  self.env['etraining.course_member'].create({'class_id':self.id,'role':role,
 			'course_id':self.course_id.id, 'user_id': user.id, 'status':'active', 
 			'enroll_status':'registered', 'date_register':datetime.datetime.now()})
-		conf_member = self.conference_id.createConferenceMember(member)
 		if member.email:
 				self.env.ref(self._module +"."+ "course_register_template").send_mail(member.id,force_send=True)
 		return member
@@ -454,7 +451,7 @@ class CourseClass(models.Model):
 				if student.enroll_status != 'completed' and student.email:
 					self.env.ref(self._module +"."+ "class_open_template").send_mail(student.id,force_send=True)
 			clazz.write({'status':'open'})
-			return True
+			return {'success':True}
 
 	@api.model
 	def close(self, params):
@@ -463,10 +460,8 @@ class CourseClass(models.Model):
 			for student in self.env['etraining.course_member'].search([('class_id','=',clazz.id),('role','=','student')]):
 				if student.enroll_status != 'completed' and student.email:
 					self.env.ref(self._module +"."+ "class_close_template").send_mail(student.id,force_send=True)
-			if clazz.conference_id:
-				clazz.conference_id.write({'status':'closed'})
 			clazz.write({'status':'closed'})
-			return True
+			return {'success':True}
 
 
 
@@ -543,6 +538,7 @@ class CourseMember(models.Model):
 				self.env['etraining.achivement'].create({'competency_level_id':member.course_id.competency_level_id.id,
 					'user_id':member.user_id.id, 'course_id':member.course_id.id, 'date_acquire':datetime.datetime.now()})
 			member.write({'enroll_status':'completed','certificate_id':certificateId})
+			return {'success':True}
 
 	@api.model
 	def do_assessment(self,params):
@@ -554,7 +550,7 @@ class CourseMember(models.Model):
 				if exam_member.enroll_status =='completed':
 					submission = self.env['etraining.submission'].create({'member_id':exam_member.id})
 					exam_member.write({'submission_id':submission.id, "enroll_status":"registered"})
-				return True
+				return {'success':True}
 
 	@api.model
 	def join_assessment(self,params):
@@ -563,7 +559,7 @@ class CourseMember(models.Model):
 		for member in self.env['etraining.course_member'].browse(memberId):
 			for assessment in self.env['etraining.self_assessment'].browse(assessmentId):
 				exam_member = self.env["etraining.exam_member"].create({"user_id":member.user_id.id,"exam_id":assessment.exam_id.id,"role":'candidate'})
-				return exam_member.id
+				return {'success':True,'exam_member_id':exam_member.id}
 
 
 class CourseMaterial(models.Model):

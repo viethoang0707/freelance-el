@@ -140,6 +140,14 @@ export class LMSProfileService {
     return courseIds
   }
 
+  get MyClassIds() {
+    var classIds = _.pluck(this.myClassMembers, 'class_id');
+    classIds = _.uniq(classIds, id => {
+      return id;
+    });
+    return classIds
+  }
+
   get MyExamMembers() {
     return this.myExamMembers;
   }
@@ -245,10 +253,24 @@ export class LMSProfileService {
     });
   }
 
+  getCourseMemberRoles(courseId: number) {
+    var members =  _.filter(this.myCourseMembers, (member: CourseMember) => {
+      return member.course_id == courseId;
+    });
+    return _.pluck(members, 'role');
+  }
+
   getClassMemberByRole(role: string, classId: number) {
     return _.find(this.myClassMembers, (member: CourseMember) => {
       return member.role == role && member.class_id == classId;
     });
+  }
+
+  getClassMemberRoles(classId: number) {
+    var members =  _.filter(this.myClassMembers, (member: CourseMember) => {
+      return member.class_id == classId;
+    });
+    return _.pluck(members, 'role');
   }
 
   getExamMemberByRole(role: string, examId: number) {
@@ -257,10 +279,37 @@ export class LMSProfileService {
     });
   }
 
+  getExamMemberRoles(examId: number) {
+    var members =  _.filter(this.myExamMembers, (member: ExamMember) => {
+      return member.exam_id == examId;
+    });
+    return _.pluck(members, 'role');
+  }
+
   getSurveyMemberByRole(role: string, surveyId: number) {
     return _.find(this.mySurveyMembers, (member: SurveyMember) => {
       return member.role == role && member.survey_id == surveyId;
     });
+  }
+
+  getSurveyMemberRoles(surveyId: number) {
+    var members =  _.filter(this.mySurveyMembers, (member: SurveyMember) => {
+      return member.survey_id == surveyId;
+    });
+    return _.pluck(members, 'role');
+  }
+
+  getConferenceMemberByRole(role: string, conferenceId: number) {
+    return _.find(this.myConferenceMembers, (member: ConferenceMember) => {
+      return member.role == role && member.conference_id == conferenceId;
+    });
+  }
+
+  getConferenceMemberRoles(conferenceId: number) {
+    var members =  _.filter(this.myConferenceMembers, (member: ConferenceMember) => {
+      return member.conference_id == conferenceId;
+    });
+    return _.pluck(members, 'role');
   }
 
 }

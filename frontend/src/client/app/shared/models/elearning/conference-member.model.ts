@@ -28,11 +28,13 @@ export class ConferenceMember extends BaseModel{
         this.is_active =  undefined;
         this.class_id = undefined;
         this.conference_status = undefined;
+        this.role = undefined;
         this.conference =  new Conference();
     }
 
     course_member_id: number;
     email: string;
+    role: string;
     phone: string;
     name: string;
     group_name: string;

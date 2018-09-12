@@ -1,6 +1,5 @@
 import { Component, OnInit, Input,ViewChild, NgZone} from '@angular/core';
 import { Observable}     from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { User } from '../../../shared/models/elearning/user.model';
@@ -15,10 +14,10 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 
 @Component({
     moduleId: module.id,
-    selector: 'project-content-dialog',
-    templateUrl: 'project-content.dialog.component.html',
+    selector: 'project-dialog',
+    templateUrl: 'project-dialog.component.html',
 })
-export class ProjectContentDialog extends BaseDialog<Project> {
+export class ProjectDialog extends BaseDialog<Project> {
 
     private locale:any;
     private projectStatus: SelectItem[];

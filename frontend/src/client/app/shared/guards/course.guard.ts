@@ -15,21 +15,20 @@ export class CourseGuard implements CanActivate, APIContext {
 	authService: AuthService;
 
 	constructor(apiService: APIService, authService: AuthService, private lmsService: LMSProfileService, private router: Router) {
-		this.apiService =  apiService;
+		this.apiService = apiService;
 		this.authService = authService;
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		var courseId = route.params.courseId;
-		var memberId = route.params.memberId;
-		if (!courseId || !memberId)
+		if ( !courseId)
 			return Observable.of(false);
 		return this.lmsService.init(this)
-		.map(()=> {
-			var member = this.lmsService.courseMemberById(memberId);
-            return member != null && ( member.role == 'teacher' ||  member.role == 'supervisor' );
-        }).catch(() => {
-            return Observable.of(false);
-        });
+			.map(() => {
+				var roles = this.lmsService.getCourseMemberRoles(courseId);
+				return  roles.includes('supervisor') || roles.includes('teacher');
+			}).catch(() => {
+				return Observable.of(false);
+			});
 	}
 }

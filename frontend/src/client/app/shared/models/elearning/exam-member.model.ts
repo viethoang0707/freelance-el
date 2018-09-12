@@ -41,7 +41,7 @@ export class ExamMember extends BaseModel{
         this.grade =  undefined;
         this.user =  new User();
         this.submit =  new Submission();
-        this.submission_ids = [];
+        this.sheet_id = undefined;
     }
 
     @UnserializeProperty()
@@ -70,6 +70,7 @@ export class ExamMember extends BaseModel{
     group_name: string;
     score: number;
     grade: string;
+    sheet_id: number;
 
     static __api__populateExam(exam_id: number,fields?:string[]): ListAPI {
         return new ListAPI(Exam.Model, [exam_id], fields);

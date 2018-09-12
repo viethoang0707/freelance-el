@@ -22,7 +22,6 @@ import { BaseModel } from '../../../shared/models/base.model';
 import { ExamLog } from '../../../shared/models/elearning/log.model';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 
-
 @Component({
     moduleId: module.id,
     selector: 'answer-print-dialog',
@@ -31,6 +30,9 @@ import { ReportUtils } from '../../../shared/helpers/report.utils';
 })
 export class AnswerPrintDialog extends BaseComponent {
 
+    @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
+    @ViewChild('printSection') printSection;
+    
     private display: boolean;
     private examQuestions: ExamQuestion[];
     private answers: Answer[];
@@ -41,9 +43,6 @@ export class AnswerPrintDialog extends BaseComponent {
     private setting: ExamSetting;
     private studyTime: number;
     private reportUtils: ReportUtils;
-
-    @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
-    @ViewChild('printSection') printSection;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver) {
         super();
@@ -66,9 +65,9 @@ export class AnswerPrintDialog extends BaseComponent {
         this.submission = submit;
         this.member = member;
         this.studyTime = Math.floor(this.submission.study_time / 60);
-        ExamSetting.get(this, this.exam.setting_id).subscribe(setting=> {
+        ExamSetting.get(this, this.exam.setting_id).subscribe(setting => {
             this.setting = setting;
-            this.startReview();     
+            this.startReview();
         });
     }
 

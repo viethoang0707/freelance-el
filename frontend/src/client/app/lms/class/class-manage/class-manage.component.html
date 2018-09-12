@@ -1,8 +1,5 @@
 <div class="card card-w-title ui-g">
-    <h1><a [routerLink]="['/lms/courses/manage',course.id,member.id]">{{'Course: ' |translate}}{{course.name}}</a>
-        <span class="fa fa-fw ui-icon-chevron-right" style="vertical-align: -10px;"></span>
-        <span>{{'Class'|translate}}: {{courseClass.name}}</span> </h1>
-   
+    <h1><span>{{'Class'|translate}}: {{courseClass.name}}</span> </h1>
     <p-tabView [style]="{width: '100%'}">
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
             <p-toolbar>
@@ -18,6 +15,9 @@
                 <p-table #outlineTable [value]="studentRecords" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
+                            <th>
+                                {{'Index'|translate}}
+                            </th>
                             <th [pSortableColumn]="'name'">
                                 {{'Name'|translate}}
                                 <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -51,8 +51,9 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-record>
+                    <ng-template pTemplate="body" let-record let-rowIndex="rowIndex">
                         <tr [pSelectableRow]="record">
+                            <td>{{rowIndex+1}}</td>
                             <td>{{record.name}}</td>
                             <td class="email">{{record.email}}</td>
                             <td>{{record.group_id__DESC__}}</td>
@@ -73,6 +74,9 @@
                 <p-table #detailTable [value]="studentRecords" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
+                            <th>
+                                {{'Index'|translate}}
+                            </th>
                             <th [pSortableColumn]="'name'">
                                 {{'Name'|translate}}
                                 <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -89,8 +93,9 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-record>
+                    <ng-template pTemplate="body" let-record let-rowIndex="rowIndex">
                         <tr [pSelectableRow]="record">
+                            <td>{{rowIndex+1}}</td>
                             <td>{{record.name}}</td>
                             <td>{{record.group_name}}</td>
                             <td *ngFor="let unit of courseUnits">{{checkUnitComplete(record,unit)}}</td>
@@ -119,6 +124,9 @@
             <p-table #examTable [value]="projects" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
                         <th [pSortableColumn]="'name'">
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -131,8 +139,9 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-project>
+                <ng-template pTemplate="body" let-project let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="project">
+                        <td>{{rowIndex+1}}</td>
                         <td>{{project.name}}</td>
                         <td>{{project.start | date : "dd/MM/yyyy"}}</td>
                         <td>{{project.end | date : "dd/MM/yyyy"}}</td>
@@ -158,6 +167,9 @@
             <p-table #examTable [value]="classExams" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedClassExam" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
                         <th [pSortableColumn]="'name'">
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -174,8 +186,9 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-exam>
+                <ng-template pTemplate="body" let-exam let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="exam">
+                        <td>{{rowIndex+1}}</td>
                         <td>{{exam.name}}</td>
                         <td>{{exam.start | date : "dd/MM/yyyy"}}</td>
                         <td>{{exam.end | date : "dd/MM/yyyy"}}</td>
@@ -203,6 +216,9 @@
             <p-table #examTable [value]="classSurveys" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedClassSurvey" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>
+                            {{'Index'|translate}}
+                        </th>
                         <th [pSortableColumn]="'name'">
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
@@ -219,8 +235,9 @@
                         </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-survey>
+                <ng-template pTemplate="body" let-survey let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="survey">
+                        <td>{{rowIndex+1}}</td>
                         <td>{{survey.name}}</td>
                         <td>{{survey.start | date : "dd/MM/yyyy"}}</td>
                         <td>{{survey.end | date : "dd/MM/yyyy"}}</td>
@@ -242,10 +259,9 @@
     </p-tabView>
     <lms-profile-dialog></lms-profile-dialog>
     <gradebook-dialog></gradebook-dialog>
-    <project-manage-dialog></project-manage-dialog>
-    <project-content-dialog></project-content-dialog>
-    <class-exam-enroll-dialog></class-exam-enroll-dialog>
-    <class-survey-enroll-dialog></class-survey-enroll-dialog>
+    <project-dialog></project-dialog>
     <survey-stats-dialog></survey-stats-dialog>
     <class-member-activity-dialog></class-member-activity-dialog>
+    <exam-dialog></exam-dialog>
+    <survey-dialog></survey-dialog>
 </div>

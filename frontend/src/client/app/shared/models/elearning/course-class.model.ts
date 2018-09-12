@@ -32,6 +32,7 @@ export class CourseClass extends BaseModel{
         this.end = undefined;
         this.status = undefined;
         this.member_count = undefined;
+        this.unit_count = undefined;
 	}
 
     name:string;
@@ -42,7 +43,8 @@ export class CourseClass extends BaseModel{
     supervisor_id: number;
     status: string;
     member_count: number;
-    
+    unit_count: number;
+
     @FieldProperty<Date>()
     start: Date;
     @FieldProperty<Date>()

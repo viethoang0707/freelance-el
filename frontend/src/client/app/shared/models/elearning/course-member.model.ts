@@ -4,7 +4,6 @@ import { Model, FieldProperty,UnserializeProperty, ReadOnlyProperty } from '../d
 import { APIContext } from '../context';
 import { ConferenceMember } from './conference-member.model';
 import { SearchReadAPI } from '../../services/api/search-read.api';
-
 import { SearchCountAPI } from '../../services/api/search-count.api';
 import { Course } from './course.model';
 import { Certificate } from './course-certificate.model';
@@ -52,10 +51,7 @@ export class CourseMember extends BaseModel {
         this.conference_member =  new ConferenceMember();
         this.course_review_state =  undefined;
         this.user = new User();
-        this.exam_record_ids = [];
-        this.project_submission_ids = [];
-        this.exam_member_ids = [];
-        this.survey_member_ids = [];
+
     }
 
     @UnserializeProperty()

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { Course } from '../../../shared/models/elearning/course.model';
@@ -28,13 +27,11 @@ import { CourseMemberActivityChartComponent } from '../../../analysis/chart/cour
 })
 export class ClassMemberActivityDialog extends BaseDialog<CourseMember> {
 
-
 	@ViewChild(CourseMemberActivityChartComponent) chart: CourseMemberActivityChartComponent;
 
 	constructor() {
 		super();
 	}
-
 
 	ngOnInit() {
 		this.onShow.subscribe(object => {

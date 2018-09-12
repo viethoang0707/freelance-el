@@ -128,6 +128,7 @@ class ExamMember(models.Model):
 	_name = 'etraining.exam_member'
 
 	exam_id = fields.Many2one('etraining.exam', string='Exam')
+	sheet_id = fields.Many2one('etraining.question_sheet', related='exam_id.sheet_id', string='Exam sheet', readonly=True)
 	submission_id = fields.Many2one('etraining.submission', string='Submission')
 	exam_name = fields.Char(related='exam_id.name', string='Exam name', readonly=True)
 	user_id = fields.Many2one('res.users', string='User')
@@ -202,7 +203,7 @@ class ExamMember(models.Model):
 		for member in self.env["etraining.exam_member"].browse(memberId):
 			member.computeExamRecord()
 			member.write({'enroll_status':'completed'})
-		return True
+		return {'success':True}
 
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'

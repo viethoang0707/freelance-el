@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Course } from '../../../shared/models/elearning/course.model';
+import { Location } from '@angular/common';
 import { User } from '../../../shared/models/elearning/user.model';
 import { CourseClass } from '../../../shared/models/elearning/course-class.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
@@ -33,7 +34,6 @@ import { ExamStatsDialog } from '../exam-stats/exam-stats.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 
-
 @Component({
     moduleId: module.id,
     selector: 'exam-manage',
@@ -43,7 +43,6 @@ import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 export class ExamManageComponent extends BaseComponent implements OnInit {
 
     private exam: Exam;
-    private member: ExamMember;
     private members: ExamMember[];
     private selectedMember: ExamMember;
     private questions: ExamQuestion[];
@@ -54,24 +53,14 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     @ViewChild(ExamReportDialog) reportDialog: ExamReportDialog;
     @ViewChild(ExamStatsDialog) statsDialog: ExamStatsDialog;
 
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(private router: Router, private route: ActivatedRoute, private location: Location) {
         super();
         this.exam = new Exam();
-        this.member = new ExamMember();
     }
 
     ngOnInit() {
-        this.route.params.subscribe(params => {
-            var memberId = +params['memberId'];
-            var examId = +params['examId'];
-            this.lmsProfileService.init(this).subscribe(()=> {
-                this.member = this.lmsProfileService.examMemberById(memberId);
-                this.member.populateExam(this).subscribe(()=> {
-                    this.exam = this.member.exam;
-                    this.loadScores();
-                });
-            });
-        });
+        this.exam = this.route.snapshot.data['exam'];
+        this.loadScores();
     }
 
     showQuestionSheet() {
@@ -84,29 +73,25 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         });
     }
 
-    redoExam(member:ExamMember) {
+    redoExam(member: ExamMember) {
         member.enroll_status = 'registered';
-        member.save(this).subscribe(()=> {
+        member.save(this).subscribe(() => {
             this.success(this.translateService.instant('Candidate is allowed to redo the exam'));
         });
     }
-
 
     viewAnswerSheet() {
         if (this.selectedMember.enroll_status != 'completed')
             this.info(this.translateService.instant('Student has not completed the exam'));
         else {
-            this.selectedMember.populate(this).subscribe(()=> {
-                this.selectedMember.populateSubmission(this).subscribe(()=> {
-                    this.answerSheetDialog.show(this.exam, this.selectedMember,this.selectedMember.submit);
-                })
-                
-            });
+            this.selectedMember.populateSubmission(this).subscribe(() => {
+                this.answerSheetDialog.show(this.exam, this.selectedMember, this.selectedMember.submit);
+            })
         }
     }
 
     loadScores() {
-        this.exam.listCandidates(this).subscribe(members=> {
+        this.exam.listCandidates(this).subscribe(members => {
             this.members = members;
         })
     }
@@ -117,5 +102,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
 
     showExamStats() {
         this.statsDialog.show(this.exam);
+    }
+
+    private back() {
+        this.location.back();
     }
 }

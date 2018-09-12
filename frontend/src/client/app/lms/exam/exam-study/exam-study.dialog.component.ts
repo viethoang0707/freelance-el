@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, EXAM_STATUS, EXAM_TIME_WARNING } from '../../../shared/models/constants'
@@ -26,6 +25,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
 import { BaseModel } from '../../../shared/models/base.model';
 import * as DetectRTC from 'detectrtc';
+import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 
 declare var $: any;
 
@@ -42,6 +42,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	private display: boolean;
 	private exam: Exam;
+	private setting: ExamSetting;
 	private member: ExamMember;
 	private qIndex: number;
 	private examQuestions: ExamQuestion[];
@@ -85,35 +86,34 @@ export class ExamStudyDialog extends BaseComponent {
 		this.WINDOW_HEIGHT = $(window).height();
 	}
 
-	show(exam: Exam, member: ExamMember) {
+	show(exam: Exam, setting: ExamSetting, member: ExamMember) {
 		this.display = true;
 		this.examQuestions = [];
 		this.exam = exam;
+		this.setting = setting;
 		this.member = member;
 		this.qIndex = 0;
-		this.exam.populateSetting(this).subscribe(() => {
-			if (this.exam.setting.take_picture_on_submit) {
-				navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-					.then(() => {
-						DetectRTC.load(() => {
-							console.log('Webcam available', DetectRTC.hasWebCam);
-							console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
-							if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
-								this.error(this.translateService.instant('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.'));
-								this.display = false;
-								return;
-							}
-							this.loadExamContent();
-						})
+		if (this.setting.take_picture_on_submit) {
+			navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+				.then(() => {
+					DetectRTC.load(() => {
+						console.log('Webcam available', DetectRTC.hasWebCam);
+						console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
+						if (!DetectRTC.hasWebcam || !DetectRTC.isWebsiteHasWebcamPermissions) {
+							this.error(this.translateService.instant('Your webcam is not installed or not enabled. Please check webcam permission in your browser settings.'));
+							this.display = false;
+							return;
+						}
+						this.loadExamContent();
 					})
-					.catch((e) => {
-						console.log('Get media error', e);
-						this.error(this.translateService.instant('Webcam device not found'));
-						this.display = false;
-					})
-			} else
-				this.loadExamContent();
-		});
+				})
+				.catch((e) => {
+					console.log('Get media error', e);
+					this.error(this.translateService.instant('Webcam device not found'));
+					this.display = false;
+				})
+		} else
+			this.loadExamContent();
 	}
 
 	loadExamContent() {
@@ -122,8 +122,8 @@ export class ExamStudyDialog extends BaseComponent {
 			if (!this.submission.start)
 				this.submission.start = new Date();
 			BaseModel.bulk_list(this,
-				QuestionSheet.__api__listQuestions(this.exam.question_ids),
-				Submission.__api__listAnswers(this.submission.answer_ids))
+				QuestionSheet.__api__listQuestions(this.exam.id),
+				Submission.__api__listAnswers(this.submission.id))
 				.subscribe(jsonArr => {
 					this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));
 					this.answers = Answer.toArray(jsonArr[1]);
@@ -247,7 +247,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	submitExam() {
 		this.submitAnswer().subscribe(() => {
-			this.submitDialog.show(this.exam, this.exam.setting,this.submission);
+			this.submitDialog.show(this.exam, this.exam.setting, this.submission);
 			this.submitDialog.onConfirm.subscribe(() => {
 				this.finishExam();
 			});

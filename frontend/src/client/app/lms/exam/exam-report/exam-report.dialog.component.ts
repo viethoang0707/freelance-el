@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -28,9 +27,9 @@ import { ExamResultReportComponent } from '../../../analysis/report/exam/exam-re
 })
 export class ExamReportDialog extends BaseComponent {
     
-    private display: boolean;
-    
     @ViewChild(ExamResultReportComponent) examReport: ExamResultReportComponent;
+
+    private display: boolean;
 
     constructor() {
         super();

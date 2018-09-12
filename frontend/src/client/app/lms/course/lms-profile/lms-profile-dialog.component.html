@@ -6,6 +6,9 @@
                 <p-table [value]="courseMembers">
                     <ng-template pTemplate="header">
                         <tr>
+                            <th>
+                                {{'Index'|translate}}
+                            </th>
                             <th>{{'Course'|translate}}</th>
                             <th>{{'Register date'|translate}}</th>
                             <th>{{'Enrollment status'|translate}}</th>
@@ -15,8 +18,9 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-member>
+                    <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                         <tr>
+                            <td>{{frowIndex+1}}</td>
                             <td>{{member.course_name}}</td>
                             <td>{{member.date_register}}</td>
                             <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
@@ -31,6 +35,9 @@
                 <p-table [value]="examMembers">
                     <ng-template pTemplate="header">
                         <tr>
+                            <th>
+                                {{'Index'|translate}}
+                            </th>
                             <th>{{'Exam'|translate}}</th>
                             <th>{{'Register date'|translate}}</th>
                             <th>{{'Enrollment status'|translate}}</th>
@@ -40,8 +47,9 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-member>
+                    <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                         <tr>
+                            <td>{{frowIndex+1}}</td>
                             <td>{{member.exam_name}}</td>
                             <td>{{member.date_register}}</td>
                             <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
@@ -54,6 +62,9 @@
                 <p-table [value]="skills">
                     <ng-template pTemplate="header">
                         <tr>
+                            <th>
+                                {{'Index'|translate}}
+                            </th>
                             <th>{{'Competency'|translate}}</th>
                             <th>{{'Level'|translate}}</th>
                             <th>{{'Date acquired'|translate}}</th>
@@ -62,8 +73,9 @@
                             </th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-skill>
+                    <ng-template pTemplate="body" let-skill let-rowIndex="rowIndex">
                         <tr>
+                            <td>{{frowIndex+1}}</td>
                             <td>{{skill.competency_name}}</td>
                             <td>{{skill.competency_level_name}}</td>
                             <td>{{skill.date_acquire}}</td>

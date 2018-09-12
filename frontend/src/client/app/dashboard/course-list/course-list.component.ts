@@ -62,7 +62,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     studyCourse(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/study', course.id, member.id]);
+        this.router.navigate(['/lms/course/study', course.id, member.id]);
     }
 
     withdrawCourse(course: Course, member: CourseMember) {
@@ -75,11 +75,11 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     viewCourse(course: Course) {
-        this.router.navigate(['/lms/courses/view', course.id]);
+        this.router.navigate(['/lms/course/view', course.id]);
     }
 
     editCourse(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/edit', course.id, member.id]);
+        this.router.navigate(['/lms/course/edit', course.id]);
     }
 
     publishCourse(course: Course) {
@@ -87,7 +87,7 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     manageCourse(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/manage', course.id, member.id]);
+        this.router.navigate(['/lms/course/manage', course.id]);
     }
 
     filterCourse() {

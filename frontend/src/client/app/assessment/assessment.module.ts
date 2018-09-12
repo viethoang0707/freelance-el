@@ -19,9 +19,9 @@ import { ExamResolve, SurveyResolve, QuestionResolve, GroupsResolve } from './ro
 import { ExamFormComponent } from './exam/exam-form/exam-form.component';
 import { ExamViewComponent } from './exam/exam-view/exam-view.component';
 import { ExamFormContentComponent } from './exam/exam-form/exam-form-content.component';
-import { ExamDialogComponent } from './exam/exam-form/exam-dialog.component';
+import { ExamDialog} from './exam/exam-form/exam-dialog.component';
 import { SurveyFormContentComponent } from './survey/survey-form/survey-form-content.component';
-import { SurveyDialogComponent } from './survey/survey-form/survey-dialog.component';
+import { SurveyDialog } from './survey/survey-form/survey-dialog.component';
 import { QuestionFormComponent } from './question/question-form/question-form.component';
 import { QuestionViewComponent } from './question/question-view/question-view.component';
 
@@ -50,19 +50,19 @@ import { QuestionViewComponent } from './question/question-view/question-view.co
 		SurveyEnrollmentListComponent,
 		SurveyListComponent,
 		ExamFormContentComponent,
-		ExamDialogComponent,
+		ExamDialog,
 		SurveyFormContentComponent,
-		SurveyDialogComponent
+		SurveyDialog
 		],
 	providers: [
 		ExamResolve,
 		SurveyResolve,
 		QuestionResolve,
 		GroupsResolve,
-		ExamDialogComponent,
-		SurveyDialogComponent
 	],
 	exports: [
+		ExamDialog,
+		SurveyDialog
 		]
 })
 export class AssessmentModule {

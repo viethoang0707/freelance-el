@@ -162,15 +162,15 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     studyCourse(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/study', course.id, member.id]);
+        this.router.navigate(['/lms/course/study', course.id, member.id]);
     }
 
     viewCourse(course: Course) {
-        this.router.navigate(['/lms/courses/view', course.id]);
+        this.router.navigate(['/lms/course/view', course.id]);
     }
 
     editCourse(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/edit', course.id, member.id]);
+        this.router.navigate(['/lms/course/edit', course.id]);
     }
 
     publishCourse(course: Course) {
@@ -178,11 +178,11 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     manageCourse(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/courses/manage', course.id, member.id]);
+        this.router.navigate(['/lms/course/manage', course.id]);
     }
 
     manageExam(exam: Exam, member: ExamMember) {
-        this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
+        this.router.navigate(['/lms/exam/manage', exam.id]);
     }
 
     editExamContent(exam: Exam) {
@@ -192,8 +192,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     startExam(exam: Exam, member: ExamMember) {
         this.confirm(this.translateService.instant('Are you sure to start?'), () => {
             exam.populate(this).subscribe(() => {
-                this.examStudyDialog.show(exam, member);
-            });
+                    exam.populateSetting(this).subscribe(()=> {
+                        this.examStudyDialog.show(exam, exam.setting, member);
+                    })
+                });
         });
     }
 

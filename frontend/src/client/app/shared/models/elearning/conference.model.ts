@@ -37,21 +37,13 @@ export class Conference extends BaseModel{
         return ConferenceMember.search(context,fields,"[('conference_id','=',"+this.id+")]");
     }
 
-    static __api__open(conferenceId: number): ExecuteAPI {
-        return new ExecuteAPI(Conference.Model, 'open',{conferenceId:conferenceId}, null);
+    static __api__registerCnferenceMember(conferenceId: number, memberIds:number[]): ExecuteAPI {
+        return new ExecuteAPI(Conference.Model, 'register_conference_member',{conferenceId:conferenceId, memberIds:memberIds}, null);
     }
 
-    open(context:APIContext):Observable<any> {
-        return context.apiService.execute(Conference.__api__open(this.id), 
+    registerConferenceMember(context:APIContext, courseMemberIds: number[]):Observable<any> {
+        return context.apiService.execute(Conference.__api__registerCnferenceMember(this.id,courseMemberIds), 
             context.authService.LoginToken);
     }
 
-    static __api__close(conferenceId: number): ExecuteAPI {
-        return new ExecuteAPI(Conference.Model, 'close',{conferenceId:conferenceId}, null);
-    }
-
-    close(context:APIContext):Observable<any> {
-        return context.apiService.execute(Conference.__api__close(this.id), 
-            context.authService.LoginToken);
-    }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { ExcelService } from '../../../shared/services/excel.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -28,11 +27,10 @@ import { ExamResultStatsReportComponent } from '../../../analysis/report/exam/ex
     styleUrls: ['exam-stats.dialog.component.css'],
 })
 export class ExamStatsDialog extends BaseComponent {
-    
-    
-    private display: boolean;
-    
+
     @ViewChild(ExamResultStatsReportComponent) statsReport: ExamResultStatsReportComponent;
+
+    private display: boolean;
 
     constructor() {
         super();
@@ -49,9 +47,9 @@ export class ExamStatsDialog extends BaseComponent {
         this.statsReport.clear();
     }
 
-   export() {
-       this.statsReport.export();
-   }
+    export() {
+        this.statsReport.export();
+    }
 }
 
 

@@ -15,7 +15,7 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 	selector: 'user-profile-dialog',
 	templateUrl: 'profile-dialog.component.html',
 })
-export class UserProfileDialogComponent extends BaseDialog<User> {
+export class UserProfileComponent extends BaseDialog<User> {
 	
 	@ViewChild(UserContentComponent) formContent: UserContentComponent;
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -39,7 +40,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 
 	private course: Course;
 	private units: CourseUnit[];
-	private member: CourseMember;
 	private selectedFaq: CourseFaq;
 	private faqs: CourseFaq[];
 	private selectedMaterial: CourseMaterial;
@@ -56,7 +56,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 
-	constructor(private router: Router, private route: ActivatedRoute) {
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.faqs = [];
@@ -65,24 +65,20 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			var memberId = +params['memberId'];
-			var courseId = +params['courseId'];
-			this.lmsProfileService.init(this).subscribe(() => {
-				this.member = this.lmsProfileService.courseMemberById(memberId);
-				this.member.populateCourse(this).subscribe(() => {
-					this.course = this.member.course;
-					this.lmsProfileService.getCourseContent(this.member.course).subscribe(content => {
-						this.syl = content["syllabus"];
-						this.faqs = content["faqs"];
-						this.materials = content["materials"];
-						this.units = content["units"];
-						this.displayCouseSyllabus();
-					});
-				});
-
+		this.course = this.route.snapshot.data['course'];
+		BaseModel.bulk_search(this,
+			Course.__api__listFaqs(this.course.id),
+			Course.__api__listMaterials(this.course.id),
+			Course.__api__listUnits(this.course.id))
+			.subscribe(jsonArr => {
+				this.faqs = CourseFaq.toArray(jsonArr[0]);
+				this.materials = CourseMaterial.toArray(jsonArr[1]);
+				this.units = CourseUnit.toArray(jsonArr[2]);
+				CourseSyllabus.get(this, this.course.syllabus_id).subscribe(syl => {
+					this.syl = syl;
+					this.displayCouseSyllabus();
+				})
 			});
-		});
 	}
 
 	displayCouseSyllabus() {
@@ -100,7 +96,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		faq.course_id = this.course.id;
 		this.faqDialog.show(faq);
 		this.faqDialog.onCreateComplete.first().subscribe(() => {
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
 			this.faqs.push(faq);
 			this.success(this.translateService.instant('Add course FAQ successfully'));
 		});
@@ -113,7 +108,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	deleteFaq(faq: CourseFaq) {
 		this.confirm('Are you sure to delete ?', () => {
 			faq.delete(this).subscribe(() => {
-				this.lmsProfileService.invalidateCourseContent(this.course.id);
 				this.faqs = _.reject(this.faqs, (obj: CourseFaq) => {
 					return faq.id == obj.id;
 				});
@@ -127,7 +121,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 		material.course_id = this.course.id;
 		this.materialDialog.show(material);
 		this.materialDialog.onCreateComplete.first().subscribe(() => {
-			this.lmsProfileService.invalidateCourseContent(this.course.id);
 			this.materials.push(material);
 			this.success(this.translateService.instant('Add course material successfully'));
 		});
@@ -140,7 +133,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	deleteMaterial(material: CourseMaterial) {
 		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
 			material.delete(this).subscribe(() => {
-				this.lmsProfileService.invalidateCourseContent(this.course.id);
 				this.materials = _.reject(this.materials, (obj: CourseMaterial) => {
 					return material.id == obj.id;
 				});
@@ -165,6 +157,10 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 
 	restoreCourse() {
 		this.router.navigate(['/cms/course/restore', this.course.id, this.course.syllabus_id]);
+	}
+
+	back() {
+		this.location.back();
 	}
 
 }

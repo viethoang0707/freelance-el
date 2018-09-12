@@ -8,8 +8,8 @@ import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve
 import { CoursePublishComponent } from './course/course-publish/course-publish.component';
 import { CourseRestoreComponent } from './course/course-restore/course-restore.component';
 import { CourseSyllabusComponent } from './course/course-syllabus/course-syllabus.component';
-import { SurveyContentFormComponent } from './survey/survey-content/survey-content-form.component';
-import { ExamContentFormCoponent } from './exam/exam-content/exam-content-form.component';
+import { SurveyEditorFormComponent } from './survey/survey-editor/survey-editor-form.component';
+import { ExamEditorFormCoponent } from './exam/exam-editor/exam-editor-form.component';
 
 export const CmsRoutes: Routes = [
   {
@@ -66,7 +66,7 @@ export const CmsRoutes: Routes = [
         },
         {
           path: "exam/compose/:examId/:sheetId",
-          component: ExamContentFormCoponent,
+          component: ExamEditorFormCoponent,
           data: {
             breadcrumb: 'Exam editor'
           },
@@ -77,7 +77,7 @@ export const CmsRoutes: Routes = [
         },
         {
           path: "survey/compose/:surveyId/:sheetId",
-          component: SurveyContentFormComponent,
+          component: SurveyEditorFormComponent,
           data: {
             breadcrumb: 'Survey editor'
           },

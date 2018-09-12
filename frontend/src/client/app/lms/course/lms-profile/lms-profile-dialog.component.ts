@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { Course } from '../../../shared/models/elearning/course.model';
@@ -54,11 +53,11 @@ export class LMSProfileDialog extends BaseDialog<User> {
 			object.populateUser(this).subscribe(()=> {
 				let user:User = object.user;
 				BaseModel
-				.bulk_list(this,
-					User.__api__listCourseMembers(user.course_member_ids),
-					User.__api__listCertificates(user.certificate_ids),
-					User.__api__listAchivements(user.achivement_ids),
-					User.__api__listExamMembers(user.exam_member_ids))
+				.bulk_search(this,
+					User.__api__listCourseMembers(user.id),
+					User.__api__listCertificates(user.id),
+					User.__api__listAchivements(user.id),
+					User.__api__listExamMembers(user.id))
 				.subscribe((jsonArr) => {
 					this.courseMembers = CourseMember.toArray(jsonArr[0]);
 					this.certificates = Certificate.toArray(jsonArr[1]);

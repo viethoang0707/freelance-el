@@ -47,8 +47,3 @@ export const WorkflowRoutes: Routes = [
 
 ]
 
-@NgModule({
-  imports: [RouterModule.forChild(WorkflowRoutes)],
-  exports: [RouterModule]
-})
-export class WorkflowRoutingModule { }

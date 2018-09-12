@@ -51,8 +51,6 @@ export class VideoLectureCourseUnitPlayerComponent extends BaseComponent impleme
 		});
 	}
 
-
-
 	videoEnded() {
 		this.viewCompleted = true;
 		this.onViewCompletedReceiver.next();

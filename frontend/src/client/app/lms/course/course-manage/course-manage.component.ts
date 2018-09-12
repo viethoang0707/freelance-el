@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -17,7 +18,6 @@ import {
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
-import { ClassConferenceDialog } from '../../class/class-conference/class-conference.dialog.component';
 import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseFaqDialog } from '../course-faq/course-faq.dialog.component';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
@@ -40,7 +40,6 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
 	private course: Course;
-	private courseMember: CourseMember;
 	private classMembers: CourseMember[];
 	private selectedClass: CourseClass;
 	private classes: CourseClass[];
@@ -55,11 +54,10 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
-	@ViewChild(ClassConferenceDialog) conferenceDialog: ClassConferenceDialog;
 	@ViewChild(CourseUnitPreviewDialog) unitPreviewDialog: CourseUnitPreviewDialog;
 	@ViewChild(MailMessageDialog) mailDialog: MailMessageDialog;
 
-	constructor(private router: Router, private route: ActivatedRoute) {
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
 		super();
 		this.sylUtils = new SyllabusUtils();
 		this.classes = [];
@@ -70,31 +68,24 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.route.params.subscribe(params => {
-			var courseId = +params['courseId'];
-			var memberId = +params['memberId'];
-			this.courseMember = this.lmsProfileService.courseMemberById(memberId);
-			this.classMembers = this.lmsProfileService.classMembersByCourseId(courseId);
-			this.courseMember.populateCourse(this).subscribe(() => {
-				this.course = this.courseMember.course;
-				CourseMember.populateClasses(this, this.classMembers).subscribe(() => {
-					this.classes = _.map(this.classMembers, (member: CourseMember) => {
-						return member.clazz;
-					});
-					this.classes = _.uniq(this.classes, (courseClass:CourseClass)=> {
-						return courseClass.id;
-					});
-					this.lmsProfileService.getCourseContent(this.course).subscribe(content => {
-						this.syl = content["syllabus"];
-						this.faqs = content["faqs"];
-						this.materials = content["materials"];
-						this.units = content["units"];
+		this.course = this.route.snapshot.data['course'];
+		this.lmsProfileService.init(this).subscribe(() => {
+			CourseClass.array(this, this.lmsProfileService.MyClassIds).subscribe(classList => {
+				this.classes = classList;
+			});
+			BaseModel.bulk_search(this,
+				Course.__api__listFaqs(this.course.id),
+				Course.__api__listMaterials(this.course.id),
+				Course.__api__listUnits(this.course.id))
+				.subscribe(jsonArr => {
+					this.faqs = CourseFaq.toArray(jsonArr[0]);
+					this.materials = CourseMaterial.toArray(jsonArr[1]);
+					this.units = CourseUnit.toArray(jsonArr[2]);
+					CourseSyllabus.get(this, this.course.syllabus_id).subscribe(syl => {
+						this.syl = syl;
 						this.displayCouseSyllabus();
-					});
+					})
 				});
-			})
-
-
 		});
 	}
 
@@ -108,14 +99,14 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 	}
 
 	manageConference(courseClass: CourseClass) {
-		this.conferenceDialog.show(courseClass);
+		this.router.navigate(['/lms/class/manage', courseClass.id,courseClass.conference_id]);
 	}
 
 	manageClass(courseClass: CourseClass) {
-		var member = _.find(this.classMembers, (obj: CourseMember)=> {
+		var member = _.find(this.classMembers, (obj: CourseMember) => {
 			return obj.class_id == courseClass.id && (obj.role == 'supervisor' || obj.role == 'teacher');
 		});
-		this.router.navigate(['/lms/courses/manage/class', this.course.id, courseClass.id, member.id]);
+		this.router.navigate(['/lms/class/manage', courseClass.id]);
 	}
 
 	nodeSelect(event: any) {
@@ -135,6 +126,10 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 
 	previewUnit(unit: CourseUnit) {
 		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);
+	}
+
+	back() {
+		this.location.back();
 	}
 
 }

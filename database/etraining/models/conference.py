@@ -30,37 +30,25 @@ class Conference(models.Model):
 		conference = super(Conference, self).create(vals)
 		return conference
 
-	@api.multi
-	def createConferenceMember(self, course_member):
+	@api.model
+	def register_conference_member(self, params):
 		cr,uid, context = self.env.args
 		if "meeting_cloudid" in context:
 			meeting_account = context["meeting_cloudid"]
+			memberIds = params["memberIds"]
+			conferenceId = params["conferenceId"]
 			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
-			for conference in self:
-				member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
-				resp = client.model('emeeting.room','add_member',{"room_ref":self.room_ref, "member":member})
-				if resp["success"]:
-					conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"]})
-					return conf_member
-
-
-	@api.model
-	def open(self, params):
-		classId = +params["classId"]
-		for conference in self.env["etraining.conference"].browse(conferenceId):
-			for member in self.env['etraining.conference_member'].search([('conference_id','=',conferenceId)]):
-				member.write({'is_active':True})
-			conference.write({'status':'open'})
-		return True
-
-	@api.model
-	def close(self, params):
-		conferenceId = +params["conferenceId"]
-		for conference in self.env["etraining.conference"].browse(conferenceId):
-			for member in self.env['etraining.conference_member'].search([('conference_id','=',conferenceId)]):
-				member.write({'is_active':False})
-			conference.write({'status':'closed'})
-		return True
+			for course_member in self.env['etraining.course_member'].browse(memberIds):
+				for conference in self.env['etraining.conference'].browse(conferenceId):
+					member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
+					resp = client.model('emeeting.room','add_member',{"room_ref":self.room_ref, "member":member})
+					if resp["success"]:
+						role ='member'
+						if course_member.role =='teacher' or course_member.role =='supervisor':
+							role = 'supervisor'
+						conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"],'role':role})
+						member.write({'conference_member_id':conf_member.id}) 
+			return {'success':True}
 
 class ConferenceMember(models.Model):
 	_name = 'etraining.conference_member'
@@ -76,3 +64,5 @@ class ConferenceMember(models.Model):
 	name = fields.Char(related='course_member_id.name', string='User name', readonly=True)
 	group_name = fields.Char(related='group_id.name', string='Group name', readonly=True)
 	user_id = fields.Many2one('res.users',related='course_member_id.user_id', string='User ID', readonly=True)
+	role = fields.Selection(
+		[('member', 'Member'),  ('supervisor', 'Supervisor')])

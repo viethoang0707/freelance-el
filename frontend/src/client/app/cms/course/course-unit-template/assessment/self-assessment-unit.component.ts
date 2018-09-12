@@ -49,7 +49,9 @@ export class SelfAssessmentCourseUnitComponent extends BaseComponent implements 
 
 	editContent() {
 		this.assessment.populateExam(this).subscribe(() => {
-			this.examContentDialog.show(this.assessment.exam);
+			this.assessment.exam.populateQuestionSheet(this).subscribe(()=> {
+				this.examContentDialog.show(this.assessment.exam, this.assessment.exam.sheet);
+			});
 		});
 	}
 

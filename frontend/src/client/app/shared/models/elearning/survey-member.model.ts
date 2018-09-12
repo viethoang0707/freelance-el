@@ -37,6 +37,7 @@ export class SurveyMember extends BaseModel{
         this.submit =  new SurveySubmission();
         this.group_name = undefined;
         this.class_id = undefined;
+        this.sheet_id = undefined;
     }
 
     @UnserializeProperty()
@@ -61,6 +62,7 @@ export class SurveyMember extends BaseModel{
     submit: SurveySubmission;
     group_name: string;
     class_id: number;
+    sheet_id: number;
     
     static __api__populateSurvey(survey_id: number, fields?:string[]): ListAPI {
         return new ListAPI(Survey.Model, [survey_id], fields);

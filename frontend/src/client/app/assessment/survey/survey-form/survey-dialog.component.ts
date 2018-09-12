@@ -19,7 +19,7 @@ import { SurveyFormContentComponent } from './survey-form-content.component';
     selector: 'survey-dialog',
     templateUrl: 'survey-dialog.component.html',
 })
-export class SurveyDialogComponent extends BaseDialog<Survey> {
+export class SurveyDialog extends BaseDialog<Survey> {
 
     private editor: SurveyMember;
     private survey: Survey;

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import * as _ from 'underscore';
 import { GROUP_CATEGORY, SURVEY_MEMBER_ENROLL_STATUS } from '../../../shared/models/constants'
@@ -11,72 +10,77 @@ import { Survey } from '../../../shared/models/elearning/survey.model';
 import { SurveyMember } from '../../../shared/models/elearning/survey-member.model';
 import { SelectItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+const COURSE_MEMBER_FIELDS = ['group_name', 'name', 'email', 'phone', 'user_id'];
+const SURVEY_MEMBER_FIELDS = ['course_member_id'];
 
 @Component({
 	moduleId: module.id,
-	selector: 'class-survey-enroll-dialog',
-	templateUrl: 'class-survey-enroll.dialog.component.html',
+	selector: 'class-survey-enroll',
+	templateUrl: 'class-survey-enroll.component.html',
 })
-export class ClassSurveyEnrollDialog extends BaseComponent {
+export class ClassSurveyEnrollComponent extends BaseComponent {
 
 	SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
 
-	private display: boolean;
 	private survey: Survey;
-	private courseClass: CourseClass;
-	private selectedMember: SurveyMember;
+	private selectedMember: any;
 	private surveyMembers: SurveyMember[];
 	private courseMembers: CourseMember[];
 
-	constructor() {
+	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
-		this.display = false;
 		this.surveyMembers = [];
 		this.courseMembers = [];
 		this.survey = new Survey();
-		this.courseClass = new CourseClass();
 	}
 
-	show(survey: Survey, courseClass: CourseClass) {
-		this.display = true;
-		this.surveyMembers = [];
-		this.courseMembers = [];
-		this.survey = survey;
-		this.courseClass = courseClass;
-
-		this.survey.listMembers(this).subscribe((members) => {
-			this.surveyMembers = _.filter(members, (member: SurveyMember) => {
-				return member.role == 'candidate';
-			});
-		})
-		this.courseClass.listMembers(this).subscribe(members => {
-			this.courseMembers = _.filter(members, (member: CourseMember) => {
-				return member.role == 'student';
-			});
-		});
+	ngOnInit() {
+		this.survey = this.route.snapshot.data['survey'];
+		this.loadMembers();
 	}
 
-	hide() {
-		this.display = false;
+	loadMembers() {
+		this.selectedMember = [];
+		BaseModel
+			.bulk_search(this,
+				CourseClass.__api__listMembers(this.survey.course_class_id, COURSE_MEMBER_FIELDS),
+				Survey.__api__listMembers(this.survey.id,SURVEY_MEMBER_FIELDS))
+			.subscribe(jsonArr => {
+				this.courseMembers = _.filter(CourseMember.toArray(jsonArr[0]), (member: CourseMember) => {
+					return member.role == 'student';
+				});
+				this.surveyMembers = _.filter(SurveyMember.toArray(jsonArr[1]), (member: SurveyMember) => {
+					return member.role == 'candidate';
+				});
+				_.each(this.courseMembers, (courseMember:CourseMember)=> {
+					courseMember["surveyMember"] = _.find(this.surveyMembers, (surveyMember:SurveyMember)=> {
+						return courseMember.id == surveyMember.course_member_id;
+					});
+				});
+			});
 	}
 
 	enrollAll() {
-		var userIds = _.pluck(this.courseMembers, 'user_id');
-		this.survey.enroll(this, userIds).subscribe(() => {
-			this.info('Register all successfully');
-			this.survey.populate(this).subscribe(() => {
-				this.survey.listCandidates(this).subscribe(members => {
-					this.surveyMembers = members;
-				});
-			});
-
+		var newMembers = _.each(this.courseMembers, (courseMember:CourseMember)=> {
+			return courseMember["surveyMember"] ==  null;
 		});
+		var userIds = _.pluck(newMembers, 'user_id');
+		this.survey.enroll(this, userIds).subscribe(() => {
+				this.loadMembers();
+				this.success(this.translateService.instant('Register all successfully'));
+		});
+	}
+
+
+	close() {
+		this.router.navigate(['/lms/class/manage', this.survey.course_class_id]);
 	}
 
 	closeSurvey() {
 		this.confirm(this.translateService.instant('Are you sure to proceed ?  You will not be able to enroll new members after the survey is closed'), () => {
 			this.survey.close(this).subscribe(() => {
-				this.survey.status = 'closed';
 				this.success(this.translateService.instant('Survey close'));
 			});
 		});
@@ -85,7 +89,6 @@ export class ClassSurveyEnrollDialog extends BaseComponent {
 	openSurvey() {
 		this.confirm(this.translateService.instant('Are you sure to proceed?'), () => {
 			this.survey.open(this).subscribe(() => {
-				this.survey.status = 'open';
 				this.success(this.translateService.instant('Survey open'));
 			});
 		});

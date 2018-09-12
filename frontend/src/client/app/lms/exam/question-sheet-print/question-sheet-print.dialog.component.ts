@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -18,7 +17,7 @@ import { IQuestion } from '../../../cms/question/question.interface';
 import { QuestionRegister } from '../../../cms/question/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
-import {PRINT_DIALOG_STYLE} from  '../../../shared/models/constants';
+import { PRINT_DIALOG_STYLE } from '../../../shared/models/constants';
 
 @Component({
     moduleId: module.id,
@@ -27,7 +26,7 @@ import {PRINT_DIALOG_STYLE} from  '../../../shared/models/constants';
     styleUrls: ['question-sheet-print.dialog.component.css'],
 })
 export class QuestionSheetPrintDialog extends BaseComponent {
-    
+
     private display: boolean;
     private examQuestions: ExamQuestion[];
     private exam: Exam;
@@ -58,20 +57,19 @@ export class QuestionSheetPrintDialog extends BaseComponent {
     startReview() {
         this.sheet.listQuestions(this).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
-            ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(()=> {
-                var questions = _.map(this.examQuestions, (examQuestion:ExamQuestion)=> {
+            ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
+                var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
                     return examQuestion.question
                 });
-                Question.listOptionsForArray(this,questions).subscribe(()=> {
+                Question.listOptionsForArray(this, questions).subscribe(() => {
                     var componentHostArr = this.questionsComponents.toArray();
                     for (var i = 0; i < examQuestions.length; i++) {
                         var examQuestion = examQuestions[i];
                         var componentHost = componentHostArr[i];
                         this.displayQuestion(examQuestion, componentHost);
                     }
-                    })
-            })
-            
+                });
+            });
         });
     }
 

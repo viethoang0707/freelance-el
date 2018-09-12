@@ -40,7 +40,7 @@ export class TicketListComponent extends BaseComponent {
     }
 
     ticketDetail(ticket: Ticket) {
-        this.ticketDialog.show(ticket);
+        this.router.navigate(['/workflow/ticket/form', ticket.id]);
     }
 
     approveTicket(ticket: Ticket) {
