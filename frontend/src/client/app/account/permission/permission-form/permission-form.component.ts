@@ -85,7 +85,7 @@ export class PermissionFormComponent extends BaseComponent {
 	}
 
 	deleteMember(users: User[]) {
-		this.confirm('Are you sure to remove ?', () => {
+		this.confirm(this.translateService.instant('Are you sure to remove ?'), () => {
 			_.each(users, (user: User) => {
 				this.users = _.reject(this.users, (obj: User) => {
 					return obj.id == user.id;

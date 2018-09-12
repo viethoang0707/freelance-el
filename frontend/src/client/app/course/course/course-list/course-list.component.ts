@@ -75,7 +75,7 @@ export class CourseListComponent extends BaseComponent {
             return;
         }
         this.workflowService.createCourseReviewTicket(this, course).subscribe(() => {
-            this.success('Request submitted');
+            this.success(this.translateService.instant('Request submitted'));
             course.populate(this).subscribe();
         });
     }

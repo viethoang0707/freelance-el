@@ -62,11 +62,11 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     }
 
     confirmDelete() {
-        this.confirm('Are you sure to delete ?', () => {
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
             this.selectedNode.data.delete(this).subscribe(() => {
                 this.loadGroups();
             }, () => {
-                this.error('Permission denied');
+                this.error(this.translateService.instant('Permission denied'));
             });
         });
     }
@@ -82,7 +82,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         if (this.category == "competency")
             sub_item = this.selectedNode.data.competency_count;
         if (sub_item) {
-            this.error('The group is used by another content.');
+            this.error(this.translateService.instant('The group is used by another content.'));
         }
         else {
             this.confirmDelete();
