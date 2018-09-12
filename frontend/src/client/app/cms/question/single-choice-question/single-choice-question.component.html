@@ -19,7 +19,8 @@
             <input type="text" pInputText [(ngModel)]="option.content" name="option_content">
             <label>{{'Content'|translate}}</label>
           </span>
-          <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)" class="remove-btn"></button>
+          <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)"
+            class="remove-btn"></button>
         </li>
         <div *ngIf="!options.length" class="ui-message ui-messages-error ui-corner-all">
           {{'Add options is required' | translate}}</div>
@@ -67,8 +68,8 @@
     <p-fieldset styleClass="f-print">
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
-          <p-radioButton [(ngModel)]="answer.option_id" [disabled]="true" inputId="{{option.id}}" value="{{option.id}}" name="option_answer{{question.id}}"
-            label="{{option.content}}" styleClass="radio"></p-radioButton>
+          <p-radioButton [(ngModel)]="answer.option_id" [disabled]="true" inputId="{{option.id}}" value="{{option.id}}"
+            name="option_answer{{question.id}}" label="{{option.content}}" styleClass="radio"></p-radioButton>
           <i class="material-icons" *ngIf="option.is_correct">done</i>
         </li>
       </ul>
@@ -84,6 +85,7 @@
       <ul class="options-question">
         <li *ngFor="let option of options" style="list-style-type: none;">
           <p-radioButton [disabled]="true" value="{{option.id}}" name="option_answer" label="{{option.content}}"></p-radioButton>
+          <i class="material-icons" *ngIf="option.is_correct">done</i>
         </li>
       </ul>
     </p-fieldset>
