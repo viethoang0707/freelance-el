@@ -324,5 +324,14 @@ export class User extends BaseModel {
             context.authService.LoginToken);
     }
 
+    static __api__changePassword(userId: number, old_pass: string, new_pass:string): ExecuteAPI {
+        return new ExecuteAPI(User.Model, 'change_password',{userId: userId,old_pass:old_pass,new_pass:new_pass}, null);
+    }
+
+    changePassword(context:APIContext, old_pass: string, new_pass:string):Observable<any> {
+        return context.apiService.execute(User.__api__changePassword(this.id, old_pass, new_pass), 
+            context.authService.LoginToken);
+    }
+
 
 }

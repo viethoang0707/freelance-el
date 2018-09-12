@@ -67,6 +67,18 @@ class User(models.Model):
 		user = super(User, self).create(user)
 		return {"success":True}
 
+	@api.model
+	def change_password(self, params):
+		userId = +params["userId"]
+		old_passwd = params["old_pass"]
+		new_passwd = params["new_pass"]
+		self.check(self._cr.dbname, userId, old_passwd)
+		if new_passwd:
+				for user in self.env['res.users'].browse(userId):
+					user.write({'password': new_passwd})
+					return {"success":True}
+		raise UserError(_("Setting empty passwords is not allowed for security reasons!"))
+
 class Permission(models.Model):
 	_name = 'etraining.permission'
 

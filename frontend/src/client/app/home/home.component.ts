@@ -11,7 +11,8 @@ import { BaseModel } from '../shared/models/base.model';
 import { User } from '../shared/models/elearning/user.model';
 import { MenuService } from '../shared/services/menu.service';
 import { SettingDialog } from '../setting/setting-dialog.component';
-import { UserProfileComponent } from '../account/user/user-form/profile-dialog.component';
+import { UserProfileDialog } from '../account/user/user-form/profile-dialog.component';
+import { ChangePasswordDialog } from '../account/user/change-password/change-password-dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -22,7 +23,8 @@ import { UserProfileComponent } from '../account/user/user-form/profile-dialog.c
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
     @ViewChild(SettingDialog) settingDialog: SettingDialog;
-    @ViewChild(UserProfileComponent) profieDialog: UserProfileComponent;
+    @ViewChild(UserProfileDialog) profieDialog: UserProfileDialog;
+    @ViewChild(ChangePasswordDialog) changePassDialog: ChangePasswordDialog;
 
     menuClick: boolean;
     menuButtonClick: boolean;
@@ -84,7 +86,9 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
         this.eventManager.showProfileEvents.subscribe(() => {
             this.profieDialog.show(this.ContextUser);
         });
-        
+        this.eventManager.changePasswordEvents.subscribe(() => {
+            this.changePassDialog.show();
+        });
         this.eventManager.topbarMenuEvents.subscribe(() => {
             this.topbarMenuClick = true;
         });
