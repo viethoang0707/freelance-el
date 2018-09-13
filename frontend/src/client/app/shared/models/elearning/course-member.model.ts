@@ -162,7 +162,7 @@ export class CourseMember extends BaseModel {
     }
 
     static __api__get_assessment_info(memberId: number, assessmentId: number,fields?:string[]): ExecuteAPI {
-        return new ExecuteAPI(CourseMember.Model, 'join_assessment',{memberId:memberId, assessmentId:assessmentId}, null);
+        return new ExecuteAPI(CourseMember.Model, 'get_assessment_info',{memberId:memberId, assessmentId:assessmentId}, null);
     }
 
     getAssessmentInfo(context:APIContext, assessmentId: number,fields?:string[]):Observable<any> {

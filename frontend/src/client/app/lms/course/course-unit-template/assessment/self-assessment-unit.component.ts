@@ -61,8 +61,7 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 		BaseModel
 			.bulk_search(this, ExamMember.__api__listSubmissions(this.examMemberId))
 			.subscribe(jsonArr => {
-				var submission = Submission.toArray(jsonArr[0]);
-				this.submissions = _.filter(submits, (submit: Submission) => {
+				this.submissions = _.filter(Submission.toArray(jsonArr[0]), (submit: Submission) => {
 					return submit.start != null && submit.end != null;
 				});
 			});

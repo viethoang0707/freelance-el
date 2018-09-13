@@ -550,7 +550,7 @@ class CourseMember(models.Model):
 					exam_member.write({'submission_id':submission.id, "enroll_status":"registered"})
 					return {'success':True,'submission_id':submission.id}
 				else:
-					return {'success':True,'submission_id':exam_member.submission.id} 
+					return {'success':True,'submission_id':exam_member.submission_id.id} 
 
 	@api.model
 	def get_assessment_info(self,params):
