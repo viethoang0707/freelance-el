@@ -11,7 +11,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { ExcelService } from '../../../shared/services/excel.service';
 import * as _ from 'underscore';
 
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 
 @Component({
 	moduleId: module.id,
@@ -25,6 +25,8 @@ export class UserExportDialog extends BaseComponent {
 	private fields: SelectItem[];
 	private selectedFields: string[];
 	private display: boolean;
+
+	@Input() lang: string;
 
 	constructor(private excelService: ExcelService) {
 		super();
@@ -49,7 +51,7 @@ export class UserExportDialog extends BaseComponent {
 
 	show() {
 		this.display = true;
-		Group.listUserGroup(this,GROUP_FIELDS).subscribe(groups => {
+		Group.listUserGroup(this, GROUP_FIELDS).subscribe(groups => {
 			let treeUtils = new TreeUtils();
 			this.tree = treeUtils.buildGroupTree(groups);
 		});
@@ -60,23 +62,75 @@ export class UserExportDialog extends BaseComponent {
 	}
 
 	export() {
+		this.lang = this.translateService.currentLang;
 		var apiList = _.map(this.selectedGroupNodes, (node: TreeNode) => {
 			return Group.__api__listUsers(node.data["id"], this.selectedFields);
 		});
 		BaseModel.bulk_search(this, ...apiList)
-		.map(jsonArray=> {
-			return _.flatten(jsonArray);
-		}).subscribe(users => {
-			var data = _.map(users, (user) => {
-				var userData = {};
-				_.each(this.selectedFields, (field) => {
-					userData[field] = user[field];
+			.map(jsonArray => {
+				return _.flatten(jsonArray);
+			}).subscribe(users => {
+				var data = _.map(users, (user) => {
+					var userData = {};
+					_.each(this.selectedFields, (field) => {
+						userData[field] = user[field];
+					});
+					return userData;
 				});
-				return userData;
+				var i;
+				for (i = 0; i < data.length; i++) {
+					if (data[i]['login'] || data[i]['login'] == "") {
+						data[i]['Username / Tên truy cập'] = data[i]['login'];
+						delete data[i]['login'];
+					}
+					if (data[i]['name'] || data[i]['name'] == "") {
+						data[i]['Fullname / Tên đầy đủ'] = data[i]['name'];
+						delete data[i]['name'];
+					}
+					if (data[i]['social_id'] || data[i]['social_id'] == "") {
+						data[i]['IDNo / Số CMND'] = data[i]['social_id'];
+						delete data[i]['social_id'];
+					}
+					if (data[i]['group_name'] || data[i]['group_name'] == "") {
+						data[i]['Dealer / Đại lý'] = data[i]['group_name'];
+						delete data[i]['group_name'];
+					}
+					if (data[i]['group_code'] || data[i]['group_code'] == "") {
+						data[i]['Dealer Code / Mã đại lý'] = data[i]['group_code'];
+						delete data[i]['group_code'];
+					}
+					if (data[i]['position'] || data[i]['position'] == "") {
+						data[i]['Position / Vị trí'] = data[i]['position'];
+						delete data[i]['position'];
+					}
+					if (data[i]['dob'] || data[i]['dob'] == "") {
+						data[i]['Date of birth / Ngày sinh'] = data[i]['dob'];
+						delete data[i]['dob'];
+					}
+					if (data[i]['gender'] || data[i]['gender'] == "") {
+						data[i]['Gender / Giới tính'] = data[i]['gender'];
+						delete data[i]['gender'];
+					}
+					if (data[i]['phone'] || data[i]['phone'] == "") {
+						data[i]['Phone / Số điện thoại'] = data[i]['phone'];
+						delete data[i]['phone'];
+					}
+					if (data[i]['email'] || data[i]['email'] == "") {
+						data[i]['Email'] = data[i]['email'];
+						delete data[i]['email'];
+					}
+					if (data[i]['ban_date'] || data[i]['ban_date'] == "") {
+						data[i]['Deactivate date / Ngày hủy kích hoạt'] = data[i]['ban_date'];
+						delete data[i]['ban_date'];
+					}
+					if (data[i]['unban_date'] || data[i]['unban_date'] == "") {
+						data[i]['Activate date / Ngày kích hoạt'] = data[i]['unban_date'];
+						delete data[i]['unban_date'];
+					}
+				}
+				this.excelService.exportAsExcelFile(data, 'user_export');
+				this.hide();
 			});
-			this.excelService.exportAsExcelFile(data, 'user_export');
-			this.hide();
-		});
 	}
 
 }

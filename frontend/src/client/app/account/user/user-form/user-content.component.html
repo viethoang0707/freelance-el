@@ -78,13 +78,8 @@
                     <p-radioButton name="gender" value="female" label="{{'Female'|translate}}" [(ngModel)]="user.gender" inputId="opt2"></p-radioButton>
                 </div>
                 <div class="ui-g-12">
-                    <label>{{'Birthday'|translate}}<span> *</span></label>
-                    <p-calendar [(ngModel)]="user.dob" #dob="ngModel" name="dob" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1918:2099" required dateFormat="dd/mm/yy"></p-calendar>
-                    <div *ngIf="dob.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
-                        <div *ngIf="dob.errors.required">
-                            {{'Birthday is required' | translate}}
-                        </div>
-                    </div>
+                    <label>{{'Birthday'|translate}}</label>
+                    <p-calendar [(ngModel)]="user.dob" #dob="ngModel" name="dob" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1918:2099" dateFormat="dd/mm/yy"></p-calendar>
                 </div>
             </div>
         </div>
