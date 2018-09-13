@@ -497,8 +497,6 @@ class CourseMember(models.Model):
 	exam_member_ids = fields.One2many('etraining.exam_member','course_member_id', string='Exam members')
 	survey_member_ids = fields.One2many('etraining.survey_member','course_member_id', string='Survey members')
 
-
-
 	@api.multi
 	def unlink(self):
 		if self.conference_member_id:
@@ -550,16 +548,18 @@ class CourseMember(models.Model):
 				if exam_member.enroll_status =='completed':
 					submission = self.env['etraining.submission'].create({'member_id':exam_member.id})
 					exam_member.write({'submission_id':submission.id, "enroll_status":"registered"})
-				return {'success':True}
+					return {'success':True,'submission_id':submission.id}
+				else:
+					return {'success':True,'submission_id':exam_member.submission.id} 
 
 	@api.model
-	def join_assessment(self,params):
+	def get_assessment_info(self,params):
 		memberId = params["memberId"]
 		assessmentId = params["assessmentId"]
 		for member in self.env['etraining.course_member'].browse(memberId):
 			for assessment in self.env['etraining.self_assessment'].browse(assessmentId):
 				exam_member = self.env["etraining.exam_member"].create({"user_id":member.user_id.id,"exam_id":assessment.exam_id.id,"role":'candidate'})
-				return {'success':True,'exam_member_id':exam_member.id}
+				return {'success':True,'exam_member_id':exam_member.id, 'exam_id':assessment.exam_id.id,'exam_setting_id':assessment.exam_id.setting_id.id}
 
 
 class CourseMaterial(models.Model):

@@ -172,6 +172,11 @@ export abstract class BaseModel {
         });
     }
 
+    static toObject(vals) {
+        var model = this.Model;
+        return MapUtils.deserializeModel(model, vals);
+    }
+
     static bulk_update(context:APIContext, ...apiList:UpdateAPI[]):Observable<any> {
         if (apiList.length==0)
             return Observable.of([]);

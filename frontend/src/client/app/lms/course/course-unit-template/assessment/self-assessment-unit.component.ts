@@ -16,6 +16,7 @@ import { CourseMember } from '../../../../shared/models/elearning/course-member.
 import { ExamMember } from '../../../../shared/models/elearning/exam-member.model';
 import { Submission } from '../../../../shared/models/elearning/submission.model';
 import { AnswerPrintDialog } from '../../../exam/answer-print/answer-print.dialog.component';
+import { ExamSetting } from '../../../../shared/models/elearning/exam-setting.model';
 
 @Component({
 	moduleId: module.id,
@@ -28,10 +29,10 @@ import { AnswerPrintDialog } from '../../../exam/answer-print/answer-print.dialo
 export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent implements ICourseUnitPlay {
 
 	private unit: CourseUnit;
-	private assessment: SelfAssessment;
 	private member: CourseMember;
-	private examMember: ExamMember;
 	private submissions: Submission[];
+	private examId, settingId, examMemberId: number;
+
 	protected onViewCompletedReceiver: Subject<any> = new Subject();
 	onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
 	viewCompleted: boolean;
@@ -41,60 +42,56 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 
 	constructor() {
 		super();
-		this.assessment = new SelfAssessment();
 		this.viewCompleted = false;
-		this.examMember = new ExamMember();
 		this.submissions = [];
 	}
 
 	play(unit: CourseUnit, member: CourseMember) {
 		this.unit = unit;
 		this.member = member;
-		this.unit.populateSelfAssessment(this).subscribe(() => {
-			this.assessment = this.unit.selfAssessment;
-			this.member.joinAssessment(this, this.assessment.id).subscribe(examMemberId => {
-				ExamMember.get(this, examMemberId).subscribe(examMember => {
-					this.examMember = examMember;
-					this.loadSubmissionHistory();
-				});
-
-			});
+		this.member.getAssessmentInfo(this, this.unit.self_assessment_id).subscribe(resp => {
+			this.examMemberId = resp["exam_member_id"];
+			this.examId = resp["exam_id"];
+			this.settingId = resp["exam_setting_id"];
+			this.loadSubmissionHistory();
 		});
-
 	}
 
 	loadSubmissionHistory() {
-
-		this.examMember.listSubmissions(this).subscribe((submits: Submission[]) => {
-			this.submissions = _.filter(submits, (submit: Submission) => {
-				return submit.start != null && submit.end != null;
-			})
-		});
-
+		BaseModel
+			.bulk_search(this, ExamMember.__api__listSubmissions(this.examMemberId))
+			.subscribe(jsonArr => {
+				var submission = Submission.toArray(jsonArr[0]);
+				this.submissions = _.filter(submits, (submit: Submission) => {
+					return submit.start != null && submit.end != null;
+				});
+			});
 	}
 
 	doAssessment() {
-		this.assessment.populateExam(this).subscribe(() => {
-			this.assessment.exam.populateSetting(this).subscribe(() => {
-				this.member.doAssessment(this, this.assessment.id, this.examMember.id).subscribe(examMemberId => {
-					this.studyDialog.show(this.assessment.exam, this.assessment.exam.setting, this.examMember);
-					this.studyDialog.onFinish.subscribe(() => {
-						this.viewCompleted = true;
-						this.onViewCompletedReceiver.next();
-						this.examMember.populate(this).subscribe(() => {
+		this.member.doAssessment(this, this.unit.self_assessment_id, this.examMemberId).subscribe(() => {
+			Exam.get(this, this.examMemberId).subscribe(exam => {
+				ExamSetting.get(this, this.settingId).subscribe(setting => {
+					ExamMember.get(this, this.examMemberId).subscribe(member => {
+						this.studyDialog.show(exam, exam.setting, member);
+						this.studyDialog.onFinish.subscribe(() => {
+							this.viewCompleted = true;
+							this.onViewCompletedReceiver.next();
 							this.loadSubmissionHistory();
 						});
 					});
 				});
-			})
+			});
+
 		});
 	}
 
 	viewAnswer(submit: Submission) {
-		this.assessment.populateExam(this).subscribe(() => {
-			this.answerPrintDialog.show(this.assessment.exam, this.examMember, submit);
+		Exam.get(this, this.examMemberId).subscribe(exam => {
+			ExamMember.get(this, this.examMemberId).subscribe(member => {
+				this.answerPrintDialog.show(exam, member, submit);
+			});
 		});
-
 	}
 
 

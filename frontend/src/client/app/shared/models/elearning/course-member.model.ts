@@ -161,12 +161,12 @@ export class CourseMember extends BaseModel {
             context.authService.LoginToken);
     }
 
-    static __api__join_assessment(memberId: number, assessmentId: number,fields?:string[]): ExecuteAPI {
+    static __api__get_assessment_info(memberId: number, assessmentId: number,fields?:string[]): ExecuteAPI {
         return new ExecuteAPI(CourseMember.Model, 'join_assessment',{memberId:memberId, assessmentId:assessmentId}, null);
     }
 
-    joinAssessment(context:APIContext, assessmentId: number,fields?:string[]):Observable<any> {
-        return context.apiService.execute(CourseMember.__api__join_assessment(this.id, assessmentId), 
+    getAssessmentInfo(context:APIContext, assessmentId: number,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__get_assessment_info(this.id, assessmentId), 
             context.authService.LoginToken);
     }
 
