@@ -32,6 +32,8 @@ export class SurveySubmission extends BaseModel{
     }
 
     listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return SurveyAnswer.search(context,fields, "[('submission_id','=',"+this.id+")]");
     }
 

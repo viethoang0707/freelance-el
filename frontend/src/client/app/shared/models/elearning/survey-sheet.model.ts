@@ -51,6 +51,8 @@ export class SurveySheet extends BaseModel{
     }
 
     listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return SurveyQuestion.search(context,fields,"[('sheet_id','=',"+this.id+")]");
     }
 }

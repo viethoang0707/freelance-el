@@ -38,7 +38,7 @@
                                 <p-radioButton name="level" value="hard" label="{{'Hard'|translate}}" [(ngModel)]="question.level" inputId="opt3" required></p-radioButton>
                             </div>
                             <div *ngIf="level.invalid" class="ui-message ui-messages-error ui-corner-all ui-lg-12">
-                                <div *ngIf="!object.level">
+                                <div *ngIf="!question.level">
                                     {{'Level is required' | translate}}
                                 </div>
                             </div>

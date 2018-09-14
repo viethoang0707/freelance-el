@@ -243,6 +243,8 @@ export class CourseMember extends BaseModel {
     }
 
     listProjectSubmissions(context: APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ProjectSubmission.search(context,fields,"[('member_id','=',"+this.id+")]");
     }
 
@@ -251,6 +253,8 @@ export class CourseMember extends BaseModel {
     }
 
     listExamRecords(context: APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ExamRecord.search(context,fields,"[('course_member_id','=',"+this.id+")]");
     }
 
@@ -259,6 +263,8 @@ export class CourseMember extends BaseModel {
     }
 
     listExamMembers(context: APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ExamMember.search(context,fields,"[('course_member_id','=',"+this.id+")]");
     }
 
@@ -267,6 +273,8 @@ export class CourseMember extends BaseModel {
     }
 
     listSurveyMembers(context: APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return SurveyMember.search(context,fields,"[('course_member_id','=',"+this.id+")]");
     }
 

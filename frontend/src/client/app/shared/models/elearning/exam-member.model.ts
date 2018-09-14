@@ -139,6 +139,8 @@ export class ExamMember extends BaseModel{
     }
 
     listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Submission.search(context,fields,"[('member_id','=',"+this.id+")]");
     }
 }

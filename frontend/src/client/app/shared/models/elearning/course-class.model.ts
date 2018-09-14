@@ -108,6 +108,8 @@ export class CourseClass extends BaseModel{
     }
 
     listCertificates( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Certificate.search(context,fields,"[('class_id','=',"+this.id+ ")]");
     }
 
@@ -116,6 +118,8 @@ export class CourseClass extends BaseModel{
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseMember.search(context,fields,"[('class_id','=',"+this.id+ ")]");
     }
 
@@ -124,6 +128,8 @@ export class CourseClass extends BaseModel{
     }
 
     listProjects( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Project.search(context,fields,"[('class_id','=',"+this.id+ ")]");
     }
 
@@ -132,6 +138,8 @@ export class CourseClass extends BaseModel{
     }
 
     listExams( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Exam.search(context,fields, "[('course_class_id','=',"+this.id+ ")]");
     }
 
@@ -140,6 +148,8 @@ export class CourseClass extends BaseModel{
     }
 
     listSurveys( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Survey.search(context,fields, "[('course_class_id','=',"+this.id+ ")]");
     }
 

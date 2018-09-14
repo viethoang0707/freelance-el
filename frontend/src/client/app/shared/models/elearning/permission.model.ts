@@ -31,6 +31,8 @@ export class Permission extends BaseModel{
     }
 
     listUsers(context: APIContext,fields?:string[]): Observable<any> {
+        if (!this.id)
+            return Observable.of([]);
         return User.search(context, fields, "[('permission_id','='," + this.id + ")]");
     }
 }

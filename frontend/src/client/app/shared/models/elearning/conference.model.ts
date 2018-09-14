@@ -34,6 +34,8 @@ export class Conference extends BaseModel{
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ConferenceMember.search(context,fields,"[('conference_id','=',"+this.id+")]");
     }
 

@@ -78,6 +78,8 @@ export class Group extends BaseModel{
     }
 
     listAchivements( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Achivement.search(context,fields,"[('group_id','=',"+this.id+")]");
     }
 
@@ -86,6 +88,8 @@ export class Group extends BaseModel{
     }
 
     listUsers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return User.search(context,fields,"[('group_id','=',"+this.id+")]");
     }
 
@@ -94,6 +98,8 @@ export class Group extends BaseModel{
     }
 
     listCourses( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Course.search(context,fields,"[('group_id','=',"+this.id+")]");
     }
 
@@ -102,6 +108,8 @@ export class Group extends BaseModel{
     }
 
     listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Question.search(context,fields,"[('group_id','=',"+this.id+")]");
     }
 
@@ -110,6 +118,8 @@ export class Group extends BaseModel{
     }
 
     listCompetencies( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Competency.search(context,fields,"[('group_id','=',"+this.id+")]");
     }
 

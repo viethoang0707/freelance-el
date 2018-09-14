@@ -150,6 +150,8 @@ export class User extends BaseModel {
     }
 
     listAchivements( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Achivement.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -158,6 +160,8 @@ export class User extends BaseModel {
     }
 
     listCourseMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -166,6 +170,8 @@ export class User extends BaseModel {
     }
 
     listCertificates( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Certificate.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -174,6 +180,8 @@ export class User extends BaseModel {
     }
 
     listExamMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ExamMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -182,6 +190,8 @@ export class User extends BaseModel {
     }
 
     listSurveyMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return SurveyMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -190,6 +200,8 @@ export class User extends BaseModel {
     }
 
     listConferenceMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ConferenceMember.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -198,6 +210,8 @@ export class User extends BaseModel {
     }
 
     listExamRecords( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ExamRecord.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -206,6 +220,8 @@ export class User extends BaseModel {
     }
 
     listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Submission.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -214,6 +230,8 @@ export class User extends BaseModel {
     }
 
     listProjectSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ProjectSubmission.search(context,fields,"[('user_id','=',"+this.id+")]");
     }
 
@@ -222,6 +240,8 @@ export class User extends BaseModel {
     }
 
     listManageCourses( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Course.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
     }
 
@@ -230,6 +250,8 @@ export class User extends BaseModel {
     }
 
     listManageCourseClasses( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseClass.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
     }
 
@@ -238,6 +260,8 @@ export class User extends BaseModel {
     }
 
     listManageExams( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Exam.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
     }
 
@@ -246,6 +270,8 @@ export class User extends BaseModel {
     }
 
     listManageSurveys( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Survey.search(context,fields,"[('supervisor_id','=',"+this.id+")]");
     }
 
@@ -254,6 +280,8 @@ export class User extends BaseModel {
     }
 
     listReviewTickets( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Ticket.search(context,fields,"[('approve_user_id','=',"+this.id+")]");
     }
 
@@ -262,6 +290,8 @@ export class User extends BaseModel {
     }
 
     listSubmitTickets( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Ticket.search(context,fields,"[('submit_user_id','=',"+this.id+")]");
     }
 

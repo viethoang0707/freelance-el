@@ -207,6 +207,8 @@ export class Exam extends BaseModel{
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ExamMember.search(context,fields,"[('exam_id','=',"+this.id+")]");
     }
 
@@ -231,6 +233,8 @@ export class Exam extends BaseModel{
     }
 
     listCandidates( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ExamMember.search(context,fields,"[('exam_id','=',"+this.id+"),('role','=','candidate')]");
     }
 
@@ -239,6 +243,8 @@ export class Exam extends BaseModel{
     }
 
     listSubmissions(context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return Submission.search(context,fields,"[('exam_id','=',"+this.id+")]");
     }
 

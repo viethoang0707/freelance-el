@@ -88,6 +88,8 @@ export class Question extends BaseModel{
     }
 
     listOptions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return QuestionOption.search(context,fields,"[('question_id','=',"+this.id+")]");
     }
 

@@ -168,6 +168,8 @@ export class Survey extends BaseModel{
     }
 
     listCandidates( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return SurveyMember.search(context,fields,"[('survey_id','=',"+this.id+"),('role','=','candidate')]");
     }
 
@@ -176,6 +178,8 @@ export class Survey extends BaseModel{
     }
 
     listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return SurveyAnswer.search(context,fields,"[('survey_id','=',"+this.id+")]");
     }
 
@@ -184,6 +188,8 @@ export class Survey extends BaseModel{
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return SurveyMember.search(context,fields,"[('survey_id','=',"+this.id+")]");
     }
 }

@@ -32,7 +32,7 @@ export class CourseSettingDialog extends BaseDialog<Course> {
         this.coursesDialog.onSelectCourses.first().subscribe(courses => {
             if (courses && courses.length) {
                 this.object.prequisite_course_id = courses[0].id;
-                this.object.prequisite_course_id__DESC__ = courses[0].name;
+                this.object.prequisite_course_id_name = courses[0].name;
             }
             
         });

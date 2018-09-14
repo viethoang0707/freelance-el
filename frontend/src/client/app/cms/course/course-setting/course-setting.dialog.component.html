@@ -4,11 +4,11 @@
             <div class="ui-g ui-fluid form-group">
                 <div class="ui-g-12">
                     <p-checkbox name="unit_complete" binary="true" label="{{'Complete unit by order user'|translate}}" [(ngModel)]="object.complete_unit_by_order"></p-checkbox>
-                    <button type="button" pButton icon="ui-icon-change-history" label="{{object.prequisite_course_id?translateService.instant('Prequisite course') +':'+ object.prequisite_course_name:translateService.instant('Select prequisite course')}}" (click)="selectCourse()" class="mt20 mb20"></button>
+                    <button type="button" pButton icon="ui-icon-change-history" label="{{object.prequisite_course_id?translateService.instant('Prequisite course') +':'+ object.prequisite_course_name:translateService.instant('Select prequisite course')}}" (click)="selectCourse();$event.preventDefault()" class="mt20 mb20"></button>
                 </div>
             </div>
         <p-footer>
-            <button type="submit" [disabled]="loading" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
+            <button type="submit" [disabled]="loading" pButton icon="ui-icon-check" label="{{'Save'|translate}}" (click)="save()" [disabled]="!f.form.valid"></button>
             <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>

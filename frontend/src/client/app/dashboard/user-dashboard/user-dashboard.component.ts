@@ -27,7 +27,6 @@ import { Survey } from '../../shared/models/elearning/survey.model';
 import { SurveyStudyDialog } from '../../lms/survey/survey-study/survey-study.dialog.component';
 import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
 import * as _ from 'underscore';
-
 const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
 const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 const CLASS_FIELDS = ['start', 'end', 'name'];

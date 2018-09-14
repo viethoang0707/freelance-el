@@ -58,6 +58,8 @@ export class Project extends BaseModel{
     }
 
     listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ProjectSubmission.search(context,fields, "[('project_id','=',"+this.id+")]");
     }
 

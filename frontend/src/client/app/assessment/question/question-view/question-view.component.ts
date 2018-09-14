@@ -47,7 +47,7 @@ export class QuestionViewComponent extends BaseComponent {
 	}
 
 	editQuestion() {
-		this.router.navigate(['/assessment/question/form', this.question.id]);
+		this.router.navigate(['/assessment/question/form/edit', this.question.id]);
 	}
 
 	close() {

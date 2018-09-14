@@ -149,6 +149,8 @@ export class Course extends BaseModel{
     }
 
     listMembers( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseMember.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
@@ -157,6 +159,8 @@ export class Course extends BaseModel{
     }
 
     listClasses( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseClass.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
@@ -165,6 +169,8 @@ export class Course extends BaseModel{
     }
 
     listFaqs( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseFaq.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
@@ -173,6 +179,8 @@ export class Course extends BaseModel{
     }
 
     listMaterials( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseMaterial.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
@@ -181,6 +189,8 @@ export class Course extends BaseModel{
     }
 
     listUnits( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return CourseUnit.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 

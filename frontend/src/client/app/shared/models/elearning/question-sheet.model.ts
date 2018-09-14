@@ -55,6 +55,8 @@ export class QuestionSheet extends BaseModel{
     }
 
     listQuestions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
         return ExamQuestion.search(context,fields,"[('sheet_id','=',"+this.id+")]");
     }
 }
