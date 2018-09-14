@@ -65,7 +65,7 @@ class User(models.Model):
 		if self.env["res.users"].search([("login","=",user["login"])]):
 			return {"success":False, "code":"USER_EXIST", "message":"Username exist" }
 		user = super(User, self).create(user)
-		return {"success":True}
+		return {"success":True, "user_id": user.id}
 
 	@api.model
 	def change_password(self, params):

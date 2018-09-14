@@ -14,7 +14,7 @@ import { CompetencyLevel } from '../../../shared/models/elearning/competency-lev
 
 const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
 const COMPETENCY_FIELDS = ['name', 'group_id'];
-const COMPETENCY_LEVEL_FIELDS = ['name', 'competency_id'];
+const COMPETENCY_LEVEL_FIELDS = ['name', 'competency_id' ,'competency_name'];
 
 
 @Component({

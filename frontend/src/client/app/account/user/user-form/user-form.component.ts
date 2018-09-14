@@ -38,6 +38,7 @@ export class UserFormComponent extends BaseComponent {
 					this.error(this.translateService.instant(resp["message"]));
 					return;
 				}
+				this.user.id = +resp["user_id"];
 				this.router.navigate(['/account/user/view', this.user.id]);
 			})
 		}

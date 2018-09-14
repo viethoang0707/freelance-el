@@ -23,8 +23,11 @@ export class ExamResolve implements Resolve<Exam>,APIContext {
   resolve(route: ActivatedRouteSnapshot) {
   	if (route.paramMap.get('examId'))
     	return Exam.get(this,+route.paramMap.get('examId') );
-    else
-    	return Observable.of(new Exam());
+    else {
+      var exam = new Exam();
+      exam.is_public = true;
+    	return Observable.of(exam);
+    }
   }
 }
 
@@ -42,8 +45,11 @@ export class SurveyResolve implements Resolve<Survey>,APIContext {
   resolve(route: ActivatedRouteSnapshot) {
   	if (route.paramMap.get('surveyId'))
     	return Survey.get(this,+route.paramMap.get('surveyId') );
-    else
-    	return Observable.of(new Survey());
+    else {
+      var survey = new Survey();
+      survey.is_public = true;
+    	return Observable.of(survey);
+    }
   }
 }
 

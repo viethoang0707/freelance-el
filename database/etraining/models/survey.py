@@ -207,4 +207,4 @@ class SurveySubmission(models.Model):
 	def unlink(self):
 		for answer in self.answer_ids:
 			answer.unlink()
-		return super(SurveyAnswer, self).unlink()
+		return super(SurveySubmission, self).unlink()
