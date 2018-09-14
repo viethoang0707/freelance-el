@@ -96,4 +96,4 @@ class Permission(models.Model):
 
 	def _compute_group_name(self):
 		for perm in self:
-			perm.group_name =  ','.join([group.name for group in perm.user_ids])
+			perm.group_name =  ','.join([group.name for group in perm.user_group_ids])
