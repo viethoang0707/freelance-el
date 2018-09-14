@@ -1,4 +1,4 @@
 
 <div >
-  <div #content [innerHTML]="lecture.content" style="height: 580px; overflow: auto; padding: 15px;" scrollTracker (scrolled)="updateScrollPos($event)"></div>
+  <div #content [innerHTML]="lecture.content" style="height: calc(100vh - 55px); overflow: auto; padding: 15px;" scrollTracker (scrolled)="updateScrollPos($event)"></div>
 </div>
