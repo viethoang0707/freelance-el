@@ -87,7 +87,6 @@ class Permission(models.Model):
 	name = fields.Char( string="Name")
 	menu_access = fields.Text( string="Menu access")
 	user_ids = fields.One2many('res.users', 'permission_id',string='Users')
-	user_group_name = fields.Char(related="user_group_id.name", string="Group Name", readonly=True)
 	user_count = fields.Integer( compute='_compute_user_count', string='User count')
 
 	def _compute_user_count(self):

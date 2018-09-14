@@ -18,14 +18,12 @@ export class Permission extends BaseModel{
 		this.user_group_ids = undefined;
 		this.menu_access = undefined;
         this.user_count =  undefined;
-        this.user_group_name =  undefined;
 	}
 
     name: string;
     user_group_ids: number[];
     menu_access: string;
     user_count: number;
-    user_group_name: string;
 
 
     static __api__listUsers(permissionId: number,fields?:string[]): SearchReadAPI {
