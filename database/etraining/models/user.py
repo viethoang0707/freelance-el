@@ -87,21 +87,22 @@ class Permission(models.Model):
 	menu_access = fields.Text( string="Menu access")
 	user_ids = fields.One2many('res.users', 'permission_id',string='Users')
 	user_count = fields.Integer( compute='_compute_user_count', string='User count')
+	user_group_ids = fields.Many2many('res.groups', string='Group')
 
 	def _compute_user_count(self):
 		for perm in self:
 			perm.user_count =  len(perm.user_ids)
 
-	user_group_ids = fields.Many2many('res.groups', string='Group')
-
 	@api.model
 	def create(self, vals):
-		vals["user_group_ids"] = (6, 0, vals["user_group_ids"])
+		if "user_group_ids" in vals:
+			vals["user_group_ids"] = [(6, 0, vals["user_group_ids"])]
 		permission = super(Permission, self).create(vals)
 		return permission
 
 	@api.multi
 	def write(self, vals):
 		for permision in self:
-			vals["user_group_ids"] = (6, 0, vals["user_group_ids"])
+			if "user_group_ids" in vals:
+				vals["user_group_ids"] = [(6, 0, vals["user_group_ids"])]
 			return super(Permission, permision).write(vals)
