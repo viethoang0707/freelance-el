@@ -93,16 +93,4 @@ class Permission(models.Model):
 		for perm in self:
 			perm.user_count =  len(perm.user_ids)
 
-	@api.model
-	def create(self, vals):
-		if "user_group_ids" in vals:
-			vals["user_group_ids"] = [(6, 0, vals["user_group_ids"])]
-		permission = super(Permission, self).create(vals)
-		return permission
 
-	@api.multi
-	def write(self, vals):
-		for permision in self:
-			if "user_group_ids" in vals:
-				vals["user_group_ids"] = [(6, 0, vals["user_group_ids"])]
-			return super(Permission, permision).write(vals)
