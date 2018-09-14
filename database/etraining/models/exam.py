@@ -49,7 +49,7 @@ class Exam(models.Model):
 		return exam
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		if self.sheet_id:
 			self.sheet_id.unlink()
 		if self.setting_id:
@@ -91,7 +91,7 @@ class Exam(models.Model):
 			for course_member in self.env['etraining.course_member'].search([('class_id','=',self.course_class_id.id),('user_id','=',user.id)]):
 				member.write({'course_member_id':course_member.id})
 		if member.email:
-				self.env.ref(self._module +"."+ "exam_register_template").send_mail(member.id,force_send=True)
+				self.env.ref(self._module +"."+ "exam_register_template").send_mail(member.id,force_send=False)
 		return member
 
 	@api.multi
@@ -107,7 +107,7 @@ class Exam(models.Model):
 		for exam in self.env["etraining.exam"].browse(examId):
 			for candidate in self.env['etraining.exam_member'].search([('exam_id','=',exam.id),('role','=','candidate')]):
 				if candidate.enroll_status != 'completed' and candidate.email:
-					self.env.ref(self._module +"."+ "exam_open_template").send_mail(candidate.id,force_send=True)
+					self.env.ref(self._module +"."+ "exam_open_template").send_mail(candidate.id,force_send=False)
 			exam.write({'status':'open'})
 		return {"success":True}
 
@@ -155,7 +155,7 @@ class ExamMember(models.Model):
 	submission_ids = fields.One2many('etraining.submission','member_id', string='Submission history')
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		if self.exam_record_id:
 			self.exam_record_id.unlink()
 		if self.submission_id:

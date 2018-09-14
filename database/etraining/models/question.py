@@ -32,7 +32,7 @@ class Question(models.Model):
 		return True
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		for option in self.option_ids:
 			option.unlink()
 		return super(Question, self).unlink()

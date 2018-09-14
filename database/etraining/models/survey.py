@@ -28,7 +28,7 @@ class Survey(models.Model):
 	answer_ids = fields.One2many('etraining.survey_answer', 'survey_id', string='Answers')
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		if self.sheet_id:
 			self.sheet_id.unlink()
 		for member in self.member_ids:
@@ -58,7 +58,7 @@ class Survey(models.Model):
 				token = ''.join(random.choice(ascii_uppercase + digits) for _ in range(24))
 				candidate.write({'survey_token': token, 'survey_link':'/lms/survey/study/%s' % token})
 				if candidate.email:
-						self.env.ref(self._module +"."+ "survey_invite_template").send_mail(candidate.id,force_send=True)
+						self.env.ref(self._module +"."+ "survey_invite_template").send_mail(candidate.id,force_send=False)
 			survey.write({'status':'open'})
 		return {'success':True}
 
@@ -129,7 +129,7 @@ class SurveySheet(models.Model):
 			sheet.question_count =  len(questions)
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		for question in self.question_ids:
 			question.unlink()
 		return super(SurveySheet, self).unlink()
@@ -160,7 +160,7 @@ class SurveyMember(models.Model):
 	class_id = fields.Many2one('etraining.course_class', related="course_member_id.class_id", string='Class')
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		if self.submission_id:
 			self.submission_id.unlink()
 		return super(SurveyMember, self).unlink()
@@ -204,7 +204,7 @@ class SurveySubmission(models.Model):
 	answer_ids = fields.One2many('etraining.survey_answer', 'submission_id', string='Answers')
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		for answer in self.answer_ids:
 			answer.unlink()
 		return super(SurveyAnswer, self).unlink()

@@ -3,7 +3,7 @@
          <record id="course_register_template" model="mail.template">
             <field name="name">E-learning course registration</field>
             <field name="subject">E-learning course enrollment notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
@@ -17,7 +17,7 @@
         <record id="course_open_template" model="mail.template">
             <field name="name">E-learning course open</field>
             <field name="subject">E-learning course open notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
@@ -31,7 +31,7 @@
         <record id="course_close_template" model="mail.template">
             <field name="name">E-learning course close</field>
             <field name="subject">E-learning course close notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
@@ -45,7 +45,7 @@
         <record id="class_register_template" model="mail.template">
             <field name="name">E-learning class registration</field>
             <field name="subject">E-learning class enrollment notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
@@ -59,7 +59,7 @@
         <record id="class_open_template" model="mail.template">
             <field name="name">E-learning class open</field>
             <field name="subject">E-learning course open notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
@@ -73,7 +73,7 @@
         <record id="class_close_template" model="mail.template">
             <field name="name">E-learning class close</field>
             <field name="subject">E-learning class close notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
@@ -87,7 +87,7 @@
         <record id="exam_register_template" model="mail.template">
             <field name="name">E-learning exam registration</field>
             <field name="subject">E-learning exam registration</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_exam_member" />
             <field name="auto_delete" eval="True" />
@@ -101,7 +101,7 @@
         <record id="exam_open_template" model="mail.template">
             <field name="name">E-learning exam open</field>
             <field name="subject">E-learning exam open notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_exam_member" />
             <field name="auto_delete" eval="True" />
@@ -115,7 +115,7 @@
         <record id="exam_close_template" model="mail.template">
             <field name="name">E-learning exam close</field>
             <field name="subject">E-learning exam close notification</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_exam_member" />
             <field name="auto_delete" eval="True" />
@@ -129,7 +129,7 @@
         <record id="survey_invite_template" model="mail.template">
             <field name="name">E-learning survey invitation</field>
             <field name="subject">E-learning survey invitation</field>
-            <field name="email_from">info@vietinterview.com</field>
+            <field name="email_from">${object.user_id.company_id.email}</field>
             <field name="email_to">${object.email|safe}</field>
             <field name="model_id" ref="model_etraining_survey_member" />
             <field name="auto_delete" eval="True" />
