@@ -17,7 +17,7 @@
             </div>
         </div>
         <p-footer>
-            <button pButton type="submit" icon="ui-icon-check" title="{{'Save'|translate}}" label="{{'Save'|translate}}" class=" flat" [disabled]="!f.form.valid"></button>
+            <button pButton type="submit" icon="ui-icon-check" title="{{'Save'|translate}}" label="{{'Save'|translate}}" class=" flat" (click)="save()" [disabled]="!f.form.valid"></button>
             <button pButton type="button" icon="ui-icon-close" title="{{'Close'|translate}}" label="{{'Close'|translate}}" class=" flat" style="margin-right:4px;" (click)="hide()"></button>
         </p-footer>
     </p-dialog>
