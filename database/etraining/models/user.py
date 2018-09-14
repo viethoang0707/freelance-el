@@ -26,7 +26,6 @@ class User(models.Model):
 	group_code = fields.Char(related="group_id.code", string="Code",readonly=True)
 	permission_id = fields.Many2one('etraining.permission', string='Permission')
 	permission_name = fields.Char(related="permission_id.name", string="Permission Name",readonly=True)
-	permission_group_id = fields.Many2one('res.groups', related="permission_id.user_group_id", string="Permission Group",readonly=True)
 	name = fields.Char(related="partner_id.name", string="Name",store=True)
 	email = fields.Char(related="partner_id.email", string="Email",store=True)
 	phone = fields.Char(related="partner_id.phone", string="Phone",store=True)
