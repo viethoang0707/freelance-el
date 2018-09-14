@@ -87,10 +87,13 @@ class Permission(models.Model):
 	menu_access = fields.Text( string="Menu access")
 	user_ids = fields.One2many('res.users', 'permission_id',string='Users')
 	user_count = fields.Integer( compute='_compute_user_count', string='User count')
+	group_name = fields.Char( compute='_compute_group_name', string='Group name')
 	user_group_ids = fields.Many2many('res.groups', string='Group')
 
 	def _compute_user_count(self):
 		for perm in self:
 			perm.user_count =  len(perm.user_ids)
 
-
+	def _compute_group_name(self):
+		for perm in self:
+			perm.group_name =  ','.join([group.name for group in perm.user_ids])
