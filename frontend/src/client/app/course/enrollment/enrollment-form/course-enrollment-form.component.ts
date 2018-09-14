@@ -14,9 +14,9 @@ import {
 	GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS
 } from '../../../shared/models/constants'
-import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
+import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 
-const MEMBER_FIELDS = ['name', 'email', 'phone', 'role', 'status', 'group_name'];
+const MEMBER_FIELDS = ['name', 'email', 'phone', 'role', 'status', 'group_name' ,'enroll_status'];
 
 @Component({
 	moduleId: module.id,
@@ -33,7 +33,7 @@ export class CourseEnrollmentFormComponent extends BaseComponent {
 	private courseClass: CourseClass;
 	private items: any[];
 
-	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
+	@ViewChild(SelectMultiUsersDialog) usersDialog: SelectMultiUsersDialog;
 
 	COURSE_MODE = COURSE_MODE;
 	CONTENT_STATUS = CONTENT_STATUS;

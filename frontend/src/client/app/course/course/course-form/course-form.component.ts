@@ -50,15 +50,9 @@ export class CourseFormComponent extends BaseComponent {
 
 	selectEditor() {
 		this.usersDialog.show();
-		this.usersDialog.onSelectUsers.first().subscribe(users => {
-			if (users.length > 1) {
-				this.error(this.translateService.instant('You can select only one editor.'));
-				return;
-			} else if (users.length == 1) {
-				var user = users[0];
+		this.usersDialog.onSelectUsers.first().subscribe(user => {
 				this.editor.user_id = user.id;
 				this.editor.name = user.name;
-			}
 		});
 	}
 

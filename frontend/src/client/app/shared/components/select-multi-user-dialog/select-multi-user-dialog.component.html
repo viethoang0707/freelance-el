@@ -25,7 +25,7 @@
                 <ng-template pTemplate="body" let-rowData>
                     <tr [pSelectableRow]="rowData">
                         <td>
-                            <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                         </td>
                         <td>
                             {{rowData.login}}
