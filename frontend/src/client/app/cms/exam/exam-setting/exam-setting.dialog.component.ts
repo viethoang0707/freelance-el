@@ -76,7 +76,7 @@ export class ExamSettingDialog extends BaseComponent {
                 ExamGrade.createArray(this, newGrades), 
                 ExamGrade.deleteArray(this, deleteGrades))
             .subscribe(()=> {
-                    this.success(this.translateService.instant('Setting saved successfully.'));
+                    this.success(this.translateService.instant('Setting saved successfully'));
                     this.hide();
 
             });

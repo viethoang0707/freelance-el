@@ -1,5 +1,5 @@
 <form novalidate (ngSubmit)="save()" #f="ngForm" autocomplete="off">
-    <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1000" [responsive]="true" [positionTop]="20" appendTo="body" [closeOnEscape]="false" [closable]="false">
+    <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1200" [responsive]="true" [positionTop]="20" appendTo="body" [closeOnEscape]="false" [closable]="false">
         <div class="spinner" [hidden]="!loading"></div>
         <p-tabView styleClass="profile-dialog">
             <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school" [style]="{width: '100%', height: '430px'}">

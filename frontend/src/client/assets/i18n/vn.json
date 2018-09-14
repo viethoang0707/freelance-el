@@ -646,6 +646,24 @@
 	"Exam enroll": "Tuyển sinh kỳ thi",
 	"Index": "STT",
 	"Study time": "Thời gian làm bài",
-	"minutes": "phút"
+	"minutes": "phút",
+	"Course form": "Khóa học",
+	"Group is required": "Danh mục là bắt buộc",
+	"Delete course successfully": "Xóa khóa học thành công",
+	"Apply": "Áp dụng",
+	"Exam form": "Khảo sát",
+	"Survey form": "Khảo sát",
+	"Survey create form": "Tạo mẫu khảo sát",
+	"Survey view": "Xem khảo sát",
+	"Survey view form": "Xem khảo sát",
+	"Course view": "Xem khóa học",
+	"Go back": "Quay lại",
+	"Class enrollment": "Tuyển sinh",
+	"Prequisite course": "Khóa học tiên quyết",
+	"Mail templates": "Mẫu mail",
+	"Mail templates list": "Danh sách mẫu mail",
+	"Export course": "Tải xuống khóa học",
+	"Export exam": "Tải xuống kì thi",
+	"Export skill": "Tải xuống kĩ năng"
 
 }
