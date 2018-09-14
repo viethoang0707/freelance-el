@@ -194,17 +194,7 @@ export class Course extends BaseModel{
         return CourseUnit.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
-    static __api__populateSyllabus(syllabus_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(CourseSyllabus.Model, [syllabus_id], fields);
-    }
 
-    populateSyllabus(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.syllabus_id)
-            return Observable.of(null);
-        return CourseSyllabus.get(context, this.syllabus_id,fields).do(syl => {
-            this.syl = syl;
-        });
-    }
 
     static __api__courseEditor(course_id: number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(CourseMember.Model, fields,"[('role','=','editor'),('course_id','='," + course_id + ")]");

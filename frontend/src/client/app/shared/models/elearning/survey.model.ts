@@ -131,17 +131,7 @@ export class Survey extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__populateClass(class_id:number,fields?:string[]): ListAPI {
-        return new ListAPI(CourseClass.Model, [class_id], fields);
-    }
 
-    populateClass(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.course_class_id)
-            return Observable.of(null);
-        return CourseClass.get(context, this.course_class_id,fields).do(clazz => {
-            this.clazz = clazz;
-        });
-    }
 
     static __api__surveyEditor(surveyId: number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(SurveyMember.Model, fields,"[('role','=','editor'),('survey_id','='," + surveyId + ")]");
@@ -151,17 +141,7 @@ export class Survey extends BaseModel{
         return SurveyMember.single(context, fields, "[('role','=','editor'),('survey_id','='," + this.id + ")]");
     }
 
-    static __api__populateQuestionSheet(sheet_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(SurveySheet.Model, [sheet_id], fields);
-    }
 
-    populateQuestionSheet(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.sheet_id)
-            return Observable.of(null);
-        return SurveySheet.get(context, this.sheet_id,fields).do(sheet => {
-            this.sheet = sheet;
-        });
-    }
 
     static __api__listCandidates(surveyId: number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(SurveyMember.Model, fields,"[('survey_id','=',"+surveyId+"),('role','=','candidate')]");

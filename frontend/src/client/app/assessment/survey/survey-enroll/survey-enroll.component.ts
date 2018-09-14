@@ -22,7 +22,7 @@ const SURVEY_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 's
     selector: 'survey-enroll',
     templateUrl: 'survey-enroll.component.html',
 })
-export class SurveyEnrollComponent extends BaseComponent implements OnInit{
+export class SurveyEnrollComponent extends BaseComponent implements OnInit {
 
     SURVEY_STATUS = SURVEY_STATUS;
     SURVEY_MEMBER_ENROLL_STATUS = SURVEY_MEMBER_ENROLL_STATUS;
@@ -73,12 +73,9 @@ export class SurveyEnrollComponent extends BaseComponent implements OnInit{
     }
 
     loadMembers() {
-        this.survey.populate(this).subscribe(() => {
-            this.survey.listCandidates(this, SURVEY_MEMBER_FIELDS).subscribe(members => {
-                this.members = members;
-            });
+        this.survey.listCandidates(this, SURVEY_MEMBER_FIELDS).subscribe(members => {
+            this.members = members;
         });
-
     }
 }
 

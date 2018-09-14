@@ -19,6 +19,7 @@ import { ICourseUnitPlay } from '../unit.interface';
 import { QuestionSheet } from '../../../../shared/models/elearning/question-sheet.model';
 import { BaseModel } from '../../../../shared/models/base.model';
 import { CourseMember } from '../../../../shared/models/elearning/course-member.model';
+import { Exercise } from '../../../../shared/models/elearning/exercise.model';
 
 @Component({
 	moduleId: module.id,
@@ -58,8 +59,8 @@ export class ExerciseCourseUnitPlayerComponent extends BaseComponent implements 
 
 	play(unit: CourseUnit, member: CourseMember) {
 		this.unit = unit;
-		this.unit.populateExercise(this).subscribe(() => {
-				BaseModel.bulk_search(this, QuestionSheet.__api__listQuestions( this.unit.exercise.sheet_id)).subscribe(jsonArr => {
+		Exercise.get(this, this.unit.exercise_id).subscribe(exercise => {
+				BaseModel.bulk_search(this, QuestionSheet.__api__listQuestions( this.exercise.sheet_id)).subscribe(jsonArr => {
 					this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
 					ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
 						var questions = _.map(this.examQuestions , (examQuestion: ExamQuestion) => {

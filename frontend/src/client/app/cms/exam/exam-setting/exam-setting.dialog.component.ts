@@ -45,8 +45,8 @@ export class ExamSettingDialog extends BaseComponent {
         exam.listGrades(this).subscribe(grades => {
             this.grades = grades;
         })
-        exam.populateSetting(this).subscribe(() => {
-            this.setting = exam.setting;
+        ExamSetting.get(this, exam.setting_id).subscribe(setting => {
+            this.setting = setting;
         });
     }
 

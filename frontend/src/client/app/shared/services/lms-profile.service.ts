@@ -92,7 +92,6 @@ export class LMSProfileService {
     if (this.initialized)
       return Observable.of([]);
     var user = context.authService.UserProfile;
-    return user.populate(context).flatMap(() => {
       return BaseModel.bulk_search(context,
         User.__api__listCourseMembers(user.id),
         User.__api__listExamMembers(user.id),
@@ -124,8 +123,6 @@ export class LMSProfileService {
         this.myProjectSubmits = ProjectSubmission.toArray(jsonArray[7]);
         this.initialized = true;
       });
-    })
-
   }
 
   get MyCourseMembers() {

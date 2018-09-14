@@ -50,7 +50,7 @@ export class ExamEditorFormCoponent extends BaseComponent {
 
 	save() {
 		this.examContent.save().subscribe(()=> {
-			this.location.back();
+			this.router.navigate(['/lms/exams']);
 		});
 	}
 

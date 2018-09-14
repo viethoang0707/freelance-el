@@ -39,8 +39,8 @@ export class SCORMLectureCourseUnitPlayerComponent extends BaseComponent impleme
 
 	play(unit:CourseUnit, member: CourseMember) {
 		this.unit = unit;
-		this.unit.populateScormLecture(this).subscribe(() => {
-			this.lecture = this.unit.scormLecture;
+		SCORMLecture.get(this, this.unit.scorm_lecture_id).subscribe(lecture=> {
+			this.lecture = lecture;
 			this.onViewCompletedReceiver.next();
 			this.viewCompleted = true;
 		});

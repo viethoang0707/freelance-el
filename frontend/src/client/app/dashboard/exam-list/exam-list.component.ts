@@ -16,8 +16,9 @@ import { BaseModel } from '../../shared/models/base.model';
 import { User } from '../../shared/models/elearning/user.model';
 import { ExamRecord } from '../../shared/models/elearning/exam-record.model';
 import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
+import { ExamSetting } from '../../shared/models/elearning/exam-setting.model';
 
-const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
+const EXAM_FIELDS = ['status', 'review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 
 @Component({
     moduleId: module.id,
@@ -87,22 +88,23 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         this.confirmationService.confirm({
             message: this.translateService.instant('Are you sure to start?'),
             accept: () => {
-                exam.populate(this).subscribe(() => {
-                    exam.populateSetting(this).subscribe(()=> {
-                        this.examStudyDialog.show(exam, exam.setting, member);
-                    })
+                ExamSetting.get(this, exam.setting_id).subscribe(setting => {
+                    this.examStudyDialog.show(exam, setting, member);
                 });
             }
         });
     }
 
     viewAnswer(exam: Exam, member: ExamMember) {
-        exam.populate(this).subscribe(() => {
-            member.populate(this).subscribe(()=> {
-                member.populateSubmission(this).subscribe(()=> {
-                    this.answerSheetDialog.show(exam, member, member.submit);
-                });
+        ExamSetting.get(this, exam.setting_id).subscribe((setting: ExamSetting) => {
+            if (!setting.allow_review_answer) {
+                this.info('Answer sheet review is not allowed!');
+                return;
+            }
+            Submission.get(this, member.submission_id).subscribe(submit => {
+                this.answerSheetDialog.show(exam, member, submit);
             });
         });
+
     }
 }

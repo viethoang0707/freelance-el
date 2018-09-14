@@ -123,8 +123,8 @@ export class GradebookDialog extends BaseComponent {
         this.viewer = viewer;
         this.student = student;
         this.courseClass = courseClass;
-        student.populateCertificate(this).subscribe(() => {
-            this.certificate = student.certificate;
+        Certificate.get(this, student.certificate_id).subscribe(certificate => {
+            this.certificate = certificate;
         });
         this.lmsProfileService.init(this).subscribe(() => {
             BaseModel.bulk_search(this,

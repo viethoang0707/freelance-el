@@ -75,7 +75,7 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
 
     render(survey: Survey) {
         this.clear();
-        survey.populateQuestionSheet(this).subscribe(()=> {
+        SurveySheet.get(this, survey.sheet_id).subscribe(()=> {
             var sheet = survey.sheet;
             survey.listAnswers(this).subscribe(answers=> {
                 var statistics = this.statsUtils.surveyAnswerStatistics(answers);

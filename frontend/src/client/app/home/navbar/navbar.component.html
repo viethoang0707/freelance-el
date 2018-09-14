@@ -40,7 +40,7 @@
                             <span>{{'User Profile'|translate}}</span>
                         </a>
                     </li>
-                    <li role="menuitem">
+                    <li role="menuitem" *ngIf="user.login!='admin'">
                         <a (click)="eventManager.changePassword()">
                 <i class="material-icons">verified_user</i>
                 <span>{{'Change Password'|translate}}</span>

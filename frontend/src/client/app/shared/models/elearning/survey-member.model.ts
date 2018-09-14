@@ -64,18 +64,6 @@ export class SurveyMember extends BaseModel{
     class_id: number;
     sheet_id: number;
     
-    static __api__populateSurvey(survey_id: number, fields?:string[]): ListAPI {
-        return new ListAPI(Survey.Model, [survey_id], fields);
-    }
-
-    populateSurvey(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.survey_id)
-            return Observable.of(null);
-        return Survey.get(context, this.survey_id,fields).do(survey => {
-            this.survey = survey;
-        });
-    }
-
     static populateSurveys(context: APIContext, members: SurveyMember[],fields?:string[]): Observable<any> {
         members = _.filter(members, (member:SurveyMember)=> {
             return member.survey.IsNew;
@@ -93,27 +81,13 @@ export class SurveyMember extends BaseModel{
         });
     }
 
-    static __api__populateUser(user_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(User.Model, [user_id], fields);
+    static __api__listSubmissions(memberId:number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveySubmission.Model,fields,"[('member_id','=',"+memberId+")]");
     }
 
-    populateUser(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.user_id)
-            return Observable.of(null);
-        return User.get(context, this.user_id,fields).do(user => {
-            this.user = user;
-        });
-    }
-
-    static __api__populateSubmission(submission_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(SurveySubmission.Model, [submission_id], fields);
-    }
-
-    populateSubmission(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.user_id)
-            return Observable.of(null);
-        return SurveySubmission.get(context, this.submission_id,fields).do(submit => {
-            this.submit = submit;
-        });
+    listSubmissions( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
+        return SurveySubmission.search(context,fields,"[('member_id','=',"+this.id+")]");
     }
 }

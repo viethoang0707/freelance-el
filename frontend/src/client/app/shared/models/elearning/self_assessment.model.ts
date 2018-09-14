@@ -31,28 +31,6 @@ export class SelfAssessment extends BaseModel {
 	@UnserializeProperty()
 	sheet: QuestionSheet;
 
-	static __api__populateExam(exam_id: number, fields?: string[]): ListAPI {
-		return new ListAPI(Exam.Model, [exam_id], fields);
-	}
 
-	populateExam(context: APIContext, fields?: string[]): Observable<any> {
-		if (!this.exam_id)
-			return Observable.of(null);
-		return Exam.get(context, this.exam_id, fields).do(exam => {
-			this.exam = exam;
-		});
-	}
-
-	static __api__populateQuestionSheet(sheet_id: number, fields?: string[]): ListAPI {
-		return new ListAPI(QuestionSheet.Model, [sheet_id], fields);
-	}
-
-	populateQuestionSheet(context: APIContext, fields?: string[]): Observable<any> {
-		if (!this.sheet_id)
-			return Observable.of(null);
-		return QuestionSheet.get(context, this.sheet_id, fields).do(sheet => {
-			this.sheet = sheet;
-		});
-	}
 
 }

@@ -66,18 +66,6 @@ export class ExamQuestion extends BaseModel{
         return q;
     }
 
-    __api__populateQuestion(fields?:string[]): ListAPI {
-        return new ListAPI(Question.Model, [this.question_id], fields);
-    }
-
-    populateQuestion(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.question_id)
-            return Observable.of(null);
-        return Question.get(context, this.question_id,fields).do(question => {
-            this.question = question;
-        });
-    }
-
     static populateQuestions(context: APIContext, examQuestions: ExamQuestion[],fields?:string[]): Observable<any> {
         examQuestions = _.filter(examQuestions, (q:ExamQuestion)=> {
             return q.question.IsNew;

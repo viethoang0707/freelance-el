@@ -40,8 +40,8 @@ export class SlideLectureCourseUnitPlayerComponent extends BaseComponent impleme
 
 	play(unit:CourseUnit, member: CourseMember) {
 		this.unit = unit;
-		this.unit.populateSlideLecture(this).subscribe(() => {
-			this.lecture = this.unit.slideLecture;
+		SlideLecture.get(this, this.unit.slide_lecture_id).subscribe(lecture=> {
+			this.lecture = lecture;
 			this.onViewCompletedReceiver.next();
 			this.viewCompleted = true;
 		});

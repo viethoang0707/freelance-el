@@ -38,8 +38,8 @@ export class SelfAssessmentCourseUnitComponent extends BaseComponent implements 
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		this.unit.populateSelfAssessment(this).subscribe(() => {
-			this.assessment = this.unit.selfAssessment;
+		SelfAssessment.get(this, this.unit.self_assessment_id).subscribe(assessment=> {
+			this.assessment =  assessment;
 		});
 	}
 

@@ -52,6 +52,7 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 import { GradebookDialog } from '../../class/gradebook/gradebook.dialog.component';
 import { CourseUnitStudyDialog } from '../course-unit-study-dialog/course-unit-study-dialog.component';
+import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 
 
 @Component({
@@ -172,11 +173,9 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	startExam(exam: Exam, member: ExamMember) {
 		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
-			exam.populate(this).subscribe(() => {
-				exam.populateSetting(this).subscribe(() => {
-					this.examStudyDialog.show(exam, exam.setting, member);
-				})
-			});
+			ExamSetting.get(this, exam.setting_id).subscribe(setting => {
+				this.examStudyDialog.show(exam, setting, member);
+			})
 		});
 	}
 

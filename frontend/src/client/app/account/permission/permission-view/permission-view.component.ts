@@ -14,6 +14,7 @@ import { MenuService } from '../../../shared/services/menu.service';
 import * as _ from 'underscore';
 
 const USER_FIELDS = ['name', 'email', 'login', 'position', 'permission_id', 'gender', 'dob', 'group_id', 'group_name']
+const GROUP_FIELDS = ['name'];
 
 @Component({
 	moduleId: module.id,
@@ -26,6 +27,7 @@ export class PermissionViewComponent extends BaseComponent {
 	private users: User[];
 	private menuTree: TreeNode[];
 	private selectedMenus: TreeNode[];
+	private managedGroups: string;
 
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -38,7 +40,8 @@ export class PermissionViewComponent extends BaseComponent {
 	ngOnInit() {
 		this.permission = this.route.snapshot.data['permission'];
 		this.loadMembers();
-		this.loadMenus()
+		this.loadMenus();
+		this.loadGroups();
 	}
 
 	
@@ -61,6 +64,13 @@ export class PermissionViewComponent extends BaseComponent {
 			if (menuNode)
 				this.selectedMenus.push(menuNode);
 		}));
+	}
+
+	loadGroups() {
+		this.permission.listGroups(this, GROUP_FIELDS).subscribe(groups => {
+			var names = _.pluck(groups, 'name');
+			this.managedGroups = names.join(',');
+		});
 	}
 
 	loadMembers() {

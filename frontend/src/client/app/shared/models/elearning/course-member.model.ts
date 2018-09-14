@@ -102,30 +102,6 @@ export class CourseMember extends BaseModel {
         return CourseMember.count(context, "[('role','=','student')]")
     }
 
-    static __api__populateCertificate(certificate_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(Certificate.Model, [certificate_id],fields);
-    }
-
-    populateCertificate(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.certificate_id)
-            return Observable.of(null);
-        return Certificate.get(context, this.certificate_id,fields).do(certificate => {
-            this.certificate = certificate;
-        });
-    }
-
-    static __api__populateCourse(course_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(Course.Model, [course_id],fields);
-    }
-
-    populateCourse(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.course_id)
-            return Observable.of(null);
-        return Course.get(context, this.course_id,fields).do(course => {
-            this.course = course;
-        });
-    }
-
     static populateCourses(context: APIContext, members: CourseMember[],fields?:string[]): Observable<any> {
         members = _.filter(members, (member:CourseMember)=> {
             return member.course.IsNew;
@@ -170,19 +146,6 @@ export class CourseMember extends BaseModel {
             context.authService.LoginToken);
     }
 
-
-    static __api__populateClass(class_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(CourseClass.Model, [class_id],fields);
-    }
-
-    populateClass(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.class_id)
-            return Observable.of(null);
-        return CourseClass.get(context, this.class_id,fields).do(clazz => {
-            this.clazz = clazz;
-        });
-    }
-
     static populateClasses(context: APIContext, members: CourseMember[],fields?:string[]): Observable<any> {
         members = _.filter(members, (member:CourseMember)=> {
             return member.clazz.IsNew;
@@ -200,17 +163,6 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static __api__populateConferenceMember(conference_member_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(ConferenceMember.Model, [conference_member_id],fields);
-    }
-
-    populateConferenceMember(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.conference_member_id)
-            return Observable.of(null);
-        return ConferenceMember.get(context, this.conference_member_id,fields).do(member => {
-            this.conference_member = member;
-        });
-    }
 
     static populateConferenceMembers(context: APIContext, members: CourseMember[],fields?:string[]): Observable<any> {
         var memberIds = _.pluck(members,'conference_member_id');
@@ -223,18 +175,6 @@ export class CourseMember extends BaseModel {
                     return member.conference_member_id == confMember.id;
                 });
             });
-        });
-    }
-
-    static __api__populateUser(user_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(User.Model, [user_id],fields);
-    }
-
-    populateUser(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.user_id)
-            return Observable.of(null);
-        return User.get(context, this.user_id,fields).do(user => {
-            this.user = user;
         });
     }
 

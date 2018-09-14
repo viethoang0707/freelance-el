@@ -46,8 +46,8 @@ export class VideoLectureCourseUnitPlayerComponent extends BaseComponent impleme
 
 	play(unit:CourseUnit, member: CourseMember) {
 		this.unit = unit;
-		this.unit.populateVideoLecture(this).subscribe(() => {
-			this.lecture = this.unit.videoLecture;
+		VideoLecture.get(this, this.unit.video_lecture_id).subscribe(lecture=> {
+			this.lecture = lecture;
 		});
 	}
 

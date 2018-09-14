@@ -50,14 +50,12 @@ export class LMSProfileDialog extends BaseDialog<User> {
 			this.courseMembers = [];
 			this.skills = [];
 			this.examMembers = [];
-			object.populateUser(this).subscribe(()=> {
-				let user:User = object.user;
 				BaseModel
 				.bulk_search(this,
-					User.__api__listCourseMembers(user.id),
-					User.__api__listCertificates(user.id),
-					User.__api__listAchivements(user.id),
-					User.__api__listExamMembers(user.id))
+					User.__api__listCourseMembers(object.user_id),
+					User.__api__listCertificates(object.user_id),
+					User.__api__listAchivements(object.user_id),
+					User.__api__listExamMembers(object.user_id))
 				.subscribe((jsonArr) => {
 					this.courseMembers = CourseMember.toArray(jsonArr[0]);
 					this.certificates = Certificate.toArray(jsonArr[1]);
@@ -67,7 +65,6 @@ export class LMSProfileDialog extends BaseDialog<User> {
 					this.displayCourseHistory();
 					this.displaySkills();
 				});
-			});
 			
 		});
 	}

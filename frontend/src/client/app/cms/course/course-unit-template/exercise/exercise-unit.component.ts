@@ -19,6 +19,7 @@ import { QuestionRegister } from '../../../../cms/question/question.decorator';
 import { QuestionSheetPreviewDialog } from '../../../exam/question-sheet-preview/question-sheet-preview.dialog.component';
 import { QuestionSheetEditorDialog } from '../../../exam/question-sheet-editor/question-sheet-editor.dialog.component';
 import { SelectQuestionSheetDialog } from '../../../../shared/components/select-question-sheet-dialog/select-question-sheet-dialog.component';
+import { Exercise } from '../../../../shared/models/elearning/exercise.model';
 
 const QUESTION_FIELS = ['title', 'group_name'];
 
@@ -54,10 +55,9 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-
-		this.unit.populateExercise(this).subscribe(() => {
-			this.unit.exercise.populateSheet(this).subscribe(() => {
-				this.sheet = this.unit.exercise.sheet;
+		Exercise.get(this, this.unit.exercise_id).subscribe((exercise:Exercise)=> {
+			QuestionSheet.get(this, exercise.sheet_id).subscribe(sheet=> {
+				this.sheet =  sheet;
 				this.sheet.listQuestions(this,QUESTION_FIELS).subscribe(examQuestions => {
 					this.examQuestions = examQuestions;
 				});

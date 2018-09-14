@@ -72,18 +72,6 @@ export class ExamMember extends BaseModel{
     grade: string;
     sheet_id: number;
 
-    static __api__populateExam(exam_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(Exam.Model, [exam_id], fields);
-    }
-
-    populateExam(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.exam_id)
-            return Observable.of(null);
-        return Exam.get(context, this.exam_id,fields).do(exam => {
-            this.exam = exam;
-        });
-    }
-
     static populateExams(context: APIContext, members: ExamMember[],fields?:string[]): Observable<any> {
         members = _.filter(members, (member:ExamMember)=> {
             return member.exam.IsNew;
@@ -110,29 +98,6 @@ export class ExamMember extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__populateUser(user_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(User.Model, [user_id], fields);
-    }
-
-    populateUser(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.user_id)
-            return Observable.of(null);
-        return User.get(context, this.user_id,fields).do(user => {
-            this.user = user;
-        });
-    }
-
-    static __api__populateSubmission(submission_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(Submission.Model, [submission_id], fields);
-    }
-
-    populateSubmission(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.user_id)
-            return Observable.of(null);
-        return Submission.get(context, this.submission_id,fields).do(submit => {
-            this.submit = submit;
-        });
-    }
 
     static __api__listSubmissions(memberId:number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(Submission.Model,fields,"[('member_id','=',"+memberId+")]");

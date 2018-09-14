@@ -27,17 +27,5 @@ export class Exercise extends BaseModel {
 	@UnserializeProperty()
 	sheet: QuestionSheet;
 
-	static __api__populateSheet(sheet_id: number, fields?: string[]): ListAPI {
-		return new ListAPI(QuestionSheet.Model, [sheet_id], fields);
-	}
-
-	populateSheet(context: APIContext, fields?: string[]): Observable<any> {
-		if (!this.sheet_id)
-			return Observable.of(null);
-		return QuestionSheet.get(context, this.sheet_id, fields).do(sheet => {
-			this.sheet = sheet;
-		});
-	}
-
 
 }

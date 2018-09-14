@@ -99,7 +99,7 @@
                     <div class="ui-g-12">
                         <label>{{'Managed group'|translate}}<span> *</span>
                         </label>
-                        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="groupNodeSelect($event)"></p-tree>
+                        <p-tree [value]="tree" selectionMode="multiple" [(selection)]="selectedNodes" (onNodeSelect)="groupNodeChange($event)"  (onNodeUnselect)="groupNodeChange($event)"></p-tree>
                         <input type="hidden" name="group" #group="ngModel" [(ngModel)]="permission.user_group_id" required>
                         <div *ngIf="group.invalid" class="ui-message ui-messages-error ui-corner-all">
                             <div *ngIf="group.errors.required">

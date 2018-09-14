@@ -22,7 +22,7 @@ const EXAM_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 'sta
     selector: 'exam-enroll',
     templateUrl: 'exam-enroll.component.html',
 })
-export class ExamEnrollComponent extends BaseComponent implements OnInit{
+export class ExamEnrollComponent extends BaseComponent implements OnInit {
 
     EXAM_MEMBER_ROLE = EXAM_MEMBER_ROLE;
     EXAM_STATUS = EXAM_STATUS;
@@ -88,17 +88,14 @@ export class ExamEnrollComponent extends BaseComponent implements OnInit{
     }
 
     loadMembers() {
-        this.exam.populate(this).subscribe(() => {
-            this.exam.listMembers(this, EXAM_MEMBER_FIELDS).subscribe(members => {
-                this.candidates = _.filter(members, (member) => {
-                    return member.role == 'candidate';
-                });
-                this.supervisors = _.filter(members, (member) => {
-                    return member.role == 'supervisor';
-                });
+        this.exam.listMembers(this, EXAM_MEMBER_FIELDS).subscribe(members => {
+            this.candidates = _.filter(members, (member) => {
+                return member.role == 'candidate';
             });
-        })
-
+            this.supervisors = _.filter(members, (member) => {
+                return member.role == 'supervisor';
+            });
+        });
     }
 }
 

@@ -17,12 +17,14 @@ export class ExamSetting extends BaseModel{
 		this.take_picture_on_submit = undefined;
         this.scale =  undefined;
         this.exam_id = undefined;
+        this.allow_review_answer = undefined;
 	}
 
     scale: number;
     exam_id: number;
     max_attempt: number;
     allow_navigation: boolean;
+    allow_review_answer: boolean;
     take_picture_on_submit: boolean;
 
 }

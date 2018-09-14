@@ -64,8 +64,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     showQuestionSheet() {
-        this.exam.populateQuestionSheet(this).subscribe(() => {
-            var sheet = this.exam.sheet;
+        QuestionSheet.get(this, this.exam.sheet_id).subscribe(sheet => {
             if (!sheet || !sheet.finalized)
                 this.error(this.translateService.instant('The exam questions has not been set up'));
             else
@@ -84,9 +83,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         if (this.selectedMember.enroll_status != 'completed')
             this.info(this.translateService.instant('Student has not completed the exam'));
         else {
-            this.selectedMember.populateSubmission(this).subscribe(() => {
-                this.answerSheetDialog.show(this.exam, this.selectedMember, this.selectedMember.submit);
-            })
+            Submission.get(this, this.selectedMember.submission_id).subscribe(submit => {
+                this.answerSheetDialog.show(this.exam, this.selectedMember, submit);
+            });
         }
     }
 

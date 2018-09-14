@@ -158,48 +158,12 @@ export class Exam extends BaseModel{
             context.authService.LoginToken);
     }
 
-    static __api__populateClass(course_class_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(CourseClass.Model, [course_class_id], fields);
-    }
-
-    populateClass(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.course_class_id)
-            return Observable.of(null);
-        return CourseClass.get(context, this.course_class_id,fields).do(clazz => {
-            this.clazz = clazz;
-        });
-    }
-
     static __api__examEditor(examId: number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(ExamMember.Model, fields,"[('role','=','editor'),('exam_id','='," + examId + ")]");
     }
 
     examEditor(context: APIContext,fields?:string[]): Observable<any> {
         return ExamMember.single(context, fields, "[('role','=','editor'),('exam_id','='," + this.id + ")]");
-    }
-
-    static __api__populateSetting(setting_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(ExamSetting.Model, [setting_id], fields);
-    }
-
-    populateSetting(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.setting_id)
-            return Observable.of(null);
-        return ExamSetting.get(context, this.setting_id,fields).do(setting => {
-            this.setting = setting;
-        });
-    }
-
-    static __api__populateQuestionSheet(sheet_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(QuestionSheet.Model, [sheet_id], fields);
-    }
-
-    populateQuestionSheet(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.sheet_id)
-            return Observable.of(null);
-        return QuestionSheet.get(context, this.sheet_id,fields).do(sheet => {
-            this.sheet = sheet;
-        });
     }
 
     static __api__listMembers(examId: number,fields?:string[]): SearchReadAPI {

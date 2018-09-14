@@ -20,15 +20,16 @@ import { SelectItem } from 'primeng/api';
 import { QuestionMarkingDialog } from '../../lms/exam/question-marking/question-marking.dialog.component';
 import { AnswerPrintDialog } from '../../lms/exam/answer-print/answer-print.dialog.component';
 import { ExamStudyDialog } from '../../lms/exam/exam-study/exam-study.dialog.component';
-import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
+import { ExamSetting } from '../../shared/models/elearning/exam-setting.model';
 import { Submission } from '../../shared/models/elearning/submission.model';
 import { BaseModel } from '../../shared/models/base.model';
 import { Survey } from '../../shared/models/elearning/survey.model';
 import { SurveyStudyDialog } from '../../lms/survey/survey-study/survey-study.dialog.component';
 import { SurveyMember } from '../../shared/models/elearning/survey-member.model';
 import * as _ from 'underscore';
+
 const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
-const EXAM_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
+const EXAM_FIELDS = ['status', 'review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 const CLASS_FIELDS = ['start', 'end', 'name'];
 
 @Component({
@@ -72,7 +73,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                 if (log.code == 'START_COURSE_UNIT')
                     this.confirm(this.translateService.instant('Do you want to continue last course'), () => {
                         var member = this.lmsProfileService.courseMemberById(log.member_id);
-                        var course = _.find(courses, (obj:Course)=> {
+                        var course = _.find(courses, (obj: Course) => {
                             return obj.id == log.course_id;
                         });
                         this.studyCourse(course, member);
@@ -123,7 +124,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                     allDay: true
                 });
         });
-        this.exams  = _.sortBy(exams, (exam: Exam) => {
+        this.exams = _.sortBy(exams, (exam: Exam) => {
             return -exam.id;
         });
     }
@@ -185,16 +186,14 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     editExamContent(exam: Exam) {
-       this.router.navigate(['/cms/exam/compose', exam.id, exam.sheet_id]);
+        this.router.navigate(['/cms/exam/compose', exam.id, exam.sheet_id]);
     }
 
     startExam(exam: Exam, member: ExamMember) {
         this.confirm(this.translateService.instant('Are you sure to start?'), () => {
-            exam.populate(this).subscribe(() => {
-                    exam.populateSetting(this).subscribe(()=> {
-                        this.examStudyDialog.show(exam, exam.setting, member);
-                    })
-                });
+            ExamSetting.get(this, exam.setting_id).subscribe(() => {
+                this.examStudyDialog.show(exam, exam.setting, member);
+            });
         });
     }
 
@@ -209,11 +208,13 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     viewAnswer(exam: Exam, member: ExamMember) {
-        exam.populate(this).subscribe(() => {
-            member.populate(this).subscribe(() => {
-                member.populateSubmission(this).subscribe(()=> {
-                    this.answerSheetDialog.show(exam, member, member.submit);
-                });
+        ExamSetting.get(this, exam.setting_id).subscribe((setting: ExamSetting) => {
+            if (!setting.allow_review_answer) {
+                this.info('Answer sheet review is not allowed!');
+                return;
+            }
+            Submission.get(this, member.submission_id).subscribe(submit => {
+                this.answerSheetDialog.show(exam, member, submit);
             });
         });
     }

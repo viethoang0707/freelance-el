@@ -52,18 +52,6 @@ export class SurveyQuestion extends BaseModel {
         return question;
     }
 
-    static __api__populateQuestion(question_id: number, fields?:string[]): ListAPI {
-        return new ListAPI(Question.Model, [question_id], fields);
-    }
-
-    populateQuestion(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.question_id)
-            return Observable.of(null);
-        return Question.get(context, this.question_id,fields).do(question => {
-            this.question = question;
-        });
-    }
-
     static populateQuestions(context: APIContext, surveyQuestions: SurveyQuestion[],fields?:string[]): Observable<any> {
         surveyQuestions = _.filter(surveyQuestions, (q:SurveyQuestion)=> {
             return q.question.IsNew;

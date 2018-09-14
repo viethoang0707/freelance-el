@@ -75,6 +75,8 @@ class User(models.Model):
 		self.check(self._cr.dbname, userId, old_passwd)
 		if new_passwd:
 				for user in self.env['res.users'].browse(userId):
+					if user.login =='admin':
+						raise UserError(_("Setting passwords for superadmin is forbidden!"))
 					user.write({'password': new_passwd})
 					return {"success":True}
 		raise UserError(_("Setting empty passwords is not allowed for security reasons!"))
@@ -85,10 +87,22 @@ class Permission(models.Model):
 	name = fields.Char( string="Name")
 	menu_access = fields.Text( string="Menu access")
 	user_ids = fields.One2many('res.users', 'permission_id',string='Users')
-	user_group_id = fields.Many2one('res.groups', string='Group')
 	user_group_name = fields.Char(related="user_group_id.name", string="Group Name", readonly=True)
 	user_count = fields.Integer( compute='_compute_user_count', string='User count')
 
 	def _compute_user_count(self):
 		for perm in self:
 			perm.user_count =  len(perm.user_ids)
+
+	user_group_ids = fields.Many2many('res.groups', string='Group')
+
+	@api.model
+	def create(self, vals):
+		vals["user_group_ids"] = (6, 0, vals["user_group_ids"])
+		permission = super(Permission, self).create(vals)
+		return permission
+
+	@api.multi
+	def write(self, vals):
+		vals["user_group_ids"] = (6, 0, vals["user_group_ids"])
+		return super(Permission, self).write(vals)

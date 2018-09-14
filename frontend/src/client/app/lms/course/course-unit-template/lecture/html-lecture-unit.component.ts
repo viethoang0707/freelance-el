@@ -42,9 +42,9 @@ export class HtmlLectureCourseUnitPlayerComponent extends BaseComponent implemen
 
 	play(unit:CourseUnit, member: CourseMember) {
 		this.unit = unit;
-		this.unit.populateHtmlLecture(this).subscribe(() => {
-			this.lecture = this.unit.htmlLecture;
-		})
+		HtmlLecture.get(this, this.unit.html_lecture_id).subscribe(lecture=> {
+			this.lecture = lecture;
+		});
 	}
 
 	updateScrollPos(e) {

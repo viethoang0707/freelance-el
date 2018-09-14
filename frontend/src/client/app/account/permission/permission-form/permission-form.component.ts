@@ -24,7 +24,7 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 export class PermissionFormComponent extends BaseComponent {
 
 	private tree: TreeNode[];
-	private selectedNode: any;
+	private selectedNodes: any;
 	private permission: Permission;
 	private users: User[];
 	private addUsers: User[];
@@ -40,10 +40,11 @@ export class PermissionFormComponent extends BaseComponent {
 		this.permission = new Permission();
 	}
 
-	groupNodeSelect(event: any) {
-		if (this.selectedNode) {
-			this.permission.user_group_id = this.selectedNode.data.id;
-			this.permission.user_group_name = this.selectedNode.data.name;
+	groupNodeChange(event: any) {
+		if (this.selectedNodes) {
+			this.permission.user_group_ids = _.map(this.selectedNodes, node => {
+				return node["data"]["id"];
+			});
 		}
 	}
 
@@ -57,13 +58,14 @@ export class PermissionFormComponent extends BaseComponent {
 	ngOnInit() {
 		this.addUsers = [];
 		this.deleteUsers = [];
+		this.selectedNodes = [];
 		this.permission = this.route.snapshot.data['permission'];
 		Group.listUserGroup(this, GROUP_FIELDS).subscribe(groups => {
 			let treeUtils: TreeUtils = new TreeUtils();
 			this.tree = treeUtils.buildGroupTree(groups);
-			if (this.permission.user_group_id) {
-				this.selectedNode = treeUtils.findTreeNode(this.tree, this.permission.user_group_id);
-			}
+			this.selectedNodes = _.map(this.permission.user_group_ids, groupId => {
+				return treeUtils.findTreeNode(this.tree, groupId);
+			});
 		});
 		this.loadMembers();
 		this.loadMenus()

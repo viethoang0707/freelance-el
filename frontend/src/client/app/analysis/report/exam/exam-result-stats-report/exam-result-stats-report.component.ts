@@ -67,7 +67,7 @@ export class ExamResultStatsReportComponent extends BaseComponent {
 
     render(exam: Exam) {
         this.clear();
-        exam.populateQuestionSheet(this).subscribe(sheet => {
+        QuestionSheet.get(this, exam.sheet_id).subscribe(sheet => {
             BaseModel
                 .bulk_search(this,
                     Exam.__api__listAnswers(exam.id))

@@ -48,18 +48,6 @@ export class ConferenceMember extends BaseModel{
     conference: Conference;
     conference_status: string;
 
-    static __api__populateConference(conf_id: number,fields?:string[]): ListAPI {
-        return new ListAPI(Conference.Model, [conf_id],fields);
-    }
-
-    populateConference(context: APIContext,fields?:string[]): Observable<any> {
-        if (!this.conference_id)
-            return Observable.of(null);
-        return Conference.get(context, this.conference_id,fields).do(conf => {
-            this.conference = conf;
-        });
-    }
-
     static populateConferences(context: APIContext, members: ConferenceMember[],fields?:string[]): Observable<any> {
         members = _.filter(members, (member:ConferenceMember)=> {
             return member.conference.IsNew;

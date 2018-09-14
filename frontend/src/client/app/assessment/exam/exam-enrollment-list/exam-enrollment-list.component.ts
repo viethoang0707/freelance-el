@@ -48,7 +48,7 @@ export class ExamEnrollmentListComponent extends BaseComponent {
     ngOnInit() {
         Exam.allForEnrollPublic(this, EXAM_FIELDS).subscribe(exams=> {
             this.exams =  _.sortBy(exams, (exam:Exam)=> {
-                return exam.id;
+                return -exam.id;
             });
         });
     }

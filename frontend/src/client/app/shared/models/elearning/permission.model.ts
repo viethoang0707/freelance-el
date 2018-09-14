@@ -5,6 +5,8 @@ import { BaseModel } from '../base.model';
 import { User } from './user.model';
 import * as _ from 'underscore';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { Group } from './group.model';
+import { ListAPI } from '../../services/api/list.api';
 
 @Model('etraining.permission')
 export class Permission extends BaseModel{
@@ -13,14 +15,14 @@ export class Permission extends BaseModel{
     constructor(){
         super();
 		this.name = undefined;
-		this.user_group_id = undefined;
+		this.user_group_ids = undefined;
 		this.menu_access = undefined;
         this.user_count =  undefined;
         this.user_group_name =  undefined;
 	}
 
     name: string;
-    user_group_id: number;
+    user_group_ids: number[];
     menu_access: string;
     user_count: number;
     user_group_name: string;
@@ -35,4 +37,13 @@ export class Permission extends BaseModel{
             return Observable.of([]);
         return User.search(context, fields, "[('permission_id','='," + this.id + ")]");
     }
+
+    static __api__listGroups(groupIds: number[],fields?:string[]): SearchReadAPI {
+        return new ListAPI(Group.Model, groupIds, fields);
+    }
+
+    listGroups(context: APIContext,fields?:string[]): Observable<any> {
+        return Group.array(context, this.user_group_ids, fields);
+    }
 }
+

@@ -15,7 +15,7 @@ import { Route, Router } from '@angular/router';
 import { BaseModel } from '../../shared/models/base.model';
 import { User } from '../../shared/models/elearning/user.model';
 
-const SURVEY_FIELDS = ['status','review_state', 'name', 'create_date', 'write_date','supervisor_id', 'summary', 'instruction', 'start', 'end', 'sheet_id',  'question_count','sheet_status'];
+const SURVEY_FIELDS = ['status', 'review_state', 'name', 'create_date', 'write_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'sheet_id', 'question_count', 'sheet_status'];
 
 
 @Component({
@@ -43,18 +43,18 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            this.surveyMembers =  this.lmsProfileService.MySurveyMembers;
-            Survey.array(this, this.lmsProfileService.MySurveyIds, SURVEY_FIELDS).subscribe(surveys=> {
+            this.surveyMembers = this.lmsProfileService.MySurveyMembers;
+            Survey.array(this, this.lmsProfileService.MySurveyIds, SURVEY_FIELDS).subscribe(surveys => {
                 this.displaySurveys(surveys);
             });
         });
     }
 
     displaySurveys(surveys: Survey[]) {
-        _.each(surveys, (survey:Survey)=> {
-            survey['candidate'] =  this.lmsProfileService.getSurveyMemberByRole('candidate', survey.id);
-            survey['editor'] =  this.lmsProfileService.getSurveyMemberByRole('editor', survey.id);
-            survey['supervisor'] =  this.lmsProfileService.getSurveyMemberByRole('supervisor', survey.id);
+        _.each(surveys, (survey: Survey) => {
+            survey['candidate'] = this.lmsProfileService.getSurveyMemberByRole('candidate', survey.id);
+            survey['editor'] = this.lmsProfileService.getSurveyMemberByRole('editor', survey.id);
+            survey['supervisor'] = this.lmsProfileService.getSurveyMemberByRole('supervisor', survey.id);
         });
         this.surveys = _.sortBy(surveys, (survey: Survey) => {
             return -survey.id;
@@ -69,20 +69,17 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
         this.confirmationService.confirm({
             message: this.translateService.instant('Are you sure to start?'),
             accept: () => {
-                survey.populate(this).subscribe(()=> {
-                    this.surveyStudyDialog.show(survey, member);
-                });
-                
+                this.surveyStudyDialog.show(survey, member);
             }
         });
     }
 
-    publishSurvey(survey:Survey) {
+    publishSurvey(survey: Survey) {
         survey.sheet_status = 'published';
         survey.save(this).subscribe();
     }
 
-    unpublishSurvey(survey:Survey) {
+    unpublishSurvey(survey: Survey) {
         survey.sheet_status = 'unpublished';
         survey.save(this).subscribe();
     }

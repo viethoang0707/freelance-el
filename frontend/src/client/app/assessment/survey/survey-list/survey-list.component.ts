@@ -48,10 +48,7 @@ export class SurveyListComponent extends BaseComponent {
             this.error(this.translateService.instant('You do not have edit permission for this survey'));
             return;
         }
-        survey.populate(this).subscribe(()=> {
-            this.router.navigate(['/assessment/survey/form', survey.id]);
-        });
-        
+        this.router.navigate(['/assessment/survey/form', survey.id]);        
     }
 
     viewSurvey(survey:Survey) {

@@ -82,7 +82,7 @@ export class QuestionListComponent extends BaseComponent {
     loadQuestions() {
         Question.all(this, QUESTION_FIELDS).subscribe(questions => {
             questions = _.sortBy(questions, (question: Question) => {
-                return question.create_date;
+                return -question.id;
             });
             this.questions = questions;
             this.displayQuestions = questions;
