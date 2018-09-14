@@ -41,7 +41,7 @@ export class SurveyEditorFormComponent extends BaseComponent {
 	}
 
 	ngOnInit() {
-		this.survey = this.route.snapshot.data['exam'];
+		this.survey = this.route.snapshot.data['survey'];
 		this.sheet = this.route.snapshot.data['sheet'];
 		this.surveyContent.render(this.survey, this.sheet);
 	}
