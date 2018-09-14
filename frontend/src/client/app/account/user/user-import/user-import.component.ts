@@ -92,6 +92,8 @@ export class UserImportComponent extends BaseComponent implements OnInit {
 			isValid = user['gender'] in GENDER;
 			if (!isValid)
 				this.statusMessages.push(`Record ${index + 1}: Invalid gender. Valid values: ${Object.keys(GENDER)}`);
+			else
+				users.push(user);
 		});
 		return Observable.of(users);
 	}
