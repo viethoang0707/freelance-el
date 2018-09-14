@@ -37,7 +37,7 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 
 	render(unit: CourseUnit) {
 		this.unit = unit;
-		this.unit.populateSlideLecture(this).subscribe(()=> {
+		this.unit.populateSlideLecture(this).subscribe(() => {
 			this.lecture = this.unit.slideLecture;
 		});
 	}
@@ -49,23 +49,21 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 	uploadFile(file) {
 		this.percentage = 0;
 		this.lecture.filename = file.name;
-		this.apiService.upload(file,  this.authService.LoginToken).subscribe(
+		this.apiService.upload(file, this.authService.LoginToken).subscribe(
 			data => {
 				if (data["result"]) {
-					this.ngZone.run(()=> {
-						if (file.name.endsWith('pdf')) {
-							this.lecture.slide_url = data["url"];
-							this.lecture.slide_file_id = data["attachment_id"];
-						}
-						else {
+					this.ngZone.run(() => {
+						this.lecture.slide_url = data["url"];
+						this.lecture.slide_file_id = data["attachment_id"];
+						if (!file.name.endsWith('pdf')) {
 							var serverFile = data["filename"]
-							this.apiService.convert2Pdf(serverFile, this.authService.LoginToken).subscribe((data)=> {
+							this.apiService.convert2Pdf(serverFile, this.authService.LoginToken).subscribe((data) => {
 								this.lecture.slide_url = data["url"];
 							});
 						}
 					});
 				} else {
-					this.ngZone.run(()=> {
+					this.ngZone.run(() => {
 						this.percentage = +data;
 					});
 				}

@@ -6,7 +6,6 @@
                 <div class="ui-g-6">
                     <label for="scale">{{'Scale' | translate}}</label>
                     <input type="text" pInputText name="scale" [(ngModel)]="setting.scale" pKeyFilter="pint">
-                    <label for="scale">{{'Scale' | translate}}</label>
                 </div>
                 <div class="ui-g-6">
                     <p-checkbox name="take_pic" binary="true" label="{{'Take picture on submit'|translate}}" [(ngModel)]="setting.take_picture_on_submit"></p-checkbox>
@@ -73,7 +72,7 @@
             </div>
         </p-scrollPanel>
         <p-footer>
-            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid || loading"></button>
+            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" (click)="saveExamSetting()" [disabled]="!f.form.valid || loading"></button>
             <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>

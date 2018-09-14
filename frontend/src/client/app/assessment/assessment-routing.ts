@@ -40,14 +40,17 @@ export const AssessmentRoutes: Routes = [
         path: "exam/form",
         component: ExamFormComponent,
         data: {
-          breadcrumb: 'Exam edit form'
-        }
+          breadcrumb: 'Exam create form'
+        },
+        resolve: {
+          exam: ExamResolve,
+        },
       },
       {
         path: "exam/form/:examId",
         component: ExamFormComponent,
         data: {
-          breadcrumb: 'Exam create form'
+          breadcrumb: 'Exam edit form'
         },
         resolve: {
           exam: ExamResolve,

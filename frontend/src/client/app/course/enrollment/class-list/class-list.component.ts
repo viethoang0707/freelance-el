@@ -42,7 +42,7 @@ export class CourseClassListComponent extends BaseComponent implements OnInit {
                 .map(jsonArr => {
                     return _.flatten(jsonArr)
                 }).subscribe(jsonArr => {
-                    this.classes = _.sortBy(CourseClass.toArray(jsonArr), (clazz:CourseClass)=> {
+                    this.classes = _.sortBy(CourseClass.toArray(jsonArr), (clazz: CourseClass) => {
                         return -clazz.id;
                     });
                 });
@@ -64,6 +64,10 @@ export class CourseClassListComponent extends BaseComponent implements OnInit {
 
     editClass(courseClass: CourseClass) {
         this.router.navigate(['/course/class/form', this.courseId, courseClass.id]);
+    }
+
+    viewClass(courseClass: CourseClass) {
+        this.router.navigate(['/course/class/view', courseClass.id]);
     }
 
     deleteClass(courseClass: CourseClass) {

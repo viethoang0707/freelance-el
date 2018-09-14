@@ -66,7 +66,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
         if (!exam.IsAvailable) {
             this.warn(this.translateService.instant('Exam is not available.'));
         }
-        this.router.navigate(['/lms/exam/manage', exam.id, member.id]);
+        this.router.navigate(['/lms/exam/manage', exam.id]);
     }
 
     editContent(exam: Exam) {
