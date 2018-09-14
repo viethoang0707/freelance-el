@@ -36,7 +36,7 @@ export class PermissionViewComponent extends BaseComponent {
 		this.permission = new Permission();
 	}
 
-	
+
 	ngOnInit() {
 		this.permission = this.route.snapshot.data['permission'];
 		this.loadMembers();
@@ -44,7 +44,7 @@ export class PermissionViewComponent extends BaseComponent {
 		this.loadGroups();
 	}
 
-	
+
 	loadMenus() {
 		this.menuTree = this.menuService.menuToTree(this.menuService.adminMenu());
 		this.menuTree.forEach((tree: any) => {
@@ -80,13 +80,11 @@ export class PermissionViewComponent extends BaseComponent {
 	}
 
 	editPermission() {
-		this.permission.save(this).subscribe(() => {
-			this.router.navigate(['/account/permission/form', this.permission.id]);
-		});
+		this.router.navigate(['/account/permission/form', this.permission.id]);
 	}
 
 	close() {
-			this.router.navigate(['/account/permissions']);
+		this.router.navigate(['/account/permissions']);
 	}
 }
 

@@ -102,5 +102,6 @@ class Permission(models.Model):
 
 	@api.multi
 	def write(self, vals):
-		vals["user_group_ids"] = (6, 0, vals["user_group_ids"])
-		return super(Permission, self).write(vals)
+		for permision in self:
+			vals["user_group_ids"] = (6, 0, vals["user_group_ids"])
+			return super(Permission, permision).write(vals)

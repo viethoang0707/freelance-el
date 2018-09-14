@@ -128,7 +128,7 @@ export class MapUtils {
                     jsonObject[key] = moment(object[key]).format(SERVER_DATETIME_FORMAT);
                 else {
                     let readOnlyMetadata = Reflect.getMetadata(READONLY_METADATA_KEY, object, key);
-                    if (!readOnlyMetadata && (!(object[key] && object[key] instanceof Object)))
+                    if (!readOnlyMetadata && (object[key] &&  (!(object[key] instanceof Object) || object[key] instanceof Array)))
                         jsonObject[key] = object[key];
                 }
             }
