@@ -23,5 +23,5 @@ p.question{
 }
 
 .options-question .md-inputfield input{
-	width: 470px;
+	width: 100%;
 }
