@@ -88,9 +88,9 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 						option.content = optionRecord["option"];
 						questionOptions.push(option);
 					}
-					this.optionList.push(_.shuffle(questionOptions));
+					optionList.push(_.shuffle(questionOptions));
 				} else
-					this.optionList.push([])
+					optionList.push([])
 				i += optionLength;
 			} else
 				i++;

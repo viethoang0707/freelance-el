@@ -258,7 +258,7 @@ class QuestionSheet(models.Model):
 			sheet.question_count =  len(questions)
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		for question in self.question_ids:
 			question.unlink()
 		return super(QuestionSheet, self).unlink()
@@ -295,7 +295,7 @@ class Submission(models.Model):
 	study_time = fields.Integer( compute='_compute_study_time', string='Study time')
 
 	@api.multi
-	def unlink(self, vals):
+	def unlink(self):
 		for answer in self.answer_ids:
 			answer.unlink()
 		return super(Submission, self).unlink()
