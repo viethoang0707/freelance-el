@@ -17,3 +17,7 @@
   width: 2em;
   height: 2em;
 }
+
+.options-question .md-inputfield input{
+	width: 100%;
+}
