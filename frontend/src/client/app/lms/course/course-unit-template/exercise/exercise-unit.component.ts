@@ -16,6 +16,8 @@ import { QuestionContainerDirective } from '../../../../cms/question/question-co
 import { IQuestion } from '../../../../cms/question/question.interface';
 import { QuestionRegister } from '../../../../cms/question/question.decorator';
 import { ICourseUnitPlay } from '../unit.interface';
+import { QuestionSheet } from '../../../../shared/models/elearning/question-sheet.model';
+import { BaseModel } from '../../../../shared/models/base.model';
 import { CourseMember } from '../../../../shared/models/elearning/course-member.model';
 
 @Component({
@@ -57,11 +59,10 @@ export class ExerciseCourseUnitPlayerComponent extends BaseComponent implements 
 	play(unit: CourseUnit, member: CourseMember) {
 		this.unit = unit;
 		this.unit.populateExercise(this).subscribe(() => {
-			this.unit.exercise.populateSheet(this).subscribe(() => {
-				this.unit.exercise.sheet.listQuestions(this).subscribe(examQuestions => {
-					this.examQuestions = examQuestions;
+				BaseModel.bulk_search(this, QuestionSheet.__api__listQuestions( this.unit.exercise.sheet_id)).subscribe(jsonArr => {
+					this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
 					ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
-						var questions = _.map(examQuestions, (examQuestion: ExamQuestion) => {
+						var questions = _.map(this.examQuestions , (examQuestion: ExamQuestion) => {
 							return examQuestion.question;
 						});
 						Question.listOptionsForArray(this, questions).subscribe(() => {
@@ -69,12 +70,10 @@ export class ExerciseCourseUnitPlayerComponent extends BaseComponent implements 
 								this.qIndex = 0;
 								this.displayQuestion(this.qIndex);
 							}
-
 						});
 					});
 				});
 			});
-		});
 	}
 
 	answerQuestion() {

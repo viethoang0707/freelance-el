@@ -13,6 +13,7 @@ import { CompetencyRoutes } from '../competency/competency-routing';
 import { SettingRoutes } from '../setting/setting-routing';
 import { APIResolver } from '../shared/guards/init.guard';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { CMSRoutes } from '../cms/cms-routing';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
           ...AnalysisRoutes,
           ...WorkflowRoutes,
           ...CompetencyRoutes,
-          ...SettingRoutes
+          ...SettingRoutes,
+          ...CMSRoutes
         ]
       },
       {path: '**', redirectTo: ''}

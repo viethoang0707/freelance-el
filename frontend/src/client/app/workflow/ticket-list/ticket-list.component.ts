@@ -30,7 +30,7 @@ export class TicketListComponent extends BaseComponent {
 
     ngOnInit() {
         BaseModel
-        .bulk_list(this,
+        .bulk_search(this,
             User.__api__listSubmitTickets(this.ContextUser.id),
             User.__api__listReviewTickets(this.ContextUser.id))
         .subscribe(jsonArr=> {

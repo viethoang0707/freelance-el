@@ -121,8 +121,8 @@ export class ExamStudyDialog extends BaseComponent {
 			this.submission = this.member.submit;
 			if (!this.submission.start)
 				this.submission.start = new Date();
-			BaseModel.bulk_list(this,
-				QuestionSheet.__api__listQuestions(this.exam.id),
+			BaseModel.bulk_search(this,
+				QuestionSheet.__api__listQuestions(this.exam.sheet_id),
 				Submission.__api__listAnswers(this.submission.id))
 				.subscribe(jsonArr => {
 					this.examQuestions = this.prepareExamQuestions(ExamQuestion.toArray(jsonArr[0]));

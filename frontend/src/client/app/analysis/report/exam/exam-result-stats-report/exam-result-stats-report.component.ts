@@ -69,18 +69,18 @@ export class ExamResultStatsReportComponent extends BaseComponent {
         this.clear();
         exam.populateQuestionSheet(this).subscribe(sheet => {
             BaseModel
-                .bulk_list(this,
+                .bulk_search(this,
                     Exam.__api__listAnswers(exam.id))
                 .subscribe(jsonArr => {
                     var sheet = sheet;
-                    var answers = Answer.toArray(jsonArr[1]);
+                    var answers = Answer.toArray(jsonArr[0]);
                     var statistics = this.statsUtils.examAnswerStatistics(answers);
                     this.optionPercentage = statistics['multichoice'];
                     sheet.listQuestions(this).subscribe(examQuestions => {
                         var apiList = _.map(examQuestions, (examQuestion: ExamQuestion) => {
                             return Question.__api__listOptions(examQuestion.id)
                         });
-                        BaseModel.bulk_list(this, ...apiList)
+                        BaseModel.bulk_search(this, ...apiList)
                             .map(jsonArr => _.flatten(jsonArr))
                             .subscribe(jsonArr => {
                                 var options = QuestionOption.toArray(jsonArr);

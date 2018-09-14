@@ -31,7 +31,9 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 	private unit: CourseUnit;
 	private member: CourseMember;
 	private submissions: Submission[];
-	private examId, settingId, examMemberId: number;
+	private examId: number;
+	private settingId:number;
+	private  examMemberId: number;
 
 	protected onViewCompletedReceiver: Subject<any> = new Subject();
 	onViewCompleted: Observable<any> = this.onViewCompletedReceiver.asObservable();
@@ -69,10 +71,10 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 
 	doAssessment() {
 		this.member.doAssessment(this, this.unit.self_assessment_id, this.examMemberId).subscribe(() => {
-			Exam.get(this, this.examMemberId).subscribe(exam => {
+			Exam.get(this, this.examId).subscribe(exam => {
 				ExamSetting.get(this, this.settingId).subscribe(setting => {
 					ExamMember.get(this, this.examMemberId).subscribe(member => {
-						this.studyDialog.show(exam, exam.setting, member);
+						this.studyDialog.show(exam, setting, member);
 						this.studyDialog.onFinish.subscribe(() => {
 							this.viewCompleted = true;
 							this.onViewCompletedReceiver.next();
@@ -81,12 +83,11 @@ export class SelfAssessmentCourseUnitPlayerComponent extends BaseComponent imple
 					});
 				});
 			});
-
 		});
 	}
 
 	viewAnswer(submit: Submission) {
-		Exam.get(this, this.examMemberId).subscribe(exam => {
+		Exam.get(this, this.examId).subscribe(exam => {
 			ExamMember.get(this, this.examMemberId).subscribe(member => {
 				this.answerPrintDialog.show(exam, member, submit);
 			});

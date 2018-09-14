@@ -4,7 +4,6 @@ import { Model ,UnserializeProperty, ReadOnlyProperty} from '../decorator';
 import { QuestionOption } from './option.model';
 import { APIContext } from '../context';
 import * as _ from 'underscore';
-
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { CreateAPI } from '../../services/api/create.api';
 import { BulkListAPI } from '../../services/api/bulk-list.api';
@@ -12,6 +11,7 @@ import { MapUtils } from '../../helpers/map.utils';
 import { ExecuteAPI } from '../../services/api/execute.api';
 import { Group } from './group.model';
 import { ListAPI } from '../../services/api/list.api';
+import { BulkSearchReadAPI } from '../../services/api/bulk-search-read.api';
 
 @Model('etraining.question')
 export class Question extends BaseModel{
@@ -43,7 +43,7 @@ export class Question extends BaseModel{
     group_name: string;
 
     static listByGroups(context:APIContext, groups:Group[],fields?:string[]):Observable<any> {
-        var api = new BulkListAPI();
+        var api = new BulkSearchReadAPI();
         _.each(groups, (group:Group)=> {
             var subApi = Group.__api__listQuestions(group.id,fields)
             api.add(subApi);

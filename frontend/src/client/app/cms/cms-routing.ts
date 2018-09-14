@@ -11,7 +11,7 @@ import { CourseSyllabusComponent } from './course/course-syllabus/course-syllabu
 import { SurveyEditorFormComponent } from './survey/survey-editor/survey-editor-form.component';
 import { ExamEditorFormCoponent } from './exam/exam-editor/exam-editor-form.component';
 
-export const CmsRoutes: Routes = [
+export const CMSRoutes: Routes = [
   {
     path: 'cms',
     component: CMSComponent,
