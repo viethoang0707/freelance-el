@@ -53,7 +53,6 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 			var record = this.records[i];
 			var question = new Question();
 			Object.assign(question, record);
-			if (this.dataFields.includes('group_code')) {
 				var group = _.find(this.groups, (obj: Group) => {
 					return obj.code == record["group_code"];
 				});
@@ -63,30 +62,19 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					isValid = false;
 					this.statusMessages.push(`Record ${i + 1}: Group ${record["group_code"]} is not defined`);
 				}
-			} else {
-				isValid = false;
-				this.statusMessages.push(`Record ${i + 1}: Group is not defined`);
-			}
-			if (this.dataFields.includes('type')) {
+
 				var type = record["type"];
 				if (!type || !QUESTION_TYPE[type]) {
 					isValid = false;
 					this.statusMessages.push(`Record ${i}: Type ${record["type"]} is not defined`);
 				}
-			} else {
-				isValid = false;
-				this.statusMessages.push(`Record ${i + 1}: Type is not defined`);
-			}
-			if (this.dataFields.includes('type')) {
+
 				var level = record["level"];
 				if (!level || !QUESTION_LEVEL[level]) {
 					isValid = false;
 					this.statusMessages.push(`Record ${i}: Type ${record["level"]} is not defined`);
 				}
-			} else {
-				isValid = false;
-				this.statusMessages.push(`Record ${i + 1}: Level is not defined`);
-			}
+
 			if (isValid) {
 				var questionOptions = [];
 				var optionLength = 1;

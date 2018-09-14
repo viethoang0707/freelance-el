@@ -78,35 +78,20 @@ export class UserImportComponent extends BaseComponent implements OnInit {
 					user[modelField.value] = record[field];
 			});
 			user["password"] = DEFAULT_PASSWORD;
-			if (this.dataFields.includes('group_code')) {
-				var group = _.find(this.groups, (obj: Group) => {
-					return obj.code == user["group_code"];
-				});
-				if (group) {
-					user.group_id = group.id;
-				} else {
-					isValid = false;
-					this.statusMessages.push(`Record ${index + 1}: Group ${record["group_code"]} is not defined`);
-				}
+			var group = _.find(this.groups, (obj: Group) => {
+				return obj.code == user["group_code"];
+			});
+			if (group) {
+				user.group_id = group.id;
 			} else {
-					isValid = false;
-					this.statusMessages.push(`Record ${index + 1}: Group is not defined`);
-				}
-			if (this.dataFields.includes('dob')) {
-				if (user.dob && moment(user.dob, this.dateFormat.value)["_isValid"])
-					user.dob = moment(user.dob, this.dateFormat.value).toDate();
-				else {
-					isValid = false;
-					this.statusMessages.push(`Record ${index + 1}: Invalid date of birth format. Require ${this.dateFormat.value}`);
-				}
+				isValid = false;
+				this.statusMessages.push(`Record ${index + 1}: Group ${record["group_code"]} is not defined`);
 			}
-			if (this.dataFields.includes('gender')) {
-				isValid = user['gender'] in GENDER;
-				if (!isValid)
-					this.statusMessages.push(`Record ${index + 1}: Invalid gender. Valid values: ${Object.keys(GENDER)}`);
-			}
-			if (isValid)
-				users.push(user);
+			if (user.dob && moment(user.dob, this.dateFormat.value)["_isValid"])
+				user.dob = moment(user.dob, this.dateFormat.value).toDate();
+			isValid = user['gender'] in GENDER;
+			if (!isValid)
+				this.statusMessages.push(`Record ${index + 1}: Invalid gender. Valid values: ${Object.keys(GENDER)}`);
 		});
 		return Observable.of(users);
 	}
@@ -124,8 +109,8 @@ export class UserImportComponent extends BaseComponent implements OnInit {
 		this.excelService.importFromExcelFile(file).subscribe(data => {
 			this.records = data;
 			this.dataFields = Object.keys(this.records[0]);
-			_.each(this.dataFields, (field,index) => {
-				this.columnMappings[field] = this.modelFields[index%this.modelFields.length];
+			_.each(this.dataFields, (field, index) => {
+				this.columnMappings[field] = this.modelFields[index % this.modelFields.length];
 			});
 		});
 	}
