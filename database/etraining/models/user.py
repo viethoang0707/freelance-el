@@ -91,7 +91,7 @@ class User(models.Model):
 					return True
 				user_group_id =  user_group_id.partner_id
 			return False
-		res = super(Users, self)._search(args, offset=offset, limit=limit, order=order, count=count,
+		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
                                           access_rights_uid=access_rights_uid)
 		cr,uid, context = self.env.args
 		print 'Context ', context
