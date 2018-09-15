@@ -83,7 +83,7 @@ class User(models.Model):
 		raise UserError(_("Setting empty passwords is not allowed for security reasons!"))
 
 	@api.model
-	def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+	def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
 		def is_child_of_group(user, group):
 			user_group_id = user.group_id
 			while user_group_id:
@@ -91,11 +91,11 @@ class User(models.Model):
 					return True
 				user_group_id =  user_group_id.partner_id
 			return False
-		res = super(User, self).search_read(domain=domain, fields=fields, offset=offset, limit=limit,
-                                          order=order)
+		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
+                                          access_rights_uid=access_rights_uid)
 		cr,uid, context = self.env.args
 		import pdb
-		pdb.set_trac()
+		pdb.set_trace()
 		print 'Context ', context
 		if "user_id" in context:
 			for user in self.env['res.users'].browse([context["user_id"]]):
