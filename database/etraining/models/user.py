@@ -105,6 +105,13 @@ class User(models.Model):
 					return res_filter
 		return res
 
+	@api.model
+	def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+		cr,uid, context = self.env.args
+		print 'Context ', context
+		res = super(User, self).search_read(args, domain = domain, fields = fields, offset=offset, limit = limit, order = order, count = count)
+		return res
+
 
 class ResetPassToken(models.Model):
 	_name = 'etraining.reset_pass_token'
