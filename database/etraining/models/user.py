@@ -93,6 +93,7 @@ class User(models.Model):
 			return False
 		res = super(User, self).search(args, offset=offset, limit = limit, order = order, count = count)
 		cr,uid, context = self.env.args
+		print 'Context ', context
 		if "user_id" in context:
 			for user in self.env['res.users'].browse([context["user_id"]]):
 				if user.permission_id:
@@ -103,6 +104,7 @@ class User(models.Model):
 								res_filter.append(res_id)
 					return res_filter
 		return res
+
 
 class ResetPassToken(models.Model):
 	_name = 'etraining.reset_pass_token'
