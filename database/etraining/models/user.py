@@ -112,6 +112,12 @@ class User(models.Model):
 		res = super(User, self).search_read(args, domain = domain, fields = fields, offset=offset, limit = limit, order = order, count = count)
 		return res
 
+	@api.multi
+  def read(self, fields=None, load='_classic_read'):
+  	cr,uid, context = self.env.args
+		print 'Context ', context
+		res = super(User, self).read(fields = fields,load = load)
+		return res
 
 class ResetPassToken(models.Model):
 	_name = 'etraining.reset_pass_token'
