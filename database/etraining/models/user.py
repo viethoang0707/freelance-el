@@ -93,15 +93,14 @@ class User(models.Model):
 			return False
 		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
                                           access_rights_uid=access_rights_uid)
-		cr,uid, context = self.env.args
-		import pdb
-		pdb.set_trace()
+		# TODO: Hack fix to erppeek since service API chang in Odoo 10
+		context = count
 		print 'Context ', context
 		if "user_id" in context:
 			for user in self.env['res.users'].browse([context["user_id"]]):
 				if user.permission_id:
 					res_filter = []
-					for res_id in res:
+					for res_id in self.env['res.users'].browse(res):
 						for group_id in user.permission_id.user_group_ids:
 							if is_child_of_group(res_id, group_id):
 								res_filter.append(res_id)
