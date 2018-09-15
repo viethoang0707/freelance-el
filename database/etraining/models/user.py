@@ -94,7 +94,6 @@ class User(models.Model):
 		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
                                           access_rights_uid=access_rights_uid)
 		cr,uid, context = self.env.args
-		raise Exception('rrrrrrrr',context)
 		print 'Context ', context
 		if "user_id" in context:
 			for user in self.env['res.users'].browse([context["user_id"]]):
