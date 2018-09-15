@@ -96,7 +96,7 @@ class User(models.Model):
 		# TODO: Hack fix to erppeek since service API chang in Odoo 10
 		context = count
 		print 'Context ', context
-		if res and context and "user_id" in context:
+		if res and context and isinstance(context, dict) "user_id" in context:
 			for user in self.env['res.users'].browse([context["user_id"]]):
 				if user.permission_id:
 					res_filter = []
