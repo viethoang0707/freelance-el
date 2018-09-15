@@ -89,7 +89,7 @@ class User(models.Model):
 			while user_group_id:
 				if user_group_id.id == group_id.id:
 					return True
-				user_group_id =  user_group_id.partner_id
+				user_group_id =  user_group_id.parent_id
 			return False
 		# TODO: Hack fix to erppeek since service API chang in Odoo 10
 		context = count
