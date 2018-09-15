@@ -105,7 +105,7 @@ class User(models.Model):
 		return res
 
 class ResetPassToken(models.Model):
-	_name = 'erpcloud.reset_pass_token'
+	_name = 'etraining.reset_pass_token'
 
 	code = fields.Char(string='Token')
 	date_expire = fields.Float(string='Time in millseconds')
