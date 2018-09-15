@@ -113,8 +113,8 @@ class User(models.Model):
 		return res
 
 	@api.multi
-  def read(self, fields=None, load='_classic_read'):
-  	cr,uid, context = self.env.args
+	def read(self, fields=None, load='_classic_read'):
+		cr,uid, context = self.env.args
 		print 'Context ', context
 		res = super(User, self).read(fields = fields,load = load)
 		return res
