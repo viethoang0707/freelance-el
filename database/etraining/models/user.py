@@ -91,12 +91,15 @@ class User(models.Model):
 					return True
 				user_group_id =  user_group_id.partner_id
 			return False
-		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
-                                          access_rights_uid=access_rights_uid)
 		# TODO: Hack fix to erppeek since service API chang in Odoo 10
 		context = count
-		print 'Context ', context
-		if res and context and isinstance(context, dict) and "user_id" in context:
+		if context and isinstance(context, dict):
+			count = None
+		else:
+			context = None
+		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
+                                          access_rights_uid=access_rights_uid)
+		if res and context and  "user_id" in context:
 			for user in self.env['res.users'].browse([context["user_id"]]):
 				if user.permission_id:
 					res_filter = []
