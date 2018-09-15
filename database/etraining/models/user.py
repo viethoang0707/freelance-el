@@ -139,7 +139,7 @@ class ResetPassToken(models.Model):
 		try:
 			code = params['token']
 			new_pass = params['new_pass']
-			for token in self.env["reset_pass_token"].get([('code','=',code)])
+			for token in self.env["reset_pass_token"].get([('code','=',code)]):
 					currentTime = int(round(time.time() * 1000)) 
 					if token.date_expire < currentTime:
 						return {'success':False,'message':'Token expired'}
