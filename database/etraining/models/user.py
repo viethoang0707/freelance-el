@@ -136,15 +136,15 @@ class ResetPassToken(models.Model):
 
 	@api.model
 	def apply_reset_password(self,params):
-    try:
-      code = params['token']
-      new_pass = params['new_pass']
-      for token in self.env["reset_pass_token"].get([('code','=',code)])
-      		currentTime = int(round(time.time() * 1000)) 
-      		if token.date_expire < currentTime:
-            return {'success':False,'message':'Token expired'}
-      		user.write({'password':new_pass})
-      		return {'success':True}
+		try:
+			code = params['token']
+			new_pass = params['new_pass']
+			for token in self.env["reset_pass_token"].get([('code','=',code)])
+					currentTime = int(round(time.time() * 1000)) 
+					if token.date_expire < currentTime:
+						return {'success':False,'message':'Token expired'}
+					user.write({'password':new_pass})
+					return {'success':True}
 
 
 class Permission(models.Model):
