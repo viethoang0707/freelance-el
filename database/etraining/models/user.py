@@ -146,6 +146,7 @@ class ResetPassToken(models.Model):
 					user.write({'password':new_pass})
 					return {'success':True}
 
+
 class Permission(models.Model):
 	_name = 'etraining.permission'
 
