@@ -146,7 +146,6 @@ class ResetPassToken(models.Model):
 					user.write({'password':new_pass})
 					return {'success':True}
 
-
 class Permission(models.Model):
 	_name = 'etraining.permission'
 
@@ -160,7 +159,7 @@ class Permission(models.Model):
 	def _compute_user_count(self):
 		for perm in self:
 			perm.user_count =  len(perm.user_ids)
-
+			
 	def _compute_group_name(self):
 		for perm in self:
 			perm.group_name =  ','.join([group.name for group in perm.user_group_ids])
