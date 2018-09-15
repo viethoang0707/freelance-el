@@ -106,7 +106,7 @@ class User(models.Model):
 					for res_id in self.env['res.users'].browse(res):
 						for group_id in user.permission_id.user_group_ids:
 							if is_child_of_group(res_id, group_id):
-								res_filter.append(res_id)
+								res_filter.append(res_id.id)
 					return res_filter
 		return res
 
