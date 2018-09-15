@@ -31,7 +31,9 @@ export class PermissionListComponent extends BaseComponent {
 
     loadPermission() {
         Permission.all(this).subscribe(permissions => {
-            this.permissions = permissions;
+            this.permissions = _.sortBy(permissions, (permission:Permission)=> {
+                return -permission.id;
+            });
         });
     }
 

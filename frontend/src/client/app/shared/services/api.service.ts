@@ -91,45 +91,6 @@ export class APIService {
         });
     }
 
-    resetPasswordRequest(email: string): Observable<any> {
-        return this.init().flatMap(() => {
-            let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': `${this.cloudId}` });
-            let options = new RequestOptions({ headers: headers });
-            var endpoint = this.apiEndpoint + '/account/resetpass/request';
-            var params = { email: email }
-            this.appEvent.startHttpTransaction();
-            return this.http.post(endpoint, JSON.stringify(params), options)
-                .map((response: Response) => response.json()).do(() => {
-                    this.appEvent.finishHttpTransaction();
-                })
-                .catch((e) => {
-                    console.log(e);
-                    this.appEvent.finishHttpTransaction();
-                    return Observable.throw(e.json());
-                });
-        });
-    }
-
-    resetPasswordExecute(token: Token, new_pass: string): Observable<any> {
-        return this.init().flatMap(() => {
-            let headers = token ? new Headers({ 'Content-Type': 'application/json', 'Authorization': `${token.cloud_code} ${token.code}` })
-                : new Headers({ 'Content-Type': 'application/json', 'Authorization': `${this.cloudId}` });
-            let options = new RequestOptions({ headers: headers });
-            var endpoint = this.apiEndpoint + '/account/resetpass/execute';
-            var params = { new_pass: new_pass, token: token }
-            this.appEvent.startHttpTransaction();
-            return this.http.post(endpoint, JSON.stringify(params), options)
-                .map((response: Response) => response.json()).do(() => {
-                    this.appEvent.finishHttpTransaction();
-                })
-                .catch((e) => {
-                    console.log(e);
-                    this.appEvent.finishHttpTransaction();
-                    return Observable.throw(e.json());
-                });
-        });
-    }
-
     upload_S3(file: any, token: Token): Observable<any> {
         return this.init().flatMap(() => {
             let formData: FormData = new FormData();

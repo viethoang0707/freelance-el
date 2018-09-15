@@ -13,7 +13,7 @@
               <p>{{'Room password'|translate}}: {{member.conference.room_pass}}</p>
             </div>
             <p-footer>
-              <button pButton type="button " label="{{ 'Join'|translate}} " class="green-btn" icon="ui-icon-call " (click)="joinConference(member.conference,member) " [disabled]="member.conference.status!='open'"></button>
+              <button pButton type="button" label="{{ 'Join'|translate}} " class="green-btn" icon="ui-icon-call " (click)="joinConference(member.conference,member) " [disabled]="member.conference.status!='open'"></button>
             </p-footer>
           </p-panel>
         </div>

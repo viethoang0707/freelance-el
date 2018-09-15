@@ -10,7 +10,7 @@
                     <div class="ui-lg-12 ui-md-12 ui-g-12" *ngIf="member.class_id">
                         <p-toolbar>
                             <div class="ui-toolbar-group-left">
-                                <button pButton type="button " label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
+                                <button pButton type="button" label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="showCertificate()" *ngIf="certificate"></button>
                                 <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook()"></button>
                             </div>
                         </p-toolbar>
@@ -33,7 +33,7 @@
                                 {{COURSE_STATUS[course.status]|translate}}
                             </span>
                             <div class="clear pt15">
-                                <button pButton type="button " label="{{ 'Study'|translate}} " class="green-btn" icon="ui-icon-play-arrow " (click)="study()" *ngIf="syl.status=='published'"></button>
+                                <button pButton type="button" label="{{ 'Study'|translate}} " class="green-btn" icon="ui-icon-play-arrow " (click)="study()" *ngIf="syl.status=='published'"></button>
                             </div>
                             <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Summary'|translate}}</h4>
                             <p>{{course.summary}}</p>
@@ -235,7 +235,7 @@
                     <div class="ui-lg-4 ui-md-6 ui-g-12">
                         <div class="task-box task-box-1">
                             <div class="task-box-header">
-                                <button pButton type="button " label="{{ 'Join'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
+                                <button pButton type="button" label="{{ 'Join'|translate}} " class="blue-grey-btn " icon="ui-icon-call " (click)="joinConference() " [disabled]="conference.status!='open'"></button>
                             </div>
                             <div class="task-box-content">
                                 <h3>{{'Live conference'|translate}} : {{conference.name}}</h3>

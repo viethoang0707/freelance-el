@@ -41,11 +41,13 @@ export class PermissionFormComponent extends BaseComponent {
 	}
 
 	groupNodeChange(event: any) {
-		if (this.selectedNodes) {
-			this.permission.user_group_ids = _.map(this.selectedNodes, node => {
-				return node["data"]["id"];
-			});
-		}
+		this.selectedNodes = _.filter(this.selectedNodes, node => {
+			return node && node["data"];
+		});
+		this.permission.user_group_ids = _.map(this.selectedNodes, node => {
+			return node["data"]["id"];
+		});
+
 	}
 
 	menuNodeSelect(event: any) {
@@ -72,6 +74,7 @@ export class PermissionFormComponent extends BaseComponent {
 	}
 
 	addMember() {
+		this.users = [];
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			User.populateArray(this, users, USER_FIELDS).subscribe(() => {
@@ -97,6 +100,7 @@ export class PermissionFormComponent extends BaseComponent {
 				});
 				this.deleteUsers.push(user);
 			});
+			this.users = [];
 		});
 	}
 

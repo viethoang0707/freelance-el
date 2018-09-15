@@ -3,13 +3,13 @@
     <div class="ui-g-12 ">
         <p-toolbar>
             <div class="ui-toolbar-group-left ">
-                <button pButton type="button " label="{{ 'Question sheets'|translate}} " class="blue-grey-btn " icon="ui-icon-question-answer" (click)="showQuestionSheet()"></button>
-                <button pButton type="button " label="{{ 'Answer sheet'|translate}} " class="blue-grey-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedMember"></button>
-                <button pButton type="button " label="{{ 'Redo exam'|translate}} " class="blue-grey-btn " icon="ui-icon-refresh" (click)="redoExam(selectedMember)" [disabled]="!selectedMember || selectedMember.enroll_status != 'completed'"></button>
+                <button pButton type="button" label="{{ 'Question sheets'|translate}} " class="blue-grey-btn " icon="ui-icon-question-answer" (click)="showQuestionSheet()"></button>
+                <button pButton type="button" label="{{ 'Answer sheet'|translate}} " class="blue-grey-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedMember"></button>
+                <button pButton type="button" label="{{ 'Redo exam'|translate}} " class="blue-grey-btn " icon="ui-icon-refresh" (click)="redoExam(selectedMember)" [disabled]="!selectedMember || selectedMember.enroll_status != 'completed'"></button>
             </div>
             <div class="ui-toolbar-group-right ">
-                <button pButton type="button " label="{{ 'Result report'|translate}} " class="blue-grey-btn " icon="ui-icon-data-usage" (click)="showExamReport()"></button>
-                <button pButton type="button " label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer" (click)="showExamStats()"></button>
+                <button pButton type="button" label="{{ 'Result report'|translate}} " class="blue-grey-btn " icon="ui-icon-data-usage" (click)="showExamReport()"></button>
+                <button pButton type="button" label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer" (click)="showExamStats()"></button>
             </div>
         </p-toolbar>
         <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">

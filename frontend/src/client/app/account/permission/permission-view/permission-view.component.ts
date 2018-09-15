@@ -27,7 +27,6 @@ export class PermissionViewComponent extends BaseComponent {
 	private users: User[];
 	private menuTree: TreeNode[];
 	private selectedMenus: TreeNode[];
-	private managedGroups: string;
 
 	@ViewChild(SelectUsersDialog) usersDialog: SelectUsersDialog;
 
@@ -41,7 +40,6 @@ export class PermissionViewComponent extends BaseComponent {
 		this.permission = this.route.snapshot.data['permission'];
 		this.loadMembers();
 		this.loadMenus();
-		this.loadGroups();
 	}
 
 
@@ -64,13 +62,6 @@ export class PermissionViewComponent extends BaseComponent {
 			if (menuNode)
 				this.selectedMenus.push(menuNode);
 		}));
-	}
-
-	loadGroups() {
-		this.permission.listGroups(this, GROUP_FIELDS).subscribe(groups => {
-			var names = _.pluck(groups, 'name');
-			this.managedGroups = names.join(',');
-		});
 	}
 
 	loadMembers() {

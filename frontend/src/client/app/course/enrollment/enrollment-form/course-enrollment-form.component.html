@@ -5,8 +5,8 @@
             <div class="ui-g-12 ">
                 <p-toolbar>
                     <div class="ui-toolbar-group-left ">
-                        <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addStudent() "></button>
-                        <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedStudents) " *ngIf="selectedStudents && selectedStudents.length "></button>
+                        <button pButton type="button" label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addStudent() "></button>
+                        <button pButton type="button" label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedStudents) " *ngIf="selectedStudents && selectedStudents.length "></button>
                     </div>
                 </p-toolbar>
                 <p-table #studentTable [value]="students" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedStudents " [responsive]="true " sortField="name">
@@ -65,8 +65,8 @@
             <div class="ui-g-12 ">
                 <p-toolbar>
                     <div class="ui-toolbar-group-left ">
-                        <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addTeacher() "></button>
-                        <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedTeachers) " *ngIf="selectedTeachers && selectedTeachers.length "></button>
+                        <button pButton type="button" label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addTeacher() "></button>
+                        <button pButton type="button" label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedTeachers) " *ngIf="selectedTeachers && selectedTeachers.length "></button>
                     </div>
                 </p-toolbar>
                 <p-table #candidateTable [value]="teachers" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedTeachers " [responsive]="true " sortField="name">
@@ -119,6 +119,6 @@
     </p-tabView>
     <select-multi-user-dialog></select-multi-user-dialog>
     <div class="card-footer">
-        <button type="button " pButton icon="ui-icon-clear " (click)="close() " label="{{ 'Close'|translate}} "></button>
+        <button type="button" pButton icon="ui-icon-clear " (click)="close() " label="{{ 'Close'|translate}} "></button>
     </div>
 </div>

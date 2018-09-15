@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import time
+
 
 class Partner(models.Model):
 	_name = 'res.partner'
@@ -79,6 +81,71 @@ class User(models.Model):
 					user.write({'password': new_passwd})
 					return {"success":True}
 		raise UserError(_("Setting empty passwords is not allowed for security reasons!"))
+
+	@api.model
+	def search(self, args, offset=0, limit=None, order=None, count=False):
+		def is_child_of_group(user, group):
+			user_group_id = user.group_id
+			while user_group_id:
+				if user_group_id.id == group_id.id:
+					return True
+				user_group_id =  user_group_id.partner_id
+			return False
+		res = super(User, self).search(args, offset=offset, limit = limit, order = order, count = count)
+		cr,uid, context = self.env.args
+		if "user_id" in context:
+			for user in self.env['res.users'].browse([context["user_id"]]):
+				if user.permission_id:
+					res_filter = []
+					for res_id in res:
+						for group_id in user.permission_id.user_group_ids:
+							if is_child_of_group(res_id, group_id):
+								res_filter.append(res_id)
+					return res_filter
+		return res
+
+class ResetPassToken(models.Model):
+	_name = 'erpcloud.reset_pass_token'
+
+	code = fields.Char(string='Token')
+	date_expire = fields.Float(string='Time in millseconds')
+	login = fields.Char(string='Login')
+	email = fields.Char(string='Email')
+	reset_link = fields.Text(string="Reset link")
+	user_id = fields.Many2one('res.users')
+
+	@api.model
+	def create(self, vals):
+		cr,uid, context = self.env.args
+		if "account" in context:
+			account = context["account"]
+			for user in self.env['res.users'].search([("login","=",vals["login"])]):
+				vals["email"] = user.email
+				var["user_id"] = user.id
+			vals['code'] = ''.join(random.choice(ascii_uppercase + digits) for _ in range(24))
+			vals["date_expire"] = int(round(time.time() * 1000)) + 1000 * 60 * 60 *24
+			vals["reset_link"] =  '%s/auth/reset-pass/%s' % (account["domain"] ,vals['code'])
+		return super(ResetPassToken, self).create(vals)
+
+	@api.model
+	def request_reset_password(self, params):
+		login = params["login"]
+		token = self.env['etraining.reset_pass_token'].create({'login': login, 'cloud_id':self.id})
+		self.env.ref(self._module +"."+"reset_password_template").send_mail(token.id,force_send=False)
+		return {'success':True}
+
+	@api.model
+	def apply_reset_password(self,params):
+    try:
+      code = params['token']
+      new_pass = params['new_pass']
+      for token in self.env["reset_pass_token"].get([('code','=',code)])
+      		currentTime = int(round(time.time() * 1000)) 
+      		if token.date_expire < currentTime:
+            return {'success':False,'message':'Token expired'}
+      		user.write({'password':new_pass})
+      		return {'success':True}
+
 
 class Permission(models.Model):
 	_name = 'etraining.permission'

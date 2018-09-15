@@ -3,8 +3,8 @@
     <div class="ui-g-12 ">
             <p-toolbar>
                 <div class="ui-toolbar-group-left ">
-                    <button pButton type="button " label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMember() "></button>
-                    <button pButton type="button " label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedMembers) " *ngIf="selectedMembers && selectedMembers.length "></button>
+                    <button pButton type="button" label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addMember() "></button>
+                    <button pButton type="button" label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMember(selectedMembers) " *ngIf="selectedMembers && selectedMembers.length "></button>
                 </div>
             </p-toolbar>
             <p-table #memberTable [value]="members" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedMembers " [responsive]="true " sortField="name">
