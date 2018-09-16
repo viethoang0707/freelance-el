@@ -211,7 +211,7 @@ class ExamMember(models.Model):
 		for exam_member in self.env['etraining.exam_member'].browse(memberId):
 				if exam_member.submission_id:
 					exam_member.submission_id.unlink()
- 				submission = self.env['etraining.submission'].create({'member_id':m.id})
+ 				submission = self.env['etraining.submission'].create({'member_id':exam_member.id})
 				exam_member.write({'submission_id':submission.id,"enroll_status":"registered"})
 
 class ExamRecord(models.Model):
