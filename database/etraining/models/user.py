@@ -91,7 +91,7 @@ class User(models.Model):
 					return True
 				user_group_id =  user_group_id.parent_id
 			return False
-
+		cr, uid, context = self.env.args
 		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
                                           access_rights_uid=access_rights_uid)
 		if res and context and  "user_id" in context:
