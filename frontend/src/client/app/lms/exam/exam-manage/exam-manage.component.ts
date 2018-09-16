@@ -73,8 +73,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     }
 
     redoExam(member: ExamMember) {
-        member.enroll_status = 'registered';
-        member.save(this).subscribe(() => {
+        member.redoExam(this).subscribe(() => {
             this.success(this.translateService.instant('Candidate is allowed to redo the exam'));
         });
     }
@@ -103,7 +102,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         this.statsDialog.show(this.exam);
     }
 
-    private back() {
+    back() {
         this.location.back();
     }
 }

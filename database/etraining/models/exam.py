@@ -214,7 +214,7 @@ class ExamMember(models.Model):
  				submission = self.env['etraining.submission'].create({'member_id':exam_member.id})
 				exam_member.write({'submission_id':submission.id,"enroll_status":"registered"})
 				return {'success':True}
-				
+
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
 
@@ -301,7 +301,7 @@ class Submission(models.Model):
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
 	picture = fields.Binary(string='Picture')
-
+	course_member_id = fields.Many2one('etraining.course_member', related="member_id.course_member_id", readonly=True,string='Exam')
 	study_time = fields.Integer( compute='_compute_study_time', string='Study time')
 
 	@api.multi

@@ -33,13 +33,14 @@ import { SurveyEditorDialog } from '../../../cms/survey/survey-editor/survey-edi
 import { SurveyStatsDialog } from '../../survey/survey-stats/survey-stats.dialog.component';
 import { Conference } from '../../../shared/models/elearning/conference.model';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
-import { ClassMemberActivityDialog } from '../class-member-activity/class-member-activity.dialog.component';
+import { CourseMemberActivityDialog } from '../course-member-activity/course-member-activity.dialog.component';
 import { ProjectMarkingDialog } from '../project-marking/project-marking.dialog.component';
 import { ExamDialog } from '../../../assessment/exam/exam-form/exam-dialog.component';
 import { SurveyDialog } from '../../../assessment/survey/survey-form/survey-dialog.component';
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 
+const MEMBER_FIELDS =['name', 'group_name', 'email', 'enroll_satus', 'role']
 @Component({
 	moduleId: module.id,
 	selector: 'class-manage',
@@ -70,7 +71,7 @@ export class ClassManageComponent extends BaseComponent {
 	private conference: Conference;
 	private selectedMember: CourseMember;
 	private courseContent: any;
-	private member: CourseMember;
+	private supervisor: CourseMember;
 
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
 	@ViewChild(LMSProfileDialog) lmsProfileDialog: LMSProfileDialog;
@@ -78,10 +79,10 @@ export class ClassManageComponent extends BaseComponent {
 	@ViewChild(ExamEditorDialog) examContentDialog: ExamEditorDialog;
 	@ViewChild(SurveyEditorDialog) surveyContentDialog: SurveyEditorDialog;
 	@ViewChild(SurveyStatsDialog) statsDialog: SurveyStatsDialog;
-	@ViewChild(ClassMemberActivityDialog) memberActivityChart: ClassMemberActivityDialog;
+	@ViewChild(CourseMemberActivityDialog) memberActivityChart: CourseMemberActivityDialog;
 	@ViewChild(ProjectMarkingDialog) projectMarkingDialog: ProjectMarkingDialog;
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
-	@ViewChild(ExamDialog) surveyDialog: SurveyDialog;
+	@ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
 
 	constructor(private router: Router, private route: ActivatedRoute, private datePipe: DatePipe, private timePipe: TimeConvertPipe) {
 		super();
@@ -103,18 +104,19 @@ export class ClassManageComponent extends BaseComponent {
 
 	ngOnInit() {
 		this.courseClass = this.route.snapshot.data['courseClass'];
+		this.supervisor = this.route.snapshot.data['supervisor'];
 		this.viewMode = "outline";
 		this.lmsProfileService.init(this).subscribe(() => {
 			BaseModel.bulk_search(this,
 				CourseClass.__api__listProjects(this.courseClass.id),
 				CourseClass.__api__listExams(this.courseClass.id),
 				CourseClass.__api__listSurveys(this.courseClass.id),
-				CourseClass.__api__listMembers(this.courseClass.id),
+				CourseClass.__api__listMembers(this.courseClass.id, MEMBER_FIELDS),
 				CourseClass.__api__listCertificates(this.courseClass.id))
 				.subscribe(jsonArr => {
 					this.projects = Project.toArray(jsonArr[0]);
-					this.classExams = Exam.toArray(jsonArr[0]);
-					this.classSurveys = Survey.toArray(jsonArr[0]);
+					this.classExams = Exam.toArray(jsonArr[1]);
+					this.classSurveys = Survey.toArray(jsonArr[2]);
 					this.courseMembers = CourseMember.toArray(jsonArr[3]);
 					this.certificates = Certificate.toArray(jsonArr[4]);
 					CourseLog.classActivity(this, this.courseClass.id).subscribe(logs => {
@@ -129,7 +131,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	viewGradebook(student: CourseMember) {
-		this.gradebookDialog.show(this.member, this.courseClass, student);
+		this.gradebookDialog.show(this.supervisor, this.courseClass, student);
 	}
 
 	viewLMSProfile(member: CourseMember) {

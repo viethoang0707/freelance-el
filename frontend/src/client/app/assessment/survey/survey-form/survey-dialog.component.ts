@@ -56,10 +56,13 @@ export class SurveyDialog extends BaseDialog<Survey> {
         this.object.save(this).subscribe(() => {
             this.editor.role = 'editor';
             this.editor.survey_id = this.survey.id;
+            var isNew = this.object.IsNew;
             this.editor.save(this).subscribe(() => {
-                this.onUpdateCompleteReceiver.next();
                 this.hide();
-            });
+                if (isNew)
+                    this.onCreateCompleteReceiver.next();
+                else
+                    this.onUpdateCompleteReceiver.next();
         });
     }
 }

@@ -87,7 +87,10 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     manageCourse(course: Course, member: CourseMember) {
-        this.router.navigate(['/lms/course/manage', course.id]);
+        if (course.mode =='group')
+            this.router.navigate(['/lms/course/group-manage', course.id, member.id]);
+        if (course.mode =='self-study')
+            this.router.navigate(['/lms/course/self-study-manage', course.id, member.id]);
     }
 
     filterCourse() {

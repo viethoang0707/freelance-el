@@ -19,11 +19,13 @@ export class Exercise extends BaseModel {
 
 		this.sheet_id = undefined;
 		this.unit_id = undefined;
+		this.course_id = undefined;
 		this.sheet = new QuestionSheet();
 	}
 
 	sheet_id: number;
 	unit_id: number;
+	course_id: number;
 	@UnserializeProperty()
 	sheet: QuestionSheet;
 

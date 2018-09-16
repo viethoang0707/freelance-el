@@ -23,8 +23,10 @@ export class Submission extends BaseModel{
         this.score =  undefined;
         this.grade =  undefined;
         this.study_time = undefined;
+        this.course_member_id = undefined;
     }
     
+    course_member_id: number;
     exam_id: number;
     user_id: number;
     member_id: number;

@@ -20,7 +20,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                         <tr>
-                            <td>{{frowIndex+1}}</td>
+                            <td>{{rowIndex+1}}</td>
                             <td>{{member.course_name}}</td>
                             <td>{{member.date_register}}</td>
                             <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
@@ -49,7 +49,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                         <tr>
-                            <td>{{frowIndex+1}}</td>
+                            <td>{{rowIndex+1}}</td>
                             <td>{{member.exam_name}}</td>
                             <td>{{member.date_register}}</td>
                             <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
@@ -75,7 +75,7 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-skill let-rowIndex="rowIndex">
                         <tr>
-                            <td>{{frowIndex+1}}</td>
+                            <td>{{rowIndex+1}}</td>
                             <td>{{skill.competency_name}}</td>
                             <td>{{skill.competency_level_name}}</td>
                             <td>{{skill.date_acquire}}</td>

@@ -16,12 +16,13 @@ export class SlideLecture extends BaseModel{
         this.slide_url = undefined;
         this.unit_id = undefined;
         this.slide_file_id = undefined;
+        this.course_id = undefined;
 	}
 
     slide_file_id: number;
     filename:string;
     slide_url:string;
     unit_id: number;
-
+    course_id: number;
 
 }

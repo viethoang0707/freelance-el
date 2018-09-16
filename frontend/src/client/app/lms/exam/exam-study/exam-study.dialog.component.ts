@@ -117,8 +117,8 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	loadExamContent() {
-		this.member.populateSubmission(this).subscribe(() => {
-			this.submission = this.member.submit;
+		Submission.get(this, this.member.submission_id).subscribe(submit => {
+			this.submission = submit;
 			if (!this.submission.start)
 				this.submission.start = new Date();
 			BaseModel.bulk_search(this,

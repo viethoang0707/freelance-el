@@ -31,11 +31,11 @@ import { MailMessageDialog } from '../../../shared/components/mail-message/mail-
 
 @Component({
 	moduleId: module.id,
-	selector: 'course-manage',
-	templateUrl: 'course-manage.component.html',
-	styleUrls: ['course-manage.component.css']
+	selector: 'course-group-manage',
+	templateUrl: 'course-group-manage.component.html',
+	styleUrls: ['course-group-manage.component.css']
 })
-export class CourseManageComponent extends BaseComponent implements OnInit {
+export class CourseGroupManageComponent extends BaseComponent implements OnInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
 
@@ -106,7 +106,7 @@ export class CourseManageComponent extends BaseComponent implements OnInit {
 		var member = _.find(this.classMembers, (obj: CourseMember) => {
 			return obj.class_id == courseClass.id && (obj.role == 'supervisor' || obj.role == 'teacher');
 		});
-		this.router.navigate(['/lms/class/manage', courseClass.id]);
+		this.router.navigate(['/lms/class/manage', courseClass.id,member.id]);
 	}
 
 	nodeSelect(event: any) {

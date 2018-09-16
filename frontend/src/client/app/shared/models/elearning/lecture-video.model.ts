@@ -16,11 +16,12 @@ export class VideoLecture extends BaseModel{
         this.unit_id = undefined;
         this.video_url = undefined;
         this.attachment_id = undefined;
+        this.course_id = undefined;
     }
 
     attachment_id: number;
     transcript: string;
     video_url: string;
     unit_id: number;
-
+    course_id: number;
 }

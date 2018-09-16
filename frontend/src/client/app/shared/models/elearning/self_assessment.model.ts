@@ -20,9 +20,11 @@ export class SelfAssessment extends BaseModel {
 		this.exam_id = undefined;
 		this.sheet_id = undefined;
 		this.unit_id = undefined;
+		this.course_id = undefined;
 		this.exam = new Exam();
 	}
 
+	course_id: number;
 	exam_id: number;
 	sheet_id: number;
 	unit_id: number;

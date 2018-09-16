@@ -14,6 +14,7 @@ import { CourseFaq } from './course-faq.model';
 import { CourseMaterial } from './course-material.model';
 import { CourseUnit } from './course-unit.model';
 import { CourseSyllabus } from './course-syllabus.model';
+import { SelfAssessment } from './self_assessment.model';
 
 
 @Model('etraining.course')
@@ -194,7 +195,15 @@ export class Course extends BaseModel{
         return CourseUnit.search(context,fields,"[('course_id','=',"+this.id+")]");
     }
 
+    static __api__listAssessments(courseId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SelfAssessment.Model,fields,"[('course_id','=',"+courseId+")]");
+    }
 
+    listAssessments( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
+        return SelfAssessment.search(context,fields,"[('course_id','=',"+this.id+")]");
+    }
 
     static __api__courseEditor(course_id: number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(CourseMember.Model, fields,"[('role','=','editor'),('course_id','='," + course_id + ")]");

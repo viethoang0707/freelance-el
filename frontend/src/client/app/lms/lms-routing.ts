@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { LMSComponent } from './lms.component';
-import { CourseManageComponent } from './course/course-manage/course-manage.component';
-import { CourseStudyComponent } from './course/course-study/course-study.component';
+import { CourseGroupManageComponent } from './course/course-manage/course-group-manage.component';
+import { CourseSelfStudyManageComponent } from './course/course-manage/course-self-study-manage.component';import { CourseStudyComponent } from './course/course-study/course-study.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
@@ -51,24 +51,26 @@ export const LMSRoutes: Routes = [
           canActivate: [SyllabusGuard]
         },
         {
-          path: "course/manage/:courseId",
-          component: CourseManageComponent,
+          path: "course/group-manage/:courseId/:memberId",
+          component: CourseGroupManageComponent,
           data: {
             breadcrumb: 'Manage course'
           },
           resolve: {
             course: CourseResolve,
+            supervisor: CourseMemberResolve
           },
           canActivate: [CourseGuard]
         },
         {
-          path: "class/manage/:classId",
-          component: ClassManageComponent,
+          path: "class/self-study-manage/:classId/:memberId",
+          component: CourseSelfStudyManageComponent,
           data: {
             breadcrumb: 'Manage class student'
           },
           resolve: {
-            courseClass: CourseClassResolve
+            courseClass: CourseClassResolve,
+            supervisor: CourseMemberResolve
           },
           canActivate: [ClassGuard]
         },

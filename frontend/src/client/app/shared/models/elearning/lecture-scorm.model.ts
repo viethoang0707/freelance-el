@@ -17,6 +17,7 @@ export class SCORMLecture extends BaseModel{
         this.unit_id = undefined;
         this.package_url = undefined;
         this.package_file_id = undefined;
+        this.course_id = undefined;
     }
 
     entry_file: string;
@@ -24,5 +25,5 @@ export class SCORMLecture extends BaseModel{
     base_url: string;
     package_url: string;
     unit_id: number;
-
+    course_id: number;
 }

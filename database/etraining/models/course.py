@@ -220,7 +220,8 @@ class SlideLecture(models.Model):
 	slide_file_id = fields.Many2one('ir.attachment', string='Slide file')
 	filename = fields.Text(string='Filename')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
-
+	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
+	
 	@api.multi
 	def write(self, vals):
 		if self.slide_file_id and "slide_file_id" in vals and self.slide_file_id.id != vals["slide_file_id"]:
@@ -238,6 +239,7 @@ class HtmlLecture(models.Model):
 
 	content = fields.Text(string='Content')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
+	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
 
 class VideoLecture(models.Model):
 	_name = 'etraining.video_lecture'
@@ -267,13 +269,15 @@ class SelfAssessment(models.Model):
 	exam_id = fields.Many2one('etraining.exam', string='Exam')
 	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet', related="exam_id.sheet_id")
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
+	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
 
 class Exerise(models.Model):
 	_name = 'etraining.exercise'
 
 	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
-
+	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
+	
 class SCORMLecture(models.Model):
 	_name = 'etraining.scorm_lecture'
 

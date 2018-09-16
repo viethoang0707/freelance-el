@@ -197,24 +197,22 @@ export class CourseUnitStudyDialog extends BaseComponent {
 				if (prevUnit) {
 					if (this.completedUnitIds.includes(prevUnit.id)) {
 						this.openUnit(this.selectedUnit);
-						if (this.enableLogging)
-							CourseLog.startCourseUnit(this, this.member, this.selectedUnit).subscribe();
+					} else {
+						this.warn(this.translateService.instant('You have not completed previous unit'));
+						this.selectedUnit = prevUnit;
 					}
 				}
-				else {
-					this.warn(this.translateService.instant('You have not completed previous unit'));
-					this.selectedUnit = prevUnit;
-				}
-			}
-			else {
-				this.openUnit(this.selectedUnit);
-				if (this.enableLogging)
-					CourseLog.startCourseUnit(this, this.member, this.selectedUnit).subscribe();
+				else
+					this.openUnit(this.selectedUnit);
 			}
 		}
+		else
+			this.openUnit(this.selectedUnit);
 	}
 
 	openUnit(unit: CourseUnit) {
+		if (this.enableLogging)
+			CourseLog.startCourseUnit(this, this.member, unit).subscribe();
 		var detailComponent = CourseUnitPlayerRegister.Instance.lookup(unit.type);
 		let viewContainerRef = this.unitHost.viewContainerRef;
 		if (detailComponent) {

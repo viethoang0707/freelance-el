@@ -18,7 +18,8 @@ import { ClassExamEnrollComponent } from './class/class-exam-enroll/class-exam-e
 import { CourseStudyComponent } from './course/course-study/course-study.component';
 import { CourseCertificateDialog } from './course/course-certificate/course-certificate.dialog.component';
 import { CertificatePrintDialog } from './course/certificate-print/certificate-print.dialog.component';
-import { CourseManageComponent } from './course/course-manage/course-manage.component';
+import { CourseGroupManageComponent } from './course/course-manage/course-group-manage.component';
+import { CourseSelfStudyManageComponent } from './course/course-manage/course-self-study-manage.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { ExamSubmissionDialog } from './exam/exam-submit/exam-submission.dialog.component';
 import { ExamReportDialog } from './exam/exam-report/exam-report.dialog.component';
@@ -33,7 +34,7 @@ import { LMSProfileDialog } from './course/lms-profile/lms-profile-dialog.compon
 import { WebcamModule } from 'ngx-webcam';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
-import { ClassMemberActivityDialog } from './class/class-member-activity/class-member-activity.dialog.component';
+import { CourseMemberActivityDialog } from './class/course-member-activity/course-member-activity.dialog.component';
 import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-unit-study-dialog.component';
 import { CourseUnitPlayerContainerDirective } from './course/course-unit-template/unit-player.directive';
 import { FolderCourseUnitPlayerComponent } from './course/course-unit-template/folder/folder-unit.component';
@@ -45,6 +46,7 @@ import { HtmlLectureCourseUnitPlayerComponent } from './course/course-unit-templ
 import { SelfAssessmentCourseUnitPlayerComponent } from './course/course-unit-template/assessment/self-assessment-unit.component';
 import { ConferenceeResolve, CourseResolve, ProjectResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
 import { ProjectDialog } from './class/project-dialog/project-dialog.component';
+import { SelfAssessmentGradebookDialog } from './course/self-assessment-gradebook/gradebook.dialog.component';
 
 @NgModule({
     imports: [
@@ -60,7 +62,8 @@ import { ProjectDialog } from './class/project-dialog/project-dialog.component';
         ExamStudyDialog,
         AnswerPrintDialog,
         CourseEditComponent,
-        ClassMemberActivityDialog,
+        CourseMemberActivityDialog,
+        CourseSelfStudyManageComponent,
         QuestionMarkingDialog,
         CertificatePrintDialog,
         LMSProfileDialog,
@@ -68,10 +71,11 @@ import { ProjectDialog } from './class/project-dialog/project-dialog.component';
         ExamManageComponent,
         QuestionSheetPrintDialog,
         ClassConferenceComponent,
-        CourseManageComponent,
+        CourseGroupManageComponent,
         CourseViewComponent,
         CourseMaterialDialog,
         CourseFaqDialog,
+        SelfAssessmentGradebookDialog,
         CourseStudyComponent,
         ProjectSubmissionDialog,
         ProjectDialog,

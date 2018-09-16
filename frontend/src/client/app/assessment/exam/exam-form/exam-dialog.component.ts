@@ -55,9 +55,13 @@ export class ExamDialog extends BaseDialog<Exam> {
         this.object.save(this).subscribe(() => {
             this.editor.role = 'editor';
             this.editor.exam_id = this.object.id;
+            var isNew = this.object.IsNew;
             this.editor.save(this).subscribe(() => {
                 this.hide();
-                this.onUpdateCompleteReceiver.next();
+                if (isNew)
+                    this.onCreateCompleteReceiver.next();
+                else
+                    this.onUpdateCompleteReceiver.next();
             });
         });
     }

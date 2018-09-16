@@ -21,11 +21,11 @@ import { CourseMemberActivityChartComponent } from '../../../analysis/chart/cour
 
 @Component({
 	moduleId: module.id,
-	selector: 'class-member-activity-dialog',
-	templateUrl: 'class-member-activity.dialog.component.html',
-	styleUrls: ['class-member-activity.dialog.component.css'],
+	selector: 'course-member-activity-dialog',
+	templateUrl: 'course-member-activity.dialog.component.html',
+	styleUrls: ['course-member-activity.dialog.component.css'],
 })
-export class ClassMemberActivityDialog extends BaseDialog<CourseMember> {
+export class CourseMemberActivityDialog extends BaseDialog<CourseMember> {
 
 	@ViewChild(CourseMemberActivityChartComponent) chart: CourseMemberActivityChartComponent;
 

@@ -98,6 +98,15 @@ export class ExamMember extends BaseModel{
             context.authService.LoginToken);
     }
 
+    static __api__redo_exam(memberId: number): ExecuteAPI {
+        return new ExecuteAPI(ExamMember.Model, 'redo_exam',{memberId:memberId}, null);
+    }
+
+    redoExam(context:APIContext):Observable<any> {
+        return context.apiService.execute(ExamMember.__api__redo_exam(this.id), 
+            context.authService.LoginToken);
+    }
+
 
     static __api__listSubmissions(memberId:number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(Submission.Model,fields,"[('member_id','=',"+memberId+")]");

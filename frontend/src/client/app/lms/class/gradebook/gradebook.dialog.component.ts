@@ -51,7 +51,7 @@ export class GradebookDialog extends BaseComponent {
     private certificate: Certificate;
     private stats: any;
     private reportUtils: ReportUtils;
-    private viewer: CourseMember;
+    private supervisor: CourseMember;
 
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
     @ViewChild(CourseCertificateDialog) certDialog: CourseCertificateDialog;
@@ -64,7 +64,7 @@ export class GradebookDialog extends BaseComponent {
         this.stats = [];
         this.reportUtils = new ReportUtils();
         this.student = new CourseMember();
-        this.viewer = new CourseMember();
+        this.supervisor = new CourseMember();
     }
 
     ngOnInit() {
@@ -104,7 +104,7 @@ export class GradebookDialog extends BaseComponent {
         certificate.date_issue = new Date();
         certificate.course_id = this.student.course_id;
         certificate.member_id = this.student.id;
-        certificate.issue_member_id = this.viewer.id;
+        certificate.issue_member_id = this.supervisor.id;
         this.certDialog.show(certificate);
         this.certDialog.onCreateComplete.first().subscribe((obj: Certificate) => {
             this.certificate = obj;
@@ -115,12 +115,12 @@ export class GradebookDialog extends BaseComponent {
         });
     }
 
-    show(viewer: CourseMember ,courseClass: CourseClass, student: CourseMember) {
+    show(supervisor: CourseMember ,courseClass: CourseClass, student: CourseMember) {
         this.display = true;
         this.exams = [];
         this.projects = [];
         this.stats = [];
-        this.viewer = viewer;
+        this.supervisor = supervisor;
         this.student = student;
         this.courseClass = courseClass;
         Certificate.get(this, student.certificate_id).subscribe(certificate => {

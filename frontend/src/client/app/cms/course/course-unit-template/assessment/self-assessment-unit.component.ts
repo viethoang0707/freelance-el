@@ -13,6 +13,7 @@ import { CourseUnit } from '../../../../shared/models/elearning/course-unit.mode
 import { BaseModel } from '../../../../shared/models/base.model';
 import { ExamEditorDialog } from '../../../exam/exam-editor/exam-editor.dialog.component';
 import { QuestionSheetPreviewDialog } from '../../../exam/question-sheet-preview/question-sheet-preview.dialog.component';
+import { QuestionSheet } from '../../../../shared/models/elearning/question-sheet.model';
 
 @Component({
 	moduleId: module.id,
@@ -48,16 +49,16 @@ export class SelfAssessmentCourseUnitComponent extends BaseComponent implements 
 	}
 
 	editContent() {
-		this.assessment.populateExam(this).subscribe(() => {
-			this.assessment.exam.populateQuestionSheet(this).subscribe(()=> {
-				this.examContentDialog.show(this.assessment.exam, this.assessment.exam.sheet);
+		Exam.get(this, this.assessment.exam_id).subscribe(exam => {
+			QuestionSheet.get(this, this.assessment.sheet_id).subscribe(sheet=> {
+				this.examContentDialog.show(exam, sheet);
 			});
 		});
 	}
 
 	previewSheet() {
-		this.assessment.populateQuestionSheet(this).subscribe(() => {
-			this.previewDialog.show(this.assessment.sheet);
+		QuestionSheet.get(this, this.assessment.sheet_id).subscribe(sheet => {
+			this.previewDialog.show(sheet);
 		});
 	}
 }
