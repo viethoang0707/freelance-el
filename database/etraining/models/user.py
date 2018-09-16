@@ -99,6 +99,8 @@ class User(models.Model):
 			context = None
 		res = super(User, self)._search(args, offset=offset, limit=limit, order=order, count=count,
                                           access_rights_uid=access_rights_uid)
+		import pdb
+		pdb.set_trace()
 		if res and context and  "user_id" in context:
 			for user in self.env['res.users'].browse([context["user_id"]]):
 				if user.permission_id:
