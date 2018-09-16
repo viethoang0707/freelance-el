@@ -208,7 +208,7 @@ class ExamMember(models.Model):
 	@api.model
 	def redo_exam(self,params):
 		memberId = params["memberId"]
-		for exam_member in self.env['etraining.exam_member'].browse(examMemberId):
+		for exam_member in self.env['etraining.exam_member'].browse(memberId):
 				if exam_member.submission_id:
 					exam_member.submission_id.unlink()
  				submission = self.env['etraining.submission'].create({'member_id':m.id})
