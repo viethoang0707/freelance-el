@@ -205,6 +205,15 @@ class ExamMember(models.Model):
 			member.write({'enroll_status':'completed'})
 		return {'success':True}
 
+	@api.model
+	def redo_exam(self,params):
+		memberId = params["memberId"]
+		for exam_member in self.env['etraining.exam_member'].browse(examMemberId):
+				if exam_member.submission_id:
+					exam_member.submission_id.unlink()
+ 				submission = self.env['etraining.submission'].create({'member_id':m.id})
+				exam_member.write({'submission_id':submission.id,"enroll_status":"registered"})
+
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
 
