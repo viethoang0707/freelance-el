@@ -213,7 +213,8 @@ class ExamMember(models.Model):
 					exam_member.submission_id.unlink()
  				submission = self.env['etraining.submission'].create({'member_id':exam_member.id})
 				exam_member.write({'submission_id':submission.id,"enroll_status":"registered"})
-
+				return {'success':True}
+				
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
 
