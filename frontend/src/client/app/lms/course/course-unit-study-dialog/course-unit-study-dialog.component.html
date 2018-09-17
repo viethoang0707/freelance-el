@@ -1,9 +1,9 @@
 <p-dialog [(visible)]="display" modal="true" [responsive]="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0"
-    styleClass="ui-g-12 course-unit-study scroll-y removePd" appendTo="body">
+    styleClass="ui-g-12 course-unit-study scroll-y p-0" appendTo="body">
     <div class="spinner" [hidden]="!loading"></div>
     <div class="ui-g">
-        <div class="ui-lg-9 ui-md-9 ui-g-12 removePd">
-            <div class="card course-study-unit removePd">
+        <div class="ui-lg-9 ui-md-9 ui-g-12 p-0">
+            <div class="card course-study-unit p-0">
                 <div class="head">
                 </div>
                 <div class="image-box-content">
@@ -29,9 +29,9 @@
                 </div>
             </div>
         </div>
-        <div class="ui-lg-3 ui-md-3 ui-g-12 side-bar removePd">
+        <div class="ui-lg-3 ui-md-3 ui-g-12 side-bar p-0">
             <div class="ui-g">
-                <div class="ui-g-12 removePd course-study-syllabus">
+                <div class="ui-g-12 p-0 course-study-syllabus">
                     <p-tabView>
                         <p-tabPanel header="{{'Syllabus'|translate}}" leftIcon="ui-icon-collections-bookmark">
                             <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)">

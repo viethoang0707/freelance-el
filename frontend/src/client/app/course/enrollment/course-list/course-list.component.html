@@ -1,16 +1,16 @@
-<div class="card card-w-title">
-    <h1>{{'Enrollment'|translate}}</h1>
+<div class="">
+    <h1 class="removeM ml8">{{'Enrollment'|translate}}</h1>
     <div class="ui-g">
         <div class="ui-g-12">
             <label>{{'Course group'|translate}}</label>
-            <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterCourse()" (onNodeUnselect)="filterCourse()" styleClass="width-tree"></p-tree>
+            <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterCourse()" (onNodeUnselect)="filterCourse()" styleClass="width-tree mt5 mb10"></p-tree>
         </div>
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{'Enroll'|translate}}" class="green-btn" icon="ui-icon-people" (click)="enrollCourse(selectedCourse)" [disabled]="!selectedCourse || !selectedCourse.IsAvailable"></button>
-                    <button pButton type="button" label="{{ 'Open'|translate}} " class="green-btn " icon="ui-icon-lock-open" (click)="openCourse(selectedCourse) " [disabled]=" selectedCourse && selectedCourse.status=='open'"></button>
-                    <button pButton type="button" label="{{ 'Close'|translate}} " class="orange-btn " icon="ui-icon-lock" (click)="closeCourse(selectedCourse) " [disabled]=" selectedCourse && selectedCourse.status=='closed'"></button>
+                    <button pButton type="button" label="{{'Enroll'|translate}}" class="red-btn" icon="ui-icon-people" (click)="enrollCourse(selectedCourse)" [disabled]="!selectedCourse || !selectedCourse.IsAvailable"></button>
+                    <button pButton type="button" label="{{ 'Open'|translate}} " class="nissan-btn " icon="ui-icon-lock-open" (click)="openCourse(selectedCourse) " [disabled]=" selectedCourse && selectedCourse.status=='open'"></button>
+                    <button pButton type="button" label="{{ 'Close'|translate}} " class="nissan-btn" icon="ui-icon-lock" (click)="closeCourse(selectedCourse) " [disabled]=" selectedCourse && selectedCourse.status=='closed'"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <span class="md-inputfield search">
