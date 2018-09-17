@@ -43,6 +43,7 @@ const MEMBER_FIELDS =['name', 'group_name', 'email', 'enroll_satus', 'role']
 export class CourseSelfStudyManageComponent extends BaseComponent implements OnInit {
 
 	COURSE_UNIT_TYPE = COURSE_UNIT_TYPE;
+	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
 	private course: Course;
 	private courseMembers: CourseMember[];
@@ -80,9 +81,6 @@ export class CourseSelfStudyManageComponent extends BaseComponent implements OnI
 		this.course = this.route.snapshot.data['course'];
 		this.supervisor = this.route.snapshot.data['supervisor'];
 		this.lmsProfileService.init(this).subscribe(() => {
-			CourseClass.array(this, this.lmsProfileService.MyClassIds).subscribe(classList => {
-				this.classes = classList;
-			});
 			BaseModel.bulk_search(this,
 				Course.__api__listFaqs(this.course.id),
 				Course.__api__listMaterials(this.course.id),
@@ -92,7 +90,9 @@ export class CourseSelfStudyManageComponent extends BaseComponent implements OnI
 					this.faqs = CourseFaq.toArray(jsonArr[0]);
 					this.materials = CourseMaterial.toArray(jsonArr[1]);
 					this.units = CourseUnit.toArray(jsonArr[2]);
-					this.courseMembers = CourseUnit.toArray(jsonArr[3]);
+					this.courseMembers = _.filter(CourseMember.toArray(jsonArr[3]), (member:CourseMember)=> {
+						return member.role =='student';
+					});
 					CourseSyllabus.get(this, this.course.syllabus_id).subscribe(syl => {
 						this.syl = syl;
 						this.displayCouseSyllabus();

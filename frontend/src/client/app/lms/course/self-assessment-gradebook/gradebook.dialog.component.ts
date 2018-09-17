@@ -52,6 +52,7 @@ export class SelfAssessmentGradebookDialog extends BaseComponent {
         this.student = new CourseMember();
         this.supervisor = new CourseMember();
         this.submissions = {};
+        this.assessments = [];
     }
 
     ngOnInit() {
@@ -71,7 +72,7 @@ export class SelfAssessmentGradebookDialog extends BaseComponent {
             this.assessments = assessments;
             _.each(this.assessments, (assessment: SelfAssessment) => {
                 student.listExamSubmissions(this, assessment.exam_id).subscribe(submits=> {
-                    this.submissions[assessment.exam_id] = submits;
+                    this.submissions[assessment.id] = submits;
                 });
             });
         });

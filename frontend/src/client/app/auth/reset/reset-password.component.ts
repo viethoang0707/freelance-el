@@ -24,11 +24,7 @@ export class ResetPasswordComponent extends BaseComponent implements OnInit {
   }
 
   resetPassword() {
-    this.apiService.resetPasswordExecute(this.authService.LoginToken, this.new_pass).subscribe(() => {
-      this.success('Your password has been reset successfully.');
-    }, (err) => {
-      this.error(err["message"]);
-    });
+   
   }
 }
 

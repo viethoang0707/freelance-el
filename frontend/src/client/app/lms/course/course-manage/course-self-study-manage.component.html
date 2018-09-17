@@ -4,12 +4,12 @@
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewGradebook(selectedRecord)" [hidden]="!selectedRecord"></button>
-                    <button pButton type="button" label="{{ 'Study history'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewLMSProfile(selectedRecord)" [hidden]="selectedRecord"></button>
+                    <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewSelfAssessmentGradebook(selectedMember)" [disabled]="!selectedMember"></button>
+                    <button pButton type="button" label="{{ 'Study history'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewLMSProfile(selectedMember)" [disabled]="!selectedMember"></button>
                 </div>
             </p-toolbar>
             <div >
-                <p-table #outlineTable [value]="courseMembers" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #outlineTable [value]="courseMembers" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>
@@ -34,7 +34,7 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
-                        <tr [pSelectableRow]="record">
+                        <tr [pSelectableRow]="member">
                             <td>{{rowIndex+1}}</td>
                             <td>{{member.name}}</td>
                             <td class="email">{{member.email}}</td>
@@ -140,5 +140,5 @@
     </div>
 </div>
 <lms-profile-dialog></lms-profile-dialog>
-<self-assessment-gradebook></self-assessment-gradebook>
+<self-assessment-gradebook-dialog></self-assessment-gradebook-dialog>
 <course-member-activity-dialog></course-member-activity-dialog>

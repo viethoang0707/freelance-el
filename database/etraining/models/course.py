@@ -277,7 +277,7 @@ class Exerise(models.Model):
 	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
-	
+
 class SCORMLecture(models.Model):
 	_name = 'etraining.scorm_lecture'
 
@@ -562,7 +562,7 @@ class CourseMember(models.Model):
 		assessmentId = params["assessmentId"]
 		for member in self.env['etraining.course_member'].browse(memberId):
 			for assessment in self.env['etraining.self_assessment'].browse(assessmentId):
-				exam_member = self.env["etraining.exam_member"].create({"user_id":member.user_id.id,"exam_id":assessment.exam_id.id,"role":'candidate'})
+				exam_member = self.env["etraining.exam_member"].create({"user_id":member.user_id.id,"exam_id":assessment.exam_id.id,"role":'candidate','course_member_id':memberId})
 				return {'success':True,'exam_member_id':exam_member.id, 'exam_id':assessment.exam_id.id,'exam_setting_id':assessment.exam_id.setting_id.id}
 
 
