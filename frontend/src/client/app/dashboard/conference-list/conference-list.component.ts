@@ -22,6 +22,7 @@ const CONFERENCE_FIELDS = ['name', 'status', 'room_pass', 'room_ref'];
 export class ConferenceListComponent extends BaseComponent implements OnInit {
 
 	private conferenceMembers: ConferenceMember[];
+    private conferences: Conference[];
 
 	CONFERENCE_STATUS = CONFERENCE_STATUS;
 
@@ -32,15 +33,20 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
             var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
-            ConferenceMember.populateConferences(this, conferenceMembers,CONFERENCE_FIELDS ).subscribe(()=> {
-                this.displayConferences(conferenceMembers);
+            Conference.array(this, this.lmsProfileService.MyConferenceIds ).subscribe(conferences=> {
+                this.displayConferences(conferences);
             });
         });
     }
 
-    displayConferences(conferenceMembers: ConferenceMember[]) {
-        this.conferenceMembers = _.sortBy(conferenceMembers, (member: ConferenceMember) => {
-            return -member.id;
+    displayConferences(conferences: Conference[]) {
+        _.each(conferences, (conference: Conference) => {
+            conference['member'] = _.find(this.conferenceMembers, (member:ConferenceMember)=> {
+                return member.conference_id == conference.id;
+            });
+        });
+        this.conferences = this.conferences = _.sortBy(conferences, (conference: Conference) => {
+            return -conference.id && conference['member']!=null;
         });
     }
 

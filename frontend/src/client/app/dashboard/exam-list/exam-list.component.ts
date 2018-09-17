@@ -31,7 +31,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     EXAM_STATUS = EXAM_STATUS;
 
     private exams: Exam[];
-    private examMembers: ExamMember[];
     private reportUtils: ReportUtils;
 
     @ViewChild(ExamStudyDialog) examStudyDialog: ExamStudyDialog;
@@ -45,7 +44,6 @@ export class ExamListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            this.examMembers = this.lmsProfileService.MyExamMembers;
             Exam.array(this, this.lmsProfileService.MyExamIds, EXAM_FIELDS).subscribe(exams => {
                 this.displayExams(exams);
             });

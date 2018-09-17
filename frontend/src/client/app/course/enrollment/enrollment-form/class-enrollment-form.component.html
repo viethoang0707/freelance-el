@@ -21,6 +21,10 @@
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
                         </th>
+                         <th [pSortableColumn]="'login'">
+                                {{'Login'|translate}}
+                                <p-sortIcon [field]="'login'"></p-sortIcon>
+                            </th>
                         <th width="250px" [pSortableColumn]="'email'">
                             {{'Email'|translate}}
                             <p-sortIcon [field]="'email'"></p-sortIcon>
@@ -47,6 +51,7 @@
                         </td>
                         <td>{{rowIndex+1}}</td>
                         <td style="text-align: left;">{{member.name}}</td>
+                        <td>{{member.login}}</td>
                         <td style="text-align: left;" width="250px">{{member.email}}</td>
                         <td>{{member.phone}}</td>
                         <td>{{member.group_name}}</td>
@@ -79,6 +84,10 @@
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
                         </th>
+                         <th [pSortableColumn]="'login'">
+                                {{'Login'|translate}}
+                                <p-sortIcon [field]="'login'"></p-sortIcon>
+                            </th>
                         <th [pSortableColumn]="'email'">
                             {{'Email'|translate}}
                             <p-sortIcon [field]="'email'"></p-sortIcon>
@@ -101,6 +110,7 @@
                         </td>
                         <td>{{rowIndex+1}}</td>
                         <td>{{member.name}}</td>
+                         <td>{{member.login}}</td>
                         <td>{{member.email}}</td>
                         <td>{{member.phone}}</td>
                         <td>{{member.group_name}}</td>

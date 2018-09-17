@@ -1,19 +1,19 @@
 <div class="card card-w-title lms-conference-list-item ui-g">
   <div class="ui-lg-12 ui-md-12 ui-g-12"><h1>{{'My conferences'|translate}}</h1></div>
   <div class="ui-lg-12 ui-md-12 ui-g-12">
-  <p-dataGrid [value]="conferenceMembers" [paginator]="true" [rows]="12">
-      <ng-template let-member pTemplate="item">
+  <p-dataGrid [value]="conferences" [paginator]="true" [rows]="12">
+      <ng-template let-conference pTemplate="item">
         <div class="ui-lg-4 ui-md-6 ui-g-12 lms-conference-item">
           <p-panel>
             <p-header>
-              <h3 class="heading-conference">{{member.conference.name}}</h3>
-              <span class="task-status">{{CONFERENCE_STATUS[member.conference.status] | translate}}</span>
+              <h3 class="heading-conference">{{conference.name}}</h3>
+              <span class="task-status">{{CONFERENCE_STATUS[conference.status] | translate}}</span>
             </p-header>
             <div>
-              <p>{{'Room password'|translate}}: {{member.conference.room_pass}}</p>
+              <p>{{'Room password'|translate}}: {{conference.room_pass}}</p>
             </div>
             <p-footer>
-              <button pButton type="button" label="{{ 'Join'|translate}} " class="green-btn" icon="ui-icon-call " (click)="joinConference(member.conference,member) " [disabled]="member.conference.status!='open'"></button>
+              <button pButton type="button" label="{{ 'Join'|translate}} " class="green-btn" icon="ui-icon-call " (click)="joinConference(conference,conference.member) " [disabled]="conference.status!='open'"></button>
             </p-footer>
           </p-panel>
         </div>

@@ -16,7 +16,7 @@ import {
 } from '../../../shared/models/constants'
 import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 
-const MEMBER_FIELDS = ['name', 'email', 'phone', 'role', 'status', 'group_name' ,'enroll_status'];
+const MEMBER_FIELDS = ['name', 'email', 'phone', 'role', 'login','status', 'group_name' ,'enroll_status'];
 
 @Component({
 	moduleId: module.id,
