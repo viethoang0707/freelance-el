@@ -86,8 +86,8 @@ export class SurveyStudyDialog extends BaseComponent {
 	}
 
 	loadSurveyContent() {
-		this.member.listSubmissions(this).subscribe(submits => {
-			this.submission = submits;
+		SurveySubmission.get(this, this.member.submission_id).subscribe(submit => {
+			this.submission = submit;
 			this.submission.start = new Date();
 			BaseModel.bulk_search(this,
 				SurveySheet.__api__listQuestions(this.survey.id),

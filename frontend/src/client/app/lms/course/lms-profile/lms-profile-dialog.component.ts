@@ -123,5 +123,7 @@ export class LMSProfileDialog extends BaseDialog<User> {
 		this.excelService.exportAsExcelFile(output, 'skill_report');
 	}
 
+	
+
 }
 

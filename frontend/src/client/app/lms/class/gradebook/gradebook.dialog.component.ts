@@ -183,9 +183,9 @@ export class GradebookDialog extends BaseComponent {
             return member.exam_id = exam.id;
         });
         if (member) {
-            member.populateSubmission(this).subscribe(() => {
-                this.answerSheetDialog.show(exam, member, member.submit);
-            });
+            Submission.get(this, member.submission_id).subscribe(submit=> {
+                this.answerSheetDialog.show(exam, member, submit);
+            })
         }
         else
             this.error(this.translateService.instant('You have not been registered for this exam'));

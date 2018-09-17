@@ -63,16 +63,16 @@ export const LMSRoutes: Routes = [
           canActivate: [CourseGuard]
         },
         {
-          path: "class/self-study-manage/:classId/:memberId",
+          path: "course/self-study-manage/:courseId/:memberId",
           component: CourseSelfStudyManageComponent,
           data: {
             breadcrumb: 'Manage class student'
           },
           resolve: {
-            courseClass: CourseClassResolve,
+            course: CourseResolve,
             supervisor: CourseMemberResolve
           },
-          canActivate: [ClassGuard]
+          canActivate: [CourseGuard]
         },
         {
           path: "class/manage/exam/:classId/:examId",

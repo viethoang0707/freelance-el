@@ -4,15 +4,12 @@
         <p-tabPanel header="{{'Student list'|translate}}" leftIcon="ui-icon-people">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility"
-                        (click)="viewGradebook(selectedRecord)" [hidden]="!selectedRecord"></button>
-                    <button pButton type="button" label="{{ 'Study history'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility"
-                        (click)="viewLMSProfile(selectedRecord)" [hidden]="selectedRecord"></button>
+                    <button pButton type="button" label="{{ 'Gradebook'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewSelfAssessmentGradebook(selectedMember)" [disabled]="!selectedMember"></button>
+                    <button pButton type="button" label="{{ 'Study history'|translate}}" class="blue-grey-btn " icon="ui-icon-visibility" (click)="viewLMSProfile(selectedMember)" [disabled]="!selectedMember"></button>
                 </div>
             </p-toolbar>
             <div>
-                <p-table #outlineTable [value]="courseMembers" [paginator]="true" [rows]="25" selectionMode="single"
-                    [(selection)]="selectedRecord" [responsive]="true">
+                <p-table #outlineTable [value]="courseMembers" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>
@@ -37,7 +34,7 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
-                        <tr [pSelectableRow]="record">
+                        <tr [pSelectableRow]="member">
                             <td>{{rowIndex+1}}</td>
                             <td>{{member.name}}</td>
                             <td class="email">{{member.email}}</td>
@@ -50,7 +47,6 @@
                     </ng-template>
                 </p-table>
             </div>
-
         </p-tabPanel>
         <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze" [disabled]="syl.status!='published'">
             <div class="ui-g-3">
@@ -64,9 +60,7 @@
                             <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
                         </div>
                         <div class="image-box-footer">
-                            <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}"
-                                label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit(selectedUnit)"
-                                *ngIf="selectedUnit.type!='folder'"></button>
+                            <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit(selectedUnit)" *ngIf="selectedUnit.type!='folder'"></button>
                         </div>
                     </div>
                 </div>
@@ -75,8 +69,7 @@
         </p-tabPanel>
         <p-tabPanel header="{{'Course material'|translate}}" leftIcon="ui-icon-cloud-download">
             <div class="ui-g-12">
-                <p-table #materialTable [value]="materials" [paginator]="true" [rows]="25" selectionMode="single"
-                    [(selection)]="selectedMaterial" [responsive]="true">
+                <p-table #materialTable [value]="materials" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMaterial" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>
@@ -112,8 +105,7 @@
         </p-tabPanel>
         <p-tabPanel header="{{'Course FAQ'|translate}}" leftIcon="ui-icon-question-answer">
             <div class="ui-g-12">
-                <p-table #faqTable [value]="faqs" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedFaq"
-                    [responsive]="true">
+                <p-table #faqTable [value]="faqs" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedFaq" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>

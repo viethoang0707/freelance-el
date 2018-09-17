@@ -99,7 +99,7 @@ export class CourseGroupManageComponent extends BaseComponent implements OnInit 
 	}
 
 	manageConference(courseClass: CourseClass) {
-		this.router.navigate(['/lms/class/manage', courseClass.id,courseClass.conference_id]);
+		this.router.navigate(['/lms/class/manage/conference', courseClass.id,courseClass.conference_id]);
 	}
 
 	manageClass(courseClass: CourseClass) {

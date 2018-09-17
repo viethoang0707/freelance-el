@@ -22,11 +22,7 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
     }
 
     recoverPassword() {
-        this.apiService.resetPasswordRequest(this.recover_email).subscribe(() => {
-            this.success('Instruction to reset passwrod will be sent to your email.');
-        }, (err)=> {
-          this.error(err["message"]);
-        });
+       
     }
 }
 

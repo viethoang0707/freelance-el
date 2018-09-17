@@ -60,7 +60,7 @@ export class ExerciseCourseUnitPlayerComponent extends BaseComponent implements 
 	play(unit: CourseUnit, member: CourseMember) {
 		this.unit = unit;
 		Exercise.get(this, this.unit.exercise_id).subscribe(exercise => {
-				BaseModel.bulk_search(this, QuestionSheet.__api__listQuestions( this.exercise.sheet_id)).subscribe(jsonArr => {
+				BaseModel.bulk_search(this, QuestionSheet.__api__listQuestions( exercise.sheet_id)).subscribe(jsonArr => {
 					this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
 					ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
 						var questions = _.map(this.examQuestions , (examQuestion: ExamQuestion) => {

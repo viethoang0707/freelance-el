@@ -63,6 +63,7 @@ export class SurveyDialog extends BaseDialog<Survey> {
                     this.onCreateCompleteReceiver.next();
                 else
                     this.onUpdateCompleteReceiver.next();
+            });
         });
     }
 }
