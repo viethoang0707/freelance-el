@@ -1,20 +1,12 @@
 <div class="card card-w-title">
     <h1>{{'Course view'|translate}}</h1>
     <div class="ui-g ui-fluid form-group">
-        <div class="ui-g-3 logo-course">
+        <div class="ui-g-9 logo-course">
             <div class="ui-g-3">
                 <label>{{'Logo'|translate}}</label>
             </div>
             <div class="ui-g-9">
                 <img [src]="course.logo | imageBase64" />
-            </div>
-        </div>
-        <div class="ui-g-9">
-            <div class="ui-g-3">
-                <label>{{'Parent group'|translate}}</label>
-            </div>
-            <div class="ui-g-9">
-                <span>{{course.group_name}}</span>
             </div>
         </div>
         <div class="ui-g-6">
@@ -51,6 +43,14 @@
         </div>
         <div class="ui-g-6">
             <div class="ui-g-3">
+                <label>{{'Parent group'|translate}}</label>
+            </div>
+            <div class="ui-g-9">
+                <span>{{course.group_name}}</span>
+            </div>
+        </div>
+        <div class="ui-g-6">
+            <div class="ui-g-3">
                 <label>{{'Competency'|translate}}</label>
             </div>
             <div class="ui-g-9">
@@ -75,7 +75,8 @@
         </div>
     </div>
     <div class="card-footer">
-        <button type="submit" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}" (click)="editCourse()" [disabled]="(course.supervisor_id != ContextUser.id || course.review_state=='approved') && !ContextUser.IsSuperAdmin"></button>
+        <button type="submit" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}" (click)="editCourse()"
+            [disabled]="(course.supervisor_id != ContextUser.id || course.review_state=='approved') && !ContextUser.IsSuperAdmin"></button>
         <button type="button" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
     </div>
 </div>
