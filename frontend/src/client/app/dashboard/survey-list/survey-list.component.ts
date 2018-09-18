@@ -31,7 +31,6 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
     private surveys: Survey[];
     private submits: SurveySubmission[];
     private reportUtils: ReportUtils;
-    private surveyMembers: SurveyMember[];
 
     @ViewChild(SurveyStudyDialog) surveyStudyDialog: SurveyStudyDialog;
 
@@ -43,7 +42,6 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            this.surveyMembers = this.lmsProfileService.MySurveyMembers;
             Survey.array(this, this.lmsProfileService.MySurveyIds, SURVEY_FIELDS).subscribe(surveys => {
                 this.displaySurveys(surveys);
             });
