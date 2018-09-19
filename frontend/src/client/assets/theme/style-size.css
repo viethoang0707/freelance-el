@@ -242,3 +242,7 @@
 /* Line-height */
 .lh21{ line-height: 21px !important}
 
+/* Width */
+.w100pc{
+    width: 100%;
+}
