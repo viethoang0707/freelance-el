@@ -4,10 +4,8 @@
         <div class="ui-dialog-content">
             <div class="ui-g form-group ui-fluid">
                 <div class="ui-g-12">
-                    <span class="md-inputfield">
-            <input type="text" pInputText  name="name" [(ngModel)]="sheet.name" required #name_input="ngModel">
-            <label>{{'Name'|translate}}: </label>
-        </span>
+                    <label>{{'Name'|translate}}: </label>
+                    <input type="text" pInputText name="name" [(ngModel)]="sheet.name" required #name_input="ngModel">
                     <div *ngIf="name_input.invalid && (name_input.dirty || name_input.touched)" class="ui-message ui-messages-error ui-corner-all">
                         <div *ngIf="name_input.errors.required">
                             {{'Name is requried'|translate}}

@@ -64,7 +64,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.exam = exam;
         this.submission = submit;
         this.member = member;
-        this.studyTime = Math.floor(this.submission.study_time / 60);
+        this.studyTime = Math.floor(this.submission.study_time);
         ExamSetting.get(this, this.exam.setting_id).subscribe(setting => {
             this.setting = setting;
             this.startReview();
