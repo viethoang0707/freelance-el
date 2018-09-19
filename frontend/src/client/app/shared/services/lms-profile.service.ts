@@ -173,6 +173,14 @@ export class LMSProfileService {
     return this.myConferenceMembers;
   }
 
+  get MyConferenceIds() {
+    var confIds = _.pluck(this.myConferenceMembers, 'exam_id');
+    confIds = _.uniq(confIds, id => {
+      return id;
+    });
+    return confIds
+  }
+
 
   get MyExamRecords() {
     return this.myExamRecords;

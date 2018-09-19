@@ -644,7 +644,8 @@ body .dashboard .ui-tabview.ui-tabview-top>.ui-tabview-nav {
 body .ui-dialog.course-unit-study .side-bar .ui-tabview-nav li,
 body .dashboard .ui-tabview-nav li {
   border: none !important;
-  margin: 10px 5px;
+  /* margin: 10px 5px; */
+  margin: 10px 0;
 }
 
 body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav>li.ui-state-default a,
@@ -652,7 +653,13 @@ body .dashboard .ui-tabview .ui-tabview-nav>li.ui-state-default a {
   font-weight: 500;
 }
 
-body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav>li.ui-state-active a,
+body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav>li.ui-state-active a{
+  color: #fff;
+  background-color: #c71633;
+  border-radius: 25px;
+  font-weight: 500;
+  padding: 6px 15px;
+}
 body .dashboard .ui-tabview .ui-tabview-nav>li.ui-state-active a {
   color: #fff;
   background-color: #ababab;

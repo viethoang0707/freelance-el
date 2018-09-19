@@ -25,7 +25,10 @@
                             <label>{{'Admin user'|translate}}</label>
                         </div>
                         <div class="ui-g-9">
-                            <span>{{user.is_admin}}</span>
+                            <span>
+                                <i *ngIf="user.is_admin" class="fa fa-check"></i>
+                                <i *ngIf="!user.is_admin"  class="fa fa-close"></i>
+                            </span>
                         </div>
                     </div>
                     <div class="ui-g-12">
@@ -33,7 +36,10 @@
                             <label>{{'Banned from access'|translate}}</label>
                         </div>
                         <div class="ui-g-9">
-                            <span>{{user.banned}}</span>
+                            <span>
+                                <i *ngIf="user.banned" class="fa fa-check"></i>
+                                <i *ngIf="!user.banned" class="fa fa-close"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -51,15 +57,11 @@
         </p-tabPanel>
         <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
             <div class="ui-g ui-fluid form-group">
-                <div class="ui-g-6">
-                    <div class="ui-g-3">
-                        <label>{{'Avatar'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <img [src]="user.image | imageBase64" />
-                    </div>
+                <div class="ui-g-4">                   
+                    <label class="mb10">{{'Avatar'|translate}}</label>                    
+                    <img [src]="user.image | imageBase64" style="width: 100%" />
                 </div>
-                <div class="ui-g-6">
+                <div class="ui-g-8">
                     <div class="ui-g-12">
                         <div class="ui-g-3">
                             <label>{{'Email'|translate}}</label>
@@ -184,9 +186,9 @@
             </p-table>
         </p-tabPanel>
     </p-tabView>
+    <user-view-content></user-view-content>
     <div class="card-footer">
         <button type="button" class="blue-grey-btn" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}" (click)="editUser()"></button>
         <button type="button" class="blue-grey-btn" pButton icon="ui-icon-clear" (click)="close()" label="{{ 'Close'|translate}} "></button>
     </div>
 </div>
-<certificate-print-dialog></certificate-print-dialog>

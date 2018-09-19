@@ -29,7 +29,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     private courses: Course[];
     private filteredCourses: Course[];
-    private courseMembers: CourseMember[];
     private reportUtils: ReportUtils;
 
     @Input() keyword: string;
@@ -42,7 +41,6 @@ export class CourseListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            this.courseMembers = this.lmsProfileService.MyCourseMembers;
             Course.array(this, this.lmsProfileService.MyCourseIds, COURSE_FIELDS).subscribe(courses => {
                 this.displayCourses(courses);
             });

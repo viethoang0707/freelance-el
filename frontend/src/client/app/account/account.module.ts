@@ -16,6 +16,8 @@ import { UserResolve, GroupsResolve, DateFormatResolve, PermissionResolve } from
 import { PermissionFormComponent } from './permission/permission-form/permission-form.component';
 import { PermissionViewComponent } from './permission/permission-view/permission-view.component';
 import { ChangePasswordDialog } from './user/change-password/change-password-dialog.component';
+import { UserViewDialogComponent } from './user/user-view/user-view.dialog.component';
+import { UserViewContentComponent } from './user/user-view/user-content.component';
 
 @NgModule({
     imports: [
@@ -34,10 +36,13 @@ import { ChangePasswordDialog } from './user/change-password/change-password-dia
         PermissionViewComponent,
         UserContentComponent,
         UserProfileDialog,
+        UserViewDialogComponent,
+        UserViewContentComponent,
         ChangePasswordDialog
     ],
     exports: [
         UserProfileDialog,
+        UserViewDialogComponent,
         ChangePasswordDialog
     ],
     providers: [

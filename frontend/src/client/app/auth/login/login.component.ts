@@ -54,7 +54,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
                 });
             },
             error => {
-                this.error(this.translateService.instant('Login failed.'));
+                this.error(this.translateService.instant(error["message"]));
             });
     }
 
