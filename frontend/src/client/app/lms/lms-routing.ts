@@ -78,7 +78,7 @@ export const LMSRoutes: Routes = [
           path: "class/manage/:classId/:memberId",
           component: ClassManageComponent,
           data: {
-            breadcrumb: 'Manage class exam enrollment'
+            breadcrumb: 'Manage class'
           },
           resolve: {
             courseClass : CourseClassResolve,

@@ -13,3 +13,9 @@ h2.exam-name, .exam-timer h2{
 .exam-study-footer button{
 	margin-right: 32%;
 }
+
+@media screen and (max-width: 768px) {
+	.exam-study-footer button{
+		margin-right: 5px;
+	}
+}
