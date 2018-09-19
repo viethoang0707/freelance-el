@@ -18,7 +18,6 @@ import { ClassExamEnrollComponent } from './class/class-exam-enroll/class-exam-e
 import { ClassSurveyEnrollComponent } from './class/class-survey-enroll/class-survey-enroll.component';
 import { ConferenceeResolve, ProjectResolve, CourseResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
 import { ProjectManageComponent } from './class/project-manage/project-manage.component';
-import { CourseMemberResolve } from '../../../../dist/tmp/app/lms/router.resolve';
 
 export const LMSRoutes: Routes = [
   {
@@ -74,7 +73,8 @@ export const LMSRoutes: Routes = [
             supervisor: CourseMemberResolve
           },
           canActivate: [CourseGuard]
-        }, {
+        },
+        {
           path: "class/manage/:classId/:memberId",
           component: ClassManageComponent,
           data: {
@@ -85,7 +85,8 @@ export const LMSRoutes: Routes = [
             supervisor: CourseMemberResolve
           },
           canActivate: [ClassGuard]
-        }, {
+        },
+        {
           path: "class/manage/exam/:classId/:examId",
           component: ClassExamEnrollComponent,
           data: {
