@@ -100,7 +100,8 @@ export class UserImportComponent extends BaseComponent implements OnInit {
 
 	uploadData(users: User[]) {
 		User.createArray(this, users).subscribe(() => {
-			this.success(`Import ${users.length} users successfully`);
+			var string = this.translateService.instant('Import') + users.length + this.translateService.instant('users successfully');
+			this.success(string);
 		});
 	}
 
