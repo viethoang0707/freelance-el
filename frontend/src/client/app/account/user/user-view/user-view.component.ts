@@ -29,7 +29,8 @@ const EXAM_MEMBER_FIELDS = ['exam_name', 'grade', 'enroll_status', 'date_registe
 export class UserViewComponent extends BaseComponent {
 
 	GENDER = GENDER;
-	EXAM_MEMBER_ENROLL_STATUS=EXAM_MEMBER_ENROLL_STATUS
+	EXAM_MEMBER_ENROLL_STATUS = EXAM_MEMBER_ENROLL_STATUS;
+	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 	@ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
 	private user: User;
@@ -62,7 +63,9 @@ export class UserViewComponent extends BaseComponent {
 				this.displayExams();
 				this.displayCourseHistory();
 				this.displaySkills();
+				console.log(this.courseMembers);
 			});
+
 	}
 
 	displayCourseHistory() {
