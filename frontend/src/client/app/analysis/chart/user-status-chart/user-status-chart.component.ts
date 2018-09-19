@@ -42,7 +42,7 @@ export class UserStatusChartComponent extends BaseComponent {
                 var activeCount = jsonArr[0];
                 var bannerCount = jsonArr[1];
                 this.chartData = {
-                    labels: ['Active user', 'Banner user'],
+                    labels: [this.translateService.instant('Active user'), this.translateService.instant('Banner user')],
                     datasets: [
                         {
                             data: [activeCount, bannerCount],

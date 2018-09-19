@@ -42,7 +42,7 @@ export class UserChartComponent extends BaseComponent {
                 var userCount = jsonArr[0];
                 var adminCount = jsonArr[1];
                 this.chartData = {
-                    labels: ['Admin user', 'Normal user'],
+                    labels: [this.translateService.instant('Admin user'), this.translateService.instant('Normal user')],
                     datasets: [
                         {
                             data: [adminCount, userCount - adminCount],
