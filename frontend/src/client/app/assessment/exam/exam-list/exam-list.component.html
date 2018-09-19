@@ -1,14 +1,14 @@
-<div class="card card-w-title">
-    <h1>{{'Exams'|translate}}</h1>
+<div class="">
+    <h1 class="removeM ml8">{{'Exams'|translate}}</h1>
     <div class="ui-g">
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addExam()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editExam(selectedExam)" [disabled]="!selectedExam"></button>
-                    <button pButton type="button" label="{{'View'|translate}}" class="blue-grey-btn" icon="ui-icon-visibility" (click)="viewExam(selectedExam)" [disabled]="!selectedExam"></button>
-                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteExam(selectedExam)" [disabled]="!selectedExam"></button>
-                    <button pButton type="button" label="{{'Request review'|translate}}" class="purple-btn" icon="ui-icon-rate-revie" (click)="requestReview(selectedExam)" [disabled]="!selectedExam ||  selectedExam.review_state =='approved'"></button>
+                    <button pButton type="button" label="{{'New'|translate}}" class="red-btn" (click)="addExam()" icon="ui-icon-add"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="nissan-btn" icon="ui-icon-mode-edit" (click)="editExam(selectedExam)" [disabled]="!selectedExam"></button>
+                    <button pButton type="button" label="{{'View'|translate}}" class="nissan-btn" icon="ui-icon-visibility" (click)="viewExam(selectedExam)" [disabled]="!selectedExam"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="nissan-btn" icon="ui-icon-delete" (click)="deleteExam(selectedExam)" [disabled]="!selectedExam"></button>
+                    <button pButton type="button" label="{{'Request review'|translate}}" class="nissan-btn" icon="ui-icon-rate-review" (click)="requestReview(selectedExam)" [disabled]="!selectedExam ||  selectedExam.review_state =='approved'"></button>
                 </div>
                  <div class="ui-toolbar-group-right">
                     <span class="md-inputfield search">
