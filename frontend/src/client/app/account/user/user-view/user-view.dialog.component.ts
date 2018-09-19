@@ -15,43 +15,37 @@ import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
-import * as _ from 'underscore';
 import { UserViewContentComponent } from './user-content.component';
-
-const COURSE_MEMBER_FIELDS = ['course_name', 'role', 'enroll_status', 'date_register'];
-const EXAM_MEMBER_FIELDS = ['exam_name', 'grade', 'enroll_status', 'date_register', 'status', 'exam_id', 'role'];
+import * as _ from 'underscore';
 
 
 @Component({
 	moduleId: module.id,
-	selector: 'user-view',
-	templateUrl: 'user-view.component.html',
+	selector: 'user-view-dialog',
+	templateUrl: 'user-view.dialog.component.html',
 })
-export class UserViewComponent extends BaseComponent implements OnInit{
+export class UserViewDialogComponent extends BaseComponent{
 
 
 	@ViewChild(UserViewContentComponent) viewContent: UserViewContentComponent;
 
 	private user: User;
-
+	private display: boolean;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
 		this.user = new User();
 	}
 
-	ngOnInit() {
-		this.user = this.route.snapshot.data['user'];
+	show(user:User) {
+		this.display = true;
+		this.user = user;
 		this.viewContent.render(this.user);
 	}
 
 
-	editUser() {
-		this.router.navigate(['/account/user/form', this.user.id]);
-	}
-
 	close() {
-		this.router.navigate(['/account/users']);
+		this.display = false;
 	}
 
 
