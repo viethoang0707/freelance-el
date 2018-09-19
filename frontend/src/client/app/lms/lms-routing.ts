@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes } from '@angular/router';
 import { LMSComponent } from './lms.component';
 import { CourseGroupManageComponent } from './course/course-manage/course-group-manage.component';
-import { CourseSelfStudyManageComponent } from './course/course-manage/course-self-study-manage.component';import { CourseStudyComponent } from './course/course-study/course-study.component';
+import { CourseSelfStudyManageComponent } from './course/course-manage/course-self-study-manage.component'; import { CourseStudyComponent } from './course/course-study/course-study.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
@@ -73,6 +73,18 @@ export const LMSRoutes: Routes = [
             supervisor: CourseMemberResolve
           },
           canActivate: [CourseGuard]
+        },
+        {
+          path: "class/manage/:classId/:memberId",
+          component: ClassManageComponent,
+          data: {
+            breadcrumb: 'Manage class exam enrollment'
+          },
+          resolve: {
+            courseClass : CourseClassResolve,
+            supervisor: CourseMemberResolve
+          },
+          canActivate: [ClassGuard]
         },
         {
           path: "class/manage/exam/:classId/:examId",

@@ -28,6 +28,7 @@ import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseUnitPreviewDialog } from '../../../cms/course/course-unit-preview-dialog/course-unit-preview-dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { MailMessageDialog } from '../../../shared/components/mail-message/mail-message.dialog.component';
+import { isBuffer } from 'util';
 
 @Component({
 	moduleId: module.id,
@@ -99,14 +100,17 @@ export class CourseGroupManageComponent extends BaseComponent implements OnInit 
 	}
 
 	manageConference(courseClass: CourseClass) {
-		this.router.navigate(['/lms/class/manage/conference', courseClass.id,courseClass.conference_id]);
+		this.router.navigate(['/lms/class/manage/conference', courseClass.id, courseClass.conference_id]);
 	}
 
 	manageClass(courseClass: CourseClass) {
-		var member = _.find(this.classMembers, (obj: CourseMember) => {
-			return obj.class_id == courseClass.id && (obj.role == 'supervisor' || obj.role == 'teacher');
-		});
-		this.router.navigate(['/lms/class/manage', courseClass.id,member.id]);
+		var member = this.lmsProfileService.getCourseMemberByRole('teacher', this.course.id);
+		console.log('member: ', member);
+		console.log('class: ', this.classMembers);
+		console.log('course: ', courseClass);
+		if (member != null) {
+			this.router.navigate(['/lms/class/manage', courseClass.id, member.id]);
+		}
 	}
 
 	nodeSelect(event: any) {

@@ -65,7 +65,7 @@ export class CourseListComponent extends BaseComponent {
         this.router.navigate(['/course/form', course.id]);
     }
 
-    viwCourse(course: Course) {
+    viewCourse(course: Course) {
         this.router.navigate(['/course/view', course.id]);
     }
 

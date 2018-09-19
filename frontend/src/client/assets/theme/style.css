@@ -643,7 +643,8 @@ body .dashboard .ui-tabview.ui-tabview-top>.ui-tabview-nav {
 body .ui-dialog.course-unit-study .side-bar .ui-tabview-nav li,
 body .dashboard .ui-tabview-nav li {
   border: none !important;
-  margin: 10px 5px;
+  /* margin: 10px 5px; */
+  margin: 10px 0;
 }
 
 body .ui-dialog.course-unit-study .side-bar .ui-tabview .ui-tabview-nav>li.ui-state-default a,

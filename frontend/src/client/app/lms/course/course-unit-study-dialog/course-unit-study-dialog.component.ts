@@ -205,6 +205,8 @@ export class CourseUnitStudyDialog extends BaseComponent {
 				else
 					this.openUnit(this.selectedUnit);
 			}
+			else
+				this.openUnit(this.selectedUnit);
 		}
 		else
 			this.openUnit(this.selectedUnit);
