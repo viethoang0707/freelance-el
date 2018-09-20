@@ -11,7 +11,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 
-const QUESTION_FIELDS = ['title', 'level', 'type', 'group_id', 'group_name', 'content'];
+const QUESTION_FIELDS = ['title', 'level', 'type', 'group_id', 'content', 'group_name'];
 
 @Component({
     moduleId: module.id,

@@ -5,7 +5,7 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th>{{'Index' | translate}}</th>
+                <th style="width: 5%">{{'Index' | translate}}</th>
                 <th>{{'Start'|translate}}</th>
                 <th>{{'Study time (min)'|translate}}</th>
                 <th>{{'Score'|translate}}</th>
@@ -17,7 +17,7 @@
             <tr>
                 <td>{{rowIndex+1}}</td>
                 <td>{{submit.start | date: 'dd/MM/yyyy'}}</td>
-                <td>{{submit.study_time | timeConvert:'min'}}</td>
+                <td>{{submit.study_time | timeConvert:'sec'}}</td>
                 <td>{{submit.score}}</td>
                 <td>{{submit.grade}}</td>
                 <td>

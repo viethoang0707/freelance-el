@@ -13,6 +13,7 @@ import { MenuService } from '../shared/services/menu.service';
 import { SettingDialog } from '../setting/setting-dialog.component';
 import { UserProfileDialog } from '../account/user/user-form/profile-dialog.component';
 import { ChangePasswordDialog } from '../account/user/change-password/change-password-dialog.component';
+import { UserViewDialogComponent } from '../account/user/user-view/user-view.dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -23,7 +24,7 @@ import { ChangePasswordDialog } from '../account/user/change-password/change-pas
 export class HomeComponent extends BaseComponent implements OnInit, AfterViewInit {
 
     @ViewChild(SettingDialog) settingDialog: SettingDialog;
-    @ViewChild(UserProfileDialog) profieDialog: UserProfileDialog;
+    @ViewChild(UserViewDialogComponent) profieDialog: UserViewDialogComponent;
     @ViewChild(ChangePasswordDialog) changePassDialog: ChangePasswordDialog;
 
     menuClick: boolean;

@@ -116,6 +116,7 @@ class SurveySheet(models.Model):
 	_name = 'etraining.survey_sheet'
 
 	finalized = fields.Boolean(string="Finalized")
+	name = fields.Char(string="Name")
 	question_ids = fields.One2many('etraining.survey_question',"sheet_id", string='Exam questions')
 	survey_id = fields.Many2one('etraining.survey',  string='Survey')
 	supervisor_id = fields.Many2one('res.users', related="survey_id.supervisor_id", string='Administrator')
