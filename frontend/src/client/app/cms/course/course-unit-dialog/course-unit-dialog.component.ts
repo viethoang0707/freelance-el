@@ -56,6 +56,11 @@ export class CourseUnitDialog extends BaseDialog<CourseUnit> {
 				this.componentRef = null;
 			}
 		});
+		this.onHide.subscribe(object=> {
+			let viewContainerRef = this.unitHost.viewContainerRef;
+			if (viewContainerRef)
+				viewContainerRef.clear();
+		});
 		this.onUpdateComplete.subscribe(object => {
 			if (this.componentRef)
 				(<ICourseUnitDesign>this.componentRef.instance).saveEditor().subscribe(() => {

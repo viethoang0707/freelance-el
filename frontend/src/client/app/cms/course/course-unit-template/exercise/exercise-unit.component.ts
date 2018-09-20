@@ -65,6 +65,8 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 		});
 	}
 
+	
+
 	saveEditor(): Observable<any> {
 		this.sheet.finalized = true;
 		return this.sheet.save(this).flatMap(() => {

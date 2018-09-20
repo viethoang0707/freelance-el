@@ -141,7 +141,7 @@ export class CourseSyllabusComponent extends BaseComponent {
 	}
 
 	back() {
-		this.location.back();
+		this.router.navigate(['/lms/course/edit', this.course.id]);
 	}
 
 	moveUp(node: TreeNode) {

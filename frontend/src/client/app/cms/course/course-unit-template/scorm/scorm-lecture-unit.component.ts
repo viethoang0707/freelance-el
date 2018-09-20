@@ -78,6 +78,8 @@ export class SCORMLectureCourseUnitComponent extends BaseComponent implements IC
 		this.uploadFile(file);
 	}
 
+	
+
 
 }
 
