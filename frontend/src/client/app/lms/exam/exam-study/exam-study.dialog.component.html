@@ -1,5 +1,5 @@
 <div class="ui-g exam-study">
-  <p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12" [responsive]="true" [closeOnEscape]="false" [closable]="false"  appendTo="body">
+  <p-dialog [(visible)]="display" modal="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 scroll-y" [responsive]="true" [closeOnEscape]="false" [closable]="false"  appendTo="body">
     <div class="spinner" [hidden]="!loading"></div>
     <p-growl ></p-growl>
     <div class="ui-g-12 ui-md-6 ui-lg-6">
@@ -23,7 +23,7 @@
         <h4 class="removeM">{{'Exam Date'|translate}}: {{exam.start | date : "dd/MM/yyyy"}}</h4>
       </div>
     </div>
-    <div class="ui-g-12 ui-md-12 ui-lg-12 removePdLf removePdRt ques-exam-study">
+    <div class="ui-g-12 ui-md-12 ui-lg-12 pr-0 pl-0 ques-exam-study">
         <p-card>
           <div class="ui-g">
             <div class="ui-lg-8 ui-md-12 ui-g-12">
@@ -66,6 +66,5 @@
           </p-footer>
         </p-card>
     </div>
-    
   </p-dialog>
 </div>

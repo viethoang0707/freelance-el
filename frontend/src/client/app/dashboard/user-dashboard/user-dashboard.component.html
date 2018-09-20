@@ -101,7 +101,7 @@
                                                 <span class="cmt-title">{{'Number of question'|translate}}</span>
                                                 <span class="cmt-detail">{{exam.question_count}}</span>
                                             </li>
-                                            <li class="clearfix removePdLf removePdRt">
+                                            <li class="clearfix pr-0 pl-0">
                                                 <div class="btn-exam">
                                                     <button pButton type="button" icon="ui-icon-arrow-forward" title="{{'Join'| translate}}" class="green-btn mr5" (click)="startExam(exam, exam.candidate)" *ngIf="exam.candidate !=null" [disabled]="!exam.IsAvailable || exam.candidate.enroll_status=='completed'"></button>
                                                     <button pButton type="button" icon="ui-icon-timeline" title="{{'View answer'| translate}}" class="blue-grey-btn mr5"  [disabled]="exam.candidate.enroll_status!='completed'" (click)="viewAnswer(exam,exam.candidate)" *ngIf="exam.candidate!=null"></button>

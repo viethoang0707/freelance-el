@@ -11,55 +11,55 @@
 .list-cmt li{
 	list-style: none;
 	padding: 10px 14px;
-    border-bottom: 1px solid #dbdbdb;
+	float: left;
+    color: #757575;
+    margin-right: 10px;
 }
 
 .list-cmt li i{
 	font-size: 24px;
-    margin-right: 8px;
-    width: 32px;
     vertical-align: middle;
-    color: #757575;
-}
-
-.list-cmt li .cmt-title{
-	font-weight: 700;
-    margin-right: 8px;
-}
-
-.list-cmt li .cmt-detail{
-	color: #283593;
-	float: right;
-}
-
-.c-title{
-	font-size: 15px;
 }
 
 .c-status{
-	background-color: #e91e63;
-	border-radius: 9px;
-    padding: 2px 8px;
+	position: absolute;
+    background-color: #32de4e;
     color: #fff;
+    right: 0;
+    top: 5px;
+    padding: 5px 10px;
 }
 
-.profile-image-wrapper img{
+.course-img img{
 	width: 100%;
 	border: 1px solid #dbdbdb;
+    height: 190px;
 }
 
 .border{
-	border-bottom: 1px solid #dbdbdb;
+	border-top: 1px solid #dbdbdb;
 }
 
 .heading-course{
-	font-weight: 600;
-	color: #192fa9;
-	float: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin: 5px 10px 0 0;
+    margin: 0;
+    font-size: 18px;
+    color: rgb(199, 22, 50);
+    line-height: 1.667;
+}
+
+p.course-description{
+    display: block;
+    height: 80px;
+    display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0;
+    margin-right: 30px;
 }
 
 .display-none{
@@ -67,22 +67,48 @@
 }
 
 .search input{
-	border: 1px solid #bdbdbd; 
-	width: 360px; 
-	border-bottom-left-radius: 3px; 
-	border-top-left-radius: 3px;
-	border-radius: 3px;
-    height: 30px;
+	border: 1px solid #bdbdbd;
+    width: 360px;
+    height: 35px;
+    position: relative;
+    border-radius: 25px;
+    padding: 0 15px;
 }
 
-.search button{
-	border-bottom-left-radius: 0;
-	border-top-left-radius: 0
+.search i{
+	position: absolute;
+    right: 10px;
+    top: 7px;
+    color: #888;
+    font-size: 22px;
+}
+
+.course-img{
+	position: relative;
+    height: 190px;
+}
+
+.course-info{
+    position: relative;
+}
+
+.btn-course{
+	position: absolute;
+    background: rgba(85, 85, 85, 0.9);
+    width: 100%;
+    top: 0;
+    text-align: center;
+    padding: 72px 15px;
+    display: none;
+    height: 190px;
+}
+
+.course-img:hover .btn-course{
+	display: block;
 }
 
 @media screen and (max-width: 500px) {
 	.search input{
 		width: 280px;
-		margin-right: 20px;
 	}
 }

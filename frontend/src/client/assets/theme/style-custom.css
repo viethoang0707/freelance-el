@@ -65,7 +65,7 @@
 
 label {
      font: 15px arial, sans-serif;
-     font-weight: bold;
+     /*font-weight: bold;*/
 }
 
 .card-footer {
