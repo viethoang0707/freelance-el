@@ -41,7 +41,7 @@ import { CourseClass } from '../../../shared/models/elearning/course-class.model
 export class SelfAssessmentGradebookDialog extends BaseComponent {
 
     @ViewChild(AnswerPrintDialog) answerPrintDialog: AnswerPrintDialog;
-    
+
     private display: boolean;
     private student: CourseMember;
     private assessments: SelfAssessment[];
@@ -84,7 +84,7 @@ export class SelfAssessmentGradebookDialog extends BaseComponent {
             _.each(this.assessments, (assessment: SelfAssessment) => {
                 student.listExamSubmissions(this, assessment.exam_id).subscribe(submits=> {
                     this.submissions[assessment.id] = _.filter(submits,(submit:Submission)=> {
-                        return submit.start && submit.end;
+                        return submit.start!=null && submit.end!=null;
                     });
                 });
             });

@@ -81,7 +81,6 @@ export class CourseRestoreComponent extends BaseComponent {
 		var course_material =  output.course_material;
 		var course_syllabus = output.course_syllabus;
 		var course_unit = output.course_unit;
-		this.buildCourseTree();
 	}
 }
 
