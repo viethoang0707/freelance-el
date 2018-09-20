@@ -105,10 +105,14 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 					record["index"] = this.rowGroupMetadata[record["user_login"]].index;
 					record["size"] = this.rowGroupMetadata[record["user_login"]].size;
 				});
-				this.records = _.sortBy(records, record => {
-					return +record["index"];
-				});
 				console.log('records: ', records);
+				records = _.sortBy(records, record => {
+					return +record["code_name"];
+				});
+				// this.records = _.sortBy(records, record => {
+				// 	return +record["index"];
+				// });
+				console.log('records 1: ', records);
 				console.log('this.records: ', this.records);
 			});
 

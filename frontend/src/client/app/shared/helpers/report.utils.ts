@@ -57,10 +57,10 @@ export class ReportUtils {
 		for (var i=0;i<logs.length;i++) {
 			var current = logs[i];
 			if (current.code == "START_COURSE_UNIT") {
-				if (i +1 < logs.length && logs[i+1].res_id == current.res_id) {
+				if (i +1 < logs.length && logs[i+1].res_id == current.res_id && logs[i+1].member_id == current.member_id) {
 					var next = logs[i+1];
 					if (next.code == "STOP_COURSE_UNIT" || next.code =="COMPLETE_COURSE_UNIT") {
-						onTime = next.start.getTime() - current.start.getTime();
+						onTime += next.start.getTime() - current.start.getTime();
 					}
 				}
 			}

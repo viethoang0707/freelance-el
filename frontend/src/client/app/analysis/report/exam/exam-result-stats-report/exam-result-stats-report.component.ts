@@ -79,8 +79,12 @@ export class ExamResultStatsReportComponent extends BaseComponent {
                             .map(jsonArr => _.flatten(jsonArr))
                             .subscribe(jsonArr => {
                                 var options = QuestionOption.toArray(jsonArr);
+                                console.log(options);
+                                console.log(examQuestions);
                                 _.each(examQuestions, (examQuestion: ExamQuestion) => {
                                     examQuestion["options"] = _.filter(options, (opt: QuestionOption) => {
+                                        console.log('examQuestion:',examQuestion.question_id);
+                                        console.log('opt.question: ',opt.question_id);
                                         return opt.question_id == examQuestion.question_id;
                                     });
                                 });
