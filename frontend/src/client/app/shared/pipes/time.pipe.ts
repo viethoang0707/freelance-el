@@ -3,6 +3,7 @@ import { PipeTransform, Pipe } from '@angular/core';
 @Pipe({ name: 'timeConvert', pure: false })
 export class TimeConvertPipe implements PipeTransform {
     transform(ms: number, scale: string): number {
+        console.log(ms);
         if (scale == 'sec')
             ms = Math.floor(ms / 1000);
         if (scale == 'min')

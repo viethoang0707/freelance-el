@@ -99,6 +99,7 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		var courseMemberData = this.reportUtils.analyseCourseMember(course, members);
 		Object.assign(record, courseMemberData);
 		var result = this.reportUtils.analyzeCourseMemberActivity(logs);
+		console.log(result[2]);
 		record["time_spent"] = this.timePipe.transform(+result[2], 'min');
 		return record;
 	}
