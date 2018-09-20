@@ -11,7 +11,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode, MenuItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 
-const QUESTION_FIELDS = ['title', 'level', 'type', 'group_id', 'content','group_name'];
+const QUESTION_FIELDS = ['title', 'level', 'type', 'group_id', 'content', 'group_name'];
 
 @Component({
     moduleId: module.id,
@@ -86,6 +86,8 @@ export class QuestionListComponent extends BaseComponent {
             });
             this.questions = questions;
             this.displayQuestions = questions;
+
+            console.log(this.questions);
         });
     }
 

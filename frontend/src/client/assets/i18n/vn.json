@@ -664,7 +664,7 @@
 	"Export course": "Tải xuống khóa học",
 	"Export exam": "Tải xuống kì thi",
 	"Export skill": "Tải xuống kĩ năng",
-	"Course search": "Tìm kiếm khóa học"
+	"Course search": "Tìm kiếm khóa học",
 	"User form": "Người dùng",
 	"User create form": "Tạo tài khoản",
 	"Avatar": "Ảnh đại diện",
@@ -693,6 +693,4 @@
 	"Active user": "Tài khoản được truy cập",
 	"Banner user": "Tài khoản bị cấm truy cập",
 	"Qualification": "Trình độ chuyên môn"
-
-
 }
