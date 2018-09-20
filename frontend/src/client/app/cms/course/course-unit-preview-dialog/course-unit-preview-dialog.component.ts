@@ -13,6 +13,8 @@ import { ICourseUnitDesign } from '../course-unit-template/unit.interface';
 import { SyllabusUtils } from '../../../shared/helpers/syllabus.utils';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { Course } from '../../../shared/models/elearning/course.model';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
+declare var $: any;
 
 @Component({
 	moduleId: module.id,
@@ -20,7 +22,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 	templateUrl: 'course-unit-preview-dialog.component.html',
 })
 export class CourseUnitPreviewDialog extends BaseComponent {
-
+	WINDOW_HEIGHT: any;
 	private componentRef: any;
 	private treeUtils: TreeUtils;
 	private tree: TreeNode[];
@@ -39,6 +41,7 @@ export class CourseUnitPreviewDialog extends BaseComponent {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
+		this.WINDOW_HEIGHT = $(window).height();
 	}
 
 	show(unit: CourseUnit, course: Course, syl: CourseSyllabus, units: CourseUnit[]) {
