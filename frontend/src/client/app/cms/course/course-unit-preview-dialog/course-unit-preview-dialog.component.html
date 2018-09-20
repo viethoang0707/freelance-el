@@ -1,4 +1,4 @@
-<p-dialog header="{{nameUnit}}" [(visible)]="display" modal="true" [responsive]="true" width="1000" appendTo="body">
+<p-dialog header="{{nameUnit}}" [(visible)]="display" modal="true" [responsive]="true" width="1000" [styleClass]="dialog-style"  appendTo="body">
     <div class="spinner" [hidden]="!loading"></div>
     <p-scrollPanel [style]="{width: '100%'}">
         <div class="ui-g ui-fluid form-group">
