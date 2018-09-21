@@ -122,7 +122,7 @@ export class CourseSelfStudyManageComponent extends BaseComponent implements OnI
 	}
 
 	back() {
-		this.location.back();
+		this.router.navigate(['/lms/courses']);
 	}
 
 	viewSelfAssessmentGradebook(member: CourseMember) {

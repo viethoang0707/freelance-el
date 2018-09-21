@@ -13,7 +13,7 @@
                 </div>
                 <div class="ui-g-12">
                     <label>{{'Login'|translate}}<span> *</span></label>
-                    <input type="text" pInputText [(ngModel)]="user.login" #login="ngModel" name="login" [(lowercase)]="user.login" required>
+                    <input type="text" pInputText [(ngModel)]="user.login" #login="ngModel" name="login" [(lowercase)]="user.login" [disabled]="!user.IsNew" required>
                     <div *ngIf="login.invalid && (login.dirty || login.touched)" class="ui-message ui-messages-error ui-corner-all">
                         <div *ngIf="login.errors.required">
                             {{'Login is required' | translate}}

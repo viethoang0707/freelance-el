@@ -1,6 +1,8 @@
 <p-dialog header="{{'User profile'|translate}}" [(visible)]="display" modal="true" width="1000" [responsive]="true" [positionTop]="20" [closeOnEscape]="false" [closable]="false">
     <user-view-content></user-view-content>
     <p-footer>
+        <button type="button" class="blue-grey-btn" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}" (click)="editUser()"></button>
         <button type="button" class="blue-grey-btn" pButton icon="ui-icon-clear" (click)="close()" label="{{ 'Close'|translate}} "></button>
     </p-footer>
 </p-dialog>
+<user-form-dialog></user-form-dialog>

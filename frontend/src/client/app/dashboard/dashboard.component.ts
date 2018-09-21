@@ -15,6 +15,10 @@ export class DashboardComponent extends BaseComponent implements OnInit{
         super();
         this.settingService.viewModeEvents.subscribe((mode:string) => {
             this.viewMode = mode;
+            if (this.viewMode =='admin')
+                this.router.navigate(['/dashboard/admin']);
+            else
+                this.router.navigate(['/dashboard/lms']);
         });
     }
 

@@ -214,7 +214,7 @@ export class ClassManageComponent extends BaseComponent {
 		exam.course_class_id = this.courseClass.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.first().subscribe(() => {
-			this.classExams.push(exam);
+			this.classExams = [...this.classExams,exam];
 		});
 	}
 
@@ -249,7 +249,7 @@ export class ClassManageComponent extends BaseComponent {
 		survey.course_class_id = this.courseClass.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.first().subscribe(() => {
-			this.classSurveys.push(survey);
+			this.classSurveys = [...this.classSurveys,survey];
 		});
 	}
 

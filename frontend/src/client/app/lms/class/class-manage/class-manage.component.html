@@ -126,7 +126,7 @@
                     <button pButton type="button" label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="markProject(selectedProject)" [disabled]="!selectedProject"></button>
                 </div>
             </p-toolbar>
-            <p-table #examTable [value]="projects" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">
+            <p-table #projectTable [value]="projects" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>
@@ -218,7 +218,7 @@
                     </button>
                 </div>
             </p-toolbar>
-            <p-table #examTable [value]="classSurveys" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedClassSurvey" [responsive]="true">
+            <p-table #surveyTable [value]="classSurveys" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedClassSurvey" [responsive]="true">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>

@@ -180,7 +180,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	back() {
-		this.location.back();
+		this.router.navigate(['/lms/courses']);
 	}
 
 }

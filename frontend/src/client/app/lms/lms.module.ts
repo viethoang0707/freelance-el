@@ -47,6 +47,12 @@ import { SelfAssessmentCourseUnitPlayerComponent } from './course/course-unit-te
 import { ConferenceeResolve, CourseResolve, ProjectResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
 import { ProjectDialog } from './class/project-dialog/project-dialog.component';
 import { SelfAssessmentGradebookDialog } from './course/self-assessment-gradebook/gradebook.dialog.component';
+import { ExamListComponent } from './exam/exam-list/exam-list.component';
+import { CourseListComponent } from './course/course-list/course-list.component';
+import { ConferenceListComponent } from './class/conference-list/conference-list.component';
+import { CourseSearchComponent } from './course/course-search/course-search.component';
+import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
+import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 
 @NgModule({
     imports: [
@@ -59,6 +65,12 @@ import { SelfAssessmentGradebookDialog } from './course/self-assessment-gradeboo
     ],
     declarations: [
         LMSComponent,
+        ExamListComponent,
+        CourseListComponent,
+        ConferenceListComponent,
+        CourseSearchComponent,
+        CourseRecommendComponent,
+        SurveyListComponent,
         ExamStudyDialog,
         AnswerPrintDialog,
         CourseEditComponent,

@@ -10,7 +10,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { UserFormComponent } from './user/user-form/user-form.component';
 import { UserContentComponent } from './user/user-form/user-content.component';
-import { UserProfileDialog } from './user/user-form/profile-dialog.component';
+import { UserFormDialog } from './user/user-form/user-form-dialog.component';
 import { UserViewComponent } from './user/user-view/user-view.component';
 import { UserResolve, GroupsResolve, DateFormatResolve, PermissionResolve } from './route.resolver';
 import { PermissionFormComponent } from './permission/permission-form/permission-form.component';
@@ -35,13 +35,12 @@ import { UserViewContentComponent } from './user/user-view/user-content.componen
         PermissionFormComponent,
         PermissionViewComponent,
         UserContentComponent,
-        UserProfileDialog,
+        UserFormDialog,
         UserViewDialogComponent,
         UserViewContentComponent,
         ChangePasswordDialog
     ],
     exports: [
-        UserProfileDialog,
         UserViewDialogComponent,
         ChangePasswordDialog
     ],

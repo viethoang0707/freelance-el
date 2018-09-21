@@ -1,15 +1,15 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseComponent } from '../../shared/components/base/base.component';
+import { BaseComponent } from '../../../shared/components/base/base.component';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, CONFERENCE_STATUS } from '../../shared/models/constants'
-import { CourseMember } from '../../shared/models/elearning/course-member.model';
-import { Course } from '../../shared/models/elearning/course.model';
-import { User } from '../../shared/models/elearning/user.model';
-import { ConferenceMember } from '../../shared/models/elearning/conference-member.model';
-import { Conference } from '../../shared/models/elearning/conference.model';
-import { MeetingService } from '../../shared/services/meeting.service';
-import { BaseModel } from '../../shared/models/base.model';
+import { GROUP_CATEGORY, CONFERENCE_STATUS } from '../../../shared/models/constants'
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Course } from '../../../shared/models/elearning/course.model';
+import { User } from '../../../shared/models/elearning/user.model';
+import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
+import { Conference } from '../../../shared/models/elearning/conference.model';
+import { MeetingService } from '../../../shared/services/meeting.service';
+import { BaseModel } from '../../../shared/models/base.model';
 
 const CONFERENCE_FIELDS = ['name', 'status', 'room_pass', 'room_ref'];
 

@@ -25,7 +25,7 @@
                 <span>{{'Submit'|translate}}: {{submission.end | date : "dd/MM/yyyy"}}</span>
             </div>
             <div class="ui-g-3">
-                <span>{{'Study time'|translate}}: {{studyTime}} {{'minutes'|translate}}</span>
+                <span>{{'Study time'|translate}}: {{studyTime | clock}} </span>
             </div>
             <div class="ui-g-3">
                 <span>{{'Score'|translate}}: </span><span class="bold"> {{submission.score}}</span>
