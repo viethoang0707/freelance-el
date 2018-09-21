@@ -109,9 +109,9 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 				records = _.sortBy(records, record => {
 					return +record["code_name"];
 				});
-				// this.records = _.sortBy(records, record => {
-				// 	return +record["index"];
-				// });
+				this.records = _.sortBy(records, record => {
+					return +record["index"];
+				});
 				console.log('records 1: ', records);
 				console.log('this.records: ', this.records);
 			});
