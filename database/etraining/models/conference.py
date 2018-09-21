@@ -43,7 +43,7 @@ class Conference(models.Model):
 			for course_member in self.env['etraining.course_member'].browse(memberIds):
 				for conference in self.env['etraining.conference'].browse(conferenceId):
 					member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
-					resp = client.execute('emeeting.room','add_member',{"room_ref":self.room_ref, "member":member})
+					resp = client.execute('emeeting.room','add_member',{"room_ref":conference.room_ref, "member":member})
 					if resp["success"]:
 						role ='member'
 						if course_member.role =='teacher' or course_member.role =='supervisor':
