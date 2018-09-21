@@ -21,7 +21,7 @@ import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, COURSE_
 	styleUrls: ['course-view.component.css'],
 })
 export class CourseViewComponent extends BaseComponent {
-
+	COURSE_MODE = COURSE_MODE;
 	private editor: CourseMember;
 	private course: Course;
 

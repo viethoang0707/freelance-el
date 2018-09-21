@@ -45,7 +45,7 @@
                     <td>{{rowIndex+1}}</td>
                     <td style="text-align: left; ">{{courseClass.name}}</td>
                     <td style="text-align: left; ">{{courseClass.course_name}}</td>
-                    <td>{{CLASS_STATUS[courseClass.status]}}</td>
+                    <td>{{CLASS_STATUS[courseClass.status] | translate}}</td>
                     <td>{{courseClass.start | date : "dd/MM/yyyy "}}</td>
                     <td>{{courseClass.end | date : "dd/MM/yyyy "}}</td>
                 </tr>

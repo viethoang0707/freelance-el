@@ -336,7 +336,7 @@ body .user-dashboard .ui-fieldset.ui-widget-content {
   height: 50%;
 }
 
-.course-study-tree .ui-tree {
+.course-study-tree.ui-tree {
   width: 100%;
 }
 
@@ -590,6 +590,7 @@ body .exam-study .ui-dialog-content.ui-widget-content {
 
 .course-unit-study .ui-tabview {
   border: 1px solid #eee !important;
+  height: calc(100vh - 55px);
 }
 
 body .ui-dialog.course-unit-study .ui-dialog-titlebar .ui-dialog-titlebar-close {

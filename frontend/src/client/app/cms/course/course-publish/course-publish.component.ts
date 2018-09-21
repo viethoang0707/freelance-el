@@ -86,7 +86,7 @@ export class CoursePublishComponent extends BaseComponent implements OnInit {
 		});
 		saveApiList.push(this.syl.__api__update());
 		BaseModel.bulk_update(this, ...saveApiList).subscribe(() => {
-			this.success('Course published successful');
+			this.success(this.translateService.instant('Course published successful'));
 		});
 	}
 
