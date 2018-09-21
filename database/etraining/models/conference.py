@@ -35,7 +35,7 @@ class Conference(models.Model):
 		cr,uid, context = self.env.args
 		if "account" in context:
 			account = context["account"]
-			meeting_account = account["meeting_cloudid"]
+			meeting_account = context[account["meeting_cloudid"]]
 			memberIds = params["memberIds"]
 			conferenceId = params["conferenceId"]
 			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
