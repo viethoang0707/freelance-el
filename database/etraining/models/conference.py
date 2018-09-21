@@ -19,11 +19,12 @@ class Conference(models.Model):
 	@api.model
 	def create(self, vals):
 		cr,uid, context = self.env.args
-		if "meeting_cloudid" in context:
-			meeting_account = context["meeting_cloudid"]
+		if "account" in context:
+			account = context["account"]
+			meeting_account = context[account["meeting_cloudid"]]
 			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
 			room = {'name':vals["name"],'category':'one-to-many'}
-			resp = client.model('emeeting.room','add_room',{"room":room})
+			resp = client.execute('emeeting.room','add_room',{"room":room})
 			if resp["success"]:
 				vals["room_ref"] = resp["room"]["ref"]
 				vals["room_pass"] = resp["room"]["password"]
@@ -42,12 +43,12 @@ class Conference(models.Model):
 			for course_member in self.env['etraining.course_member'].browse(memberIds):
 				for conference in self.env['etraining.conference'].browse(conferenceId):
 					member  = {'name':course_member.name,'avatar':course_member.image, 'email':course_member.email, 'is_supervisor':course_member.role =='teacher' or course_member.role =='supervisor'} 
-					resp = client.model('emeeting.room','add_member',{"room_ref":self.room_ref, "member":member})
+					resp = client.execute('emeeting.room','add_member',{"room_ref":self.room_ref, "member":member})
 					if resp["success"]:
 						role ='member'
 						if course_member.role =='teacher' or course_member.role =='supervisor':
 							role = 'supervisor'
-						conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"],'role':role})
+						conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"]["ref"],'role':role})
 						member.write({'conference_member_id':conf_member.id}) 
 			return {'success':True}
 		return {'success':False, 'message':'Meeting Cloud not defined'}
