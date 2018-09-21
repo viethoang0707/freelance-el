@@ -22,6 +22,10 @@
                                 {{'Name'|translate}}
                                 <p-sortIcon [field]="'name'"></p-sortIcon>
                             </th>
+                            <th [pSortableColumn]="'login'">
+                                {{'Login'|translate}}
+                                <p-sortIcon [field]="'login'"></p-sortIcon>
+                            </th>
                             <th style="width: 15%" [pSortableColumn]="'email'">
                                 {{'Email'|translate}}
                                 <p-sortIcon [field]="'email'"></p-sortIcon>
@@ -55,6 +59,7 @@
                         <tr [pSelectableRow]="record">
                             <td>{{rowIndex+1}}</td>
                             <td>{{record.name}}</td>
+                            <td>{{record.login}}</td>
                             <td class="email">{{record.email}}</td>
                             <td>{{record.group_name}}</td>
                             <td>{{COURSE_MEMBER_ENROLL_STATUS[record.enroll_status]}} </td>

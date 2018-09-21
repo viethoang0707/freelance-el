@@ -219,14 +219,14 @@ export class CourseMember extends BaseModel {
         return SurveyMember.search(context,fields,"[('course_member_id','=',"+this.id+")]");
     }
 
-    static __api__listExamSubmissions(examId: number,memberId: number, fields?:string[]): SearchReadAPI {
-        return new SearchReadAPI(Submission.Model,fields,"[('course_member_id','=',"+memberId+"),('exam_id','=',"+examId+")]");
+    static __api__listExamSubmissions(examId: number,userId: number, fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Submission.Model,fields,"[('user_id','=',"+userId+"),('exam_id','=',"+examId+")]");
     }
 
     listExamSubmissions( context:APIContext,examId: number,fields?:string[]): Observable<any[]> {
         if (!this.id)
             return Observable.of([]);
-        return Submission.search(context,fields,"[('course_member_id','=',"+this.id+"),('exam_id','=',"+examId+")]");
+        return Submission.search(context,fields,"[('user_id','=',"+this.user_id+"),('exam_id','=',"+examId+")]");
     }
 
 }

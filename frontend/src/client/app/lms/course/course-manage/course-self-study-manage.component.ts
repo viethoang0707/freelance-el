@@ -31,7 +31,7 @@ import { CourseMemberActivityDialog } from '../../class/course-member-activity/c
 import { LMSProfileDialog } from '../../course/lms-profile/lms-profile-dialog.component';
 import { SelfAssessmentGradebookDialog } from '../self-assessment-gradebook/gradebook.dialog.component';
 
-const MEMBER_FIELDS =['name', 'group_name', 'email', 'enroll_satus', 'role']
+const MEMBER_FIELDS =['name', 'group_name', 'email', 'enroll_satus', 'role', 'login', 'user_id'];
 
 
 @Component({

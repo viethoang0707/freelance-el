@@ -32,6 +32,8 @@ export class FolderCourseUnitComponent extends BaseComponent implements ICourseU
 		this.unit = unit;
 	}
 
+	
+
 	saveEditor():Observable<any> {
 		return Observable.of(true);
 	}

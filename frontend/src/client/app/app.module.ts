@@ -31,6 +31,7 @@ import { TranslateService } from '@ngx-translate/core';
         HttpModule,
         AppRoutingModule,
         AuthModule,
+        CMSModule,
         HomeModule,
         ErpSharedModule.forRoot(),
         TranslateModule.forRoot({

@@ -160,7 +160,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	}
 
 	back() {
-		this.location.back();
+		this.router.navigate(['/dashboard/courses']);
 	}
 
 }

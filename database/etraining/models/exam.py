@@ -301,7 +301,6 @@ class Submission(models.Model):
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
 	picture = fields.Binary(string='Picture')
-	course_member_id = fields.Many2one('etraining.course_member', related="member_id.course_member_id", readonly=True,string='Exam')
 	study_time = fields.Integer( compute='_compute_study_time', string='Study time')
 
 	@api.multi

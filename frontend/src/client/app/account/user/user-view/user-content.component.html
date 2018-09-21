@@ -54,7 +54,7 @@
                     <label>{{'Avatar'|translate}}</label>
                 </div>
                 <div class="ui-g-9">
-                    <img [src]="user.image | imageBase64" />
+                    <img style="width: 100%" [src]="user.image | imageBase64" />
                 </div>
             </div>
             <div class="ui-g-6">
@@ -95,7 +95,7 @@
                         <label>{{'Gender'|translate}}</label>
                     </div>
                     <div class="ui-g-9">
-                        <span>{{GENDER[user.gender]}}</span>
+                        <span>{{user.gender}}</span>
                     </div>
                 </div>
                 <div class="ui-g-12">

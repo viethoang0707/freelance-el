@@ -247,7 +247,7 @@ export class ExamStudyDialog extends BaseComponent {
 
 	submitExam() {
 		this.submitAnswer().subscribe(() => {
-			this.submitDialog.show(this.exam, this.exam.setting, this.submission);
+			this.submitDialog.show(this.exam, this.setting, this.submission);
 			this.submitDialog.onConfirm.subscribe(() => {
 				this.finishExam();
 			});

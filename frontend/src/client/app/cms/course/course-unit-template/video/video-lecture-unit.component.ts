@@ -45,6 +45,8 @@ export class VideoLectureCourseUnitComponent extends BaseComponent implements Af
 		video.autoplay = false;
 	}
 
+	
+
 	render(unit: CourseUnit) {
 		this.unit = unit;
 		VideoLecture.get(this, this.unit.video_lecture_id).subscribe(lecture=> {
