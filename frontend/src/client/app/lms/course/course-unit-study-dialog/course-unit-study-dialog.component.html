@@ -1,15 +1,13 @@
-<p-dialog [(visible)]="display" modal="true" [responsive]="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0"
-    styleClass="ui-g-12 course-unit-study scroll-y p-0" appendTo="body">
+<p-dialog [(visible)]="display" modal="true" [responsive]="true" [height]="WINDOW_HEIGHT" positionLeft="0" positionTop="0" styleClass="ui-g-12 course-unit-study scroll-y p-0" appendTo="body">
     <div class="spinner" [hidden]="!loading"></div>
     <div class="ui-g">
         <div class="ui-lg-9 ui-md-9 ui-g-12 p-0">
             <div class="card course-study-unit p-0">
-                <div class="head">
-                </div>
+               <!--  <div class="head">
+                </div> -->
                 <div class="image-box-content">
                     <div #unitPlayer>
-                        <ng-template course-unit-player-container></ng-template>
-                        
+                        <ng-template course-unit-player-container></ng-template>  
                     </div>
                 </div>
             </div>
@@ -34,7 +32,7 @@
                 <div class="ui-g-12 p-0 course-study-syllabus">
                     <p-tabView>
                         <p-tabPanel header="{{'Syllabus'|translate}}" leftIcon="ui-icon-collections-bookmark">
-                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)">
+                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="course-study-tree">
                                 <ng-template let-node pTemplate="default">
                                     <span>{{node.label}}</span>
                                     <span [hidden]="!node.data || !node.data.id || !completedUnitIds.includes(node.data.id)">
