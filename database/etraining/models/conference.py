@@ -33,8 +33,9 @@ class Conference(models.Model):
 	@api.model
 	def register_conference_member(self, params):
 		cr,uid, context = self.env.args
-		if "meeting_cloudid" in context:
-			meeting_account = context["meeting_cloudid"]
+		if "account" in context:
+			account = context["account"]
+			meeting_account = account["meeting_cloudid"]
 			memberIds = params["memberIds"]
 			conferenceId = params["conferenceId"]
 			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
@@ -49,7 +50,7 @@ class Conference(models.Model):
 						conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"],'role':role})
 						member.write({'conference_member_id':conf_member.id}) 
 			return {'success':True}
-		return {'success':False, 'message':'Meeting Cloud not defined', "context":context}
+		return {'success':False, 'message':'Meeting Cloud not defined'}
 
 class ConferenceMember(models.Model):
 	_name = 'etraining.conference_member'
