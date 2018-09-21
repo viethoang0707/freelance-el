@@ -50,7 +50,7 @@ class Conference(models.Model):
 						if course_member.role =='teacher' or course_member.role =='supervisor':
 							role = 'supervisor'
 						conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"]["ref"],'role':role})
-						member.write({'conference_member_id':conf_member.id}) 
+						course_member.write({'conference_member_id':conf_member.id}) 
 			return {'success':True}
 		return {'success':False, 'message':'Meeting Cloud not defined'}
 
