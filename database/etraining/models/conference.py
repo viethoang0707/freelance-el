@@ -25,7 +25,6 @@ class Conference(models.Model):
 			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
 			room = {'name':vals["name"],'category':'one-to-many'}
 			resp = client.execute('emeeting.room','add_room',{"room":room})
-			print resp
 			if resp["success"]:
 				vals["room_ref"] = resp["room"]["ref"]
 				vals["room_pass"] = resp["room"]["password"]

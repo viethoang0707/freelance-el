@@ -67,7 +67,9 @@ export class SurveyListComponent extends BaseComponent implements OnInit {
         this.confirmationService.confirm({
             message: this.translateService.instant('Are you sure to start?'),
             accept: () => {
-                this.surveyStudyDialog.show(survey, member);
+                member.joinSurvey(this).subscribe(()=> {
+                    this.surveyStudyDialog.show(survey, member);
+                });
             }
         });
     }

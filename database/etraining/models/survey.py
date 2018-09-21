@@ -179,6 +179,13 @@ class SurveyMember(models.Model):
 			m.write({'submission_id':submission.id})
 		return m
 
+	@api.model
+	def join_exam(self,params):
+		memberId = params["memberId"]
+		for member in self.env['etraining.survey_member'].browse(memberId):
+			if member.enroll_status == 'registered':
+				member.write({'enroll_status':'in-progress'})
+			return {'success':True}
 
 class SurveyAnswer(models.Model):
 	_name = 'etraining.survey_answer'

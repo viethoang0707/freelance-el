@@ -155,10 +155,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     joinConference(conference, member) {
-        if (member.is_active)
-            this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
-        else
-            this.error(this.translateService.instant('You are  not allowed to join the conference'));
+           this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
     }
 
     studyCourse(course: Course, member: CourseMember) {
@@ -195,7 +192,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     startExam(exam: Exam, member: ExamMember) {
         this.confirm(this.translateService.instant('Are you sure to start?'), () => {
             ExamSetting.get(this, exam.setting_id).subscribe(() => {
-                this.examStudyDialog.show(exam, exam.setting, member);
+                member.joinExam(this).subscribe(()=> {
+                    this.examStudyDialog.show(exam, exam.setting, member);
+                });
             });
         });
     }

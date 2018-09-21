@@ -40,7 +40,8 @@ import { SurveyDialog } from '../../../assessment/survey/survey-form/survey-dial
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 
-const MEMBER_FIELDS = ['name', 'group_name', 'email', 'enroll_satus', 'role', 'login']
+const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_satus', 'role', 'login']
+
 @Component({
 	moduleId: module.id,
 	selector: 'class-manage',
@@ -275,12 +276,19 @@ export class ClassManageComponent extends BaseComponent {
 		});
 	}
 
-	registerAll() {
+	registerConferenceMember() {
 		var newMembers = _.filter(this.conferenceMembers, (member: CourseMember) => {
 			return !member.conference_member_id;
 		});
 		var memberIds = _.pluck(newMembers, 'id');
 		this.conference.registerConferenceMember(this, memberIds).subscribe(() => {
+			this.success('Register conferenc successfully');
+			this.courseClass.listMembers(this, MEMBER_FIELDS).subscribe(members=> {
+				this.courseMembers = members;
+				this.conferenceMembers = _.filter(this.courseMembers, (member: CourseMember) => {
+						return member.role == 'student' || member.role == 'teacher';
+					});
+			});
 		});
 	}
 

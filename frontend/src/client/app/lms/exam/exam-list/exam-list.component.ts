@@ -87,7 +87,9 @@ export class ExamListComponent extends BaseComponent implements OnInit {
             message: this.translateService.instant('Are you sure to start?'),
             accept: () => {
                 ExamSetting.get(this, exam.setting_id).subscribe(setting => {
-                    this.examStudyDialog.show(exam, setting, member);
+                    member.joinExam(this).subscribe(()=> {
+                        this.examStudyDialog.show(exam, setting, member);
+                    });
                 });
             }
         });

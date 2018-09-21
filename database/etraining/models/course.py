@@ -543,6 +543,14 @@ class CourseMember(models.Model):
 			return {'success':True}
 
 	@api.model
+	def join_course(self,params):
+		memberId = params["memberId"]
+		for member in self.env['etraining.course_member'].browse(memberId):
+			if member.enroll_status == 'registered':
+				member.write({'enroll_status':'in-study'})
+			return {'success':True}
+
+	@api.model
 	def do_assessment(self,params):
 		memberId = params["memberId"]
 		assessmentId = params["assessmentId"]

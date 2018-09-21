@@ -11,7 +11,7 @@ import { Conference } from '../../../shared/models/elearning/conference.model';
 import { MeetingService } from '../../../shared/services/meeting.service';
 import { BaseModel } from '../../../shared/models/base.model';
 
-const CONFERENCE_FIELDS = ['name', 'status', 'room_pass', 'room_ref'];
+const CONFERENCE_FIELDS = ['name', 'status', 'room_pass','conferenc_id', 'room_ref'];
 
 @Component({
     moduleId: module.id,
@@ -32,7 +32,7 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.lmsProfileService.init(this).subscribe(() => {
-            var conferenceMembers = this.lmsProfileService.MyConferenceMembers;
+            this.conferenceMembers = this.lmsProfileService.MyConferenceMembers;
             Conference.array(this, this.lmsProfileService.MyConferenceIds ).subscribe(conferences=> {
                 this.displayConferences(conferences);
             });
@@ -45,16 +45,16 @@ export class ConferenceListComponent extends BaseComponent implements OnInit {
                 return member.conference_id == conference.id;
             });
         });
-        this.conferences = this.conferences = _.sortBy(conferences, (conference: Conference) => {
-            return -conference.id && conference['member']!=null;
+        this.conferences = _.filter(conferences, (conference: Conference) => {
+            return conference['member']!=null;
+        });
+        this.conferences = _.sortBy(this.conferences, (conference: Conference) => {
+            return -conference.id;
         });
     }
 
     joinConference(conference:Conference, member:ConferenceMember) {
-        if (member.is_active)
-            this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
-        else
-            this.error(this.translateService.instant('You are  not allowed to join the conference'));
+         this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
     }
 
 }
