@@ -49,7 +49,7 @@ class Conference(models.Model):
 						conf_member  = self.env["etraining.conference_member"].create({'conference_id':self.id, 'course_member_id':course_member.id,'room_member_ref': resp["member"][0]["ref"],'role':role})
 						member.write({'conference_member_id':conf_member.id}) 
 			return {'success':True}
-		return {'success':False, 'message':'Meeting Cloud not defined'}
+		return {'success':False, 'message':'Meeting Cloud not defined', "context":context}
 
 class ConferenceMember(models.Model):
 	_name = 'etraining.conference_member'
