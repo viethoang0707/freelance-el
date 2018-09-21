@@ -19,6 +19,7 @@ class Conference(models.Model):
 	@api.model
 	def create(self, vals):
 		cr,uid, context = self.env.args
+		print 'context', context
 		if "account" in context:
 			account = context["account"]
 			meeting_account = context[account["meeting_cloudid"]]

@@ -6,7 +6,6 @@ import { AssessmentModule } from '../assessment/assessment.module';
 import { CMSModule } from '../cms/cms.module';
 import { LMSComponent } from './lms.component';
 import { ExamStudyDialog } from './exam/exam-study/exam-study.dialog.component';
-import { ClassConferenceComponent } from './class/class-conference/class-conference.component';
 import { QuestionMarkingDialog } from './exam/question-marking/question-marking.dialog.component';
 import { AnswerPrintDialog } from './exam/answer-print/answer-print.dialog.component';
 import { QuestionSheetPrintDialog } from './exam/question-sheet-print/question-sheet-print.dialog.component';
@@ -82,7 +81,6 @@ import { SurveyListComponent } from './survey/survey-list/survey-list.component'
         ExamSubmissionDialog,
         ExamManageComponent,
         QuestionSheetPrintDialog,
-        ClassConferenceComponent,
         CourseGroupManageComponent,
         CourseViewComponent,
         CourseMaterialDialog,

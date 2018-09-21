@@ -13,7 +13,6 @@ import { SyllabusGuard } from '../shared/guards/syllabus.guard';
 import { SurveyGuard } from '../shared/guards/survey.guard';
 import { RouterModule } from '@angular/router';
 import { ClassGuard } from '../shared/guards/class.guard';
-import { ClassConferenceComponent } from './class/class-conference/class-conference.component';
 import { ClassExamEnrollComponent } from './class/class-exam-enroll/class-exam-enroll.component';
 import { ClassSurveyEnrollComponent } from './class/class-survey-enroll/class-survey-enroll.component';
 import { ConferenceeResolve, ProjectResolve, CourseResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
@@ -122,17 +121,6 @@ export const LMSRoutes: Routes = [
           },
           resolve: {
             survey: SurveyResolve
-          },
-          canActivate: [ClassGuard]
-        },
-        {
-          path: "class/manage/conference/:classId/:conferenceId",
-          component: ClassConferenceComponent,
-          data: {
-            breadcrumb: 'Manage class conference'
-          },
-          resolve: {
-            conference: ConferenceeResolve,
           },
           canActivate: [ClassGuard]
         },
