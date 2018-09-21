@@ -692,5 +692,8 @@
 	"Normal user": "Người dùng thông thường",
 	"Active user": "Tài khoản được truy cập",
 	"Banner user": "Tài khoản bị cấm truy cập",
-	"Qualification": "Trình độ chuyên môn"
+	"Qualification": "Trình độ chuyên môn",
+	"Class form": "Lớp học",
+	"Course publish": "Công khai khóa học",
+	"Course published successful": "Công khai khóa học thành công"
 }
