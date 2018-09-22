@@ -1,78 +1,152 @@
+
 <div class="card card-w-title">
-    <h1>{{'Course view'|translate}}</h1>
-    <div class="ui-g ui-fluid form-group">
-        <div class="ui-g-9 logo-course">
-            <div class="ui-g-3">
-                <label>{{'Logo'|translate}}</label>
+    <div class="ui-g">
+        <div style="width:100%;">
+            <h1>{{'Course view'|translate}}</h1>
+        </div>
+        <div style="width:100%;">
+            <div class="ui-lg-4 ui-g-12" style="padding-top: 10px;">
+                <span class="profile-image-wrapper">
+                    <img [src]="course.logo | imageBase64" height="70%"/>
+                </span>
             </div>
-            <div class="ui-g-9">
-                <img [src]="course.logo | imageBase64" />
+            <div class="ui-lg-4 ui-g-12">
+                <p-card styleClass="lms-course-detail">
+                    <ul class="list-cmt">
+                        <li class="clearfix">
+                            <i class="material-icons">toys</i>
+                            <span class="cmt-title">{{'Name'|translate}}</span>
+                            <span class="cmt-detail">{{course.name}}</span>
+                        </li>
+                        <li class="clearfix">
+                            <i class="material-icons">toys</i>
+                            <span class="cmt-title">{{'Code'|translate}}</span>
+                            <span class="cmt-detail">{{course.Code}}</span>
+                        </li>
+                        <li class="clearfix">
+                            <i class="material-icons">invert_colors</i>
+                            <span class="cmt-title">{{'Mode'|translate}}</span>
+                            <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
+                        </li>
+                        <li class="clearfix">
+                            <i class="material-icons">school</i>
+                            <span class="cmt-title">{{'Editor'|translate}}</span>
+                            <span class="cmt-detail">{{course.name}}</span>
+                            
+                        </li>
+                    </ul>
+                </p-card>
+            </div>
+            <div class="ui-lg-4 ui-g-12">
+                <p-card styleClass="lms-course-detail">
+                    <ul class="list-cmt">
+                        <li class="clearfix">
+                            <i class="material-icons">grade</i>
+                            <span class="cmt-title">{{'Parent group'|translate}}</span>
+                            <span class="cmt-detail">{{course.group_name}}</span>
+                        </li>
+                        <li class="clearfix">
+                            <i class="material-icons">grade</i>
+                            <span class="cmt-title">{{'Competency'|translate}}</span>
+                            <span class="cmt-detail">{{course.competency_name +' - '+ course.competency_level_name}}</span>
+                        </li>
+                        <li class="clearfix">
+                            <i class="material-icons">toc</i>
+                            <span class="cmt-title">{{'Summary'|translate}}</span>
+                            <span class="cmt-detail">{{course.summary}}</span>
+                        </li>
+                        <!-- <li class="clearfix">
+                            <i class="material-icons">toc</i>
+                            <span class="cmt-title">{{'Description'|translate}}</span>
+                        </li> -->
+
+                    </ul>
+                </p-card>
             </div>
         </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Name'|translate}}</label>
-            </div>
-            <div class="ui-g-9">
-                <span>{{course.name}}</span>
-            </div>
+        <div style="width:100%;">
+            <h3>{{'Description'|translate}}</h3>
         </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Code'|translate}}</label>
-            </div>
-            <div class="ui-g-9">
-                <span>{{course.code}}</span>
-            </div>
+        <div>
+            <span [innerHTML]="course.description" style="width:100%;"></span>
         </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Mode'|translate}}</label>
+        
+
+
+
+            <!-- <div class="ui-g-9 logo-course">
+                <div class="ui-g-3">
+                    <label>{{'Logo'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <img [src]="course.logo | imageBase64" />
+                </div>
             </div>
-            <div class="ui-g-9">
-                <span>{{COURSE_MODE[course.mode] | translate}}</span>
+            <div class="ui-g-6">
+                <div class="ui-g-3">
+                    <label>{{'Name'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{course.name}}</span>
+                </div>
             </div>
-        </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Editor'|translate}}</label>
+            <div class="ui-g-6">
+                <div class="ui-g-3">
+                    <label>{{'Code'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{course.code}}</span>
+                </div>
             </div>
-            <div class="ui-g-9">
-                <span>{{editor.name}}</span>
+            <div class="ui-g-6">
+                <div class="ui-g-3">
+                    <label>{{'Mode'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{COURSE_MODE[course.mode] | translate}}</span>
+                </div>
             </div>
-        </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Parent group'|translate}}</label>
+            <div class="ui-g-6">
+                <div class="ui-g-3">
+                    <label>{{'Editor'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{editor.name}}</span>
+                </div>
             </div>
-            <div class="ui-g-9">
-                <span>{{course.group_name}}</span>
+            <div class="ui-g-6">
+                <div class="ui-g-3">
+                    <label>{{'Parent group'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{course.group_name}}</span>
+                </div>
             </div>
-        </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Competency'|translate}}</label>
+            <div class="ui-g-6">
+                <div class="ui-g-3">
+                    <label>{{'Competency'|translate}}</label>
+                </div>
+                <div class="ui-g-9">
+                    <span>{{course.competency_name +' - '+ course.competency_level_name}}</span>
+                </div>
             </div>
-            <div class="ui-g-9">
-                <span>{{course.competency_name +' - '+ course.competency_level_name}}</span>
+            <div class="ui-g-12">
+                <div class="ui-g-2">
+                    <label>{{'Summary'|translate}}</label>
+                </div>
+                <div class="ui-g-10">
+                    <p>{{course.summary}}</p>
+                </div>
             </div>
-        </div>
-        <div class="ui-g-12">
-            <div class="ui-g-2">
-                <label>{{'Summary'|translate}}</label>
-            </div>
-            <div class="ui-g-10">
-                <p>{{course.summary}}</p>
-            </div>
-        </div>
-        <div class="ui-g-12">
-            <div class="ui-g-2">
-                <label>{{'Description'|translate}}</label>
-            </div>
-            <div class="ui-g-10">
-                <p [innerHTML]="course.description"></p>
-            </div>
-        </div>
+            <div class="ui-g-12">
+                <div class="ui-g-2">
+                    <label>{{'Description'|translate}}</label>
+                </div>
+                <div class="ui-g-10">
+                    <p [innerHTML]="course.description"></p>
+                </div>
+            </div> -->
+        
     </div>
     <div class="card-footer">
         <button type="submit" pButton icon="ui-icon-edit" label="{{'Edit'|translate}}" (click)="editCourse()"
@@ -80,3 +154,4 @@
         <button type="button" pButton icon="ui-icon-clear" (click)="close()" label="{{'Close'|translate}}"></button>
     </div>
 </div>
+    

@@ -1,5 +1,8 @@
 <div class="card card-w-title">
-    <h1>{{'Course form'|translate}}</h1>
+    <div style="width:100%;">
+        <h1>{{'Course form'|translate}}</h1>
+    </div>
+        
     <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
         <div class="ui-g ui-fluid form-group">
             <div class="ui-g-3 logo-course">
@@ -16,7 +19,99 @@
                     </div>
                 </div>
             </div>
-            <div class="ui-g-6">
+            <h1>{{'Course info'|translate}}</h1>
+            <div style="width:100%;">
+                <div class="ui-lg-4 ui-g-12" style="width:50%;">
+                    <p-card styleClass="lms-course-detail">
+                        <ul class="list-cmt">
+                            <li class="clearfix">
+                                <i class="material-icons">toys</i>
+                                <span class="cmt-title">{{'Name'|translate}}</span>
+                                <span class="cmt-detail" style="width:70%;">
+                                    <input type="text" pInputText [(ngModel)]="course.name" #name="ngModel" name="name" required>
+                                    <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
+                                        <div *ngIf="name.errors.required">
+                                            {{'Name is required' | translate}}
+                                        </div>
+                                    </div>
+                                </span>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">toys</i>
+                                <span class="cmt-title">{{'Code'|translate}}</span>
+                                <span class="cmt-detail" style="width:70%;">
+                                    <input type="text" pInputText [(ngModel)]="course.code" #code="ngModel" name="code" required>
+                                    <div *ngIf="code.invalid && (code.dirty || code.touched)" class="ui-message ui-messages-error ui-corner-all">
+                                        <div *ngIf="code.errors.required">
+                                            {{'Code is required' | translate}}
+                                        </div>
+                                    </div>
+                                </span>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">invert_colors</i>
+                                <span class="cmt-title">{{'Mode'|translate}}</span>
+                                <span class="cmt-detail" style="width:70%;">
+                                    <div style="margin:10px 0">
+                                        <p-radioButton name="mode" value="self-study" [disabled]="course.id" label="{{'Self-study'|translate}}" [(ngModel)]="course.mode" inputId="opt1" #mode="ngModel" required></p-radioButton>
+                                    </div>
+                                    <div style="margin-bottom:10px">
+                                        <p-radioButton name="mode" value="group" [disabled]="course.id" label="{{'Group study'|translate}}" [(ngModel)]="course.mode" inputId="opt2" required></p-radioButton>
+                                    </div>
+                                    <div *ngIf="mode.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
+                                        <div *ngIf="mode.errors.required">
+                                            {{'Mode is required' | translate}}
+                                        </div>
+                                    </div>
+                                </span>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">school</i>
+                                <span class="cmt-title">{{'Editor'|translate}}</span>
+                                <span class="cmt-detail" style="width:70%;">
+                                    <span class="cmt-title">{{editor.name}}</span>
+                                    <div (click)="selectEditor()">
+                                        <i class="material-icons">open_in_browser</i>
+                                    </div>
+                                </span>
+                                
+                            </li>
+                        </ul>
+                    </p-card>
+                </div>
+                <div class="ui-lg-4 ui-g-12" style="width:50%;">
+                    <p-card styleClass="lms-course-detail">
+                        <ul class="list-cmt">
+                            <li class="clearfix">
+                                <i class="material-icons">grade</i>
+                                <span class="cmt-title" style="width:70%;">{{'Parent group'|translate}}</span>
+                                <!-- <span class="cmt-detail">{{course.group_name}}</span> -->
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">grade</i>
+                                <span class="cmt-title">{{'Competency'|translate}}</span>
+                                <span class="cmt-detail" style="width:70%;">
+                                    <div (click)="selectCompetencyLevel()">
+                                        <span class="cmt-title">{{course.competency_name +' - '+ course.competency_level_name}}</span>
+                                        <!-- <label>{{'Competency' |translate}}: {{course.competency_name +' - '+ course.competency_level_name}}</label> -->
+                                        <i class="material-icons">open_in_browser</i>
+                                    </div>
+                                </span>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">toc</i>
+                                <span class="cmt-title">{{'Summary'|translate}}</span>
+                                <span class="cmt-detail" style="width:70%;">
+                                    <textarea pInputTextarea [(ngModel)]="course.summary" name="summary"></textarea>
+                                </span>
+                            </li>
+                
+
+                        </ul>
+                    </p-card>
+                </div>
+            </div>
+            <!-- <div class="ui-g-6">
                 <label>{{'Name'|translate}}</label>
                 <input type="text" pInputText [(ngModel)]="course.name" #name="ngModel" name="name" required>
                 <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
@@ -63,7 +158,7 @@
             <div class="ui-g-12">
                 <label>{{'Summary'|translate}}</label>
                 <textarea pInputTextarea [(ngModel)]="course.summary" name="summary"></textarea>
-            </div>
+            </div> -->
             <div class="ui-g-12">
                 <label>{{'Description'|translate}}</label>
                 <p-editor [(ngModel)]="course.description" name="description" [style]="{'height':'120px'}"></p-editor>
