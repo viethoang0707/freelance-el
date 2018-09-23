@@ -5,9 +5,11 @@
             <h1>{{'Course view'|translate}}</h1>
         </div>
         <div style="width:100%;">
-            <div class="ui-lg-4 ui-g-12" style="padding-top: 10px;">
+            <div class="ui-lg-4 ui-g-12" style="padding-top: 10px;height:70%;">
                 <span class="profile-image-wrapper">
-                    <img [src]="course.logo | imageBase64" height="70%"/>
+                    <img [src]='course.logo | imageBase64' style="height:100%;" [ngClass]="{'display-none' : !course.logo}"  />
+                    <img *ngIf="!course.logo" src="assets/images/logo/logo-course.jpg" style="height:100%;">
+                    <!-- <img [src]="course.logo | imageBase64" height="70%"/> -->
                 </span>
             </div>
             <div class="ui-lg-4 ui-g-12">
@@ -55,10 +57,11 @@
                             <span class="cmt-title">{{'Summary'|translate}}</span>
                             <span class="cmt-detail">{{course.summary}}</span>
                         </li>
-                        <!-- <li class="clearfix">
+                        <li class="clearfix">
                             <i class="material-icons">toc</i>
-                            <span class="cmt-title">{{'Description'|translate}}</span>
-                        </li> -->
+                            <span class="cmt-title">{{'Created'|translate}}</span>
+                            <span class="cmt-detail">{{course.create_date| date : "dd/MM/yyyy "}}</span>
+                        </li>
 
                     </ul>
                 </p-card>

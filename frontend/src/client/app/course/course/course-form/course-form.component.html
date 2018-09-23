@@ -1,13 +1,16 @@
 <div class="card card-w-title">
-    <div style="width:100%;">
-        <h1>{{'Course form'|translate}}</h1>
-    </div>
-        
     <form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+        <div class="card-footer">
+            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}"  [disabled]="loading || ((course.supervisor_id != ContextUser.id || course.review_state=='approved') && !ContextUser.IsSuperAdmin)"></button>
+            <button type="button" pButton icon="ui-icon-clear" (click)="cancel()" label="{{'Close'|translate}}"></button>
+        </div>
+        <div style="width:100%;">
+            <h1>{{'Course form'|translate}}</h1>
+        </div>
         <div class="ui-g ui-fluid form-group">
             <div class="ui-g-3 logo-course">
                 <label>{{'Logo'|translate}}</label>
-                <image-base64 [(src64)]="course.logo"></image-base64>
+                <image-base64 [(src64)]="course.logo" style="height:100%;"></image-base64>
             </div>
             <div class="ui-g-9">
                 <label>{{'Parent group'|translate}}</label>
@@ -69,8 +72,8 @@
                                 <i class="material-icons">school</i>
                                 <span class="cmt-title">{{'Editor'|translate}}</span>
                                 <span class="cmt-detail" style="width:70%;">
-                                    <span class="cmt-title">{{editor.name}}</span>
                                     <div (click)="selectEditor()">
+                                        <span class="cmt-title">{{editor.name}}</span>
                                         <i class="material-icons">open_in_browser</i>
                                     </div>
                                 </span>
