@@ -86,8 +86,7 @@ h4.title{
 
 .profile-image-wrapper img{
   width: 100%;
-  height: 40%;
-	border: 1px solid #dbdbdb;
+	/* border: 1px solid #dbdbdb; */
 }
 
 .border{
