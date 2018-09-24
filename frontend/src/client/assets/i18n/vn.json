@@ -700,5 +700,7 @@
 	"Competency form": "Biểu mẫu năng lực",
 	"Survey editor": "Chỉnh sửa khảo sát",
 	"Survey start time is required": "Thời gian bắt đầu khảo sát là bắt buộc",
-	"Survey end time is required": "Thời gian kết thúc khảo sát là bắt buộc"
+	"Survey end time is required": "Thời gian kết thúc khảo sát là bắt buộc",
+	"Permission view": "Xem chi tiết quyền người dùng",
+	"Permission view form": "Xem chi tiết quyền người dùng"
 }
