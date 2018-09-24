@@ -13,6 +13,14 @@ export class TimeConvertPipe implements PipeTransform {
             ms = Math.floor(ms / 1000 / 60 / 60 / 24);
         return ms;
     }
+
+    transformMinutesSec(ms: number): string {
+        var result: string;
+        var min = Math.floor(ms / 1000 / 60);
+        var sec = Math.floor(ms / 1000) - (Math.floor(ms / 1000 / 60) * 60);
+        result = min + ":" + sec;
+        return result;
+    }
 }
 
 @Pipe({ name: 'clock', pure: false })
@@ -23,8 +31,8 @@ export class ClockPipe implements PipeTransform {
         var sec = Math.floor(ms / 1000);
         var min = Math.floor(sec / 60);
         sec = sec % 60;
-        var minStr =  min < 10 ?  "0" + min :''+min; 
-        var secStr =  sec < 10 ?  "0" + sec :''+sec; 
+        var minStr = min < 10 ? "0" + min : '' + min;
+        var secStr = sec < 10 ? "0" + sec : '' + sec;
         return minStr + ':' + secStr
     }
 }

@@ -88,10 +88,11 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
         record["score"] = member.score;
         record["grade"] = member.grade;
         if (submit) {
-            if (submit.start) 
+            if (submit.start)
                 record["date_attempt"] = this.datePipe.transform(submit.start, EXPORT_DATE_FORMAT);
-            if (submit.study_time)
-                record["study_time"] = this.timePipe.transform(submit.study_time * 1000, 'sec');
+            if (submit.study_time) {
+                record["study_time"] = this.timePipe.transformMinutesSec(submit.study_time * 1000);
+            }
         }
         return record;
     }

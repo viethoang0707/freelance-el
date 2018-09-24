@@ -21,3 +21,7 @@
 .options-question .md-inputfield input{
 	width: 100%;
 }
+
+.option_answer .ui-chkbox .ui-chkbox-box{
+  border-radius: 0px;
+}
