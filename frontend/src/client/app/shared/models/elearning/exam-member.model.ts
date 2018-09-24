@@ -107,6 +107,14 @@ export class ExamMember extends BaseModel{
             context.authService.LoginToken);
     }
 
+    static __api__join_exam(memberId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(ExamMember.Model, 'join_exam',{memberId:memberId}, null);
+    }
+
+    joinExam(context:APIContext,fields?:string[]):Observable<any> {
+        return context.apiService.execute(ExamMember.__api__join_exam(this.id), 
+            context.authService.LoginToken);
+    }
 
     static __api__listSubmissions(memberId:number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(Submission.Model,fields,"[('member_id','=',"+memberId+")]");

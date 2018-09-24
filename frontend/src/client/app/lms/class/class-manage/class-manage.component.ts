@@ -40,7 +40,8 @@ import { SurveyDialog } from '../../../assessment/survey/survey-form/survey-dial
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 
-const MEMBER_FIELDS =['name', 'group_name', 'email', 'enroll_satus', 'role']
+const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_satus', 'role', 'login']
+
 @Component({
 	moduleId: module.id,
 	selector: 'class-manage',
@@ -72,6 +73,7 @@ export class ClassManageComponent extends BaseComponent {
 	private selectedMember: CourseMember;
 	private courseContent: any;
 	private supervisor: CourseMember;
+	private conferenceMembers: CourseMember[];
 
 	@ViewChild(GradebookDialog) gradebookDialog: GradebookDialog;
 	@ViewChild(LMSProfileDialog) lmsProfileDialog: LMSProfileDialog;
@@ -100,12 +102,16 @@ export class ClassManageComponent extends BaseComponent {
 		this.classSurveys = [];
 		this.classExams = [];
 		this.courseClass = new CourseClass();
+		this.conference =  new Conference();
 	}
 
 	ngOnInit() {
 		this.courseClass = this.route.snapshot.data['courseClass'];
 		this.supervisor = this.route.snapshot.data['supervisor'];
 		this.viewMode = "outline";
+		Conference.get(this, this.courseClass.conference_id).subscribe(conference => {
+			this.conference = conference;
+		});
 		this.lmsProfileService.init(this).subscribe(() => {
 			BaseModel.bulk_search(this,
 				CourseClass.__api__listProjects(this.courseClass.id),
@@ -121,6 +127,9 @@ export class ClassManageComponent extends BaseComponent {
 					this.certificates = Certificate.toArray(jsonArr[4]);
 					CourseLog.classActivity(this, this.courseClass.id).subscribe(logs => {
 						this.loadMemberStats(logs);
+					});
+					this.conferenceMembers = _.filter(this.courseMembers, (member: CourseMember) => {
+						return member.role == 'student' || member.role == 'teacher';
 					});
 				});
 		});
@@ -214,7 +223,7 @@ export class ClassManageComponent extends BaseComponent {
 		exam.course_class_id = this.courseClass.id;
 		this.examDialog.show(exam);
 		this.examDialog.onCreateComplete.first().subscribe(() => {
-			this.classExams.push(exam);
+			this.classExams = [...this.classExams, exam];
 		});
 	}
 
@@ -232,7 +241,7 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	editExamContent(exam: Exam) {
-		QuestionSheet.get(this, exam.sheet_id).subscribe(sheet=> {
+		QuestionSheet.get(this, exam.sheet_id).subscribe(sheet => {
 			this.examContentDialog.show(exam, sheet);
 		});
 	}
@@ -249,7 +258,7 @@ export class ClassManageComponent extends BaseComponent {
 		survey.course_class_id = this.courseClass.id;
 		this.surveyDialog.show(survey);
 		this.surveyDialog.onCreateComplete.first().subscribe(() => {
-			this.classSurveys.push(survey);
+			this.classSurveys = [...this.classSurveys, survey];
 		});
 	}
 
@@ -262,8 +271,24 @@ export class ClassManageComponent extends BaseComponent {
 	}
 
 	editSurveyContent(survey: Survey) {
-		Survey.get(this, survey.sheet_id).subscribe(sheet=> {
+		Survey.get(this, survey.sheet_id).subscribe(sheet => {
 			this.surveyContentDialog.show(survey, sheet);
+		});
+	}
+
+	registerConferenceMember() {
+		var newMembers = _.filter(this.conferenceMembers, (member: CourseMember) => {
+			return !member.conference_member_id;
+		});
+		var memberIds = _.pluck(newMembers, 'id');
+		this.conference.registerConferenceMember(this, memberIds).subscribe(() => {
+			this.success('Register conferenc successfully');
+			this.courseClass.listMembers(this, MEMBER_FIELDS).subscribe(members=> {
+				this.courseMembers = members;
+				this.conferenceMembers = _.filter(this.courseMembers, (member: CourseMember) => {
+						return member.role == 'student' || member.role == 'teacher';
+					});
+			});
 		});
 	}
 

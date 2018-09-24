@@ -85,12 +85,12 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 						var optionRecord = this.records[j + i];
 						var option = new QuestionOption();
 						option.is_correct = optionRecord["correct"] == 'Y';
-						option.content = optionRecord["option"];
-						questionOptions.push(option);
+						option.content = optionRecord["option"] || '';
+						if (option.content.length)
+							questionOptions.push(option);
 					}
 					optionList.push(_.shuffle(questionOptions));
-				} else
-					optionList.push([])
+				}
 				i += optionLength;
 			} else
 				i++;

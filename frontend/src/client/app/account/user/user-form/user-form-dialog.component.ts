@@ -12,18 +12,16 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 
 @Component({
 	moduleId: module.id,
-	selector: 'user-profile-dialog',
-	templateUrl: 'profile-dialog.component.html',
+	selector: 'user-form-dialog',
+	templateUrl: 'user-form-dialog.component.html',
 })
-export class UserProfileDialog extends BaseDialog<User> {
+export class UserFormDialog extends BaseDialog<User> {
 	
 	@ViewChild(UserContentComponent) formContent: UserContentComponent;
 
-	private user: User;
 
 	constructor(private router: Router, private route: ActivatedRoute) {
 		super();
-		this.user = new User();
 	}
 
 
@@ -35,8 +33,8 @@ export class UserProfileDialog extends BaseDialog<User> {
 
 
 	save() {
-		if (this.user.IsNew) {
-			User.register(this, this.user).subscribe(resp => {
+		if (this.object.IsNew) {
+			User.register(this, this.object).subscribe(resp => {
 				if (!resp["success"]) {
 					this.error(this.translateService.instant(resp["message"]));
 					return;
@@ -46,7 +44,7 @@ export class UserProfileDialog extends BaseDialog<User> {
 			})
 		}
 		else {
-			this.user.save(this).subscribe(() => {
+			this.object.save(this).subscribe(() => {
 				this.onUpdateCompleteReceiver.next();
 				this.hide();
 			});

@@ -99,10 +99,6 @@ export class CourseGroupManageComponent extends BaseComponent implements OnInit 
 			this.warn(this.translateService.instant('Course syllabus is not published'));
 	}
 
-	manageConference(courseClass: CourseClass) {
-		this.router.navigate(['/lms/class/manage/conference', courseClass.id, courseClass.conference_id]);
-	}
-
 	manageClass(courseClass: CourseClass) {
 		var member = this.lmsProfileService.getCourseMemberByRole('teacher', this.course.id);
 		console.log('member: ', member);

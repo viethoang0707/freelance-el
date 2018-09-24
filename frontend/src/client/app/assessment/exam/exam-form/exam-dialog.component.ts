@@ -52,10 +52,10 @@ export class ExamDialog extends BaseDialog<Exam> {
     }
 
     save() {
+        var isNew = this.object.IsNew;
         this.object.save(this).subscribe(() => {
             this.editor.role = 'editor';
             this.editor.exam_id = this.object.id;
-            var isNew = this.object.IsNew;
             this.editor.save(this).subscribe(() => {
                 this.hide();
                 if (isNew)

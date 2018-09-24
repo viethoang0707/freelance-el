@@ -41,6 +41,8 @@ export class HtmlLectureCourseUnitComponent extends BaseComponent implements ICo
 		});
 	}
 
+	
+
 	saveEditor(): Observable<any> {
 		return  this.lecture.save(this);
 	}

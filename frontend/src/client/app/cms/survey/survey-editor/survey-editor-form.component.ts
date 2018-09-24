@@ -53,6 +53,6 @@ export class SurveyEditorFormComponent extends BaseComponent {
 	}
 
 	back() {
-		this.location.back();
+		this.router.navigate(['/lms/exam/edit', this.survey.id]);
 	}
 }

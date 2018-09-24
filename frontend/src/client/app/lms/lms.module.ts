@@ -6,7 +6,6 @@ import { AssessmentModule } from '../assessment/assessment.module';
 import { CMSModule } from '../cms/cms.module';
 import { LMSComponent } from './lms.component';
 import { ExamStudyDialog } from './exam/exam-study/exam-study.dialog.component';
-import { ClassConferenceComponent } from './class/class-conference/class-conference.component';
 import { QuestionMarkingDialog } from './exam/question-marking/question-marking.dialog.component';
 import { AnswerPrintDialog } from './exam/answer-print/answer-print.dialog.component';
 import { QuestionSheetPrintDialog } from './exam/question-sheet-print/question-sheet-print.dialog.component';
@@ -47,6 +46,12 @@ import { SelfAssessmentCourseUnitPlayerComponent } from './course/course-unit-te
 import { ConferenceeResolve, CourseResolve, ProjectResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
 import { ProjectDialog } from './class/project-dialog/project-dialog.component';
 import { SelfAssessmentGradebookDialog } from './course/self-assessment-gradebook/gradebook.dialog.component';
+import { ExamListComponent } from './exam/exam-list/exam-list.component';
+import { CourseListComponent } from './course/course-list/course-list.component';
+import { ConferenceListComponent } from './class/conference-list/conference-list.component';
+import { CourseSearchComponent } from './course/course-search/course-search.component';
+import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
+import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 
 @NgModule({
     imports: [
@@ -59,6 +64,12 @@ import { SelfAssessmentGradebookDialog } from './course/self-assessment-gradeboo
     ],
     declarations: [
         LMSComponent,
+        ExamListComponent,
+        CourseListComponent,
+        ConferenceListComponent,
+        CourseSearchComponent,
+        CourseRecommendComponent,
+        SurveyListComponent,
         ExamStudyDialog,
         AnswerPrintDialog,
         CourseEditComponent,
@@ -70,7 +81,6 @@ import { SelfAssessmentGradebookDialog } from './course/self-assessment-gradeboo
         ExamSubmissionDialog,
         ExamManageComponent,
         QuestionSheetPrintDialog,
-        ClassConferenceComponent,
         CourseGroupManageComponent,
         CourseViewComponent,
         CourseMaterialDialog,

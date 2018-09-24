@@ -11,7 +11,6 @@ import { BaseModel } from '../shared/models/base.model';
 import { User } from '../shared/models/elearning/user.model';
 import { MenuService } from '../shared/services/menu.service';
 import { SettingDialog } from '../setting/setting-dialog.component';
-import { UserProfileDialog } from '../account/user/user-form/profile-dialog.component';
 import { ChangePasswordDialog } from '../account/user/change-password/change-password-dialog.component';
 import { UserViewDialogComponent } from '../account/user/user-view/user-view.dialog.component';
 

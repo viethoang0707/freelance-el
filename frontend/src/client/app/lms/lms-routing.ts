@@ -13,11 +13,16 @@ import { SyllabusGuard } from '../shared/guards/syllabus.guard';
 import { SurveyGuard } from '../shared/guards/survey.guard';
 import { RouterModule } from '@angular/router';
 import { ClassGuard } from '../shared/guards/class.guard';
-import { ClassConferenceComponent } from './class/class-conference/class-conference.component';
 import { ClassExamEnrollComponent } from './class/class-exam-enroll/class-exam-enroll.component';
 import { ClassSurveyEnrollComponent } from './class/class-survey-enroll/class-survey-enroll.component';
 import { ConferenceeResolve, ProjectResolve, CourseResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
 import { ProjectManageComponent } from './class/project-manage/project-manage.component';
+import { ExamListComponent } from './exam/exam-list/exam-list.component';
+import { CourseListComponent } from './course/course-list/course-list.component';
+import { ConferenceListComponent } from './class/conference-list/conference-list.component';
+import { CourseSearchComponent } from './course/course-search/course-search.component';
+import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
+import { SurveyListComponent } from './survey/survey-list/survey-list.component';
 
 export const LMSRoutes: Routes = [
   {
@@ -120,17 +125,6 @@ export const LMSRoutes: Routes = [
           canActivate: [ClassGuard]
         },
         {
-          path: "class/manage/conference/:classId/:conferenceId",
-          component: ClassConferenceComponent,
-          data: {
-            breadcrumb: 'Manage class conference'
-          },
-          resolve: {
-            conference: ConferenceeResolve,
-          },
-          canActivate: [ClassGuard]
-        },
-        {
           path: "course/view/:courseId",
           component: CourseViewComponent,
           data: {
@@ -151,6 +145,48 @@ export const LMSRoutes: Routes = [
             member: CourseMemberResolve
           },
         },
+        {
+          path: "exams",
+          component: ExamListComponent,
+          data: {
+            breadcrumb: 'My exams'
+          }
+        },
+        {
+          path: "courses",
+          component: CourseListComponent,
+          data: {
+            breadcrumb: 'My courses'
+          }
+        },
+        {
+          path: "courses/search",
+          component: CourseSearchComponent,
+          data: {
+            breadcrumb: 'Search courses'
+          }
+        },
+        {
+          path: "courses/recommend",
+          component: CourseRecommendComponent,
+          data: {
+            breadcrumb: 'Search courses'
+          }
+        },
+        {
+          path: "meetings",
+          component: ConferenceListComponent,
+          data: {
+            breadcrumb: 'My conferences'
+          }
+        },
+        {
+          path: "surveys",
+          component: SurveyListComponent,
+          data: {
+            breadcrumb: 'My surveys'
+          }
+        }
       ]
   }
 

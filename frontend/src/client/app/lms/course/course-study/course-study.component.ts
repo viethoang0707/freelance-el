@@ -151,7 +151,9 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	study() {
-		this.unitStudyDialog.show(this.member, this.course, this.syl, this.units, this.faqs, this.materials);
+		this.member.joinCourse(this).subscribe(()=> {
+			this.unitStudyDialog.show(this.member, this.course, this.syl, this.units, this.faqs, this.materials);
+		});
 	}
 
 	getProjectSubmit(project: Project) {
@@ -161,7 +163,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	joinConference() {
-		if (this.conference.id && this.conferenceMember.id && this.conferenceMember.is_active)
+		if (this.conference.id && this.conferenceMember.id)
 			this.meetingSerivce.join(this.conference.room_ref, this.conferenceMember.room_member_ref)
 		else
 			this.error(this.translateService.instant('You are  not allowed to join the conference'));
@@ -174,13 +176,15 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	startExam(exam: Exam, member: ExamMember) {
 		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			ExamSetting.get(this, exam.setting_id).subscribe(setting => {
-				this.examStudyDialog.show(exam, setting, member);
-			})
+				member.joinExam(this).subscribe(()=> {
+					this.examStudyDialog.show(exam, setting, member);
+				});
+			});
 		});
 	}
 
 	back() {
-		this.location.back();
+		this.router.navigate(['/lms/courses']);
 	}
 
 }

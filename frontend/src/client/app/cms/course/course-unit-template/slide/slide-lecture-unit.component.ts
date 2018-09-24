@@ -71,6 +71,8 @@ export class SlideLectureCourseUnitComponent extends BaseComponent implements IC
 		);
 	}
 
+	
+
 	changeFile(event: any) {
 		let file = event.files[0];
 		this.uploadFile(file);

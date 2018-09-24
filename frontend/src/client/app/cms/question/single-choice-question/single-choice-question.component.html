@@ -17,7 +17,6 @@
           <p-checkbox (click)="setOptionCorrect(option)" binary="true" name="option_is_correct" [(ngModel)]="option.is_correct" class="fLeft pr10"></p-checkbox>
           <span class="md-inputfield ui-g-8">
             <input type="text" pInputText [(ngModel)]="option.content" name="option_content">
-            <label>{{'Content'|translate}}</label>
           </span>
           <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)"
             class="remove-btn"></button>
