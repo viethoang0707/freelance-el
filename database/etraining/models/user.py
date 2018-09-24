@@ -56,12 +56,26 @@ class User(models.Model):
 
 	@api.model
 	def create(self, vals):
+		self = self.sudo()
 		vals["login"] = vals["login"].lower()
 		user = super(User, self).create(vals)
 		return user
 
 	@api.model
+	def write(self, vals):
+		self = self.sudo()
+		user = super(User, self).write(vals)
+		return user
+
+	@api.model
+	def unlink(self):
+		self = self.sudo()
+		user = super(User, self).unlink()
+		return user
+
+	@api.model
 	def register(self, params):
+		self = self.sudo()
 		user = params["user"]
 		if self.env["res.users"].search([("login","=",user["login"])]):
 			return {"success":False, "code":"USER_EXIST", "message":"Username exist" }
