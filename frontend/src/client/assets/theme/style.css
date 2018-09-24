@@ -762,6 +762,11 @@ body .remember-pass .ui-chkbox .ui-chkbox-box.ui-state-active {
   border-radius: 50%;
 }
 
+.lms-course-template-html img{
+  width: 100% !important;
+  height: auto !important;
+}
+
 @media screen and (max-width: 500px) {
   .tree-unit-course-study {
     height: 150px;
