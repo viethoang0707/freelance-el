@@ -66,7 +66,7 @@ export class CourseBackupComponent extends BaseComponent implements OnInit {
 	}
 
 	back() {
-		this.location.back();
+		this.router.navigate(['/lms/course/edit', this.course.id]);
 	}
 }
 

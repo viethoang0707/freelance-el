@@ -650,12 +650,13 @@
 	"Group is required": "Danh mục là bắt buộc",
 	"Delete course successfully": "Xóa khóa học thành công",
 	"Apply": "Áp dụng",
-	"Exam form": "Khảo sát",
+	"Exam form": "Kỳ thi",
 	"Survey form": "Khảo sát",
 	"Survey create form": "Tạo mẫu khảo sát",
 	"Survey view": "Xem khảo sát",
 	"Survey view form": "Xem khảo sát",
 	"Course view": "Xem khóa học",
+	"Course info": "Thông tin khóa học",
 	"Go back": "Quay lại",
 	"Class enrollment": "Tuyển sinh",
 	"Prequisite course": "Khóa học tiên quyết",
@@ -692,5 +693,8 @@
 	"Normal user": "Người dùng thông thường",
 	"Active user": "Tài khoản được truy cập",
 	"Banner user": "Tài khoản bị cấm truy cập",
-	"Qualification": "Trình độ chuyên môn"
+	"Qualification": "Trình độ chuyên môn",
+	"Class form": "Lớp học",
+	"Course publish": "Công khai khóa học",
+	"Course published successful": "Công khai khóa học thành công"
 }

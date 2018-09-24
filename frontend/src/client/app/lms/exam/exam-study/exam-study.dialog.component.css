@@ -14,6 +14,14 @@ h2.exam-name, .exam-timer h2{
 	margin-right: 32%;
 }
 
+.options-question .ui-chkbox .ui-chkbox-box{
+	border-radius: 0px !important;
+}
+
+body .ui-chkbox .ui-chkbox-box{
+	border-radius: 0px !important;
+}
+
 @media screen and (max-width: 768px) {
 	.exam-study-footer button{
 		margin-right: 5px;

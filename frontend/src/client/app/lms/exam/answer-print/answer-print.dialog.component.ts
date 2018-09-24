@@ -21,6 +21,7 @@ import * as _ from 'underscore';
 import { BaseModel } from '../../../shared/models/base.model';
 import { ExamLog } from '../../../shared/models/elearning/log.model';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
+import { TimeConvertPipe } from '../../../shared/pipes/time.pipe';
 
 @Component({
     moduleId: module.id,
@@ -42,9 +43,11 @@ export class AnswerPrintDialog extends BaseComponent {
     private submission: Submission;
     private setting: ExamSetting;
     private studyTime: number;
+    private studyTimeMinutes: number;
+    private studyTimeSecs: number;
     private reportUtils: ReportUtils;
 
-    constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+    constructor(private componentFactoryResolver: ComponentFactoryResolver, private timePipe: TimeConvertPipe) {
         super();
         this.display = false;
         this.examQuestions = [];
@@ -65,6 +68,8 @@ export class AnswerPrintDialog extends BaseComponent {
         this.submission = submit;
         this.member = member;
         this.studyTime = Math.floor(this.submission.study_time);
+        this.studyTimeMinutes = this.timePipe.transform(this.studyTime * 1000, 'min');
+        this.studyTimeSecs = this.studyTime - (this.studyTimeMinutes * 60);
         ExamSetting.get(this, this.exam.setting_id).subscribe(setting => {
             this.setting = setting;
             this.startReview();

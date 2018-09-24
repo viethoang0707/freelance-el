@@ -57,7 +57,9 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
     	this.userDialog.show();
     	this.userDialog.onSelectUsers.first().subscribe((users:User[]) => {
             this.courseReport.clear();
-            this.courseReport.render(users);
+            User.populateArray(this, users, USER_FIELDS).subscribe(()=> {
+                this.courseReport.render(users);
+            });
 		});
     }
 

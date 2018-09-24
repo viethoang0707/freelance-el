@@ -25,12 +25,14 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                 <tr>
-                    <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
+                    <!-- <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
                         {{rowData.user_login}}
                     </td>
                     <td *ngIf="rowData.index == rowIndex" [attr.rowspan]="rowData.size">
                         {{rowData.user_name}}
-                    </td>
+                    </td> -->
+                    <td>{{rowData.user_login}}</td>
+                    <td>{{rowData.user_name}}</td>
                     <td>{{rowData.course_code}}</td>
                     <td>{{rowData.course_name}}</td>
                     <td>{{COURSE_MODE[rowData.course_mode] | translate}}</td>

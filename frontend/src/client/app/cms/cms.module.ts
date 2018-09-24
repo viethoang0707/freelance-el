@@ -36,11 +36,12 @@ import { SingleChoiceQuestionComponent } from './question/single-choice-question
 import { OpenEndQuestionComponent } from './question/open-end-question/open-end-question.component';
 import { MultiChoiceQuestionComponent } from './question/multi-choice-question/multi-choice-question.component';
 import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve, SurveyResolve, SurveySheetResolve } from './route.resolver';
-
+import { CMSRoutingModule } from './cms-routing';
 
 @NgModule({
 	imports: [
 		ErpSharedModule,
+		CMSRoutingModule,
 		AuthModule,
 	],
 	declarations: [

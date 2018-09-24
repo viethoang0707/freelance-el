@@ -16,6 +16,7 @@ import { Course } from '../../../shared/models/elearning/course.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import { UserViewContentComponent } from './user-content.component';
+import { UserFormDialog } from '../user-form/user-form-dialog.component';
 import * as _ from 'underscore';
 
 
@@ -26,7 +27,7 @@ import * as _ from 'underscore';
 })
 export class UserViewDialogComponent extends BaseComponent{
 
-
+	@ViewChild(UserFormDialog) formDialog: UserFormDialog;
 	@ViewChild(UserViewContentComponent) viewContent: UserViewContentComponent;
 
 	private user: User;
@@ -43,6 +44,9 @@ export class UserViewDialogComponent extends BaseComponent{
 		this.viewContent.render(this.user);
 	}
 
+	editUser() {
+		this.formDialog.show(this.user);
+	}
 
 	close() {
 		this.display = false;

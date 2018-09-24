@@ -56,7 +56,8 @@ export class CourseRestoreComponent extends BaseComponent {
 		this.syl = this.route.snapshot.data['syllabus'];
 	}
 
-	buildCourseTree() {
+	back() {
+		this.router.navigate(['/lms/course/edit', this.course.id]);
 	}
 
 	onUpload(event) {
@@ -80,7 +81,6 @@ export class CourseRestoreComponent extends BaseComponent {
 		var course_material =  output.course_material;
 		var course_syllabus = output.course_syllabus;
 		var course_unit = output.course_unit;
-		this.buildCourseTree();
 	}
 }
 

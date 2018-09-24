@@ -215,6 +215,14 @@ class ExamMember(models.Model):
 				exam_member.write({'submission_id':submission.id,"enroll_status":"registered"})
 				return {'success':True}
 
+	@api.model
+	def join_exam(self,params):
+		memberId = params["memberId"]
+		for member in self.env['etraining.exam_member'].browse(memberId):
+			if member.enroll_status == 'registered':
+				member.write({'enroll_status':'in-progress'})
+			return {'success':True}
+
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
 
@@ -301,7 +309,6 @@ class Submission(models.Model):
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
 	picture = fields.Binary(string='Picture')
-	course_member_id = fields.Many2one('etraining.course_member', related="member_id.course_member_id", readonly=True,string='Exam')
 	study_time = fields.Integer( compute='_compute_study_time', string='Study time')
 
 	@api.multi

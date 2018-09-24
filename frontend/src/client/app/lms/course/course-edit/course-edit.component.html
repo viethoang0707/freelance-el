@@ -8,16 +8,13 @@
                 <div class="ui-g">
                     <div class="ui-g-12">
                         <p-toolbar>
+                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}" label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, member)"></button>
                             <button pButton type="button" icon="ui-icon-backup" title="{{'Backup'| translate}}" label="{{'Backup'|translate}}" class="green-btn" style="margin-right:4px;" (click)="backupCourse()"></button>
                             <button pButton type="button" icon="ui-icon-restore" title="{{'Restore'| translate}}" label="{{'Restore'|translate}}" class="blue-btn" style="margin-right:4px;" (click)="restoreCourse()"></button>
                         </p-toolbar>
                     </div>
                     <div class="ui-g-3 course-edit-tree">
                         <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
-                        <div class="ui-g-12">
-                            <button pButton type="button" icon="ui-icon-edit" title="{{'Edit course'| translate}}"
-                                label="{{'Edit'|translate}}" class="mr4 blue-grey-btn" (click)="editSyllabus(course, member)"></button>
-                        </div>
                     </div>
                     <div class="ui-g-9 course-unit-edit" *ngIf="selectedUnit">
                         <div class="card">
@@ -27,9 +24,7 @@
                                     <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]}}</span>
                                 </div>
                                 <div class="image-box-footer">
-                                    <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}"
-                                        label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;"
-                                        (click)="previewUnit(selectedUnit)" *ngIf="selectedUnit.type!='folder'"></button>
+                                    <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}" label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit(selectedUnit)" *ngIf="selectedUnit.type!='folder'"></button>
                                 </div>
                             </div>
                         </div>
@@ -42,16 +37,12 @@
                     <div class="ui-g-12">
                         <p-toolbar>
                             <div class="ui-toolbar-group-left">
-                                <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addMaterial()"
-                                    icon="ui-icon-add"></button>
-                                <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit"
-                                    (click)="editMaterial(selectedMaterial)" *ngIf="selectedMaterial"></button>
-                                <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete"
-                                    (click)="deleteMaterial(selectedMaterial)" *ngIf="selectedMaterial"></button>
+                                <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addMaterial()" icon="ui-icon-add"></button>
+                                <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editMaterial(selectedMaterial)" *ngIf="selectedMaterial"></button>
+                                <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteMaterial(selectedMaterial)" *ngIf="selectedMaterial"></button>
                             </div>
                         </p-toolbar>
-                        <p-table #materialTable [value]="materials" [paginator]="true" [rows]="25" selectionMode="single"
-                            [(selection)]="selectedMaterial" [responsive]="true">
+                        <p-table #materialTable [value]="materials" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMaterial" [responsive]="true">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>
@@ -91,16 +82,12 @@
                     <div class="ui-g-12">
                         <p-toolbar>
                             <div class="ui-toolbar-group-left">
-                                <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addFaq()"
-                                    icon="ui-icon-add"></button>
-                                <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit"
-                                    (click)="editFaq(selectedFaq)" *ngIf="selectedFaq"></button>
-                                <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete"
-                                    (click)="deleteFaq(selectedFaq)" *ngIf="selectedFaq"></button>
+                                <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addFaq()" icon="ui-icon-add"></button>
+                                <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editFaq(selectedFaq)" *ngIf="selectedFaq"></button>
+                                <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteFaq(selectedFaq)" *ngIf="selectedFaq"></button>
                             </div>
                         </p-toolbar>
-                        <p-table #faqTable [value]="faqs" [paginator]="true" [rows]="25" selectionMode="single"
-                            [(selection)]="selectedFaq" [responsive]="true">
+                        <p-table #faqTable [value]="faqs" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedFaq" [responsive]="true">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>

@@ -1,18 +1,18 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { BaseComponent } from '../../shared/components/base/base.component';
-import { ReportUtils } from '../../shared/helpers/report.utils';
+import { BaseComponent } from '../../../shared/components/base/base.component';
+import { ReportUtils } from '../../../shared/helpers/report.utils';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../shared/models/constants'
-import { Course } from '../../shared/models/elearning/course.model';
-import { CourseUnit } from '../../shared/models/elearning/course-unit.model';
-import { CourseSyllabus } from '../../shared/models/elearning/course-syllabus.model';
-import { CourseMember } from '../../shared/models/elearning/course-member.model';
-import { Group } from '../../shared/models/elearning/group.model';
-import { User } from '../../shared/models/elearning/user.model';
+import { GROUP_CATEGORY, COURSE_STATUS, COURSE_MODE } from '../../../shared/models/constants'
+import { Course } from '../../../shared/models/elearning/course.model';
+import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
+import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
+import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { Group } from '../../../shared/models/elearning/group.model';
+import { User } from '../../../shared/models/elearning/user.model';
 import { SelectItem } from 'primeng/api';
-import { BaseModel } from '../../shared/models/base.model';
+import { BaseModel } from '../../../shared/models/base.model';
 
 const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
 

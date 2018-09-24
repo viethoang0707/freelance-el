@@ -112,7 +112,7 @@ export class LMSProfileService {
           return isFinite(parseInt(member.exam_id + "")) && member.status == 'active' && member.exam_review_state == 'approved';
         });
         this.myConferenceMembers = _.filter(ConferenceMember.toArray(jsonArray[2]), (member: ConferenceMember) => {
-          return isFinite(parseInt(member.conference_id + "")) && member.conference_status == 'open' && member.is_active;
+          return isFinite(parseInt(member.conference_id + "")) ;
         });
         this.mySurveyMembers = _.filter(SurveyMember.toArray(jsonArray[3]), (member: SurveyMember) => {
           return isFinite(parseInt(member.survey_id + "")) && member.survey_review_state == 'approved';

@@ -197,6 +197,26 @@ export class APIService {
         });
     }
 
+    ssoLogin(token: Token, cloudid: string): Observable<any> {
+        return this.init().flatMap(() => {
+            let headers = token ? new Headers({ 'Content-Type': 'application/json', 'Authorization': `${token.cloud_code} ${token.code}` })
+                : new Headers({ 'Content-Type': 'application/json', 'Authorization': `${this.cloudId}` });
+            let options = new RequestOptions({ headers: headers });
+            var endpoint = this.apiEndpoint + '/account/sso_login';
+            var params = { cloudid: cloudid }
+            this.appEvent.startHttpTransaction();
+            return this.http.post(endpoint, JSON.stringify(params), options)
+                .map((response: Response) => response.json()).do(() => {
+                    this.appEvent.finishHttpTransaction();
+                })
+                .catch((e) => {
+                    console.log(e);
+                    this.appEvent.finishHttpTransaction();
+                    return Observable.throw(e.json());
+                });
+        });
+    }
+
     execute(api: BaseAPI, token: Token): Observable<any> {
         return this.init().flatMap(() => {
             let headers = token ? new Headers({ 'Content-Type': 'application/json', 'Authorization': `${token.cloud_code} ${token.code}` })

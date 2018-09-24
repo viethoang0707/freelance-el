@@ -90,4 +90,13 @@ export class SurveyMember extends BaseModel{
             return Observable.of([]);
         return SurveySubmission.search(context,fields,"[('member_id','=',"+this.id+")]");
     }
+
+    static __api__join_survey(memberId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(SurveyMember.Model, 'join_survey',{memberId:memberId}, null);
+    }
+
+    joinSurvey(context:APIContext,fields?:string[]):Observable<any> {
+        return context.apiService.execute(SurveyMember.__api__join_survey(this.id), 
+            context.authService.LoginToken);
+    }
 }
