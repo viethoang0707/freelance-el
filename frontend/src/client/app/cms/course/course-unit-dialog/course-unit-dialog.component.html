@@ -5,11 +5,11 @@
             <div class="ui-g-12">
                 <p-selectButton [options]="contentStatus" [(ngModel)]="object.status" name="status"></p-selectButton>
             </div>
-            <div class=" ui-g-6 mb20" style="margin-top: 30px;">
+            <div class=" ui-g-12 mb20" style="margin-top: 30px;">
                 <span class="md-inputfield">
-              <input type="text"  pInputText name="name"[(ngModel)]="object.name">
-              <label for="name">{{'Name' | translate}}</label>
-          </span>
+                    <input type="text"  pInputText name="name"[(ngModel)]="object.name" style="width: 100%">
+                    <label for="name">{{'Name' | translate}}</label>
+                </span>
             </div>
             <div class=" ui-g-12 p-0">
                 <ng-template course-unit-container></ng-template>
