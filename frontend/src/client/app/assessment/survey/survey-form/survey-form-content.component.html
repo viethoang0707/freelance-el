@@ -22,7 +22,7 @@
         <p-calendar [(ngModel)]="survey.start" showTime="true" hourFormat="24" #start="ngModel" name="start" required="true" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
         <div *ngIf="start.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
             <div *ngIf="start.errors.required">
-                {{'survey start time is required' | translate}}
+                {{'Survey start time is required' | translate}}
             </div>
         </div>
     </div>
@@ -31,7 +31,7 @@
         <p-calendar [(ngModel)]="survey.end" showTime="true" hourFormat="24" #end="ngModel" name="end" required="true" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
         <div *ngIf="end.invalid" class="ui-message ui-messages-error ui-corner-all" style="margin: 10px 0 20px;">
             <div *ngIf="end.errors.required">
-                {{'survey end time is required' | translate}}
+                {{'Survey end time is required' | translate}}
             </div>
         </div>
     </div>
