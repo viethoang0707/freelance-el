@@ -9,11 +9,19 @@
                 <div class="ui-g-6">
                     <p-checkbox name="take_pic" binary="true" label="{{'Allow candidate to review answer sheet'|translate}}" [(ngModel)]="setting.allow_review_answer"></p-checkbox>
                 </div>
-                <div class="ui-g-12">
+                <div class="ui-g-6">
                     <label for="scale">{{'Scale' | translate}}</label>
                     <input type="text" pInputText name="scale" [(ngModel)]="setting.scale" pKeyFilter="pint">
                 </div>
-                
+                <div class="ui-g-6">
+                    <label>{{'Duration (in minutes)'|translate}}</label>
+                    <input type="text" pInputText [(ngModel)]="setting.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
+                    <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="ui-message ui-messages-error ui-corner-all">
+                        <div *ngIf="duration.errors.required">
+                            {{'Duration is required' | translate}}
+                        </div>
+                    </div>
+                </div>
                 <div class=" ui-g-12 ">
                     <p-toolbar>
                         <div class="ui-toolbar-group-left">

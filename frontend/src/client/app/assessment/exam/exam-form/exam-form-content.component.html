@@ -8,15 +8,6 @@
             </div>
         </div>
     </div>
-    <div class="ui-g-6">
-        <label>{{'Duration (in minutes)'|translate}}</label>
-        <input type="text" pInputText [(ngModel)]="exam.duration" #duration="ngModel" name="duration" pKeyFilter="pint" required>
-        <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="ui-message ui-messages-error ui-corner-all">
-            <div *ngIf="duration.errors.required">
-                {{'Duration is required' | translate}}
-            </div>
-        </div>
-    </div>
     <div class="ui-g-12">
         <label>{{'Summary'|translate}}</label>
         <input type="text" pInputText [(ngModel)]="exam.summary" name="summary">

@@ -12,7 +12,7 @@ class Exam(models.Model):
 	question_count = fields.Integer(related='sheet_id.question_count', string='Sheet question count', readonly=True)
 	supervisor_name = fields.Char(related='supervisor_id.name', string='Author name', readonly=True)
 	question_ids = fields.One2many('etraining.exam_question','exam_id', string="Question list")
-	duration = fields.Integer(string='Duration')	
+	duration = fields.Integer(string='Duration', related='setting_id.duration')	
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
 	name = fields.Char(string='Name', required=True)

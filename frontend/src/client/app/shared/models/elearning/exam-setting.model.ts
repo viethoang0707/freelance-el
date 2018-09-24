@@ -18,8 +18,10 @@ export class ExamSetting extends BaseModel{
         this.scale =  undefined;
         this.exam_id = undefined;
         this.allow_review_answer = undefined;
+        this.duration = undefined;
 	}
 
+    duration: number;
     scale: number;
     exam_id: number;
     max_attempt: number;
