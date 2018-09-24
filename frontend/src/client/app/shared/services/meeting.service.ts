@@ -7,6 +7,9 @@ import { AuthService } from '../services/auth.service';
 import { APIService } from '../services/api.service';
 import { Observable, Subject } from 'rxjs/Rx';
 
+declare function escape(s: string): string;
+declare function unescape(s: string): string;
+
 @Injectable()
 export class MeetingService {
 
@@ -18,8 +21,8 @@ export class MeetingService {
 
 	join(room_ref: string, member_ref: string) {
 		this.apiService.ssoLogin(this.authService.LoginToken, Config.CONFERENCE_CLOUDID).subscribe(resp=> {
-			var ssoToken = resp["token"];
-			this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&sso_token=${ssoToken.code}`);
+			var ssoToken = btoa(unescape(encodeURIComponent(JSON.stringify(resp["token"])))) ;
+			this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&sso_token=${ssoToken}`);
 		});
 	}
 

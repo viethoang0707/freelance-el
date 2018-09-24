@@ -87,8 +87,13 @@ export class UserImportComponent extends BaseComponent implements OnInit {
 				isValid = false;
 				this.statusMessages.push(`Record ${index + 1}: Group ${record["group_code"]} is not defined`);
 			}
-			if (user.dob && moment(user.dob, this.dateFormat.value)["_isValid"])
-				user.dob = moment(user.dob, this.dateFormat.value).toDate();
+			if (user.dob)
+				if (moment(user.dob, this.dateFormat.value)["_isValid"])
+					user.dob = moment(user.dob, this.dateFormat.value).toDate();
+				else {
+					isValid = false;
+					this.statusMessages.push(`Record ${index + 1}: Invalid date format`);
+				}
 			isValid = user['gender'] in GENDER;
 			if (!isValid)
 				this.statusMessages.push(`Record ${index + 1}: Invalid gender. Valid values: ${Object.keys(GENDER)}`);

@@ -32,7 +32,7 @@ class User(models.Model):
 	email = fields.Char(related="partner_id.email", string="Email")
 	phone = fields.Char(related="partner_id.phone", string="Phone",store=True)
 	position = fields.Char(related="partner_id.position", string="Position",store=True)
-	dob = fields.Datetime(related="partner_id.dob", string="Date of birth",store=True)
+	dob = fields.Date(related="partner_id.dob", string="Date of birth",store=True)
 	banned = fields.Boolean(default=False, string="Is banned")
 	ban_date = fields.Datetime( string="Ban date")
 	unban_date = fields.Datetime( string="Unban date")

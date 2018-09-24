@@ -74,7 +74,6 @@ export class PermissionFormComponent extends BaseComponent {
 	}
 
 	addMember() {
-		this.users = [];
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			User.populateArray(this, users, USER_FIELDS).subscribe(() => {
@@ -100,7 +99,6 @@ export class PermissionFormComponent extends BaseComponent {
 				});
 				this.deleteUsers.push(user);
 			});
-			this.users = [];
 		});
 	}
 
