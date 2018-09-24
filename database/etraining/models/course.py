@@ -494,7 +494,7 @@ class CourseMember(models.Model):
 	role = fields.Selection(
 		[('student', 'Student'), ('teacher', 'Teacher'), ('editor', 'Editor'),  ('supervisor', 'Supervisor')])
 	enroll_status = fields.Selection(
-		[('in-study', 'In-study'), ('completed', 'Completed'), ('registered', 'Registered')], default="registered")
+		[('in-study', 'In-study'), ('completed', 'Completed'),('await-certiicate', 'Awaiting for certificate'), ('registered', 'Registered')], default="registered")
 	date_register = fields.Datetime('Register date')
 	exam_record_ids = fields.One2many('etraining.exam_record','course_member_id', string='Exam records')
 	project_submission_ids = fields.One2many('etraining.project_submission','member_id', string='Project Submission')
@@ -548,6 +548,14 @@ class CourseMember(models.Model):
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.enroll_status == 'registered':
 				member.write({'enroll_status':'in-study'})
+			return {'success':True}
+
+	@api.model
+	def request_certificate(self,params):
+		memberId = params["memberId"]
+		for member in self.env['etraining.course_member'].browse(memberId):
+			if member.enroll_status = 'in-study':
+				member.write({'enroll_status':'await-certiicate'})
 			return {'success':True}
 
 	@api.model

@@ -129,6 +129,15 @@ export class CourseMember extends BaseModel {
             context.authService.LoginToken);
     }
 
+    static __api__request_certificate(memberId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'request_certificate',{memberId:memberId}, null);
+    }
+
+    requestCertificate(context:APIContext,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__request_certificate(this.id), 
+            context.authService.LoginToken);
+    }
+
     static __api__join_course(memberId: number,fields?:string[]): ExecuteAPI {
         return new ExecuteAPI(CourseMember.Model, 'join_course',{memberId:memberId}, null);
     }

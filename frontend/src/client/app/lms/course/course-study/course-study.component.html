@@ -34,6 +34,7 @@
                             </span>
                             <div class="clear pt15">
                                 <button pButton type="button" label="{{ 'Study'|translate}} " class="green-btn" icon="ui-icon-play-arrow " (click)="study()" *ngIf="syl.status=='published'"></button>
+                                <button pButton type="button" label="{{ 'Request certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-school" (click)="requestCertificate()" *ngIf="member.enroll_status=='in-study'"></button>
                             </div>
                             <h4 class="summary"><i class="material-icons">keyboard_arrow_right</i>{{'Summary'|translate}}</h4>
                             <p>{{course.summary}}</p>

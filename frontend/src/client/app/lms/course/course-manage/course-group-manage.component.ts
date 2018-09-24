@@ -71,7 +71,7 @@ export class CourseGroupManageComponent extends BaseComponent implements OnInit 
 	ngOnInit() {
 		this.course = this.route.snapshot.data['course'];
 		this.lmsProfileService.init(this).subscribe(() => {
-			CourseClass.array(this, this.lmsProfileService.MyClassIds).subscribe(classList => {
+			CourseClass.array(this, this.lmsProfileService.classIdByCourse(this.course.id)).subscribe(classList => {
 				this.classes = classList;
 			});
 			BaseModel.bulk_search(this,
