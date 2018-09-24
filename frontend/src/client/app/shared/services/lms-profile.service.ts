@@ -145,6 +145,18 @@ export class LMSProfileService {
     return classIds
   }
 
+  classIdByCourse(courseId: number) {
+    var members = _.filter(this.myClassMembers, (member: CourseMember)=> {
+      return member.course_id == courseId;
+    });
+    var classIds = _.pluck(members, 'class_id');
+    classIds = _.uniq(classIds, id => {
+      return id;
+    });
+    return classIds
+  }
+
+
   get MyExamMembers() {
     return this.myExamMembers;
   }

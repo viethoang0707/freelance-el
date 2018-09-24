@@ -9,7 +9,7 @@ class Question(models.Model):
 	group_id = fields.Many2one('res.groups', string='Group')
 	group_name = fields.Char(related="group_id.name", string="Group Name")
 	option_ids = fields.One2many('etraining.option','question_id', string="Options")
-	content = fields.Html(string="Content")
+	content = fields.Text(string="Content")
 	title = fields.Text(string="Title")
 	max_rating = fields.Integer(string="Max rating")
 	explanation = fields.Text(string="Explanation")
