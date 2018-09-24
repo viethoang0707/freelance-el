@@ -11,9 +11,15 @@ export class TimeConvertPipe implements PipeTransform {
             ms = Math.floor(ms / 1000 / 60 / 60);
         if (scale == 'day')
             ms = Math.floor(ms / 1000 / 60 / 60 / 24);
-        if (scale == 'min-sec')
-            ms = Math.floor(ms / 1000) - (Math.floor(ms / 1000 / 60) * 60);
         return ms;
+    }
+
+    transformMinutesSec(ms: number): string {
+        var result: string;
+        var min = Math.floor(ms / 1000 / 60);
+        var sec = Math.floor(ms / 1000) - (Math.floor(ms / 1000 / 60) * 60);
+        result = min + ":" + sec;
+        return result;
     }
 }
 

@@ -105,15 +105,12 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 					record["index"] = this.rowGroupMetadata[record["user_login"]].index;
 					record["size"] = this.rowGroupMetadata[record["user_login"]].size;
 				});
-				console.log('records: ', records);
 				records = _.sortBy(records, record => {
 					return +record["code_name"];
 				});
 				this.records = _.sortBy(records, record => {
 					return +record["index"];
 				});
-				console.log('records 1: ', records);
-				console.log('this.records: ', this.records);
 			});
 
 
@@ -130,6 +127,7 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 		record["enroll_status"] = member.enroll_status;
 		record["date_register"] = this.datePipe.transform(member.date_register, EXPORT_DATE_FORMAT);
 		var result = this.reportUtils.analyzeCourseMemberActivity(logs);
+		console.log(result);
 		if (result[0] != Infinity)
 			record["first_attempt"] = this.datePipe.transform(result[0], EXPORT_DATE_FORMAT);
 		else
@@ -138,8 +136,10 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 			record["last_attempt"] = this.datePipe.transform(result[1], EXPORT_DATE_FORMAT);
 		else
 			record["last_attempt"] = '';
-		if (!Number.isNaN(result[2]))
-			record["time_spent"] = this.timePipe.transform(+(result[2]), 'min');
+
+		if (!Number.isNaN(result[2])) {
+			record["time_spent"] = this.timePipe.transformMinutesSec(+(result[2]));
+		}
 		else
 			record["time_spent"] = 0;
 		return record;

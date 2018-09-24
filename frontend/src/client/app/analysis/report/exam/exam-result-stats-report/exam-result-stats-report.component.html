@@ -1,6 +1,6 @@
-    <div class="ui-g">
-        <div class="ui-g-12 p-0">
-            <p-table #dataTable [value]="records" [responsive]="true">
+<div class="ui-g">
+    <div class="ui-g-12 p-0">
+        <p-table #dataTable [value]="records" [responsive]="true">
             <ng-template pTemplate="caption">
                 {{'Exam answer statistics'|translate}}
             </ng-template>
@@ -15,10 +15,10 @@
                     <td colspan="2">
                         <span>{{'Question'|translate}} {{1+rowIndex}}:</span>
                         <div>{{rowData.title}}</div>
-                         <p [innerHTML]="rowData.content"></p>
+                        <p [innerHTML]="rowData.content"></p>
                     </td>
                 </tr>
-                <tr *ngFor ="let option of rowData.options">
+                <tr *ngFor="let option of rowData.options">
                     <td>
                         {{option.content}}
                     </td>
@@ -31,5 +31,5 @@
                 {{'Total records'|translate}} : {{records?.length}}
             </ng-template>
         </p-table>
-        </div>
     </div>
+</div>

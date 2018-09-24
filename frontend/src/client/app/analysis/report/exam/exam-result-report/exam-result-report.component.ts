@@ -91,9 +91,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
             if (submit.start)
                 record["date_attempt"] = this.datePipe.transform(submit.start, EXPORT_DATE_FORMAT);
             if (submit.study_time) {
-                var min = this.timePipe.transform(submit.study_time * 1000, 'min');
-                var sec = this.timePipe.transform(submit.study_time * 1000, 'min-sec');
-                record["study_time"] = min + "'" + sec;
+                record["study_time"] = this.timePipe.transformMinutesSec(submit.study_time * 1000);
             }
         }
         return record;

@@ -99,10 +99,11 @@ export class MemberByCourseReportComponent extends BaseComponent {
 		var courseMemberData = this.reportUtils.analyseCourseMember(course, members);
 		Object.assign(record, courseMemberData);
 		var result = this.reportUtils.analyzeCourseMemberActivity(logs);
-		console.log(result);
-		console.log('course:', course);
-		console.log('member: ', members);
-		record["time_spent"] = this.timePipe.transform(+result[2], 'sec');
+		if (!Number.isNaN(result[2])) {
+			record["time_spent"] = this.timePipe.transformMinutesSec(+result[2]);
+		} else {
+			record["time_spent"] = 0;
+		}
 		return record;
 	}
 
