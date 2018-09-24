@@ -50,12 +50,12 @@
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
-        <div class="ui-g ui-fluid form-group pt20">
-            <div class="ui-g-4" style="width:40%;">
+        <div class="ui-g ui-fluid form-group pt20 contact-info">
+            <div class="ui-g-5">
                 <label>{{'Avatar'|translate}}</label>
                 <image-base64 [(src64)]="user.image" width="80%"></image-base64>
             </div>
-            <div class="ui-lg-4 ui-g-12" style="width:60%;">
+            <!-- <div class="ui-lg-4 ui-g-12" style="width:60%;">
                     <p-card styleClass="lms-course-detail">
                         <ul class="list-cmt">
                             <li class="clearfix">
@@ -103,8 +103,8 @@
                             </li>
                         </ul>
                     </p-card>
-            </div>
-            <!-- <div class="ui-g-8">
+            </div> -->
+            <div class="ui-g-7">
                 <div class="ui-g-12">
                     <label>{{'Email'|translate}}</label>
                     <input type="text" pInputText [(ngModel)]="user.email" name="email" pKeyFilter="email">
@@ -121,7 +121,7 @@
                     <label>{{'Position'|translate}}</label>
                     <input type="text" pInputText [(ngModel)]="user.position" #position="ngModel" name="department">
                 </div>
-                <div class="ui-g-12">
+                <div class="ui-g-12 pt20 pb20">
                     <label>{{'Gender'|translate}}</label>
                     <p-radioButton name="gender" value="male" label="{{'Male'|translate}}" [(ngModel)]="user.gender" inputId="opt1"></p-radioButton>
                     <p-radioButton name="gender" value="female" label="{{'Female'|translate}}" [(ngModel)]="user.gender" inputId="opt2"></p-radioButton>
@@ -130,7 +130,7 @@
                     <label>{{'Birthday'|translate}}</label>
                     <p-calendar [(ngModel)]="user.dob" #dob="ngModel" name="dob" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1918:2099" dateFormat="dd/mm/yy"></p-calendar>
                 </div>
-            </div> -->
+            </div>
         </div>
     </p-tabPanel>
 </p-tabView>

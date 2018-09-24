@@ -4,10 +4,10 @@
         <div class="ui-g-12">
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
-                    <button pButton type="button" label="{{'New'|translate}}" class="green-btn" (click)="addPermission()" icon="ui-icon-add"></button>
-                    <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit" (click)="editPermission(selectedPermission)" [disabled]="!selectedPermission"></button>
-                    <button pButton type="button" label="{{'View'|translate}}" class="blue-grey-btn" icon="ui-icon-visibility" (click)="viewPermission(selectedPermission)" [disabled]="!selectedPermission"></button>
-                    <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deletePermission(selectedPermission)" [disabled]="!selectedPermission"></button>
+                    <button pButton type="button" label="{{'New'|translate}}" class="red-btn" (click)="addPermission()" icon="ui-icon-add"></button>
+                    <button pButton type="button" label="{{'Edit'|translate}}" class="nissan-btn" icon="ui-icon-mode-edit" (click)="editPermission(selectedPermission)" [disabled]="!selectedPermission"></button>
+                    <button pButton type="button" label="{{'View'|translate}}" class="nissan-btn" icon="ui-icon-visibility" (click)="viewPermission(selectedPermission)" [disabled]="!selectedPermission"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="nissan-btn" icon="ui-icon-delete" (click)="deletePermission(selectedPermission)" [disabled]="!selectedPermission"></button>
                 </div>
             </p-toolbar>
             <p-table #permissionTable [value]="permissions" [(selection)]="selectedPermission" [paginator]="true" [rows]="25" selectionMode="single" [responsive]="true">
