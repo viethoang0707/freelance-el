@@ -50,20 +50,19 @@
     line-height: 1.667;
 }
 
-p.course-description{
+p.course-summary{
     display: block;
-    height: 80px;
+    height: 66px;
     /*display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical; */
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-top: 0;
     margin-right: 30px;
     word-break: break-word;
 }
 
-.course-description h1, .course-description h2, .course-description h3, .course-description h4, .course-description h5,.course-description h6{
+.course-summary h1, .course-summary h2, .course-summary h3, .course-summary h4, .course-summary h5,.course-description h6{
     margin: 10px 0;
 }
 

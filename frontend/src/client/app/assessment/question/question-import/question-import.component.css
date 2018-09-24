@@ -1,0 +1,15 @@
+table{
+	border-spacing: 0;
+	border: 1px solid #dddddd;
+}
+
+th{
+	background: #deedf7;
+    border: 1px solid #aed0ea;
+    padding: 12px;
+}
+
+td{
+	border: 1px solid #dddddd;
+    padding: 12px;
+}
