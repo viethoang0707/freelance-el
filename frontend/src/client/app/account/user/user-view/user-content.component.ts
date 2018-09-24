@@ -25,6 +25,7 @@ const EXAM_MEMBER_FIELDS = ['exam_name', 'grade', 'enroll_status', 'date_registe
 	moduleId: module.id,
 	selector: 'user-view-content',
 	templateUrl: 'user-content.component.html',
+	styleUrls: ['user-content.component.css'],
 })
 export class UserViewContentComponent extends BaseComponent {
 

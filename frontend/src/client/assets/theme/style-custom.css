@@ -76,3 +76,7 @@ label {
 .dialog-style{
     height: calc(100vh * 88%);
 }
+
+body .ui-chkbox .ui-chkbox-box{
+    border-radius: 0px;
+}

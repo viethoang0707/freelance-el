@@ -16,6 +16,7 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 	moduleId: module.id,
 	selector: 'user-content',
 	templateUrl: 'user-content.component.html',
+	styleUrls: ['user-content.component.css'],
 })
 export class UserContentComponent extends BaseComponent {
 
