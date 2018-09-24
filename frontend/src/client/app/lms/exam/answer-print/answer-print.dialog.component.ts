@@ -33,7 +33,7 @@ export class AnswerPrintDialog extends BaseComponent {
 
     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
     @ViewChild('printSection') printSection;
-    
+
     private display: boolean;
     private examQuestions: ExamQuestion[];
     private answers: Answer[];
@@ -135,7 +135,75 @@ export class AnswerPrintDialog extends BaseComponent {
           <html>
             <head>
                 <title>Exam paper</title>
-                #{PRINT_DIALOG_STYLE}
+                <style>
+                  //........Customized style.......
+                    .header{
+                    }
+                    .name-c{
+                        float: left;
+                        width: 55%;
+                    }
+
+                    .name-e{
+                        height: 40px;
+                    }
+
+                    .name-c, .name-e{
+                        text-align: center; 
+                        text-transform: uppercase; 
+                        font-weight: bold; 
+                        margin-bottom: 10px;
+                    }
+                    
+                    .label{
+                        float: left;
+                        font-weight: bold;
+                        
+                    }
+
+                    .title{
+                        text-transform: uppercase;
+                        float: left;
+                        margin-right:40px;
+                    }
+
+                    .ins p{
+                        text-indent: 25px;
+                    }
+
+                    .f-print{
+                        border:none;
+                        padding: 0;
+                        margin-top: -10px;
+                    }
+                    
+                    .f-print ul{
+                        padding-left: 10px;
+                    }
+
+                    .l-question{
+                        padding-bottom: 0;
+                        margin-bottom: 0;
+                    }
+
+                    .l-question li{
+                        list-style-type: decimal;
+                    }
+
+                    .bold{
+                        font-weight: bold;
+                    }
+
+                    .student{
+                        float: left;
+                        margin-right:100px;
+                    }
+
+                    .radio{
+                        float: left;
+                        padding-right: 5px;
+                    }
+                </style>
             </head>
             <body onload="window.print();window.close()">${printContents}</body>
           </html>`
