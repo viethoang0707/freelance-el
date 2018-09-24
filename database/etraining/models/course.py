@@ -307,7 +307,7 @@ class Project(models.Model):
 	filename = fields.Text(string='Filename')
 	file_url = fields.Text(string='Entry file')
 	project_file_id = fields.Many2one('ir.attachment', string='Project file')
-	content = fields.Html(string='Project content')
+	content = fields.Text(string='Project content')
 	class_id = fields.Many2one('etraining.course_class', string='Class')
 	course_id = fields.Many2one('etraining.course', string='Course')
 	start = fields.Datetime(string='Start time')
@@ -554,7 +554,7 @@ class CourseMember(models.Model):
 	def request_certificate(self,params):
 		memberId = params["memberId"]
 		for member in self.env['etraining.course_member'].browse(memberId):
-			if member.enroll_status = 'in-study':
+			if member.enroll_status == 'in-study':
 				member.write({'enroll_status':'await-certiicate'})
 			return {'success':True}
 
