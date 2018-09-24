@@ -10,7 +10,7 @@ class Partner(models.Model):
 
 	position = fields.Char( string="Position")
 	social_id = fields.Char( string="Social ID")
-	dob = fields.Datetime( string="Date of birth")
+	dob = fields.Date( string="Date of birth")
 	gender = fields.Selection(
 		[('male', 'Male'), ('female', 'Female'), ('other', 'Other')])
 
