@@ -5,7 +5,7 @@
             <p-toolbar>
                 <div class="ui-toolbar-group-left">
                     <button pButton type="button" label="{{ 'Issue certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-beenhere " (click)="issueCertificate()" *ngIf="student.enroll_status=='await-certificate' && supervisor.role=='teacher'"></button>
-                    <button pButton type="button" label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="printCertificate()" *ngIf="certificate"></button>
+                    <button pButton type="button" label="{{ 'View certificate'|translate}} " class="blue-grey-btn " icon="ui-icon-print " (click)="printCertificate(this.student.certificate_id)" *ngIf="this.student.certificate_id"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
                     <button pButton type="button" label="{{ 'Download score'|translate}} " class="blue-grey-btn " icon="ui-icon-insert-chart " (click)="downloadScoreReport()"></button>

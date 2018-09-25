@@ -97,6 +97,8 @@ export class SurveyMember extends BaseModel{
 
     joinSurvey(context:APIContext,fields?:string[]):Observable<any> {
         return context.apiService.execute(SurveyMember.__api__join_survey(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.enroll_status = 'in-progress';
+            });
     }
 }

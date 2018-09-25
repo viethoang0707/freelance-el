@@ -40,7 +40,9 @@ import { CourseClass } from '../../../shared/models/elearning/course-class.model
 })
 export class SelfAssessmentGradebookDialog extends BaseComponent {
 
-    @ViewChild(AnswerPrintDialog) answerPrintDialog: AnswerPrintDialog;
+    @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
+    @ViewChild(CourseCertificateDialog) certDialog: CourseCertificateDialog;
+    @ViewChild(CertificatePrintDialog) certPrintDialog: CertificatePrintDialog;
 
     private display: boolean;
     private student: CourseMember;
@@ -60,6 +62,29 @@ export class SelfAssessmentGradebookDialog extends BaseComponent {
     ngOnInit() {
     }
 
+    printCertificate(certificateId: number) {
+        Certificate.get(this, certificateId).subscribe(certificate=> {
+            this.certPrintDialog.show(certificate);
+        });
+    }
+
+    issueCertificate() {
+        if (this.student.enroll_status == 'completed') {
+            this.error(this.translateService.instant('This member already completed the course'));
+            return;
+        }
+        var certificate = new Certificate();
+        certificate.date_issue = new Date();
+        certificate.course_id = this.student.course_id;
+        certificate.member_id = this.student.id;
+        this.certDialog.show(certificate);
+        this.certDialog.onCreateComplete.first().subscribe(() => {
+            this.supervisor.grantCertificate(this, this.student, certificate.id).subscribe(() => {
+                this.success(this.translateService.instant('Congratulations! You have completed the course.'));
+            })
+        });
+    }
+
     hide() {
         this.display = false;
     }
@@ -67,7 +92,7 @@ export class SelfAssessmentGradebookDialog extends BaseComponent {
     viewAnswer(submit: Submission) {
         Exam.get(this, submit.exam_id).subscribe(exam => {
             ExamMember.get(this, submit.member_id).subscribe(member => {
-                this.answerPrintDialog.show(exam, member, submit);
+                this.answerSheetDialog.show(exam, member, submit);
             });
         });
     }

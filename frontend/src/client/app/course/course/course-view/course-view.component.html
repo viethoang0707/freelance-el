@@ -31,9 +31,9 @@
                             <span class="cmt-detail">{{COURSE_MODE[course.mode]|translate}}</span>
                         </li>
                         <li class="clearfix">
-                            <i class="material-icons">school</i>
+                            <i class="material-icons">people</i>
                             <span class="cmt-title">{{'Editor'|translate}}</span>
-                            <span class="cmt-detail">{{course.name}}</span>
+                            <span class="cmt-detail">{{editor.name}}</span>
                             
                         </li>
                     </ul>
@@ -54,11 +54,6 @@
                         </li>
                         <li class="clearfix">
                             <i class="material-icons">toc</i>
-                            <span class="cmt-title">{{'Summary'|translate}}</span>
-                            <span class="cmt-detail">{{course.summary}}</span>
-                        </li>
-                        <li class="clearfix">
-                            <i class="material-icons">toc</i>
                             <span class="cmt-title">{{'Created'|translate}}</span>
                             <span class="cmt-detail">{{course.create_date| date : "dd/MM/yyyy "}}</span>
                         </li>
@@ -68,87 +63,18 @@
             </div>
         </div>
         <div style="width:100%;">
+            <h3>{{'Summary'|translate}}</h3>
+        </div>
+        <div>
+            <p>{{course.summary}}</p>
+        </div>
+        <div style="width:100%;">
             <h3>{{'Description'|translate}}</h3>
         </div>
         <div>
             <span [innerHTML]="course.description" style="width:100%;"></span>
         </div>
         
-
-
-
-            <!-- <div class="ui-g-9 logo-course">
-                <div class="ui-g-3">
-                    <label>{{'Logo'|translate}}</label>
-                </div>
-                <div class="ui-g-9">
-                    <img [src]="course.logo | imageBase64" />
-                </div>
-            </div>
-            <div class="ui-g-6">
-                <div class="ui-g-3">
-                    <label>{{'Name'|translate}}</label>
-                </div>
-                <div class="ui-g-9">
-                    <span>{{course.name}}</span>
-                </div>
-            </div>
-            <div class="ui-g-6">
-                <div class="ui-g-3">
-                    <label>{{'Code'|translate}}</label>
-                </div>
-                <div class="ui-g-9">
-                    <span>{{course.code}}</span>
-                </div>
-            </div>
-            <div class="ui-g-6">
-                <div class="ui-g-3">
-                    <label>{{'Mode'|translate}}</label>
-                </div>
-                <div class="ui-g-9">
-                    <span>{{COURSE_MODE[course.mode] | translate}}</span>
-                </div>
-            </div>
-            <div class="ui-g-6">
-                <div class="ui-g-3">
-                    <label>{{'Editor'|translate}}</label>
-                </div>
-                <div class="ui-g-9">
-                    <span>{{editor.name}}</span>
-                </div>
-            </div>
-            <div class="ui-g-6">
-                <div class="ui-g-3">
-                    <label>{{'Parent group'|translate}}</label>
-                </div>
-                <div class="ui-g-9">
-                    <span>{{course.group_name}}</span>
-                </div>
-            </div>
-            <div class="ui-g-6">
-                <div class="ui-g-3">
-                    <label>{{'Competency'|translate}}</label>
-                </div>
-                <div class="ui-g-9">
-                    <span>{{course.competency_name +' - '+ course.competency_level_name}}</span>
-                </div>
-            </div>
-            <div class="ui-g-12">
-                <div class="ui-g-2">
-                    <label>{{'Summary'|translate}}</label>
-                </div>
-                <div class="ui-g-10">
-                    <p>{{course.summary}}</p>
-                </div>
-            </div>
-            <div class="ui-g-12">
-                <div class="ui-g-2">
-                    <label>{{'Description'|translate}}</label>
-                </div>
-                <div class="ui-g-10">
-                    <p [innerHTML]="course.description"></p>
-                </div>
-            </div> -->
         
     </div>
     <div class="card-footer">

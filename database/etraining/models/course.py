@@ -534,13 +534,22 @@ class CourseMember(models.Model):
 	@api.model
 	def complete_course(self,params):
 		memberId = params["memberId"]
-		certificateId = params["certificateId"] if "certificate" in params else None
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.course_id.competency_id and member.course_id.competency_level_id:
 				self.env['etraining.achivement'].create({'competency_level_id':member.course_id.competency_level_id.id,
 					'user_id':member.user_id.id, 'course_id':member.course_id.id, 'date_acquire':datetime.datetime.now()})
-			member.write({'enroll_status':'completed','certificate_id':certificateId})
 			return {'success':True}
+
+	@api.model
+	def grant_certificate(self,params):
+		memberId = params["memberId"]
+		staffId = params["staffId"]
+		certificateId = params["certificateId"] if "certificate" in params else None
+		for member in self.env['etraining.course_member'].browse(memberId):
+			for certificate in self.env['etraining.course_certificate'].browse(certificateId):
+				certificate.write({'issue_member_id':staffId})
+				member.write({'enroll_status':'completed','certificate_id':certificateId})
+				return {'success':True}
 
 	@api.model
 	def join_course(self,params):

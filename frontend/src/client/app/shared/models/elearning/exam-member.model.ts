@@ -113,7 +113,9 @@ export class ExamMember extends BaseModel{
 
     joinExam(context:APIContext,fields?:string[]):Observable<any> {
         return context.apiService.execute(ExamMember.__api__join_exam(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.enroll_status = 'in-progress';
+            });
     }
 
     static __api__listSubmissions(memberId:number,fields?:string[]): SearchReadAPI {

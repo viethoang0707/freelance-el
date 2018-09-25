@@ -91,8 +91,10 @@ export class GradebookDialog extends BaseComponent {
         this.display = false;
     }
 
-    printCertificate() {
-        this.certPrintDialog.show(this.certificate);
+    printCertificate(certificateId: number) {
+        Certificate.get(this, certificateId).subscribe(certificate=> {
+            this.certPrintDialog.show(certificate);
+        });
     }
 
     issueCertificate() {
@@ -104,12 +106,10 @@ export class GradebookDialog extends BaseComponent {
         certificate.date_issue = new Date();
         certificate.course_id = this.student.course_id;
         certificate.member_id = this.student.id;
-        certificate.issue_member_id = this.supervisor.id;
         this.certDialog.show(certificate);
-        this.certDialog.onCreateComplete.first().subscribe((obj: Certificate) => {
-            this.certificate = obj;
-            this.student.completeCourse(this, certificate.id).subscribe(() => {
-                this.student.enroll_status = 'completed';
+        this.certDialog.onCreateComplete.first().subscribe(() => {
+            this.certificate =  certificate;
+            this.student.grantCertificate(this, this.student, certificate.id).subscribe(() => {
                 this.success(this.translateService.instant('Congratulations! You have completed the course.'));
             })
         });
