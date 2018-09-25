@@ -49,12 +49,12 @@
 	margin-top: 60px;
 }
 
-.login-body .login-panel .login-panel-header h1{
+.login-body .login-panel .login-panel-header h2{
+	font-size: 26px;
 	margin-top: 10px;
 }
 
-.login-body .login-panel .login-panel-header h2{
-	font-size: 24px;
+.login-body .login-panel .login-panel-header h1{
 	margin-bottom: 0;
 }
 
