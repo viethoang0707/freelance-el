@@ -13,7 +13,7 @@
         </div>
         <div class="ui-g-12">
             <h3>{{'Data'|translate}}</h3>
-            <table>
+            <table >
                 <tr>
                     <th *ngFor="let field of dataFields">
                         <p-dropdown [options]="modelFields" [(ngModel)]="columnMappings[field]" optionLabel="label" [style]="{width: 'auto'}"></p-dropdown>

@@ -1,9 +1,18 @@
 ul.select-columns li{
 	list-style-type: none;
 }
-table, th, td {
-   border: 1px solid black;
+table{
+	border-collapse: collapse;
+	width: 100%;
 }
-table {
-    border-collapse: collapse;
+
+th{
+	background: #deedf7;
+    border: 1px solid #aed0ea;
+    padding: 12px;
+}
+
+td{
+	border: 1px solid #dddddd;
+    padding: 12px;
 }

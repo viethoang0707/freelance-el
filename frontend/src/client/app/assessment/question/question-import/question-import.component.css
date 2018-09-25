@@ -1,6 +1,5 @@
 table{
-	border-spacing: 0;
-	border: 1px solid #dddddd;
+	border-collapse: collapse;
 }
 
 th{
