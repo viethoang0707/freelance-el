@@ -26,16 +26,28 @@ class Group(models.Model):
 
 	def _compute_user_count(self):
 		for group in self:
-			group.user_count =  len(group.user_ids)
+			count = len(group.user_ids)
+			for child in group.child_ids:
+				count += child.user_count
+			group.user_count =  count
 
 	def _compute_question_count(self):
 		for group in self:
-			group.question_count =  len(group.question_ids)
+			count = len(group.question_ids)
+			for child in group.child_ids:
+				count += child.question_count
+			group.question_count =  count
 
 	def _compute_course_count(self):
 		for group in self:
-			group.course_count =  len(group.course_ids)
+			count = len(group.course_ids)
+			for child in group.child_ids:
+				count += child.course_count
+			group.course_count =  count
 
 	def _compute_competency_count(self):
 		for group in self:
-			group.competency_count =  len(group.competency_ids)
+			count = len(group.competency_ids)
+			for child in group.child_ids:
+				count += child.competency_count
+			group.competency_count =  count
