@@ -57,6 +57,7 @@ export class PermissionFormComponent extends BaseComponent {
 		this.permission.menu_access = JSON.stringify(menuCodes);
 	}
 
+
 	ngOnInit() {
 		this.addUsers = [];
 		this.deleteUsers = [];

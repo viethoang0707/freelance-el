@@ -4,7 +4,7 @@
     <div class="ui-g ui-fluid form-group">
       <div class="ui-g-12">
         <label>{{'Parent group'|translate}}</label>
-        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)">></p-tree>
+        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
       </div>
       <div class="ui-g-12"> <span class="md-inputfield">
             <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>

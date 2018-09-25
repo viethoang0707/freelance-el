@@ -62,13 +62,13 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					isValid = false;
 					this.statusMessages.push(`Record ${i + 1}: Group ${record["group_code"]} is not defined`);
 				}
-
 				var type = record["type"];
 				if (!type || !QUESTION_TYPE[type]) {
 					isValid = false;
 					this.statusMessages.push(`Record ${i}: Type ${record["type"]} is not defined`);
 				}
-
+				if (record["level"])
+					record["level"] = record["level"].toLowerCase();
 				var level = record["level"];
 				if (!level || !QUESTION_LEVEL[level]) {
 					isValid = false;

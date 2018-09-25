@@ -36,10 +36,15 @@ export class QuestionFormComponent extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.question.group_id = this.selectedNode.data.id;
 			this.question.group_name = this.selectedNode.data.name;
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	ngOnInit() {

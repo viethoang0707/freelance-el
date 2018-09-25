@@ -74,7 +74,7 @@
             <p-tabPanel header="{{'Course syllabus'|translate}}" leftIcon="ui-icon-dehaze">
                 <div class="ui-g">
                     <div class="ui-g-3 course-study-tree">
-                        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="tree-unit-course-study"></p-tree>
+                        <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"styleClass="tree-unit-course-study"></p-tree>
                     </div>
                     <div class="ui-g-9" *ngIf="selectedUnit">
                         <div class="card course-study-unit">

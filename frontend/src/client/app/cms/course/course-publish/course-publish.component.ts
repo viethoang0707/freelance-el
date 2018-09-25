@@ -67,6 +67,7 @@ export class CoursePublishComponent extends BaseComponent implements OnInit {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			if (this.selectedUnit && this.selectedUnit.id == this.selectedNode.data.id) {
 				this.clearSelection();
@@ -75,6 +76,11 @@ export class CoursePublishComponent extends BaseComponent implements OnInit {
 				this.selectedUnit = this.selectedNode.data;
 		}
 	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
+	}
+
 
 	previewUnit(unit: CourseUnit) {
 		this.unitPreviewDialog.show(unit, this.course, this.syl, this.units);

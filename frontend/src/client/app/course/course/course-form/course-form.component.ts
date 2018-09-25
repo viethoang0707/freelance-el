@@ -17,7 +17,7 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 import { WorkflowService } from '../../../shared/services/workflow.service';
 import { SelectCompetencyLevelDialog } from '../../../shared/components/select-competency-level-dialog/select-competency-level-dialog.component';
 
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'course_count'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'course_count'];
 
 
 @Component({
@@ -43,17 +43,23 @@ export class CourseFormComponent extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.course.group_id = this.selectedNode.data.id;
 			this.course.group_name = this.selectedNode.data.name;
 		}
 	}
 
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
+	}
+
+
 	selectEditor() {
 		this.usersDialog.show();
 		this.usersDialog.onSelectUsers.first().subscribe(user => {
-				this.editor.user_id = user.id;
-				this.editor.name = user.name;
+			this.editor.user_id = user.id;
+			this.editor.name = user.name;
 		});
 	}
 

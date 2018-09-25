@@ -34,11 +34,16 @@ export class CompetencyFormComponent extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+        this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.competency.group_id = this.selectedNode.data.id;
 			this.competency.group_name = this.selectedNode.data.name;
 		}
 	}
+
+    nodeUnselect(event: any) {
+        this.selectedNode = null;
+    }
 
 	ngOnInit() {
 		this.competency = this.route.snapshot.data['competency'];

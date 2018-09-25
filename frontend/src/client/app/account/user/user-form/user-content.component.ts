@@ -30,10 +30,15 @@ export class UserContentComponent extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.user.group_id = this.selectedNode.data.id;
 			this.user.group_name = this.selectedNode.data.name;
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	render(user:User) {

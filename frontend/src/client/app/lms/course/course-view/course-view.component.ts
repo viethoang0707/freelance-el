@@ -113,10 +113,15 @@ export class CourseViewComponent extends BaseComponent implements OnInit {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
 			this.unloadCurrentUnit();
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	unloadCurrentUnit() {
