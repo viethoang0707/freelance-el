@@ -42,6 +42,14 @@ export class Group extends BaseModel{
     competency_count: number;
 
     treeLabel(count?:boolean) {
+        if (!this.user_count)
+            this.user_count = 0;
+        if (!this.course_count)
+            this.course_count = 0;
+        if (!this.question_count)
+            this.question_count = 0;
+        if (!this.competency_count)
+            this.competency_count = 0;
         if (count && this.category =='organization')
             return `${this.name}(${this.user_count})`;
         if (count && this.category =='course')
