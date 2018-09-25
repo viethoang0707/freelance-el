@@ -307,7 +307,7 @@ class Project(models.Model):
 	filename = fields.Text(string='Filename')
 	file_url = fields.Text(string='Entry file')
 	project_file_id = fields.Many2one('ir.attachment', string='Project file')
-	content = fields.Html(string='Project content')
+	content = fields.Text(string='Project content')
 	class_id = fields.Many2one('etraining.course_class', string='Class')
 	course_id = fields.Many2one('etraining.course', string='Course')
 	start = fields.Datetime(string='Start time')
@@ -494,7 +494,7 @@ class CourseMember(models.Model):
 	role = fields.Selection(
 		[('student', 'Student'), ('teacher', 'Teacher'), ('editor', 'Editor'),  ('supervisor', 'Supervisor')])
 	enroll_status = fields.Selection(
-		[('in-study', 'In-study'), ('completed', 'Completed'), ('registered', 'Registered')], default="registered")
+		[('in-study', 'In-study'), ('completed', 'Completed'),('await-certificate', 'Awaiting for certificate'), ('registered', 'Registered')], default="registered")
 	date_register = fields.Datetime('Register date')
 	exam_record_ids = fields.One2many('etraining.exam_record','course_member_id', string='Exam records')
 	project_submission_ids = fields.One2many('etraining.project_submission','member_id', string='Project Submission')
@@ -534,13 +534,22 @@ class CourseMember(models.Model):
 	@api.model
 	def complete_course(self,params):
 		memberId = params["memberId"]
-		certificateId = params["certificateId"] if "certificate" in params else None
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.course_id.competency_id and member.course_id.competency_level_id:
 				self.env['etraining.achivement'].create({'competency_level_id':member.course_id.competency_level_id.id,
 					'user_id':member.user_id.id, 'course_id':member.course_id.id, 'date_acquire':datetime.datetime.now()})
-			member.write({'enroll_status':'completed','certificate_id':certificateId})
 			return {'success':True}
+
+	@api.model
+	def grant_certificate(self,params):
+		memberId = params["memberId"]
+		staffId = params["staffId"]
+		certificateId = params["certificateId"] if "certificate" in params else None
+		for member in self.env['etraining.course_member'].browse(memberId):
+			for certificate in self.env['etraining.course_certificate'].browse(certificateId):
+				certificate.write({'issue_member_id':staffId})
+				member.write({'enroll_status':'completed','certificate_id':certificateId})
+				return {'success':True}
 
 	@api.model
 	def join_course(self,params):
@@ -548,6 +557,14 @@ class CourseMember(models.Model):
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.enroll_status == 'registered':
 				member.write({'enroll_status':'in-study'})
+			return {'success':True}
+
+	@api.model
+	def request_certificate(self,params):
+		memberId = params["memberId"]
+		for member in self.env['etraining.course_member'].browse(memberId):
+			if member.enroll_status == 'in-study':
+				member.write({'enroll_status':'await-certificate'})
 			return {'success':True}
 
 	@api.model

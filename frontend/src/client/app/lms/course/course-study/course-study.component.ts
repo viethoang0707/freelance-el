@@ -156,6 +156,12 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 		});
 	}
 
+	requestCertificate() {
+		this.member.requestCertificate(this).subscribe(()=> {
+			this.success('Action completed');
+		});
+	}
+
 	getProjectSubmit(project: Project) {
 		return _.find(this.projectSubmits, (submit: ProjectSubmission) => {
 			return submit.project_id == project.id;

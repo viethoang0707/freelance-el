@@ -120,13 +120,38 @@ export class CourseMember extends BaseModel {
         });
     }
 
-    static __api__complete_course(memberId: number, certificateId: number,fields?:string[]): ExecuteAPI {
-        return new ExecuteAPI(CourseMember.Model, 'complete_course',{memberId:memberId, certificateId:certificateId}, null);
+    static __api__complete_course(memberId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'complete_course',{memberId:memberId}, null);
     }
 
-    completeCourse(context:APIContext, certificateId: number,fields?:string[]):Observable<any> {
-        return context.apiService.execute(CourseMember.__api__complete_course(this.id, certificateId), 
-            context.authService.LoginToken);
+    completeCourse(context:APIContext,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__complete_course(this.id), 
+            context.authService.LoginToken).do(()=> {
+                this.enroll_status = 'completed';
+            });
+    }
+
+    static __api__grant_certificate(staffId:number, memberId: number, certificateId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'grant_certificate',{memberId:memberId, certificateId:certificateId, staffId:staffId}, null);
+    }
+
+    grantCertificate(context:APIContext, member:CourseMember, certificateId: number,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__grant_certificate(this.id, member.id, certificateId), 
+            context.authService.LoginToken).do(()=> {
+                member.enroll_status = 'completed';
+                member.certificate_id = certificateId;
+            });
+    }
+
+    static __api__request_certificate(memberId: number,fields?:string[]): ExecuteAPI {
+        return new ExecuteAPI(CourseMember.Model, 'request_certificate',{memberId:memberId}, null);
+    }
+
+    requestCertificate(context:APIContext,fields?:string[]):Observable<any> {
+        return context.apiService.execute(CourseMember.__api__request_certificate(this.id), 
+            context.authService.LoginToken).do(()=> {
+                this.enroll_status = 'await-certificate';
+            });
     }
 
     static __api__join_course(memberId: number,fields?:string[]): ExecuteAPI {
@@ -135,7 +160,9 @@ export class CourseMember extends BaseModel {
 
     joinCourse(context:APIContext,fields?:string[]):Observable<any> {
         return context.apiService.execute(CourseMember.__api__join_course(this.id), 
-            context.authService.LoginToken);
+            context.authService.LoginToken).do(()=> {
+                this.enroll_status = 'in-study';
+            });
     }
 
     static __api__do_assessment(memberId: number, assessmentId: number,examMemberId: number,fields?:string[]): ExecuteAPI {

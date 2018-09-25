@@ -46,6 +46,10 @@ export class UserViewDialogComponent extends BaseComponent{
 
 	editUser() {
 		this.formDialog.show(this.user);
+		if (this.user.id == this.ContextUser.id)
+			this.formDialog.onUpdateComplete.subscribe(()=> {
+				this.authService.UserProfile =  this.user;
+			});
 	}
 
 	close() {

@@ -6,7 +6,7 @@ class Ticket(models.Model):
 	_name = 'etraining.ticket'
 
 	title = fields.Char(string='Title')
-	content = fields.Html(string='Content')
+	content = fields.Text(string='Content')
 	approve_user_id = fields.Many2one('res.users',string='Approval user')
 	submit_user_id = fields.Many2one('res.users',string='Submit user')
 	res_model = fields.Char('Resource Model',help="The database object this attachment will be attached to.")

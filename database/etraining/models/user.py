@@ -61,13 +61,13 @@ class User(models.Model):
 		user = super(User, self).create(vals)
 		return user
 
-	@api.model
+	@api.multi
 	def write(self, vals):
 		self = self.sudo()
 		user = super(User, self).write(vals)
 		return user
 
-	@api.model
+	@api.multi
 	def unlink(self):
 		self = self.sudo()
 		user = super(User, self).unlink()
