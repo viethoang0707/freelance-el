@@ -10,6 +10,8 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
 import { ExcelService } from '../../../shared/services/excel.service';
 import * as _ from 'underscore';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
+declare var $: any;
 
 const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 
@@ -19,6 +21,8 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
 	templateUrl: 'export-dialog.component.html',
 })
 export class UserExportDialog extends BaseComponent {
+
+	WINDOW_HEIGHT: any;
 
 	private tree: TreeNode[];
 	private selectedGroupNodes: TreeNode[];
@@ -47,6 +51,7 @@ export class UserExportDialog extends BaseComponent {
 		this.selectedFields = [];
 		this.selectedGroupNodes = [];
 		this.display = false;
+		this.WINDOW_HEIGHT = $(window).height();	
 	}
 
 	show() {

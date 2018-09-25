@@ -282,7 +282,7 @@ export class ClassManageComponent extends BaseComponent {
 		});
 		var memberIds = _.pluck(newMembers, 'id');
 		this.conference.registerConferenceMember(this, memberIds).subscribe(() => {
-			this.success('Register conferenc successfully');
+			this.success(this.translateService.instant('Register conferenc successfully'));
 			this.courseClass.listMembers(this, MEMBER_FIELDS).subscribe(members=> {
 				this.courseMembers = members;
 				this.conferenceMembers = _.filter(this.courseMembers, (member: CourseMember) => {
