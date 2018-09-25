@@ -132,7 +132,7 @@ export class CourseMember extends BaseModel {
     }
 
     static __api__grant_certificate(staffId:number, memberId: number, certificateId: number,fields?:string[]): ExecuteAPI {
-        return new ExecuteAPI(CourseMember.Model, 'grant_certficate',{memberId:memberId, certificateId:certificateId, staffId:staffId}, null);
+        return new ExecuteAPI(CourseMember.Model, 'grant_certificate',{memberId:memberId, certificateId:certificateId, staffId:staffId}, null);
     }
 
     grantCertificate(context:APIContext, member:CourseMember, certificateId: number,fields?:string[]):Observable<any> {
