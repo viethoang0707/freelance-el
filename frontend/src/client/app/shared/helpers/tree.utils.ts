@@ -42,11 +42,11 @@ export class TreeUtils {
     return false;
   }
 
-  buildGroupTree(groups: Group[]): any[] {
-    return this.buildSubGroupTree(null, groups);
+  buildGroupTree(groups: Group[],count?:boolean): any[] {
+    return this.buildSubGroupTree(null, groups,count);
   }
 
-  private buildSubGroupTree(parentGroup: Group, groups: Group[]): any[] {
+  private buildSubGroupTree(parentGroup: Group, groups: Group[], count?:boolean): any[] {
     var subTrees = [];
     var directChilds = [];
     if (!parentGroup)
@@ -62,7 +62,7 @@ export class TreeUtils {
       subTrees.push(
         {
           data: group,
-          label: group.name,
+          label: group.treeLabel(count),
           expanded: true,
           expandedIcon: "ui-icon-folder-open",
           collapsedIcon: "ui-icon-folder",

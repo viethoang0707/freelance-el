@@ -11,7 +11,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { ExcelService } from '../../../shared/services/excel.service';
 import * as _ from 'underscore';
 
-const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'user_count'];
 
 @Component({
 	moduleId: module.id,

@@ -25,6 +25,7 @@ class Group(models.Model):
 	competency_count = fields.Integer( compute='_compute_competency_count', string='Competency count')
 
 	def _compute_user_count(self):
+		count = 0
 		for group in self:
 			count = len(group.user_ids)
 			for child in group.child_ids:
@@ -32,6 +33,7 @@ class Group(models.Model):
 			group.user_count =  count
 
 	def _compute_question_count(self):
+		count = 0
 		for group in self:
 			count = len(group.question_ids)
 			for child in group.child_ids:
@@ -39,6 +41,7 @@ class Group(models.Model):
 			group.question_count =  count
 
 	def _compute_course_count(self):
+		count = 0
 		for group in self:
 			count = len(group.course_ids)
 			for child in group.child_ids:
@@ -46,6 +49,7 @@ class Group(models.Model):
 			group.course_count =  count
 
 	def _compute_competency_count(self):
+		count = 0
 		for group in self:
 			count = len(group.competency_ids)
 			for child in group.child_ids:

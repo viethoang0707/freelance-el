@@ -17,7 +17,8 @@ import { SelectUsersDialog } from '../../../shared/components/select-user-dialog
 import { WorkflowService } from '../../../shared/services/workflow.service';
 import { SelectCompetencyLevelDialog } from '../../../shared/components/select-competency-level-dialog/select-competency-level-dialog.component';
 
-const GROUP_FIELDS = ['name', 'category', 'parent_id'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'course_count'];
+
 
 @Component({
 	moduleId: module.id,

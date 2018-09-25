@@ -41,6 +41,18 @@ export class Group extends BaseModel{
     course_count: number;
     competency_count: number;
 
+    treeLabel(count?:boolean) {
+        if (count && this.category =='organization')
+            return `${this.name}(${this.user_count})`;
+        if (count && this.category =='course')
+            return `${this.name}(${this.course_count})`;
+        if (count && this.category =='question')
+            return `${this.name}(${this.question_count})`;
+        if (count && this.category =='competency')
+            return `${this.name}(${this.competency_count})`;
+        return this.name;
+    }
+
     static __api__listUserGroup(fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(Group.Model, fields,"[('category','=','organization')]");
     }

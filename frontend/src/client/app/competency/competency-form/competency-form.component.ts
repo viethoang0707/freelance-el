@@ -11,7 +11,7 @@ import { CompetencyLevel } from '../../shared/models/elearning/competency-level.
 import { BaseModel } from '../../shared/models/base.model';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-const GROUP_FIELDS = ['name', 'parent_id', 'category'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'competency_count'];
 
 @Component({
 	moduleId: module.id,

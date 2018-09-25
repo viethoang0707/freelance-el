@@ -10,7 +10,7 @@ import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY } from '../../../shared/models/constants';
 import * as _ from 'underscore';
 
-const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'user_count'];
 
 @Component({
 	moduleId: module.id,
