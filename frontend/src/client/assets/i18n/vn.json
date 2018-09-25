@@ -732,5 +732,6 @@
 	"Enter you login name": "Nhập tên đăng nhập",
 	"Reset link will be sent to your email": "Reset link sẽ được gửi vào hòm thư điện tử của bạn",
 	"Your token has been expired": "Mã kích hoạt của bạn đã hết hạn",
-	"Access denied. You must login again!": "Truy cập bị từ chối. Bạn phải đăng nhập lại!"
+	"Access denied. You must login again!": "Truy cập bị từ chối. Bạn phải đăng nhập lại!",
+	"E-learnining System": "Hệ thống đào tạo trực tuyến"
 }
