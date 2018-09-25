@@ -3,16 +3,12 @@
         <div class="spinner" [hidden]="!loading"></div>
         <div class="ui-g ui-fluid form-group">
             <div class="ui-g-6 ">
-                <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.name" name="name">
-              <label>{{'Name'|translate}}</label>
-            </span>
+                <label>{{'Name'|translate}}</label>
+                <input type="text" pInputText [(ngModel)]="object.name" name="name">
             </div>
             <div class="ui-g-6 ">
-                <span class="md-inputfield">
-              <input type="text" pInputText [(ngModel)]="object.qualification" name="qualification">
-              <label>{{'Qualification'|translate}}</label>
-            </span>
+                <label>{{'Qualification'|translate}}</label>
+                <input type="text" pInputText [(ngModel)]="object.qualification" name="qualification">
             </div>
             <div class="ui-g-12 ">
                 <label>{{'Summary'|translate}}</label>
@@ -20,7 +16,7 @@
             </div>
         </div>
         <p-footer>
-            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
+            <button type="button" (click)="save()" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
             <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>
