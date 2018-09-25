@@ -136,7 +136,7 @@ export class CourseMember extends BaseModel {
     }
 
     grantCertificate(context:APIContext, member:CourseMember, certificateId: number,fields?:string[]):Observable<any> {
-        return context.apiService.execute(CourseMember.__api__grant_certificate(this.id, memberId, certificateId), 
+        return context.apiService.execute(CourseMember.__api__grant_certificate(this.id, member.id, certificateId), 
             context.authService.LoginToken).do(()=> {
                 member.enroll_status = 'completed';
                 member.certificate_id = certificateId;
