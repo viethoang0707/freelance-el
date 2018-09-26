@@ -28,6 +28,7 @@ export class UserExportDialog extends BaseComponent {
 	private selectedGroupNodes: TreeNode[];
 	private fields: SelectItem[];
 	private selectedFields: string[];
+	private selectedAllFields: string[];
 	private display: boolean;
 
 	@Input() lang: string;
@@ -51,7 +52,7 @@ export class UserExportDialog extends BaseComponent {
 		this.selectedFields = [];
 		this.selectedGroupNodes = [];
 		this.display = false;
-		this.WINDOW_HEIGHT = $(window).height();	
+		this.WINDOW_HEIGHT = $(window).height();
 	}
 
 	show() {
@@ -138,5 +139,13 @@ export class UserExportDialog extends BaseComponent {
 			});
 	}
 
+	selectedAll() {
+		if (this.selectedAllFields.length != 0) {
+			this.selectedFields = ["login", "name", "social_id", "group_name", "group_code", "position", "dob", "gender", "phone", "email", "ban_date", "unban_date"];
+		} else {
+			this.selectedFields = [];
+		}
+
+	}
 }
 
