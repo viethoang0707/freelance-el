@@ -209,7 +209,7 @@
                 <tr>
                     <td>{{rowIndex+1}}</td>
                     <td>{{member.course_name}}</td>
-                    <td>{{member.date_register}}</td>
+                    <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>
                         <a *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
@@ -235,7 +235,7 @@
                 <tr>
                     <td>{{rowIndex+1}}</td>
                     <td>{{member.exam_name}}</td>
-                    <td>{{member.date_register}}</td>
+                    <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>{{member.grade}}</td>
                 </tr>
