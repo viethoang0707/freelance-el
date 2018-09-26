@@ -9,13 +9,13 @@
     <p-editor [(ngModel)]="question.explanation" [style]="{'height':'120px'}" name="explanation">
     </p-editor>
   </div>
-  <div class="ui-g-6">
+  <div class="ui-g-12">
     <p-panel header="{{'Options'|translate}}">
       <button pButton type="button" icon="ui-icon-add" class="secondary-btn" (click)="addOption()" pTooltip="{{'Add option'|translate}}"></button>
       <ul class="options-question">
         <li *ngFor="let option of options" class="mt25">
           <p-checkbox (click)="setOptionCorrect(option)" binary="true" name="option_is_correct" [(ngModel)]="option.is_correct" class="fLeft pr10"></p-checkbox>
-          <span class="md-inputfield ui-g-8">
+          <span class="md-inputfield ui-g-11">
             <input type="text" pInputText [(ngModel)]="option.content" name="option_content">
           </span>
           <button pButton type="button" icon="ui-icon-close" title="{{Remove|translate}}" (click)="removeOption(option)"

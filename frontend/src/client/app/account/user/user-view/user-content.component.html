@@ -94,15 +94,15 @@
     </p-tabPanel>
     <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
         <div class="ui-g ui-fluid form-group">
-            <div class="ui-g-6" style="width:30%;">
-                <div class="ui-g-3" style="width:100%;">
+            <div class="ui-g-4">
+                <div class="ui-g-12">
                     <label>{{'Avatar'|translate}}</label>
                 </div>
-                <div class="ui-g-9">
-                    <img style="width:100%;" [src]="user.image | imageBase64" />
+                <div class="ui-g-12">
+                    <img style="width:80%;" [src]="user.image | imageBase64" />
                 </div>
             </div>
-            <div class="ui-lg-4 ui-g-12" style="width:70%;">
+            <div class="ui-g-8">
                 <p-card styleClass="">
                     <ul class="list-cmt">
                         <li class="clearfix">
@@ -209,7 +209,7 @@
                 <tr>
                     <td>{{rowIndex+1}}</td>
                     <td>{{member.course_name}}</td>
-                    <td>{{member.date_register}}</td>
+                    <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>
                         <a *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
@@ -235,7 +235,7 @@
                 <tr>
                     <td>{{rowIndex+1}}</td>
                     <td>{{member.exam_name}}</td>
-                    <td>{{member.date_register}}</td>
+                    <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>{{member.grade}}</td>
                 </tr>

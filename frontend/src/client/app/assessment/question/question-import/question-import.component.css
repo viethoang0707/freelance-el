@@ -1,9 +1,5 @@
-ul.select-columns li{
-	list-style-type: none;
-}
 table{
 	border-collapse: collapse;
-	width: 100%;
 }
 
 th{
