@@ -11,7 +11,7 @@ import { CompetencyLevel } from '../../shared/models/elearning/competency-level.
 import { BaseModel } from '../../shared/models/base.model';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-const GROUP_FIELDS = ['name', 'parent_id', 'category'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'competency_count'];
 
 @Component({
 	moduleId: module.id,
@@ -34,11 +34,16 @@ export class CompetencyFormComponent extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+        this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.competency.group_id = this.selectedNode.data.id;
 			this.competency.group_name = this.selectedNode.data.name;
 		}
 	}
+
+    nodeUnselect(event: any) {
+        this.selectedNode = null;
+    }
 
 	ngOnInit() {
 		this.competency = this.route.snapshot.data['competency'];

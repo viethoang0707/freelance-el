@@ -32,7 +32,7 @@
                 <div class="ui-g-12 p-0 course-study-syllabus">
                     <p-tabView>
                         <p-tabPanel header="{{'Syllabus'|translate}}" leftIcon="ui-icon-collections-bookmark">
-                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" styleClass="course-study-tree">
+                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"  (onNodeUnselect)="nodeUnselect($event)" styleClass="course-study-tree">
                                 <ng-template let-node pTemplate="default">
                                     <span>{{node.label}}</span>
                                     <span [hidden]="!node.data || !node.data.id || !completedUnitIds.includes(node.data.id)">

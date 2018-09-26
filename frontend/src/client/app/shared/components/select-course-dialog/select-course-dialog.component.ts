@@ -43,11 +43,16 @@ export class SelectCoursesDialog extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.selectedNode.data.listCourses(this,COURSE_FIELDS).subscribe(courses => {
 				this.courses = courses;
 			});
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	show() {

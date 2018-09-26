@@ -15,7 +15,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 import * as _ from 'underscore';
 
 const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position', 'phone', 'group_name', 'permission_name'];
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'user_count'];
 
 @Component({
     moduleId: module.id,

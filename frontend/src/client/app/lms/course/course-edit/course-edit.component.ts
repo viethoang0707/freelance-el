@@ -142,9 +142,14 @@ export class CourseEditComponent extends BaseComponent implements OnInit {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	previewUnit(unit: CourseUnit) {

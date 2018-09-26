@@ -7,7 +7,7 @@
                     <div class="fLeft">
                         <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
                     </div>
-                    <div class="ml110">
+                    <div class="ml120">
                         <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit"
                             (click)="editNode(selectedNode)" *ngIf="selectedNode"></button>
                         <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete"
@@ -21,7 +21,7 @@
                 </div>
             </p-toolbar>
             <div class="ui-g-3" style="padding: 10px 10px 0 0">
-                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
+                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
                     styleClass="tree-unit-course-syllabus"></p-tree>
             </div>
             <div class="ui-g-9" style="padding: 10px 0 0" *ngIf="selectedUnit">

@@ -16,7 +16,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
 import { TreeNode } from 'primeng/api';
 
-const GROUP_FIELDS = ['name','parent_id'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
 
 @Component({
 	moduleId: module.id,
@@ -99,7 +99,7 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 		this.examQuestions = [];
 		Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
 			_.each(QUESTION_LEVEL, (val, key) => {
-				this.tree[key] = this.treeUtils.buildGroupTree(groups);
+				this.tree[key] = this.treeUtils.buildGroupTree(groups,true);
 			});
 		});
 	}
