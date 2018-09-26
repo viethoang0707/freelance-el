@@ -12,7 +12,8 @@ import { TreeNode, MenuItem } from 'primeng/api';
 import { CompetencyLevel } from '../../shared/models/elearning/competency-level.model';
 import { BaseModel } from '../../shared/models/base.model';
 
-const GROUP_FIELDS = ['name', 'category', 'parent_id'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'competency_count'];
+
 
 @Component({
     moduleId: module.id,

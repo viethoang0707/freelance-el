@@ -39,7 +39,7 @@
             <div class="ui-g-6">
                 <label>{{'Parent group'|translate}}<span> *</span>
                 </label>
-                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"></p-tree>
+                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
                 <input type="hidden" name="group" #group="ngModel" [(ngModel)]="user.group_id" required>
                 <div *ngIf="group.invalid" class="ui-message ui-messages-error ui-corner-all">
                     <div *ngIf="group.errors.required">

@@ -141,7 +141,7 @@ export class CourseSyllabusComponent extends BaseComponent {
 	}
 
 	back() {
-		this.router.navigate(['/lms/course/edit', this.course.id]);
+		this.location.back();
 	}
 
 	moveUp(node: TreeNode) {
@@ -159,6 +159,7 @@ export class CourseSyllabusComponent extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			if (this.selectedUnit && this.selectedUnit.id == this.selectedNode.data.id) {
 				this.clearSelection();
@@ -166,6 +167,10 @@ export class CourseSyllabusComponent extends BaseComponent {
 			else
 				this.selectedUnit = this.selectedNode.data;
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	previewUnit(unit: CourseUnit) {

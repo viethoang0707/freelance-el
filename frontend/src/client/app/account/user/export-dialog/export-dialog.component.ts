@@ -13,7 +13,7 @@ import * as _ from 'underscore';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
 declare var $: any;
 
-const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'user_count'];
 
 @Component({
 	moduleId: module.id,

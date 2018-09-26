@@ -13,7 +13,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 import { User } from '../../../shared/models/elearning/user.model';
 
 const COURSE_FIELDS = ['name', 'group_id', 'code', 'mode', 'status', 'review_state', 'supervisor_name', 'supervisor_id', 'create_date', 'write_date'];
-const GROUP_FIELDS = ['name', 'category', 'parent_id'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'course_count'];
 
 
 @Component({

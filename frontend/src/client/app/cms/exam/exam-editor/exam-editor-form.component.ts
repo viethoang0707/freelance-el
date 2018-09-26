@@ -55,7 +55,7 @@ export class ExamEditorFormCoponent extends BaseComponent {
 	}
 
 	back() {
-		this.router.navigate(['/lms/exam/edit', this.exam.id]);
+		this.location.back();
 	}
 
 }

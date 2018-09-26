@@ -44,11 +44,16 @@ export class SelectUsersDialog extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.selectedNode.data.listUsers(this, USER_FIELDS).subscribe(users => {
 				this.users = users;
 			});
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	show() {

@@ -12,6 +12,7 @@ import { TreeNode, MenuItem } from 'primeng/api';
 import { BaseModel } from '../../../shared/models/base.model';
 
 const QUESTION_FIELDS = ['title', 'level', 'type', 'group_id', 'content', 'group_name'];
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
 
 @Component({
     moduleId: module.id,
@@ -45,7 +46,7 @@ export class QuestionListComponent extends BaseComponent {
     }
 
     ngOnInit() {
-        Group.listQuestionGroup(this).subscribe(groups => {
+        Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
             var treeUtils = new TreeUtils();
             this.tree = treeUtils.buildGroupTree(groups);
         });

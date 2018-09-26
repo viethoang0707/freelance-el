@@ -25,9 +25,14 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.object.parent_id = this.selectedNode.data.id;
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	ngOnInit() {
