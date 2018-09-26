@@ -212,7 +212,7 @@
                     <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>
-                        <a *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
+                        <a *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'View'|translate}}</a>
                     </td>
                 </tr>
             </ng-template>

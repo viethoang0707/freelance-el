@@ -706,5 +706,9 @@
 	"Register conferenc successfully": "Đăng ký lớp học trực tuyến thành công",
 	"In-study": "Đang học",
 	"Awaiting for certificate": "Đang chờ nhận chứng chỉ",
-	"Request certificate": "Yêu cầu chứng chỉ"
+	"Request certificate": "Yêu cầu chứng chỉ",
+	"Question form": "Thêm câu hỏi",
+	"Question create form": "Thêm câu hỏi",
+	"Import questions": "Nhập câu hỏi từ file",
+	"Print": "In"
 }
