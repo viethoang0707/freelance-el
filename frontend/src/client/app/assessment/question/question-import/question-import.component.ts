@@ -54,7 +54,7 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 			var question = new Question();
 			Object.assign(question, record);
 				var group = _.find(this.groups, (obj: Group) => {
-					return obj.code == record["group_code"];
+					return obj.code.toLowerCase() == record["group_code"].toLowerCase();
 				});
 				if (group) {
 					question.group_id = group.id;
@@ -62,6 +62,8 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					isValid = false;
 					this.statusMessages.push(`Record ${i + 1}: Group ${record["group_code"]} is not defined`);
 				}
+				if (record["type"])
+					record["type"] = record["type"].toLowerCase();
 				var type = record["type"];
 				if (!type || !QUESTION_TYPE[type]) {
 					isValid = false;
@@ -84,7 +86,7 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					for (var j = 0; j < optionLength && i < this.records.length; j++) {
 						var optionRecord = this.records[j + i];
 						var option = new QuestionOption();
-						option.is_correct = optionRecord["correct"] == 'Y';
+						option.is_correct = optionRecord["correct"].toLowerCase() == 'y';
 						option.content = optionRecord["option"] || '';
 						if (option.content.length)
 							questionOptions.push(option);
