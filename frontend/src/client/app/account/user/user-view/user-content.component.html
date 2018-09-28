@@ -18,7 +18,9 @@
                             <li class="clearfix">
                                 <i class="material-icons">toys</i>
                                 <span class="cmt-title">{{'Admin user'|translate}}</span>
-                                <span class="cmt-detail">{{user.is_admin}}</span>
+                                <span class="cmt-detail">
+                                    <i class="material-icons" *ngIf="user.is_admin">check</i>
+                                    <i class="material-icons" *ngIf="!user.is_admin">close</i></span>
                             </li>
                         </ul>
                     </p-card>
