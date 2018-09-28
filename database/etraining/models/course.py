@@ -545,9 +545,9 @@ class CourseMember(models.Model):
 
 	@api.model
 	def grant_certificate(self,params):
-		memberId = params["memberId"]
-		staffId = params["staffId"]
-		certificateId = params["certificateId"] if "certificate" in params else None
+		memberId = +params["memberId"]
+		staffId = +params["staffId"]
+		certificateId = +params["certificateId"]
 		for member in self.env['etraining.course_member'].browse(memberId):
 			for certificate in self.env['etraining.course_certificate'].browse(certificateId):
 				certificate.write({'issue_member_id':staffId})

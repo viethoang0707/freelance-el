@@ -113,10 +113,15 @@ export class CourseUnitStudyDialog extends BaseComponent {
 
 	nodeSelect(event: any) {
 		this.unloadCurrentUnit();
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.selectedUnit = this.selectedNode.data;
 			this.studyUnit();
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	unloadCurrentUnit() {

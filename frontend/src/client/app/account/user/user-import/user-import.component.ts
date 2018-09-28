@@ -79,7 +79,7 @@ export class UserImportComponent extends BaseComponent implements OnInit {
 			});
 			user["password"] = DEFAULT_PASSWORD;
 			var group = _.find(this.groups, (obj: Group) => {
-				return obj.code == user["group_code"];
+				return obj.code.toLowerCase() == user["group_code"].toLowerCase();
 			});
 			if (group) {
 				user.group_id = group.id;
@@ -94,6 +94,8 @@ export class UserImportComponent extends BaseComponent implements OnInit {
 					isValid = false;
 					this.statusMessages.push(`Record ${index + 1}: Invalid date format`);
 				}
+			if (user['gender'])
+				user['gender'] = user['gender'].toLowerCase();
 			isValid = user['gender'] in GENDER;
 			if (!isValid)
 				this.statusMessages.push(`Record ${index + 1}: Invalid gender. Valid values: ${Object.keys(GENDER)}`);

@@ -14,7 +14,7 @@ import { MenuService } from '../../../shared/services/menu.service';
 import * as _ from 'underscore';
 
 const USER_FIELDS = ['name', 'email', 'login', 'position', 'permission_id', 'gender', 'dob', 'group_id', 'group_name']
-const GROUP_FIELDS = ['name', 'category', 'parent_id', 'child_ids'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'user_count',];
 
 @Component({
 	moduleId: module.id,
@@ -56,6 +56,7 @@ export class PermissionFormComponent extends BaseComponent {
 		});
 		this.permission.menu_access = JSON.stringify(menuCodes);
 	}
+
 
 	ngOnInit() {
 		this.addUsers = [];

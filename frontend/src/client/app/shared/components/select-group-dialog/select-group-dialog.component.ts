@@ -60,6 +60,19 @@ export class SelectGroupDialog extends BaseComponent {
 		this.hide();
 	}
 
+	nodeSelect(event: any) {
+		if (!this.selectedNode) {
+			this.selectedNode = event.node;
+			return;
+		} else {
+			if (this.selectedNode["id"] != event.node["id"])
+				this.selectedNode = event.node;
+			else
+				this.selectedNode = null;
+		}
+		
+	}
+
 
 }
 

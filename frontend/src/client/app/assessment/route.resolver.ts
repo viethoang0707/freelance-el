@@ -53,6 +53,8 @@ export class SurveyResolve implements Resolve<Survey>,APIContext {
   }
 }
 
+
+
 @Injectable()
 export class QuestionResolve implements Resolve<Question>,APIContext {
 
@@ -76,6 +78,7 @@ export class QuestionResolve implements Resolve<Question>,APIContext {
   }
 }
 
+
 @Injectable()
 export class GroupsResolve implements Resolve<Group[]>,APIContext {
 
@@ -88,6 +91,7 @@ export class GroupsResolve implements Resolve<Group[]>,APIContext {
 	}
 
   resolve(route: ActivatedRouteSnapshot) {
-    	return Group.listQuestionGroup(this,['id','code']);
+      return Group.listQuestionGroup(this,['id','code']);
+  
   }
 }

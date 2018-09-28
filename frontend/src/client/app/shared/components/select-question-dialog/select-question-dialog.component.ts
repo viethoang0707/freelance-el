@@ -56,6 +56,8 @@ export class SelectQuestionsDialog extends BaseComponent {
 		}
 	}
 
+	
+
 	show() {
 		this.display = true;
 		this.selectedQuestions = [];

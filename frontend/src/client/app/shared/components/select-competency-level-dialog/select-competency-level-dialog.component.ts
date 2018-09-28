@@ -49,6 +49,7 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.displayLevels = [];
 			this.selectedNode.data.listCompetencies(this, COMPETENCY_FIELDS).subscribe(competencies => {
@@ -60,6 +61,10 @@ export class SelectCompetencyLevelDialog extends BaseComponent {
 				});
 			});
 		}
+	}
+
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 	show() {

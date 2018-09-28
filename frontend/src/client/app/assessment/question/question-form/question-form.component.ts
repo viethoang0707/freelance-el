@@ -14,6 +14,7 @@ import { IQuestion } from '../../../cms/question/question.interface';
 import { QuestionRegister } from '../../../cms/question/question.decorator';
 import { WindowRef } from '../../../shared/helpers/windonw.ref';
 
+const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
 
 @Component({
 	moduleId: module.id,
@@ -35,15 +36,20 @@ export class QuestionFormComponent extends BaseComponent {
 	}
 
 	nodeSelect(event: any) {
+		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.question.group_id = this.selectedNode.data.id;
 			this.question.group_name = this.selectedNode.data.name;
 		}
 	}
 
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
+	}
+
 	ngOnInit() {
 		this.question = this.route.snapshot.data['question'];
-			Group.listQuestionGroup(this).subscribe(groups => {
+			Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
 				var treeUtils = new TreeUtils();
 				this.tree = treeUtils.buildGroupTree(groups);
 				if (this.question.group_id) {

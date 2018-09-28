@@ -40,7 +40,7 @@ import { SurveyDialog } from '../../../assessment/survey/survey-form/survey-dial
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 
-const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_satus', 'role', 'login']
+const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_satus', 'role', 'login', 'user_id']
 
 @Component({
 	moduleId: module.id,

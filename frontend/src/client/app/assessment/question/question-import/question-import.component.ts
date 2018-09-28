@@ -16,6 +16,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 	moduleId: module.id,
 	selector: 'question-import-component',
 	templateUrl: 'question-import.component.html',
+	styleUrls: ['question-import.component.css']
 })
 export class QuestionImportComponent extends BaseComponent implements OnInit {
 
@@ -54,7 +55,7 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 			var question = new Question();
 			Object.assign(question, record);
 				var group = _.find(this.groups, (obj: Group) => {
-					return obj.code == record["group_code"];
+					return obj.code.toLowerCase() == record["group_code"].toLowerCase();
 				});
 				if (group) {
 					question.group_id = group.id;
@@ -62,14 +63,16 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					isValid = false;
 					this.statusMessages.push(`Record ${i + 1}: Group ${record["group_code"]} is not defined`);
 				}
-
-				var type = record["type"];
+				if (question.type)
+					question.type = question.type.toLowerCase();
+				var type = question.type;
 				if (!type || !QUESTION_TYPE[type]) {
 					isValid = false;
 					this.statusMessages.push(`Record ${i}: Type ${record["type"]} is not defined`);
 				}
-
-				var level = record["level"];
+				if (question.level)
+					question.level = question.level.toLowerCase();
+				var level = question.level;
 				if (!level || !QUESTION_LEVEL[level]) {
 					isValid = false;
 					this.statusMessages.push(`Record ${i}: Type ${record["level"]} is not defined`);
@@ -84,7 +87,7 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					for (var j = 0; j < optionLength && i < this.records.length; j++) {
 						var optionRecord = this.records[j + i];
 						var option = new QuestionOption();
-						option.is_correct = optionRecord["correct"] == 'Y';
+						option.is_correct = optionRecord["correct"].toLowerCase() == 'y';
 						option.content = optionRecord["option"] || '';
 						if (option.content.length)
 							questionOptions.push(option);
@@ -92,9 +95,10 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					optionList.push(_.shuffle(questionOptions));
 				}
 				i += optionLength;
+				questionList.push(question);
 			} else
 				i++;
-			questionList.push(question);
+			
 		}
 		return Observable.of({ questions: questionList, options: optionList });
 	}
