@@ -16,6 +16,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 	moduleId: module.id,
 	selector: 'question-import-component',
 	templateUrl: 'question-import.component.html',
+	styleUrls: ['question-import.component.css']
 })
 export class QuestionImportComponent extends BaseComponent implements OnInit {
 

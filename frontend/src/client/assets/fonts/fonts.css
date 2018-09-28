@@ -1,0 +1,32 @@
+@font-face {
+    font-family: UVN Sang Song;
+    src: url(uvn-sang-song.ttf);
+}
+
+@font-face {
+    font-family: Kunstler Script;
+    src: url(KUNSTLER.TTF);
+}
+
+@font-face {
+    font-family: MyriadPro-BoldCond;
+    src: url(MyriadPro-BoldCond.otf);
+}
+
+@font-face {
+    font-family: Autocar Black Italic;
+    src: url(autocar/AUTOCARBLACKITALIC.TTF);
+}
+
+@font-face {
+    font-family: Autocar Bold Condensed;
+    src: url(autocar/AUTOCARBOLDCONDENSED.TTF);
+}
+@font-face {
+    font-family: Autocar Bold Italic;
+    src: url(autocar/AUTOCARBOLDITALIC.TTF);
+}
+@font-face {
+    font-family: Autocar Light Italic;
+    src: url(autocar/AUTOCARLIGHTITALIC.TTF);
+}

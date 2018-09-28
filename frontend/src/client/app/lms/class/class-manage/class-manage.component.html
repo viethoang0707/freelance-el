@@ -15,7 +15,7 @@
                 <p-table #outlineTable [value]="studentRecords" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>
+                            <th style="width: 5%">
                                 {{'Index'|translate}}
                             </th>
                             <th [pSortableColumn]="'name'">

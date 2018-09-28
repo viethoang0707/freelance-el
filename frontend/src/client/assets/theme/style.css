@@ -958,6 +958,16 @@ body .ui-tree .ui-treenode-content .ui-chkbox .fa-check {
   color: #fff !important;
 }
 
+.layout-wrapper .layout-main .layout-topbar .layout-topbar-menu-wrapper .topbar-menu > li.profile-item > ul {
+    right: 0;
+    left: auto;
+}
+
+.layout-wrapper .layout-main .layout-topbar .layout-topbar-menu-wrapper .topbar-menu > li.profile-item > ul:before {
+    right: 15px;
+    left: auto;
+}
+
 @media screen and (max-width: 500px) {
   .next-btn .course-unit-study-btn span.ui-button-text.ui-clickable,
   .next-btn .course-unit-study-btn span.ui-button-text.ui-clickable {
