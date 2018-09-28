@@ -95,9 +95,10 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					optionList.push(_.shuffle(questionOptions));
 				}
 				i += optionLength;
+				questionList.push(question);
 			} else
 				i++;
-			questionList.push(question);
+			
 		}
 		return Observable.of({ questions: questionList, options: optionList });
 	}
