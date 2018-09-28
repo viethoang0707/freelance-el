@@ -180,7 +180,7 @@ class SurveyMember(models.Model):
 		return m
 
 	@api.model
-	def join_exam(self,params):
+	def join_survey(self,params):
 		memberId = params["memberId"]
 		for member in self.env['etraining.survey_member'].browse(memberId):
 			if member.enroll_status == 'registered':

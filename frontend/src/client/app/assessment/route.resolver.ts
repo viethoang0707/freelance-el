@@ -78,7 +78,6 @@ export class QuestionResolve implements Resolve<Question>,APIContext {
   }
 }
 
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
 
 @Injectable()
 export class GroupsResolve implements Resolve<Group[]>,APIContext {
@@ -92,6 +91,7 @@ export class GroupsResolve implements Resolve<Group[]>,APIContext {
 	}
 
   resolve(route: ActivatedRouteSnapshot) {
-    	return Group.listQuestionGroup(this,GROUP_FIELDS);
+      return Group.listQuestionGroup(this,['id','code']);
+  
   }
 }

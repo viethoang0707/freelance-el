@@ -16,6 +16,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 	moduleId: module.id,
 	selector: 'question-import-component',
 	templateUrl: 'question-import.component.html',
+	styleUrls: ['question-import.component.css']
 })
 export class QuestionImportComponent extends BaseComponent implements OnInit {
 
@@ -62,16 +63,16 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					isValid = false;
 					this.statusMessages.push(`Record ${i + 1}: Group ${record["group_code"]} is not defined`);
 				}
-				if (record["type"])
-					record["type"] = record["type"].toLowerCase();
-				var type = record["type"];
+				if (question.type)
+					question.type = question.type.toLowerCase();
+				var type = question.type;
 				if (!type || !QUESTION_TYPE[type]) {
 					isValid = false;
 					this.statusMessages.push(`Record ${i}: Type ${record["type"]} is not defined`);
 				}
-				if (record["level"])
-					record["level"] = record["level"].toLowerCase();
-				var level = record["level"];
+				if (question.level)
+					question.level = question.level.toLowerCase();
+				var level = question.level;
 				if (!level || !QUESTION_LEVEL[level]) {
 					isValid = false;
 					this.statusMessages.push(`Record ${i}: Type ${record["level"]} is not defined`);
@@ -94,9 +95,10 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					optionList.push(_.shuffle(questionOptions));
 				}
 				i += optionLength;
+				questionList.push(question);
 			} else
 				i++;
-			questionList.push(question);
+			
 		}
 		return Observable.of({ questions: questionList, options: optionList });
 	}

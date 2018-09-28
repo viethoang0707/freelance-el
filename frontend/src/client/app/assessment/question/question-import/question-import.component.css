@@ -1,0 +1,9 @@
+ul.select-columns li{
+	list-style-type: none;
+}
+table, th, td {
+   border: 1px solid black;
+}
+table {
+    border-collapse: collapse;
+}
