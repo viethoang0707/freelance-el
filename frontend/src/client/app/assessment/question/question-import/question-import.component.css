@@ -1,15 +1,13 @@
-table{
-	border-collapse: collapse;
+ul.select-columns li{
+	list-style-type: none;
 }
-
-th{
-	background: #deedf7;
-    border: 1px solid #aed0ea;
-    padding: 12px;
+table, th, td {
+   border: 1px solid black;
 }
 
 td{
 	border: 1px solid #dddddd;
     padding: 12px;
+
 
 }
