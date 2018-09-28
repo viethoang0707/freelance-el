@@ -19,6 +19,7 @@ import { WindowRef } from '../../../shared/helpers/windonw.ref';
 	moduleId: module.id,
 	selector: 'question-view',
 	templateUrl: 'question-view.component.html',
+	styleUrls: ['question-view.component.css']
 })
 export class QuestionViewComponent extends BaseComponent {
 

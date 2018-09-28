@@ -1,55 +1,45 @@
 <div class="card card-w-title">
     <h1>{{'Exam view'|translate}}</h1>
-    <div class="ui-g ui-fluid form-group pt40">
+    <div class="ui-g ui-fluid form-group">
         <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Name'|translate}}</label>
-            </div>
-            <div class="ui-g-9">
-                <span>{{exam.name}}</span>
-            </div>
-        </div>
-        <div class="ui-g-12">
-            <label>{{'Summary'|translate}}</label>
-            <p>
-                {{exam.summary}}
-            </p>
-        </div>
-        <div class="ui-g-12">
-            <label>{{'Instruction'|translate}}</label>
-            <p [innerHTML]="exam.instruction">
-            </p>
-        </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Start'|translate}}</label>
-            </div>
-            <div class="ui-g-9">
-                {{exam.start | date: 'dd/MM/yyyy'}}
-            </div>
-        </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'End'|translate}}</label>
-            </div>
-            <div class="ui-g-9">
-                {{exam.end | date :'dd/MM/yyyy'}}
-            </div>
+            <p-card>
+                <ul class="list-cmt">
+                    <li class="clearfix">
+                        <i class="material-icons">star_border</i>
+                        <span class="cmt-title">{{'Name'|translate}}</span>
+                        <span class="cmt-detail">{{exam.name}}</span>
+                    </li>
+                    <li class="clearfix">
+                        <i class="material-icons">star_border</i>
+                        <span class="cmt-title">{{'Start'|translate}}</span>
+                        <span class="cmt-detail">{{exam.start | date: 'dd/MM/yyyy'}}</span>
+                    </li>
+                    <li class="clearfix">
+                        <i class="material-icons">star_border</i>
+                        <span class="cmt-title">{{'End'|translate}}</span>
+                        <span class="cmt-detail">{{exam.end | date :'dd/MM/yyyy'}}</span>
+                    </li>
+                    <li class="clearfix">
+                        <i class="material-icons">star_border</i>
+                        <span class="cmt-title">{{'Editor'|translate}}</span>
+                        <span class="cmt-detail">{{editor.name}}</span>
+                    </li>
+                    <li class="clearfix" style="border-bottom: none;">
+                        <i class="material-icons">star_border</i>
+                        <span class="cmt-title">{{'Competency level'|translate}}</span>
+                        <span class="cmt-detail">{{exam.competency_level_name}}</span>
+                    </li>
+                </ul>
+            </p-card>
         </div>
         <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Editor' |translate}}:</label>
+            <div>
+                <label><i class="material-icons">star_border</i> {{'Summary'|translate}}</label>
+                <p>{{exam.summary}}</p>
             </div>
-            <div class="ui-g-9">
-                <span>{{editor.name}}</span>
-            </div>
-        </div>
-        <div class="ui-g-6">
-            <div class="ui-g-3">
-                <label>{{'Competency level' |translate}}:</label>
-            </div>
-            <div class="ui-g-9">
-                <span>{{exam.competency_level_name}}</span>
+            <div class="">
+                <label><i class="material-icons">star_border</i> {{'Instruction'|translate}}</label>
+                <p [innerHTML]="exam.instruction"></p>
             </div>
         </div>
     </div>

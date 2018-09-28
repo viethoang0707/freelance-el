@@ -715,5 +715,9 @@
 	"Question view": "Xem chi tiết câu hỏi",
 	"Question view form": "Xem chi tiết câu hỏi",
 	"Exam view": "Xem chi tiết kì thi",
-	"Exam view form": "Xem chi tiết kì thi"
+	"Exam view form": "Xem chi tiết kì thi",
+	"Please enter a password": "Vui lòng nhập mật khẩu",
+	"Weak": "Yếu",
+	"Medium": "Trung bình",
+	"Strong": "Mạnh"
 }
