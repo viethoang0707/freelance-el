@@ -1,14 +1,9 @@
 <div class="card card-w-title">
-    <h1>{{'Exam view'|translate}}</h1>
+    <h1>{{'Exam view'|translate}}: {{exam.name}}</h1>
     <div class="ui-g ui-fluid form-group">
         <div class="ui-g-6">
-            <p-card>
+            <p-card styleClass="lms-exam-detail">
                 <ul class="list-cmt">
-                    <li class="clearfix">
-                        <i class="material-icons">star_border</i>
-                        <span class="cmt-title">{{'Name'|translate}}</span>
-                        <span class="cmt-detail">{{exam.name}}</span>
-                    </li>
                     <li class="clearfix">
                         <i class="material-icons">star_border</i>
                         <span class="cmt-title">{{'Start'|translate}}</span>
@@ -34,11 +29,11 @@
         </div>
         <div class="ui-g-6">
             <div>
-                <label><i class="material-icons">star_border</i> {{'Summary'|translate}}</label>
+                <h4 class="removeM"><i class="material-icons">star_border</i> {{'Summary'|translate}}</h4>
                 <p>{{exam.summary}}</p>
             </div>
             <div class="">
-                <label><i class="material-icons">star_border</i> {{'Instruction'|translate}}</label>
+                <h4 class="removeM"><i class="material-icons">star_border</i> {{'Instruction'|translate}}</h4>
                 <p [innerHTML]="exam.instruction"></p>
             </div>
         </div>
