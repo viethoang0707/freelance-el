@@ -203,9 +203,9 @@ class CourseUnit(models.Model):
 
 	@api.onchange(name)
 	def on_change_name(self):
-    for record in self:
-        if record.self_assessment_id and record.self_assessment_id.exam_id:
-        	record.self_assessment_id.exam_id.write({'name':record.name})
+		for record in self:
+			if record.self_assessment_id and record.self_assessment_id.exam_id:
+				record.self_assessment_id.exam_id.write({'name':record.name})
             
 
 	@api.multi
