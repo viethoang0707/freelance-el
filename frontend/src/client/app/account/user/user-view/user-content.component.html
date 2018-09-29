@@ -48,50 +48,7 @@
                     </p-card>
                 </div>
             </div>
-            <!-- <div> -->
-                <!-- <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Name'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.name}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Login'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.login}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Admin user'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.is_admin}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Banned from access'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.banned}}</span>
-                    </div>
-                </div> -->
-            <!-- </div> -->
-            <!-- <div class="ui-g-6">
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Parent group'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.group_name}}</span>
-                    </div>
-                </div>
-            </div> -->
+
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
@@ -142,56 +99,7 @@
                     </ul>
                 </p-card>
             </div>
-            <!-- <div class="ui-g-6">
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Email'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.email}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Mobile'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.phone}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Social ID'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.social_id}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Position'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.position}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Gender'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.gender}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Birthday'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.dob | date :'dd/MM/yyyy'}}</span>
-                    </div>
-                </div>
-            </div> -->
+           
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school" [style]="{width: '100%', height: '430px'}">
@@ -214,7 +122,7 @@
                     <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>
-                        <a *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'View'|translate}}</a>
+                        <button *ngIf="member.certificate_id"  pButton type="button" label="{{'View'|translate}}" (click)="printCertificate(member.certificate_id)"icon="ui-icon-visibility"  class="blue-grey-btn" ></button>
                     </td>
                 </tr>
             </ng-template>
