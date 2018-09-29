@@ -10,6 +10,7 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
+import { Location } from '@angular/common';
 import { SelectItem, MenuItem } from 'primeng/api';
 import {
     GROUP_CATEGORY, PROJECT_STATUS
@@ -41,15 +42,18 @@ export class ProjectManageComponent extends BaseComponent {
     private submits: ProjectSubmission[];
     private members: CourseMember[];
     private selectedMember: any;
+    private supervisor: CourseMember;
+    private courseClass: CourseClass;
 
     @ViewChild(ProjectMarkingDialog) projectMarkDialog: ProjectMarkingDialog;
 
-	constructor(private router: Router, private route: ActivatedRoute) {
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
 		super();
 		this.project = new Project();
 	}
 
     ngOnInit() {
+        this.courseClass = this.route.snapshot.data['courseClass'];
         this.project = this.route.snapshot.data['project'];
         BaseModel.bulk_search(this,
             Project.__api__listSubmissios(this.project.id),
@@ -73,7 +77,7 @@ export class ProjectManageComponent extends BaseComponent {
     }
 
     close() {
-        this.router.navigate(['/lms/class/manage', this.project.class_id]);
+        this.location.back();
     }
 
 }

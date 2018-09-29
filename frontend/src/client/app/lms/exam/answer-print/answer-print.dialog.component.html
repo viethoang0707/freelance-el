@@ -31,6 +31,9 @@
             <div class="ui-g-3">
                 <span>{{'Score'|translate}}: </span><span class="bold"> {{submission.score}}</span>
             </div>
+            <div class="ui-g-3">
+                <span>{{'Grade'|translate}}: </span><span class="bold"> {{submission.grade}}</span>
+            </div>
             <div class="ui-g-12">
                 <p-dataList [value]="examQuestions" [rows]="examQuestions.length" styleClass="l-question">
                     <ng-template let-question pTemplate="item" let-i="index">

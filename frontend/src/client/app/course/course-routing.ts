@@ -19,7 +19,8 @@ export const CourseRoutes: Routes = [
     path: 'course',
     component: CourseComponent,
     data: {
-      breadcrumb: 'Syllabus'
+      breadcrumb: 'Syllabus',
+      viewMode: 'admin'
     },
     canActivate: [AdminGuard],
     children:

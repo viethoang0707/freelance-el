@@ -13,7 +13,8 @@ export const SettingRoutes: Routes = [
     path: 'settings',
     component: SettingComponent,
     data: {
-      breadcrumb: 'Setting'
+      breadcrumb: 'Setting',
+      viewMode: 'admin'
     },
     canActivate: [AdminGuard],
     children:

@@ -27,7 +27,8 @@ export const AssessmentRoutes: Routes = [
     path: 'assessment',
     component: AssessmentComponent,
     data: {
-      breadcrumb: 'Assessment'
+      breadcrumb: 'Assessment',
+      viewMode: 'admin'
     },
     canActivate: [AdminGuard],
     children:

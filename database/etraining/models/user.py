@@ -79,7 +79,7 @@ class User(models.Model):
 		user = params["user"]
 		if self.env["res.users"].search([("login","=",user["login"])]):
 			return {"success":False, "code":"USER_EXIST", "message":"Username exist" }
-		user = super(User, self).create(user)
+		user = super(User, self).with_context({"no_reset_password":True}).create(user)
 		return {"success":True, "user_id": user.id}
 
 	@api.model

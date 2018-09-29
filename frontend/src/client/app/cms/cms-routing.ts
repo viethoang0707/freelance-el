@@ -18,7 +18,8 @@ import { ExamEditorFormCoponent } from './exam/exam-editor/exam-editor-form.comp
         path: 'cms',
         component: CMSComponent,
         data: {
-          breadcrumb: 'CMS'
+          breadcrumb: 'CMS',
+          viewMode: 'lms'
         },
         children:
           [

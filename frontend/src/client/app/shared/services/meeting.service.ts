@@ -22,7 +22,7 @@ export class MeetingService {
 	join(room_ref: string, member_ref: string) {
 		this.apiService.ssoLogin(this.authService.LoginToken, Config.CONFERENCE_CLOUDID).subscribe(resp=> {
 			var ssoToken = btoa(unescape(encodeURIComponent(JSON.stringify(resp["token"])))) ;
-			this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}?room=${room_ref}&member=${member_ref}&sso_token=${ssoToken}`);
+			this.nativeWindow.open(`${Config.CONFERENCE_ENDPOINT}/${room_ref}/${member_ref}/${ssoToken}`);
 		});
 	}
 

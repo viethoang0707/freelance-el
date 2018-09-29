@@ -27,8 +27,10 @@ export class SettingService {
   }
 
   set ViewMode(data: string) {
-    this.viewMode = data;
-    this.viewModeEventReceiver.next(data);
+    if (data != this.viewMode) {
+      this.viewMode = data;
+      this.viewModeEventReceiver.next(data);
+    }
   }
 
   set Lang(lang: string) {

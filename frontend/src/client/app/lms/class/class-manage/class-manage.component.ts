@@ -82,7 +82,6 @@ export class ClassManageComponent extends BaseComponent {
 	@ViewChild(SurveyEditorDialog) surveyContentDialog: SurveyEditorDialog;
 	@ViewChild(SurveyStatsDialog) statsDialog: SurveyStatsDialog;
 	@ViewChild(CourseMemberActivityDialog) memberActivityChart: CourseMemberActivityDialog;
-	@ViewChild(ProjectMarkingDialog) projectMarkingDialog: ProjectMarkingDialog;
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
 
@@ -212,8 +211,8 @@ export class ClassManageComponent extends BaseComponent {
 		});
 	}
 
-	markProject(project: Project) {
-		this.projectMarkingDialog.show(project);
+	manageProject(project: Project) {
+		this.router.navigate(['/lms/class/manage/project', this.courseClass.id, project.id]);
 	}
 
 	addExam() {

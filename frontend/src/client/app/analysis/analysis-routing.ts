@@ -11,7 +11,8 @@ export const AnalysisRoutes: Routes = [
     path: 'analysis',
     component: AnalysisComponent,
     data: {
-      breadcrumb: 'Analysis'
+      breadcrumb: 'Analysis',
+      viewMode: 'admin'
     },
     canActivate: [AdminGuard],
     children:

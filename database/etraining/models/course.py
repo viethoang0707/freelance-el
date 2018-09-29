@@ -147,7 +147,7 @@ class CourseSyllabus(models.Model):
 	member_ids = fields.One2many('etraining.course_member','syllabus_id', string='Course members')
 	name = fields.Char(string='Name')
 	status = fields.Selection(
-		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="draft")
+		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="published")
 	unit_count = fields.Integer( compute='_compute_unit_count', string='Unit count')
 
 	def _compute_unit_count(self):
@@ -166,7 +166,7 @@ class CourseUnit(models.Model):
 	name = fields.Char(string='Name', required=True)
 	icon = fields.Char(name="Icon")
 	status = fields.Selection(
-		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="draft")
+		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="published")
 	type = fields.Selection(
 		[('folder', 'Folder'), ('html', 'HTML'),('self-assess', 'Self-assessment'), ('slide', 'Slide'), ('scorm', 'SCORM'),('exercise', 'Exercise'), ('video', 'Video')])
 	slide_lecture_id = fields.Many2one('etraining.slide_lecture', string='Slide lecture')
@@ -200,6 +200,13 @@ class CourseUnit(models.Model):
 			exercise = self.env['etraining.exercise'].create({'unit_id': unit.id ,'sheet_id':sheet.id})
 			unit.write({'exercise_id': exercise.id})
 		return unit
+
+	@api.onchange(name)
+	def on_change_name(self):
+    for record in self:
+        if record.self_assessment_id and record.self_assessment_id.exam_id:
+        	record.self_assessment_id.exam_id.write({'name':record.name})
+            
 
 	@api.multi
 	def unlink(self):
@@ -314,7 +321,7 @@ class Project(models.Model):
 	end = fields.Datetime(string='End time')
 	submission_ids = fields.One2many('etraining.project_submission','project_id', string='Project Submission members')
 	status = fields.Selection(
-		[('draft', 'Draft'), ('open', 'Open'), ('closed', 'Closed')], default="draft")
+		[('draft', 'Draft'), ('open', 'Open'), ('closed', 'Closed')], default="published")
 
 	@api.multi
 	def write(self, vals):
