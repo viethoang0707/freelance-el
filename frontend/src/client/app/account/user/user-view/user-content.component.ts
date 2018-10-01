@@ -17,7 +17,7 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import { Certificate } from '../../../shared/models/elearning/course-certificate.model';
 import * as _ from 'underscore';
 
-const COURSE_MEMBER_FIELDS = ['course_name', 'role', 'enroll_status', 'date_register'];
+const COURSE_MEMBER_FIELDS = ['course_name','certificate_id', 'role', 'enroll_status', 'date_register'];
 const EXAM_MEMBER_FIELDS = ['exam_name', 'grade', 'enroll_status', 'date_register', 'status', 'exam_id', 'role'];
 
 
@@ -95,8 +95,11 @@ export class UserViewContentComponent extends BaseComponent {
 		});
 	}
 
-	printCertificate(certificate) {
-		this.certPrintDialog.show(certificate);
+	printCertificate(certificateId:number) {
+		Certificate.get(this, certificateId).subscribe(certificate=> {
+			this.certPrintDialog.show(certificate);
+		});
+		
 	}
 
 }

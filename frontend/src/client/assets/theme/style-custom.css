@@ -3,7 +3,7 @@
 }
 
 .remove-border {
-    border: none;
+    border: none !important;
 }
 
 .fLeft {
@@ -67,8 +67,8 @@ body .ui-widget-content.ui-tree {
 }
 
 label {
-     font: 15px arial, sans-serif;
-     /*font-weight: bold;*/
+    font: 15px arial, sans-serif;
+    /*font-weight: bold;*/
 }
 
 .card-footer {
@@ -76,6 +76,11 @@ label {
     text-align: right;
 }
 
-.dialog-style{
+.dialog-style {
     height: calc(100vh * 88%);
+}
+
+body .ui-chkbox .ui-chkbox-box,
+body .ui-tree .ui-treenode-content .ui-chkbox .fa-check {
+    border-radius: 0px;
 }

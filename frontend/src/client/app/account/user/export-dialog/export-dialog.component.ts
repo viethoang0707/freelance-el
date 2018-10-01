@@ -10,6 +10,8 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { User } from '../../../shared/models/elearning/user.model';
 import { ExcelService } from '../../../shared/services/excel.service';
 import * as _ from 'underscore';
+import { WindowRef } from '../../../shared/helpers/windonw.ref';
+declare var $: any;
 
 const GROUP_FIELDS = ['name', 'category', 'parent_id', 'user_count'];
 
@@ -20,10 +22,13 @@ const GROUP_FIELDS = ['name', 'category', 'parent_id', 'user_count'];
 })
 export class UserExportDialog extends BaseComponent {
 
+	WINDOW_HEIGHT: any;
+
 	private tree: TreeNode[];
 	private selectedGroupNodes: TreeNode[];
 	private fields: SelectItem[];
 	private selectedFields: string[];
+	private selectedAllFields: string[];
 	private display: boolean;
 
 	@Input() lang: string;
@@ -47,6 +52,7 @@ export class UserExportDialog extends BaseComponent {
 		this.selectedFields = [];
 		this.selectedGroupNodes = [];
 		this.display = false;
+		this.WINDOW_HEIGHT = $(window).height();
 	}
 
 	show() {
@@ -66,6 +72,8 @@ export class UserExportDialog extends BaseComponent {
 		var apiList = _.map(this.selectedGroupNodes, (node: TreeNode) => {
 			return Group.__api__listUsers(node.data["id"], this.selectedFields);
 		});
+		this.selectedGroupNodes = [];
+		console.log(apiList);
 		BaseModel.bulk_search(this, ...apiList)
 			.map(jsonArray => {
 				return _.flatten(jsonArray);
@@ -128,10 +136,18 @@ export class UserExportDialog extends BaseComponent {
 						delete data[i]['unban_date'];
 					}
 				}
-				this.excelService.exportAsExcelFile(data, 'user_export');
+				// this.excelService.exportAsExcelFile(data, 'user_export');
 				this.hide();
 			});
 	}
 
+	selectedAll() {
+		if (this.selectedAllFields.length != 0) {
+			this.selectedFields = ["login", "name", "social_id", "group_name", "group_code", "position", "dob", "gender", "phone", "email", "ban_date", "unban_date"];
+		} else {
+			this.selectedFields = [];
+		}
+
+	}
 }
 

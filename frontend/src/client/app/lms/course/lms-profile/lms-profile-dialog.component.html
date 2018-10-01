@@ -24,10 +24,10 @@
                         <tr>
                             <td>{{rowIndex+1}}</td>
                             <td>{{member.course_name}}</td>
-                            <td>{{member.date_register}}</td>
+                            <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                             <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                             <td>
-                                <a style="cursor: pointer; color: seagreen" *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
+                                <button *ngIf="member.certificate_id"  pButton type="button" label="{{'View'|translate}}" (click)="printCertificate(member.certificate_id)"icon="ui-icon-visibility"  class="blue-grey-btn" >{{'View'|translate}}</button>
                             </td>
                         </tr>
                     </ng-template>
@@ -55,7 +55,7 @@
                         <tr>
                             <td>{{rowIndex+1}}</td>
                             <td>{{member.exam_name}}</td>
-                            <td>{{member.date_register}}</td>
+                            <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                             <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                             <td>{{member.grade?.name}}</td>
                         </tr>

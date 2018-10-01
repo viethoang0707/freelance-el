@@ -270,7 +270,7 @@ class QuestionSheet(models.Model):
 	supervisor_id = fields.Many2one('res.users', related="exam_id.supervisor_id", string='Administrator')
 	question_count = fields.Integer( compute='_compute_question_count', string='Question count')
 	status = fields.Selection(
-		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="draft")
+		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="published")
 
 	def _compute_question_count(self):
 		for sheet in self:

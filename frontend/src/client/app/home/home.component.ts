@@ -1,5 +1,5 @@
 import { Component, ElementRef, Renderer, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
@@ -61,7 +61,13 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
         });
         this.menuService.onShowSetting.subscribe(()=> {
             this.settingDialog.show();
-        })
+        });
+        this.router.events.subscribe((val) => {
+            if (val instanceof ActivationEnd) {
+                if (val.snapshot.data['viewMode'])
+                    this.settingService.ViewMode = val.snapshot.data['viewMode'];
+            }
+        });
     }
 
     ngOnInit() {

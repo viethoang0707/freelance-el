@@ -66,6 +66,7 @@ export class ProjectConfig extends SeedConfig {
             { src: `${this.ASSETS_SRC}/theme/style.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/style-size.css`, inject: true, vendor: false },
             { src: `${this.ASSETS_SRC}/theme/style-custom.css`, inject: true, vendor: false },
+            { src: `${this.ASSETS_SRC}/fonts/fonts.css`, inject: true, vendor: false },
         ];
 
         this.APP_LOCALE = 'vn';

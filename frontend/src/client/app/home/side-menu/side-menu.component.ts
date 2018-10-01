@@ -30,8 +30,8 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
         private eventManager: HomeEventManager) {
         super();
         this.settingService.viewModeEvents.subscribe(mode => {
-            this.reset =  true;
-            if (mode=='admin')
+            this.reset = true;
+            if (mode == 'admin')
                 this.setAdminMenu();
             else
                 this.setUserMenu();
@@ -39,10 +39,10 @@ export class SideMenuComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.settingService.ViewMode =='admin')
-                this.setAdminMenu();
-            else
-                this.setUserMenu();
+        if (this.settingService.ViewMode == 'admin')
+            this.setAdminMenu();
+        else
+            this.setUserMenu();
     }
 
     setAdminMenu() {

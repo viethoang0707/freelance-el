@@ -15,7 +15,7 @@
                 <p-table #outlineTable [value]="studentRecords" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedRecord" [responsive]="true">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>
+                            <th style="width: 5%">
                                 {{'Index'|translate}}
                             </th>
                             <th [pSortableColumn]="'name'">
@@ -123,7 +123,7 @@
                     <button pButton type="button" label="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="deleteProject(selectedProject)" *ngIf="selectedProject"></button>
                 </div>
                 <div class="ui-toolbar-group-right">
-                    <button pButton type="button" label="{{ 'Mark'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="markProject(selectedProject)" [disabled]="!selectedProject"></button>
+                    <button pButton type="button" label="{{ 'Manage'|translate}} " class="blue-grey-btn " icon="ui-icon-local-offer" (click)="manageProject(selectedProject)" [disabled]="!selectedProject"></button>
                 </div>
             </p-toolbar>
             <p-table #projectTable [value]="projects" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedProject" [responsive]="true">

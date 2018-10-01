@@ -91,7 +91,6 @@ export class GroupsResolve implements Resolve<Group[]>,APIContext {
 	}
 
   resolve(route: ActivatedRouteSnapshot) {
-      return Group.listQuestionGroup(this,['id','code']);
-  
+    	return Group.listQuestionGroup(this,['id','code']);
   }
 }

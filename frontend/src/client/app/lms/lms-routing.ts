@@ -29,7 +29,8 @@ export const LMSRoutes: Routes = [
     path: 'lms',
     component: LMSComponent,
     data: {
-      breadcrumb: 'LMS'
+      breadcrumb: 'LMS',
+      viewMode: 'lms'
     },
     children:
       [
@@ -109,6 +110,7 @@ export const LMSRoutes: Routes = [
             breadcrumb: 'Manage class project'
           },
           resolve: {
+            courseClass : CourseClassResolve,
             project: ProjectResolve
           },
           canActivate: [ClassGuard]

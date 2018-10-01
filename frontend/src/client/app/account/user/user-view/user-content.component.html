@@ -1,43 +1,45 @@
 <p-tabView>
     <p-tabPanel header="{{'Account info'|translate}}" leftIcon="ui-icon-people">
         <div class="ui-g ui-fluid form-group">
-            <div class="ui-g-6" style="width:100%;">
-                <div class="ui-lg-4 ui-g-12" style="width:50%;">
+            <div class="ui-g-12">
+                <div class="ui-g-6">
                     <p-card>
                         <ul class="list-cmt">
                             <li class="clearfix">
-                                <i class="material-icons">toys</i>
+                                <i class="material-icons">star_border</i>
                                 <span class="cmt-title">{{'Name'|translate}}</span>
                                 <span class="cmt-detail">{{user.name}}</span>
                             </li>
                             <li class="clearfix">
-                                <i class="material-icons">toys</i>
+                                <i class="material-icons">star_border</i>
                                 <span class="cmt-title">{{'Login'|translate}}</span>
                                 <span class="cmt-detail">{{user.login}}</span>
                             </li>
-                            <li class="clearfix">
-                                <i class="material-icons">toys</i>
+                            <li class="clearfix" style="border-bottom: none;">
+                                <i class="material-icons">star_border</i>
                                 <span class="cmt-title">{{'Admin user'|translate}}</span>
-                                <span class="cmt-detail">{{user.is_admin}}</span>
+                                <span class="cmt-detail">
+                                    <i class="material-icons" *ngIf="user.is_admin">check</i>
+                                    <i class="material-icons" *ngIf="!user.is_admin">close</i></span>
                             </li>
                         </ul>
                     </p-card>
                 </div>
-                <div class="ui-lg-4 ui-g-12" style="width:50%;">
+                <div class="ui-g-6">
                     <p-card>
                         <ul class="list-cmt">
                             <li class="clearfix">
-                                <i class="material-icons">grade</i>
+                                <i class="material-icons">star_border</i>
                                 <span class="cmt-title">{{'Banned from access'|translate}}</span>
                                 <span class="cmt-detail">{{user.banned}}</span>
                             </li>
                             <li class="clearfix">
-                                <i class="material-icons">grade</i>
+                                <i class="material-icons">star_border</i>
                                 <span class="cmt-title">{{'Parent group'|translate}}</span>
                                 <span class="cmt-detail">{{user.group_name}}</span>
                             </li>
-                            <li class="clearfix">
-                                <i class="material-icons">grade</i>
+                            <li class="clearfix" style="border-bottom: none;">
+                                <i class="material-icons">star_border</i>
                                 <span class="cmt-title">{{'Email'|translate}}</span>
                                 <span class="cmt-detail">{{user.email}}</span>
                             </li>
@@ -46,93 +48,50 @@
                     </p-card>
                 </div>
             </div>
-            <!-- <div> -->
-                <!-- <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Name'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.name}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Login'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.login}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Admin user'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.is_admin}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Banned from access'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.banned}}</span>
-                    </div>
-                </div> -->
-            <!-- </div> -->
-            <!-- <div class="ui-g-6">
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Parent group'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.group_name}}</span>
-                    </div>
-                </div>
-            </div> -->
+
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
         <div class="ui-g ui-fluid form-group">
-            <div class="ui-g-6" style="width:30%;">
-                <div class="ui-g-3" style="width:100%;">
+            <div class="ui-g-4">
+                <div class="ui-g-12">
                     <label>{{'Avatar'|translate}}</label>
                 </div>
-                <div class="ui-g-9">
-                    <img style="width:100%;" [src]="user.image | imageBase64" />
+                <div class="ui-g-12">
+                    <img style="width:80%;" [src]="user.image | imageBase64" />
                 </div>
             </div>
-            <div class="ui-lg-4 ui-g-12" style="width:70%;">
-                <p-card styleClass="">
+            <div class="ui-g-8">
+                <p-card styleClass="remove-border">
                     <ul class="list-cmt">
                         <li class="clearfix">
-                            <i class="material-icons">toys</i>
+                            <i class="material-icons">star_border</i>
                             <span class="cmt-title">{{'Email'|translate}}</span>
                             <span class="cmt-detail">{{user.email}}</span>
                         </li>
                         <li class="clearfix">
-                            <i class="material-icons">toys</i>
+                            <i class="material-icons">star_border</i>
                             <span class="cmt-title">{{'Mobile'|translate}}</span>
                             <span class="cmt-detail">{{user.phone}}</span>
                         </li>
                         <li class="clearfix">
-                            <i class="material-icons">toys</i>
+                            <i class="material-icons">star_border</i>
                             <span class="cmt-title">{{'Social ID'|translate}}</span>
                             <span class="cmt-detail">{{user.social_id}}</span>
                         </li>
                         <li class="clearfix">
-                            <i class="material-icons">toys</i>
+                            <i class="material-icons">star_border</i>
                             <span class="cmt-title">{{'Position'|translate}}</span>
                             <span class="cmt-detail">{{user.position}}</span>
                         </li>
                         <li class="clearfix">
-                            <i class="material-icons">toys</i>
+                            <i class="material-icons">star_border</i>
                             <span class="cmt-title">{{'Gender'|translate}}</span>
                             <span class="cmt-detail">{{GENDER[user.gender]|translate}}</span>
                             
                         </li>
                         <li class="clearfix">
-                            <i class="material-icons">toys</i>
+                            <i class="material-icons">star_border</i>
                             <span class="cmt-title">{{'Birthday'|translate}}</span>
                             <span class="cmt-detail">{{user.dob | date :'dd/MM/yyyy'}}</span>
                             
@@ -140,56 +99,7 @@
                     </ul>
                 </p-card>
             </div>
-            <!-- <div class="ui-g-6">
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Email'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.email}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Mobile'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.phone}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Social ID'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.social_id}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Position'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.position}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Gender'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.gender}}</span>
-                    </div>
-                </div>
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <label>{{'Birthday'|translate}}</label>
-                    </div>
-                    <div class="ui-g-9">
-                        <span>{{user.dob | date :'dd/MM/yyyy'}}</span>
-                    </div>
-                </div>
-            </div> -->
+           
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Course history'|translate}}" leftIcon="ui-icon-school" [style]="{width: '100%', height: '430px'}">
@@ -209,10 +119,10 @@
                 <tr>
                     <td>{{rowIndex+1}}</td>
                     <td>{{member.course_name}}</td>
-                    <td>{{member.date_register}}</td>
+                    <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>
-                        <a *ngIf="member.certificate" (click)="printCertificate(member.certificate)">{{'Print'|translate}}</a>
+                        <button *ngIf="member.certificate_id"  pButton type="button" label="{{'View'|translate}}" (click)="printCertificate(member.certificate_id)"icon="ui-icon-visibility"  class="blue-grey-btn" ></button>
                     </td>
                 </tr>
             </ng-template>
@@ -235,7 +145,7 @@
                 <tr>
                     <td>{{rowIndex+1}}</td>
                     <td>{{member.exam_name}}</td>
-                    <td>{{member.date_register}}</td>
+                    <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                     <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                     <td>{{member.grade}}</td>
                 </tr>

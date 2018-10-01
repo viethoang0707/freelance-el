@@ -15,6 +15,7 @@
 
 .list-cmt{
 	padding-left: 0;
+	margin: 0;
 }
 
 .complete-status{
@@ -105,10 +106,4 @@ h4.title{
 
 .display-none{
 	display: none;
-}
-
-h4.summary{
-	margin-bottom: 0;
-	font-size: 16px;
-	font-weight: 600;
 }

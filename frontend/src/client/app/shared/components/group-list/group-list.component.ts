@@ -39,7 +39,7 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     category: string;
 
     ngOnInit() {
-        this.category = this.route.snapshot.data['category']
+        this.category = this.route.snapshot.data['category'];
         this.loadGroups();
         this.actionItems = [
             { label: this.translateService.instant('Edit'), icon: 'ui-icon-mode-edit', command: (event) => this.edit() },

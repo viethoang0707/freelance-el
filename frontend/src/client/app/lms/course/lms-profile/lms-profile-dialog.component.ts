@@ -96,8 +96,11 @@ export class LMSProfileDialog extends BaseDialog<User> {
 		});
 	}
 
-	printCertificate(certificate) {
-		this.certPrintDialog.show(certificate);
+	printCertificate(certificateId:number) {
+		Certificate.get(this, certificateId).subscribe(certificate=> {
+			this.certPrintDialog.show(certificate);
+		});
+		
 	}
 
 	exportCourse() {

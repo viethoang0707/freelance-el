@@ -68,6 +68,7 @@ export class AnswerPrintDialog extends BaseComponent {
             this.setting = setting;
             this.startReview();
         });
+        console.log(this.exam);
     }
 
     hide() {

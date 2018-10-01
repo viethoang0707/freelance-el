@@ -26,10 +26,13 @@
                 <span>{{'Submit'|translate}}: {{submission.end | date : "dd/MM/yyyy"}}</span>
             </div>
             <div class="ui-g-3">
-                <span>{{'Study time'|translate}}: {{submission.study_time | clock}} </span>
+                <span>{{'Study time'|translate}}: {{(submission.study_time * 1000) | clock}} </span>
             </div>
             <div class="ui-g-3">
                 <span>{{'Score'|translate}}: </span><span class="bold"> {{submission.score}}</span>
+            </div>
+            <div class="ui-g-3">
+                <span>{{'Grade'|translate}}: </span><span class="bold"> {{submission.grade}}</span>
             </div>
             <div class="ui-g-12">
                 <p-dataList [value]="examQuestions" [rows]="examQuestions.length" styleClass="l-question">

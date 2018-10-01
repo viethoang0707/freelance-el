@@ -16,7 +16,8 @@ export const AccountRoutes: Routes = [
   {
     path: 'account',
     data: {
-      breadcrumb: 'Account'
+      breadcrumb: 'Account',
+      viewMode: 'admin'
     },
     canActivate: [AdminGuard],
     children:

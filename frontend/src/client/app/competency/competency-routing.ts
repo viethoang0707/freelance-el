@@ -14,7 +14,8 @@ export const CompetencyRoutes: Routes = [
     path: 'competency',
     component: CompetencyComponent,
     data: {
-      breadcrumb: 'Competency'
+      breadcrumb: 'Competency',
+      viewMode: 'admin'
     },
     canActivate: [AdminGuard],
     children:

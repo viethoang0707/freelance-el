@@ -40,7 +40,7 @@ import { SurveyDialog } from '../../../assessment/survey/survey-form/survey-dial
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 
-const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_satus', 'role', 'login', 'user_id']
+const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_status', 'certificate_id', 'role', 'login', 'user_id']
 
 @Component({
 	moduleId: module.id,
@@ -82,7 +82,6 @@ export class ClassManageComponent extends BaseComponent {
 	@ViewChild(SurveyEditorDialog) surveyContentDialog: SurveyEditorDialog;
 	@ViewChild(SurveyStatsDialog) statsDialog: SurveyStatsDialog;
 	@ViewChild(CourseMemberActivityDialog) memberActivityChart: CourseMemberActivityDialog;
-	@ViewChild(ProjectMarkingDialog) projectMarkingDialog: ProjectMarkingDialog;
 	@ViewChild(ExamDialog) examDialog: ExamDialog;
 	@ViewChild(SurveyDialog) surveyDialog: SurveyDialog;
 
@@ -212,8 +211,8 @@ export class ClassManageComponent extends BaseComponent {
 		});
 	}
 
-	markProject(project: Project) {
-		this.projectMarkingDialog.show(project);
+	manageProject(project: Project) {
+		this.router.navigate(['/lms/class/manage/project', this.courseClass.id, project.id]);
 	}
 
 	addExam() {
@@ -282,7 +281,7 @@ export class ClassManageComponent extends BaseComponent {
 		});
 		var memberIds = _.pluck(newMembers, 'id');
 		this.conference.registerConferenceMember(this, memberIds).subscribe(() => {
-			this.success('Register conferenc successfully');
+			this.success(this.translateService.instant('Register conferenc successfully'));
 			this.courseClass.listMembers(this, MEMBER_FIELDS).subscribe(members=> {
 				this.courseMembers = members;
 				this.conferenceMembers = _.filter(this.courseMembers, (member: CourseMember) => {

@@ -71,18 +71,15 @@ export class CourseClassListComponent extends BaseComponent implements OnInit {
     }
 
     deleteClass(courseClass: CourseClass) {
-        if (courseClass.member_count)
-            this.error(this.translateService.instant('You cannot delete class with member inside'));
-        else
-            this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
-                courseClass.delete(this).subscribe(() => {
-                    this.selectedClass = null;
-                    this.classes = _.reject(this.classes, (obj: CourseClass) => {
-                        return courseClass.id == obj.id;
-                    });
-                    this.success(this.translateService.instant('Delete class successfully'));
-                })
-            });
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+            courseClass.delete(this).subscribe(() => {
+                this.selectedClass = null;
+                this.classes = _.reject(this.classes, (obj: CourseClass) => {
+                    return courseClass.id == obj.id;
+                });
+                this.success(this.translateService.instant('Delete class successfully'));
+            })
+        });
     }
 
     closeClass(courseClass: CourseClass) {

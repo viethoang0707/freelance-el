@@ -27,14 +27,16 @@ export const DashboardRoutes: Routes = [
 					path: "lms",
 					component: UserDashboardComponent,
 					data: {
-						breadcrumb: 'LMS'
+						breadcrumb: 'LMS',
+						viewMode: 'lms'
 					},
 				},
 				{
 					path: "admin",
 					component: AdminDashboardComponent,
 					data: {
-						breadcrumb: 'Admin'
+						breadcrumb: 'Admin',
+						viewMode: 'admin'
 					},
 					canActivate: [AdminGuard]
 				},

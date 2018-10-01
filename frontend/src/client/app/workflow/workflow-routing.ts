@@ -13,7 +13,8 @@ export const WorkflowRoutes: Routes = [
     path: 'workflow',
     component: WorkflowComponent,
     data: {
-      breadcrumb: 'Workflow'
+      breadcrumb: 'Workflow',
+      viewMode: 'admin'
     },
     canActivate: [AdminGuard],
     children:
