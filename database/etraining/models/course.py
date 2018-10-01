@@ -555,6 +555,8 @@ class CourseMember(models.Model):
 			for certificate in self.env['etraining.course_certificate'].browse(certificateId):
 				certificate.write({'issue_member_id':staffId})
 				member.write({'enroll_status':'completed','certificate_id':certificateId})
+				if member.email:
+					self.env.ref(self._module +"."+ "certificate_grant_template").send_mail(member.id,force_send=False)
 				return {'success':True}
 
 	@api.model
@@ -571,7 +573,7 @@ class CourseMember(models.Model):
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.enroll_status == 'in-study':
 				member.write({'enroll_status':'await-certificate'})
-				if member.email:
+				if member.course_id.supervisor_id.email:
 					self.env.ref(self._module +"."+ "certificate_request_template").send_mail(member.id,force_send=False)
 			return {'success':True}
 
