@@ -53,7 +53,7 @@
 	"Edit content": "Sửa nội dung",
 	"Mark": "Chấm điểm",
 	"Enrollment": "Đào tạo",
-	"Course": "Khóa học",
+	"Course": "Khóa học ",
 	"Courses": "Khóa học",
 	"COURSE": "Khóa học",
 	"Course group": "Danh mục khóa học",
@@ -63,7 +63,7 @@
 	"Question bank": "Ngân hàng câu hỏi",
 	"Question banks": "Ngân hàng câu hỏi",
 	"Question category": "Danh mục câu hỏi",
-	"Exam": "Kỳ thi",
+	"Exam": "Kỳ thi ",
 	"EXAM": "Kỳ thi",
 	"Report": "Báo cáo",
 	"Account": "Tài khoản",
@@ -441,7 +441,7 @@
 	"You do not have enroll permission for this course": "Bạn không có quyền ghi danh cho khóa học này",
 	"Teacher registered successfully": "Giáo viên đã đăng ký thành công",
 	"Question sheet templates": "Mẫu đề thi",
-	"Survey": "Khảo sát",
+	"Survey": "Khảo sát ",
 	"Surveys": "Khảo sát",
 	"SURVEY": "Khảo sát",
 	"My survey": "Khảo sát của tôi",
@@ -722,5 +722,9 @@
 	"Strong": "Mạnh",
 	"Project manage": "Quản lý bài tập lớn",
 	"Manage class project": "Quản lý bài tập lớn lớp học",
-	"Date of submission": "Ngày gửi"
+	"Date of submission": "Ngày gửi",
+	"Course review request": "Yêu cầu đánh giá khóa học",
+	"Exam review request": "Yêu cầu đánh giá kỳ thi",
+	"Survey review request": "Yêu cầu đánh giá khảo sát",
+	"is request to be reviewed": " là yêu cầu được xem xét"
 }

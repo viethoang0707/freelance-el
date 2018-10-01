@@ -13,12 +13,13 @@ import { APIContext } from '../models/context';
 import { Exam } from '../models/elearning/exam.model';
 import { Survey } from '../models/elearning/survey.model';
 import { ExecuteAPI } from '../../shared/services/api/execute.api';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Injectable()
 export class WorkflowService {
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private translateService: TranslateService) {
   }
 
   createCourseReviewTicket(context: APIContext, course: Course): Observable<any> {
@@ -26,11 +27,11 @@ export class WorkflowService {
     var ticket = new Ticket();
     ticket.res_id = course.id;
     ticket.res_model = Course.Model;
-    ticket.content = `Course ${course.name} is request to be reviewed`;
+    ticket.content = this.translateService.instant('Course') + course.name + this.translateService.instant('is request to be reviewed');
     ticket.date_open = new Date();
     ticket.submit_user_id = user.id;
     ticket.approve_user_id = user.supervisor_id;
-    ticket.title = 'Course review request';
+    ticket.title = this.translateService.instant('Course review request');
     ticket.code = 'REVIEW_COURSE';
     var executeApi = new ExecuteAPI('etraining.workflow_service', 'submitReview', ticket, null)
     return context.apiService.execute(executeApi, context.authService.LoginToken);
@@ -41,11 +42,11 @@ export class WorkflowService {
     var ticket = new Ticket();
     ticket.res_id = exam.id;
     ticket.res_model = Exam.Model;
-    ticket.content = `Exan ${exam.name} is request to be reviewed`;
+    ticket.content = this.translateService.instant('Exam') + exam.name + this.translateService.instant('is request to be reviewed');
     ticket.date_open = new Date();
     ticket.submit_user_id = user.id;
     ticket.approve_user_id = user.supervisor_id;
-    ticket.title = 'Exam review request';
+    ticket.title = this.translateService.instant('Exam review request');
     ticket.code = 'REVIEW_EXAM';
     var executeApi = new ExecuteAPI('etraining.workflow_service', 'submitReview', ticket, null)
     return context.apiService.execute(executeApi, context.authService.LoginToken);
@@ -56,11 +57,11 @@ export class WorkflowService {
     var ticket = new Ticket();
     ticket.res_id = survey.id;
     ticket.res_model = Survey.Model;
-    ticket.content = `Survey ${survey.name} is request to be reviewed`;
+    ticket.content = this.translateService.instant('Survey') + survey.name + this.translateService.instant('is request to be reviewed');
     ticket.date_open = new Date();
     ticket.submit_user_id = user.id;
     ticket.approve_user_id = user.supervisor_id;
-    ticket.title = 'Survey review request';
+    ticket.title = this.translateService.instant('Survey review request');
     ticket.code = 'REVIEW_SURVEY';
     var executeApi = new ExecuteAPI('etraining.workflow_service', 'submitReview', ticket, null)
     return context.apiService.execute(executeApi, context.authService.LoginToken);
