@@ -72,6 +72,8 @@ export class UserExportDialog extends BaseComponent {
 		var apiList = _.map(this.selectedGroupNodes, (node: TreeNode) => {
 			return Group.__api__listUsers(node.data["id"], this.selectedFields);
 		});
+		this.selectedGroupNodes = [];
+		console.log(apiList);
 		BaseModel.bulk_search(this, ...apiList)
 			.map(jsonArray => {
 				return _.flatten(jsonArray);
@@ -134,7 +136,7 @@ export class UserExportDialog extends BaseComponent {
 						delete data[i]['unban_date'];
 					}
 				}
-				this.excelService.exportAsExcelFile(data, 'user_export');
+				// this.excelService.exportAsExcelFile(data, 'user_export');
 				this.hide();
 			});
 	}
