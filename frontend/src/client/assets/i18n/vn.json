@@ -719,5 +719,8 @@
 	"Please enter a password": "Vui lòng nhập mật khẩu",
 	"Weak": "Yếu",
 	"Medium": "Trung bình",
-	"Strong": "Mạnh"
+	"Strong": "Mạnh",
+	"Project manage": "Quản lý bài tập lớn",
+	"Manage class project": "Quản lý bài tập lớn lớp học",
+	"Date of submission": "Ngày gửi"
 }
