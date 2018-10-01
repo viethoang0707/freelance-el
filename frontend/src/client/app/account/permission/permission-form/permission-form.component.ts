@@ -8,7 +8,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { Permission } from '../../../shared/models/elearning/permission.model';
-import { GROUP_CATEGORY } from '../../../shared/models/constants';
+import { GROUP_CATEGORY, EMPTY_VALUE } from '../../../shared/models/constants';
 import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 import { MenuService } from '../../../shared/services/menu.service';
 import * as _ from 'underscore';
@@ -136,10 +136,10 @@ export class PermissionFormComponent extends BaseComponent {
 				user.permission_id = this.permission.id;
 			});
 			_.each(this.deleteUsers, (user: User) => {
-				user.permission_id = null;
+				user.permission_id = EMPTY_VALUE;
 			});
 			var udpateUsers = this.addUsers.concat(this.deleteUsers);
-			User.updateArray(this, udpateUsers).subscribe(() => {
+			User.updateArray(this, udpateUsers, ['permission_id']).subscribe(() => {
 				this.router.navigate(['/account/permission/view', this.permission.id]);
 			});
 		});

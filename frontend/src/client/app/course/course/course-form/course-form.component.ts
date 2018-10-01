@@ -45,8 +45,14 @@ export class CourseFormComponent extends BaseComponent {
 	nodeSelect(event: any) {
 		this.selectedNode = event.node;
 		if (this.selectedNode) {
-			this.course.group_id = this.selectedNode.data.id;
-			this.course.group_name = this.selectedNode.data.name;
+			if (this.course.group_id != this.selectedNode.data.id) {
+				this.course.group_id = this.selectedNode.data.id;
+				this.course.group_name = this.selectedNode.data.name;
+			} else {
+				this.selectedNode = null;
+				this.course.group_id = null;
+				this.course.group_name = null;
+			}
 		}
 	}
 

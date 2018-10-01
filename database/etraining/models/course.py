@@ -201,7 +201,7 @@ class CourseUnit(models.Model):
 			unit.write({'exercise_id': exercise.id})
 		return unit
 
-	@api.onchange(name)
+	@api.onchange('name')
 	def on_change_name(self):
 		for record in self:
 			if record.self_assessment_id and record.self_assessment_id.exam_id:

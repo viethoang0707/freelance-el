@@ -36,9 +36,17 @@ export class CompetencyFormComponent extends BaseComponent {
 	nodeSelect(event: any) {
         this.selectedNode = event.node;
 		if (this.selectedNode) {
-			this.competency.group_id = this.selectedNode.data.id;
-			this.competency.group_name = this.selectedNode.data.name;
-		}
+            if (this.competency.group_id != this.selectedNode.data.id) {
+                this.competency.group_id = this.selectedNode.data.id;
+                this.competency.group_name = this.selectedNode.data.name;
+            } else {
+                this.selectedNode = null;
+                this.competency.group_id = null;
+                this.competency.group_name = null;
+            }
+        }
+
+		
 	}
 
     nodeUnselect(event: any) {

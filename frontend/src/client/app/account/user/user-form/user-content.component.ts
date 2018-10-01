@@ -32,8 +32,14 @@ export class UserContentComponent extends BaseComponent {
 	nodeSelect(event: any) {
 		this.selectedNode = event.node;
 		if (this.selectedNode) {
-			this.user.group_id = this.selectedNode.data.id;
-			this.user.group_name = this.selectedNode.data.name;
+			if (this.user.group_id != this.selectedNode.data.id) {
+				this.user.group_id = this.selectedNode.data.id;
+				this.user.group_name = this.selectedNode.data.name;
+			} else {
+				this.selectedNode = null;
+				this.user.group_id = null;
+				this.user.group_name = null;
+			}
 		}
 	}
 
@@ -41,7 +47,7 @@ export class UserContentComponent extends BaseComponent {
 		this.selectedNode = null;
 	}
 
-	render(user:User) {
+	render(user: User) {
 		this.user = user;
 		Group.listUserGroup(this, GROUP_FIELDS).subscribe(groups => {
 			let treeUtils: TreeUtils = new TreeUtils();

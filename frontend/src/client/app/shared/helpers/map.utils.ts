@@ -1,7 +1,7 @@
 import './reflect';
 import { FIELD_METADATA_KEY, UNSERIALIZE_METADATA_KEY, READONLY_METADATA_KEY, FieldProperty, IFieldMetaData } from '../models/decorator'
 import * as moment from 'moment';
-import {SERVER_DATETIME_FORMAT} from '../models/constants';
+import {SERVER_DATETIME_FORMAT, EMPTY_VALUE} from '../models/constants';
 import { ModelRegister } from '../models/decorator';
 
 export class MapUtils {
@@ -113,6 +113,9 @@ export class MapUtils {
             } else {
                 if (jsonObject && jsonObject[key] !== undefined) {
                     obj[key] = jsonObject[key];
+                }
+                if (jsonObject && jsonObject[key] == EMPTY_VALUE) {
+                    obj[key] = null;
                 }
             }
         });
