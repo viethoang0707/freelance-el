@@ -47,7 +47,6 @@ export class ProjectConfig extends SeedConfig {
             { src: 'moment/min/moment.min.js', inject: true },
             { src: 'fullcalendar/dist/fullcalendar.js', inject: true },
             { src: 'fullcalendar/dist/fullcalendar.min.css', inject: true },
-            { src: 'fullcalendar/dist/locale/vi.js', inject: true },
             { src: 'quill/dist/quill.core.css', inject: true },
             { src: 'quill/dist/quill.snow.css', inject: true },
             { src: 'quill/dist/quill.js', inject: true },
