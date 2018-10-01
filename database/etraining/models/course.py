@@ -571,6 +571,8 @@ class CourseMember(models.Model):
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.enroll_status == 'in-study':
 				member.write({'enroll_status':'await-certificate'})
+				if member.email:
+					self.env.ref(self._module +"."+ "certificate_request_template").send_mail(member.id,force_send=False)
 			return {'success':True}
 
 	@api.model
