@@ -26,7 +26,7 @@
                     <div> {{teacherCount}} {{'Teachers'|translate}}</div>
                 </a>
             </li>
-            <li #profile class="profile-item mr20" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
+            <li #profile class="profile-item mr20 ml20" [ngClass]="{'active-topmenuitem': parent.activeTopbarItem === profile}" (click)="eventManager.topbarRootItemClick(profile)">
                 <a>
                     <span class="profile-image-wrapper">
                         <img [src]='user.image | imageBase64'/>
@@ -42,9 +42,9 @@
                     </li>
                     <li role="menuitem" *ngIf="user.login!='admin'">
                         <a (click)="eventManager.changePassword()">
-                <i class="material-icons">verified_user</i>
-                <span>{{'Change Password'|translate}}</span>
-            </a>
+                            <i class="material-icons">verified_user</i>
+                            <span>{{'Change Password'|translate}}</span>
+                        </a>
                     </li>
                     <li role="menuitem">
                         <a (click)="appEvent.userLogout()">

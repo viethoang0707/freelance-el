@@ -27,7 +27,7 @@
                             <td>{{member.date_register | date : "dd/MM/yyyy "}}</td>
                             <td>{{COURSE_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                             <td>
-                                <button *ngIf="member.certificate_id"  pButton type="button" label="{{'View'|translate}}" (click)="printCertificate(member.certificate_id)"icon="ui-icon-visibility"  class="blue-grey-btn" >{{'View'|translate}}</button>
+                                <button *ngIf="member.certificate_id"  pButton type="button" label="{{'View'|translate}}" (click)="printCertificate(member.certificate_id)"icon="ui-icon-visibility"  class="blue-grey-btn" ></button>
                             </td>
                         </tr>
                     </ng-template>

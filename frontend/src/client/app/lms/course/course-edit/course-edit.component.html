@@ -63,7 +63,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-material let-i="rowIndex">
                                 <tr [pSelectableRow]="material">
-                                    <td>{{rowIndex + 1}}</td>
+                                    <td>{{i + 1}}</td>
                                     <td>{{material.name}}</td>
                                     <td>{{material.type}}</td>
                                     <td class="url-course-material">{{material.url}}</td>

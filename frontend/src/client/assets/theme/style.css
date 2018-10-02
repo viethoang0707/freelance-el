@@ -911,6 +911,9 @@ body .schedule-dashboard.fc .ui-state-highlight .fc-day-number {
   padding: 5px;
   margin: 3px;
   color: #fff;
+  width: 15px;
+  height: 15px;
+  text-align: center;
 }
 
 /*custom style*/
