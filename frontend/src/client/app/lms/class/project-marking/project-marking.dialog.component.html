@@ -14,7 +14,7 @@
             <p-spinner size="30" [(ngModel)]="object.score" [min]="0" name="score"></p-spinner>
         </div>
         <p-footer>
-            <button type="submit" pButton icon="ui-icon-check" label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
+            <button type="submit" pButton icon="ui-icon-check" (click)="save()"  label="{{'Save'|translate}}" [disabled]="!f.form.valid"></button>
             <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
         </p-footer>
     </p-dialog>

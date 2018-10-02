@@ -160,13 +160,13 @@
             <field name="name">E-learning certificate request</field>
             <field name="subject">E-learning certificate request notification</field>
             <field name="email_from">${object.user_id.company_id.email}</field>
-            <field name="email_to">${object.supervisor_id.email|safe}</field>
+            <field name="email_to">${object.course_id.supervisor_id.email|safe}</field>
             <field name="model_id" ref="model_etraining_course_member" />
             <field name="auto_delete" eval="True" />
             <field name="body_html">
                 <![CDATA[
             <div>
-                User ${object.name} has requested the certificate of course ${object.course_id.name}.
+                User ${object.name} has requested for certificate of course ${object.course_id.name}.
             </div>]]>
             </field>
         </record>
