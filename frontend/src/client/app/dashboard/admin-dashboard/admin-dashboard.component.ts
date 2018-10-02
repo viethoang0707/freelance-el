@@ -11,12 +11,13 @@ import { DateUtils } from '../../shared/helpers/date.utils';
 import { Group } from '../../shared/models/elearning/group.model';
 import * as _ from 'underscore';
 import * as moment from 'moment';
-import { USER_STATUS, SERVER_DATETIME_FORMAT,TICKET_STATUS, CONTENT_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants';
+import { USER_STATUS, SERVER_DATETIME_FORMAT,TICKET_STATUS, CONTENT_STATUS, SCHEDULER_HEADER, DEFAULT_DATE_LOCALE } from '../../shared/models/constants';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseModel } from '../../shared/models/base.model';
 import { CourseClass } from '../../shared/models/elearning/course-class.model';
 import { Ticket } from '../../shared/models/elearning/ticket.model';
 import { WorkflowService } from '../../shared/services/workflow.service';
+import { Http, Response } from '@angular/http';
 
 const EXAM_FIELDS = ['name','start','end'];
 const CLASS_FIELDS = ['name','start','end'];
@@ -38,14 +39,22 @@ export class AdminDashboardComponent extends BaseComponent implements OnInit {
     private classes: CourseClass[];
     private approvalTickets : Ticket[];
     private dateUtils: DateUtils;
+    private lang: any;
+    private locale: any;
 
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(private router: Router, private route: ActivatedRoute, private http: Http) {
         super();
         this.header = SCHEDULER_HEADER;
         this.dateUtils =  new DateUtils();
+        this.lang = this.translateService.currentLang;
+        this.locale = DEFAULT_DATE_LOCALE;
     }
 
-    ngOnInit() {  
+    ngOnInit() {
+        this.http.get(`/assets/i18n/calendar.${this.lang}.json`)
+            .subscribe((res: Response) => {
+                this.locale = res.json();
+            });;
         var now =  new Date();
         this.events = [];
         this.approvalTickets = [];

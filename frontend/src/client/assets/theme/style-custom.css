@@ -81,3 +81,11 @@ body .ui-chkbox .ui-chkbox-box,
 body .ui-tree .ui-treenode-content .ui-chkbox .fa-check {
     border-radius: 0px;
 }
+
+.text-left{
+    text-align: left;
+}
+
+.text-right{
+    text-align: right;
+}
