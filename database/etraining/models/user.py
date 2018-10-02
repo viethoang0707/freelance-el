@@ -58,7 +58,7 @@ class User(models.Model):
 	def create(self, vals):
 		self = self.sudo()
 		vals["login"] = vals["login"].lower()
-		user = super(User, self).create(vals)
+		user = super(User, self).with_context({"no_reset_password":True}).create(vals)
 		return user
 
 	@api.multi
