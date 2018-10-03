@@ -17,6 +17,7 @@ import { BulkSearchCountAPI } from '../services/api/bulk-search-count.api';
 import { SearchReadAPI, SearchAllAPI } from '../services/api/search-read.api';
 import { BulkSearchReadAPI } from '../services/api/bulk-search-read.api';
 import { ExecuteAPI } from '../services/api/execute.api';
+import { BulkExecuteAPI } from '../services/api/bulk-execute.api';
 
 
 export abstract class BaseModel {
@@ -103,6 +104,14 @@ export abstract class BaseModel {
         return new ExecuteAPI(model, method, paramsList,paramsDict);
     }
 
+    static __api__bulk_execute(apiList:ExecuteAPI[]):BulkExecuteAPI {
+        var api = new BulkExecuteAPI();
+        _.each(apiList, subApi=> {
+            api.add(subApi);
+        });
+        return api;
+    }
+
     static __api__bulk_create(apiList:CreateAPI[]):BulkCreateAPI {
         var api = new BulkCreateAPI();
         _.each(apiList, subApi=> {
@@ -169,6 +178,16 @@ export abstract class BaseModel {
                 objects.push(object);
             }
             return objects;
+        });
+    }
+
+    static bulk_execute(context:APIContext, ...apiList:ExecuteAPI[]):Observable<any> {
+        if (apiList.length==0)
+            return Observable.of([]);
+        var token = context.authService.LoginToken;
+        return context.apiService.execute(this.__api__bulk_execute(apiList), token).map(jsonArr=> {
+            var resp = _.flatten(jsonArr);
+            return resp;
         });
     }
 
