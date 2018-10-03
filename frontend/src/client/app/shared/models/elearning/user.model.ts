@@ -363,5 +363,12 @@ export class User extends BaseModel {
             context.authService.LoginToken);
     }
 
+    static createArray(context: APIContext,users:User[]): Observable<any> {
+        var apiList = _.map(users, (user:User) => {
+            return User.__api__register(user);
+        });
+        return BaseModel.bulk_execute(context, ...apiList);
+    }
+
 
 }
