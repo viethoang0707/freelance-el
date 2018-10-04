@@ -1,4 +1,5 @@
 import { Observable, Subject } from 'rxjs/Rx';
+import { MapUtils } from '../../helpers/map.utils';
 import { Model,FieldProperty, UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
@@ -346,7 +347,7 @@ export class User extends BaseModel {
     }
 
     static __api__register(user: User): ExecuteAPI {
-        return new ExecuteAPI(User.Model, 'register',{user:user}, null);
+        return new ExecuteAPI(User.Model, 'register',{user:MapUtils.serialize(user)}, null);
     }
 
     static register(context:APIContext, user:User):Observable<any> {

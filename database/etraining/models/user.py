@@ -159,7 +159,7 @@ class ResetPassToken(models.Model):
 				currentTime = int(round(time.time() * 1000)) 
 				if token.date_expire < currentTime:
 					return {'success':False,'message':'Token expired'}
-				user.write({'password':new_pass})
+				token.user_id.write({'password':new_pass})
 				return {'success':True}
 
 
