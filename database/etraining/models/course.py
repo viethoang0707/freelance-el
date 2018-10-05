@@ -206,7 +206,7 @@ class CourseUnit(models.Model):
 		unit =  super(CourseUnit, self).writes(vals)  
 		if self.self_assessment_id and self.self_assessment_id.exam_id:
 			self.self_assessment_id.exam_id.write({'name':self.name})
-    return unit
+		return unit
 
 	@api.multi
 	def unlink(self):
