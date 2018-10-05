@@ -85,9 +85,9 @@ export class CourseListComponent extends BaseComponent implements OnInit {
     }
 
     manageCourse(course: Course, member: CourseMember) {
-        if (course.mode =='group')
+        if (course.mode == 'group')
             this.router.navigate(['/lms/course/group-manage', course.id, member.id]);
-        if (course.mode =='self-study')
+        if (course.mode == 'self-study')
             this.router.navigate(['/lms/course/self-study-manage', course.id, member.id]);
     }
 
@@ -100,10 +100,15 @@ export class CourseListComponent extends BaseComponent implements OnInit {
         else {
             var keyword = this.keyword.toLowerCase();
             this.filteredCourses = _.filter(this.courses, (course: Course) => {
-                return course.name.toLowerCase().includes(this.keyword)
-                    || course.summary.toLowerCase().includes(this.keyword)
-                    || course.code.toLowerCase().includes(this.keyword)
-                    || course.description.toLowerCase().includes(this.keyword);
+                if (course.summary != null && course.description != null) {
+                    return course.name.toLowerCase().includes(keyword)
+                        || course.summary.toLowerCase().includes(keyword)
+                        || course.code.toLowerCase().includes(keyword)
+                        || course.description.toLowerCase().includes(keyword);
+                } else {
+                    return course.name.toLowerCase().includes(keyword)
+                        || course.code.toLowerCase().includes(keyword);
+                }
             });
         }
 
