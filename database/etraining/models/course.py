@@ -202,9 +202,10 @@ class CourseUnit(models.Model):
 		return unit
 
 	@api.onchange('name')
-	def on_change_name(self):
+	def on_change_name(self, value):
 		import pdb
 		pdb.set_trace()
+		self.write({'name' : value})
 		if self.self_assessment_id and self.self_assessment_id.exam_id:
 			self.self_assessment_id.exam_id.write({'name':self.name})
             
