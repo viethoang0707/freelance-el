@@ -2,7 +2,8 @@
 
 from odoo import models, fields, api
 import time
-
+from string import ascii_uppercase, digits
+import random
 
 class Partner(models.Model):
 	_name = 'res.partner'
