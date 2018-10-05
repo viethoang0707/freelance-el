@@ -201,7 +201,7 @@ class CourseUnit(models.Model):
 			unit.write({'exercise_id': exercise.id})
 		return unit
 
-	@api.onchange('order')
+	@api.onchange('name')
 	def on_change_name(self):
 		import pdb
 		pdb.set_trace()
@@ -484,7 +484,7 @@ class CourseMember(models.Model):
 	class_id = fields.Many2one('etraining.course_class', string='Class')
 	course_id = fields.Many2one('etraining.course', string='Course')
 	conference_member_id = fields.Many2one('etraining.conference_member', string='Confernce member')
-	certificate_id = fields.Many2one('etraining.certificate', string='Certificate')
+	certificate_id = fields.Many2one('etraining.course_certificate', string='Certificate')
 	user_id = fields.Many2one('res.users', string='User')
 	email = fields.Char(related='user_id.email', string='Email', readonly=True)
 	phone = fields.Char(related='user_id.phone', string='Phone', readonly=True)
