@@ -201,14 +201,12 @@ class CourseUnit(models.Model):
 			unit.write({'exercise_id': exercise.id})
 		return unit
 
-	@api.onchange('name')
-	def on_change_name(self, value):
-		import pdb
-		pdb.set_trace()
-		self.write({'name' : value})
+	@api.multi
+	def writes(self, vals):
+		unit =  super(CourseUnit, self).writes(vals)  
 		if self.self_assessment_id and self.self_assessment_id.exam_id:
 			self.self_assessment_id.exam_id.write({'name':self.name})
-            
+    return unit
 
 	@api.multi
 	def unlink(self):
