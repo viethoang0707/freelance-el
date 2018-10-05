@@ -138,7 +138,7 @@ class ResetPassToken(models.Model):
 			account = context["account"]
 			for user in self.env['res.users'].search([("login","=",vals["login"])]):
 				vals["email"] = user.email
-				var["user_id"] = user.id
+				vals["user_id"] = user.id
 			vals['code'] = ''.join(random.choice(ascii_uppercase + digits) for _ in range(24))
 			vals["date_expire"] = int(round(time.time() * 1000)) + 1000 * 60 * 60 *24
 			vals["reset_link"] =  '%s/auth/reset-pass/%s' % (account["domain"] ,vals['code'])

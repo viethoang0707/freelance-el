@@ -36,7 +36,7 @@
                     <p-checkbox name="banned" binary="true" label="{{'Banned from access'|translate}}" [(ngModel)]="user.banned"></p-checkbox>
                 </div>
             </div>
-            <div class="ui-g-6">
+            <div class="ui-g-6" *ngIf="ContextUser.IsAdmin && ContextUser.id != user.id">
                 <label>{{'Parent group'|translate}}<span> *</span>
                 </label>
                 <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
@@ -47,6 +47,10 @@
                     </div>
                 </div>
             </div>
+            <div class="ui-g-6" *ngIf="!ContextUser.IsAdmin || ContextUser.id == user.id">
+                <span class="cmt-title">{{'Parent group'|translate}}</span>
+                <span class="cmt-detail">{{user.group_name}}</span>
+            </div>
         </div>
     </p-tabPanel>
     <p-tabPanel header="{{'Contact info'|translate}}" leftIcon="ui-icon-phone">
@@ -55,55 +59,6 @@
                 <label>{{'Avatar'|translate}}</label>
                 <image-base64 [(src64)]="user.image" width="80%"></image-base64>
             </div>
-            <!-- <div class="ui-lg-4 ui-g-12" style="width:60%;">
-                    <p-card styleClass="lms-course-detail">
-                        <ul class="list-cmt">
-                            <li class="clearfix">
-                                <i class="material-icons">toys</i>
-                                <span class="cmt-title">{{'Email'|translate}}</span>
-                                <span class="cmt-detail" style="width:70%;">
-                                    <input type="text" pInputText [(ngModel)]="user.email" name="email" pKeyFilter="email">
-                                </span>
-                            </li>
-                            <li class="clearfix">
-                                <i class="material-icons">toys</i>
-                                <span class="cmt-title">{{'Mobile'|translate}}</span>
-                                <span class="cmt-detail" style="width:70%;">
-                                    <input type="text" pInputText [(ngModel)]="user.phone" name="phone">
-                                </span>
-                            </li>
-                            <li class="clearfix">
-                                <i class="material-icons">invert_colors</i>
-                                <span class="cmt-title">{{'Social ID'|translate}}</span>
-                                <span class="cmt-detail" style="width:70%;">
-                                    <input type="text" pInputText [(ngModel)]="user.social_id" name="social_id">
-                                </span>
-                            </li>
-                            <li class="clearfix">
-                                <i class="material-icons">school</i>
-                                <span class="cmt-title">{{'Position'|translate}}</span>
-                                <span class="cmt-detail" style="width:70%;">
-                                    <input type="text" pInputText [(ngModel)]="user.position" #position="ngModel" name="department">
-                                </span>
-                            </li>
-                            <li class="clearfix">
-                                <i class="material-icons">school</i>
-                                <span class="cmt-title">{{'Gender'|translate}}</span>
-                                <span class="cmt-detail" style="width:70%;">
-                                    <p-radioButton name="gender" value="male" label="{{'Male'|translate}}" [(ngModel)]="user.gender" inputId="opt1"></p-radioButton>
-                                    <p-radioButton name="gender" value="female" label="{{'Female'|translate}}" [(ngModel)]="user.gender" inputId="opt2"></p-radioButton>
-                                </span>
-                            </li>
-                            <li class="clearfix">
-                                <i class="material-icons">toys</i>
-                                <span class="cmt-title">{{'Birthday'|translate}}</span>
-                                <span class="cmt-detail" style="width:70%;">
-                                    <p-calendar [(ngModel)]="user.dob" #dob="ngModel" name="dob" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="1918:2099" dateFormat="dd/mm/yy"></p-calendar>
-                                </span>
-                            </li>
-                        </ul>
-                    </p-card>
-            </div> -->
             <div class="ui-g-7">
                 <div class="ui-g-12">
                     <label>{{'Email'|translate}}</label>

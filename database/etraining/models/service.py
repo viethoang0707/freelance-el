@@ -65,11 +65,11 @@ class AccountService(osv.AbstractModel):
         code = params['token']
         new_pass = params['new_pass']
         for token in self.env["reset_pass_token"].get([('code','=',code)]):
-                currentTime = int(round(time.time() * 1000)) 
-                if token.date_expire < currentTime:
-                    return {'success':False,'message':'Token expired'}
-                token.user_id.write({'password':new_pass})
-                return {'success':True}
+            currentTime = int(round(time.time() * 1000)) 
+            if token.date_expire < currentTime:
+                return {'success':False,'message':'Token expired'}
+            token.user_id.write({'password':new_pass})
+            return {'success':True}
 
 class WorkflowService(osv.AbstractModel):
     _name = 'etraining.workflow_service'

@@ -7,6 +7,7 @@ import { Permission } from '../models/elearning/permission.model';
 import { Token } from '../models/cloud/token.model';
 import { MapUtils } from '../helpers/map.utils';
 import { APIService } from './api.service';
+import { ExecuteAPI } from '../../shared/services/api/execute.api';
 
 
 declare function escape(s: string): string;
@@ -39,7 +40,7 @@ export class AuthService {
     }
 
     set UserProfile(user: User) {
-        localStorage.setItem('currentUser', btoa(unescape(encodeURIComponent(JSON.stringify(user)))));
+        localStorage.setItem('currentUser', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(user)))));
     }
 
     clearUserProfile() {
@@ -53,7 +54,7 @@ export class AuthService {
     }
 
     set UserPermission(perm: Permission) {
-        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(perm)))));
+        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(perm)))));
     }
 
     clearUserPermission() {
@@ -93,6 +94,16 @@ export class AuthService {
             this.LoginToken = MapUtils.deserialize(Token, resp["token"]);
             return { user: this.UserProfile, token: this.LoginToken };
         });
+    }
+
+    requestResetPassword(login:string): Observable<any> {
+        var executeApi = new ExecuteAPI('etraining.account_service', 'request_reset_password',{login:login}, null);
+        return this.apiService.execute(executeApi);
+    }
+
+    applyResetPassword(token:string, pass:string): Observable<any> {
+        var executeApi = new ExecuteAPI('etraining.account_service', 'apply_reset_password',{token:token, new_pass:pass}, null);
+        return this.apiService.execute(executeApi);
     }
 
     logout() {
