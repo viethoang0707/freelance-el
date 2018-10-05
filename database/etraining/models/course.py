@@ -201,7 +201,7 @@ class CourseUnit(models.Model):
 			unit.write({'exercise_id': exercise.id})
 		return unit
 
-	@api.onchange('name')
+	@api.onchange('order')
 	def on_change_name(self):
 		import pdb
 		pdb.set_trace()
