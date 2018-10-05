@@ -121,6 +121,8 @@ export class CourseSyllabusComponent extends BaseComponent {
 		this.unitDialog.onUpdateComplete.first().subscribe(() => {
 			this.success(this.translateService.instant('Action completed'));
 			this.tree = this.sylUtils.buildGroupTree(this.units);
+			this.selectedNode = null;
+			this.selectedUnit = null;
 		});
 	}
 
