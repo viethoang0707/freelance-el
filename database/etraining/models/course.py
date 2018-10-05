@@ -203,6 +203,8 @@ class CourseUnit(models.Model):
 
 	@api.multi
 	def writes(self, vals):
+		import pdb
+		pdb.set_trace()
 		unit =  super(CourseUnit, self).writes(vals)  
 		if self.self_assessment_id and self.self_assessment_id.exam_id:
 			self.self_assessment_id.exam_id.write({'name':self.name})
