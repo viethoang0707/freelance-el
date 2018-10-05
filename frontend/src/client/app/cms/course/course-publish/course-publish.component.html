@@ -5,9 +5,6 @@
             <p-selectButton [options]="contentStatus" [(ngModel)]="syl.status" name="status"></p-selectButton>
         </div>
         <div class="ui-g-12 course-syllabus">
-            <div class="ui-g-4" style="padding: 10px 10px 0 0">
-                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"  styleClass="tree-unit-course-syllabus"></p-tree>
-            </div>
             <div class="ui-g-8" style="padding: 10px 0 0" *ngIf="selectedUnit">
                 <div class="card course-syllabus-unit">
                     <div class="image-box-content">

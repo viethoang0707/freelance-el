@@ -144,23 +144,7 @@ class ResetPassToken(models.Model):
 			vals["reset_link"] =  '%s/auth/reset-pass/%s' % (account["domain"] ,vals['code'])
 		return super(ResetPassToken, self).create(vals)
 
-	@api.model
-	def request_reset_password(self, params):
-		login = params["login"]
-		token = self.env['etraining.reset_pass_token'].create({'login': login, 'cloud_id':self.id})
-		self.env.ref(self._module +"."+"reset_password_template").send_mail(token.id,force_send=False)
-		return {'success':True}
-
-	@api.model
-	def apply_reset_password(self,params):
-		code = params['token']
-		new_pass = params['new_pass']
-		for token in self.env["reset_pass_token"].get([('code','=',code)]):
-				currentTime = int(round(time.time() * 1000)) 
-				if token.date_expire < currentTime:
-					return {'success':False,'message':'Token expired'}
-				token.user_id.write({'password':new_pass})
-				return {'success':True}
+	
 
 
 class Permission(models.Model):

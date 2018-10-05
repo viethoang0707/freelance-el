@@ -203,6 +203,8 @@ class CourseUnit(models.Model):
 
 	@api.onchange('name')
 	def on_change_name(self):
+		import pdb
+		pdb.set_trace()
 		if self.self_assessment_id and self.self_assessment_id.exam_id:
 			self.self_assessment_id.exam_id.write({'name':self.name})
             
