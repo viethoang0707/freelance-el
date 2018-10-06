@@ -64,7 +64,7 @@ class AccountService(osv.AbstractModel):
     def apply_reset_password(self,params):
         code = params['token']
         new_pass = params['new_pass']
-        for token in self.env["etraining.reset_pass_token"].get([('code','=',code)]):
+        for token in self.env["etraining.reset_pass_token"].search([('code','=',code)]):
             currentTime = int(round(time.time() * 1000)) 
             if token.date_expire < currentTime:
                 return {'success':False,'message':'Token expired'}
