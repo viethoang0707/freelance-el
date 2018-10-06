@@ -1,6 +1,7 @@
 from odoo import models, fields, api,tools
 from odoo.osv import osv
 from datetime import datetime
+import time
 
 class NotificationService(osv.AbstractModel):
     _name = 'etraining.notification_service'
