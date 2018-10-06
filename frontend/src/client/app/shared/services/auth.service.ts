@@ -40,7 +40,7 @@ export class AuthService {
     }
 
     set UserProfile(user: User) {
-        localStorage.setItem('currentUser', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(user)))));
+        localStorage.setItem('currentUser', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(user))))));
     }
 
     clearUserProfile() {
@@ -54,7 +54,7 @@ export class AuthService {
     }
 
     set UserPermission(perm: Permission) {
-        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(perm)))));
+        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(perm))))));
     }
 
     clearUserPermission() {

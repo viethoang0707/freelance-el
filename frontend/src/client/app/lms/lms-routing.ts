@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 import { ClassGuard } from '../shared/guards/class.guard';
 import { ClassExamEnrollComponent } from './class/class-exam-enroll/class-exam-enroll.component';
 import { ClassSurveyEnrollComponent } from './class/class-survey-enroll/class-survey-enroll.component';
-import { ConferenceeResolve, ProjectResolve, CourseResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
+import { ConferenceeResolve, ProjectResolve, CourseResolve, CourseSyllabusResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
 import { ProjectManageComponent } from './class/project-manage/project-manage.component';
 import { ExamListComponent } from './exam/exam-list/exam-list.component';
 import { CourseListComponent } from './course/course-list/course-list.component';
@@ -23,6 +23,7 @@ import { ConferenceListComponent } from './class/conference-list/conference-list
 import { CourseSearchComponent } from './course/course-search/course-search.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
+import { CourseUnitStudyComponent } from './course/course-study/course-unit-study.component';
 
 export const LMSRoutes: Routes = [
   {
@@ -145,6 +146,18 @@ export const LMSRoutes: Routes = [
           resolve: {
             course: CourseResolve,
             member: CourseMemberResolve
+          },
+        },
+        {
+          path: "course/study/syllabys/:courseId/:sylId/:memberId",
+          component: CourseStudyComponent,
+          data: {
+            breadcrumb: 'Study course'
+          },
+          resolve: {
+            course: CourseResolve,
+            member: CourseMemberResolve,
+            syl: CourseSyllabusResolve
           },
         },
         {

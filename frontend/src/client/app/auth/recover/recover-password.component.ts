@@ -24,7 +24,7 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
     recoverPassword() {
        this.authService.requestResetPassword(this.login).subscribe(()=> {
          this.success('Reset link will be sent to your email');
-       }) 
+       }) ;
     }
 }
 

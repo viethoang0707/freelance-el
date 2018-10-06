@@ -1,0 +1,68 @@
+<div class="ui-g card card-w-title">
+    <div class="ui-lg-12 ui-g-12">
+        <h1>{{'Course study'|translate}}: {{course.name}}</h1>
+    </div>
+    <div class="ui-g-12">
+        <div class="ui-lg-9 ui-md-9 ui-g-12 p-0">
+            <div class="card course-study-unit p-0">
+                <!--  <div class="head">
+                </div> -->
+                <div class="image-box-content">
+                    <div style="background: white" #unitPlayer>
+                        <ng-template course-unit-player-container></ng-template>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer removeM">
+                <div class="fLeft auto-next pt8">
+                    <p-inputSwitch [(ngModel)]="autoNext"></p-inputSwitch>
+                    <span>{{'Auto next'|translate}}</span>
+                    <button pButton type="button" icon="ui-icon-fullscreen" title="{{'Fullscreen'|translate}}" label="{{'Fullscreen'|translate}}" class="course-unit-study-btn" (click)="requestFullScreen()"></button>
+                </div>
+                <div class="fRight next-btn">
+                    <button pButton type="button" icon="ui-icon-navigate-before" iconPos="left" title="{{'Prev'|translate}}" label="{{'Previous'|translate}}" (click)="prevUnit()" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
+                    <button pButton type="button" icon="ui-icon-navigate-next" iconPos="right" title="{{'Next'|translate}}" label="{{'Next'|translate}}" (click)="nextUnit()" [disabled]="componentRef && !componentRef.instance.viewCompleted && !completedUnitIds.includes(selectedUnit.id)" *ngIf="selectedUnit && selectedUnit.type!='folder'" class="course-unit-study-btn"></button>
+                </div>
+            </div>
+        </div>
+        <div class="ui-lg-3 ui-md-3 ui-g-12 side-bar p-0">
+            <div class="ui-g">
+                <div class="ui-g-12 p-0 course-study-syllabus">
+                    <p-tabView>
+                        <p-tabPanel header="{{'Syllabus'|translate}}" leftIcon="ui-icon-collections-bookmark">
+                            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)" styleClass="course-study-tree">
+                                <ng-template let-node pTemplate="default">
+                                    <span>{{node.label}}</span>
+                                    <span [hidden]="!node.data || !node.data.id || !completedUnitIds.includes(node.data.id)">
+                                        <i class="material-icons">check</i>
+                                    </span>
+                                </ng-template>
+                            </p-tree>
+                        </p-tabPanel>
+                        <p-tabPanel header="{{'Material'|translate}}" leftIcon="ui-icon-cloud-download">
+                            <ul class="material-items">
+                                <li *ngFor="let material of materials">
+                                    <a href="" class="material-item">
+                                        <i class="material-icons">insert_drive_file</i>
+                                        <span>{{material.name}}</span>
+                                    </a>
+                                    <button type="button" pButton title="{{'Dowload'|translate}}" icon="ui-icon-file-download" (click)="downloadMaterial(material)"></button>
+                                </li>
+                            </ul>
+                        </p-tabPanel>
+                        <p-tabPanel header="{{'FAQ'|translate}}" leftIcon="ui-icon-question-answer">
+                            <p-accordion>
+                                <p-accordionTab header="{{faq.question}}" *ngFor="let faq of faqs" [selected]="faq.active">
+                                    <div [innerHTML]="faq.answer"></div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </p-tabPanel>
+                    </p-tabView>
+                </div>
+                <div class="ui-g-12 footer">
+                    <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
