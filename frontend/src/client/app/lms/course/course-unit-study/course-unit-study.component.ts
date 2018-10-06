@@ -22,6 +22,7 @@ import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
 import * as screenfull from 'screenfull';
 declare var $: any;
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
@@ -29,7 +30,7 @@ declare var $: any;
 	templateUrl: 'course-unit-study.component.html',
 	styleUrls: ['course-unit-study.component.css'],
 })
-export class CourseUnitStudyComponent extends BaseComponent implements OnInit{
+export class CourseUnitStudyComponent extends BaseComponent implements OnInit {
 
 	private componentRef: any;
 	private treeUtils: TreeUtils;
@@ -53,8 +54,8 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit{
 	@ViewChild(CourseUnitPlayerContainerDirective) unitHost: CourseUnitPlayerContainerDirective;
 	@ViewChild('unitPlayer') unitPlayer: ElementRef;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver, private winRef: WindowRef,
-		private location: Location, private router: Router, private route: ActivatedRoute,) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver,  private router: Router,
+	 private route: ActivatedRoute, private winRef: WindowRef) {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
@@ -69,15 +70,20 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit{
 		this.course = this.route.snapshot.data['course'];
 		this.member = this.route.snapshot.data['member'];
 		this.syl = this.route.snapshot.data['syl'];
-		this.syl = this.route.snapshot.data['units'];
-		this.faqa = this.route.snapshot.data['faqs'];
-		this.materials = this.route.snapshot.data['materials'];
-		this.faqs = faqs;
-		this.materials = materials;
-		CourseLog.memberStudyActivity(this, this.member.id, this.course.id).subscribe(logs => {
-			this.logs = logs;
-			this.displayCouseSyllabus();
-		});
+		BaseModel.bulk_search(this,
+			Course.__api__listFaqs(this.course.id),
+			Course.__api__listMaterials(this.course.id),
+			Course.__api__listUnits(this.course.id))
+			.subscribe(jsonArr => {
+				this.faqs = CourseFaq.toArray(jsonArr[0]);
+				this.materials = CourseMaterial.toArray(jsonArr[1]);
+				this.units = CourseUnit.toArray(jsonArr[2]);
+				CourseLog.memberStudyActivity(this, this.member.id, this.course.id).subscribe(logs => {
+					this.logs = logs;
+					this.displayCouseSyllabus();
+				});
+			});
+
 	}
 
 	displayCouseSyllabus() {

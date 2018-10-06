@@ -98,12 +98,12 @@ export class AuthService {
 
     requestResetPassword(login:string): Observable<any> {
         var executeApi = new ExecuteAPI('etraining.account_service', 'request_reset_password',{login:login}, null);
-        return this.apiService.execute(executeApi);
+        return this.apiService.execute(executeApi, null);
     }
 
     applyResetPassword(token:string, pass:string): Observable<any> {
         var executeApi = new ExecuteAPI('etraining.account_service', 'apply_reset_password',{token:token, new_pass:pass}, null);
-        return this.apiService.execute(executeApi);
+        return this.apiService.execute(executeApi, null);
     }
 
     logout() {

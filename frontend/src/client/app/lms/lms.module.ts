@@ -34,7 +34,7 @@ import { WebcamModule } from 'ngx-webcam';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
 import { CourseMemberActivityDialog } from './class/course-member-activity/course-member-activity.dialog.component';
-import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-unit-study-dialog.component';
+import { CourseUnitStudyDialog } from './course/course-unit-study/course-unit-study-dialog.component';
 import { CourseUnitPlayerContainerDirective } from './course/course-unit-template/unit-player.directive';
 import { FolderCourseUnitPlayerComponent } from './course/course-unit-template/folder/folder-unit.component';
 import { ExerciseCourseUnitPlayerComponent } from './course/course-unit-template/exercise/exercise-unit.component';
@@ -52,7 +52,7 @@ import { ConferenceListComponent } from './class/conference-list/conference-list
 import { CourseSearchComponent } from './course/course-search/course-search.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
-import { CourseUnitStudyComponent } from './course/course-study/course-unit-study.component';
+import { CourseUnitStudyComponent } from './course/course-unit-study/course-unit-study.component';
 
 @NgModule({
     imports: [

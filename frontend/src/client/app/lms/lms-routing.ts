@@ -23,7 +23,7 @@ import { ConferenceListComponent } from './class/conference-list/conference-list
 import { CourseSearchComponent } from './course/course-search/course-search.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
-import { CourseUnitStudyComponent } from './course/course-study/course-unit-study.component';
+import { CourseUnitStudyComponent } from './course/course-unit-study/course-unit-study.component';
 
 export const LMSRoutes: Routes = [
   {
@@ -149,8 +149,8 @@ export const LMSRoutes: Routes = [
           },
         },
         {
-          path: "course/study/syllabys/:courseId/:sylId/:memberId",
-          component: CourseStudyComponent,
+          path: "course/study/syllabus/:courseId/:sylId/:memberId",
+          component: CourseUnitStudyComponent,
           data: {
             breadcrumb: 'Study course'
           },
