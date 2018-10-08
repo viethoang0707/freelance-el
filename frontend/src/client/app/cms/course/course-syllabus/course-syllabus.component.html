@@ -1,45 +1,40 @@
-<div class="card card-w-title">
-    <h1>{{'Course syllabus'|translate}} :{{course.name}}</h1>
-    <div class="ui-g">
-        <div class="ui-g-12 course-syllabus">
-            <p-toolbar>
-                <div class="ui-toolbar-group-left ui-g-6 mt5">
-                    <div class="fLeft">
-                        <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success"></p-splitButton>
-                    </div>
-                    <div class="ml120">
-                        <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit"
-                            (click)="editNode(selectedNode)" *ngIf="selectedNode"></button>
-                        <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete"
-                            (click)="deleteNode(selectedNode)" *ngIf="selectedNode" label="{{'Delete'|translate}}"></button>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <div class="ui-toolbar-group-right">
-                    <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings"
-                        (click)="showSetting()" label="{{'Setting'|translate}}"></button>
-                </div>
-            </p-toolbar>
-            <div class="ui-g-3" style="padding: 10px 10px 0 0">
-                <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
-                    styleClass="tree-unit-course-syllabus"></p-tree>
+<div class="card card-w-title ui-g">
+    <div class="ui-g-12">
+        <h1>{{'Course syllabus'|translate}} :{{course.name}}</h1>
+    </div>
+    <div class="ui-g-12 course-syllabus">
+        <p-toolbar>
+            <div class="ui-toolbar-group-left">
+                <p-splitButton label="{{'Add'|translate}}" icon="ui-icon-add" [model]="items" styleClass="ui-button-success btn-add-course-syllabus"></p-splitButton>
+                <button pButton type="button" label="{{'Edit'|translate}}" class="blue-grey-btn" icon="ui-icon-mode-edit"
+                    (click)="editNode(selectedNode)" *ngIf="selectedNode"></button>
+                <button pButton type="button" pTooltip="{{'Delete'|translate}}" class="red-btn" icon="ui-icon-delete"
+                    (click)="deleteNode(selectedNode)" *ngIf="selectedNode" label="{{'Delete'|translate}}"></button>
             </div>
-            <div class="ui-g-9" style="padding: 10px 0 0" *ngIf="selectedUnit">
-                <div class="card course-syllabus-unit">
-                    <div class="image-box-content">
-                        <div>
-                            <h3 class="removeMT">{{selectedUnit.name}}</h3>
-                            <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]|translate}}</span>
-                        </div>
-                        <div class="image-box-footer">
-                            <button pButton type="button" label="{{'Move up'|translate}}" class="blue-grey-btn" icon="ui-icon-arrow-upward"
-                                (click)="moveUp(selectedNode)"></button>
-                            <button pButton type="button" label="{{'Move down'|translate}}" class="blue-grey-btn" icon="ui-icon-arrow-downward"
-                                (click)="moveDown(selectedNode)"></button>
-                            <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}"
-                                label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit(selectedUnit)"
-                                *ngIf="selectedUnit.type!='folder'"></button>
-                        </div>
+            <div class="ui-toolbar-group-right">
+                <button pButton type="button" pTooltip="{{'Setting'|translate}}" class="orange-btn" icon="ui-icon-settings"
+                    (click)="showSetting()" label="{{'Setting'|translate}}"></button>
+            </div>
+        </p-toolbar>
+        <div class="ui-g-3" style="padding: 10px 10px 0 0">
+            <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
+                styleClass="tree-unit-course-syllabus"></p-tree>
+        </div>
+        <div class="ui-g-9" style="padding: 10px 0 0" *ngIf="selectedUnit">
+            <div class="card course-syllabus-unit">
+                <div class="image-box-content">
+                    <div>
+                        <h3 class="removeMT">{{selectedUnit.name}}</h3>
+                        <span>{{'Unit type'|translate}} : {{COURSE_UNIT_TYPE[selectedUnit.type]|translate}}</span>
+                    </div>
+                    <div class="image-box-footer">
+                        <button pButton type="button" label="{{'Move up'|translate}}" class="blue-grey-btn" icon="ui-icon-arrow-upward"
+                            (click)="moveUp(selectedNode)"></button>
+                        <button pButton type="button" label="{{'Move down'|translate}}" class="blue-grey-btn" icon="ui-icon-arrow-downward"
+                            (click)="moveDown(selectedNode)"></button>
+                        <button pButton type="button" icon="ui-icon-remove-red-eye" title="{{'Preview'| translate}}"
+                            label="{{'Preview'|translate}}" class="orange-btn" style="margin-right:4px;" (click)="previewUnit(selectedUnit)"
+                            *ngIf="selectedUnit.type!='folder'"></button>
                     </div>
                 </div>
             </div>
