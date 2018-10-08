@@ -201,12 +201,12 @@ class CourseUnit(models.Model):
 			unit.write({'exercise_id': exercise.id})
 		return unit
 
-	@api.onchange(name)
-	def on_change_name(self):
-		for record in self:
-			if record.self_assessment_id and record.self_assessment_id.exam_id:
-				record.self_assessment_id.exam_id.write({'name':record.name})
-            
+	@api.multi
+	def write(self, vals):
+		unit =  super(CourseUnit, self).write(vals)  
+		if self.self_assessment_id and self.self_assessment_id.exam_id:
+			self.self_assessment_id.exam_id.write({'name':self.name})
+		return unit
 
 	@api.multi
 	def unlink(self):
@@ -483,7 +483,7 @@ class CourseMember(models.Model):
 	class_id = fields.Many2one('etraining.course_class', string='Class')
 	course_id = fields.Many2one('etraining.course', string='Course')
 	conference_member_id = fields.Many2one('etraining.conference_member', string='Confernce member')
-	certificate_id = fields.Many2one('etraining.certificate', string='Certificate')
+	certificate_id = fields.Many2one('etraining.course_certificate', string='Certificate')
 	user_id = fields.Many2one('res.users', string='User')
 	email = fields.Char(related='user_id.email', string='Email', readonly=True)
 	phone = fields.Char(related='user_id.phone', string='Phone', readonly=True)
@@ -556,6 +556,8 @@ class CourseMember(models.Model):
 			for certificate in self.env['etraining.course_certificate'].browse(certificateId):
 				certificate.write({'issue_member_id':staffId})
 				member.write({'enroll_status':'completed','certificate_id':certificateId})
+				if member.email:
+					self.env.ref(self._module +"."+ "certificate_grant_template").send_mail(member.id,force_send=False)
 				return {'success':True}
 
 	@api.model
@@ -572,6 +574,8 @@ class CourseMember(models.Model):
 		for member in self.env['etraining.course_member'].browse(memberId):
 			if member.enroll_status == 'in-study':
 				member.write({'enroll_status':'await-certificate'})
+				if member.course_id.supervisor_id.email:
+					self.env.ref(self._module +"."+ "certificate_request_template").send_mail(member.id,force_send=False)
 			return {'success':True}
 
 	@api.model

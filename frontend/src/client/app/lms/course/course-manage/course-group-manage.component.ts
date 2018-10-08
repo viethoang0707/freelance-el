@@ -101,9 +101,6 @@ export class CourseGroupManageComponent extends BaseComponent implements OnInit 
 
 	manageClass(courseClass: CourseClass) {
 		var member = this.lmsProfileService.getCourseMemberByRole('teacher', this.course.id);
-		console.log('member: ', member);
-		console.log('class: ', this.classMembers);
-		console.log('course: ', courseClass);
 		if (member != null) {
 			this.router.navigate(['/lms/class/manage', courseClass.id, member.id]);
 		}

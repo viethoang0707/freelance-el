@@ -12,7 +12,7 @@ import { Token } from '../../shared/models/cloud/token.model';
 
 export class RecoverPasswordComponent extends BaseComponent implements OnInit {
 
-    @Input() recover_email: string;
+    @Input() login: string;
 
     constructor() { 
       super(); 
@@ -22,7 +22,9 @@ export class RecoverPasswordComponent extends BaseComponent implements OnInit {
     }
 
     recoverPassword() {
-       
+       this.authService.requestResetPassword(this.login).subscribe(()=> {
+         this.success('Reset link will be sent to your email');
+       }) ;
     }
 }
 

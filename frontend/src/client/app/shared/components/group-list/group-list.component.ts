@@ -14,7 +14,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 import { Competency } from '../../../shared/models/elearning/competency.model';
 
-const GROUP_FIELDS = ['name', 'code', 'parent_id']
+const GROUP_FIELDS = ['name', 'code', 'parent_id', 'category']
 
 @Component({
     moduleId: module.id,
@@ -53,12 +53,16 @@ export class GroupListComponent extends BaseComponent implements OnInit {
         this.groupDialog.show(group);
         this.groupDialog.onCreateComplete.first().subscribe(() => {
             this.loadGroups();
-        })
+        });
     }
 
     edit() {
-        if (this.selectedNode)
+        if (this.selectedNode) {
             this.groupDialog.show(this.selectedNode.data);
+            this.groupDialog.onUpdateComplete.first().subscribe(() => {
+                this.loadGroups();
+            });
+        }
     }
 
     confirmDelete() {
@@ -93,13 +97,13 @@ export class GroupListComponent extends BaseComponent implements OnInit {
     loadGroups() {
         var subscription = null;
         if (this.category == "course")
-            subscription = Group.listCourseGroup(this,GROUP_FIELDS);
+            subscription = Group.listCourseGroup(this, GROUP_FIELDS);
         if (this.category == "organization")
-            subscription = Group.listUserGroup(this,GROUP_FIELDS);
+            subscription = Group.listUserGroup(this, GROUP_FIELDS);
         if (this.category == "question")
-            subscription = Group.listQuestionGroup(this,GROUP_FIELDS);
+            subscription = Group.listQuestionGroup(this, GROUP_FIELDS);
         if (this.category == "competency")
-            subscription = Group.listCompetencyGroup(this,GROUP_FIELDS);
+            subscription = Group.listCompetencyGroup(this, GROUP_FIELDS);
         if (subscription)
             subscription.subscribe(groups => {
                 this.groups = groups;

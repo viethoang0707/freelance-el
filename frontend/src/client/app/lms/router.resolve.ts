@@ -11,6 +11,7 @@ import { Conference } from '../shared/models/elearning/conference.model';
 import { Exam } from '../shared/models/elearning/exam.model';
 import { CourseMember } from '../shared/models/elearning/course-member.model';
 import { Project } from '../shared/models/elearning/project.model';
+import { CourseSyllabus } from '../shared/models/elearning/course-syllabus.model';
 
 @Injectable()
 export class ConferenceeResolve implements Resolve<Conference>, APIContext {
@@ -128,3 +129,23 @@ export class CourseMemberResolve implements Resolve<CourseMember>, APIContext {
 
 	}
 }
+
+@Injectable()
+export class CourseSyllabusResolve implements Resolve<CourseSyllabus>, APIContext {
+
+	apiService: APIService;
+	authService: AuthService;
+
+	constructor(apiService: APIService, authService: AuthService, private router: Router) {
+		this.apiService = apiService;
+		this.authService = authService;
+	}
+
+	resolve(route: ActivatedRouteSnapshot) {
+		return CourseSyllabus.get(this, +route.paramMap.get('sylId'));
+
+	}
+}
+
+
+

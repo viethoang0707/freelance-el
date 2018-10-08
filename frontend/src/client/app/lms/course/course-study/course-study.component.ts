@@ -51,7 +51,7 @@ import { SurveyStudyDialog } from '../../survey/survey-study/survey-study.dialog
 import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
 import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 import { GradebookDialog } from '../../class/gradebook/gradebook.dialog.component';
-import { CourseUnitStudyDialog } from '../course-unit-study-dialog/course-unit-study-dialog.component';
+import { CourseUnitStudyDialog } from '../course-unit-study/course-unit-study-dialog.component';
 import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 
 
@@ -152,7 +152,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 
 	study() {
 		this.member.joinCourse(this).subscribe(()=> {
-			this.unitStudyDialog.show(this.member, this.course, this.syl, this.units, this.faqs, this.materials);
+			this.router.navigate(['/lms/course/study/syllabus', this.course.id, this.syl.id, this.member.id]);
 		});
 	}
 
