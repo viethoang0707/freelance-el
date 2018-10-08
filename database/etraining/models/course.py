@@ -7,6 +7,7 @@ class Course(models.Model):
 	_name = 'etraining.course'
 
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
+	supervisor_group_id = fields.Many2one('res.groups',related='supervisor_id.group_id', string='Supervisor Group')
 	supervisor_name = fields.Char(related='supervisor_id.name', string='Supervisor name', readonly=True)
 	name = fields.Char(string='Name', required=True)
 	summary = fields.Text(string='Summary')

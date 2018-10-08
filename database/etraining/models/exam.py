@@ -7,6 +7,7 @@ class Exam(models.Model):
 	_name = 'etraining.exam'
 
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
+	supervisor_group_id = fields.Many2one('res.groups',related='supervisor_id.group_id', string='Supervisor Group')
 	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet')
 	sheet_status = fields.Selection(related='sheet_id.status', string='Sheet status')
 	question_count = fields.Integer(related='sheet_id.question_count', string='Sheet question count', readonly=True)
