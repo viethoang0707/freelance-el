@@ -81,6 +81,10 @@ export class SelectGroupDialog extends BaseComponent {
 		}
 	}
 
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
+	}
+
 
 }
 
