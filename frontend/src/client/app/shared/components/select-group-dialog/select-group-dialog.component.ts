@@ -9,8 +9,9 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
+import { Permission } from '../../../shared/models/elearning/permission.model';
 
-const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id'];
 
 @Component({
 	moduleId: module.id,
@@ -25,6 +26,7 @@ export class SelectGroupDialog extends BaseComponent {
 	private selectedNode: TreeNode;
 	private display: boolean;
 	private treeUtils: TreeUtils;
+	private filteredParentIds: number[];
 
 	private onSelectGroupReceiver: Subject<any> = new Subject();
 	onSelectGroup: Observable<any> = this.onSelectGroupReceiver.asObservable();
@@ -39,18 +41,25 @@ export class SelectGroupDialog extends BaseComponent {
 		this.display = false;
 	}
 
-	show() {
+	show(parents?: number[]) {
 		this.display = true;
 		this.selectedNode = null;
+		if (parents)
+			this.filteredParentIds = parents;
 		var subscription = null;
 		if (this.category == "course")
-			subscription = Group.listCourseGroup(this,GROUP_FIELDS);
+			subscription = Group.listCourseGroup(this, GROUP_FIELDS);
 		if (this.category == "organization")
-			subscription = Group.listUserGroup(this,GROUP_FIELDS);
+			subscription = Group.listUserGroup(this, GROUP_FIELDS);
 		if (this.category == "question")
-			subscription = Group.listQuestionGroup(this,GROUP_FIELDS);
+			subscription = Group.listQuestionGroup(this, GROUP_FIELDS);
 		if (subscription)
 			subscription.subscribe(groups => {
+				if (this.filteredParentIds) {
+					groups = _.filter(groups, (groupId:number) => {
+						return this.filteredParentIds.includes(groupId);
+					});
+				}
 				this.tree = this.treeUtils.buildGroupTree(groups);
 			});
 	}
@@ -70,7 +79,7 @@ export class SelectGroupDialog extends BaseComponent {
 			else
 				this.selectedNode = null;
 		}
-		
+
 	}
 
 

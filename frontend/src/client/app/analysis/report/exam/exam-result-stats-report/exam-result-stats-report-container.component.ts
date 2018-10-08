@@ -19,7 +19,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { ExamResultStatsReportComponent } from './exam-result-stats-report.component';
 
-const EXAM_FIELDS = ['name' ,'sheet_id'];
+const EXAM_FIELDS = ['name' ,'sheet_id','supervisor_id', 'supervisor_group_id'];
 
 @Component({
     moduleId: module.id,
@@ -43,6 +43,12 @@ export class ExamResultStatsReportContainerComponent extends BaseComponent imple
     ngOnInit() {
     	Exam.all(this,EXAM_FIELDS).subscribe(exams => {
     		this.exams = exams;
+            if (this.ContextPermission)
+                this.ContextPermission.listSubGroupIds(this).subscribe(groupIds=> {
+                    this.exams = _.filter(exams, (exam:Exam)=> {
+                        return exam.supervisor_id == this.ContextUser.id || groupIds.includes(exam.supervisor_group_id);
+                    });
+                });
     	});
     }
 

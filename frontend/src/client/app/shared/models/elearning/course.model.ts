@@ -52,10 +52,12 @@ export class Course extends BaseModel{
         this.syllabus_status = undefined;
         this.syl =  new CourseSyllabus();
         this.group_name = undefined;
+        this.supervisor_group_id = undefined;
 	}
 
     complete_unit_by_order: boolean;
     competency_id: number;
+    supervisor_group_id: number;
     syllabus_id: number;
     unit_count: number;
     syllabus_status: string;

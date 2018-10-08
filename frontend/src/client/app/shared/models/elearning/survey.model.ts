@@ -36,6 +36,7 @@ export class Survey extends BaseModel{
         this.sheet_status = undefined;
         this.clazz =  new CourseClass();
         this.sheet =  new SurveySheet();
+        this.supervisor_group_id = undefined;
 	}
 
     @UnserializeProperty()
@@ -48,6 +49,7 @@ export class Survey extends BaseModel{
     course_class_id: number;
     review_state:string;
     name:string;
+    supervisor_group_id: number;
     summary: string;
     instruction: string;
     @FieldProperty<Date>()

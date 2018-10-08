@@ -15,6 +15,7 @@ import {
 	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS
 } from '../../../shared/models/constants'
 import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
+import { ExcelService } from '../../../shared/services/excel.service';
 
 const MEMBER_FIELDS = ['name', 'email', 'phone', 'role', 'login', 'status', 'group_name', 'enroll_status'];
 
@@ -41,7 +42,8 @@ export class CourseClassEnrollmentFormComponent extends BaseComponent {
 	COURSE_MEMBER_STATUS = COURSE_MEMBER_STATUS;
 	COURSE_MEMBER_ENROLL_STATUS = COURSE_MEMBER_ENROLL_STATUS;
 
-	constructor(private location: Location, private router: Router, private route: ActivatedRoute) {
+	constructor(private location: Location, private router: Router, private route: ActivatedRoute,
+		private excelService: ExcelService) {
 		super();
 		this.items = [
 			{ label: this.translateService.instant('Student'), value: 'student', command: () => { this.addStudent() } },
@@ -124,6 +126,20 @@ export class CourseClassEnrollmentFormComponent extends BaseComponent {
 
 	close() {
 		this.router.navigate(['/course/class/list',this.courseClass.course_id]);
+	}
+
+	export() {
+		var output = _.map(this.students, (student:CourseMember) => {
+			return {
+				'Login': student.login,
+				'Name': student.name,
+				'Email': student.email,
+				'Group': student.group_name,
+				'Status': student.status,
+				'Enroll status': student.enroll_status,
+			};
+		})
+		this.excelService.exportAsExcelFile(output, 'course_student_report');
 	}
 }
 

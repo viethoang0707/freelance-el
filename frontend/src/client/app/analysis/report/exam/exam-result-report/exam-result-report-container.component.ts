@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Observable, Subject } from 'rxjs/Rx';
 
@@ -16,11 +16,11 @@ import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, C
 import { Report } from '../../report.decorator';
 import { SelectGroupDialog } from '../../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
-import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
+import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { ExamResultReportComponent } from './exam-result-report.component';
 
-const EXAM_FIELDS = ['name', 'sheet_id'];
+const EXAM_FIELDS = ['name', 'sheet_id', 'supervisor_id', 'supervisor_group_id'];
 
 @Component({
     moduleId: module.id,
@@ -28,10 +28,10 @@ const EXAM_FIELDS = ['name', 'sheet_id'];
     templateUrl: 'exam-result-report-container.component.html',
 })
 @Report({
-    title:'Exam result report',
-    category:REPORT_CATEGORY.EXAM
+    title: 'Exam result report',
+    category: REPORT_CATEGORY.EXAM
 })
-export class ExamResultReportContainerComponent extends BaseComponent implements OnInit{
+export class ExamResultReportContainerComponent extends BaseComponent implements OnInit {
 
     private exams: Exam[];
     private selectedExam: Exam;
@@ -42,21 +42,27 @@ export class ExamResultReportContainerComponent extends BaseComponent implements
     }
 
     ngOnInit() {
-    	Exam.all(this, EXAM_FIELDS).subscribe(exams => {
-    		this.exams = exams;
-    	});
+        Exam.all(this, EXAM_FIELDS).subscribe(exams => {
+            this.exams = exams;
+            if (this.ContextPermission)
+                this.ContextPermission.listSubGroupIds(this).subscribe(groupIds => {
+                    this.exams = _.filter(exams, (exam: Exam) => {
+                        return exam.supervisor_id == this.ContextUser.id || groupIds.includes(exam.supervisor_group_id);
+                    });
+                });
+        });
     }
 
     export() {
-    	if (this.selectedExam)
+        if (this.selectedExam)
             this.examReport.export();
     }
 
     selectExam() {
-    	if (this.selectedExam) {
+        if (this.selectedExam) {
             this.examReport.clear();
             this.examReport.render(this.selectedExam);
-    	}
+        }
     }
 
 }

@@ -7,6 +7,9 @@
                     <button pButton type="button" label="{{ 'Add'|translate}} " class="green-btn " icon="ui-icon-add " (click)="addStudent() "></button>
                     <button pButton type="button" label="{{ 'Delete'|translate}} " class="red-btn " icon="ui-icon-delete " (click)="deleteMembers(selectedStudents) " *ngIf="selectedStudents && selectedStudents.length "></button>
                 </div>
+                <div class="ui-toolbar-group-right">
+                    <button pButton type="button" label="{{'Export'|translate}}" class="blue-grey-btn" icon="ui-icon-file-download" (click)="export()"></button>
+                </div>
             </p-toolbar>
             <p-table #studentTable [value]="students" [paginator]="true " [rows]="25" selectionMode="multiple" [(selection)]="selectedStudents " [responsive]="true " sortField="name">
                 <ng-template pTemplate="header">
@@ -21,10 +24,10 @@
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
                         </th>
-                         <th [pSortableColumn]="'login'">
-                                {{'Login'|translate}}
-                                <p-sortIcon [field]="'login'"></p-sortIcon>
-                            </th>
+                        <th [pSortableColumn]="'login'">
+                            {{'Login'|translate}}
+                            <p-sortIcon [field]="'login'"></p-sortIcon>
+                        </th>
                         <th width="250px" [pSortableColumn]="'email'">
                             {{'Email'|translate}}
                             <p-sortIcon [field]="'email'"></p-sortIcon>
@@ -84,10 +87,10 @@
                             {{'Name'|translate}}
                             <p-sortIcon [field]="'name'"></p-sortIcon>
                         </th>
-                         <th [pSortableColumn]="'login'">
-                                {{'Login'|translate}}
-                                <p-sortIcon [field]="'login'"></p-sortIcon>
-                            </th>
+                        <th [pSortableColumn]="'login'">
+                            {{'Login'|translate}}
+                            <p-sortIcon [field]="'login'"></p-sortIcon>
+                        </th>
                         <th [pSortableColumn]="'email'">
                             {{'Email'|translate}}
                             <p-sortIcon [field]="'email'"></p-sortIcon>
@@ -110,7 +113,7 @@
                         </td>
                         <td>{{rowIndex+1}}</td>
                         <td>{{member.name}}</td>
-                         <td>{{member.login}}</td>
+                        <td>{{member.login}}</td>
                         <td>{{member.email}}</td>
                         <td>{{member.phone}}</td>
                         <td>{{member.group_name}}</td>

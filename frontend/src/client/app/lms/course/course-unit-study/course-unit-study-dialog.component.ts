@@ -240,6 +240,9 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	}
 
 	hide() {
+		if (this.selectedUnit)
+			if (this.enableLogging)
+				CourseLog.stopCourseUnit(this, this.member, this.selectedUnit).subscribe();
 		this.unloadCurrentUnit();
 		this.display = false;
 	}

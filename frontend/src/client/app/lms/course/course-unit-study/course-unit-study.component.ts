@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ComponentFactoryResolver, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
@@ -30,7 +30,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 	templateUrl: 'course-unit-study.component.html',
 	styleUrls: ['course-unit-study.component.css'],
 })
-export class CourseUnitStudyComponent extends BaseComponent implements OnInit {
+export class CourseUnitStudyComponent extends BaseComponent implements OnInit, OnDestroy {
 
 	private componentRef: any;
 	private treeUtils: TreeUtils;
@@ -230,7 +230,6 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit {
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
 			let courseUnitPlayer: ICourseUnitPlay = (<ICourseUnitPlay>this.componentRef.instance);
 			courseUnitPlayer.play(unit, this.member);
-
 			courseUnitPlayer.onViewCompleted.first().subscribe(() => {
 				if (unit.type == 'video' && this.autoNext)
 					this.nextUnit();
@@ -251,6 +250,12 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit {
 			screenfull.request(this.unitPlayer.nativeElement);
 		}
 
+	}
+
+	ngOnDestroy() {
+		if (this.selectedUnit)
+			if (this.enableLogging)
+				CourseLog.stopCourseUnit(this, this.member, this.selectedUnit).subscribe();
 	}
 
 

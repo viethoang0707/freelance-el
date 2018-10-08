@@ -97,7 +97,7 @@ export class CoursePublishComponent extends BaseComponent implements OnInit {
 	}
 
 	back() {
-		this.router.navigate(['/lms/course/edit', this.course.id]);
+		this.location.back();
 	}
 
 }

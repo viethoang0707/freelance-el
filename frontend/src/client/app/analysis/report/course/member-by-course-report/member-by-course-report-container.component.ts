@@ -17,7 +17,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { MemberByCourseReportComponent } from './member-by-course-report.component';
 
-const COURSE_FIELDS = ['name'];
+const COURSE_FIELDS = ['name',  'supervisor_id', 'supervisor_group_id'];
 
 @Component({
     moduleId: module.id,
@@ -47,15 +47,17 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.first().subscribe((group:Group) => {
     		group.listCourses(this).subscribe((courses:Course[]) => {
-    			this.memberReport.render(courses);
+                if (this.ContextPermission)
+                    this.ContextPermission.listSubGroupIds(this).subscribe(groupIds => {
+                        courses = _.filter(courses, (course: Course) => {
+                            return course.supervisor_id == this.ContextUser.id || groupIds.includes(course.supervisor_group_id);
+                        });
+                        this.memberReport.render(courses);
+                    });
+                else
+                    this.memberReport.render(courses);
     		});
     	});
     }
 
-    selectIndividualCourses() {
-		this.courseDialog.show();
-    	this.courseDialog.onSelectCourses.first().subscribe((courses:Course[]) => {
-            this.memberReport.render(courses);
-		});
-    }
 }

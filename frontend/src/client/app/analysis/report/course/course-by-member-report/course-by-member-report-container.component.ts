@@ -44,7 +44,12 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
     }
 
     selectUserGroup() {
-    	this.groupDialog.show();
+        if (this.ContextPermission)
+            this.ContextPermission.listSubGroupIds(this).subscribe(groupIds=> {
+                this.groupDialog.show(groupIds);
+            });
+        else
+    	    this.groupDialog.show();
     	this.groupDialog.onSelectGroup.first().subscribe((group:Group) => {
     		group.listUsers(this,USER_FIELDS).subscribe(users => {
                 this.courseReport.clear();
@@ -53,14 +58,5 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
     	});
     }
 
-    selectIndividualUsers() {
-    	this.userDialog.show();
-    	this.userDialog.onSelectUsers.first().subscribe((users:User[]) => {
-            this.courseReport.clear();
-            User.populateArray(this, users, USER_FIELDS).subscribe(()=> {
-                this.courseReport.render(users);
-            });
-		});
-    }
 
 }
