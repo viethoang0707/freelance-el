@@ -63,11 +63,10 @@ export class CourseSearchComponent extends BaseComponent implements OnInit {
         domain = "[" + domain +"]";
         Course.search(this, COURSE_FIELDS,domain).subscribe(courses=> {
             if (this.keyword!= null && this.keyword!="")
+                var keyword = this.keyword.toLowerCase();
                 courses = _.filter(courses, (course:Course)=> {
-                    return course.name.includes(this.keyword) 
-                    || course.summary.includes(this.keyword)
-                    || course.code.includes(this.keyword)
-                    || course.description.includes(this.keyword);
+                    return course.name.toLowerCase().includes(keyword)
+                    || course.code.toLowerCase().includes(keyword);
                 });
             this.courses =  courses;
         });
