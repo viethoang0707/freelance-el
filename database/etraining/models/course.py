@@ -66,8 +66,6 @@ class Course(models.Model):
 
 	@api.model
 	def enroll(self, params):
-		import pdb
-		pdb.set_trace()
 		successList = []
 		failList = []
 		courseId = params["courseId"]
