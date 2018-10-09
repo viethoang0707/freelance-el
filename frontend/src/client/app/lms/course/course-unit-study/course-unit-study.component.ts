@@ -54,8 +54,8 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit, O
 	@ViewChild(CourseUnitPlayerContainerDirective) unitHost: CourseUnitPlayerContainerDirective;
 	@ViewChild('unitPlayer') unitPlayer: ElementRef;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,  private router: Router,
-	 private route: ActivatedRoute, private winRef: WindowRef) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver, private router: Router,
+		private route: ActivatedRoute, private winRef: WindowRef) {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
@@ -258,7 +258,9 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit, O
 				CourseLog.stopCourseUnit(this, this.member, this.selectedUnit).subscribe();
 	}
 
-
+	hide() {
+		this.router.navigate(['/lms/course/study/', this.course.id, this.member.id]);
+	}
 }
 
 
