@@ -204,3 +204,7 @@ ul.material-items li button {
 	height: 2em;
 	background-color: #ababab;
 }
+
+.course-study-tree {
+	border: none;
+}
