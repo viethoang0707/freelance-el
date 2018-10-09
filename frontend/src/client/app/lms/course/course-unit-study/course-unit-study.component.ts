@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, ComponentFactoryResolver, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Location } from '@angular/common';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -55,7 +56,7 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit, O
 	@ViewChild('unitPlayer') unitPlayer: ElementRef;
 
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,  private router: Router,
-	 private route: ActivatedRoute, private winRef: WindowRef) {
+	 private route: ActivatedRoute, private winRef: WindowRef, private location: Location) {
 		super();
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
@@ -258,6 +259,9 @@ export class CourseUnitStudyComponent extends BaseComponent implements OnInit, O
 				CourseLog.stopCourseUnit(this, this.member, this.selectedUnit).subscribe();
 	}
 
+	hide() {
+		this.location.back();
+	}
 
 }
 
