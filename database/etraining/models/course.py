@@ -426,7 +426,7 @@ class CourseClass(models.Model):
 				for user in self.env['res.users'].browse(userIds):
 					fail = True
 					for member in user.course_member_ids:
-						if member.course_id.id == self.course_id.prequisite_course_id.id and member.enroll_status =='completed':
+						if member.course_id.id == course.prequisite_course_id.id and member.enroll_status =='completed':
 							fail = False
 							break
 					if fail:
