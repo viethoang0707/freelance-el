@@ -44,7 +44,7 @@ export class CourseByMemberReportContainerComponent extends BaseComponent{
     }
 
     selectUserGroup() {
-        if (this.ContextPermission)
+        if (this.ContextPermission.id)
             this.ContextPermission.listSubGroupIds(this).subscribe(groupIds=> {
                 this.groupDialog.show(groupIds);
             });
