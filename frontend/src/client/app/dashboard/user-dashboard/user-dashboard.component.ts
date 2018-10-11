@@ -111,16 +111,20 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayExams(exams: Exam[]) {
-        console.log(exams);
         _.each(exams, (exam: Exam) => {
             exam['candidate'] = this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
             exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
             exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
+            if (exam.end) {
+                var end = new Date(exam.end.getTime() + (60 * 60 * 24 * 1000));
+            } else {
+                var end = new Date();
+            }
             // if (exam.IsAvailable)
             this.events.push({
                 title: exam.name,
                 start: exam.start,
-                end: exam.end,
+                end: end,
                 id: exam.id,
                 allDay: true
             });
