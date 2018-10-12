@@ -10,9 +10,10 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
+import * as filter from 'gulp-filter';
 
-const USER_FIELDS = ['name', 'group_name', 'login'];
-const GROUP_FIELDS = ['name', 'category' ,'parent_id'];
+const USER_FIELDS = ['name', 'group_name', 'login', 'banned'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id'];
 
 @Component({
 	moduleId: module.id,
@@ -47,7 +48,9 @@ export class SelectUsersDialog extends BaseComponent {
 		this.selectedNode = event.node;
 		if (this.selectedNode) {
 			this.selectedNode.data.listUsers(this, USER_FIELDS).subscribe(users => {
-				this.users = users;
+				this.users = users.filter(user => {
+					return user.banner != true;
+				});
 			});
 		}
 	}
@@ -59,7 +62,7 @@ export class SelectUsersDialog extends BaseComponent {
 	show() {
 		this.display = true;
 		this.selectedUser = null;
-		Group.listUserGroup(this,GROUP_FIELDS).subscribe(groups => {
+		Group.listUserGroup(this, GROUP_FIELDS).subscribe(groups => {
 			var treeNodes = this.treeUtils.buildGroupTree(groups);
 			if (this.ContextUser.IsAdmin) {
 				this.tree = treeNodes
