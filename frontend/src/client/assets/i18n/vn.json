@@ -512,6 +512,7 @@
 	"Survey open": "Mở khảo sát",
 	"You do not have close permission for this class": "Bạn không có quyền đóng lớp học này",
 	"Are you sure to proceed ? You will not be able to add new class after the course is closed": "Bạn có chắc chắn sẽ tiếp tục không? Bạn sẽ không thể thêm lớp mới sau khi khóa học bị đóng.",
+	"Are you sure to proceed ? You will not be able to enroll students after the exam is closed": "Bạn có chắc chắn sẽ tiếp tục không? Bạn sẽ không thể thêm học sinh sau khi kỳ thi bị đóng.",
 	"You do not have enroll permission for this exam": "Bạn không có quyền ghi danh cho kỳ thi này",
 	"You do not have close permission for this exam": "Bạn không có quyền đóng kỳ thi này",
 	"You do not have open permission for this exam": "Bạn không có quyền mở kỳ thi này",
