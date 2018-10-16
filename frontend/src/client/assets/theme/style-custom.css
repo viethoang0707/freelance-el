@@ -60,7 +60,7 @@
 }
 
 body .ui-widget-content.ui-tree {
-    border: none !important;
+    /* border: none !important; */
 }
 .language {
     list-style-type: none;
