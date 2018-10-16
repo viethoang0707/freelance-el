@@ -116,8 +116,8 @@ export class CourseLog extends BaseModel{
         log.course_id = member.course_id;
         log.class_id = member.class_id;
         log.res_model = CourseUnit.Model;
-        log.note = 'finish course unit';
-        log.code = "FINISH_COURSE_UNIT";
+        log.note = 'stop course unit';
+        log.code = "STOP_COURSE_UNIT";
         log.start = new Date();
         return log.save(context);
     }
