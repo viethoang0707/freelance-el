@@ -17,7 +17,7 @@
                 <button pButton type="button" label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer" (click)="showExamStats()"></button>
             </div>
         </p-toolbar>
-        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true" [globalFilterFields]="['name', 'group_name', 'score', 'grade', 'enroll_status' ]">
+        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true" [globalFilterFields]="['name', 'login' ,'group_name', 'score', 'grade', 'enroll_status' ]">
             <!--  sortField="role" -->
             <ng-template pTemplate="header">
                 <tr>
@@ -27,6 +27,10 @@
                     <th [pSortableColumn]="'name'">
                         {{'Name'|translate}}
                         <p-sortIcon [field]="'name'"></p-sortIcon>
+                    </th>
+                    <th [pSortableColumn]="'login'">
+                        {{'Username'|translate}}
+                        <p-sortIcon [field]="'login'"></p-sortIcon>
                     </th>
                     <th [pSortableColumn]="'group_name'">
                         {{'Group'|translate}}
@@ -50,6 +54,7 @@
                 <tr [pSelectableRow]="member">
                      <td>{{rowIndex+1}}</td>
                     <td>{{member.name}}</td>
+                    <td>{{member.login}}</td>
                     <td>{{member.group_name}}</td>
                     <td>{{member.score}}</td>
                     <td>{{member.grade}}</td>
