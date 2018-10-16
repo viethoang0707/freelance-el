@@ -8,11 +8,16 @@
                 <button pButton type="button" label="{{ 'Redo exam'|translate}} " class="blue-grey-btn " icon="ui-icon-refresh" (click)="redoExam(selectedMember)" [disabled]="!selectedMember || selectedMember.enroll_status != 'completed'"></button>
             </div>
             <div class="ui-toolbar-group-right ">
+                <span class="md-inputfield search">
+                    <input type="text" pInputText placeholder="{{'Search'|translate}}" 
+                    (input)="scoreTable.filterGlobal($event.target.value, 'contains')">   
+                    <i class="fa fa-search"></i>      
+                </span>
                 <button pButton type="button" label="{{ 'Result report'|translate}} " class="blue-grey-btn " icon="ui-icon-data-usage" (click)="showExamReport()"></button>
                 <button pButton type="button" label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer" (click)="showExamStats()"></button>
             </div>
         </p-toolbar>
-        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true">
+        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true" [globalFilterFields]="['name', 'group_name', 'score', 'grade', 'enroll_status' ]">
             <!--  sortField="role" -->
             <ng-template pTemplate="header">
                 <tr>

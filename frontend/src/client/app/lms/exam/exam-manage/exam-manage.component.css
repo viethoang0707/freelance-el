@@ -1,3 +1,22 @@
 .exam-manage{
 	min-height: 480px;
 }
+
+.search{
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.search input{
+    padding: 7px 24px 7px 8px;
+    border-width: 1px;
+    border-radius: 3px;
+}
+
+.search i{
+	 position: absolute;
+    right: 5px;
+    top: 6px;
+    color: #888;
+    font-size: 22px;
+}
