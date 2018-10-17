@@ -14,7 +14,7 @@ import { TreeNode } from 'primeng/api';
 import { SelectItem, MenuItem } from 'primeng/api';
 import {
     GROUP_CATEGORY, CONTENT_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE,
-    COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS
+    COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, EXAM_MEMBER_ENROLL_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -47,6 +47,8 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     private members: ExamMember[];
     private selectedMember: ExamMember;
     private questions: ExamQuestion[];
+
+    EXAM_MEMBER_ENROLL_STATUS = EXAM_MEMBER_ENROLL_STATUS;
 
     @ViewChild(QuestionMarkingDialog) questionMarkDialog: QuestionMarkingDialog;
     @ViewChild(AnswerPrintDialog) answerSheetDialog: AnswerPrintDialog;
