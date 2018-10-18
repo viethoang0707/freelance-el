@@ -20,8 +20,8 @@ class Conference(models.Model):
 	def create(self, vals):
 		cr,uid, context = self.env.args
 		if "meeting_cloudid" in context:
-			meeting_account = context["meeting_cloudid"]
-			raise Exception(meeting_account)
+			meeting_cloudid = context["meeting_cloudid"]
+			meeting_account = context[meeting_cloudid]
 			client = erppeek.Client(meeting_account["db_endpoint"],meeting_account["db"],meeting_account["db_user"],meeting_account["db_pass"])
 			room = {'name':vals["name"],'category':'one-to-many'}
 			resp = client.execute('emeeting.room','add_room',{"room":room})
