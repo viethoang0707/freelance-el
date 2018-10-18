@@ -73,7 +73,7 @@ export class ClassExamEnrollComponent extends BaseComponent {
 
 
 	closeExam() {
-		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', () => {
+		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is closed', () => {
 			this.exam.close(this).subscribe(() => {
 				this.success(this.translateService.instant('Exam close'));
 			});

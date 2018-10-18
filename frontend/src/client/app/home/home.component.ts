@@ -41,7 +41,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
         private eventManager :HomeEventManager) {
         super();
         this.appEvent.onTokenExpired.first().subscribe(()=> {
-            this.warn('Your token has been expired');
+            this.warn(this.translateService.instant('Your token has been expired'));
             this.authService.logout();
             this.router.navigate(['/auth']);
         });
@@ -53,10 +53,10 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
         this.appEvent.onLogin.first().subscribe((user:User)=> {
             UserLog.login(this, user.id).subscribe();
             this.success(`Hello ${user.name}`)
-            this.settingService.ViewMode =  user.IsAdmin?'admin':'lms'
+            this.settingService.ViewMode =  user.IsAdmin?'admin':'lms';
         });
         this.appEvent.onUnauthorizedAccess.first().subscribe(()=> {
-            this.error('Access denied. You must login again!')
+            this.error(this.translateService.instant('Access denied. You must login again!'));
             this.authService.logout();
         });
         this.menuService.onShowSetting.subscribe(()=> {
