@@ -87,7 +87,7 @@ export class MenuService {
 
   private USER_MENU = [
     { label: 'Dashboard', icon: 'dashboard', routerLink: ['/dashboard/lms'], visible: true },
-    { label: '', separator: true, styleClass: 'menu-separator', visible: true }
+    { label: '', separator: true, styleClass: 'menu-separator', visible: true },
     { label: 'My courses', icon: 'school', routerLink: ['/lms/courses'], visible: true },
     { label: 'My exams', icon: 'alarm_add', routerLink: ['/lms/exams'], visible: true },
     { label: 'My surveys', icon: 'question_answer', routerLink: ['/lms/surveys'], visible: true },
