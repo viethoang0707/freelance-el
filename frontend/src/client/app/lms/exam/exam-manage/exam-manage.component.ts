@@ -33,6 +33,7 @@ import { ExamReportDialog } from '../exam-report/exam-report.dialog.component';
 import { ExamStatsDialog } from '../exam-stats/exam-stats.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
+import { DataTable } from 'primeng/primeng';
 
 @Component({
     moduleId: module.id,

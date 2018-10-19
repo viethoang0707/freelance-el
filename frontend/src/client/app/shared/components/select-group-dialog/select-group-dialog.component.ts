@@ -41,11 +41,11 @@ export class SelectGroupDialog extends BaseComponent {
 		this.display = false;
 	}
 
-	show(parents?: number[]) {
+	show(parents?: Group[]) {
 		this.display = true;
 		this.selectedNode = null;
 		if (parents)
-			this.filteredParentIds = parents;
+			this.filteredParentIds = _.pluck(parents, 'id');
 		var subscription = null;
 		if (this.category == "course")
 			subscription = Group.listCourseGroup(this, GROUP_FIELDS);
@@ -56,8 +56,8 @@ export class SelectGroupDialog extends BaseComponent {
 		if (subscription)
 			subscription.subscribe(groups => {
 				if (this.filteredParentIds) {
-					groups = _.filter(groups, (groupId:number) => {
-						return this.filteredParentIds.includes(groupId);
+					groups = _.filter(groups, (group:Group) => {
+						return this.filteredParentIds.includes(group.id);
 					});
 				}
 				this.tree = this.treeUtils.buildGroupTree(groups);

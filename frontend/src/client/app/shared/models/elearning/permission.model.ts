@@ -48,7 +48,7 @@ export class Permission extends BaseModel {
 
     listSubGroupIds(context: APIContext): Observable<any> {
         var treeUtils = new TreeUtils();
-        return Group.array(context, [], ['parent_id']).map(groups => {
+        return Group.listUserGroup(context, ['parent_id']).map(groups => {
             var filteredGroups = [];
             _.each(this.user_group_ids, parentId => {
                 var subGroups = treeUtils.getSubGroup(groups, parentId);

@@ -186,8 +186,13 @@ class ExamMember(models.Model):
 			self.write({'exam_record_id':exam_record.id})
 		else:
 			score = 0
+			question_ids = set()
 			for answer in self.env['etraining.answer'].search([('submission_id','=',self.submission_id.id)]):
-				score += answer.score
+				if answer.question_id and answer.question_id.id not in question_ids
+					score += answer.score
+					question_ids.add(answer.question_id.id)
+				else:
+					answer.unlink()
 			grade_name =''
 			for grade in grades:
 				if grade.max_score >= score and grade.min_score <= score:

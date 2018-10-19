@@ -88,7 +88,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
-                    {{'Total records'|translate}} : {{displayUsers?.length}}
+                    {{'Total records'|translate}} : {{userTable.filteredValue?userTable.filteredValue.length:displayUsers.length}}
                 </ng-template>
             </p-table>
         </div>

@@ -16,6 +16,7 @@ import {
 } from '../../../shared/models/constants'
 import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 import { ExcelService } from '../../../shared/services/excel.service';
+import { DataTable } from 'primeng/primeng';
 
 const MEMBER_FIELDS = ['name', 'email', 'phone', 'role', 'login','status', 'group_name' ,'enroll_status'];
 

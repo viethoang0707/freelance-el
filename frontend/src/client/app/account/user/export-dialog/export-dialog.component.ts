@@ -80,61 +80,13 @@ export class UserExportDialog extends BaseComponent {
 				var data = _.map(users, (user) => {
 					var userData = {};
 					_.each(this.selectedFields, (field) => {
-						userData[field] = user[field];
+						var exportField = _.find(this.fields, obj=> {
+								return obj["value"] == field;
+						})
+						userData[exportField["label"]] = user[field];
 					});
 					return userData;
 				});
-				var i;
-				for (i = 0; i < data.length; i++) {
-					if (data[i]['login'] || data[i]['login'] == "") {
-						data[i]['Username / Tên truy cập'] = data[i]['login'];
-						delete data[i]['login'];
-					}
-					if (data[i]['name'] || data[i]['name'] == "") {
-						data[i]['Fullname / Tên đầy đủ'] = data[i]['name'];
-						delete data[i]['name'];
-					}
-					if (data[i]['social_id'] || data[i]['social_id'] == "") {
-						data[i]['IDNo / Số CMND'] = data[i]['social_id'];
-						delete data[i]['social_id'];
-					}
-					if (data[i]['group_name'] || data[i]['group_name'] == "") {
-						data[i]['Dealer / Đại lý'] = data[i]['group_name'];
-						delete data[i]['group_name'];
-					}
-					if (data[i]['group_code'] || data[i]['group_code'] == "") {
-						data[i]['Dealer Code / Mã đại lý'] = data[i]['group_code'];
-						delete data[i]['group_code'];
-					}
-					if (data[i]['position'] || data[i]['position'] == "") {
-						data[i]['Position / Vị trí'] = data[i]['position'];
-						delete data[i]['position'];
-					}
-					if (data[i]['dob'] || data[i]['dob'] == "") {
-						data[i]['Date of birth / Ngày sinh'] = data[i]['dob'];
-						delete data[i]['dob'];
-					}
-					if (data[i]['gender'] || data[i]['gender'] == "") {
-						data[i]['Gender / Giới tính'] = data[i]['gender'];
-						delete data[i]['gender'];
-					}
-					if (data[i]['phone'] || data[i]['phone'] == "") {
-						data[i]['Phone / Số điện thoại'] = data[i]['phone'];
-						delete data[i]['phone'];
-					}
-					if (data[i]['email'] || data[i]['email'] == "") {
-						data[i]['Email'] = data[i]['email'];
-						delete data[i]['email'];
-					}
-					if (data[i]['ban_date'] || data[i]['ban_date'] == "") {
-						data[i]['Deactivate date / Ngày hủy kích hoạt'] = data[i]['ban_date'];
-						delete data[i]['ban_date'];
-					}
-					if (data[i]['unban_date'] || data[i]['unban_date'] == "") {
-						data[i]['Activate date / Ngày kích hoạt'] = data[i]['unban_date'];
-						delete data[i]['unban_date'];
-					}
-				}
 				this.excelService.exportAsExcelFile(data, 'user_export');
 				this.hide();
 			});
