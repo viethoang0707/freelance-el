@@ -58,7 +58,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 				return _.flatten(jsonArray);
 			})
 			.subscribe((counts) => {
-				console.log(counts);
 				this.userCount = counts[0];
 				this.courseCount = counts[1];
 				this.teacherCount = counts[2];

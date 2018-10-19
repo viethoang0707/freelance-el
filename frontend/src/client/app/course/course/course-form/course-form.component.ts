@@ -107,6 +107,9 @@ export class CourseFormComponent extends BaseComponent {
 	}
 
 	save() {
+		if (this.course.description == null) {
+			this.course.description = '';
+		}
 		this.course.save(this).subscribe(() => {
 			this.editor.role = 'editor';
 			this.editor.course_id = this.course.id;
