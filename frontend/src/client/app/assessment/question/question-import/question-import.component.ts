@@ -119,8 +119,6 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 		this.excelService.importFromExcelFile(file).subscribe(data => {
 			this.records = data;
 			this.dataFields = Object.keys(this.records[0]);
-			console.log('Data fields: ', this.dataFields);
-			console.log('Data ', data);
 		});
 	}
 
