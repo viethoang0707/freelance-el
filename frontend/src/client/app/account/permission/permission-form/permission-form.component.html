@@ -91,7 +91,7 @@
             </p-tabPanel>
             <p-tabPanel header="{{'Menu'|translate}}" leftIcon="ui-icon-apps">
                 <div class="ui-g ui-fluid form-group">
-                    <p-tree [value]="menuTree" selectionMode="checkbox" [(selection)]="selectedMenus" (onNodeSelect)="menuNodeSelect($event)" ></p-tree>
+                    <p-tree [value]="menuTree" selectionMode="checkbox" [(selection)]="selectedMenus" (onNodeSelect)="menuNodeSelect($event)" (onNodeUnselect)="menuNodeSelect($event)"></p-tree>
                 </div>
             </p-tabPanel>
             <p-tabPanel header="{{'Managed group'|translate}}" leftIcon="ui-icon-cloud">
