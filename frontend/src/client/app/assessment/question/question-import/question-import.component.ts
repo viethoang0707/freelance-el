@@ -87,7 +87,7 @@ export class QuestionImportComponent extends BaseComponent implements OnInit {
 					for (var j = 0; j < optionLength && i < this.records.length; j++) {
 						var optionRecord = this.records[j + i];
 						var option = new QuestionOption();
-						option.is_correct = optionRecord["correct"].toLowerCase() == 'y';
+						option.is_correct = optionRecord["correct"].trim().toLowerCase() == 'y';
 						option.content = optionRecord["option"] || '';
 						if (option.content.length)
 							questionOptions.push(option);
