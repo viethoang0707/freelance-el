@@ -2,7 +2,7 @@
 	<div class="spinner" [hidden]="!loading"></div>
   <div class="ui-g ui-fluid form-group">
     <div class="ui-g-12">
-      <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+      <p-tree [value]="tree" selectionMode="single" [(selection)]="selectedNode"></p-tree>
     </div>
   </div>
   <p-footer>

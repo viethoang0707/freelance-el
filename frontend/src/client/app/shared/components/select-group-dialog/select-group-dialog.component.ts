@@ -23,7 +23,7 @@ export class SelectGroupDialog extends BaseComponent {
 
 	@Input() category: string;
 	private tree: TreeNode[];
-	private selectedNode: any;
+	private selectedNode: TreeNode;
 	private display: boolean;
 	private treeUtils: TreeUtils;
 	private filteredParentIds: number[];
@@ -56,7 +56,7 @@ export class SelectGroupDialog extends BaseComponent {
 		if (subscription)
 			subscription.subscribe(groups => {
 				if (this.filteredParentIds) {
-					groups = _.filter(groups, (group:Group) => {
+					groups = _.filter(groups, (group: Group) => {
 						return this.filteredParentIds.includes(group.id);
 					});
 				}
@@ -79,10 +79,7 @@ export class SelectGroupDialog extends BaseComponent {
 			else
 				this.selectedNode = null;
 		}
-	}
 
-	nodeUnselect(event: any) {
-		this.selectedNode = null;
 	}
 
 
