@@ -23,7 +23,7 @@ export class SelectGroupDialog extends BaseComponent {
 
 	@Input() category: string;
 	private tree: TreeNode[];
-	private selectedNode: TreeNode;
+	private selectedNode: any;
 	private display: boolean;
 	private treeUtils: TreeUtils;
 	private filteredParentIds: number[];
@@ -79,7 +79,10 @@ export class SelectGroupDialog extends BaseComponent {
 			else
 				this.selectedNode = null;
 		}
+	}
 
+	nodeUnselect(event: any) {
+		this.selectedNode = null;
 	}
 
 
