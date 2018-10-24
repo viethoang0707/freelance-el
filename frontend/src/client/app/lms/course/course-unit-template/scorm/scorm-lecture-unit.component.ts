@@ -18,6 +18,7 @@ import { CourseMember } from '../../../../shared/models/elearning/course-member.
 	moduleId: module.id,
 	selector: 'scorm-lecture-course-unit',
 	templateUrl: 'scorm-lecture-unit.component.html',
+	styleUrls: ['scorm-lecture-unit.component.css'],
 })
 @CourseUnitPlayerTemplate({
 	type: 'scorm'

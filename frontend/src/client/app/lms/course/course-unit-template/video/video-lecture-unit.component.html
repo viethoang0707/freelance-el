@@ -1,5 +1,4 @@
-
-<div >
-  <video id="camera" style="width: 100%; height: calc(100vh - 55px)" #camera autoplay poster="assets/images/logo-vietinterview.png" src="{{lecture.video_url}}" (ended)="videoEnded()"></video>
+ <div>
+  <video id="camera" #camera autoplay poster="assets/images/logo-vietinterview.png" src="{{lecture.video_url}}" (ended)="videoEnded()"></video>
   <!-- <div [innerHTML]="lecture.transcript" class="lecture-transcript"></div> -->
 </div>
