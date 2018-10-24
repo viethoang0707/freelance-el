@@ -1,7 +1,7 @@
 <div class="">
     <h1 class="removeM ml8">{{'Enrollment'|translate}}</h1>
     <div class="ui-g">
-        <div class="ui-g-12">
+        <div class="ui-g-12 tree-enrollment ">
             <label>{{'Course group'|translate}}</label>
             <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterCourse()" (onNodeUnselect)="filterCourse()" styleClass="width-tree mt5 mb10"></p-tree>
         </div>

@@ -22,3 +22,8 @@
   white-space: nowrap; 
   text-overflow: ellipsis;
 }
+
+.tree-course-list{
+  height: 500px;
+  overflow-y: auto;
+}

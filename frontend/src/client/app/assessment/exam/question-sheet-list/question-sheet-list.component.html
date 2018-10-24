@@ -11,7 +11,7 @@
             <p-table #surveySheetTable [value]="sheets" [paginator]="true" [rows]="25" [(selection)]="selectedSheet" [responsive]="true" selectionMode="single">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>
+                        <th style="width: 5%">
                             {{'Index'|translate}}
                         </th>
                         <th [pSortableColumn]="'name'">
