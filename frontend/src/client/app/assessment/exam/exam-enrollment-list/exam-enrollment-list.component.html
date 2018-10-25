@@ -60,7 +60,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
-                    {{'Total records'|translate}} : {{exams?.length}}
+                    {{'Total records'|translate}} : {{examTable.filteredValue?examTable.filteredValue.length:exams.length}}
                 </ng-template>
             </p-table>
         </div>

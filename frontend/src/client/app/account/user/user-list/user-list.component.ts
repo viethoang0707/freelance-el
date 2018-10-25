@@ -12,6 +12,8 @@ import { TreeNode } from 'primeng/api';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { CourseMember } from '../../../shared/models/elearning/course-member.model';
 import { BaseModel } from '../../../shared/models/base.model';
+import { DataTable } from 'primeng/primeng';
+
 import * as _ from 'underscore';
 
 const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position', 'phone', 'group_name', 'permission_name'];
@@ -27,7 +29,7 @@ const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'user_count'];
 export class UserListComponent extends BaseComponent {
 
     @ViewChild(UserExportDialog) userExportDialog: UserExportDialog;
-
+    
     private tree: TreeNode[];
     private users: User[];
     private displayUsers: User[];

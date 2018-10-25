@@ -11,7 +11,7 @@ import { CourseMember } from '../../../shared/models/elearning/course-member.mod
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { SelectItem } from 'primeng/api';
-
+import { Location } from '@angular/common';
 const COURSE_MEMBER_FIELDS = ['group_name', 'name', 'email', 'phone', 'user_id','role'];
 const EXAM_MEMBER_FIELDS = ['course_member_id','role'];
 
@@ -27,7 +27,7 @@ export class ClassExamEnrollComponent extends BaseComponent {
 	private examMembers: ExamMember[];
 	private courseMembers: CourseMember[];
 
-	constructor(private router: Router, private route: ActivatedRoute) {
+	constructor(private router: Router, private route: ActivatedRoute, private location: Location) {
 		super();
 		this.examMembers = [];
 		this.courseMembers = [];
@@ -73,7 +73,7 @@ export class ClassExamEnrollComponent extends BaseComponent {
 
 
 	closeExam() {
-		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is opened', () => {
+		this.confirm('Are you sure to proceed ? You will not be able to enroll students after the exam is closed', () => {
 			this.exam.close(this).subscribe(() => {
 				this.success(this.translateService.instant('Exam close'));
 			});
@@ -89,6 +89,6 @@ export class ClassExamEnrollComponent extends BaseComponent {
 	}
 
 	close() {
-		this.router.navigate(['/lms/class/manage', this.exam.course_class_id]);
+		this.location.back();
 	}
 }

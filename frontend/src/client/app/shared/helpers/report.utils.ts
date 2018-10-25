@@ -38,7 +38,7 @@ export class ReportUtils {
 	}
 
 	analyzeCourseMemberActivity(logs: CourseLog[]): any {
-		logs = _.sortBy(logs, (log:CourseLog)=> {
+		logs = _.sortBy(logs, (log: CourseLog) => {
 			return log.start.getTime();
 		});
 		var onTime = 0;
@@ -46,7 +46,7 @@ export class ReportUtils {
 			return log.start != null && log.code == 'START_COURSE_UNIT';
 		});
 		var endCourseUnitLogs = _.filter(logs, (log) => {
-			return log.start != null && log.code == 'COMPLETE_COURSE_UNIT';
+			return log.start != null && (log.code == 'COMPLETE_COURSE_UNIT' || log.code == 'STOP_COURSE_UNIT');
 		});
 		var first_attempt = _.min(startCourseUnitLogs, (log) => {
 			return log.start.getTime();
@@ -54,31 +54,31 @@ export class ReportUtils {
 		var last_attempt = _.max(endCourseUnitLogs, (log) => {
 			return log.start.getTime();
 		});
-		for (var i=0;i<logs.length;i++) {
+		for (var i = 0; i < logs.length; i++) {
 			var current = logs[i];
 			if (current.code == "START_COURSE_UNIT") {
-				if (i +1 < logs.length && logs[i+1].res_id == current.res_id && logs[i+1].member_id == current.member_id) {
-					var next = logs[i+1];
-					if (next.code == "STOP_COURSE_UNIT" || next.code =="COMPLETE_COURSE_UNIT") {
+				if (i + 1 < logs.length && logs[i + 1].res_id == current.res_id && logs[i + 1].member_id == current.member_id) {
+					var next = logs[i + 1];
+					if (next.code == "STOP_COURSE_UNIT" || next.code == "COMPLETE_COURSE_UNIT") {
 						onTime += next.start.getTime() - current.start.getTime();
 					}
 				}
 			}
-		}		
+		}
 		var unitIds = [];
-		_.each(logs, (log:CourseLog) => {
+		_.each(logs, (log: CourseLog) => {
 			if (log.code == 'COMPLETE_COURSE_UNIT') {
 				unitIds.push(log.res_id);
 			}
 		});
-		unitIds = _.uniq(unitIds, (id)=> {
+		unitIds = _.uniq(unitIds, (id) => {
 			return id;
 		});
 
 		return [first_attempt.start, last_attempt.start, onTime, unitIds.length];
 	}
 
-	
+
 
 	analyzeExamMemberActivity(logs: ExamLog[]) {
 		var onTime = 0;
@@ -94,8 +94,8 @@ export class ReportUtils {
 		var last_attempt = _.max(endExamLogs, (log) => {
 			return log.start.getTime();
 		});
-		if (endExamLogs.length && startExamLogs.length )
-			onTime = last_attempt.start.getTime() -  first_attempt.start.getTime();
+		if (endExamLogs.length && startExamLogs.length)
+			onTime = last_attempt.start.getTime() - first_attempt.start.getTime();
 
 		return [first_attempt.start, last_attempt.start, onTime];
 	}

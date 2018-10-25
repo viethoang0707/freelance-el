@@ -7,6 +7,7 @@ class Exam(models.Model):
 	_name = 'etraining.exam'
 
 	supervisor_id = fields.Many2one('res.users', string='Supervisor')
+	supervisor_group_id = fields.Many2one('res.groups',related='supervisor_id.group_id', string='Supervisor Group')
 	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet')
 	sheet_status = fields.Selection(related='sheet_id.status', string='Sheet status')
 	question_count = fields.Integer(related='sheet_id.question_count', string='Sheet question count', readonly=True)
@@ -188,8 +189,13 @@ class ExamMember(models.Model):
 			self.write({'exam_record_id':exam_record.id})
 		else:
 			score = 0
+			question_ids = set()
 			for answer in self.env['etraining.answer'].search([('submission_id','=',self.submission_id.id)]):
-				score += answer.score
+				if answer.question_id and answer.question_id.id not in question_ids:
+					score += answer.score
+					question_ids.add(answer.question_id.id)
+				else:
+					answer.unlink()
 			grade_name =''
 			for grade in grades:
 				if grade.max_score >= score and grade.min_score <= score:

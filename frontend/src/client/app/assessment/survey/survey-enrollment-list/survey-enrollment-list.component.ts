@@ -9,6 +9,7 @@ import { Survey } from '../../../shared/models/elearning/survey.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
+import { DataTable } from 'primeng/primeng';
 
 const SURVEY_FIELDS = ['status', 'name', 'summary', 'start', 'end', 'create_date', 'write_date', 'review_state', 'supervisor_id'];
 

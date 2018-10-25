@@ -53,7 +53,7 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
                 'Attempt date': record['date_attempt'],
                 'Study time': record['study_time'],
                 'Score': record['score'],
-                'Result': record['result']
+                'Result': record['grade']
             };
         });
         this.excelService.exportAsExcelFile(output, 'course_by_member_report');

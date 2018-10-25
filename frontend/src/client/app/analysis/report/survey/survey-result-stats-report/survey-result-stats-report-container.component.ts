@@ -20,7 +20,7 @@ import { TimeConvertPipe} from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { SurveyResultStatsReportComponent } from './survey-result-stats-report.component';
 
-const SURVEY_FIELDS = ['name', 'sheet_id'];
+const SURVEY_FIELDS = ['name', 'sheet_id', 'supervisor_id', 'supervisor_group_id'];
 
 @Component({
     moduleId: module.id,
@@ -44,6 +44,12 @@ export class SurveyResultStatsReportContainerComponent extends BaseComponent imp
     ngOnInit() {
     	Survey.all(this, SURVEY_FIELDS).subscribe(surveys => {
     		this.surveys = surveys;
+            if (this.ContextPermission)
+                this.ContextPermission.listSubGroupIds(this).subscribe(groupIds=> {
+                    this.surveys = _.filter(surveys, (survey:Survey)=> {
+                        return survey.supervisor_id == this.ContextUser.id || groupIds.includes(survey.supervisor_group_id);
+                    });
+                });
     	});
     }
 

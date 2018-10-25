@@ -51,7 +51,7 @@ export class Exam extends BaseModel{
         this.setting =  new ExamSetting();
         this.setting_id =  undefined;
         this.sheet =  new QuestionSheet();
-
+        this.supervisor_group_id = undefined;
 	}
 
     @UnserializeProperty()
@@ -63,6 +63,7 @@ export class Exam extends BaseModel{
     setting_id: number;
     sheet_id: number;
     question_count: number;
+    supervisor_group_id: number;
     sheet_status: string;
     review_state:string;
     course_class_id:number;

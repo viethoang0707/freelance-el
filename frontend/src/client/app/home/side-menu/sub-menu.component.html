@@ -1,7 +1,7 @@
 <ng-template ngFor let-child let-i="index" [ngForOf]="(root ? item : item.items)">
-    <li [ngClass]="{'active-menuitem': isActive(i)}"  *ngIf="child.separator" [class]="child.styleClass"> 
+    <li [ngClass]="{'active-menuitem': isActive(i)}"  *ngIf="child.separator && child.visible" [class]="child.styleClass"> 
     </li>
-    <li [ngClass]="{'active-menuitem': isActive(i)}" [class]="child.badgeStyleClass" *ngIf="!child.separator">
+    <li [ngClass]="{'active-menuitem': isActive(i)}" [class]="child.badgeStyleClass" *ngIf="!child.separator && child.visible">
         <a [href]="child.url||'#'" (click)="itemClick($event,child,i)" *ngIf="!child.routerLink"
             [attr.tabindex]="!visible ? '-1' : null" [attr.target]="child.target"
             (mouseenter)="hover=true" (mouseleave)="hover=false" class="ripplelink" [class]="child.styleClass">

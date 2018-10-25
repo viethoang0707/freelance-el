@@ -34,7 +34,7 @@ import { WebcamModule } from 'ngx-webcam';
 import { CourseViewComponent } from './course/course-view/course-view.component';
 import { CourseEditComponent } from './course/course-edit/course-edit.component';
 import { CourseMemberActivityDialog } from './class/course-member-activity/course-member-activity.dialog.component';
-import { CourseUnitStudyDialog } from './course/course-unit-study-dialog/course-unit-study-dialog.component';
+import { CourseUnitStudyDialog } from './course/course-unit-study/course-unit-study-dialog.component';
 import { CourseUnitPlayerContainerDirective } from './course/course-unit-template/unit-player.directive';
 import { FolderCourseUnitPlayerComponent } from './course/course-unit-template/folder/folder-unit.component';
 import { ExerciseCourseUnitPlayerComponent } from './course/course-unit-template/exercise/exercise-unit.component';
@@ -43,7 +43,7 @@ import { SlideLectureCourseUnitPlayerComponent } from './course/course-unit-temp
 import { VideoLectureCourseUnitPlayerComponent } from './course/course-unit-template/video/video-lecture-unit.component';
 import { HtmlLectureCourseUnitPlayerComponent } from './course/course-unit-template/lecture/html-lecture-unit.component';
 import { SelfAssessmentCourseUnitPlayerComponent } from './course/course-unit-template/assessment/self-assessment-unit.component';
-import { ConferenceeResolve, CourseResolve, ProjectResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve } from './router.resolve';
+import { ConferenceeResolve, CourseResolve, ProjectResolve, CourseClassResolve, ExamResolve, SurveyResolve, CourseMemberResolve, CourseSyllabusResolve } from './router.resolve';
 import { ProjectDialog } from './class/project-dialog/project-dialog.component';
 import { SelfAssessmentGradebookDialog } from './course/self-assessment-gradebook/gradebook.dialog.component';
 import { ExamListComponent } from './exam/exam-list/exam-list.component';
@@ -52,6 +52,7 @@ import { ConferenceListComponent } from './class/conference-list/conference-list
 import { CourseSearchComponent } from './course/course-search/course-search.component';
 import { CourseRecommendComponent } from './course/course-recommend/course-recommend.component';
 import { SurveyListComponent } from './survey/survey-list/survey-list.component';
+import { CourseUnitStudyComponent } from './course/course-unit-study/course-unit-study.component';
 
 @NgModule({
     imports: [
@@ -108,7 +109,8 @@ import { SurveyListComponent } from './survey/survey-list/survey-list.component'
         SlideLectureCourseUnitPlayerComponent,
         VideoLectureCourseUnitPlayerComponent,
         HtmlLectureCourseUnitPlayerComponent,
-        SelfAssessmentCourseUnitPlayerComponent
+        SelfAssessmentCourseUnitPlayerComponent,
+        CourseUnitStudyComponent
     ],
 
     exports: [
@@ -134,7 +136,8 @@ import { SurveyListComponent } from './survey/survey-list/survey-list.component'
         ExamResolve,
         SurveyResolve,
         ProjectResolve,
-        CourseMemberResolve
+        CourseMemberResolve,
+        CourseSyllabusResolve
     ]
 
 })

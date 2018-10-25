@@ -1,4 +1,5 @@
 import { Observable, Subject } from 'rxjs/Rx';
+import { MapUtils } from '../../helpers/map.utils';
 import { Model,FieldProperty, UnserializeProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { BaseModel } from '../base.model';
@@ -346,7 +347,7 @@ export class User extends BaseModel {
     }
 
     static __api__register(user: User): ExecuteAPI {
-        return new ExecuteAPI(User.Model, 'register',{user:user}, null);
+        return new ExecuteAPI(User.Model, 'register',{user:MapUtils.serialize(user)}, null);
     }
 
     static register(context:APIContext, user:User):Observable<any> {
@@ -361,6 +362,13 @@ export class User extends BaseModel {
     changePassword(context:APIContext, old_pass: string, new_pass:string):Observable<any> {
         return context.apiService.execute(User.__api__changePassword(this.id, old_pass, new_pass), 
             context.authService.LoginToken);
+    }
+
+    static createArray(context: APIContext,users:User[]): Observable<any> {
+        var apiList = _.map(users, (user:User) => {
+            return User.__api__register(user);
+        });
+        return BaseModel.bulk_execute(context, ...apiList);
     }
 
 

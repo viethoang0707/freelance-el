@@ -9,6 +9,7 @@ import { Exam } from '../../../shared/models/elearning/exam.model';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { SelectItem } from 'primeng/api';
 import { User } from '../../../shared/models/elearning/user.model';
+import { DataTable } from 'primeng/primeng';
 
 const EXAM_FIELDS = ['is_public', 'name', 'supervisor_name', 'start', 'end', 'supervisor_id', 'create_date', 'write_date', 'status', 'review_state'];
 

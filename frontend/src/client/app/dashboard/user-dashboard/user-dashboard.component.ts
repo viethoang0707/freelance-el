@@ -106,7 +106,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
                         id: clazz.id,
                         allDay: true
                     });
-            })
+            });
         });
     }
 
@@ -115,14 +115,19 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
             exam['candidate'] = this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
             exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
             exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
-            if (exam.IsAvailable)
-                this.events.push({
-                    title: exam.name,
-                    start: exam.start,
-                    end: exam.end,
-                    id: exam.id,
-                    allDay: true
-                });
+            if (exam.end) {
+                var end = new Date(exam.end.getTime() + (60 * 60 * 24 * 1000));
+            } else {
+                var end = new Date();
+            }
+            // if (exam.IsAvailable)
+            this.events.push({
+                title: exam.name,
+                start: exam.start,
+                end: end,
+                id: exam.id,
+                allDay: true
+            });
         });
         this.exams = _.sortBy(exams, (exam: Exam) => {
             return -exam.id;
@@ -155,7 +160,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     joinConference(conference, member) {
-           this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
+        this.meetingSerivce.join(conference.room_ref, member.room_member_ref);
     }
 
     studyCourse(course: Course, member: CourseMember) {
@@ -175,9 +180,9 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     manageCourse(course: Course, member: CourseMember) {
-        if (course.mode =='group')
+        if (course.mode == 'group')
             this.router.navigate(['/lms/course/group-manage', course.id, member.id]);
-        if (course.mode =='self-study')
+        if (course.mode == 'self-study')
             this.router.navigate(['/lms/course/self-study-manage', course.id, member.id]);
     }
 
@@ -192,7 +197,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     startExam(exam: Exam, member: ExamMember) {
         this.confirm(this.translateService.instant('Are you sure to start?'), () => {
             ExamSetting.get(this, exam.setting_id).subscribe(() => {
-                member.joinExam(this).subscribe(()=> {
+                member.joinExam(this).subscribe(() => {
                     this.examStudyDialog.show(exam, exam.setting, member);
                 });
             });

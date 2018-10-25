@@ -52,7 +52,8 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 				User.__api__countAll(),
 				Course.__api__countAll(),
 				CourseMember.__api__countTeacher(),
-				CourseMember.__api__countStudent())
+				CourseMember.__api__countStudent(),
+				User.__api__countAllAdmin())
 			.map(jsonArray => {
 				return _.flatten(jsonArray);
 			})
@@ -60,7 +61,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 				this.userCount = counts[0];
 				this.courseCount = counts[1];
 				this.teacherCount = counts[2];
-				this.studentCount = counts[3];
+				this.studentCount = counts[0] - counts[4];
 			});
 	}
 

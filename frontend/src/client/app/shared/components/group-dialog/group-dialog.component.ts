@@ -27,7 +27,13 @@ export class GroupDialog extends BaseDialog<Group> implements OnInit {
 	nodeSelect(event: any) {
 		this.selectedNode = event.node;
 		if (this.selectedNode) {
-			this.object.parent_id = this.selectedNode.data.id;
+			if (this.object.parent_id != this.selectedNode.data.id)
+				this.object.parent_id = this.selectedNode.data.id;
+			else {
+				this.selectedNode = null;
+				this.object.parent_id = null;
+			}
+
 		}
 	}
 

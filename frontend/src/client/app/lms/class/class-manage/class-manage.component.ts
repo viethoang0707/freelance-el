@@ -42,6 +42,7 @@ import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model
 
 const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_status', 'certificate_id', 'role', 'login', 'user_id']
 
+
 @Component({
 	moduleId: module.id,
 	selector: 'class-manage',
@@ -236,7 +237,8 @@ export class ClassManageComponent extends BaseComponent {
 
 	manageExam(exam: Exam) {
 		var member = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id) || this.lmsProfileService.getExamMemberByRole('teacher', exam.id);
-		this.router.navigate(['/lms/exams/manage', exam.id, member.id]);
+		if (member)
+				this.router.navigate(['/lms/exam/manage', exam.id]);
 	}
 
 	editExamContent(exam: Exam) {

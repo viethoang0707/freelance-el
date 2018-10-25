@@ -12,19 +12,24 @@ import { Token } from '../../shared/models/cloud/token.model';
 
 export class ResetPasswordComponent extends BaseComponent implements OnInit {
 
-
   @Input() new_pass: string;
   @Input() confirm_pass: string;
+  private token: string;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     super();
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.token = params["token"];
+    });
   }
 
   resetPassword() {
-   
+    this.authService.applyResetPassword(this.token, this.new_pass).subscribe(() => {
+      this.success('Password reset successfully.');
+    });
   }
 }
 

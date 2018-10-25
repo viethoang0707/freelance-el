@@ -4,6 +4,12 @@ ul.select-columns li{
 table, th, td {
    border: 1px solid black;
 }
+
 table {
     border-collapse: collapse;
+}
+
+td{
+	border: 1px solid #dddddd;
+    padding: 12px;
 }

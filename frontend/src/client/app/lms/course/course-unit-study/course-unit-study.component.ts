@@ -1,10 +1,12 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ComponentFactoryResolver, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Location } from '@angular/common';
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import * as _ from 'underscore';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { CourseUnitPlayerRegister } from '../course-unit-template/unit.decorator';
@@ -21,16 +23,15 @@ import { CourseFaq } from '../../../shared/models/elearning/course-faq.model';
 import { CourseMaterial } from '../../../shared/models/elearning/course-material.model';
 import * as screenfull from 'screenfull';
 declare var $: any;
+import { BaseModel } from '../../../shared/models/base.model';
 
 @Component({
 	moduleId: module.id,
-	selector: 'course-unit-study-dialog',
-	templateUrl: 'course-unit-study-dialog.component.html',
-	styleUrls: ['course-unit-study-dialog.component.css'],
+	selector: 'course-unit-study',
+	templateUrl: 'course-unit-study.component.html',
+	styleUrls: ['course-unit-study.component.css'],
 })
-export class CourseUnitStudyDialog extends BaseComponent {
-
-	WINDOW_HEIGHT: any;
+export class CourseUnitStudyComponent extends BaseComponent implements OnInit, OnDestroy {
 
 	private componentRef: any;
 	private treeUtils: TreeUtils;
@@ -54,34 +55,37 @@ export class CourseUnitStudyDialog extends BaseComponent {
 	@ViewChild(CourseUnitPlayerContainerDirective) unitHost: CourseUnitPlayerContainerDirective;
 	@ViewChild('unitPlayer') unitPlayer: ElementRef;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver, private winRef: WindowRef) {
+	constructor(private componentFactoryResolver: ComponentFactoryResolver,  private router: Router,
+	 private route: ActivatedRoute, private winRef: WindowRef, private location: Location) {
+
 		super();
 		this.treeUtils = new TreeUtils();
 		this.sylUtils = new SyllabusUtils();
 		this.course = new Course();
-		this.WINDOW_HEIGHT = $(window).height();
 		this.enableLogging = true;
 		this.autoNext = false;
 		this.faqs = [];
 		this.materials = [];
 	}
 
-	show(member: CourseMember, course: Course, syl: CourseSyllabus, units: CourseUnit[], faqs: CourseFaq[], materials: CourseMaterial[]) {
-		this.display = true;
-		this.enableLogging = member.enroll_status != 'completed';
-		this.member = member;
-		this.course = course;
-		this.syl = syl;
-		this.units = units;
-		if (faqs.length > 0) {
-			faqs[0].active = true;
-		}
-		this.faqs = faqs;
-		this.materials = materials;
-		CourseLog.memberStudyActivity(this, member.id, course.id).subscribe(logs => {
-			this.logs = logs;
-			this.displayCouseSyllabus();
-		});
+	ngOnInit() {
+		this.course = this.route.snapshot.data['course'];
+		this.member = this.route.snapshot.data['member'];
+		this.syl = this.route.snapshot.data['syl'];
+		BaseModel.bulk_search(this,
+			Course.__api__listFaqs(this.course.id),
+			Course.__api__listMaterials(this.course.id),
+			Course.__api__listUnits(this.course.id))
+			.subscribe(jsonArr => {
+				this.faqs = CourseFaq.toArray(jsonArr[0]);
+				this.materials = CourseMaterial.toArray(jsonArr[1]);
+				this.units = CourseUnit.toArray(jsonArr[2]);
+				CourseLog.memberStudyActivity(this, this.member.id, this.course.id).subscribe(logs => {
+					this.logs = logs;
+					this.displayCouseSyllabus();
+				});
+			});
+
 	}
 
 	displayCouseSyllabus() {
@@ -228,7 +232,6 @@ export class CourseUnitStudyDialog extends BaseComponent {
 			this.componentRef = viewContainerRef.createComponent(componentFactory);
 			let courseUnitPlayer: ICourseUnitPlay = (<ICourseUnitPlay>this.componentRef.instance);
 			courseUnitPlayer.play(unit, this.member);
-
 			courseUnitPlayer.onViewCompleted.first().subscribe(() => {
 				if (unit.type == 'video' && this.autoNext)
 					this.nextUnit();
@@ -239,10 +242,6 @@ export class CourseUnitStudyDialog extends BaseComponent {
 		}
 	}
 
-	hide() {
-		this.unloadCurrentUnit();
-		this.display = false;
-	}
 
 	downloadMaterial(material: CourseMaterial) {
 		this.winRef.getNativeWindow().open(material.url, "_blank");
@@ -255,7 +254,15 @@ export class CourseUnitStudyDialog extends BaseComponent {
 
 	}
 
+	ngOnDestroy() {
+		if (this.selectedUnit)
+			if (this.enableLogging)
+				CourseLog.stopCourseUnit(this, this.member, this.selectedUnit).subscribe();
+	}
 
+	hide() {
+		this.router.navigate(['/lms/course/study/', this.course.id, this.member.id]);
+	}
 }
 
 

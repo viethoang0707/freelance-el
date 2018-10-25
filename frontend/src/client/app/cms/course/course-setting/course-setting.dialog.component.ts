@@ -7,7 +7,7 @@ import { User } from '../../../shared/models/elearning/user.model';
 import { CourseUnit } from '../../../shared/models/elearning/course-unit.model';
 import { CourseSyllabus } from '../../../shared/models/elearning/course-syllabus.model';
 import { TreeNode, MenuItem } from 'primeng/api';
-import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON } from '../../../shared/models/constants';
+import { COURSE_UNIT_TYPE, COURSE_UNIT_ICON, EMPTY_VALUE } from '../../../shared/models/constants';
 import { CourseUnitDialog } from '../course-unit-dialog/course-unit-dialog.component';
 import { CourseUnitPreviewDialog } from '../course-unit-preview-dialog/course-unit-preview-dialog.component';
 import * as _ from 'underscore';
@@ -32,10 +32,15 @@ export class CourseSettingDialog extends BaseDialog<Course> {
         this.coursesDialog.onSelectCourses.first().subscribe(courses => {
             if (courses && courses.length) {
                 this.object.prequisite_course_id = courses[0].id;
-                this.object.prequisite_course_id_name = courses[0].name;
+                this.object.prequisite_course_name = courses[0].name;
             }
             
         });
+    }
+
+    clearCourse() {
+        this.object.prequisite_course_id = EMPTY_VALUE;
+        this.object.prequisite_course_name = '';
     }
 }
 

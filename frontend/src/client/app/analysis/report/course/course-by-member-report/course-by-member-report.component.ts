@@ -112,8 +112,6 @@ export class CourseByMemberReportComponent extends BaseComponent implements OnIn
 					return +record["index"];
 				});
 			});
-
-
 		});
 	}
 

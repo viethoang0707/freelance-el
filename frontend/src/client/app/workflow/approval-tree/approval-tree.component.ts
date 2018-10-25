@@ -1,10 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseComponent } from '../../shared/components/base/base.component';
-
 import { AuthService } from '../../shared/services/auth.service';
 import * as _ from 'underscore';
-import { USER_STATUS, GROUP_CATEGORY } from '../../shared/models/constants'
+import { USER_STATUS, GROUP_CATEGORY, EMPTY_VALUE } from '../../shared/models/constants'
 import { Permission } from '../../shared/models/elearning/permission.model';
 import { SelectAdminDialog } from '../../shared/components/select-admin-dialog/select-admin-dialog.component';
 import { TreeUtils } from '../../shared/helpers/tree.utils';
@@ -72,7 +71,7 @@ export class ApprovalTreeComponent extends BaseComponent {
 
     clearSupervisor() {
         if (this.selectedUser) {
-            this.selectedUser.supervisor_id = null;
+            this.selectedUser.supervisor_id = EMPTY_VALUE;
             this.selectedUser.save(this,USER_FIELDS).subscribe(() => {
                 this.buildEscalationTree();
             });

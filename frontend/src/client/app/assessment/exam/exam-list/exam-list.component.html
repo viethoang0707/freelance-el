@@ -21,7 +21,7 @@
             <p-table #examTable [value]="exams" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedExam" [responsive]="true" [globalFilterFields]="['name']">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>
+                        <th style="width: 5%">
                             {{'Index'|translate}}
                         </th>
                         <th [pSortableColumn]="'name'">
@@ -58,8 +58,8 @@
                 <ng-template pTemplate="body" let-exam let-rowIndex="rowIndex">
                     <tr [pSelectableRow]="exam">
                         <td>{{rowIndex+1}}</td>
-                        <td  style="text-align: left;">{{exam.name}}</td>
-                        <td class="showformb" style="text-align: left;">{{exam.supervisor_name}}</td>
+                        <td class="text-left">{{exam.name}}</td>
+                        <td class="showformb text-left">{{exam.supervisor_name}}</td>
                         <td class="showformb">{{exam.start | date : "dd/MM/yyyy"}}</td>
                         <td class="showformb">{{exam.end | date : "dd/MM/yyyy"}}</td>
                         <td class="showformb">{{EXAM_STATUS[exam.status] | translate}}</td>
@@ -69,7 +69,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">
-                    {{'Total records'|translate}} : {{exams?.length}}
+                    {{'Total records'|translate}} : {{examTable.filteredValue?examTable.filteredValue.length:exams.length}}
                 </ng-template>
             </p-table>
         </div>
