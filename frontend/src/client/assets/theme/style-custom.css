@@ -93,3 +93,7 @@ body .ui-tree .ui-treenode-content .ui-chkbox .fa-check {
 .text-right{
     text-align: right;
 }
+
+.card.card-w-title {
+     padding-bottom: 16px; 
+}

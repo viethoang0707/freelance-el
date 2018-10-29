@@ -8,7 +8,7 @@
             <p-table [value]="users" [(selection)]="selectedUsers">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 2.25em">
+                        <th style="width: 2.25em; padding: 0 7px;">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th>
@@ -24,7 +24,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData>
                     <tr [pSelectableRow]="rowData">
-                        <td>
+                        <td style="width: 2.25em; padding: 0 7px;">
                             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                         </td>
                         <td>

@@ -1,0 +1,4 @@
+.scorm-study-mode{
+	height: calc(100vh - 100px); 
+	margin-bottom: 25px;
+}

@@ -21,7 +21,6 @@ import { ExcelService } from './services/excel.service';
 import { MenuService } from './services/menu.service';
 import { LMSProfileService } from './services/lms-profile.service';
 import { SettingService } from './services/setting.service';
-import { AppEventManager } from './services/app-event-manager.service';
 import { NotificationService } from './services/notification.service';
 import { MeetingService } from './services/meeting.service';
 import { WindowRef } from './helpers/windonw.ref';
@@ -377,7 +376,6 @@ export class ErpSharedModule {
                 WindowRef,
                 ExcelService,
                 LMSProfileService,
-                AppEventManager,
                 WorkflowService,
                 MenuService,
                 NotificationService,
