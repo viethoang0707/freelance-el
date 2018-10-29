@@ -3,7 +3,6 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Config } from '../../env.config';
 import { Observable, Subject } from 'rxjs/Rx';
 import { AuthService } from './auth.service';
-import { AppEventManager } from './app-event-manager.service';
 import { SettingService } from './setting.service';
 import 'rxjs/add/operator/map';
 import { BaseComponent } from '../components/base/base.component';
@@ -64,19 +63,11 @@ export class LMSProfileService {
   private initialized: boolean;
   private context: APIContext;
 
-  constructor(private settingService: SettingService, private appEvent: AppEventManager) {
+  constructor(private settingService: SettingService) {
     this.settingService.viewModeEvents.subscribe(() => {
       this.invalidateAll();
     });
-    this.appEvent.onLogin.subscribe(() => {
-      this.invalidateAll();
-    });
-    this.appEvent.onLogout.subscribe(() => {
-      this.invalidateAll();
-    });
-    this.appEvent.onTokenExpired.subscribe(() => {
-      this.invalidateAll();
-    });
+    
     this.invalidateAll();
   }
 
@@ -89,6 +80,15 @@ export class LMSProfileService {
 
   init(context: APIContext): Observable<any> {
     this.context = context;
+    this.context.apiService.onLogin.subscribe(() => {
+      this.invalidateAll();
+    });
+    this.context.apiService.onLogout.subscribe(() => {
+      this.invalidateAll();
+    });
+    this.context.apiService.onTokenExpired.subscribe(() => {
+      this.invalidateAll();
+    });
     if (this.initialized)
       return Observable.of([]);
     var user = context.authService.UserProfile;

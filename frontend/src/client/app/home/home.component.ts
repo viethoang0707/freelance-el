@@ -4,7 +4,6 @@ import { AuthService } from '../shared/services/auth.service';
 import { BaseComponent } from '../shared/components/base/base.component';
 import * as _ from 'underscore';
 import { HomeEventManager } from './home-manager.service';
-import { AppEventManager } from '../shared/services/app-event-manager.service';
 import { UserLog } from '../shared/models/elearning/log.model';
 import { Group } from '../shared/models/elearning/group.model';
 import { BaseModel } from '../shared/models/base.model';
@@ -40,25 +39,7 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
     constructor( private router: Router, private menuService: MenuService,
         private eventManager :HomeEventManager) {
         super();
-        this.appEvent.onTokenExpired.first().subscribe(()=> {
-            this.warn(this.translateService.instant('Your token has been expired'));
-            this.authService.logout();
-            this.router.navigate(['/auth']);
-        });
-        this.appEvent.onLogout.first().subscribe(()=> {
-            UserLog.logout(this, this.ContextUser.id).subscribe();
-            this.authService.logout();
-            this.router.navigate(['/auth']);
-        });
-        this.appEvent.onLogin.first().subscribe((user:User)=> {
-            UserLog.login(this, user.id).subscribe();
-            this.success(`Hello ${user.name}`)
-            this.settingService.ViewMode =  user.IsAdmin?'admin':'lms';
-        });
-        this.appEvent.onUnauthorizedAccess.first().subscribe(()=> {
-            this.error(this.translateService.instant('Access denied. You must login again!'));
-            this.authService.logout();
-        });
+        
         this.menuService.onShowSetting.subscribe(()=> {
             this.settingDialog.show();
         });

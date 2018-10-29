@@ -3,15 +3,52 @@ import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Config } from '../../env.config';
 import 'rxjs/add/operator/map';
 import { Observable, Subject } from 'rxjs/Rx';
-import { AppEventManager } from './app-event-manager.service';
 import { Token } from '../models/cloud/token.model';
 import { BaseAPI } from './api/base.api';
+import { User } from '../models/elearning/user.model';
 
 @Injectable()
 export class APIService {
     private apiEndpoint: string;
     private cloudId: string = "<%= CLOUD_ID %>";
-    constructor(private http: Http, private appEvent: AppEventManager) { }
+    constructor(private http: Http) { }
+
+    private onStartHTTPReceiver: Subject<any> = new Subject();
+    private onFinishHTTPReceiver: Subject<any> = new Subject();
+    private onLoginReceiver: Subject<any> = new Subject();
+    private onLogoutReceiver: Subject<any> = new Subject();
+    private onTokenExpiredReceiver: Subject<any> = new Subject();
+    private onUnauthorizedAccessReceiver:Subject<any> = new Subject();
+    onStartHTTP: Observable<any> = this.onStartHTTPReceiver.asObservable();
+    onFinishHTTP: Observable<any> = this.onFinishHTTPReceiver.asObservable();
+    onLogin: Observable<any> = this.onLoginReceiver.asObservable();
+    onLogout: Observable<any> = this.onLogoutReceiver.asObservable();
+    onTokenExpired: Observable<any> = this.onTokenExpiredReceiver.asObservable();
+    onUnauthorizedAccess: Observable<any> = this.onUnauthorizedAccessReceiver.asObservable();
+
+    startHttpTransaction() {
+        this.onStartHTTPReceiver.next();
+    }
+
+    finishHttpTransaction() {
+        this.onFinishHTTPReceiver.next();
+    }
+
+    userLogin(user:User) {
+        this.onLoginReceiver.next(user);
+    }
+
+    userLogout() {
+        this.onLogoutReceiver.next();
+    }
+
+    tokenExpired() {
+        this.onTokenExpiredReceiver.next();
+    }
+
+    accessDenied() {
+        this.onUnauthorizedAccessReceiver.next();
+    }
 
 
     init(): Observable<any> {
@@ -39,14 +76,14 @@ export class APIService {
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/register';
             var params = { user: user }
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .map((response: Response) => response.json()).do(() => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                 })
                 .catch((e) => {
                     console.log(e);
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                     return Observable.throw(e.json());
                 });
         });
@@ -59,14 +96,15 @@ export class APIService {
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/login';
             var params = { username: username, password: password }
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
-                .map((response: Response) => response.json()).do(() => {
-                    this.appEvent.finishHttpTransaction();
+                .map((response: Response) => response.json()).do((resp) => {
+                    let user: User = resp["user"];
+                    this.finishHttpTransaction();
                 })
                 .catch((e) => {
                     console.log(e);
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                     return Observable.throw(e.json());
                 });
         });
@@ -78,14 +116,14 @@ export class APIService {
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/logout';
             var params = {};
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .do(() => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                 })
                 .catch((e) => {
                     console.log(e);
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                     return Observable.of(null);
                 });
         });
@@ -95,7 +133,7 @@ export class APIService {
         return this.init().flatMap(() => {
             let formData: FormData = new FormData();
             formData.append('file', file, file.name);
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
 
             return Observable.create(observer => {
                 let xhr: XMLHttpRequest = new XMLHttpRequest();
@@ -107,7 +145,7 @@ export class APIService {
                         } else {
                             observer.error(xhr.response);
                         }
-                        this.appEvent.finishHttpTransaction();
+                        this.finishHttpTransaction();
                     }
                 };
 
@@ -127,7 +165,7 @@ export class APIService {
         return this.init().flatMap(() => {
             let formData: FormData = new FormData();
             formData.append('file', file, file.name);
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
 
             return Observable.create(observer => {
                 let xhr: XMLHttpRequest = new XMLHttpRequest();
@@ -139,7 +177,7 @@ export class APIService {
                         } else {
                             observer.error(xhr.response);
                         }
-                        this.appEvent.finishHttpTransaction();
+                        this.finishHttpTransaction();
                     }
                 };
 
@@ -163,15 +201,15 @@ export class APIService {
             let headers = token ? new Headers({ 'Content-Type': 'application/json', 'Authorization': `${token.cloud_code} ${token.code}` })
                 : new Headers({ 'Content-Type': 'application/json', 'Authorization': `${this.cloudId}` });
             let options = new RequestOptions({ headers: headers });
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
             var params = { filename: filename };
             return this.http.post(this.apiEndpoint + '/file/unzip', JSON.stringify({ filename: filename }), options)
                 .map(res => res.json())
                 .do(() => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                 })
                 .catch(error => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                     return Observable.throw(error)
                 }
                 );
@@ -182,15 +220,15 @@ export class APIService {
         return this.init().flatMap(() => {
             let headers = token ? new Headers({ 'Content-Type': 'application/json', 'Authorization': `${token.cloud_code} ${token.code}` })
                 : new Headers({ 'Content-Type': 'application/json', 'Authorization': `${this.cloudId}` }); let options = new RequestOptions({ headers: headers });
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
             var params = { filename: filename };
             return this.http.post(this.apiEndpoint + '/file/convert2pdf', JSON.stringify({ filename: filename }), options)
                 .map(res => res.json())
                 .do(() => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                 })
                 .catch(error => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                     return Observable.throw(error)
                 }
                 );
@@ -204,14 +242,14 @@ export class APIService {
             let options = new RequestOptions({ headers: headers });
             var endpoint = this.apiEndpoint + '/account/sso_login';
             var params = { cloudid: cloudid }
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .map((response: Response) => response.json()).do(() => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                 })
                 .catch((e) => {
                     console.log(e);
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                     return Observable.throw(e.json());
                 });
         });
@@ -224,18 +262,18 @@ export class APIService {
             let options = new RequestOptions({ headers: headers });
             var params = api.params;
             var endpoint = this.apiEndpoint + api.Method;
-            this.appEvent.startHttpTransaction();
+            this.startHttpTransaction();
             return this.http.post(endpoint, JSON.stringify(params), options)
                 .map((response: Response) => response.json()).do(() => {
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                 })
                 .catch((e) => {
                     console.log(e);
-                    this.appEvent.finishHttpTransaction();
+                    this.finishHttpTransaction();
                     if (e["status"] == 400)
-                        this.appEvent.accessDenied();
+                        this.accessDenied();
                     if (e["status"] == 401)
-                        this.appEvent.tokenExpired();
+                        this.tokenExpired();
                     return Observable.throw(e.json());
                 });
         });

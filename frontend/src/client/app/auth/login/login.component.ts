@@ -44,7 +44,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
                     this.error(this.translateService.instant('Your account has been banned'));
                     return;
                 }
-                this.appEvent.userLogin(user);
+                
                 this.authService.Remember = this.remember;
                 if (this.remember)
                     this.authService.StoredCredential = this.credential;
