@@ -10,7 +10,7 @@
       <p-table [value]="users" [(selection)]="selectedAdmin">
         <ng-template pTemplate="header">
           <tr>
-            <th style="width: 2.25em">
+            <th style="width: 2.25em, padding: 0 7px;">
               <p-tableRadioButton></p-tableRadioButton>
             </th>
             <th>
@@ -23,7 +23,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowData>
           <tr [pSelectableRow]="rowData">
-            <td>
+            <td style="width: 2.25em; padding: 0 7px;">
               <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
             </td>
             <td>
