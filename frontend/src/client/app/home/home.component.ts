@@ -49,6 +49,26 @@ export class HomeComponent extends BaseComponent implements OnInit, AfterViewIni
                     this.settingService.ViewMode = val.snapshot.data['viewMode'];
             }
         });
+
+        this.apiService.onTokenExpired.first().subscribe(() => {
+            this.warn(this.translateService.instant('Your token has been expired'));
+            this.authService.logout();
+            this.router.navigate(['/auth']);
+        });
+        this.apiService.onLogout.first().subscribe(() => {
+            UserLog.logout(this, this.ContextUser.id).subscribe();
+            this.authService.logout();
+            this.router.navigate(['/auth']);
+        });
+        this.apiService.onLogin.first().subscribe((user: User) => {
+            UserLog.login(this, user.id).subscribe();
+            this.success(`Hello ${user.name}`)
+            this.settingService.ViewMode = user.IsAdmin ? 'admin' : 'lms';
+        });
+        this.apiService.onUnauthorizedAccess.first().subscribe(() => {
+            this.error(this.translateService.instant('Access denied. You must login again!'));
+            this.authService.logout();
+        });
     }
 
     ngOnInit() {

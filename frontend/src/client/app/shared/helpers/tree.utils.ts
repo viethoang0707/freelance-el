@@ -52,7 +52,7 @@ export class TreeUtils {
     var directChilds = [];
     if (!parentGroup)
       directChilds = _.filter(groups, (group) => {
-        return !group.parent_id || groupIds.includes(group.parent_id);
+        return !group.parent_id || !groupIds.includes(group.parent_id);
       });
     else {
       directChilds = _.filter(groups, (group) => {
