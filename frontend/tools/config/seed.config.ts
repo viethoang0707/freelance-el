@@ -197,6 +197,12 @@ export class SeedConfig {
    */
   APP_TITLE = 'Welome to Vietinterview E-learning System!';
 
+  /**
+   * The default ID of the application .
+   * @type {string}
+   */
+  APP_ID = 'EL';
+
   TEMPLATE_CONFIG = {
     /**
      * Used to detect `data` property values to be HTML-escaped.
