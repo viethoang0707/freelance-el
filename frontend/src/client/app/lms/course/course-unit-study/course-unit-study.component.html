@@ -46,7 +46,7 @@
                         <p-tabPanel header="{{'Material'|translate}}" leftIcon="ui-icon-cloud-download">
                             <ul class="material-items">
                                 <li *ngFor="let material of materials">
-                                    <a href="" (click)="downloadMaterial(material)" class="material-item">
+                                    <a (click)="downloadMaterial(material)" class="material-item">
                                         <i class="material-icons">insert_drive_file</i>
                                         <span>{{material.name}}</span>
                                     </a>
