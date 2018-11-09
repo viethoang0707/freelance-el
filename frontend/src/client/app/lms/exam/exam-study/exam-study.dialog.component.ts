@@ -95,7 +95,7 @@ export class ExamStudyDialog extends BaseComponent {
 		this.member = member;
 		this.qIndex = 0;
 		if (this.setting.take_picture_on_submit) {
-			navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+			navigator.mediaDevices.getUserMedia({ audio: false, video: true })
 				.then(stream => {
 					this.mediaStream = stream;
 					DetectRTC.load(() => {
@@ -174,11 +174,6 @@ export class ExamStudyDialog extends BaseComponent {
 	}
 
 	finishExam() {
-		if (this.mediaStream) {
-			this.mediaStream.getAudioTracks()[0].stop();
-			this.mediaStream.getVideoTracks()[0].stop();
-
-		}
 		this.submission.end = new Date();
 		this.submission.save(this).subscribe(() => {
 			this.member.submitScore(this).subscribe(() => {
@@ -265,7 +260,7 @@ export class ExamStudyDialog extends BaseComponent {
 		var elapse = Math.floor((now.getTime() - this.submission.start.getTime()));
 		this.timeLeft = this.exam.duration * 60 * 1000 - elapse;
 		if (this.timeLeft <= 0)
-			this.finishExam();
+			this.submitExam();
 		else {
 			this.timer = Observable.timer(0, 1000);
 			this.timer
