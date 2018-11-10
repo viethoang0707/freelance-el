@@ -1,9 +1,8 @@
 <p-dialog header="{{'Exam submission confirmation'|translate}}" [(visible)]="display" modal="true" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
     <div class="spinner" [hidden]="!loading"></div>
     <div>
-    <!--div style="display: none; visibility: hidden;"-->
+    <div style="display: none; visibility: hidden;">
         <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="setting.take_picture_on_submit"></webcam>
-        <img [src]='submission.picture | imageBase64' />
     </div>
     <p-footer>
         <button type="button" pButton icon="ui-icon-check" (click)="confirm()" label="{{'Confirm'|translate}}"></button>
