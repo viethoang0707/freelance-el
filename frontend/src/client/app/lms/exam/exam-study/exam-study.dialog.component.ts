@@ -224,7 +224,10 @@ export class ExamStudyDialog extends BaseComponent {
 				this.currentAnswer.score = 0;
 			this.currentQuestion["attempted"] = true;
 		}
-		return this.currentAnswer.save(this);
+		if (this.currentAnswer)
+			return this.currentAnswer.save(this);
+		else
+			return Observable.of(null);
 	}
 
 	next() {
