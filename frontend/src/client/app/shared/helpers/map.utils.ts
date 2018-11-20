@@ -114,9 +114,7 @@ export class MapUtils {
                 if (jsonObject && jsonObject[key] !== undefined) {
                     obj[key] = jsonObject[key];
                 }
-                if (jsonObject && jsonObject[key] == EMPTY_VALUE) {
-                    obj[key] = null;
-                }
+                
             }
         });
         return obj;
@@ -131,8 +129,9 @@ export class MapUtils {
                     jsonObject[key] = moment(object[key]).format(SERVER_DATETIME_FORMAT);
                 else {
                     let readOnlyMetadata = Reflect.getMetadata(READONLY_METADATA_KEY, object, key);
-                    if (!readOnlyMetadata && (object[key]!=null &&  (!(object[key] instanceof Object) || object[key] instanceof Array)))
+                    if (!readOnlyMetadata && (object[key]!=null &&  (!(object[key] instanceof Object) || object[key] instanceof Array))) {
                         jsonObject[key] = object[key];
+                    }
                 }
             }
         });
