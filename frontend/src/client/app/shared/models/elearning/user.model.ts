@@ -371,5 +371,16 @@ export class User extends BaseModel {
         return BaseModel.bulk_execute(context, ...apiList);
     }
 
+    static __api__searchActivationByDate(userId, start:Date, end:Date,fields?:string[]): SearchReadAPI {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return new SearchReadAPI(Exam.Model, fields,"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
+    }
+
+    static searchActivationByDate( context:APIContext,start:Date, end:Date,fields?:string[]): Observable<any[]> {
+        var startDateStr = moment(start).format(SERVER_DATETIME_FORMAT);
+        var endDateStr = moment(end).format(SERVER_DATETIME_FORMAT);
+        return Exam.search(context,fields,"[('create_date','>=','"+startDateStr+"'),('create_date','<=','"+endDateStr+"')]");
+    }
 
 }
