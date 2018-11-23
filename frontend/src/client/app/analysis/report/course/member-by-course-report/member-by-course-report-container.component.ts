@@ -47,7 +47,7 @@ export class MemberByCourseReportContainerComponent extends BaseComponent{
     	this.groupDialog.show();
     	this.groupDialog.onSelectGroup.first().subscribe((group:Group) => {
     		group.listCourses(this).subscribe((courses:Course[]) => {
-                if (this.ContextPermission)
+                if (this.ContextPermission.Exist)
                     this.ContextPermission.listSubGroupIds(this).subscribe(groupIds => {
                         courses = _.filter(courses, (course: Course) => {
                             return course.supervisor_id == this.ContextUser.id || groupIds.includes(course.supervisor_group_id);

@@ -38,6 +38,14 @@
                             <p-sortIcon [field]="'banned'"></p-sortIcon>
                         </th>
                         <th [pSortableColumn]="'create_date'">
+                            {{'Deactivated date'|translate}}
+                            <p-sortIcon [field]="'ban_date'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'create_date'">
+                            {{'Activated date'|translate}}
+                            <p-sortIcon [field]="'unban_date'"></p-sortIcon>
+                        </th>
+                        <th [pSortableColumn]="'create_date'">
                             {{'Created date'|translate}}
                             <p-sortIcon [field]="'create_date'"></p-sortIcon>
                         </th>
@@ -53,6 +61,8 @@
                         <td class="showformb">{{user.phone}}</td>
                         <td class="showformb">{{user.group_name}}</td>
                         <td><i class="material-icons" *ngIf="user.banned">check</i></td>
+                        <td class="showformb">{{user.ban_date}}</td>
+                        <td class="showformb">{{user.unban_date}}</td>
                         <td class="showformb">{{user.create_date}}</td>
                     </tr>
                 </ng-template>

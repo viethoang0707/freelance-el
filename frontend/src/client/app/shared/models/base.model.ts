@@ -55,6 +55,10 @@ export abstract class BaseModel {
         return this.id == null;
     }
 
+    get Exist() {
+        return this.id != null;
+    }
+
     static get Model(): string {
         return Reflect.getMetadata(MODEL_METADATA_KEY, this);
     }

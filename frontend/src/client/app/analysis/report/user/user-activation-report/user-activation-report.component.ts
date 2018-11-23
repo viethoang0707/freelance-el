@@ -18,7 +18,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BaseModel } from '../../../../shared/models/base.model';
 import { Achivement } from '../../../../shared/models/elearning/achievement.model';
 
-const USER_FIELDS = ['name', 'login','email', 'position', 'phone', 'group_name','banned', 'create_date']
+const USER_FIELDS = ['name', 'login','email', 'position', 'phone', 'group_name','banned', 'create_date', 'ban_date', 'unban_date']
 
 @Component({
 	moduleId: module.id,
@@ -54,17 +54,25 @@ export class UserActivationReportComponent extends BaseComponent implements OnIn
 				'Phone': record['phone'],
 				'Group': record['group_name'],
 				'Banned': record['banned'],
+				'Activated date': record['unban_date'],
+				'Dectivated date': record['ban_date'],
 				'Create date': record['create_date']
 			};
 		});
 		this.excelService.exportAsExcelFile(output, 'user_activation_report');
 	}
 
-	render(start: Date, end:Date) {
+	render(start: Date, end:Date, groups: Group[]) {
 		this.clear();
-		User.searchActivationByDate(this, start, end).subscribe(users=> {
-			this.records =  users;
+		var apiList = _.map(groups, (group:Group)=> {
+			return User.__api__searchActivationByDate(start, end,group.id,USER_FIELDS);
 		});
+		BaseModel.bulk_search(this, ...apiList).map(jsonArr=> {
+			var userArr =  _.flatten(jsonArr)
+			return User.toArray(userArr);
+		}).subscribe(users => {
+				this.records =  users;
+		})
 		this.reportTitle = `${this.translateService.instant('User activation report')} from ${start} to ${end}`;
 	}
 
