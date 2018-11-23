@@ -16,76 +16,78 @@ declare function unescape(s: string): string;
 @Injectable()
 export class AuthService {
 
+    private APP_ID = '<%= APP_ID %>';
+
     constructor(private apiService: APIService) {
     }
 
     get StoredCredential(): Credential {
-        if (localStorage.getItem('credential'))
-            return MapUtils.deserialize(Credential, JSON.parse(atob(localStorage.getItem('credential'))));
+        if (localStorage.getItem(this.APP_ID+':'+'credential'))
+            return MapUtils.deserialize(Credential, JSON.parse(atob(localStorage.getItem(this.APP_ID+':'+'credential'))));
         return new Credential();
     }
 
     set StoredCredential(credential: Credential) {
-        localStorage.setItem('credential', btoa(JSON.stringify(credential)));
+        localStorage.setItem(this.APP_ID+':'+'credential', btoa(JSON.stringify(credential)));
     }
 
     clearStoredCredential() {
-        localStorage.removeItem('credential');
+        localStorage.removeItem(this.APP_ID+':'+'credential');
     }
 
     get UserProfile(): User {
-        if (localStorage.getItem('currentUser'))
-            return MapUtils.deserialize(User, JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('currentUser'))))));
+        if (localStorage.getItem(this.APP_ID+':'+'currentUser'))
+            return MapUtils.deserialize(User, JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem(this.APP_ID+':'+'currentUser'))))));
         return new User();
     }
 
     set UserProfile(user: User) {
-        localStorage.setItem('currentUser', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(user))))));
+        localStorage.setItem(this.APP_ID+':'+'currentUser', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(user))))));
     }
 
     clearUserProfile() {
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem(this.APP_ID+':'+'currentUser');
     }
 
     get UserPermission(): Permission {
-        if (localStorage.getItem('userPerm'))
-            return MapUtils.deserialize(Permission, JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('userPerm'))))));
+        if (localStorage.getItem(this.APP_ID+':'+'userPerm'))
+            return MapUtils.deserialize(Permission, JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem(this.APP_ID+':'+'userPerm'))))));
         return null;
     }
 
     set UserPermission(perm: Permission) {
-        localStorage.setItem('userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(perm))))));
+        localStorage.setItem(this.APP_ID+':'+'userPerm', btoa(unescape(encodeURIComponent(JSON.stringify(MapUtils.serialize(perm))))));
     }
 
     clearUserPermission() {
-        localStorage.removeItem('userPerm');
+        localStorage.removeItem(this.APP_ID+':'+'userPerm');
     }
 
     set LoginToken(token: Token) {
-        localStorage.setItem('token', btoa(unescape(encodeURIComponent(JSON.stringify(token)))));
+        localStorage.setItem(this.APP_ID+':'+'token', btoa(unescape(encodeURIComponent(JSON.stringify(token)))));
     }
 
     get LoginToken(): Token {
-        if (localStorage.getItem('token'))
+        if (localStorage.getItem(this.APP_ID+':'+'token'))
             return MapUtils.deserialize(Token,
-                JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('token'))))));
+                JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem(this.APP_ID+':'+'token'))))));
         return null;
     }
 
     clearToken() {
-        localStorage.removeItem('token');
+        localStorage.removeItem(this.APP_ID+':'+'token');
     }
 
 
     get Remember(): boolean {
-        if (localStorage.getItem('remember'))
-            return localStorage.getItem('remember') == 'true';
+        if (localStorage.getItem(this.APP_ID+':'+'remember'))
+            return localStorage.getItem(this.APP_ID+':'+'remember') == 'true';
         else
             return false;
     }
 
     set Remember(val: boolean) {
-        localStorage.setItem('remember', val.toString());
+        localStorage.setItem(this.APP_ID+':'+'remember', val.toString());
     }
 
     login(info: Credential): Observable<any> {

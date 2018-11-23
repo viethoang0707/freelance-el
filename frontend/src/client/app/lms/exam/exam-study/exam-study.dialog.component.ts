@@ -57,6 +57,7 @@ export class ExamStudyDialog extends BaseComponent {
 	private stats: any;
 	private validAnswer: number;
 	private componentRef: any;
+	private mediaStream: any;
 	private onShowReceiver: Subject<any> = new Subject();
 	private onHideReceiver: Subject<any> = new Subject();
 	protected onFinishReceiver: Subject<any> = new Subject();
@@ -94,8 +95,9 @@ export class ExamStudyDialog extends BaseComponent {
 		this.member = member;
 		this.qIndex = 0;
 		if (this.setting.take_picture_on_submit) {
-			navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-				.then(() => {
+			navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+				.then(stream => {
+					this.mediaStream = stream;
 					DetectRTC.load(() => {
 						console.log('Webcam available', DetectRTC.hasWebCam);
 						console.log('Webcam permission', DetectRTC.isWebsiteHasWebcamPermissions);
@@ -258,7 +260,7 @@ export class ExamStudyDialog extends BaseComponent {
 		var elapse = Math.floor((now.getTime() - this.submission.start.getTime()));
 		this.timeLeft = this.exam.duration * 60 * 1000 - elapse;
 		if (this.timeLeft <= 0)
-			this.finishExam();
+			this.submitExam();
 		else {
 			this.timer = Observable.timer(0, 1000);
 			this.timer

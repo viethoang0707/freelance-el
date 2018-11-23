@@ -65,7 +65,7 @@ export class SelectUsersDialog extends BaseComponent {
 		Group.listUserGroup(this, GROUP_FIELDS).subscribe(groups => {
 			var treeNodes = this.treeUtils.buildGroupTree(groups);
 			if (this.ContextUser.IsAdmin) {
-				this.tree = treeNodes
+				this.tree = treeNodes;
 			} else {
 				if (this.ContextUser.permission_group_id) {
 					this.tree = [this.treeUtils.findTreeNode(treeNodes, this.ContextUser.permission_group_id)];
