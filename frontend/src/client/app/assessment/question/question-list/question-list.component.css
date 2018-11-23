@@ -10,3 +10,8 @@
 .q-content{
 	text-align: left;
 }
+
+.tree-question-list{
+  max-height: 500px;
+  overflow-y: auto;
+}
