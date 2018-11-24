@@ -13,6 +13,7 @@
                         <th>{{'Study time (min)'|translate}}</th>
                         <th>{{'Score'|translate}}</th>
                         <th>{{'Grade'|translate}}</th>
+                         <th>{{'Enroll status'|translate}}</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -24,6 +25,7 @@
                         <td>{{rowData.study_time}}</td>
                         <td>{{rowData.score}}</td>
                         <td>{{rowData.grade}}</td>
+                        <td>{{rowData.enroll_status}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

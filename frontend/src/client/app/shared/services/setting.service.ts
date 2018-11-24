@@ -19,8 +19,12 @@ export class SettingService {
 
 
   get ViewMode() {
-    if (this.viewMode)
-      return this.viewMode;
+    if (this.viewMode) {
+      if (this.authService.UserProfile && this.authService.UserProfile.IsAdmin)
+        return this.viewMode;
+      else
+        return 'lms';
+    }
     if (this.authService.UserProfile)
       return this.authService.UserProfile.IsAdmin ? 'admin' : 'lms';
     return null;
