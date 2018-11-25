@@ -65,7 +65,14 @@ export class CourseClassEnrollmentFormComponent extends BaseComponent {
 	}
 
 	addStudent() {
-		this.usersDialog.show();
+		this.usersDialog.show((user:User)=> {
+			var member = _.find(this.students, (obj: CourseMember)=> {
+				return obj.user_id == user.id;
+			});
+			if (member)
+				return false;
+			return true;
+		});
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			var userIds = _.pluck(users, 'id');
 			this.courseClass.enroll(this, userIds).subscribe((result) => {
@@ -83,7 +90,14 @@ export class CourseClassEnrollmentFormComponent extends BaseComponent {
 	}
 
 	addTeacher() {
-		this.usersDialog.show();
+		this.usersDialog.show((user:User)=> {
+			var member = _.find(this.teachers, (obj: CourseMember)=> {
+				return obj.user_id == user.id;
+			});
+			if (member)
+				return false;
+			return true;
+		});
 		this.usersDialog.onSelectUsers.first().subscribe(users => {
 			var userIds = _.pluck(users, 'id');
 			this.courseClass.enrollStaff(this, userIds).subscribe((result) => {

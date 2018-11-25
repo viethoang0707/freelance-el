@@ -28,6 +28,8 @@ export class SelectMultiUsersDialog extends BaseComponent {
 	private users: User[];
 	private display: boolean;
 	private treeUtils: TreeUtils;
+	private filterFunc: any;
+	private filterFields: any;
 
 	private onSelectUsersReceiver: Subject<any> = new Subject();
 	onSelectUsers: Observable<any> = this.onSelectUsersReceiver.asObservable();
@@ -48,7 +50,7 @@ export class SelectMultiUsersDialog extends BaseComponent {
 		if (this.selectedNode) {
 			this.selectedNode.data.listUsers(this, USER_FIELDS).subscribe(users => {
 				this.users = users.filter(user => {
-					return user.banner != true;
+					return user.banner != true && (!this.filterFunc || this.filterFunc(user));
 				});
 			});
 		}
@@ -58,8 +60,9 @@ export class SelectMultiUsersDialog extends BaseComponent {
 		this.selectedNode = null;
 	}
 
-	show() {
+	show(filter?:any) {
 		this.display = true;
+		this.filterFunc = filter;
 		this.selectedUsers = [];
 		// , GROUP_CATEGORY.USER
 		Group.listUserGroup(this).subscribe(groups => {
