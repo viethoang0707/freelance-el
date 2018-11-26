@@ -85,7 +85,9 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         Submission.get(this, this.selectedMember.submission_id).subscribe(submit => {
             this.submitDialog.show(this.exam, submit);
             this.submitDialog.onConfirm.subscribe(() => {
-                this.loadScores();
+                member.submitScore(this).subscribe(() => {
+                    this.loadScores();
+                });
             });
         });
 

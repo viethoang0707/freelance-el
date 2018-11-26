@@ -6,7 +6,7 @@
                 <button pButton type="button" label="{{ 'Question sheets'|translate}} " class="blue-grey-btn " icon="ui-icon-question-answer" (click)="showQuestionSheet()"></button>
                 <button pButton type="button" label="{{ 'Answer sheet'|translate}} " class="blue-grey-btn " icon="ui-icon-content-paste" (click)="viewAnswerSheet()" [disabled]="!selectedMember"></button>
                 <button pButton type="button" label="{{ 'Redo exam'|translate}} " class="blue-grey-btn " icon="ui-icon-refresh" (click)="redoExam(selectedMember)" [disabled]="!selectedMember || selectedMember.enroll_status != 'completed'"></button>
-                <button pButton type="button" label="{{ 'Submit offline score '|translate}} " class="blue-grey-btn " icon="ui-icon-cloud-upload" (click)="submitOffline(selectedMember)" [disabled]="!selectedMember || selectedMember.enroll_status != 'completed'"></button>
+                <button pButton type="button" label="{{ 'Submit offline score '|translate}} " class="blue-grey-btn " icon="ui-icon-cloud-upload" (click)="submitOffline(selectedMember)" [disabled]="!selectedMember || selectedMember.enroll_status == 'completed'"></button>
             </div>
             <div class="ui-toolbar-group-right ">
                 <span class="md-inputfield search">

@@ -29,7 +29,8 @@ const EXAM_FIELDS = ['status', 'mode','review_state', 'name', 'setting_id', 'wri
 export class ExamListComponent extends BaseComponent implements OnInit {
 
     EXAM_STATUS = EXAM_STATUS;
-
+    EXAM_MODE = EXAM_MODE;
+    
     private exams: Exam[];
     private reportUtils: ReportUtils;
 
@@ -83,7 +84,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
-        if (exam.mode == EXAM_MODE.OFFLINE ) {
+        if (exam.mode == 'offline' ) {
             this.warn('This exam does not support online mode');
             return;
         }

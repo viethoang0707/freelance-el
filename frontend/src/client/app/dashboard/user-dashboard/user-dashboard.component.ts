@@ -191,7 +191,7 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
-        if (exam.mode == EXAM_MODE.OFFLINE ) {
+        if (exam.mode == 'offline' ) {
             this.warn('This exam does not support online mode');
             return;
         }

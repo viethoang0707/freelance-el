@@ -18,7 +18,7 @@ import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-
 import { ExcelService } from '../../../shared/services/excel.service';
 import { DataTable } from 'primeng/primeng';
 
-const MEMBER_FIELDS = ['name', 'email', 'phone', 'role', 'login', 'status', 'group_name', 'enroll_status'];
+const MEMBER_FIELDS = ['name', 'user_id', 'email', 'phone', 'role', 'login', 'status', 'group_name', 'enroll_status'];
 
 @Component({
 	moduleId: module.id,
