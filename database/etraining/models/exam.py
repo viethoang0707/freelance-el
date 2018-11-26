@@ -232,6 +232,14 @@ class ExamMember(models.Model):
 				member.write({'enroll_status':'in-progress'})
 			return {'success':True}
 
+class ExamSection(models.Model):
+	_name = 'etraining.exam_section'
+
+	name = fields.Char(string="Name")
+	exam_id = fields.Many2one('etraining.exam',string='Exam')
+	order = fields.Integer(string="Order")
+	time = fields.Integer(string="Time")
+
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
 
@@ -253,6 +261,8 @@ class ExamQuestion(models.Model):
 	question_id = fields.Many2one('etraining.question',string="Question")
 	exam_id = fields.Many2one('etraining.exam', related="sheet_id.exam_id", string='Exam')
 	sheet_id = fields.Many2one('etraining.question_sheet',string="Question sheet")
+	section_id = fields.Many2one('etraining.exam_section',string="Section")
+	section_name = fields.Char(related="section_id.name", string="Section Name")
 	score = fields.Float(string='Score')
 	order = fields.Integer(string='Order')
 	group_id = fields.Many2one('res.groups', related="question_id.group_id", string='Group', readonly=True)
@@ -298,6 +308,8 @@ class Answer(models.Model):
 	question_level = fields.Selection(string="Level",related="question_id.level", readonly=True)
 	question_type = fields.Selection(
 		[('sc', 'Single-choice'), ('ext','Open end')],related="question_id.type", readonly=True)
+	section_id = fields.Many2one('etraining.exam_section',string="Section",related="question_id.section_id", readonly=True)
+	section_name = fields.Char(related="section_id.name", string="Section Name")
 	is_correct = fields.Boolean(default=False, string="Is correct")
 	option_id = fields.Many2one('etraining.option', string='Option')
 	text = fields.Text(string="Text")

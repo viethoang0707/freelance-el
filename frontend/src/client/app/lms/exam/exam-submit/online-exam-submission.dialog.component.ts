@@ -25,7 +25,7 @@ import { WebcamImage } from 'ngx-webcam';
     templateUrl: 'online-exam-submission.dialog.component.html',
     styleUrls: ['online-exam-submission.dialog.component.css'],
 })
-export class OfflineExamSubmissionDialog extends BaseComponent {
+export class OnlineExamSubmissionDialog extends BaseComponent {
 
     private display: boolean;
     private exam: Exam;
