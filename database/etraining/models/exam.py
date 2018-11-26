@@ -19,6 +19,8 @@ class Exam(models.Model):
 	name = fields.Char(string='Name', required=True)
 	summary = fields.Text(string='Summary')
 	instruction = fields.Text(string='Instruction')
+	mode = fields.Selection(
+		[ ('offline', 'Offline'), ('online', 'Online')], default="online")
 	status = fields.Selection(
 		[('open', 'Open'), ('closed', 'Closed'), ('initial', 'Initial')], default="initial")
 	is_public = fields.Boolean(string='Is public')
@@ -132,6 +134,7 @@ class ExamMember(models.Model):
 	sheet_id = fields.Many2one('etraining.question_sheet', related='exam_id.sheet_id', string='Exam sheet', readonly=True)
 	submission_id = fields.Many2one('etraining.submission', string='Submission')
 	exam_name = fields.Char(related='exam_id.name', string='Exam name', readonly=True)
+	exam_mode = fields.Selection(related='exam_id.mode', string='Exam mode', readonly=True)
 	user_id = fields.Many2one('res.users', string='User')
 	name = fields.Char(related='user_id.name', string='User name', readonly=True)
 	login = fields.Char(related='user_id.login', string='User login', readonly=True)
@@ -311,11 +314,16 @@ class Submission(models.Model):
 	member_id = fields.Many2one('etraining.exam_member', string='Exam member')
 	user_id = fields.Many2one('res.users', string='User', related="member_id.user_id", readonly=True)
 	exam_id = fields.Many2one('etraining.exam', related="member_id.exam_id", readonly=True,string='Exam')
+	exam_mode = fields.Selection(related='exam_id.mode', string='Exam mode', readonly=True)
 	answer_ids = fields.One2many('etraining.answer','submission_id', string="Submission")
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')
 	picture = fields.Binary(string='Picture')
 	study_time = fields.Integer( compute='_compute_study_time', string='Study time')
+	filename = fields.Text(string='Filename')
+	file_url = fields.Text(string='Entry file')
+	submission_file_id = fields.Many2one('ir.attachment', string='Submission file')
+	submit_user_id = fields.Many2one('res.users', string='Submit user in case of offline exam')
 
 	@api.multi
 	def unlink(self):

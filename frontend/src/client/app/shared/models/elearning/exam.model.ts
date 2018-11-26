@@ -30,6 +30,7 @@ export class Exam extends BaseModel{
 		this.instruction = undefined;
         this.start = undefined;
         this.end = undefined;
+        this.mode = undefined;
         this.status = undefined;
         this.duration = undefined;
         this.publish_score = undefined;
@@ -65,6 +66,7 @@ export class Exam extends BaseModel{
     question_count: number;
     supervisor_group_id: number;
     sheet_status: string;
+    mode: string;
     review_state:string;
     course_class_id:number;
     competency_id: number;

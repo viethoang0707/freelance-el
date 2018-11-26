@@ -8,9 +8,10 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Http, Response } from '@angular/http';
-import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
+import { DEFAULT_DATE_LOCALE, EXAM_STATUS, EXAM_MODE, EXAM_MEMBER_ROLE, EXAM_MEMBER_STATUS } from '../../../shared/models/constants'
 import { SelectItem, MenuItem } from 'primeng/api';
 import * as _ from 'underscore';
+
 
 @Component({
     moduleId: module.id,
@@ -22,6 +23,7 @@ export class ExamViewComponent extends BaseComponent {
 
     private exam: Exam;
     private editor: ExamMember;
+    EXAM_MODE = EXAM_MODE;
 
     constructor(private router: Router, private route: ActivatedRoute) {
         super();

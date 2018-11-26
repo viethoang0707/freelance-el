@@ -1,6 +1,7 @@
 <div class="ui-g">
     <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <h1 class="removeM">{{'My exams'|translate}}</h1></div>
+        <h1 class="removeM">{{'My exams'|translate}}</h1>
+    </div>
     <div class="ui-g-12 ui-md-12 ui-lg-12">
         <p-dataList [value]="exams" [paginator]="true" [rows]="5" styleClass="lms-exam-list">
             <ng-template let-exam pTemplate="item">
@@ -40,6 +41,11 @@
                                     <li class="clearfix" *ngIf="!exam.IsAvailable">
                                         <i class="material-icons">error</i>
                                         <span class="cmt-title">{{'Exam not available'|translate}}</span>
+                                    </li>
+                                    <li class="clearfix">
+                                        <i class="material-icons">star</i>
+                                        <span class="cmt-title">{{'Mode'|translate}}</span>
+                                        <span class="cmt-detail">{{exam.mode}}</span>
                                     </li>
                                     <li class="clearfix">
                                         <i class="material-icons">date_range</i>

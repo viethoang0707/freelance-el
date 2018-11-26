@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import * as _ from 'underscore';
-import { GROUP_CATEGORY, EXAM_STATUS } from '../../../shared/models/constants'
+import { GROUP_CATEGORY, EXAM_STATUS , EXAM_MODE} from '../../../shared/models/constants'
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
@@ -18,7 +18,7 @@ import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 import { AnswerPrintDialog } from '../../../lms/exam/answer-print/answer-print.dialog.component';
 import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 
-const EXAM_FIELDS = ['status', 'review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
+const EXAM_FIELDS = ['status', 'mode','review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 
 @Component({
     moduleId: module.id,
@@ -83,6 +83,10 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
+        if (exam.mode == EXAM_MODE.OFFLINE ) {
+            this.warn('This exam does not support online mode');
+            return;
+        }
         this.confirmationService.confirm({
             message: this.translateService.instant('Are you sure to start?'),
             accept: () => {

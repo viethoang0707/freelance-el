@@ -12,7 +12,7 @@ import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model'; import {
 	SURVEY_STATUS, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
-	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
+	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, EXAM_MODE, COURSE_UNIT_TYPE, EXAM_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -201,6 +201,10 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	startExam(exam: Exam, member: ExamMember) {
+		if (exam.mode == EXAM_MODE.OFFLINE) {
+			this.warn('This exam does not support online mode');
+			return;
+		}
 		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			ExamSetting.get(this, exam.setting_id).subscribe(setting => {
 				member.joinExam(this).subscribe(() => {

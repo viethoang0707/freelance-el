@@ -36,6 +36,11 @@
         </div>
     </div>
     <div class="ui-g-6">
+        <label>{{'Exam mode'|translate}}</label>
+        <p-radioButton name="online" value="online" label="{{'Online'|translate}}" [(ngModel)]="exam.mode" inputId="opt1"></p-radioButton>
+        <p-radioButton name="offline" value="offline" label="{{'Offline'|translate}}" [(ngModel)]="exam.mode" inputId="opt2"></p-radioButton>
+    </div>
+    <div class="ui-g-6">
         <div (click)="selectEditor()">
             <label>{{'Editor' |translate}}:</label>
             <span> {{editor.name}}

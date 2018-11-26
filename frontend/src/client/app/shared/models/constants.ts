@@ -15,6 +15,7 @@ export const DEFAULT_DATE_LOCALE = {
     today: 'Today',
     clear: 'Clear'
 };
+export const EXAM_MODE = { ONLINE: 'Online', OFFLINE: 'Offline' };
 export const COURSE_STATUS = { 'open': 'Open', 'closed': 'Closed', 'initial': 'Initial'};
 export const EXAM_STATUS = { 'open': 'Open', 'closed': 'Closed' , 'initial': 'Initial'};
 export const CLASS_STATUS = { 'open': 'Open', 'closed': 'Closed' , 'initial': 'Initial'};

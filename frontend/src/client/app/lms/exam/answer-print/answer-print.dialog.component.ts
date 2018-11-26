@@ -83,19 +83,21 @@ export class AnswerPrintDialog extends BaseComponent {
             .subscribe(jsonArr => {
                 this.examQuestions = ExamQuestion.toArray(jsonArr[0]);
                 this.answers = Answer.toArray(jsonArr[1]);
-                ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
-                    var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
-                        return examQuestion.question;
+                if (this.submission.exam_mode == 'online') {
+                    ExamQuestion.populateQuestions(this, this.examQuestions).subscribe(() => {
+                        var questions = _.map(this.examQuestions, (examQuestion: ExamQuestion) => {
+                            return examQuestion.question;
+                        });
+                        Question.listOptionsForArray(this, questions).subscribe(() => {
+                            var componentHostArr = this.questionsComponents.toArray();
+                            for (var i = 0; i < this.examQuestions.length; i++) {
+                                var examQuestion = this.examQuestions[i];
+                                var componentHost = componentHostArr[i];
+                                this.displayQuestion(examQuestion, componentHost);
+                            }
+                        });
                     });
-                    Question.listOptionsForArray(this, questions).subscribe(() => {
-                        var componentHostArr = this.questionsComponents.toArray();
-                        for (var i = 0; i < this.examQuestions.length; i++) {
-                            var examQuestion = this.examQuestions[i];
-                            var componentHost = componentHostArr[i];
-                            this.displayQuestion(examQuestion, componentHost);
-                        }
-                    });
-                });
+                }
             });
     }
 

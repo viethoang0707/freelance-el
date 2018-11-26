@@ -21,11 +21,11 @@ import { WebcamImage } from 'ngx-webcam';
 
 @Component({
     moduleId: module.id,
-    selector: 'exam-submission-dialog',
-    templateUrl: 'exam-submission.dialog.component.html',
-    styleUrls: ['exam-submission.dialog.component.css'],
+    selector: 'online-exam-submission-dialog',
+    templateUrl: 'online-exam-submission.dialog.component.html',
+    styleUrls: ['online-exam-submission.dialog.component.css'],
 })
-export class ExamSubmissionDialog extends BaseComponent {
+export class OfflineExamSubmissionDialog extends BaseComponent {
 
     private display: boolean;
     private exam: Exam;

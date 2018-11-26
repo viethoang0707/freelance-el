@@ -1,0 +1,21 @@
+<p-dialog header="{{'Exam submission offline'|translate}}" [(visible)]="display" modal="true" [responsive]="true" appendTo="body" [closeOnEscape]="false" [closable]="false">
+    <div class="spinner" [hidden]="!loading"></div>
+    <div class="ui-g-6">
+        <p-progressBar [value]="percentage" *ngIf="loading"></p-progressBar>
+        <p-fileUpload name="uploadLocal" mode="basic" chooseLabel="{{'Upload from computer'|translate}}" (onSelect)="changeFileEvent($event)" accept="*" maxFileSize="1024*8" showUploadButton="false">
+        </p-fileUpload>
+        <span class="file-upload"><a href="{{submit.file_url}}" target="_blank" *ngIf="submit.file_url">{{submit.filename}}</a></span>
+    </div>
+    <div class="ui-g-6">
+        <label>{{'Score'|translate}}</label>
+        <p-spinner size="30" [(ngModel)]="submit.score" [min]="0" name="score"></p-spinner>
+    </div>
+    <div class="ui-g-6">
+       <label>{{'Grade'|translate}}</label>
+	    <p-dropdown [options]="grades" [(ngModel)]="submit.grade" placeholder="{{'Select a grade'| translate}}"  styleClass="report-items"></p-dropdown>
+	  </div>
+    <p-footer>
+        <button type="button" pButton icon="ui-icon-check" (click)="confirm()" label="{{'Confirm'|translate}}"></button>
+        <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Cancel'|translate}}"></button>
+    </p-footer>
+</p-dialog>

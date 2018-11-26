@@ -1,58 +1,75 @@
-import { Component, OnInit, Input, ViewChild, ViewChildren, NgZone, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, ComponentFactoryResolver, NgZone } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-
 import { AuthService } from '../../../shared/services/auth.service';
 import { Group } from '../../../shared/models/elearning/group.model';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { Exam } from '../../../shared/models/elearning/exam.model';
 import { ExamQuestion } from '../../../shared/models/elearning/exam-question.model';
 import { Answer } from '../../../shared/models/elearning/answer.model';
-import { Token } from '../../../shared/models/cloud/token.model';
-import { ProjectSubmission } from '../../../shared/models/elearning/project-submission.model';
-import { Project } from '../../../shared/models/elearning/project.model';
-import { CourseMember } from '../../../shared/models/elearning/course-member.model';
+import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
+import { Submission } from '../../../shared/models/elearning/submission.model';
+import { Question } from '../../../shared/models/elearning/question.model';
+import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
+import { ExamMember } from '../../../shared/models/elearning/exam-member.model';
 import { Http, Response } from '@angular/http';
+import { QuestionContainerDirective } from '../../../cms/question/question-container.directive';
+import { IQuestion } from '../../../cms/question/question.interface';
+import { QuestionRegister } from '../../../cms/question/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
 import { WebcamImage } from 'ngx-webcam';
+import { ExamGrade } from '../../../shared/models/elearning/exam-grade.model';
+import { SelectItem } from 'primeng/api';
 
 @Component({
     moduleId: module.id,
-    selector: 'project-submission-dialog',
-    templateUrl: 'project-submission.dialog.component.html',
-    styleUrls: ['project-submission.dialog.component.css'],
+    selector: 'offline-exam-submission-dialog',
+    templateUrl: 'offline-exam-submission.dialog.component.html',
+    styleUrls: ['offline-exam-submission.dialog.component.css'],
 })
-export class ProjectSubmissionDialog extends BaseComponent {
+export class OfflineExamSubmissionDialog extends BaseComponent {
 
     private display: boolean;
-    private submit: ProjectSubmission;
+    private exam: Exam;
+    private submit: Submission;
+    private trigger: Subject<void> = new Subject<void>();
     private percentage: number;
+    private grades: SelectItem[];
+
     private onConfirmReceiver: Subject<any> = new Subject();
     onConfirm: Observable<any> = this.onConfirmReceiver.asObservable();
 
 
-    constructor(private ngZone: NgZone) {
+    constructor(private componentFactoryResolver: ComponentFactoryResolver, private ngZone: NgZone) {
         super();
         this.display = false;
-        this.submit = new ProjectSubmission();
+        this.exam = new Exam();
+        this.submit = new Submission();
     }
 
-    show(project: Project, member: CourseMember) {
+    show(exam: Exam, submit: Submission) {
         this.display = true;
-        this.submit = new ProjectSubmission();
-        this.submit.member_id = member.id;
-        this.submit.project_id = project.id;
+        this.exam = exam;
+        this.submit = submit;
+        this.exam.listGrades(this).subscribe(grades => {
+            this.grades = _.map(grades, (grade:ExamGrade)=> {
+                return {
+                    label: grade.name,
+                    value: grade.name;
+                }
+            });
+        })
     }
 
     hide() {
         this.display = false;
     }
 
+
     confirm() {
         if (!this.submit.file_url)
             this.error(this.translateService.instant('You have not submiited any attachment'));
         else {
-            this.submit.date_submit = new Date();
             this.submit.save(this).subscribe(() => {
                 this.onConfirmReceiver.next();
                 this.success(this.translateService.instant('Action completed'));
@@ -72,9 +89,10 @@ export class ProjectSubmissionDialog extends BaseComponent {
             data => {
                 if (data["result"]) {
                     this.ngZone.run(() => {
+                        this.submit.submit_user_id = this.ContextUser.id;
+                        this.submit.submission_file_id = data["attachment_id"];
                         this.submit.file_url = data["url"];
                         this.submit.filename = file.name;
-                        this.submit.submission_file_id = data["attachment_id"];
                     });
                 } else {
                     this.ngZone.run(() => {
@@ -86,3 +104,6 @@ export class ProjectSubmissionDialog extends BaseComponent {
     }
 
 }
+
+
+
