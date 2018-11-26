@@ -236,13 +236,14 @@ class ExamMember(models.Model):
 				member.write({'enroll_status':'in-progress'})
 			return {'success':True}
 
-class ExamSection(models.Model):
-	_name = 'etraining.exam_section'
+class QuestionSheetSection(models.Model):
+	_name = 'etraining.question_sheet_section'
 
 	name = fields.Char(string="Name")
-	exam_id = fields.Many2one('etraining.exam',string='Exam')
+	sheet_id = fields.Many2one('etraining.question_sheet',string='Sheet')
 	order = fields.Integer(string="Order")
-	time = fields.Integer(string="Time")
+	layout = fields.Selection(
+		[('single', 'Single-section'), ('multiple', 'Multiple-section')], default="single")
 
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
@@ -265,7 +266,7 @@ class ExamQuestion(models.Model):
 	question_id = fields.Many2one('etraining.question',string="Question")
 	exam_id = fields.Many2one('etraining.exam', related="sheet_id.exam_id", string='Exam')
 	sheet_id = fields.Many2one('etraining.question_sheet',string="Question sheet")
-	section_id = fields.Many2one('etraining.exam_section',string="Section")
+	section_id = fields.Many2one('etraining.question_sheet_section',string="Section")
 	section_name = fields.Char(related="section_id.name", string="Section Name")
 	score = fields.Float(string='Score')
 	order = fields.Integer(string='Order')

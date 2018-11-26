@@ -55,7 +55,7 @@ export class OfflineExamSubmissionDialog extends BaseComponent {
             this.grades = _.map(grades, (grade:ExamGrade)=> {
                 return {
                     label: grade.name,
-                    value: grade.name;
+                    value: grade.name
                 }
             });
         })
