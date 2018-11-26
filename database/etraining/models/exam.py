@@ -308,8 +308,8 @@ class Answer(models.Model):
 	question_level = fields.Selection(string="Level",related="question_id.level", readonly=True)
 	question_type = fields.Selection(
 		[('sc', 'Single-choice'), ('ext','Open end')],related="question_id.type", readonly=True)
-	section_id = fields.Many2one('etraining.exam_section',string="Section",related="question_id.section_id", readonly=True)
-	section_name = fields.Char(related="section_id.name", string="Section Name")
+	#section_id = fields.Many2one('etraining.exam_section',string="Section",related="question_id.section_id", readonly=True)
+	#section_name = fields.Char(related="section_id.name", string="Section Name")
 	is_correct = fields.Boolean(default=False, string="Is correct")
 	option_id = fields.Many2one('etraining.option', string='Option')
 	text = fields.Text(string="Text")
