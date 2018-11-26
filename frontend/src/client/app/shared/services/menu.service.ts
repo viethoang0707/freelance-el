@@ -150,22 +150,23 @@ export class MenuService {
     if (this.authService.UserProfile.IsSuperAdmin)
       return this.ADMIN_MENU;
     var menuCodes = []
-    if (this.authService.UserPermission && this.authService.UserPermission.menu_access)
+    if (this.authService.UserPermission && this.authService.UserPermission.id && this.authService.UserPermission.menu_access)
       menuCodes = JSON.parse(this.authService.UserPermission.menu_access);
     _.each(this.ADMIN_MENU, (menuItem: MenuItem) => {
       if (menuItem.separator || _.contains(menuCodes, menuItem["code"]))
         menuItem.visible = true;
       else {
         menuItem.visible = false;
-        for (var i = 0; i < menuItem.items.length; i++) {
-          var subMenuItem = menuItem.items[i];
-          if (subMenuItem["separator"] || _.contains(menuCodes, subMenuItem["code"])) {
-            menuItem.visible = true;
-            subMenuItem["visible"] = true;
-          } else {
-            subMenuItem["visible"] = false;
+        if (menuItem.items)
+          for (var i = 0; i < menuItem.items.length; i++) {
+            var subMenuItem = menuItem.items[i];
+            if (subMenuItem["separator"] || _.contains(menuCodes, subMenuItem["code"])) {
+              menuItem.visible = true;
+              subMenuItem["visible"] = true;
+            } else {
+              subMenuItem["visible"] = false;
+            }
           }
-        }
       }
     });
     return this.ADMIN_MENU;

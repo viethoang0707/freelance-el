@@ -325,7 +325,7 @@ class Project(models.Model):
 	end = fields.Datetime(string='End time')
 	submission_ids = fields.One2many('etraining.project_submission','project_id', string='Project Submission members')
 	status = fields.Selection(
-		[('draft', 'Draft'), ('open', 'Open'), ('closed', 'Closed')], default="published")
+		[('draft', 'Draft'), ('open', 'Open'), ('closed', 'Closed')], default="open")
 
 	@api.multi
 	def write(self, vals):

@@ -14,7 +14,7 @@ import { ConferenceMember } from '../../shared/models/elearning/conference-membe
 import { Conference } from '../../shared/models/elearning/conference.model';
 import { MeetingService } from '../../shared/services/meeting.service';
 import { User } from '../../shared/models/elearning/user.model';
-import { GROUP_CATEGORY, CONFERENCE_STATUS, COURSE_MODE, COURSE_STATUS, EXAM_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants'
+import { GROUP_CATEGORY, CONFERENCE_STATUS, EXAM_MODE, COURSE_MODE, COURSE_STATUS, EXAM_STATUS, SCHEDULER_HEADER } from '../../shared/models/constants'
 import { CourseSyllabus } from '../../shared/models/elearning/course-syllabus.model';
 import { SelectItem } from 'primeng/api';
 import { QuestionMarkingDialog } from '../../lms/exam/question-marking/question-marking.dialog.component';
@@ -29,7 +29,7 @@ import { SurveyMember } from '../../shared/models/elearning/survey-member.model'
 import * as _ from 'underscore';
 
 const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
-const EXAM_FIELDS = ['status', 'review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
+const EXAM_FIELDS = ['status', 'mode', 'review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 const CLASS_FIELDS = ['start', 'end', 'name'];
 
 @Component({
@@ -195,6 +195,10 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
+        if (exam.mode == 'offline' ) {
+            this.warn('This exam does not support online mode');
+            return;
+        }
         this.confirm(this.translateService.instant('Are you sure to start?'), () => {
             ExamSetting.get(this, exam.setting_id).subscribe(() => {
                 member.joinExam(this).subscribe(() => {

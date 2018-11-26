@@ -24,6 +24,11 @@ export class Submission extends BaseModel{
         this.grade =  undefined;
         this.study_time = undefined;
         this.course_member_id = undefined;
+        this.filename = undefined;
+        this.file_url =  undefined;
+        this.submit_user_id = undefined;
+        this.submission_file_id = undefined;
+        this.exam_mode = undefined;
     }
     
     course_member_id: number;
@@ -38,6 +43,11 @@ export class Submission extends BaseModel{
     end: Date;
     @FieldProperty<Date>()
     start: Date;
+    filename: string;
+    submission_file_id: string;
+    file_url: string;
+    exam_mode:string;
+    submit_user_id: number;
 
 
     static __api__listAnswers(submissionId: number,fields?:string[]): SearchReadAPI {

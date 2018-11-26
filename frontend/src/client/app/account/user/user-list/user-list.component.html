@@ -11,16 +11,17 @@
                     <button pButton type="button" label="{{'New'|translate}}" class="red-btn" (click)="addUser()" icon="ui-icon-add"></button>
                     <button pButton type="button" label="{{'Edit'|translate}}" class="nissan-btn" icon="ui-icon-mode-edit" (click)="editUser(selectedUsers)" [disabled]="!selectedUsers"></button>
                     <button pButton type="button" label="{{'View'|translate}}" class="nissan-btn" icon="ui-icon-visibility" (click)="viewUser(selectedUsers)" [disabled]="!selectedUsers"></button>
-                    <button pButton type="button" label="{{'Deactivate'|translate}}" class="nissan-btn" icon="ui-icon-lock" (click)="enterBatchMode('deactivate')" ></button>
-                    <button pButton type="button" label="{{'Activate'|translate}}" class="nissan-btn" icon="ui-icon-lock-open" (click)="enterBatchMode('activate')" ></button>
-                      <button pButton type="button" label="{{'Export'|translate}}" class="nissan-btn" icon="ui-icon-file-download" (click)="exportUser()"></button>
+                    <button pButton type="button" label="{{'Deactivate'|translate}}" class="nissan-btn" icon="ui-icon-lock" (click)="enterBatchMode('deactivate')"></button>
+                    <button pButton type="button" label="{{'Activate'|translate}}" class="nissan-btn" icon="ui-icon-lock-open" (click)="enterBatchMode('activate')"></button>
+                    <button pButton type="button" label="{{'Delete'|translate}}" class="nissan-btn" icon="ui-icon-delete" (click)="deleteUser(selectedUsers)" [disabled]="!selectedUsers"></button>
+                    <button pButton type="button" label="{{'Export'|translate}}" class="nissan-btn" icon="ui-icon-file-download" (click)="exportUser()"></button>
                     <button pButton type="button" label="{{'Import'|translate}}" class="nissan-btn" icon="ui-icon-file-upload" (click)="importUser()"></button>
                 </div>
                 <div class="ui-toolbar-group-left" *ngIf="mode=='multiple'">
                     <button pButton type="button" label="{{'Apply'|translate}}" class="green-btn" (click)="applyBatchAction()" icon="ui-icon-check" [disabled]="!selectedUsers || !selectedUsers.length"></button>
                     <button pButton type="button" label="{{'Cancel'|translate}}" class="red-btn" icon="ui-icon-clear" (click)="enterSingleMode()"></button>
                 </div>
-                <div class="ui-toolbar-group-right" >
+                <div class="ui-toolbar-group-right">
                     <span class="md-inputfield search">
                         <input type="text" pInputText placeholder="{{'Search'|translate}}" 
                           (input)="userTable.filterGlobal($event.target.value, 'contains')">   

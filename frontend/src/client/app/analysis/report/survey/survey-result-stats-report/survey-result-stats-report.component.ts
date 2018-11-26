@@ -75,8 +75,7 @@ export class SurveyResultStatsReportComponent extends BaseComponent {
 
     render(survey: Survey) {
         this.clear();
-        SurveySheet.get(this, survey.sheet_id).subscribe(()=> {
-            var sheet = survey.sheet;
+        SurveySheet.get(this, survey.sheet_id).subscribe(sheet=> {
             survey.listAnswers(this).subscribe(answers=> {
                 var statistics = this.statsUtils.surveyAnswerStatistics(answers);
                 this.optionPercentage = statistics['multichoice'];

@@ -69,6 +69,22 @@ export class UserListComponent extends BaseComponent {
         this.router.navigate(['/account/user/view', user.id]);
     }
 
+    deleteUser(user:User) {
+        if (this.ContextUser.id == user.id) {
+            this.warn('You cannot delete your own account');
+            return;
+        }
+        this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+            user.delete(this).subscribe(() => {
+                this.users = _.reject(this.users, (obj:User)=> {
+                    return obj.id == user.id;
+                });
+                this.selectedUsers =  null;
+                this.success(this.translateService.instant('Delete user successfully'));
+            })
+        });
+    }
+
     activateMultipleUsers(users:User[]){
         _.each(users, (user:User)=> {
             user.banned =  false;

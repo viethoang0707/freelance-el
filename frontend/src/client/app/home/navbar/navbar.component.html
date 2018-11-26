@@ -8,7 +8,7 @@
     </a>
     <div class="layout-topbar-menu-wrapper">
         <ul class="topbar-menu fadeInDown" [ngClass]="{'topbar-menu-active': parent.topbarMenuActive}" (click)="eventManager.topbarMenuClick()">
-            <li class="stats-items removeML" #stats [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === stats}" (click)="eventManager.topbarRootItemClick( stats)" *ngIf="user.IsAdmin">
+            <li class="stats-items removeML" #stats [ngClass]="{'active-topmenuitem':parent.activeTopbarItem === stats}" (click)="eventManager.topbarRootItemClick( stats)" *ngIf="user.IsAdmin && viewMode=='admin'">
                 <a> 
                     <i class="topbar-icon material-icons">person_pin_circle</i>
                     <div> {{userCount}} {{'Users'|translate}}</div>

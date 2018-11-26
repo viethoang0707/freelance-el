@@ -15,7 +15,7 @@ import * as _ from 'underscore';
 import { SelectMultiUsersDialog } from '../../../shared/components/select-multi-user-dialog/select-multi-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
 
-const EXAM_MEMBER_FIELDS = ['role', 'name', 'email', 'phone', 'group_name', 'status'];
+const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'name', 'email', 'phone', 'group_name', 'status'];
 
 @Component({
     moduleId: module.id,
@@ -55,7 +55,14 @@ export class ExamEnrollComponent extends BaseComponent implements OnInit {
     }
 
     addCandidate() {
-        this.usersDialog.show();
+        this.usersDialog.show((user: User) => {
+            var member = _.find(this.candidates, (obj: ExamMember) => {
+                return obj.user_id == user.id;
+            });
+            if (member)
+                return false;
+            return true;
+        });
         this.usersDialog.onSelectUsers.first().subscribe(users => {
             var userIds = _.pluck(users, 'id');
             this.exam.enroll(this, userIds).subscribe(() => {
@@ -66,7 +73,14 @@ export class ExamEnrollComponent extends BaseComponent implements OnInit {
     }
 
     addSupervisor() {
-        this.usersDialog.show();
+        this.usersDialog.show((user: User) => {
+            var member = _.find(this.candidates, (obj: ExamMember) => {
+                return obj.user_id == user.id;
+            });
+            if (member)
+                return false;
+            return true;
+        });
         this.usersDialog.onSelectUsers.first().subscribe(users => {
             var userIds = _.pluck(users, 'id');
             this.exam.enrollSupervisor(this, userIds).subscribe(() => {

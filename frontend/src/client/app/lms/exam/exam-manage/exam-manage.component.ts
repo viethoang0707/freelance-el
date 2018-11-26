@@ -34,6 +34,7 @@ import { ExamStatsDialog } from '../exam-stats/exam-stats.dialog.component';
 import { BaseModel } from '../../../shared/models/base.model';
 import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 import { DataTable } from 'primeng/primeng';
+import { OfflineExamSubmissionDialog } from '../exam-submit/offline-exam-submission.dialog.component';
 
 @Component({
     moduleId: module.id,
@@ -55,6 +56,7 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
     @ViewChild(QuestionSheetPrintDialog) questionSheetDialog: QuestionSheetPrintDialog;
     @ViewChild(ExamReportDialog) reportDialog: ExamReportDialog;
     @ViewChild(ExamStatsDialog) statsDialog: ExamStatsDialog;
+    @ViewChild(OfflineExamSubmissionDialog) submitDialog: OfflineExamSubmissionDialog;
 
     constructor(private router: Router, private route: ActivatedRoute, private location: Location) {
         super();
@@ -79,6 +81,18 @@ export class ExamManageComponent extends BaseComponent implements OnInit {
         member.redoExam(this).subscribe(() => {
             this.success(this.translateService.instant('Candidate is allowed to redo the exam'));
         });
+    }
+
+    submitOffline(member: ExamMember) {
+        Submission.get(this, this.selectedMember.submission_id).subscribe(submit => {
+            this.submitDialog.show(this.exam, submit);
+            this.submitDialog.onConfirm.subscribe(() => {
+                member.submitScore(this).subscribe(() => {
+                    this.loadScores();
+                });
+            });
+        });
+
     }
 
     viewAnswerSheet() {

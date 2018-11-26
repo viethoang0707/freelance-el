@@ -20,7 +20,8 @@ import { CertificatePrintDialog } from './course/certificate-print/certificate-p
 import { CourseGroupManageComponent } from './course/course-manage/course-group-manage.component';
 import { CourseSelfStudyManageComponent } from './course/course-manage/course-self-study-manage.component';
 import { ExamManageComponent } from './exam/exam-manage/exam-manage.component';
-import { ExamSubmissionDialog } from './exam/exam-submit/exam-submission.dialog.component';
+import { OnlineExamSubmissionDialog } from './exam/exam-submit/online-exam-submission.dialog.component';
+import { OfflineExamSubmissionDialog } from './exam/exam-submit/offline-exam-submission.dialog.component';
 import { ExamReportDialog } from './exam/exam-report/exam-report.dialog.component';
 import { ExamStatsDialog } from './exam/exam-stats/exam-stats.dialog.component';
 import { ProjectManageComponent } from './class/project-manage/project-manage.component';
@@ -79,7 +80,8 @@ import { CourseUnitStudyComponent } from './course/course-unit-study/course-unit
         QuestionMarkingDialog,
         CertificatePrintDialog,
         LMSProfileDialog,
-        ExamSubmissionDialog,
+        OnlineExamSubmissionDialog,
+        OfflineExamSubmissionDialog, 
         ExamManageComponent,
         QuestionSheetPrintDialog,
         CourseGroupManageComponent,
@@ -118,7 +120,8 @@ import { CourseUnitStudyComponent } from './course/course-unit-study/course-unit
         ExamStudyDialog,
         SurveyStudyDialog,
         AnswerPrintDialog,
-        ExamSubmissionDialog
+        OfflineExamSubmissionDialog,
+        OnlineExamSubmissionDialog,
     ],
     entryComponents: [
         FolderCourseUnitPlayerComponent,

@@ -12,7 +12,7 @@ import { TreeNode } from 'primeng/api';
 import { ConferenceMember } from '../../../shared/models/elearning/conference-member.model';
 import { Conference } from '../../../shared/models/elearning/conference.model'; import {
 	SURVEY_STATUS, COURSE_STATUS, COURSE_MODE, COURSE_MEMBER_ROLE, PROJECT_STATUS,
-	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, COURSE_UNIT_TYPE, EXAM_STATUS
+	COURSE_MEMBER_STATUS, COURSE_MEMBER_ENROLL_STATUS, EXAM_MODE, COURSE_UNIT_TYPE, EXAM_STATUS
 } from '../../../shared/models/constants'
 import { SelectUsersDialog } from '../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
@@ -83,6 +83,7 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	private conferenceMember: ConferenceMember;
 	private projects: Project[];
 	private projectSubmits: ProjectSubmission[];
+	private logs: CourseLog[];
 
 	@ViewChild(CourseMaterialDialog) materialDialog: CourseMaterialDialog;
 	@ViewChild(CourseFaqDialog) faqDialog: CourseFaqDialog;
@@ -151,15 +152,35 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	study() {
-		this.member.joinCourse(this).subscribe(()=> {
+		this.member.joinCourse(this).subscribe(() => {
 			this.router.navigate(['/lms/course/study/syllabus', this.course.id, this.syl.id, this.member.id]);
 		});
 	}
 
 	requestCertificate() {
-		this.member.requestCertificate(this).subscribe(()=> {
-			this.success('Action completed');
-		});
+		BaseModel.bulk_search(this,
+			Course.__api__listUnits(this.course.id))
+			.subscribe(jsonArr => {
+				this.units = CourseUnit.toArray(jsonArr[0]);
+				var unitsCourse = _.filter(this.units, (unit: CourseUnit) => {
+					return unit.type != 'folder';
+				});
+				console.log(unitsCourse);
+				CourseLog.memberStudyActivity(this, this.member.id, this.course.id).subscribe(logs => {
+					this.logs = logs;
+					console.log(this.logs);
+					var log = _.filter(this.logs, (obj: CourseLog) => {
+						return obj.code == 'COMPLETE_COURSE_UNIT';
+					});
+					if (log.length == unitsCourse.length) {
+						this.member.requestCertificate(this).subscribe(() => {
+							this.success('Action completed');
+						});
+					} else {
+						this.error('You must learn all course unit in course');
+					}
+				});
+			});
 	}
 
 	getProjectSubmit(project: Project) {
@@ -180,9 +201,13 @@ export class CourseStudyComponent extends BaseComponent implements OnInit {
 	}
 
 	startExam(exam: Exam, member: ExamMember) {
+		if (exam.mode == 'offline') {
+			this.warn('This exam does not support online mode');
+			return;
+		}
 		this.confirm(this.translateService.instant('Are you sure to start?'), () => {
 			ExamSetting.get(this, exam.setting_id).subscribe(setting => {
-				member.joinExam(this).subscribe(()=> {
+				member.joinExam(this).subscribe(() => {
 					this.examStudyDialog.show(exam, setting, member);
 				});
 			});

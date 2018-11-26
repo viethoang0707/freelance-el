@@ -105,6 +105,8 @@ class SurveyQuestion(models.Model):
 	survey_id = fields.Many2one('etraining.survey', related="sheet_id.survey_id", string='Survey')
 	sheet_id = fields.Many2one('etraining.survey_sheet',string="Survey sheet")
 	order = fields.Integer(string='Order')
+	section_id = fields.Many2one('etraining.survey_sheet_section',string="Section")
+	section_name = fields.Char(related="section_id.name", string="Section Name")
 	group_id = fields.Many2one('res.groups', related="question_id.group_id", string='Group', readonly=True)
 	group_name = fields.Char(related="group_id.name", string="Group Name")
 	option_ids = fields.One2many('etraining.option','question_id', related="question_id.option_ids", string="Options", readonly=True)
@@ -112,6 +114,13 @@ class SurveyQuestion(models.Model):
 	title = fields.Text(string="Title",related="question_id.title", readonly=True)
 	type = fields.Selection(
 		[('sc', 'Single-choice'), ('ext','Open end')],related="question_id.type", readonly=True)
+
+class SurveySheetSection(models.Model):
+	_name = 'etraining.survey_sheet_section'
+
+	name = fields.Char(string="Name")
+	sheet_id = fields.Many2one('etraining.survey_sheet',string='Sheet')
+	order = fields.Integer(string="Order")
 
 class SurveySheet(models.Model):
 	_name = 'etraining.survey_sheet'
@@ -124,6 +133,8 @@ class SurveySheet(models.Model):
 	question_count = fields.Integer( compute='_compute_question_count', string='Question count')
 	status = fields.Selection(
 		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="published")
+	layout = fields.Selection(
+		[('single', 'Single-section'), ('multiple', 'Multiple-section')], default="single")
 
 	def _compute_question_count(self):
 		for sheet in self:
