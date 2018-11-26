@@ -189,7 +189,7 @@ class ExamMember(models.Model):
 			self.write({'exam_record_id':exam_record.id})
 		else:
 			score = 0
-			if self.mode == 'offline':
+			if self.exam_id.mode == 'offline':
 				question_ids = set()
 				score = self.submission_id.score
 			else:
