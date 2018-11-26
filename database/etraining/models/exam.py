@@ -232,7 +232,7 @@ class ExamMember(models.Model):
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
 
-	score = fields.Float(string="Score")
+	score = fields.Float(string="Score", default=0)
 	grade = fields.Char(string="Grade")
 	member_id = fields.Many2one('etraining.exam_member', string='Exam member')
 	class_id = fields.Many2one('etraining.course_class', related="member_id.class_id", readonly=True,string='Exam')
@@ -306,7 +306,7 @@ class Answer(models.Model):
 class Submission(models.Model):
 	_name = 'etraining.submission'
 
-	score = fields.Float(string="Score")
+	score = fields.Float(string="Score", default=0)
 	grade = fields.Char(string="Grade")
 	member_id = fields.Many2one('etraining.exam_member', string='Exam member')
 	user_id = fields.Many2one('res.users', string='User', related="member_id.user_id", readonly=True)

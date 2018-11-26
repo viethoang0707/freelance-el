@@ -13,14 +13,13 @@ import { ExamMember } from '../../../../shared/models/elearning/exam-member.mode
 import * as _ from 'underscore';
 import { EXPORT_DATETIME_FORMAT, REPORT_CATEGORY, GROUP_CATEGORY, COURSE_MODE, COURSE_MEMBER_ENROLL_STATUS, EXPORT_DATE_FORMAT } from '../../../../shared/models/constants'
 import { Report } from '../../report.decorator';
-import { SelectGroupDialog } from '../../../../shared/components/select-group-dialog/select-group-dialog.component';
 import { SelectUsersDialog } from '../../../../shared/components/select-user-dialog/select-user-dialog.component';
 import { TimeConvertPipe } from '../../../../shared/pipes/time.pipe';
 import { ExcelService } from '../../../../shared/services/excel.service';
 import { BaseModel } from '../../../../shared/models/base.model';
 import { ExamRecord } from '../../../../shared/models/elearning/exam-record.model';
 
-const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'grade', 'score', 'submission_id']
+const EXAM_MEMBER_FIELDS = ['role', 'user_id', 'login', 'name', 'group_name', 'grade', 'score', 'submission_id', 'enroll_status']
 
 @Component({
     moduleId: module.id,
@@ -53,7 +52,8 @@ export class ExamResultReportComponent extends BaseComponent implements OnInit {
                 'Attempt date': record['date_attempt'],
                 'Study time': record['study_time'],
                 'Score': record['score'],
-                'Result': record['grade']
+                'Result': record['grade'],
+                'Enroll status': record['enroll_status']
             };
         });
         this.excelService.exportAsExcelFile(output, 'course_by_member_report');

@@ -43,7 +43,7 @@ export class ExamResultStatsReportContainerComponent extends BaseComponent imple
     ngOnInit() {
     	Exam.all(this,EXAM_FIELDS).subscribe(exams => {
     		this.exams = exams;
-            if (this.ContextPermission)
+            if (this.ContextPermission.Exist)
                 this.ContextPermission.listSubGroupIds(this).subscribe(groupIds=> {
                     this.exams = _.filter(exams, (exam:Exam)=> {
                         return exam.supervisor_id == this.ContextUser.id || groupIds.includes(exam.supervisor_group_id);

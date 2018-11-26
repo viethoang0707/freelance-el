@@ -35,14 +35,18 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 		super();
 		this.lang = this.translateService.currentLang;
 		this.notifs = [];
-		this.viewMode = this.ContextUser.IsAdmin ? 'admin' : 'lms';
 		this.user = new User();
 	}
 
 	ngOnInit() {
+		this.settingService.viewModeEvents.subscribe(mode=> {
+			this.viewMode = mode;
+			if (this.viewMode == 'admin')
+				this.loadStats();
+		});		
 		this.viewMode = this.settingService.ViewMode;
 		if (this.viewMode == 'admin')
-			this.loadStats();
+				this.loadStats();
 		this.user = this.ContextUser;
 	}
 

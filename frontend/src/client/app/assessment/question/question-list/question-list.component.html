@@ -1,6 +1,6 @@
 <h1 class="removeM ml8">{{'Question bank'|translate}}</h1>
 <div class="ui-g">
-    <div class="ui-g-12">
+    <div class="ui-g-12 tree-question-list">
         <label>{{'Question group'|translate}}</label>
         <p-tree [value]="tree" selectionMode="checkbox" [(selection)]="selectedGroupNodes" (onNodeSelect)="filterQuestion()" (onNodeUnselect)="filterQuestion()" styleClass="width-tree mt5 mb10"></p-tree>
     </div>

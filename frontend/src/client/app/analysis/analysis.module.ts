@@ -35,6 +35,8 @@ import { CompetencyProgressChartContainerComponent } from './chart/competency-pr
 import { CourseMemberActivityChartComponent } from './chart/course-member-activity-chart/course-member-activity-chart.component';
 import { UserStatusChartComponent } from './chart/user-status-chart/user-status-chart.component';
 import { UserStatusChartContainerComponent } from './chart/user-status-chart/user-status-chart-container.component';
+import { UserActivationReportComponent } from './report/user/user-activation-report/user-activation-report.component';
+import { UserActivationReportContainerComponent } from './report/user/user-activation-report/user-activation-report-container.component';
 
 @NgModule({
 	imports: [
@@ -45,6 +47,8 @@ import { UserStatusChartContainerComponent } from './chart/user-status-chart/use
 		AnalysisComponent,
 		ReportComponent,
 		ChartComponent,
+		UserActivationReportComponent,
+		UserActivationReportContainerComponent,
 		ExamResultReportContainerComponent,
 		ExamResultReportComponent,
 		CourseByMemberReportContainerComponent,
@@ -85,7 +89,9 @@ import { UserStatusChartContainerComponent } from './chart/user-status-chart/use
 		SurveyResultStatsReportContainerComponent,
 		CompetencyProfileChartContainerComponent,
 		CompetencyProgressChartContainerComponent,
-		UserStatusChartContainerComponent
+		UserStatusChartContainerComponent,
+		UserActivationReportComponent,
+		UserActivationReportContainerComponent,
 	],
 	exports: [
 		ExamResultReportComponent,

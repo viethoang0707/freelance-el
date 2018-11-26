@@ -44,7 +44,7 @@ export class SurveyResultStatsReportContainerComponent extends BaseComponent imp
     ngOnInit() {
     	Survey.all(this, SURVEY_FIELDS).subscribe(surveys => {
     		this.surveys = surveys;
-            if (this.ContextPermission)
+            if (this.ContextPermission.Exist)
                 this.ContextPermission.listSubGroupIds(this).subscribe(groupIds=> {
                     this.surveys = _.filter(surveys, (survey:Survey)=> {
                         return survey.supervisor_id == this.ContextUser.id || groupIds.includes(survey.supervisor_group_id);
