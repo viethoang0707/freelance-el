@@ -37,6 +37,9 @@ import { OpenEndQuestionComponent } from './question/open-end-question/open-end-
 import { MultiChoiceQuestionComponent } from './question/multi-choice-question/multi-choice-question.component';
 import { CourseResolve, CourseSyllabusResolve, ExamResolve, QuestionSheetResolve, SurveyResolve, SurveySheetResolve } from './route.resolver';
 import { CMSRoutingModule } from './cms-routing';
+import { QuestionSelectorComponent } from './exam/question-sheet-editor/question-selector.component';
+import { QuestionSheetSectionEditorDialog } from './exam/question-sheet-editor/question-sheet-section-editor.dialog.component';
+import { SectionDialog } from './exam/question-sheet-editor/section-dialog.component';
 
 @NgModule({
 	imports: [
@@ -47,6 +50,9 @@ import { CMSRoutingModule } from './cms-routing';
 	declarations: [
 		CMSComponent,
 		SumPipe,
+		QuestionSelectorComponent,
+		QuestionSheetSectionEditorDialog,
+		SectionDialog,
 		ExamEditorDialog,
 		ExamEditor, 
 		ExamEditorFormCoponent,

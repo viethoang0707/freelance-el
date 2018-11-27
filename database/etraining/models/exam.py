@@ -243,7 +243,13 @@ class QuestionSheetSection(models.Model):
 	sheet_id = fields.Many2one('etraining.question_sheet',string='Sheet')
 	exam_id = fields.Many2one('etraining.exam', related='sheet_id.exam_id', string='Exam', readonly=True)
 	order = fields.Integer(string="Order")
+	question_ids = fields.One2many('etraining.exam_question',"section_id", string='Exam questions')
 	
+	@api.multi
+	def unlink(self):
+		for question in self.question_ids:
+			question.unlink()
+		return super(QuestionSheetSection, self).unlink()
 
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'

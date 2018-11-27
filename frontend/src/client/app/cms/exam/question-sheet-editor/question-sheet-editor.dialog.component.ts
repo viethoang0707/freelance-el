@@ -15,93 +15,45 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
 import { TreeNode } from 'primeng/api';
+import { QuestionSelectorComponent } from './question-selector.component';
+import { QuestionSheetSection } from '../../../shared/models/elearning/question_sheet-section.model';
+import { SectionDialog } from './section-dialog.component';
+import { QuestionSheetSectionEditorDialog } from './question-sheet-section-editor.dialog.component';
 
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'question_count'];
 
 @Component({
 	moduleId: module.id,
 	selector: 'question-sheet-editor-dialog',
 	templateUrl: 'question-sheet-editor.dialog.component.html',
 })
-export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
+export class QuestionSheetEditorDialog extends BaseComponent {
 
 	QUESTION_LEVEL = QUESTION_LEVEL;
 
 	private display: boolean;
-	private tree: any;
-	private selectorGroups: any;
-	private selectedNodes: any;
-	private groups: Group[];
-	private treeUtils: TreeUtils;
+	private sheet: QuestionSheet;
+	private sections: QuestionSheetSection[];
 	private examQuestions: ExamQuestion[];
+
+	@ViewChild(QuestionSelectorComponent) singleSection: QuestionSelectorComponent;
+	@ViewChild(SectionDialog) sectionDialog: SectionDialog;
+	@ViewChild(QuestionSheetSectionEditorDialog) sectionEditorDialog: QuestionSheetSectionEditorDialog;
+
 	private onSaveReceiver: Subject<any> = new Subject();
-    onSave: Observable<any> = this.onSaveReceiver.asObservable();
+	onSave: Observable<any> = this.onSaveReceiver.asObservable();
 
 	constructor() {
 		super();
-		this.treeUtils = new TreeUtils();
-		
+		this.sheet = new QuestionSheet();
 	}
 
-	ngOnInit() {
-		this.tree = {};
-		this.selectorGroups = {};
-		this.selectedNodes = {};
-		_.each(QUESTION_LEVEL, (val, key) => {
-			this.selectorGroups[key] = {};
-			this.selectorGroups[key]["number"] = 0;
-			this.selectorGroups[key]["score"] = 0;
-			this.selectorGroups[key]["include_sub_group"] = true;
-			this.selectorGroups[key]["groups"] = [];
-			this.selectedNodes[key] = [];
+	show(sheet: QuestionSheet) {
+		this.sheet = sheet;
+		this.sheet.listSections(this).subscribe(sections => {
+			this.sections = sections;
 		});
-		
-	}
-
-	nodeSelect(event: any, level) {
-		this.selectorGroups[level]["groups"] = _.map(this.selectedNodes[level], (node => {
-			return node['data'];
-		}));
-	}
-
-	createExamQuestionFromQuestionBank(questions: Question[], score)  {
-		return  _.map(questions, (question:Question) => {
-			var examQuestion = new ExamQuestion();
-			examQuestion.question_id = question.id;
-			examQuestion.score = score;
-			examQuestion.title = question.title;
-			examQuestion.group_id = question.group_id;
-			examQuestion.group_name = question.group_name;
-			return examQuestion;
-		});
-	}
-
-	generateQuestion() {
-		var subscriptions = [];
-		_.each(QUESTION_LEVEL, (val, key)=> {
-			var groups = this.selectorGroups[key]["groups"]
-			if (groups.length > 0 && this.selectorGroups[key]["number"])
-				subscriptions.push(Question.listByGroups(this, groups).do(questions => {
-					questions = _.shuffle(questions);
-					questions = _.filter(questions, (obj:Question)=> {
-						return obj.level == key;
-					});
-					var score = this.selectorGroups[key]["score"];
-					questions = questions.slice(0, this.selectorGroups[key]["number"]);
-					this.examQuestions = this.examQuestions.concat(this.createExamQuestionFromQuestionBank(questions, score));
-				}));
-		});
-		return subscriptions;
-	}
-
-	show() {
 		this.display = true;
-		this.examQuestions = [];
-		Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
-			_.each(QUESTION_LEVEL, (val, key) => {
-				this.tree[key] = this.treeUtils.buildGroupTree(groups,true);
-			});
-		});
 	}
 
 
@@ -110,12 +62,83 @@ export class QuestionSheetEditorDialog extends BaseComponent implements OnInit {
 	}
 
 	save() {
-		Observable.forkJoin(this.generateQuestion()).subscribe(()=> {
-			this.hide();
-			this.onSaveReceiver.next(this.examQuestions);
-			this.success(this.translateService.instant('Content saved successfully.'));
-		})
+		if (this.sheet.layout == 'single')
+			Observable.forkJoin(this.singleSection.generateQuestion())
+				.map(questions => {
+					return _.flatten(questions)
+				})
+				.subscribe(questions => {
+					this.examQuestions = questions;
+					_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
+						examQuestion.sheet_id = this.sheet.id;
+					});
+					//this.onSaveReceiver.next(this.examQuestions);
+					this.hide();
+					console.log(this.examQuestions);
+					this.success(this.translateService.instant('Content saved successfully.'));
+				});
+			if (this.sheet.layout == 'multiple') 
+				console.log(this.examQuestions);
 	}
 
-	
+	addSection() {
+		let section: QuestionSheetSection = new QuestionSheetSection();
+		section.order = this.sections.length + 1;
+		section.sheet_id = this.sheet.id;
+		this.sectionDialog.show(section);
+		this.sectionDialog.onCreateComplete.first().subscribe(() => {
+			this.sections.push(section);
+		});
+	}
+
+	editSection(section: QuestionSheetSection) {
+		this.sectionDialog.show(section);
+	}
+
+	selectQuestion(section: QuestionSheetSection) {
+		this.sectionEditorDialog.show(section);
+		this.sectionEditorDialog.onSave.subscribe(questions=> {
+			this.examQuestions =  this.examQuestions.concat(questions);
+		});
+	}
+
+	removeSection(section: QuestionSheetSection) {
+		this.confirm(this.translateService.instant('Are you sure to delete?'), () => {
+			section.delete(this).subscribe(() => {
+				this.sections = _.reject(this.sections, (obj: QuestionSheetSection) => {
+					return obj.id == section.id;
+				});
+				this.success(this.translateService.instant('Delete section successfully'));
+			})
+		});
+	}
+
+	moveUp(section: QuestionSheetSection, itemIndex: number) {
+		if (itemIndex > 0) {
+			var tmp = this.sections[itemIndex];
+			this.sections[itemIndex] = this.sections[itemIndex - 1];
+			this.sections[itemIndex - 1] = tmp;
+			_.each(this.sections, (item: QuestionSheetSection, idx) => {
+				item.order = idx + 1;
+			});
+			QuestionSheetSection.updateArray(this, this.sections).subscribe(() => {
+				this.success('Action completed');
+			});
+		}
+	}
+
+	moveDown(section: QuestionSheetSection, itemIndex: number) {
+		if (itemIndex + 1 < this.sections.length - 1) {
+			var tmp = this.sections[itemIndex];
+			this.sections[itemIndex] = this.sections[itemIndex + 1];
+			this.sections[itemIndex + 1] = tmp;
+			_.each(this.sections, (item: QuestionSheetSection, idx) => {
+				item.order = idx + 1;
+			});
+			QuestionSheetSection.updateArray(this, this.sections).subscribe(() => {
+				this.success('Action completed');
+			});
+		}
+	}
+
 }

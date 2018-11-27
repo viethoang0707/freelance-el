@@ -39,6 +39,7 @@ export class SurveySheetPreviewDialog extends BaseComponent {
         this.display = false;
         this.surveyQuestions = [];
         this.sheetSections = [];
+        this.sheet =  new SurveySheet();
     }
 
     show(sheet: SurveySheet) {

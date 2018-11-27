@@ -42,6 +42,7 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
         this.examQuestions = [];
         this.questions = [];
         this.sheetSections = [];
+        this.sheet =  new QuestionSheet();
     }
 
     show(sheet: QuestionSheet) {

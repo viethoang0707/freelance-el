@@ -15,6 +15,8 @@ import * as _ from 'underscore';
 import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
 import { TreeNode } from 'primeng/api';
+import { QuestionSheetSection } from '../../../shared/models/elearning/question_sheet-section.model';
+import { QuestionSelectorComponent } from './question-selector.component';
 
 const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
 
@@ -23,85 +25,25 @@ const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
 	selector: 'question-sheet-section-editor-dialog',
 	templateUrl: 'question-sheet-section-editor.dialog.component.html',
 })
-export class QuestionSheetSectionEditorDialog extends BaseComponent implements OnInit {
+export class QuestionSheetSectionEditorDialog extends BaseComponent  {
 
 	QUESTION_LEVEL = QUESTION_LEVEL;
 
 	private display: boolean;
-	private tree: any;
-	private selectorGroups: any;
-	private selectedNodes: any;
-	private groups: Group[];
-	private treeUtils: TreeUtils;
+	private section: QuestionSheetSection;
 	private examQuestions: ExamQuestion[];
+
 	private onSaveReceiver: Subject<any> = new Subject();
-    onSave: Observable<any> = this.onSaveReceiver.asObservable();
+  onSave: Observable<any> = this.onSaveReceiver.asObservable();
+  @ViewChild(QuestionSelectorComponent) selector:QuestionSelectorComponent;
 
 	constructor() {
-		super();
-		this.treeUtils = new TreeUtils();
-		
+		super();		
 	}
 
-	ngOnInit() {
-		this.tree = {};
-		this.selectorGroups = {};
-		this.selectedNodes = {};
-		_.each(QUESTION_LEVEL, (val, key) => {
-			this.selectorGroups[key] = {};
-			this.selectorGroups[key]["number"] = 0;
-			this.selectorGroups[key]["score"] = 0;
-			this.selectorGroups[key]["include_sub_group"] = true;
-			this.selectorGroups[key]["groups"] = [];
-			this.selectedNodes[key] = [];
-		});
-		
-	}
-
-	nodeSelect(event: any, level) {
-		this.selectorGroups[level]["groups"] = _.map(this.selectedNodes[level], (node => {
-			return node['data'];
-		}));
-	}
-
-	createExamQuestionFromQuestionBank(questions: Question[], score)  {
-		return  _.map(questions, (question:Question) => {
-			var examQuestion = new ExamQuestion();
-			examQuestion.question_id = question.id;
-			examQuestion.score = score;
-			examQuestion.title = question.title;
-			examQuestion.group_id = question.group_id;
-			examQuestion.group_name = question.group_name;
-			return examQuestion;
-		});
-	}
-
-	generateQuestion() {
-		var subscriptions = [];
-		_.each(QUESTION_LEVEL, (val, key)=> {
-			var groups = this.selectorGroups[key]["groups"]
-			if (groups.length > 0 && this.selectorGroups[key]["number"])
-				subscriptions.push(Question.listByGroups(this, groups).do(questions => {
-					questions = _.shuffle(questions);
-					questions = _.filter(questions, (obj:Question)=> {
-						return obj.level == key;
-					});
-					var score = this.selectorGroups[key]["score"];
-					questions = questions.slice(0, this.selectorGroups[key]["number"]);
-					this.examQuestions = this.examQuestions.concat(this.createExamQuestionFromQuestionBank(questions, score));
-				}));
-		});
-		return subscriptions;
-	}
-
-	show() {
+	show(section:QuestionSheetSection) {
+		this.section =  section;
 		this.display = true;
-		this.examQuestions = [];
-		Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
-			_.each(QUESTION_LEVEL, (val, key) => {
-				this.tree[key] = this.treeUtils.buildGroupTree(groups,true);
-			});
-		});
 	}
 
 
@@ -110,11 +52,21 @@ export class QuestionSheetSectionEditorDialog extends BaseComponent implements O
 	}
 
 	save() {
-		Observable.forkJoin(this.generateQuestion()).subscribe(()=> {
-			this.hide();
-			this.onSaveReceiver.next(this.examQuestions);
-			this.success(this.translateService.instant('Content saved successfully.'));
-		})
+		Observable.forkJoin(this.selector.generateQuestion())
+				.map(questions => {
+					return _.flatten(questions)
+				})
+				.subscribe(questions => {
+					this.examQuestions = questions;
+					_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
+						examQuestion.sheet_id = this.section.sheet_id;
+						examQuestion.section_id = this.section.id;
+					});
+					//this.onSaveReceiver.next(this.examQuestions);
+					this.hide();
+					console.log(this.examQuestions);
+					this.success(this.translateService.instant('Content saved successfully.'));
+				});
 	}
 
 	

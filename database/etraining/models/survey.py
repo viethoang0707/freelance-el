@@ -122,6 +122,13 @@ class SurveySheetSection(models.Model):
 	name = fields.Char(string="Name")
 	sheet_id = fields.Many2one('etraining.survey_sheet',string='Sheet')
 	order = fields.Integer(string="Order")
+	question_ids = fields.One2many('etraining.survey_question',"section_id", string='Survey questions')
+	
+	@api.multi
+	def unlink(self):
+		for question in self.question_ids:
+			question.unlink()
+		return super(SurveySheetSection, self).unlink()
 
 class SurveySheet(models.Model):
 	_name = 'etraining.survey_sheet'

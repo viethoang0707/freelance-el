@@ -1,28 +1,45 @@
 <p-dialog header="{{'Question sheet design'|translate}}" [(visible)]="display" modal="false" width="960" height="600" [responsive]="true" appendTo="body">
     <div class="spinner" [hidden]="!loading"></div>
     <p-scrollPanel [style]="{width: '100%', height: '480px'}">
-        <div class="ui-g ui-fluid form-group">
-            <div *ngFor="let level of QUESTION_LEVEL | keys" class="ui-g-12">
-                <p-fieldset>
-                    <p-header>{{QUESTION_LEVEL[level]|translate}}</p-header>
-                    <div class="ui-g-12" style="margin-bottom: 10px;">
-                        <label>{{'Group'|translate}}</label>
-                        <p-tree [value]="tree[level]" selectionMode="checkbox" [(selection)]="selectedNodes[level]" (onNodeSelect)="nodeSelect($event,level)"></p-tree>
-                    </div>
-                    <div class="ui-g-6">
-                        <label>{{'Number of question'|translate}}</label>
-                        <input type="text" pInputText [(ngModel)]="selectorGroups[level].number" name="number" pKeyFilter="pint">
-                    </div>
-                    <div class="ui-g-6">
-                        <label>{{'Question score'|translate}}</label>
-                        <input type="text" pInputText [(ngModel)]="selectorGroups[level].score" name="number" pKeyFilter="num">
-                    </div>
-                </p-fieldset>
-            </div>
+        <div class="ui-g-12" style="margin-bottom: 10px;">
+            <p-fieldset legend="{{'Sheet layout'|translate}}">
+                <p-radioButton name="layout" value="single" label="{{'Single-section'|translate}}" [(ngModel)]="sheet.layout" inputId="opt1"></p-radioButton>
+                <p-radioButton name="layout" value="multiple" label="{{'Multi-section'|translate}}" [(ngModel)]="sheet.layout" inputId="opt2"></p-radioButton>
+            </p-fieldset>
         </div>
+        <ng-container *ngIf="sheet.layout=='single'">
+            <question-selector></question-selector>
+        </ng-container>
+        <ng-container *ngIf="sheet.layout=='multiple'">
+            <p-table [value]="sections">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>#</th>
+                        <th>{{'Name'|translate}}</th>
+                        <th>{{'Action'|translate}}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-section let-rowIndex="rowIndex">
+                    <tr>
+                        <td>{{rowIndex+1}}</td>
+                        <td>{{section.name}}</td>
+                        <td>
+                            <button pButton type="button" label="{{'Select question'|translate}}" class="green-btn" (click)="selectQuestion(section)" icon="ui-icon-open-in-browser"></button>
+                            <button pButton type="button" pTooltip="{{'Move up'|translate}}" class="blue-grey-btn" icon="ui-icon-arrow-upward" (click)="moveUp(section, rowIndex)"></button>
+                            <button pButton type="button" pTooltip="{{'Move down'|translate}}" class="blue-grey-btn" icon="ui-icon-arrow-downward" (click)="moveDown(section, rowIndex)"></button>
+                            <button pButton type="button" pTooltip="{{'Edit'|translate}}" class="red-btn" icon="ui-icon-edit" (click)="editSection(section)"></button>
+                            <button pButton type="button" pTooltip="{{'Remove'|translate}}" class="red-btn" icon="ui-icon-delete" (click)="removeSection(section)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <button pButton type="button" label="{{'Add section'|translate}}" class="green-btn" (click)="addSection()" icon="ui-icon-add"></button>
+        </ng-container>
     </p-scrollPanel>
     <p-footer>
         <button type="button" pButton icon="ui-icon-check" label="{{'Save'|translate}}" (click)="save()"></button>
         <button type="button" pButton icon="ui-icon-clear" (click)="hide()" label="{{'Close'|translate}}"></button>
     </p-footer>
 </p-dialog>
+<question-sheet-section-editor-dialog></question-sheet-section-editor-dialog>
+<section-dialog></section-dialog>

@@ -105,9 +105,6 @@ export class ExamEditor extends BaseComponent {
 	save() {
 		this.sheet.finalized = true;
 		return this.sheet.save(this).flatMap(() => {
-			_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
-				examQuestion.sheet_id = this.sheet.id;
-			});
 			var newExamQuestions = _.filter(this.examQuestions, (examQuestion: ExamQuestion) => {
 				return examQuestion.IsNew;
 			});
@@ -123,7 +120,7 @@ export class ExamEditor extends BaseComponent {
 
 	designSheet() {
 		if (this.sheet && !this.sheet.finalized) {
-			this.editorDialog.show();
+			this.editorDialog.show(this.sheet);
 			this.editorDialog.onSave.subscribe(examQuestions => {
 				this.examQuestions = examQuestions;
 			});
