@@ -114,6 +114,7 @@ class SurveyQuestion(models.Model):
 	title = fields.Text(string="Title",related="question_id.title", readonly=True)
 	type = fields.Selection(
 		[('sc', 'Single-choice'), ('ext','Open end')],related="question_id.type", readonly=True)
+	sheet_layout = fields.Selection(related="sheet_id.layout", string="Sheet layout")
 
 class SurveySheetSection(models.Model):
 	_name = 'etraining.survey_sheet_section'
@@ -135,6 +136,24 @@ class SurveySheet(models.Model):
 		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="published")
 	layout = fields.Selection(
 		[('single', 'Single-section'), ('multiple', 'Multiple-section')], default="single")
+
+	@api.model
+	def replicate(self,params):
+		sheetId = +params["sheetId"]
+		for sheet in self.env['etraining.survey_sheet'].browse(sheetId):
+			clone_sheet = self.env['etraining.survey_sheet'].create({'seed':sheet.seed, 'name':sheet.name, 'layout':sheet.layout})
+			section_map = {}
+			for section_id in sheet.section_ids:
+				clone_section = self.env['etraining.survey_sheet_section'].create({'order':section_id.order, 'name':section_id.name, 'sheet_id':clone_sheet.id})
+				section_map[section_id.id] = clone_section.id
+			for question_id in sheet.question_ids:
+				if question_id.section_id:
+					section = section_map[question_id.section_id:.id]
+				else:
+					section = None
+				clone_question = self.env['etraining.survey_question'].create({'question_id':question_id.question_id.id, 'sheet_id':clone_sheet.id, 'section_id':section,
+					'score':question_id.score,'order':question_id.order})
+		return True
 
 	def _compute_question_count(self):
 		for sheet in self:
@@ -212,7 +231,7 @@ class SurveyAnswer(models.Model):
 	json = fields.Text(string="JSON data")
 	survey_question_id = fields.Many2one('etraining.survey_question', string='Survey question')
 	section_id = fields.Many2one('etraining.survey_sheet_section',string="Section",related="survey_question_id.section_id", readonly=True)
-	section_name = fields.Char(related="section_id.name", string="Section Name",related="section_id.name", readonly=True)
+	section_name = fields.Char(related="section_id.name", string="Section Name", readonly=True)
 
 class SurveySubmission(models.Model):
 	_name = 'etraining.survey_submission'

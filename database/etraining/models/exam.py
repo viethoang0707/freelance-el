@@ -243,8 +243,7 @@ class QuestionSheetSection(models.Model):
 	sheet_id = fields.Many2one('etraining.question_sheet',string='Sheet')
 	exam_id = fields.Many2one('etraining.exam', related='sheet_id.exam_id', string='Exam', readonly=True)
 	order = fields.Integer(string="Order")
-	layout = fields.Selection(
-		[('single', 'Single-section'), ('multiple', 'Multiple-section')], default="single")
+	
 
 class ExamRecord(models.Model):
 	_name = 'etraining.exam_record'
@@ -270,6 +269,7 @@ class ExamQuestion(models.Model):
 	section_id = fields.Many2one('etraining.question_sheet_section',string="Section")
 	section_name = fields.Char(related="section_id.name", string="Section Name")
 	score = fields.Float(string='Score')
+	sheet_layout = fields.Selection(related="sheet_id.layout", string="Sheet layout")
 	order = fields.Integer(string='Order')
 	group_id = fields.Many2one('res.groups', related="question_id.group_id", string='Group', readonly=True)
 	group_name = fields.Char(related="group_id.name", string="Group Name")
@@ -289,10 +289,31 @@ class QuestionSheet(models.Model):
 	finalized = fields.Boolean(string="Finalized")
 	exam_id = fields.Many2one('etraining.exam',string="Exam")
 	question_ids = fields.One2many('etraining.exam_question',"sheet_id", string='Exam questions')
+	section_ids = fields.One2many('etraining.question_sheet_section',"sheet_id", string='Exam sections')
 	supervisor_id = fields.Many2one('res.users', related="exam_id.supervisor_id", string='Administrator')
 	question_count = fields.Integer( compute='_compute_question_count', string='Question count')
 	status = fields.Selection(
 		[('draft', 'draft'), ('published', 'Published'),  ('unpublished', 'unpublished')], default="published")
+	layout = fields.Selection(
+		[('single', 'Single-section'), ('multiple', 'Multiple-section')], default="single")
+
+	@api.model
+	def replicate(self,params):
+		sheetId = +params["sheetId"]
+		for sheet in self.env['etraining.question_sheet'].browse(sheetId):
+			clone_sheet = self.env['etraining.question_sheet'].create({'seed':sheet.seed, 'name':sheet.name, 'layout':sheet.layout})
+			section_map = {}
+			for section_id in sheet.section_ids:
+				clone_section = self.env['etraining.question_sheet_section'].create({'order':section_id.order, 'name':section_id.name, 'sheet_id':clone_sheet.id})
+				section_map[section_id.id] = clone_section.id
+			for question_id in sheet.question_ids:
+				if question_id.section_id:
+					section = section_map[question_id.section_id:.id]
+				else:
+					section = None
+				clone_question = self.env['etraining.exam_question'].create({'question_id':question_id.question_id.id, 'sheet_id':clone_sheet.id, 'section_id':section,
+					'score':question_id.score,'order':question_id.order})
+		return True
 
 	def _compute_question_count(self):
 		for sheet in self:
