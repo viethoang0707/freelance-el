@@ -24,8 +24,8 @@ const EXAM_FIELDS = ['name', 'sheet_id', 'supervisor_id', 'supervisor_group_id']
 
 @Component({
     moduleId: module.id,
-    selector: 'exam-result-stats-report-container',
-    templateUrl: 'exam-result-stats-report-container.component.html',
+    selector: 'exam-section-result-stats-report-container',
+    templateUrl: 'exam-section-result-stats-report-container.component.html',
 })
 @Report({
     title: 'Exam result statistics report',
