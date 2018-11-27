@@ -113,7 +113,7 @@ export class ExerciseCourseUnitComponent extends BaseComponent implements ICours
 
 	designSheet() {
 		if (this.sheet && !this.sheet.finalized) {
-			this.editorDialog.show();
+			this.editorDialog.show(this.sheet);
 			this.editorDialog.onSave.subscribe(examQuestions => {
 				this.examQuestions = examQuestions;
 			});

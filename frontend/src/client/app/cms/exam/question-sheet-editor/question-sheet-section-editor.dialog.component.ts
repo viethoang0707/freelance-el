@@ -62,10 +62,8 @@ export class QuestionSheetSectionEditorDialog extends BaseComponent  {
 						examQuestion.sheet_id = this.section.sheet_id;
 						examQuestion.section_id = this.section.id;
 					});
-					//this.onSaveReceiver.next(this.examQuestions);
+					this.onSaveReceiver.next(this.examQuestions);
 					this.hide();
-					console.log(this.examQuestions);
-					this.success(this.translateService.instant('Content saved successfully.'));
 				});
 	}
 

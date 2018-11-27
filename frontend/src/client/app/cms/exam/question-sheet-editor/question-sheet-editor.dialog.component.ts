@@ -34,7 +34,7 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	private display: boolean;
 	private sheet: QuestionSheet;
 	private sections: QuestionSheetSection[];
-	private examQuestions: ExamQuestion[];
+	private multiplSectionQuestions: any;
 
 	@ViewChild(QuestionSelectorComponent) singleSection: QuestionSelectorComponent;
 	@ViewChild(SectionDialog) sectionDialog: SectionDialog;
@@ -46,6 +46,7 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 	constructor() {
 		super();
 		this.sheet = new QuestionSheet();
+		this.multiplSectionQuestions = {};
 	}
 
 	show(sheet: QuestionSheet) {
@@ -68,17 +69,23 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 					return _.flatten(questions)
 				})
 				.subscribe(questions => {
-					this.examQuestions = questions;
-					_.each(this.examQuestions, (examQuestion: ExamQuestion) => {
-						examQuestion.sheet_id = this.sheet.id;
+					_.each(questions, (question: ExamQuestion) => {
+						question.sheet_id = this.sheet.id;
 					});
-					//this.onSaveReceiver.next(this.examQuestions);
+					this.onSaveReceiver.next(questions);
 					this.hide();
-					console.log(this.examQuestions);
 					this.success(this.translateService.instant('Content saved successfully.'));
 				});
-			if (this.sheet.layout == 'multiple') 
-				console.log(this.examQuestions);
+			if (this.sheet.layout == 'multiple') {
+				var questions = [];
+				_.each(this.sections, (section:QuestionSheetSection)=> {
+					questions = questions.concat(this.multiplSectionQuestions[section.id]);
+				});
+				this.onSaveReceiver.next(questions);
+				console.log(questions);
+				this.hide();
+				this.success(this.translateService.instant('Content saved successfully.'));
+			}
 	}
 
 	addSection() {
@@ -97,8 +104,8 @@ export class QuestionSheetEditorDialog extends BaseComponent {
 
 	selectQuestion(section: QuestionSheetSection) {
 		this.sectionEditorDialog.show(section);
-		this.sectionEditorDialog.onSave.subscribe(questions=> {
-			this.examQuestions =  this.examQuestions.concat(questions);
+		this.sectionEditorDialog.onSave.first().subscribe(questions=> {
+			this.multiplSectionQuestions[section.id] =  questions;
 		});
 	}
 

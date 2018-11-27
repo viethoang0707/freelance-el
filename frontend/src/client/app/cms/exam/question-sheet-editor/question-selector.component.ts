@@ -73,6 +73,7 @@ export class QuestionSelectorComponent extends BaseComponent implements OnInit {
 			examQuestion.question_id = question.id;
 			examQuestion.score = score;
 			examQuestion.title = question.title;
+			examQuestion.level = question.level;
 			examQuestion.group_id = question.group_id;
 			examQuestion.group_name = question.group_name;
 			return examQuestion;
