@@ -17,6 +17,7 @@ import { IQuestion } from '../../../cms/question/question.interface';
 import { QuestionRegister } from '../../../cms/question/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
+import { SurveySheetSection } from '../../../shared/models/elearning/survey_sheet-section.model';
 
 @Component({
     moduleId: module.id,
@@ -29,6 +30,7 @@ export class SurveySheetPreviewDialog extends BaseComponent {
     private display: boolean;
     private surveyQuestions: SurveyQuestion[];
     private sheet: SurveySheet;
+    private sheetSections: SurveySheetSection[];
 
     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
 
@@ -36,20 +38,34 @@ export class SurveySheetPreviewDialog extends BaseComponent {
         super();
         this.display = false;
         this.surveyQuestions = [];
+        this.sheetSections = [];
     }
 
     show(sheet: SurveySheet) {
         this.display = true;
         this.surveyQuestions = [];
         this.sheet = sheet;
-        this.startPreReview();
+        if (this.sheet.layout == 'multiple')
+            this.sheet.listSections(this).subscribe(sections => {
+                this.sheetSections = sections;
+                this.startPreview();
+            });
+            
+        else
+            this.startPreview();
+    }
+
+    questionBySection(section: SurveySheetSection) {
+        return _.filter(this.surveyQuestions, (question: SurveyQuestion) => {
+            return question.section_id == section.id;
+        });
     }
 
     hide() {
         this.display = false;
     }
 
-    startPreReview() {
+    startPreview() {
         this.sheet.listQuestions(this).subscribe(surveyQuestions => {
             SurveyQuestion.populateQuestions(this, surveyQuestions).subscribe(() => {
                 this.surveyQuestions = surveyQuestions;

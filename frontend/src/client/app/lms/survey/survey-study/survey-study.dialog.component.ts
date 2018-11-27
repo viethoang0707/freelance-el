@@ -141,6 +141,7 @@ export class SurveyStudyDialog extends BaseComponent {
 			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
+			answer.survey_question_id =  this.currentQuestion.id;
 			this.answers.push(answer);
 			this.updateStats();
 			return answer;

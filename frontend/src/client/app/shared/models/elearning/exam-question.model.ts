@@ -33,6 +33,7 @@ export class ExamQuestion extends BaseModel{
         this.group_name = undefined;
         this.section_id = undefined;
         this.section_name = undefined;
+        this.sheet_layout = undefined;
 	}
 
     group_name: string;
@@ -52,24 +53,8 @@ export class ExamQuestion extends BaseModel{
     option_ids: number[];
     section_name: string;
     section_id: number;
+    sheet_layout: string;
     
-    clone():ExamQuestion {
-        var q = new ExamQuestion();
-        q.question_id = this.question_id;
-        q.exam_id = this.exam_id;
-        q.sheet_id = this.sheet_id;
-        q.score = this.score;
-        q.order = this.order;
-        q.level = this.level;
-        q.title = this.title;
-        q.content = this.content;
-        q.explanation = this.explanation;
-        q.type = this.type;
-        q.group_id = this.group_id;
-        q.group_name = this.group_name;
-        return q;
-    }
-
     static populateQuestions(context: APIContext, examQuestions: ExamQuestion[],fields?:string[]): Observable<any> {
         examQuestions = _.filter(examQuestions, (q:ExamQuestion)=> {
             return q.question.IsNew;

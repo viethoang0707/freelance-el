@@ -5,6 +5,8 @@ import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
 import { ListAPI } from '../../services/api/list.api';
 import { SurveyQuestion } from './survey-question.model';
+import { SurveySheetSection } from './survey_sheet-section.model';
+import { ExecuteAPI } from '../../services/api/execute.api';
 
 @Model('etraining.survey_sheet')
 export class SurveySheet extends BaseModel{
@@ -30,14 +32,14 @@ export class SurveySheet extends BaseModel{
     status: string;
     layout:string;
     
-    clone() {
-        var sheet = new SurveySheet();
-        sheet.name =  this.name;
-        sheet.seed =  this.seed;
-        sheet.finalized =  this.finalized;
-        return sheet;
+    static __api__replicate(sheetId: number): SearchReadAPI {
+        return new ExecuteAPI(SurveySheet.Model, 'replicate',{sheetId:sheetId}, null);
     }
 
+    replicate(context:APIContext):Observable<any> {
+        return context.apiService.execute(SurveySheet.__api__replicate(this.id), 
+            context.authService.LoginToken);
+    }
 
     static __api__listTemplate(fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(SurveySheet.Model, fields,"[('survey_id','=',False)]");
@@ -55,5 +57,15 @@ export class SurveySheet extends BaseModel{
         if (!this.id)
             return Observable.of([]);
         return SurveyQuestion.search(context,fields,"[('sheet_id','=',"+this.id+")]");
+    }
+
+    static __api__listSections(sheetId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveySheetSection.Model,fields, "[('sheet_id','=',"+sheetId+")]");
+    }
+
+    listSections( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
+        return SurveySheetSection.search(context,fields,"[('sheet_id','=',"+this.id+")]");
     }
 }

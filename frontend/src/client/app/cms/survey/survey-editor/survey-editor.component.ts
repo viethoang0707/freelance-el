@@ -100,7 +100,7 @@ export class SurveyEditor extends BaseComponent {
 
 	saveToTemplate() {
 		if (this.sheet && this.sheet.finalized) {
-			this.saveDialog.show(this.sheet, this.surveyQuestions);
+			this.saveDialog.show(this.sheet);
 		}
 	}
 

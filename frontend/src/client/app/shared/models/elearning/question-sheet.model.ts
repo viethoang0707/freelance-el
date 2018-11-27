@@ -3,6 +3,8 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { Model,FieldProperty, ReadOnlyProperty } from '../decorator';
 import { APIContext } from '../context';
 import { SearchReadAPI } from '../../services/api/search-read.api';
+import { QuestionSheetSection } from './question_sheet-section.model';
+import { ExecuteAPI } from '../../services/api/execute.api';
 
 import { ListAPI } from '../../services/api/list.api';
 import { ExamQuestion } from './exam-question.model';
@@ -33,14 +35,13 @@ export class QuestionSheet extends BaseModel{
     status: string;
     layout:string;
     
-    clone():QuestionSheet {
-        var sheet = new QuestionSheet();
-        sheet.name = this.name;
-        sheet.exam_id = this.exam_id;
-        sheet.exercise_id = this.exercise_id;
-        sheet.finalized = this.finalized;
-        sheet.seed = this.seed;
-        return sheet;
+    static __api__replicate(sheetId: number): SearchReadAPI {
+        return new ExecuteAPI(QuestionSheet.Model, 'replicate',{sheetId:sheetId}, null);
+    }
+
+    replicate(context:APIContext):Observable<any> {
+        return context.apiService.execute(QuestionSheet.__api__replicate(this.id), 
+            context.authService.LoginToken);
     }
     
     static __api__listTemplate(fields?:string[]): SearchReadAPI {
@@ -59,5 +60,15 @@ export class QuestionSheet extends BaseModel{
         if (!this.id)
             return Observable.of([]);
         return ExamQuestion.search(context,fields,"[('sheet_id','=',"+this.id+")]");
+    }
+
+    static __api__listSections(sheetId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(QuestionSheetSection.Model,fields, "[('sheet_id','=',"+sheetId+")]");
+    }
+
+    listSections( context:APIContext,fields?:string[]): Observable<any[]> {
+        if (!this.id)
+            return Observable.of([]);
+        return QuestionSheetSection.search(context,fields,"[('sheet_id','=',"+this.id+")]");
     }
 }

@@ -27,6 +27,7 @@ export class SurveyQuestion extends BaseModel {
         this.group_name = undefined;
         this.section_id = undefined;
         this.section_name = undefined;
+        this.sheet_layout = undefined;
 	}
 
     group_name: string;
@@ -42,18 +43,7 @@ export class SurveyQuestion extends BaseModel {
     group_id: number;
     section_name: string;
     section_id: number;
-
-    clone() {
-        var question = new SurveyQuestion();
-        question.question_id = this.question_id;
-        question.order = this.order;
-        question.title = this.title;
-        question.content = this.content;
-        question.type = this.type;
-        question.group_id = this.group_id;
-        question.group_name = this.group_name;
-        return question;
-    }
+    sheet_layout: string;
 
     static populateQuestions(context: APIContext, surveyQuestions: SurveyQuestion[],fields?:string[]): Observable<any> {
         surveyQuestions = _.filter(surveyQuestions, (q:SurveyQuestion)=> {

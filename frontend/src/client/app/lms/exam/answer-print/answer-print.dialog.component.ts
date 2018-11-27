@@ -22,6 +22,7 @@ import { BaseModel } from '../../../shared/models/base.model';
 import { ExamLog } from '../../../shared/models/elearning/log.model';
 import { ReportUtils } from '../../../shared/helpers/report.utils';
 import { TimeConvertPipe } from '../../../shared/pipes/time.pipe';
+import { QuestionSheetSection } from '../../../shared/models/elearning/question_sheet-section.model';
 
 @Component({
     moduleId: module.id,
@@ -43,6 +44,7 @@ export class AnswerPrintDialog extends BaseComponent {
     private submission: Submission;
     private setting: ExamSetting;
     private reportUtils: ReportUtils;
+    private sheetSections: QuestionSheetSection[];
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, private timePipe: TimeConvertPipe) {
         super();
@@ -55,6 +57,7 @@ export class AnswerPrintDialog extends BaseComponent {
         this.submission = new Submission();
         this.setting = new ExamSetting();
         this.reportUtils = new ReportUtils();
+        this.sheetSections = [];
     }
 
     show(exam: Exam, member: ExamMember, submit: Submission) {
@@ -66,13 +69,28 @@ export class AnswerPrintDialog extends BaseComponent {
         this.member = member;
         ExamSetting.get(this, this.exam.setting_id).subscribe(setting => {
             this.setting = setting;
-            this.startReview();
+            QuestionSheet.get(this, this.exam.sheet_id).subscribe(sheet=> {
+                this.sheet = sheet;
+                if (this.sheet.layout =='single')
+                    this.startReview();
+                else
+                    this.sheet.listSections(this).subscribe(sections=> {
+                        this.sheetSections = sections;
+                        this.startReview();
+                    });
+            });
+            
         });
-        console.log(this.exam);
     }
 
     hide() {
         this.display = false;
+    }
+
+    questionBySection(section:QuestionSheetSection) {
+        return _.filter(this.examQuestions, (question:ExamQuestion)=> {
+            return question.section_id == section.id;
+        });
     }
 
     startReview() {

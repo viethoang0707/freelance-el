@@ -18,6 +18,7 @@ import { QuestionRegister } from '../../../cms/question/question.decorator';
 import 'rxjs/add/observable/timer';
 import * as _ from 'underscore';
 import { PRINT_DIALOG_STYLE } from '../../../shared/models/constants';
+import { QuestionSheetSection } from '../../../shared/models/elearning/question_sheet-section.model';
 
 @Component({
     moduleId: module.id,
@@ -31,6 +32,7 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
     private examQuestions: ExamQuestion[];
     private questions: Question[];
     private sheet: QuestionSheet;
+    private sheetSections: QuestionSheetSection[];
 
     @ViewChildren(QuestionContainerDirective) questionsComponents: QueryList<QuestionContainerDirective>;
 
@@ -39,12 +41,25 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
         this.display = false;
         this.examQuestions = [];
         this.questions = [];
+        this.sheetSections = [];
     }
 
     show(sheet: QuestionSheet) {
         this.display = true;
         this.sheet = sheet;
-        this.startPreview();
+        if (this.sheet.layout == 'multiple')
+            this.sheet.listSections(this).subscribe(sections => {
+                this.sheetSections = sections;
+                this.startPreview();
+            });
+        else
+            this.startPreview();
+    }
+
+    questionBySection(section: QuestionSheetSection) {
+        return _.filter(this.examQuestions, (question: ExamQuestion) => {
+            return question.section_id == section.id;
+        });
     }
 
     hide() {
@@ -55,10 +70,10 @@ export class QuestionSheetPreviewDialog extends BaseComponent {
         this.sheet.listQuestions(this).subscribe(examQuestions => {
             this.examQuestions = examQuestions;
             ExamQuestion.populateQuestions(this, examQuestions).subscribe(() => {
-                var questions = _.map(examQuestions, (examQuestion:ExamQuestion)=> {
+                var questions = _.map(examQuestions, (examQuestion: ExamQuestion) => {
                     return examQuestion.question;
                 });
-                Question.listOptionsForArray(this, questions).subscribe(()=> {
+                Question.listOptionsForArray(this, questions).subscribe(() => {
                     var componentHostArr = this.questionsComponents.toArray();
                     for (var i = 0; i < examQuestions.length; i++) {
                         var examQuestion = examQuestions[i];

@@ -37,6 +37,8 @@ import { UserStatusChartComponent } from './chart/user-status-chart/user-status-
 import { UserStatusChartContainerComponent } from './chart/user-status-chart/user-status-chart-container.component';
 import { UserActivationReportComponent } from './report/user/user-activation-report/user-activation-report.component';
 import { UserActivationReportContainerComponent } from './report/user/user-activation-report/user-activation-report-container.component';
+import { ExamSectionResultStatsReportComponent } from './report/exam/exam-section-result-stats-report/exam-section-result-stats-report.component';
+import { ExamSectionResultStatsReportContainerComponent } from './report/exam/exam-section-result-stats-report/exam-section-result-stats-report-container.component';
 
 @NgModule({
 	imports: [
@@ -44,6 +46,8 @@ import { UserActivationReportContainerComponent } from './report/user/user-activ
 		AuthModule
 	],
 	declarations: [
+		ExamSectionResultStatsReportComponent,
+		ExamSectionResultStatsReportContainerComponent,
 		AnalysisComponent,
 		ReportComponent,
 		ChartComponent,
@@ -92,6 +96,7 @@ import { UserActivationReportContainerComponent } from './report/user/user-activ
 		UserStatusChartContainerComponent,
 		UserActivationReportComponent,
 		UserActivationReportContainerComponent,
+		ExamSectionResultStatsReportContainerComponent,
 	],
 	exports: [
 		ExamResultReportComponent,

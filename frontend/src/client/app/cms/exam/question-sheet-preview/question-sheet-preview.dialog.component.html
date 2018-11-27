@@ -2,12 +2,28 @@
     <div class="spinner" [hidden]="!loading"></div>
     <p-scrollPanel [style]="{width: '100%', height: '460px'}">
         <div class="ui-g question-sheet-preview" #printSection>
-            <p-dataList [value]="examQuestions" [rows]="examQuestions.length" styleClass="l-question" [style]="{width: '100%', height: '100%'}">
-                <ng-template let-question pTemplate="item" let-i="index">
-                    <span>{{'Question'|translate}} {{i+1}}:</span>
-                    <div question-container></div>
-                </ng-template>
-            </p-dataList>
+            <div class="ui-g-12" *ngIf="sheet.layout=='single'">
+                    <p-dataList [value]="examQuestions" [rows]="examQuestions.length" styleClass="l-question">
+                        <ng-template let-question pTemplate="item" let-i="index">
+                            <span>{{'Question'|translate}} {{i+1}}:</span>
+                            <div question-container></div>
+                        </ng-template>
+                    </p-dataList>
+                </div>
+                <div class="ui-g-12" *ngIf="sheet.layout=='multiple'">
+                    <p-dataList [value]="sheetSections" [rows]="sheetSections.length" styleClass="l-section">
+                        <ng-template let-section pTemplate="item" >
+                            <h3>{{'Section'|translate}} {{section.name}}:</h3>
+                            <p-dataList [value]="questionBySection(section)"  styleClass="l-question">
+                                <ng-template let-question pTemplate="item" let-i="index">
+                                    <span>{{'Question'|translate}} {{i+1}}:</span>
+                                    <div question-container></div>
+                                </ng-template>
+                            </p-dataList>
+                        </ng-template>
+                    </p-dataList>
+                </div>
+
         </div>
     </p-scrollPanel>
     <p-footer>

@@ -98,7 +98,7 @@ export class ExamEditor extends BaseComponent {
 
 	saveToTemplate() {
 		if (this.sheet && this.sheet.finalized) {
-			this.saveDialog.show(this.sheet, this.examQuestions);
+			this.saveDialog.show(this.sheet);
 		}
 	}
 

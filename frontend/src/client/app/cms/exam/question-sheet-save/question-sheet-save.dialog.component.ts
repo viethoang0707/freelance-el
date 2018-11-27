@@ -28,37 +28,21 @@ export class QuestionSheetSaveDialog extends BaseComponent {
 
 	private display: boolean;
 	private sheet: QuestionSheet;
-	private examQuestions: ExamQuestion[];
 
 	constructor() {
 		super();
 		this.sheet =  new QuestionSheet();
 	}
 
-	show(sheet: QuestionSheet, questions: ExamQuestion[]) {
+	show(sheet: QuestionSheet) {
 		this.display = true;
 		this.sheet =  sheet;
-		this.examQuestions =  questions;
 	}
 
 	save() {
-		var sheet = new QuestionSheet();
-		sheet.name = this.sheet.name;
-		sheet.save(this).subscribe(()=> {
-			var examQuestions = _.map(this.examQuestions, question=> {
-				var questionTempl = question.clone();
-				questionTempl.exam_id =  null;
-				questionTempl.sheet_id =  sheet.id;
-				return questionTempl;
-			});
-			var subscriptions = _.map(examQuestions, examQuestion=> {
-				return examQuestion.save(this);
-			});
-			subscriptions.push(this.sheet.save(this));
-			Observable.forkJoin(subscriptions).subscribe(()=> {
-				this.success(this.translateService.instant('Question sheet saved successfully'));
+		this.sheet.replicate(this).subscribe(()=> {
+			this.success(this.translateService.instant('Question sheet saved successfully'));
 				this.hide();
-			});
 		});
 	}
 

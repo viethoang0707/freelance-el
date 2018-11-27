@@ -25,31 +25,21 @@ export class SurveySheetSaveDialog extends BaseComponent {
 
 	private display: boolean;
 	private sheet: SurveySheet;
-	private surveyQuestions: SurveyQuestion[];
 
 	constructor() {
 		super();
 		this.sheet =  new SurveySheet();
 	}
 
-	show(sheet: SurveySheet, questions: SurveyQuestion[]) {
+	show(sheet: SurveySheet) {
 		this.display = true;
 		this.sheet =  sheet;
-		this.surveyQuestions =  questions;
 	}
 
 	save() {
-		var sheet = this.sheet.clone()
-		sheet.save(this).subscribe(()=> {
-			var surveyQuestions = _.map(this.surveyQuestions, question=> {
-				var surveyQuestion = question.clone();
-				surveyQuestion.sheet_id = sheet.id;
-				return surveyQuestion;
-			});
-			SurveyQuestion.createArray(this, surveyQuestions).subscribe(()=> {
-				this.success(this.translateService.instant('Question sheet saved successfully'));
+		this.sheet.replicate(this).subscribe(()=> {
+			this.success(this.translateService.instant('Question sheet saved successfully'));
 				this.hide();
-			});
 		});
 	}
 
