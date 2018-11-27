@@ -84,7 +84,7 @@ export class ExamListComponent extends BaseComponent implements OnInit {
     }
 
     startExam(exam: Exam, member: ExamMember) {
-        if (exam.mode == 'offline' ) {
+        if (exam.exam_mode == 'offline' ) {
             this.warn('This exam does not support online mode');
             return;
         }

@@ -21,6 +21,7 @@ export class QuestionSheet extends BaseModel{
         this.name = undefined;
         this.status =  undefined;
         this.question_count =  undefined;
+        this.layout = undefined;
 	}
 
     name: string;
@@ -30,7 +31,7 @@ export class QuestionSheet extends BaseModel{
     seed:number;
     finalized:boolean;
     status: string;
-
+    layout:string;
     
     clone():QuestionSheet {
         var sheet = new QuestionSheet();

@@ -18,6 +18,9 @@ export class SurveyAnswer extends BaseModel{
         this.text = undefined;
         this.json = undefined;
         this.survey_id =  undefined;
+        this.survey_question_id = undefined;
+        this.section_id =  undefined;
+        this.section_name = undefined;
 	}
     survey_id: number;
     question_id: number;
@@ -26,5 +29,8 @@ export class SurveyAnswer extends BaseModel{
     text:string;
     json:string;
     question_type: string;
+    survey_question_id:number;
+    section_id: number;
+    section_name: string;
 
 }

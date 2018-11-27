@@ -17,6 +17,7 @@ import { ExamMember } from './exam-member.model';
 import { ExamGrade } from './exam-grade.model';
 import { ExamSetting } from './exam-setting.model';
 import { QuestionSheet } from './question-sheet.model';
+import { QuestionSheetSection } from './question_sheet-section.model';
 
 @Model('etraining.exam')
 export class Exam extends BaseModel{
@@ -30,7 +31,7 @@ export class Exam extends BaseModel{
 		this.instruction = undefined;
         this.start = undefined;
         this.end = undefined;
-        this.mode = undefined;
+        this.exam_mode = undefined;
         this.status = undefined;
         this.duration = undefined;
         this.publish_score = undefined;
@@ -66,7 +67,7 @@ export class Exam extends BaseModel{
     question_count: number;
     supervisor_group_id: number;
     sheet_status: string;
-    mode: string;
+    exam_mode: string;
     review_state:string;
     course_class_id:number;
     competency_id: number;
@@ -189,6 +190,22 @@ export class Exam extends BaseModel{
 
     listAnswers( context:APIContext,fields?:string[]): Observable<any[]> {
         return Answer.search(context,fields,"[('exam_id','=',"+this.id+")]");
+    }
+
+    static __api__listSections(examId: number,fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(QuestionSheetSection.Model,fields,"[('exam_id','=',"+examId+")]");
+    }
+
+    listSections( context:APIContext,fields?:string[]): Observable<any[]> {
+        return QuestionSheetSection.search(context,fields,"[('exam_id','=',"+this.id+")]");
+    }
+
+    static __api__listAnswersBySection(examId: number,sectionId:number, fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(Answer.Model,fields,"[('exam_id','=',"+examId+"),('section_id','=',"+sectionId+")]");
+    }
+
+    listAnswersBySection( context:APIContext,sectionId:number, fields?:string[]): Observable<any[]> {
+        return Answer.search(context,fields,"[('exam_id','=',"+this.id+"),('section_id','=',"+sectionId+")]");
     }
 
     listGrades( context:APIContext,fields?:string[]): Observable<any[]> {
