@@ -148,7 +148,7 @@ class SurveySheet(models.Model):
 				section_map[section_id.id] = clone_section.id
 			for question_id in sheet.question_ids:
 				if question_id.section_id:
-					section = section_map[question_id.section_id:.id]
+					section = section_map[question_id.section_id.id]
 				else:
 					section = None
 				clone_question = self.env['etraining.survey_question'].create({'question_id':question_id.question_id.id, 'sheet_id':clone_sheet.id, 'section_id':section,
