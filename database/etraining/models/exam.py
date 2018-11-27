@@ -19,7 +19,7 @@ class Exam(models.Model):
 	name = fields.Char(string='Name', required=True)
 	summary = fields.Text(string='Summary')
 	instruction = fields.Text(string='Instruction')
-	mode = fields.Selection(
+	exam_mode = fields.Selection(
 		[ ('offline', 'Offline'), ('online', 'Online')], default="online")
 	status = fields.Selection(
 		[('open', 'Open'), ('closed', 'Closed'), ('initial', 'Initial')], default="initial")
@@ -134,7 +134,7 @@ class ExamMember(models.Model):
 	sheet_id = fields.Many2one('etraining.question_sheet', related='exam_id.sheet_id', string='Exam sheet', readonly=True)
 	submission_id = fields.Many2one('etraining.submission', string='Submission')
 	exam_name = fields.Char(related='exam_id.name', string='Exam name', readonly=True)
-	exam_mode = fields.Selection(related='exam_id.mode', string='Exam mode', readonly=True)
+	exam_mode = fields.Selection(related='exam_id.exam_mode', string='Exam mode', readonly=True)
 	user_id = fields.Many2one('res.users', string='User')
 	name = fields.Char(related='user_id.name', string='User name', readonly=True)
 	login = fields.Char(related='user_id.login', string='User login', readonly=True)
@@ -241,6 +241,7 @@ class QuestionSheetSection(models.Model):
 
 	name = fields.Char(string="Name")
 	sheet_id = fields.Many2one('etraining.question_sheet',string='Sheet')
+	exam_id = fields.Many2one('etraining.exam', related='sheet_id.exam_id', string='Exam', readonly=True)
 	order = fields.Integer(string="Order")
 	layout = fields.Selection(
 		[('single', 'Single-section'), ('multiple', 'Multiple-section')], default="single")
@@ -320,6 +321,9 @@ class Answer(models.Model):
 	submission_id = fields.Many2one('etraining.submission',string="Submission")
 	exam_id = fields.Many2one('etraining.exam', related="submission_id.exam_id", readonly=True,string='Exam')
 	json = fields.Text(string="JSON data")
+	exam_question_id = fields.Many2one('etraining.exam_question', string='Exam question')
+	section_id = fields.Many2one('etraining.question_sheet_section',string="Section",related="exam_question_id.section_id", readonly=True)
+	section_name = fields.Char(related="section_id.name", string="Section Name", readonly=True)
 
 class Submission(models.Model):
 	_name = 'etraining.submission'
@@ -329,7 +333,7 @@ class Submission(models.Model):
 	member_id = fields.Many2one('etraining.exam_member', string='Exam member')
 	user_id = fields.Many2one('res.users', string='User', related="member_id.user_id", readonly=True)
 	exam_id = fields.Many2one('etraining.exam', related="member_id.exam_id", readonly=True,string='Exam')
-	exam_mode = fields.Selection(related='exam_id.mode', string='Exam mode', readonly=True)
+	exam_mode = fields.Selection(related='exam_id.exam_mode', string='Exam mode', readonly=True)
 	answer_ids = fields.One2many('etraining.answer','submission_id', string="Submission")
 	start = fields.Datetime(string='Start time')
 	end = fields.Datetime(string='End time')

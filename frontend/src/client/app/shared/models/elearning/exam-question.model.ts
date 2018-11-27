@@ -31,6 +31,8 @@ export class ExamQuestion extends BaseModel{
         this.question =  new Question();
         this.option_ids = [];
         this.group_name = undefined;
+        this.section_id = undefined;
+        this.section_name = undefined;
 	}
 
     group_name: string;
@@ -48,6 +50,8 @@ export class ExamQuestion extends BaseModel{
     group_id: number;
     @ReadOnlyProperty()
     option_ids: number[];
+    section_name: string;
+    section_id: number;
     
     clone():ExamQuestion {
         var q = new ExamQuestion();

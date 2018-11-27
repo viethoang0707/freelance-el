@@ -21,9 +21,10 @@ export class Answer extends BaseModel{
         this.score = undefined;
         this.exam_id =  undefined;
         this.json = undefined;
-        this.survey_id =  undefined;
+        this.exam_question_id = undefined;
+        this.section_id =  undefined;
+        this.section_name = undefined;
 	}
-    survey_id: number;
     exam_id: number;
     question_id: number;
     option_id: number;
@@ -34,5 +35,7 @@ export class Answer extends BaseModel{
     json:string;
     question_level: string;
     question_type: string;
-
+    exam_question_id:number;
+    section_id: number;
+    section_name: string;
 }

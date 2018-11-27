@@ -19,6 +19,7 @@ export class SurveySheet extends BaseModel{
         this.finalized = undefined;
         this.status =  undefined;
         this.question_count =  undefined;
+        this.layout = undefined;
 	}
 
     question_count: number;
@@ -27,7 +28,7 @@ export class SurveySheet extends BaseModel{
     seed:number;
     finalized:boolean;
     status: string;
-
+    layout:string;
     
     clone() {
         var sheet = new SurveySheet();

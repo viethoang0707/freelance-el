@@ -210,6 +210,9 @@ class SurveyAnswer(models.Model):
 	submission_id = fields.Many2one('etraining.survey_submission',string="Submission")
 	survey_id = fields.Many2one('etraining.survey', related="submission_id.survey_id", readonly=True,string='Survey')
 	json = fields.Text(string="JSON data")
+	survey_question_id = fields.Many2one('etraining.survey_question', string='Survey question')
+	section_id = fields.Many2one('etraining.survey_sheet_section',string="Section",related="survey_question_id.section_id", readonly=True)
+	section_name = fields.Char(related="section_id.name", string="Section Name",related="section_id.name", readonly=True)
 
 class SurveySubmission(models.Model):
 	_name = 'etraining.survey_submission'

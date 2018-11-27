@@ -143,7 +143,13 @@ export class Survey extends BaseModel{
         return SurveyMember.single(context, fields, "[('role','=','editor'),('survey_id','='," + this.id + ")]");
     }
 
+    static __api__listAnswersBySection(surveyId: number,sectionId:number, fields?:string[]): SearchReadAPI {
+        return new SearchReadAPI(SurveyAnswer.Model,fields,"[('survey_id','=',"+surveyId+"),('section_id','=',"+sectionId+")]");
+    }
 
+    listAnswersBySection( context:APIContext,sectionId:number, fields?:string[]): Observable<any[]> {
+        return SurveyAnswer.search(context,fields,"[('survey_id','=',"+this.id+"),('section_id','=',"+sectionId+")]");
+    }
 
     static __api__listCandidates(surveyId: number,fields?:string[]): SearchReadAPI {
         return new SearchReadAPI(SurveyMember.Model, fields,"[('survey_id','=',"+surveyId+"),('role','=','candidate')]");
