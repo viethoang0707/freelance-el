@@ -42,6 +42,7 @@ import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model
 
 const MEMBER_FIELDS = ['name', 'group_name', 'conference_member_id','email', 'enroll_status', 'certificate_id', 'role', 'login', 'user_id']
 
+
 @Component({
 	moduleId: module.id,
 	selector: 'class-manage',

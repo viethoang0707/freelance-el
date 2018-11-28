@@ -29,7 +29,7 @@ import { SurveyMember } from '../../shared/models/elearning/survey-member.model'
 import * as _ from 'underscore';
 
 const COURSE_FIELDS = ['status', 'review_state', 'name', 'write_date', 'create_date', 'supervisor_id', 'logo', 'summary', 'description', 'code', 'mode', 'unit_count', 'group_name', 'syllabus_id'];
-const EXAM_FIELDS = ['status', 'mode', 'review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
+const EXAM_FIELDS = ['status', 'exam_mode', 'review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 const CLASS_FIELDS = ['start', 'end', 'name'];
 
 @Component({
@@ -111,16 +111,20 @@ export class UserDashboardComponent extends BaseComponent implements OnInit {
     }
 
     displayExams(exams: Exam[]) {
-        console.log(exams);
         _.each(exams, (exam: Exam) => {
             exam['candidate'] = this.lmsProfileService.getExamMemberByRole('candidate', exam.id);
             exam['editor'] = this.lmsProfileService.getExamMemberByRole('editor', exam.id);
             exam['supervisor'] = this.lmsProfileService.getExamMemberByRole('supervisor', exam.id);
+            if (exam.end) {
+                var end = new Date(exam.end.getTime() + (60 * 60 * 24 * 1000));
+            } else {
+                var end = new Date();
+            }
             // if (exam.IsAvailable)
             this.events.push({
                 title: exam.name,
                 start: exam.start,
-                end: exam.end,
+                end: end,
                 id: exam.id,
                 allDay: true
             });

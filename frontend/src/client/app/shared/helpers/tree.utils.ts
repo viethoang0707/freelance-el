@@ -63,6 +63,7 @@ export class TreeUtils {
       subTrees.push(
         {
           data: group,
+          id: group.id,
           label: group.treeLabel(count),
           expanded: true,
           expandedIcon: "ui-icon-folder-open",

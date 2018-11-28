@@ -138,7 +138,7 @@
             <field name="body_html">
                 <![CDATA[
             <div>
-                Exam ${object.course_id.name} has been closed.
+                Exam ${object.exam_id.name} has been closed.
             </div>]]>
             </field>
         </record>

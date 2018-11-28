@@ -10,15 +10,17 @@
             </div>
             <div class="ui-toolbar-group-right ">
                 <span class="md-inputfield search">
-                    <input type="text" pInputText placeholder="{{'Search'|translate}}" 
-                    (input)="scoreTable.filterGlobal($event.target.value, 'contains')">   
-                    <i class="fa fa-search"></i>      
+                    <input type="text" pInputText placeholder="{{'Search'|translate}}" (input)="scoreTable.filterGlobal($event.target.value, 'contains')">
+                    <i class="fa fa-search"></i>
                 </span>
-                <button pButton type="button" label="{{ 'Result report'|translate}} " class="blue-grey-btn " icon="ui-icon-data-usage" (click)="showExamReport()"></button>
-                <button pButton type="button" label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer" (click)="showExamStats()"></button>
+                <button pButton type="button" label="{{ 'Result report'|translate}} " class="blue-grey-btn " icon="ui-icon-data-usage"
+                    (click)="showExamReport()"></button>
+                <button pButton type="button" label="{{ 'Statistics'|translate}} " class="blue-grey-btn " icon="ui-icon-equalizer"
+                    (click)="showExamStats()"></button>
             </div>
         </p-toolbar>
-        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember" [responsive]="true" [globalFilterFields]="['name', 'login' ,'group_name', 'score', 'grade', 'enroll_status' ]">
+        <p-table #scoreTable [value]="members" [paginator]="true" [rows]="25" selectionMode="single" [(selection)]="selectedMember"
+            [responsive]="true" [globalFilterFields]="['name', 'login' ,'group_name', 'score', 'grade', 'enroll_status' ]">
             <!--  sortField="role" -->
             <ng-template pTemplate="header">
                 <tr>
@@ -53,13 +55,13 @@
             </ng-template>
             <ng-template pTemplate="body" let-member let-rowIndex="rowIndex">
                 <tr [pSelectableRow]="member">
-                     <td>{{rowIndex+1}}</td>
+                    <td>{{rowIndex+1}}</td>
                     <td>{{member.name}}</td>
                     <td>{{member.login}}</td>
                     <td>{{member.group_name}}</td>
                     <td>{{member.score}}</td>
                     <td>{{member.grade}}</td>
-                    <td>{{member.enroll_status}}</td>
+                    <td>{{EXAM_MEMBER_ENROLL_STATUS[member.enroll_status] | translate}}</td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="summary">
@@ -67,7 +69,7 @@
             </ng-template>
         </p-table>
     </div>
-     <div class="card-footer">
+    <div class="card-footer">
         <button type="button" pButton icon="ui-icon-arrow-back" (click)="back()" label="{{'Go back'|translate}}"></button>
     </div>
     <question-marking-dialog></question-marking-dialog>

@@ -176,7 +176,7 @@ class CourseUnit(models.Model):
 	scorm_lecture_id = fields.Many2one('etraining.scorm_lecture', string='SCORM lecture')
 	self_assessment_id = fields.Many2one('etraining.self_assessment', string='Self-assessment')
 	exercise_id = fields.Many2one('etraining.exercise', string='Exercise')
-	
+
 	@api.model
 	def create(self, vals):
 		unit = super(CourseUnit, self).create(vals)
@@ -279,12 +279,15 @@ class SelfAssessment(models.Model):
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
 
+
 class Exerise(models.Model):
 	_name = 'etraining.exercise'
 
 	sheet_id = fields.Many2one('etraining.question_sheet', string='Question sheet')
 	unit_id = fields.Many2one('etraining.course_unit', string='Course unit')
 	course_id = fields.Many2one('etraining.course',related='unit_id.course_id', string='Course', readonly=True)
+
+
 
 class SCORMLecture(models.Model):
 	_name = 'etraining.scorm_lecture'
@@ -423,7 +426,7 @@ class CourseClass(models.Model):
 				for user in self.env['res.users'].browse(userIds):
 					fail = True
 					for member in user.course_member_ids:
-						if member.course_id.id == self.course_id.prequisite_course_id.id and member.enroll_status =='completed':
+						if member.course_id.id == course.prequisite_course_id.id and member.enroll_status =='completed':
 							fail = False
 							break
 					if fail:

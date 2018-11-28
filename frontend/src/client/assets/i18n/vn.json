@@ -396,7 +396,7 @@
 	"Question sheet bank": "Ngân hàng đề thi",
 	"Question sheets": "Đề thi",
 	"Question sheet template": "Mẫu đề thi",
-	"Question sheet design": "Tạo đề thi",
+	"Question sheet design": "Tạo nội dung",
 	"Save question sheet": "Lưu đề thi",
 	"Question sheet saved successfully": "Đề thi đã tạo thành công",
 	"Project": "Bài tập lớn",
@@ -500,7 +500,7 @@
 	"Publish": "Hiển thị",
 	"Unpublish": "Ẩn",
 	"Design question sheet": "Tạo đề thi",
-	"Load question sheet templates": "Tải mẫu đề thi",
+	"Load question sheet templates": "Tải mẫu",
 	"Redo exam": "Làm lại bài kiểm tra",
 	"Result report": "Báo cáo kết quả",
 	"Statistics": "Số liệu thống kê",
@@ -609,7 +609,7 @@
 	"Delete sheet successfully": "Xóa mẫu đề thi thành công",
 	"Delete survey successfully": "Xóa khảo sát thành công",
 	"Survey content": "Nội dung khảo sát",
-	"Save to templates": "Lưu nội dung",
+	"Save to templates": "Lưu mẫu",
 	"Clear": "Xóa nội dung",
 	"Self-assessment": "Bài thi",
 	"User exist": "Người dùng đã tồn tại",
@@ -732,5 +732,6 @@
 	"Enter you login name": "Nhập tên đăng nhập",
 	"Reset link will be sent to your email": "Reset link sẽ được gửi vào hòm thư điện tử của bạn",
 	"Your token has been expired": "Mã kích hoạt của bạn đã hết hạn",
-	"Access denied. You must login again!": "Truy cập bị từ chối. Bạn phải đăng nhập lại!"
+	"Access denied. You must login again!": "Truy cập bị từ chối. Bạn phải đăng nhập lại!",
+	"E-learnining System": "Hệ thống đào tạo trực tuyến"
 }

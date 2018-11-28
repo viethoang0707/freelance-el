@@ -10,6 +10,7 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { TreeNode } from 'primeng/api';
 import { GROUP_CATEGORY, CONTENT_STATUS } from '../../../shared/models/constants'
 import { SelectItem } from 'primeng/api';
+import * as filter from 'gulp-filter';
 
 const USER_FIELDS = ['name', 'group_name', 'login', 'banned'];
 const GROUP_FIELDS = ['name', 'category', 'parent_id'];

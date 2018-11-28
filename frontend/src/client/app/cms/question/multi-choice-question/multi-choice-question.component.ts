@@ -76,10 +76,10 @@ export class MultiChoiceQuestionComponent extends BaseComponent implements IQues
 			return option["is_selected"];
 		});
 		this.answer.json = JSON.stringify(_.pluck(selectedOptions, "id"));
-		_.each(this.options, (option => {
-			if ((option.is_correct && !option["is_selected"]) || (!option.is_correct && option["is_selected"]))
-				this.answer.is_correct = false;
-		}));
+		if (selectedOptions)
+			return _.pluck(selectedOptions,'id');
+		else
+			return [];
 	}
 
 	addOption() {

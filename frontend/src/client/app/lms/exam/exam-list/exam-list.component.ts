@@ -18,7 +18,7 @@ import { ExamRecord } from '../../../shared/models/elearning/exam-record.model';
 import { AnswerPrintDialog } from '../../../lms/exam/answer-print/answer-print.dialog.component';
 import { ExamSetting } from '../../../shared/models/elearning/exam-setting.model';
 
-const EXAM_FIELDS = ['status', 'mode','review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
+const EXAM_FIELDS = ['status', 'exam_mode','review_state', 'name', 'setting_id', 'write_date', 'create_date', 'supervisor_id', 'summary', 'instruction', 'start', 'end', 'duration', 'question_count', 'sheet_status', 'sheet_id'];
 
 @Component({
     moduleId: module.id,

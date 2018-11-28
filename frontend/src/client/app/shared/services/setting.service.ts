@@ -10,6 +10,7 @@ import { DEFAULT_LANG } from '../models/constants';
 export class SettingService {
 
   private viewMode: string;
+  private APP_ID = '<%= APP_ID %>';
 
   constructor(private authService: AuthService) {
   }
@@ -38,12 +39,12 @@ export class SettingService {
   }
 
   set Lang(lang: string) {
-    localStorage.setItem('language', lang);
+    localStorage.setItem(this.APP_ID+':'+'language', lang);
   }
 
   get Lang(): string {
-    if (localStorage.getItem('language'))
-      return localStorage.getItem('language');
+    if (localStorage.getItem(this.APP_ID+':'+'language'))
+      return localStorage.getItem(this.APP_ID+':'+'language');
     else
       return DEFAULT_LANG;
   }
