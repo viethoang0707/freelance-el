@@ -39,7 +39,7 @@ export class OpenEndQuestionComponent extends BaseComponent implements IQuestion
 	}
 
 	concludeAnswer() {
-		return;
+		return [];
 	}
 
 	isValid():boolean {

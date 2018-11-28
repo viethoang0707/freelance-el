@@ -98,6 +98,15 @@ export class ExamMember extends BaseModel{
             context.authService.LoginToken);
     }
 
+    static __api__submit_answer(answerId: number, optionIds:number[]): ExecuteAPI {
+        return new ExecuteAPI(ExamMember.Model, 'submit_answer',{answerId:answerId,optionIds:optionIds}, null);
+    }
+
+    submitAnswer(context:APIContext,answerId: number, optionIds:number[]):Observable<any> {
+        return context.apiService.execute(ExamMember.__api__submit_answer(answerId, optionIds), 
+            context.authService.LoginToken);
+    }
+
     static __api__redo_exam(memberId: number): ExecuteAPI {
         return new ExecuteAPI(ExamMember.Model, 'redo_exam',{memberId:memberId}, null);
     }

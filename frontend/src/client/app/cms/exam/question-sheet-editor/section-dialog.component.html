@@ -1,0 +1,20 @@
+<form novalidate (ngSubmit)="f.form.valid && save()" #f="ngForm" autocomplete="off">
+    <p-dialog header="{{'Question sheet section'|translate}}" [(visible)]="display" modal="false" [responsive]="true" positionTop="50" [closeOnEscape]="false" [closable]="false" appendTo="body">
+        <div class="spinner" [hidden]="!loading"></div>
+        <div class="ui-g ui-fluid form-group">
+            <div class="ui-g-12">
+                <label>{{'Name'|translate}}</label>
+                <input type="text" pInputText [(ngModel)]="object.name" #name="ngModel" name="name" required>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="ui-message ui-messages-error ui-corner-all">
+                    <div *ngIf="name.errors.required">
+                        {{'Name is required' | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p-footer>
+            <button type="submit" pButton icon="fa-check" label="{{'Save'|translate}}" (click)="f.ngSubmit.emit()"></button>
+            <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{'Close'|translate}}"></button>
+        </p-footer>
+    </p-dialog>
+</form>

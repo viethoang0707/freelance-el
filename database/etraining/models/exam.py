@@ -222,6 +222,33 @@ class ExamMember(models.Model):
 		return {'success':True}
 
 	@api.model
+	def submit_answer(self, params):
+		answerId = +params["answerId"]
+		optionIds = params["optionIds"]
+		is_correct = False;
+		score = 0
+		for answer in self.env['etraining.answer'].browse(answerId):
+			if answer.question_type == 'sc':
+				if len(optionIds) == 0:
+					is_correct = False
+					score = 0
+				optionId = optionIds[0]
+				for option in self.env['etraining.option'].browse(optionId):
+					if option.is_correct:
+						is_correct = True
+						score = answer.exam_question_id.score
+			if answer.question_type == 'mc':
+				is_correct = True
+				for option in answer.question_id.option_ids:
+					if option.id not in optionIds:
+						is_correct = False
+				for optionId in optionIds:
+					if optionId not in answer.question_id.option_ids.ids:
+						is_correct = False
+				answer.write({'is_correct':is_correct,'score':score})
+		return {'success':True}
+
+	@api.model
 	def redo_exam(self,params):
 		memberId = params["memberId"]
 		for exam_member in self.env['etraining.exam_member'].browse(memberId):

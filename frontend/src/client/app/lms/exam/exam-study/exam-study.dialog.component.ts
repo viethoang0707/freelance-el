@@ -195,6 +195,7 @@ export class ExamStudyDialog extends BaseComponent {
 			answer.option_id = 0;
 			answer.submission_id = this.submission.id;
 			answer.question_id = question.question_id;
+			answer.exam_question_id =  question.id;
 			this.answers.push(answer);
 			return answer;
 		} else
@@ -219,17 +220,14 @@ export class ExamStudyDialog extends BaseComponent {
 
 	submitAnswer(): Observable<any> {
 		if (this.componentRef) {
-			(<IQuestion>this.componentRef.instance).concludeAnswer();
-			if (this.currentAnswer.is_correct) {
-				this.currentAnswer.score = this.currentQuestion.score;
-			} else
-				this.currentAnswer.score = 0;
+			var optionIds = (<IQuestion>this.componentRef.instance).concludeAnswer();
 			this.currentQuestion["attempted"] = true;
+			if (this.currentAnswer.IsNew)
+				return this.currentAnswer.save(this).flatMap((ans:Answer)=> {
+					return this.member.submitAnswer(this,ans.id, optionIds);
+				});
 		}
-		if (this.currentAnswer)
-			return this.currentAnswer.save(this);
-		else
-			return Observable.of(null);
+		return Observable.of(null);
 	}
 
 	next() {

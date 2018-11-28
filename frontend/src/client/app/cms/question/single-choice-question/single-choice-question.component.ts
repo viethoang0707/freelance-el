@@ -72,7 +72,9 @@ export class SingleChoiceQuestionComponent extends BaseComponent implements IQue
 			return obj.id == this.answer.option_id;
 		});
 		if (option)
-			this.answer.is_correct = option.is_correct;
+			return [option.id]
+		else
+			return [];
 	}
 
 	addOption() {

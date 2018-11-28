@@ -39,6 +39,7 @@ export class RateQuestionComponent extends BaseComponent implements IQuestion {
 	}
 
 	concludeAnswer() {
+		return [];
 	}
 
 	isValid():boolean {
