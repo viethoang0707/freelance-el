@@ -25,6 +25,7 @@ export class SurveySheetSaveDialog extends BaseComponent {
 
 	private display: boolean;
 	private sheet: SurveySheet;
+	private newName:string;
 
 	constructor() {
 		super();
@@ -37,7 +38,7 @@ export class SurveySheetSaveDialog extends BaseComponent {
 	}
 
 	save() {
-		this.sheet.replicate(this).subscribe(()=> {
+		this.sheet.replicate(this,this.newName).subscribe(()=> {
 			this.success(this.translateService.instant('Question sheet saved successfully'));
 				this.hide();
 		});

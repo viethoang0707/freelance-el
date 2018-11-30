@@ -143,9 +143,12 @@ export class ExamStudyDialog extends BaseComponent {
 
 	prepareExamQuestions(examQuestions: ExamQuestion[]) {
 		var offset = this.member.id;
-		return _.map(examQuestions, (obj, order) => {
+		var shuffle =  _.map(examQuestions, (obj, order) => {
 			var index = (order + offset) % examQuestions.length;
 			return examQuestions[index];
+		});
+		return _.sortBy(shuffle, (examQuestion:ExamQuestion)=> {
+			return examQuestion.order;
 		});
 	}
 

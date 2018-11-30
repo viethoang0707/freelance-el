@@ -147,8 +147,9 @@ class SurveySheet(models.Model):
 	@api.model
 	def replicate(self,params):
 		sheetId = +params["sheetId"]
+		name = params["name"]
 		for sheet in self.env['etraining.survey_sheet'].browse(sheetId):
-			clone_sheet = self.env['etraining.survey_sheet'].create({'seed':sheet.seed, 'name':sheet.name, 'layout':sheet.layout})
+			clone_sheet = self.env['etraining.survey_sheet'].create({'seed':sheet.seed, 'name':name, 'layout':sheet.layout})
 			section_map = {}
 			for section_id in sheet.section_ids:
 				clone_section = self.env['etraining.survey_sheet_section'].create({'order':section_id.order, 'name':section_id.name, 'sheet_id':clone_sheet.id})

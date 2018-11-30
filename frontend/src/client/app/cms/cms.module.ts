@@ -93,7 +93,9 @@ import { SectionDialog } from './exam/question-sheet-editor/section-dialog.compo
 		SurveyEditorDialog,
 		QuestionSheetPreviewDialog,
 		SurveySheetPreviewDialog,
-		QuestionContainerDirective
+		QuestionContainerDirective,
+		QuestionSheetEditorDialog,
+		SurveyEditorDialog
 	],
 	providers: [
 		CourseResolve,

@@ -192,7 +192,7 @@ class ExamMember(models.Model):
 			self.write({'exam_record_id':exam_record.id})
 		else:
 			score = 0
-			if self.exam_id.mode == 'offline':
+			if self.exam_id.exam_mode == 'offline':
 				question_ids = set()
 				score = self.submission_id.score
 			else:
@@ -304,6 +304,7 @@ class ExamQuestion(models.Model):
 	sheet_id = fields.Many2one('etraining.question_sheet',string="Question sheet")
 	section_id = fields.Many2one('etraining.question_sheet_section',string="Section")
 	section_name = fields.Char(related="section_id.name", string="Section Name")
+	section_order = fields.Integer(related="section_id.order", string="Section Order")
 	score = fields.Float(string='Score')
 	sheet_layout = fields.Selection(related="sheet_id.layout", string="Sheet layout")
 	order = fields.Integer(string='Order')
@@ -336,8 +337,9 @@ class QuestionSheet(models.Model):
 	@api.model
 	def replicate(self,params):
 		sheetId = +params["sheetId"]
+		name = params["name"]
 		for sheet in self.env['etraining.question_sheet'].browse(sheetId):
-			clone_sheet = self.env['etraining.question_sheet'].create({'seed':sheet.seed, 'name':sheet.name, 'layout':sheet.layout})
+			clone_sheet = self.env['etraining.question_sheet'].create({'seed':sheet.seed, 'name':name, 'layout':sheet.layout})
 			section_map = {}
 			for section_id in sheet.section_ids:
 				clone_section = self.env['etraining.question_sheet_section'].create({'order':section_id.order, 'name':section_id.name, 'sheet_id':clone_sheet.id})

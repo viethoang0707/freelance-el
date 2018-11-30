@@ -12,7 +12,6 @@ import { QuestionSheetPreviewDialog } from '../../../cms/exam/question-sheet-pre
 import { QuestionSheet } from '../../../shared/models/elearning/question-sheet.model';
 import { Question } from '../../../shared/models/elearning/question.model';
 
-const SHEET_FIELDS = ['name', 'question_count','create_date', 'write_date',];
 
 @Component({
     moduleId: module.id,
@@ -53,7 +52,7 @@ export class QuestionSheetListComponent extends BaseComponent {
     }
 
     loadQuestionSheets() {
-        QuestionSheet.listTemplate(this, SHEET_FIELDS).subscribe(sheets => {
+        QuestionSheet.listTemplate(this).subscribe(sheets => {
             this.sheets = _.sortBy(sheets, (sheet:QuestionSheet)=> {
                 return -sheet.id;
             });

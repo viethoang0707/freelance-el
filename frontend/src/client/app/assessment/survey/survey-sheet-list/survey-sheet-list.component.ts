@@ -13,7 +13,6 @@ import { SurveySheetPreviewDialog } from '../../../cms/survey/survey-sheet-previ
 import { SurveySheet } from '../../../shared/models/elearning/survey-sheet.model';
 import { SurveyQuestion } from '../../../shared/models/elearning/survey-question.model';
 
-const SHEET_FIELDS = ['name', 'question_count','create_date', 'write_date',];
 
 @Component({
     moduleId: module.id,
@@ -54,7 +53,7 @@ export class SurveySheetListComponent extends BaseComponent {
     }
 
     loadSurveySheets() {
-        SurveySheet.listTemplate(this, SHEET_FIELDS).subscribe(sheets => {
+        SurveySheet.listTemplate(this).subscribe(sheets => {
             this.sheets = _.sortBy(sheets, (sheet:SurveySheet)=> {
                 return -sheet.id;
             });

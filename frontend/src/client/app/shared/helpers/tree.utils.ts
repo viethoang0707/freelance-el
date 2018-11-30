@@ -22,6 +22,26 @@ export class TreeUtils {
     return group;
   }
 
+  flattenTree(tree) {
+    var nodeList = [];
+    for (var i = 0; i< tree.length;i++)
+      nodeList = nodeList.concat(this.flattenNode(tree[i]));
+    return nodeList;
+  }
+
+  private flattenNode(treeNode) {
+    var nodeList = [treeNode];
+    for (var i = 0; i< treeNode.children.length;i++)
+      nodeList = nodeList.concat(this.flattenNode(treeNode.children[i]));
+    return nodeList;
+  }
+
+  apply(tree,func) {
+    var nodeList = this.flattenTree(tree);
+    for (var i = 0;i< nodeList.length; i++)
+      func(nodeList[i]);
+  }
+
   getSubGroup(groups: Group[], parentId: number): any[] {
     return _.filter(groups, (group: Group) => {
       return this.isSubGroup(groups, group, parentId);

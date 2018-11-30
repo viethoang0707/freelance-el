@@ -32,12 +32,12 @@ export class SurveySheet extends BaseModel{
     status: string;
     layout:string;
     
-    static __api__replicate(sheetId: number): SearchReadAPI {
-        return new ExecuteAPI(SurveySheet.Model, 'replicate',{sheetId:sheetId}, null);
+    static __api__replicate(sheetId: number, name:string): SearchReadAPI {
+        return new ExecuteAPI(SurveySheet.Model, 'replicate',{sheetId:sheetId, name:name}, null);
     }
 
-    replicate(context:APIContext):Observable<any> {
-        return context.apiService.execute(SurveySheet.__api__replicate(this.id), 
+    replicate(context:APIContext, name:string):Observable<any> {
+        return context.apiService.execute(SurveySheet.__api__replicate(this.id, name), 
             context.authService.LoginToken);
     }
 

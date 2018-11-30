@@ -34,6 +34,7 @@ export class ExamQuestion extends BaseModel{
         this.section_id = undefined;
         this.section_name = undefined;
         this.sheet_layout = undefined;
+        this.section_order = undefined;
 	}
 
     group_name: string;
@@ -54,6 +55,7 @@ export class ExamQuestion extends BaseModel{
     section_name: string;
     section_id: number;
     sheet_layout: string;
+    section_order: number;
     
     static populateQuestions(context: APIContext, examQuestions: ExamQuestion[],fields?:string[]): Observable<any> {
         examQuestions = _.filter(examQuestions, (q:ExamQuestion)=> {

@@ -16,7 +16,8 @@ import { TreeUtils } from '../../../shared/helpers/tree.utils';
 import { SelectQuestionsDialog } from '../../../shared/components/select-question-dialog/select-question-dialog.component';
 import { TreeNode } from 'primeng/api';
 
-const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'question_count'];
+const GROUP_FIELDS = ['name', 'category', 'parent_id', 'question_count'];
+const QUESTION_FIELDS = ['group_id', 'level']
 
 @Component({
 	moduleId: module.id,
@@ -38,7 +39,7 @@ export class QuestionSelectorComponent extends BaseComponent implements OnInit {
 	constructor() {
 		super();
 		this.treeUtils = new TreeUtils();
-		
+
 	}
 
 	ngOnInit() {
@@ -54,9 +55,17 @@ export class QuestionSelectorComponent extends BaseComponent implements OnInit {
 			this.selectedNodes[key] = [];
 		});
 		this.examQuestions = [];
-		Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
-			_.each(QUESTION_LEVEL, (val, key) => {
-				this.tree[key] = this.treeUtils.buildGroupTree(groups,true);
+		Question.all(this, QUESTION_FIELDS).subscribe(questions => {
+			Group.listQuestionGroup(this, GROUP_FIELDS).subscribe(groups => {
+				_.each(QUESTION_LEVEL, (val, key) => {
+					this.tree[key] = this.treeUtils.buildGroupTree(groups, true);
+					this.treeUtils.apply(this.tree[key], (node)=> {
+						var questionList = _.filter(questions, (question:Question)=> {
+							return question.group_id == node.data.id && question.level == key;
+						});
+						node.label = `${node.data.name}(${questionList.length})`;
+					});
+				});
 			});
 		});
 	}
@@ -67,8 +76,8 @@ export class QuestionSelectorComponent extends BaseComponent implements OnInit {
 		}));
 	}
 
-	createExamQuestionFromQuestionBank(questions: Question[], score)  {
-		return  _.map(questions, (question:Question) => {
+	createExamQuestionFromQuestionBank(questions: Question[], score) {
+		return _.map(questions, (question: Question) => {
 			var examQuestion = new ExamQuestion();
 			examQuestion.question_id = question.id;
 			examQuestion.score = score;
@@ -82,12 +91,12 @@ export class QuestionSelectorComponent extends BaseComponent implements OnInit {
 
 	generateQuestion() {
 		var subscriptions = [];
-		_.each(QUESTION_LEVEL, (val, key)=> {
+		_.each(QUESTION_LEVEL, (val, key) => {
 			var groups = this.selectorGroups[key]["groups"]
 			if (groups.length > 0 && this.selectorGroups[key]["number"])
 				subscriptions.push(Question.listByGroups(this, groups).map(questions => {
 					questions = _.shuffle(questions);
-					questions = _.filter(questions, (obj:Question)=> {
+					questions = _.filter(questions, (obj: Question) => {
 						return obj.level == key;
 					});
 					var score = this.selectorGroups[key]["score"];
@@ -97,5 +106,5 @@ export class QuestionSelectorComponent extends BaseComponent implements OnInit {
 		});
 		return subscriptions;
 	}
-	
+
 }
