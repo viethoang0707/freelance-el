@@ -33,6 +33,10 @@ export class UserFormDialog extends BaseDialog<User> {
 
 
 	save() {
+		if (!this.formContent.isValid()) {
+			this.warn('Some fields are missing');
+			return;
+		}
 		if (this.object.IsNew) {
 			User.register(this, this.object).subscribe(resp => {
 				if (!resp["success"]) {

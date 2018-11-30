@@ -70,6 +70,10 @@
                             {{'Banned'|translate}}
                             <p-sortIcon [field]="'banned'"></p-sortIcon>
                         </th>
+                         <th [pSortableColumn]="'create_date'">
+                            {{'Created date'|translate}}
+                            <p-sortIcon [field]="'create_date'"></p-sortIcon>
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-user let-rowIndex="rowIndex">
@@ -86,6 +90,7 @@
                         <td class="showformb">{{user.group_name}}</td>
                         <td class="showformb">{{user.permission_name}}</td>
                         <td><i class="material-icons" *ngIf="user.banned">check</i></td>
+                        <td class="showformb">{{user.create_date | date :'dd/MM/yyyy'}}</td>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="summary">

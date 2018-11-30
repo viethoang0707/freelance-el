@@ -32,6 +32,10 @@ export class UserFormComponent extends BaseComponent {
 	}
 
 	save() {
+		if (!this.formContent.isValid()) {
+			this.warn('Some fields are missing');
+			return;
+		}
 		if (this.user.IsNew) {
 			User.register(this, this.user).subscribe(resp => {
 				if (!resp["success"]) {

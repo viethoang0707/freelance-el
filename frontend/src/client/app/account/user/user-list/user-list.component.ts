@@ -16,7 +16,7 @@ import { DataTable } from 'primeng/primeng';
 
 import * as _ from 'underscore';
 
-const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position', 'phone', 'group_name', 'permission_name'];
+const USER_FIELDS = ['group_id', 'banned' ,'name', 'login', 'email', 'position', 'phone', 'group_name', 'permission_name', 'create_date'];
 const GROUP_FIELDS = ['name', 'category' ,'parent_id', 'user_count'];
 
 @Component({

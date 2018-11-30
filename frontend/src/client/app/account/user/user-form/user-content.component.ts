@@ -58,6 +58,10 @@ export class UserContentComponent extends BaseComponent {
 		});
 	}
 
+	isValid() {
+		return this.user.login && this.user.name && this.user['password'];
+	}
+
 
 }
 
